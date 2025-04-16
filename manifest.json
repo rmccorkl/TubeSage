@@ -1,0 +1,10 @@
+{
+    "id": "tubesage",
+    "name": "TubeSage",
+    "version": "1.0.0",
+    "minAppVersion": "0.0.0",
+    "description": "Extract YouTube transcripts, summarize with LLMs, and use Templater",
+    "author": "Richard McCorkle",
+    "authorUrl": "https://github.com/rmccorkl",
+    "isDesktopOnly": false
+} 
