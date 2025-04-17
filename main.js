@@ -49645,7 +49645,7 @@ Specifically:
 This document will be processed as Markdown for Obsidian, so proper heading syntax is essential.
 Provide only the summary notes.
 Do not explain what you're doing or include any introductory sentence.
-Start the output with the actual summary content only, no headers or preamble.
+Start the output with the actual summary content only, no headers, no preamble, no postamble.
 At the beginning, include a summary without heading or title just the text that synthesizes the on the main themes of the transcript
 At the end, list any books, people, or resources mentioned, along with a short explanation of their relevance.`,
   // Extensive Summary prompt
@@ -49664,7 +49664,7 @@ Specifically:
 This document will be processed as Markdown for Obsidian, so proper heading syntax is essential. Treat this as a document for training future analysts in this field.
 Provide only the summary notes.
 Do not explain what you're doing or include any introductory sentence.
-Start the output with the actual summary content only, no headers or preamble.
+Start the output with the actual summary content only, no headers, no preamble, no postamble.
 
 For each section:
 - Use the exact heading format "### 1. Title" (not "### Section 1: Title"). Number sections sequentially (1, 2, 3, etc.). IMPORTANT: Use actual Obsidian Markdown heading syntax with # symbols, not bold text.
@@ -49689,6 +49689,8 @@ RULES:
 5. ONLY process headings that follow the format: # number. text (e.g., # 1. Introduction)
 6. DO NOT process headings without numbers or dots
 7. DO NOT process horizontal rules (single #)
+8. No preamble, no postamble, no headers, no titles, just the content with added timestamp links
+
 
 EXACTLY HOW TO DO THIS:
 1. Identify ALL section headings in the document that follow the format: # number. text
@@ -51521,7 +51523,7 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian4.PluginSettingTa
         style: "font-size: 24px; font-weight: 700; margin-bottom: 16px; color: var(--text-normal); text-align: center;"
       }
     });
-    titleEl.setText("YouTube Transcript LLM Settings");
+    titleEl.setText("TubeSage - YouTube Transcript LLM Settings");
     const supportContainer = containerEl.createEl("div", {
       attr: {
         style: "display: flex; flex-direction: column; align-items: center; margin-top: 10px; margin-bottom: 30px;"
@@ -51962,12 +51964,17 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian4.PluginSettingTa
       "Google",
       "AIza...",
       [
-        "gemini-ultra (beta)",
+        "gemini-2.5-pro-exp-03-25",
+        "gemini-2.0-pro-exp-02-05",
+        "gemini-2.0-flash",
+        "gemini-2.0-flash-lite",
         "gemini-1.5-pro",
         "gemini-1.5-flash",
+        "gemini-1.5-flash-8b",
+        "gemini-nano",
+        "gemini-ultra (beta)",
         "gemini-pro",
-        "gemini-pro-vision",
-        "gemini-1.0-pro"
+        "gemini-pro-vision"
       ],
       "gemini-1.5-pro"
     );
@@ -52447,7 +52454,7 @@ var LicenseModal = class extends import_obsidian4.Modal {
       modalEl.style.width = "700px";
       modalEl.style.maxWidth = "80vw";
     }
-    contentEl.createEl("h2", { text: "YouTube Transcript Plugin License" });
+    contentEl.createEl("h2", { text: "TubeSage - YouTube Transcript Plugin License" });
     try {
       const pluginId = ((_b = (_a2 = this.app.plugins.manifest) == null ? void 0 : _a2["tubesage"]) == null ? void 0 : _b.id) || "tubesage";
       let licenseContent = "";
@@ -52650,7 +52657,7 @@ var READMEModal = class extends import_obsidian4.Modal {
       modalEl.style.width = "800px";
       modalEl.style.maxWidth = "85vw";
     }
-    contentEl.createEl("h2", { text: "YouTube Transcript Plugin Documentation" });
+    contentEl.createEl("h2", { text: "TubeSage - YouTube Transcript Plugin Documentation" });
     try {
       const pluginId = ((_b = (_a2 = this.app.plugins.manifest) == null ? void 0 : _a2["tubesage"]) == null ? void 0 : _b.id) || "tubesage";
       let readmeContent = "";

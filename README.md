@@ -1,4 +1,4 @@
-# YouTube Transcript LLM for Obsidian
+#  TubeSage : YouTube Transcript LLM for Obsidian
 
 TubeSage An Obsidian plugin to extract YouTube transcripts, summarize them with LLMs, and create notes using Templater.
 
