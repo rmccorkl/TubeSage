@@ -22964,17 +22964,46 @@ var YouTubeTranscriptExtractor = class {
    * @returns Video ID or null if not found
    */
   static extractVideoId(url) {
-    const patterns = [
-      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
-      /youtube\.com\/embed\/([^?&\n/]+)/,
-      /youtube\.com\/v\/([^?&\n/]+)/,
-      /youtube\.com\/shorts\/([^?&\n/]+)/,
-      /music\.youtube\.com\/watch\?v=([^&\n?#]+)/
-    ];
-    for (const pattern of patterns) {
-      const match = url.match(pattern);
-      if (match && match[1]) {
-        return match[1];
+    url = url.trim();
+    if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("www.")) {
+      url = "https://" + url;
+    }
+    try {
+      const urlObj = new URL(url);
+      const hostname = urlObj.hostname;
+      const pathname = urlObj.pathname;
+      if (hostname.includes("youtube.com") && pathname === "/watch") {
+        return urlObj.searchParams.get("v");
+      }
+      if (hostname === "youtu.be") {
+        return pathname.substring(1);
+      }
+      if (hostname.includes("youtube.com") && pathname.startsWith("/embed/")) {
+        return pathname.split("/")[2];
+      }
+      if (hostname.includes("youtube.com") && pathname.startsWith("/v/")) {
+        return pathname.split("/")[2];
+      }
+      if (hostname.includes("youtube.com") && pathname.startsWith("/shorts/")) {
+        return pathname.split("/")[2];
+      }
+      if (hostname.includes("music.youtube.com") && pathname === "/watch") {
+        return urlObj.searchParams.get("v");
+      }
+    } catch (error) {
+      console.error("Error parsing YouTube URL:", error);
+      const patterns = [
+        /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
+        /youtube\.com\/embed\/([^?&\n/]+)/,
+        /youtube\.com\/v\/([^?&\n/]+)/,
+        /youtube\.com\/shorts\/([^?&\n/]+)/,
+        /music\.youtube\.com\/watch\?v=([^&\n?#]+)/
+      ];
+      for (const pattern of patterns) {
+        const match = url.match(pattern);
+        if (match && match[1]) {
+          return match[1];
+        }
       }
     }
     return null;

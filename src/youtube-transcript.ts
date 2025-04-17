@@ -199,18 +199,65 @@ export class YouTubeTranscriptExtractor {
      * @returns Video ID or null if not found
      */
     static extractVideoId(url: string): string | null {
-        const patterns = [
-            /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
-            /youtube\.com\/embed\/([^?&\n/]+)/,
-            /youtube\.com\/v\/([^?&\n/]+)/,
-            /youtube\.com\/shorts\/([^?&\n/]+)/,
-            /music\.youtube\.com\/watch\?v=([^&\n?#]+)/
-        ];
+        // Clean up the URL - trim and ensure it's properly formed
+        url = url.trim();
+        if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('www.')) {
+            url = 'https://' + url;
+        }
         
-        for (const pattern of patterns) {
-            const match = url.match(pattern);
-            if (match && match[1]) {
-                return match[1];
+        try {
+            // Parse the URL to handle various formats more reliably
+            const urlObj = new URL(url);
+            const hostname = urlObj.hostname;
+            const pathname = urlObj.pathname;
+            
+            // youtube.com/watch?v=VIDEO_ID
+            if (hostname.includes('youtube.com') && pathname === '/watch') {
+                return urlObj.searchParams.get('v');
+            }
+            
+            // youtu.be/VIDEO_ID
+            if (hostname === 'youtu.be') {
+                // The pathname includes the leading slash, so we remove it
+                return pathname.substring(1);
+            }
+            
+            // youtube.com/embed/VIDEO_ID
+            if (hostname.includes('youtube.com') && pathname.startsWith('/embed/')) {
+                return pathname.split('/')[2];
+            }
+            
+            // youtube.com/v/VIDEO_ID
+            if (hostname.includes('youtube.com') && pathname.startsWith('/v/')) {
+                return pathname.split('/')[2];
+            }
+            
+            // youtube.com/shorts/VIDEO_ID
+            if (hostname.includes('youtube.com') && pathname.startsWith('/shorts/')) {
+                return pathname.split('/')[2];
+            }
+            
+            // music.youtube.com/watch?v=VIDEO_ID
+            if (hostname.includes('music.youtube.com') && pathname === '/watch') {
+                return urlObj.searchParams.get('v');
+            }
+        } catch (error) {
+            console.error("Error parsing YouTube URL:", error);
+            
+            // Fallback to regex patterns for compatibility
+            const patterns = [
+                /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
+                /youtube\.com\/embed\/([^?&\n/]+)/,
+                /youtube\.com\/v\/([^?&\n/]+)/,
+                /youtube\.com\/shorts\/([^?&\n/]+)/,
+                /music\.youtube\.com\/watch\?v=([^&\n?#]+)/
+            ];
+            
+            for (const pattern of patterns) {
+                const match = url.match(pattern);
+                if (match && match[1]) {
+                    return match[1];
+                }
             }
         }
         

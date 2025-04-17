@@ -5,7 +5,7 @@ set -e  # Exit on any error
 
 # Configuration
 PLUGIN_ID="tubesage"
-SOURCE_DIR="/Users/rmccorkl/Code/ObsidianPlugin"
+SOURCE_DIR="/Users/rmccorkl/Code/TubeSage"
 TARGET_DIR="/Users/rmccorkl/Library/Mobile Documents/com~apple~CloudDocs/Obsidian/MainVault/.obsidian/plugins/$PLUGIN_ID"
 
 # Get version from manifest.json
