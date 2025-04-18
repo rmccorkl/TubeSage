@@ -22,7 +22,6 @@ TubeSage An Obsidian plugin to extract YouTube transcripts, summarize them with 
 - [Templater plugin](https://github.com/SilentVoid13/Templater) installed and enabled
 - API key for your chosen LLM provider (OpenAI, Anthropic, or Google)
 - YouTube API key (required for channel/playlist features) - see [instructions below](#creating-a-youtube-api-key)
-- Optional: Node.js (required when using Anthropic as your LLM provider) - see [Node.js Requirements](#nodejs-requirements-for-anthropic-api)
 
 ## Installation
 
@@ -36,6 +35,12 @@ TubeSage An Obsidian plugin to extract YouTube transcripts, summarize them with 
 ## Recent Updates
 
 ### New Features (April 2025)
+
+### LLM Fetch Shim
+- Implemented a unified fetch shim for all LLM providers
+- Deprecated Node.js requirement for Anthropic API integration
+- Added robust error handling and URL validation
+- Cross-platform compatibility for all providers (desktop and mobile)
 
 ### Performance Monitoring System
 - Added comprehensive performance monitoring to track LLM response times
@@ -192,6 +197,8 @@ Key components:
 - `main.ts` - Main plugin file
 - `src/youtube-transcript.ts` - YouTube transcript extraction
 - `src/llm/transcript-summarizer.ts` - LLM integrations for summarization
+- `src/llm/langchain-client.ts` - LangChain integration for unified LLM access
+- `src/utils/fetch-shim.ts` - Cross-platform fetch implementation for API calls
 - `src/utils/youtube-utils.ts` - Shared utility functions for YouTube URL handling
 - `src/utils/error-utils.ts` - Standardized error handling utilities
 - `src/utils/logger.ts` - Centralized logging system
@@ -199,26 +206,14 @@ Key components:
 
 The UI is implemented using Obsidian's native Modal component, making it lightweight and consistent with Obsidian's user interface patterns.
 
-### Node.js Requirements for Anthropic API
+## Cross-Platform API Access
 
-The plugin uses a local proxy for Anthropic API calls, which requires Node.js. When using Anthropic as your LLM provider, please note:
+TubeSage uses a custom-built fetch shim to ensure all LLM providers work seamlessly across both desktop and mobile Obsidian:
 
-### System-installed Node.js is required
-- The plugin looks for Node.js in your system PATH
+- **Unified Interface**: All LLM providers (OpenAI, Anthropic, Google) use the same fetch implementation
+- **Mobile Compatibility**: Works on iOS and Android without requiring Node.js
+- **Error Handling**: Robust error recovery and detailed logging
+- **LangChain Integration**: Uses LangChain with our custom fetcher for standardized LLM interactions
 
-### Installation required
-- If Node.js is not found, you'll need to install it manually
-
-To install Node.js:
-1. Download the installer from [nodejs.org](https://nodejs.org/)
-2. Follow the installation instructions for your platform
-3. Ensure Node.js is added to your system PATH during installation
-4. Restart Obsidian after installing Node.js
-
-Supported platforms:
-- Windows
-- macOS (Intel and Apple Silicon)
-- Linux
-
-If Node.js is not found, the plugin will display a helpful error message with installation instructions when you try to use Anthropic models.
+This approach ensures maximum compatibility while maintaining excellent performance on all platforms.
 

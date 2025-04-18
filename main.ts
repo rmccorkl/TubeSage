@@ -2,20 +2,12 @@ import { App, Plugin, PluginSettingTab, Setting, Notice, Modal } from 'obsidian'
 import { YouTubeTranscriptExtractor } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
-import { stopLocalProxy, setPluginPath } from './src/proxy/anthropic-proxy';
-// Import the new utility functions
-import { isYoutubeUrl, isYoutubeChannelOrPlaylistUrl, extractChannelName, showNotice as showUtilityNotice } from './src/utils/youtube-utils';
-// Import error handling utilities
 import { handleApiError, getSafeErrorMessage } from './src/utils/error-utils';
-// Import logger
 import { getLogger, LogLevel, setGlobalLogLevel } from './src/utils/logger';
-// Import path utilities
 import { normalizePath, ensureFolder, joinPaths, sanitizePathComponent } from './src/utils/path-utils';
-// Import form utilities
 import { validateRequired, validateYouTubeUrl, validateInputField, ValidationResult, displayValidationResult } from './src/utils/form-utils';
-// Import prompt utilities
 import { getPromptConfig, cleanTranscript, SummaryMode, PromptConfig, getTimestampLinkConfig } from './src/utils/prompt-utils';
-// Import timestamp utilities
+import { showNotice, isYoutubeUrl, isYoutubeChannelOrPlaylistUrl, extractChannelName } from './src/utils/youtube-utils';
 import { 
     extractDocumentComponents, 
     reconstructDocument, 
@@ -27,6 +19,7 @@ import {
     hasTimestampLinks,
     convertTimestampToSeconds
 } from './src/utils/timestamp-utils';
+import { setPluginPath, stopLocalProxy } from './src/proxy/anthropic-proxy';
 import path from 'path';
 import fs from 'fs';
 
@@ -106,7 +99,7 @@ const DEFAULT_SETTINGS: YouTubeTranscriptSettings = {
     
     // Short (Fast) Summary prompt
     systemPrompt: `You are a helpful assistant that summarizes YouTube transcripts clearly and concisely using Markdown.`,
-    userPrompt: `Please summarize the following YouTube transcript. Extract key points, main ideas, and important details. 
+    userPrompt: `Extract structured notes from the transcript below without explanation or preface. Extract key points, main ideas, and important details. 
 FORMAT USING PROPER MARKDOWN HEADINGS with # syntax (not bold text).
 Specifically: 
 1. Use "# " for main headings
@@ -117,15 +110,16 @@ Specifically:
 This document will be processed as Markdown for Obsidian, so proper heading syntax is essential.
 Provide only the summary notes.
 Do not explain what you're doing or include any introductory sentence.
+Your output should be clean Markdown content only. Do not introduce, explain, or narrate anything about the task. Begin directly with content.
 Start the output with the actual summary content only, no headers, no preamble, no postamble.
-At the beginning, include a summary without heading or title just the text that synthesizes the on the main themes of the transcript
+Respond only with the raw answer, no intro or outro text.
+Start the response immediately with a short paragraph summarizing the main themes. Do not label it or describe it.
 At the end, list any books, people, or resources mentioned, along with a short explanation of their relevance.`,
-    
     // Extensive Summary prompt
     extensiveSystemPrompt: 'You are a highly analytical assistant that produces comprehensive, structured, and insightful notes from transcripts in proper Obsidian Markdown format. You specialize in creating deep, paragraph-level breakdowns of complex material with clarity and nuance. Your notes help readers understand both what is said and the reasoning or implications behind it. The objective is to extract all meaningful content, ideas, and knowledge from the transcript so that a reader can fully understand and review the material through structured notes without needing to watch or re-watch the video. IMPORTANT: Always use proper Markdown heading syntax with # characters (not bold text) for all headings and section titles.',
     extensiveUserPrompt: `From the transcript below, create detailed and structured notes for someone who wants to understand the material in depth.
 Organize the content into clearly numbered sections based on major topic or theme changes. 
-Please summarize the following YouTube transcript. Extract key points, main ideas, and important details. 
+Extract structured notes from the transcript below without explanation or preface, extract key points, main ideas, and important details. 
 FORMAT USING PROPER MARKDOWN HEADINGS with # syntax (not bold text).
 Specifically:
 1. Use "# " for main headings
@@ -137,7 +131,9 @@ Specifically:
 This document will be processed as Markdown for Obsidian, so proper heading syntax is essential. Treat this as a document for training future analysts in this field.
 Provide only the summary notes.
 Do not explain what you're doing or include any introductory sentence.
+Your output should be clean Markdown content only. Do not introduce, explain, or narrate anything about the task. Begin directly with content.
 Start the output with the actual summary content only, no headers, no preamble, no postamble.
+Respond only with the raw answer, no intro or outro text.
 
 For each section:
 - Use the exact heading format "### 1. Title" (not "### Section 1: Title"). Number sections sequentially (1, 2, 3, etc.). IMPORTANT: Use actual Obsidian Markdown heading syntax with # symbols, not bold text.
@@ -147,12 +143,10 @@ For each section:
 - Explore the reasoning, implications, or broader significance behind the ideas.
 - Explicitly identify and analyze any contrasts, tensions, contradictions, or shifts in perspective throughout the discussion. Pay special attention to dialectical relationships between concepts.
 
-At the beginning, include a summary without heading or title just the text that synthesizes the on the main themes of the transcript.
-
+Start the response immediately with a short paragraph summarizing the main themes. Do not label it or describe it.
 At the end, list any books, people, or resources mentioned, along with a short explanation of their relevance.`,
-    
     // Second pass - timestamp linking prompt
-    timestampSystemPrompt: 'You are a highly precise assistant that adds YouTube timestamp links to section headings in a note and can translate content into other languages when requested.',
+    timestampSystemPrompt: 'You are a highly precise assistant that amends YouTube links to add timestamps to section headings in a note. You never include any reference material (like video IDs or transcripts) in your output.',
     timestampUserPrompt: `TASK: Add YouTube timestamp links to each section heading in this document.
 
 RULES:
@@ -160,11 +154,12 @@ RULES:
 2. NEVER remove any content
 3. ALWAYS return the FULL original content PLUS timestamp links at the end of section headings
 4. If processing multiple sections, add timestamps to ALL headings
-5. ONLY process headings that follow the format: # number. text (e.g., # 1. Introduction)
+5. ONLY process headings that follow the format: #, ##, ### number. text (e.g., # 1. Introduction)
 6. DO NOT process headings without numbers or dots
 7. DO NOT process horizontal rules (single #)
-8. No preamble, no postamble, no headers, no titles, just the content with added timestamp links
-
+8. Do NOT add a preamble or postamble or headers or titles, ONLY AMEND the links to add the seconds timestamp
+9. Respond only with the raw answer, no intro or outro text.
+10. NEVER include any reference material marked by ----- REFERENCE MATERIAL ----- blocks in your response.
 
 EXACTLY HOW TO DO THIS:
 1. Identify ALL section headings in the document that follow the format: # number. text
@@ -179,16 +174,7 @@ EXACTLY HOW TO DO THIS:
    - IMPORTANT: Only use TimeIndex values that actually appear in the transcript
    - ENSURE the TimeIndex value does not exceed the length of the video
 6. Add the timestamp link in the format: [Watch](https://www.youtube.com/watch?v=VIDEO_ID&t=TimeIndex)
-7. Place the link at the end of the heading line, after the heading text
-
-EXAMPLE:
-Original heading: # 1. Introduction
-Relevant transcript: [00:01:15] [TimeIndex:75] This is the introduction...
-Modified heading: # 1. Introduction [Watch](https://www.youtube.com/watch?v=VIDEO_ID&t=75)
-
-Original heading: ## 2. Main Topic
-Relevant transcript: [00:03:00] [TimeIndex:180] Here we discuss the main topic...
-Modified heading: ## 2. Main Topic [Watch](https://www.youtube.com/watch?v=VIDEO_ID&t=180)`,
+7. Place the link at the end of the heading line, after the heading text`,
     // Default to Extensive Summary
     useFastSummary: false,
     
@@ -205,60 +191,6 @@ Modified heading: ## 2. Main Topic [Watch](https://www.youtube.com/watch?v=VIDEO
     licenseAccepted: false,
 };
 
-// Add this new function to check Node.js availability
-export async function checkNodeAvailability(): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-        const isWindows = process.platform === 'win32';
-        const command = isWindows ? 'where node' : 'which node';
-        
-        require('child_process').exec(command, (error: any, stdout: string) => {
-            if (!error && stdout) {
-                // Node.js found in PATH
-                console.log(`Node.js found in PATH: ${stdout.trim()}`);
-                resolve(true);
-                return;
-            }
-            
-            // Check common installation locations as a fallback
-            const commonPaths = isWindows 
-                ? [
-                    'C:\\Program Files\\nodejs\\node.exe', 
-                    'C:\\Program Files (x86)\\nodejs\\node.exe',
-                    'C:\\nodejs\\node.exe',
-                    `${process.env.APPDATA}\\npm\\node.exe`,
-                    `${process.env.LOCALAPPDATA}\\npm\\node.exe`
-                ]
-                : [
-                    '/usr/local/bin/node', 
-                    '/usr/bin/node', 
-                    '/opt/homebrew/bin/node',
-                    '/opt/local/bin/node',
-                    '/opt/bin/node'
-                ];
-            
-            console.log(`Checking for Node.js in common locations: ${JSON.stringify(commonPaths)}`);
-            
-            // Try to find node.js executable in common paths
-            for (const nodePath of commonPaths) {
-                try {
-                    if (require('fs').existsSync(nodePath)) {
-                        // Node.js found in common location
-                        console.log(`Node.js found at: ${nodePath}`);
-                        resolve(true);
-                        return;
-                    }
-                } catch (e) {
-                    console.error(`Error checking path ${nodePath}:`, e);
-                }
-            }
-            
-            // Node.js not found
-            console.log("Node.js not found in PATH or common locations");
-            resolve(false);
-        });
-    });
-}
-
 export default class YouTubeTranscriptPlugin extends Plugin {
     settings: YouTubeTranscriptSettings;
     private summarizer: TranscriptSummarizer;
@@ -266,7 +198,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
 
     // Replace the duplicated showNotice method with a wrapper that calls the shared utility
     showNotice(message: string, timeout: number = 5000): void {
-        showUtilityNotice(message, timeout);
+        showNotice(message, timeout);
     }
 
     async onload() {
@@ -663,22 +595,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             const styleEl = document.getElementById('youtube-transcript-styles');
             if (styleEl) {
                 styleEl.remove();
-            }
-            
-            // Stop the local proxy server only if Anthropic was the last used provider
-            if (this.settings.selectedLLM === 'anthropic') {
-                try {
-                    logger.info("Stopping Anthropic proxy server");
-                    await Promise.race([
-                        stopLocalProxy(),
-                        new Promise((_, reject) => 
-                            setTimeout(() => reject(new Error("Proxy shutdown timed out")), 3000)
-                        )
-                    ]);
-                    logger.info("Anthropic proxy server stopped");
-                } catch (error) {
-                    logger.error("Error stopping Anthropic proxy server:", error);
-                }
             }
         } catch (error) {
             logger.error("Error during plugin cleanup:", error);
@@ -1581,13 +1497,18 @@ Transcript info:
                 userPrompt: timestampConfig.userPrompt
             }, this.settings.apiKeys);
             
-            // Format the prompt - send ONLY the content, not frontmatter
-            let formattedPrompt = `${timestampConfig.userPrompt}${contentWithoutFrontmatter}\n\nThe YouTube video ID is: ${videoId}`;
-            
-            // If we have transcript, include it
-            if (transcript) {
-                formattedPrompt += `\n\nTRANSCRIPT EXCERPTS (for reference):\n${transcript}`;
-            }
+            // Construct the prompt with clear instructions not to include reference materials in output
+            const referenceSection = 
+                "----- REFERENCE MATERIAL (DO NOT INCLUDE IN OUTPUT) -----\n" +
+                "VIDEO_ID: " + videoId + "\n" +
+                (transcript ? "TRANSCRIPT:\n" + transcript + "\n" : "") +
+                "----- END REFERENCE MATERIAL -----";
+
+            // Format the prompt with content and reference materials clearly separated
+            let formattedPrompt = 
+                timestampConfig.userPrompt + "\n\n" +
+                contentWithoutFrontmatter + "\n\n" +
+                referenceSection;
             
             // Send to LLM for processing
             this.showNotice("Adding timestamp links with LLM...", 5000);
@@ -1788,8 +1709,22 @@ ${contentToTranslate}
                 // Get timestamp link configuration
                 const timestampConfig = getTimestampLinkConfig(this.settings, videoId);
                 
-                // Create specialized prompt for this chunk using the timestamp utility
-                const chunkPrompt = `${timestampConfig.userPrompt}${chunk}\n\nThe YouTube video ID is: ${videoId}\n\nTRANSCRIPT EXCERPTS (for reference):\n${transcript.length > 0 ? transcript : "No transcript available, use default timestamps starting at 0 seconds."}`;
+                // Construct reference section with clear instructions not to include in output
+                const transcriptContent = transcript.length > 0 ? 
+                    transcript : 
+                    "No transcript available, use default timestamps starting at 0 seconds.";
+                
+                const referenceSection = 
+                    "----- REFERENCE MATERIAL (DO NOT INCLUDE IN OUTPUT) -----\n" +
+                    "VIDEO_ID: " + videoId + "\n" +
+                    "TRANSCRIPT:\n" + transcriptContent + "\n" +
+                    "----- END REFERENCE MATERIAL -----";
+
+                // Create specialized prompt for this chunk with clear separation of content and reference
+                const chunkPrompt = 
+                    timestampConfig.userPrompt + "\n\n" +
+                    chunk + "\n\n" +
+                    referenceSection;
                 
                 try {
                     // Create chunk-specific summarizer with base config
@@ -1928,7 +1863,7 @@ class YouTubeTranscriptModal extends Modal {
     
     // Create a wrapper for Notice that uses the shared utility
     showNotice(message: string, timeout: number = 5000): void {
-        showUtilityNotice(message, timeout);
+        showNotice(message, timeout);
     }
     
     // Use imported utility method
@@ -3235,21 +3170,6 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 
                 // Add change handler
                 dropdown.onChange(async (value: string) => {
-                    // Check for Node.js availability when selecting Anthropic
-                    if (value === 'anthropic') {
-                        const nodeAvailable = await checkNodeAvailability();
-                        if (!nodeAvailable) {
-                            // Show error message
-                            new Notice('Node.js is not installed or not found in your system PATH. Anthropic (Claude) requires Node.js to function. Please install Node.js from https://nodejs.org/ and ensure it is added to your PATH.');
-                            
-                            // Reset to default LLM
-                            dropdown.setValue('openai');
-                            this.plugin.settings.selectedLLM = 'openai';
-                            await this.plugin.saveSettings();
-                            return;
-                        }
-                    }
-                    
                     // Set appropriate max token value based on provider
                     if (value === 'google') {
                         this.plugin.settings.maxTokens = 8192;
@@ -3259,7 +3179,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         new Notice('Max tokens set to 4096');
                     }
                     
-                    // Normal flow if not Anthropic or if Node.js is available
+                    // Update settings
                     this.plugin.settings.selectedLLM = value;
                     await this.plugin.saveSettings();
                     

@@ -1,11 +1,7 @@
-import { ChatOpenAI } from '@langchain/openai';
-import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
-import { ChatPromptTemplate, MessagesPlaceholder } from '@langchain/core/prompts';
-import { HumanMessage, SystemMessage } from '@langchain/core/messages';
-import { RunnableSequence } from '@langchain/core/runnables';
-import { ChatOllama } from '@langchain/community/chat_models/ollama';
-import { startLocalProxy, stopLocalProxy, getProxyUrl } from '../proxy/anthropic-proxy';
 import { getLogger } from '../utils/logger';
+import { LLMFactory } from './llm-factory';
+import { isPlatformMobile } from '../utils/fetch-shim';
+import { LangChainClient } from './langchain-client';
 
 interface LLMConfig {
     model: string;
@@ -15,234 +11,195 @@ interface LLMConfig {
     userPrompt: string;
 }
 
-interface LLMResponse {
-    content: string;
-}
-
 // Get the logger for LLM operations
 const llmLogger = getLogger('LLM');
 
 export class TranscriptSummarizer {
     private config: LLMConfig;
     private apiKeys: Record<string, string>;
-    private proxyStarted: boolean = false;
+    private llmFactory: LLMFactory;
 
     constructor(config: LLMConfig, apiKeys: Record<string, string>) {
         this.config = config;
         this.apiKeys = apiKeys;
-    }
-
-    private getLLM(provider: string) {
-        const baseConfig = {
-            temperature: this.config.temperature,
-            maxTokens: this.config.maxTokens,
-            apiKey: this.apiKeys[provider]
-        };
-
-        switch (provider) {
-            case 'openai':
-                return new ChatOpenAI({
-                    ...baseConfig,
-                    modelName: this.config.model
-                });
-            case 'anthropic':
-                // For Anthropic, we'll use a local proxy
-                // Return null as we'll handle it separately
-                return null;
-            case 'google':
-                return new ChatGoogleGenerativeAI({
-                    ...baseConfig,
-                    modelName: this.config.model
-                });
-            case 'ollama':
-                return new ChatOllama({
-                    temperature: this.config.temperature,
-                    baseUrl: this.apiKeys.ollama,
-                    model: this.config.model,
-                    numPredict: this.config.maxTokens
-                });
-            default:
-                throw new Error(`Unsupported LLM provider: ${provider}`);
-        }
-    }
-
-    private createPrompt() {
-        return ChatPromptTemplate.fromMessages([
-            new SystemMessage(this.config.systemPrompt),
-            new MessagesPlaceholder('transcript'),
-            new HumanMessage(this.config.userPrompt)
-        ]);
-    }
-
-    private async callAnthropicViaProxy(transcript: string): Promise<string> {
-        const apiKey = this.apiKeys.anthropic;
-        if (!apiKey || apiKey.trim() === '') {
-            throw new Error('Anthropic API key is missing or empty.');
-        }
-
-        try {
-            // Start the proxy server if not already running
-            if (!this.proxyStarted) {
-                llmLogger.info("Starting Anthropic proxy server");
-                try {
-                    await startLocalProxy(apiKey);
-                    this.proxyStarted = true;
-                } catch (proxyError) {
-                    llmLogger.error("Failed to start proxy server:", proxyError);
-                    throw new Error(`Failed to start Anthropic proxy server: ${proxyError.message}. Make sure Node.js is installed and accessible.`);
-                }
+        
+        // Initialize the LLM factory
+        this.llmFactory = new LLMFactory({
+            selectedLLM: 'openai', // Default, will be overridden in summarize()
+            apiKeys: this.apiKeys,
+            selectedModels: {
+                openai: this.config.model,
+                anthropic: this.config.model,
+                google: this.config.model,
+                ollama: this.config.model
             }
-
-            const proxyUrl = getProxyUrl();
-            llmLogger.info(`Using proxy server at ${proxyUrl}`);
-            
-            // Make the request to our local proxy
-            try {
-                const response = await fetch(`${proxyUrl}/v1/messages`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: this.config.model,
-                        max_tokens: this.config.maxTokens,
-                        temperature: this.config.temperature,
-                        messages: [
-                            {
-                                role: "user",
-                                content: `${this.config.systemPrompt}\n\n${this.config.userPrompt}\n\nTranscript:\n${transcript}`
-                            }
-                        ]
-                    })
-                });
-
-                if (!response.ok) {
-                    let errorMessage = 'Anthropic API error';
-                    try {
-                        const errorData = await response.json();
-                        llmLogger.error("[DEBUG-LLM] API response error:", errorData);
-                        errorMessage = `Anthropic API error: ${errorData.error?.message || JSON.stringify(errorData)}`;
-                    } catch (e) {
-                        errorMessage = `Anthropic API error: ${response.status} ${response.statusText}`;
-                    }
-                    throw new Error(errorMessage);
-                }
-
-                const data = await response.json();
-                llmLogger.info("[DEBUG-LLM] Received response from Anthropic API via proxy");
-                
-                const content = data.content[0];
-                if (content && content.type === 'text') {
-                    return content.text;
-                } else {
-                    throw new Error('Unexpected response format from Anthropic API');
-                }
-            } catch (fetchError) {
-                if (fetchError.message.includes('Failed to fetch') || 
-                    fetchError.message.includes('NetworkError') ||
-                    fetchError.message.includes('ECONNREFUSED')) {
-                    llmLogger.error("[DEBUG-LLM] Network error:", fetchError.message);
-                    
-                    // Try to restart the proxy server
-                    try {
-                        await stopLocalProxy();
-                        this.proxyStarted = false;
-                        await startLocalProxy(apiKey);
-                        this.proxyStarted = true;
-                        throw new Error(`Network error connecting to Anthropic API proxy. Proxy server has been restarted. Please try again.`);
-                    } catch (restartError) {
-                        llmLogger.error("[DEBUG-LLM] Failed to restart proxy:", restartError);
-                        throw new Error(`Proxy server connection error. Please ensure Node.js is available and can be found in a relative path from Obsidian.`);
-                    }
-                }
-                throw fetchError;
-            }
-        } catch (error: any) {
-            llmLogger.error("[DEBUG-LLM] Anthropic API error:", error);
-            throw error;
-        }
+        });
+        
+        llmLogger.debug('TranscriptSummarizer initialized with config:', {
+            model: config.model,
+            temperature: config.temperature,
+            maxTokens: config.maxTokens
+        });
     }
 
     async summarize(transcript: string, provider: string): Promise<string> {
         try {
-            // Start proxy server if using Anthropic and not already started
-            if (provider === 'anthropic' && !this.proxyStarted) {
-                const apiKey = this.apiKeys.anthropic;
-                if (!apiKey || apiKey.trim() === '') {
-                    throw new Error('Anthropic API key is missing or empty.');
-                }
-
-                try {
-                    llmLogger.info("Starting Anthropic proxy server");
-                    await startLocalProxy(apiKey);
-                    this.proxyStarted = true;
-                } catch (proxyError) {
-                    llmLogger.error("Failed to start proxy server:", proxyError);
-                    throw new Error(`Failed to start Anthropic proxy server: ${proxyError.message}. Make sure Node.js is installed and accessible.`);
-                }
-            }
-
             llmLogger.info("Starting summarization with provider:", provider);
             llmLogger.info("Transcript length:", transcript.length);
             llmLogger.info("Model:", this.config.model);
             llmLogger.info("Temperature:", this.config.temperature);
             llmLogger.info("Max tokens:", this.config.maxTokens);
             
-            // Check if the API key/URL exists
-            if (provider === 'ollama') {
-                if (!this.apiKeys[provider] || this.apiKeys[provider].trim() === '') {
-                    llmLogger.error("[DEBUG-LLM] Ollama base URL is missing");
-                    throw new Error(`Ollama base URL is missing or empty. Please configure it in settings.`);
-                }
-            } else {
-                if (!this.apiKeys[provider] || this.apiKeys[provider].trim() === '') {
-                    llmLogger.error("[DEBUG-LLM] API key is missing for provider:", provider);
-                    throw new Error(`API key for ${provider} is missing or empty.`);
-                }
+            // Handle platform-specific fallbacks
+            if (isPlatformMobile() && provider === 'ollama') {
+                llmLogger.warn("Ollama provider requested on mobile - falling back to Google");
+                provider = 'google';
             }
             
-            llmLogger.info("[DEBUG-LLM] API key/URL check passed");
+            // Check if the API key exists before proceeding
+            if (!this.apiKeys[provider] || this.apiKeys[provider].trim() === '') {
+                llmLogger.error(`API key missing for provider: ${provider}`);
+                throw new Error(`API key for ${provider} is missing or empty.`);
+            }
             
-            if (provider === 'anthropic') {
-                return await this.callAnthropicViaProxy(transcript);
-            } else {
-                const llm = this.getLLM(provider);
-                llmLogger.info("[DEBUG-LLM] LLM instance created");
+            // Important: Check if the transcript contains reference material section
+            // If it does, we need to extract the user prompt and transcript
+            let userPrompt = this.config.userPrompt;
+            let actualTranscript = transcript;
+            
+            // Use a regex pattern without the 's' flag (which is ES2018+)
+            // Instead use [\s\S]* to match any character including newlines
+            const referencePattern = /-{5,}\s*REFERENCE MATERIAL[\s\S]*?-{5,}\s*END REFERENCE MATERIAL\s*-{5,}/;
+            const referenceMatch = transcript.match(referencePattern);
+            
+            if (referenceMatch) {
+                llmLogger.debug("Detected reference material in transcript - extracting actual content");
                 
-                const prompt = this.createPrompt();
-                
-                const chain = RunnableSequence.from([
-                    prompt,
-                    llm
-                ]);
-                llmLogger.info("[DEBUG-LLM] Chain created, preparing to invoke");
-                
-                try {
-                    llmLogger.info("[DEBUG-LLM] Calling LLM with transcript of length:", transcript.length);
-                    const response = await chain.invoke({
-                        transcript
-                    });
+                // Extract the actual content from the transcript (content before the reference material)
+                const parts = transcript.split(referencePattern);
+                if (parts.length > 0) {
+                    // The content before the reference section contains the actual prompt + content
+                    const contentParts = parts[0].trim().split("\n\n");
                     
-                    llmLogger.info("[DEBUG-LLM] Received response from LLM");
-                    if (response) {
-                        llmLogger.info("[DEBUG-LLM] Response type:", typeof response);
-                        llmLogger.info("[DEBUG-LLM] Response has content:", (response as any).content ? "yes" : "no");
-                        const content = (response as LLMResponse).content || "";
-                        llmLogger.info("[DEBUG-LLM] Response content length:", content.length);
-                        llmLogger.info("[DEBUG-LLM] --- End of LLM response ---");
+                    // Extract user prompt if it's at the beginning (format matches expected)
+                    if (contentParts.length >= 2) {
+                        userPrompt = contentParts[0];
+                        actualTranscript = contentParts.slice(1).join("\n\n");
+                        llmLogger.debug("Extracted user prompt and content from transcript");
                     } else {
-                        llmLogger.error("[DEBUG-LLM] Response is null or undefined");
+                        // Just use everything before reference as the content
+                        actualTranscript = parts[0].trim();
+                        llmLogger.debug("Using content before reference section as transcript");
                     }
-                    
-                    return (response as LLMResponse).content;
-                } catch (error) {
-                    llmLogger.error("[DEBUG-LLM] Error in LLM chain:", error);
-                    throw error;
                 }
             }
+            
+            // Special handling for Ollama which doesn't use LangChain integration
+            if (provider === 'ollama') {
+                return this.summarizeWithOllama(actualTranscript);
+            }
+            
+            // For all other providers, use LangChain
+            return this.summarizeWithLangChain(actualTranscript, provider, userPrompt);
         } catch (error) {
-            llmLogger.error("[DEBUG-LLM] Error in summarize:", error);
+            llmLogger.error("Error in summarize:", error);
             throw error;
+        }
+    }
+    
+    /**
+     * Use LangChain for summarization with OpenAI, Anthropic, or Google
+     */
+    private async summarizeWithLangChain(transcript: string, provider: string, userPrompt?: string): Promise<string> {
+        try {
+            llmLogger.info(`Using LangChain for ${provider} summarization`);
+            
+            const langChainClient = new LangChainClient({
+                provider: provider,
+                model: this.config.model,
+                apiKey: this.apiKeys[provider],
+                temperature: this.config.temperature,
+                maxTokens: this.config.maxTokens
+            });
+            
+            const promptToUse = userPrompt || this.config.userPrompt;
+            const userPromptWithTranscript = `${promptToUse}\n\nTranscript:\n${transcript}`;
+            
+            const result = await langChainClient.generateCompletion(
+                this.config.systemPrompt,
+                userPromptWithTranscript
+            );
+            
+            return result;
+        } catch (error) {
+            llmLogger.error(`Error in LangChain summarization with ${provider}:`, error);
+            throw error;
+        }
+    }
+    
+    /**
+     * Use the Ollama client directly (not supported by LangChain in this implementation)
+     */
+    private async summarizeWithOllama(transcript: string): Promise<string> {
+        const client = this.llmFactory.getOllamaClient();
+        
+        // Check if server is running
+        const isRunning = await client.isServerRunning();
+        if (!isRunning) {
+            throw new Error("Ollama server is not running. Please start Ollama on your computer.");
+        }
+        
+        // Try the chat completion API first (better for newer models)
+        try {
+            const response = await client.createChatCompletion(
+                this.config.model,
+                [
+                    { role: "system", content: this.config.systemPrompt },
+                    { role: "user", content: this.config.userPrompt + "\n\nTranscript:\n" + transcript }
+                ],
+                {
+                    temperature: this.config.temperature,
+                    num_predict: this.config.maxTokens
+                }
+            );
+            
+            return response.message?.content || "";
+        } catch (chatError) {
+            // Fallback to legacy generate API
+            llmLogger.warn("Ollama chat completion failed, falling back to generate API:", chatError);
+            
+            const response = await client.generate(
+                this.config.model,
+                this.config.userPrompt + "\n\nTranscript:\n" + transcript,
+                {
+                    system: this.config.systemPrompt,
+                    temperature: this.config.temperature,
+                    num_predict: this.config.maxTokens
+                }
+            );
+            
+            return response.response || "";
+        }
+    }
+    
+    /**
+     * Format the prompt based on the provider
+     */
+    private formatPrompt(transcript: string, provider: string): string {
+        // Different providers may need different prompt formats
+        const basePrompt = `${this.config.userPrompt}\n\nTranscript:\n${transcript}`;
+        
+        switch (provider) {
+            case 'anthropic':
+                // Claude tends to work better with more explicit instructions
+                return `${this.config.systemPrompt}\n\n${basePrompt}\n\nPlease provide a comprehensive and well-structured summary.`;
+                
+            case 'ollama':
+                // Local models often need more explicit prompting
+                return `${this.config.systemPrompt}\n\n${basePrompt}\n\nSummarize the transcript above in a clear, structured format.`;
+                
+            default:
+                return basePrompt;
         }
     }
 } 
