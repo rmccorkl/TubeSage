@@ -89,7 +89,7 @@ export function getTimestampLinkConfig(
     videoId: string
 ): PromptConfig {
     // For timestamp linking, we need a lower temperature for more deterministic output
-    const timestampTemperature = 0.7;
+    const timestampTemperature = 0.2;
     
     // Use specific prompts for timestamp linking
     return {

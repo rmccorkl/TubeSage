@@ -1,298 +1,169 @@
-import { obsidianFetch, isPlatformMobile } from "../utils/fetch-shim";
+import { obsidianFetch } from "../utils/fetch-shim";
 import { getLogger } from "../utils/logger";
 
 const logger = getLogger('OLLAMA');
 
 /**
- * Client for interacting with local Ollama LLMs
- * Note: This will only work on desktop as it requires access to localhost
+ * Simplified Ollama API client that works with local Ollama instances
+ * Using the bare-bones HTTP API instead of SDKs for maximum compatibility
  */
 export class OllamaClient {
   private baseUrl: string;
   
-  constructor(baseUrl: string = "http://localhost:11434") {
+  constructor(baseUrl: string = 'http://localhost:11434') {
     this.baseUrl = baseUrl;
-    logger.debug('Creating Ollama client with base URL:', baseUrl);
+    logger.debug('Ollama client created with base URL:', baseUrl);
   }
 
   /**
    * Check if Ollama can be used on the current platform
-   * @returns true if Ollama can be used (desktop only)
    */
   isAvailable(): boolean {
-    // Only available on desktop since mobile can't access localhost
-    const available = !isPlatformMobile();
-    
-    if (!available) {
-      logger.debug('Ollama is not available on mobile platforms');
-    }
-    
-    return available;
+    // Ollama should work on all platforms with the unified fetch shim
+    // However, users need to ensure their Ollama server is accessible
+    // from their device (typically via localhost on same network)
+    return true;
   }
   
   /**
-   * Check if the Ollama server is running
-   * @returns true if the server is up and running
+   * Validate that the Ollama server is accessible
    */
-  async isServerRunning(): Promise<boolean> {
-    if (!this.isAvailable()) {
-      return false;
-    }
-    
+  async validateConnection(): Promise<boolean> {
     try {
-      const response = await obsidianFetch(`${this.baseUrl}/api/tags`, {
-        method: "GET"
-      });
-      
-      return response.ok;
-    } catch (error) {
-      logger.error('Error checking Ollama server:', error);
-      return false;
-    }
-  }
-  
-  /**
-   * Get a list of all available models
-   */
-  async listModels() {
-    if (!this.isAvailable()) {
-      throw new Error('Ollama is not available on mobile platforms');
-    }
-    
-    try {
-      const response = await obsidianFetch(`${this.baseUrl}/api/tags`, {
-        method: "GET"
-      });
-      
+      const response = await obsidianFetch(`${this.baseUrl}/api/version`);
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Ollama API error: ${errorText}`);
+        logger.error(`Ollama server returned error status: ${response.status}`);
+        return false;
       }
       
-      return response.json();
+      const data = await response.json();
+      logger.debug('Ollama version check successful:', data);
+      return true;
     } catch (error) {
-      logger.error('Error listing Ollama models:', error);
-      throw error;
+      logger.error('Ollama server connection failed:', error);
+      return false;
     }
   }
   
   /**
-   * Generate a completion from a prompt
-   * 
-   * @param model The model to use (e.g., "llama3")
-   * @param prompt The prompt text
-   * @param options Additional options
-   * @returns The generation response
+   * Generate a completion from Ollama
    */
-  async generate(model: string, prompt: string, options: any = {}) {
-    if (!this.isAvailable()) {
-      throw new Error('Ollama is not available on mobile platforms');
-    }
+  async generateCompletion(
+    model: string,
+    prompt: string,
+    options: {
+      system?: string;
+      temperature?: number;
+      max_tokens?: number;
+    } = {}
+  ) {
+    const { system, temperature = 0.7, max_tokens } = options;
     
     try {
-      const systemPrompt = options.system || '';
-      
-      const requestBody = {
-        model: model,
-        prompt: prompt,
-        system: systemPrompt,
-        temperature: options.temperature !== undefined ? options.temperature : 0.7,
-        num_predict: options.max_tokens || 1024,
-        // Add any other Ollama-specific options
-        ...options
+      const requestBody: any = {
+        model,
+        prompt,
+        stream: false,
+        options: {
+          temperature
+        }
       };
       
-      logger.debug(`Generating with model ${model}`);
+      // Add optional parameters if provided
+      if (system) {
+        requestBody.system = system;
+      }
+      
+      if (max_tokens) {
+        requestBody.options.num_predict = max_tokens;
+      }
       
       const response = await obsidianFetch(`${this.baseUrl}/api/generate`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(requestBody)
       });
       
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Ollama API error: ${errorText}`);
+        logger.error('Ollama API error:', errorText);
+        throw new Error(`Ollama API error: ${response.status} - ${errorText}`);
       }
       
-      try {
-        // Get the text response first
-        const responseText = await response.text();
-        
-        // Handle streaming responses (multiple JSON objects separated by newlines)
-        if (responseText.includes('\n')) {
-          logger.debug('Detected streaming response format from Ollama');
-          
-          // Try to combine the streaming response
-          try {
-            // Split by newlines and parse each line as JSON
-            const jsonLines = responseText.trim().split('\n');
-            let combinedContent = '';
-            
-            // Process each line
-            for (const line of jsonLines) {
-              if (line.trim()) {
-                try {
-                  const jsonObj = JSON.parse(line);
-                  // Extract and add response content from each line
-                  if (jsonObj.response) {
-                    combinedContent += jsonObj.response;
-                  }
-                } catch (lineError) {
-                  logger.debug(`Skipping invalid JSON line: ${line}`);
-                }
-              }
-            }
-            
-            // Return a properly formatted response
-            return {
-              response: combinedContent,
-              error: false
-            };
-          } catch (streamError) {
-            logger.error('Error processing streaming response:', streamError);
-            // Fallback to treating as raw text
-            return {
-              response: responseText.trim(),
-              error: false,
-              rawResponse: responseText
-            };
-          }
-        }
-        
-        // If not a streaming response, try to parse as single JSON object
-        try {
-          return JSON.parse(responseText);
-        } catch (jsonError) {
-          logger.error('Failed to parse Ollama response as JSON:', jsonError);
-          logger.debug('Raw response:', responseText);
-          
-          // Return a properly formatted response object
-          return {
-            response: responseText.trim(),
-            error: false,
-            rawResponse: responseText
-          };
-        }
-      } catch (textError) {
-        logger.error('Error reading Ollama response as text:', textError);
-        throw textError;
-      }
+      const data = await response.json();
+      return data;
     } catch (error) {
-      logger.error('Error in Ollama generate:', error);
+      logger.error('Error in Ollama generateCompletion:', error);
       throw error;
     }
   }
   
   /**
-   * Create a chat completion (simpler interface)
-   * 
-   * @param model The model to use
-   * @param messages The chat messages
-   * @param options Additional options
-   * @returns The chat completion response
+   * Create a chat completion - wrapper around generate for more OpenAI-like interface
    */
-  async createChatCompletion(model: string, messages: any[], options: any = {}) {
-    if (!this.isAvailable()) {
-      throw new Error('Ollama is not available on mobile platforms');
-    }
-    
+  async createChatCompletion(
+    model: string, 
+    messages: Array<{role: string; content: string}>,
+    options: {
+      temperature?: number;
+      max_tokens?: number;
+      system?: string;
+    } = {}
+  ) {
     try {
-      const requestBody = {
-        model: model,
-        messages: messages,
-        temperature: options.temperature !== undefined ? options.temperature : 0.7,
-        num_predict: options.max_tokens || 1024,
-        // Add any other Ollama-specific options
-        ...options
-      };
+      // Extract system message if present
+      let systemPrompt = options.system || '';
+      if (!systemPrompt && messages.length > 0 && messages[0].role === 'system') {
+        systemPrompt = messages[0].content;
+        messages = messages.slice(1);
+      }
       
-      logger.debug(`Chat completion with model ${model}`);
-      
-      const response = await obsidianFetch(`${this.baseUrl}/api/chat`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody)
+      // Format the messages into a prompt
+      let prompt = '';
+      messages.forEach(message => {
+        if (message.role === 'user') {
+          prompt += `\nHuman: ${message.content}`;
+        } else if (message.role === 'assistant') {
+          prompt += `\nAssistant: ${message.content}`;
+        }
       });
       
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Ollama API error: ${errorText}`);
-      }
+      // Add final turn
+      prompt += '\nAssistant:';
       
-      try {
-        // Get the text response first
-        const responseText = await response.text();
-        
-        // Handle streaming responses (multiple JSON objects separated by newlines)
-        if (responseText.includes('\n')) {
-          logger.debug('Detected streaming response format from Ollama');
-          
-          // Try to combine the streaming response
-          try {
-            // Split by newlines and parse each line as JSON
-            const jsonLines = responseText.trim().split('\n');
-            let combinedContent = '';
-            
-            // Process each line
-            for (const line of jsonLines) {
-              if (line.trim()) {
-                try {
-                  const jsonObj = JSON.parse(line);
-                  // Extract and add content from each token
-                  if (jsonObj.message && jsonObj.message.content) {
-                    combinedContent += jsonObj.message.content;
-                  }
-                } catch (lineError) {
-                  logger.debug(`Skipping invalid JSON line: ${line}`);
-                }
-              }
-            }
-            
-            // Return a properly formatted response
-            return {
-              message: {
-                content: combinedContent,
-                role: "assistant"
-              }
-            };
-          } catch (streamError) {
-            logger.error('Error processing streaming response:', streamError);
-            
-            // Fallback - treat as raw text
-            return {
-              message: {
-                content: responseText.trim(),
-                role: "assistant"
-              },
-              rawResponse: responseText
-            };
-          }
-        }
-        
-        // If not a streaming response, try to parse as a single JSON object
-        try {
-          return JSON.parse(responseText);
-        } catch (jsonError) {
-          logger.error('Failed to parse Ollama chat response as JSON:', jsonError);
-          logger.debug('Raw response:', responseText);
-          
-          // Extract the content and return a properly formatted response object
-          const content = responseText.trim();
-          return {
+      // Generate completion
+      const result = await this.generateCompletion(model, prompt, {
+        system: systemPrompt,
+        temperature: options.temperature,
+        max_tokens: options.max_tokens
+      });
+      
+      // Format the response to match OpenAI structure
+      return {
+        id: 'ollama-' + Date.now(),
+        object: 'chat.completion',
+        created: Math.floor(Date.now() / 1000),
+        model,
+        choices: [
+          {
+            index: 0,
             message: {
-              content: content,
-              role: "assistant"
+              role: 'assistant',
+              content: result.response
             },
-            rawResponse: responseText
-          };
+            finish_reason: 'stop'
+          }
+        ],
+        usage: {
+          prompt_tokens: result.prompt_eval_count || 0,
+          completion_tokens: result.eval_count || 0,
+          total_tokens: (result.prompt_eval_count || 0) + (result.eval_count || 0)
         }
-      } catch (textError) {
-        logger.error('Error reading Ollama chat response as text:', textError);
-        throw textError;
-      }
+      };
     } catch (error) {
-      logger.error('Error in Ollama chat completion:', error);
+      logger.error('Error in Ollama createChatCompletion:', error);
       throw error;
     }
   }

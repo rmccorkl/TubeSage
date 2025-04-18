@@ -1,5 +1,4 @@
 import { getLogger } from "../utils/logger";
-import { isPlatformMobile } from "../utils/fetch-shim";
 import { OpenAIWrapper } from "./openai-client";
 import { AnthropicClient } from "./anthropic-client";
 import { GeminiClient } from "./gemini-client";
@@ -32,19 +31,11 @@ export class LLMFactory {
   }
   
   /**
-   * Get the best available LLM provider for the current platform
+   * Get the selected LLM provider
    * @returns The provider ID
    */
   getBestProvider(): string {
-    const selectedProvider = this.settings.selectedLLM;
-    
-    // On mobile, force fallback if provider is Ollama
-    if (isPlatformMobile() && selectedProvider === 'ollama') {
-      logger.debug('Ollama selected but on mobile - falling back to default');
-      return 'google'; // Prefer Google as fallback on mobile
-    }
-    
-    return selectedProvider;
+    return this.settings.selectedLLM;
   }
   
   /**
@@ -114,10 +105,6 @@ export class LLMFactory {
       case 'google':
         return this.getGeminiClient();
       case 'ollama':
-        if (isPlatformMobile()) {
-          logger.warn('Tried to get Ollama client on mobile - falling back to Google');
-          return this.getGeminiClient();
-        }
         return this.getOllamaClient();
       default:
         throw new Error(`Unknown LLM provider: ${provider}`);

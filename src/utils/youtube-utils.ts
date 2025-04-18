@@ -152,4 +152,4 @@ export function showNotice(message: string, timeout: number = 5000): void {
         // Fallback to standard Notice if timeout parameter isn't supported
         new Notice(message);
     }
-} 
+}

@@ -776,7 +776,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     seconds: currentChunk.startSeconds
                 });
             }
-            
+
             transcriptLogger.debug(`Created ${chunks.length} exactly time-based chunks`);
             
             // Format chunks for YAML frontmatter
@@ -787,9 +787,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 // Escape any YAML special characters (colons are most important)
                 const escapedText = chunk.text.replace(/:/g, "\\:");
                 
-                // Add chunk with proper indentation for YAML frontmatter
-                // Add four spaces at the beginning of each line for YAML block format
-                formattedTranscript += `    [${chunk.time}] ${escapedText}\n`;
+                // Include the TimeIndex which is needed for proper timestamp linking
+                formattedTranscript += `    [${chunk.time}] [TimeIndex:${Math.round(chunk.seconds)}] ${escapedText}\n`;
             });
         } else {
             // Fallback if segments is not an array
@@ -1509,14 +1508,84 @@ Transcript info:
                 timestampConfig.userPrompt + "\n\n" +
                 contentWithoutFrontmatter + "\n\n" +
                 referenceSection;
+                
+            // Restructure the prompt order to optimize for Google LLMs
+            const restructuredPrompt = 
+                "INSTRUCTIONS:\n" + timestampConfig.userPrompt + "\n\n" +
+                "INSTRUCTION INPUT DATA - TIMESTAMPS TRANSCRIPT:\n" + 
+                (transcript ? transcript : "No transcript available") + "\n\n" +
+                "INPUT NOTE TO BE MODIFIED WITH TIMESTAMPS:\n" + contentWithoutFrontmatter;
             
             // Send to LLM for processing
             this.showNotice("Adding timestamp links with LLM...", 5000);
+            
+            // Log detailed information when debug logging is enabled
+            if (this.settings.debugLogging) {
+                llmLogger.debug("==================== TIMESTAMP LINKING DEBUG ====================");
+                llmLogger.debug(`Processing file: ${filePath}`);
+                llmLogger.debug(`Video ID: ${videoId}`);
+                llmLogger.debug(`Number of headings found: ${headings.length}`);
+                llmLogger.debug(`First few headings: ${headings.slice(0, 3).join(', ')}${headings.length > 3 ? '...' : ''}`);
+                llmLogger.debug(`LLM Provider: ${this.settings.selectedLLM}`);
+                llmLogger.debug(`Model: ${this.settings.selectedModels[this.settings.selectedLLM]}`);
+                llmLogger.debug(`Max tokens: ${this.getMaxTokensForTimestampPass()}`);
+                llmLogger.debug(`Temperature: ${timestampConfig.temperature}`);
+                
+                // Log the system prompt
+                llmLogger.debug("SYSTEM PROMPT:");
+                llmLogger.debug("----------------------------------------");
+                llmLogger.debug(timestampConfig.systemPrompt);
+                llmLogger.debug("----------------------------------------");
+                
+                // Log the user prompt
+                llmLogger.debug("USER PROMPT:");
+                llmLogger.debug("----------------------------------------");
+                llmLogger.debug(timestampConfig.userPrompt);
+                llmLogger.debug("----------------------------------------");
+                
+                // Log content being processed
+                llmLogger.debug("CONTENT BEING PROCESSED:");
+                llmLogger.debug("----------------------------------------");
+                llmLogger.debug(contentWithoutFrontmatter);
+                llmLogger.debug("----------------------------------------");
+                
+                // Log transcript excerpt (first 500 chars to avoid excessive logging)
+                if (transcript) {
+                    const transcriptExcerpt = transcript.length > 500 
+                        ? transcript.substring(0, 500) + "... [truncated for log]" 
+                        : transcript;
+                    llmLogger.debug("TRANSCRIPT EXCERPT:");
+                    llmLogger.debug("----------------------------------------");
+                    llmLogger.debug(transcriptExcerpt);
+                    llmLogger.debug("----------------------------------------");
+                } else {
+                    llmLogger.debug("NO TRANSCRIPT FOUND IN FRONTMATTER");
+                }
+                
+                // Log the complete formatted prompt
+                llmLogger.debug("COMPLETE FORMATTED PROMPT BEING SENT TO LLM:");
+                llmLogger.debug("========================================");
+                llmLogger.debug(this.settings.selectedLLM === 'google' ? restructuredPrompt : formattedPrompt);
+                llmLogger.debug("========================================");
+            }
+            
             logger.debug("[addTimestampLinksSinglePass] Sending content to LLM (without frontmatter)...");
             
             let enhancedContent;
             try {
-                enhancedContent = await timestampLinkSummarizer.summarize(formattedPrompt, this.settings.selectedLLM);
+                enhancedContent = await timestampLinkSummarizer.summarize(
+                    this.settings.selectedLLM === 'google' ? restructuredPrompt : formattedPrompt, 
+                    this.settings.selectedLLM
+                );
+                
+                // Debug log the entire response if debug logging is enabled
+                if (this.settings.debugLogging) {
+                    llmLogger.debug("LLM RESPONSE:");
+                    llmLogger.debug("========================================");
+                    llmLogger.debug(enhancedContent || "Empty response from LLM");
+                    llmLogger.debug("========================================");
+                }
+                
                 logger.debug("[addTimestampLinksSinglePass] Received LLM response, length:", enhancedContent ? enhancedContent.length : 0);
             } catch (e) {
                 logger.error("[addTimestampLinksSinglePass] Error during LLM call:", e);
@@ -1529,6 +1598,10 @@ Transcript info:
                     // Reduce token limit by half and try again
                     const reducedTokens = Math.floor(this.getMaxTokensForTimestampPass() / 2);
                     
+                    if (this.settings.debugLogging) {
+                        llmLogger.debug(`Retrying with reduced token limit: ${reducedTokens}`);
+                    }
+                    
                     // Create a new summarizer with reduced tokens but same config otherwise
                     const reducedTokensSummarizer = new TranscriptSummarizer({
                         model: this.getModelForProvider(this.settings.selectedLLM),
@@ -1539,7 +1612,19 @@ Transcript info:
                     }, this.settings.apiKeys);
                     
                     try {
-                        enhancedContent = await reducedTokensSummarizer.summarize(formattedPrompt, this.settings.selectedLLM);
+                        enhancedContent = await reducedTokensSummarizer.summarize(
+                            this.settings.selectedLLM === 'google' ? restructuredPrompt : formattedPrompt, 
+                            this.settings.selectedLLM
+                        );
+                        
+                        // Debug log the entire response after retry if debug logging is enabled
+                        if (this.settings.debugLogging) {
+                            llmLogger.debug("LLM RESPONSE AFTER RETRY:");
+                            llmLogger.debug("========================================");
+                            llmLogger.debug(enhancedContent || "Empty response from LLM");
+                            llmLogger.debug("========================================");
+                        }
+                        
                         logger.debug("[addTimestampLinksSinglePass] Second attempt successful with reduced tokens:", reducedTokens);
                     } catch (retryError) {
                         logger.error("[addTimestampLinksSinglePass] Error on second attempt:", retryError);
@@ -1573,8 +1658,22 @@ Transcript info:
                 const linkCount = countTimestampLinks(enhancedContent);
                 this.showNotice(`Added timestamp links to ${linkCount} section headings`, 5000);
                 
+                // Log the final output if debug logging is enabled
+                if (this.settings.debugLogging) {
+                    llmLogger.debug("TIMESTAMP LINKING SUCCESSFUL");
+                    llmLogger.debug(`Added ${linkCount} timestamp links`);
+                    llmLogger.debug("========================================");
+                }
+                
                 // Return the enhanced content for potential translation
                 return enhancedContent;
+            }
+            
+            // Log validation failure if debug logging is enabled
+            if (this.settings.debugLogging) {
+                llmLogger.debug("TIMESTAMP LINKING VALIDATION FAILED");
+                llmLogger.debug("Validation of enhanced content against original content failed");
+                llmLogger.debug("========================================");
             }
             
             return null;
@@ -1680,9 +1779,24 @@ ${contentToTranslate}
             const { frontmatter, contentWithoutFrontmatter, transcript } = 
                 extractDocumentComponents(originalContent);
             
+            // Log debug info about chunking if enabled
+            if (this.settings.debugLogging) {
+                llmLogger.debug("==================== CHUNKED TIMESTAMP LINKING DEBUG ====================");
+                llmLogger.debug(`Processing file: ${filePath} in chunks`);
+                llmLogger.debug(`Video ID: ${videoId}`);
+                llmLogger.debug(`Number of headings found: ${headings.length}`);
+                llmLogger.debug(`Original content length: ${contentWithoutFrontmatter.length} characters`);
+                llmLogger.debug(`Transcript length: ${transcript ? transcript.length : 0} characters`);
+            }
+            
             // Create optimized chunks based on heading positions
             const maxTokenLimit = this.getMaxTokensForTimestampPass();
             const chunks = createOptimizedChunks(contentWithoutFrontmatter, maxTokenLimit);
+            
+            if (this.settings.debugLogging) {
+                llmLogger.debug(`Split content into ${chunks.length} optimized chunks`);
+                llmLogger.debug(`Chunk sizes: ${chunks.map(c => c.length).join(', ')} characters`);
+            }
             
             logger.debug(`[addTimestampLinksInChunks] Split content into ${chunks.length} optimized chunks`);
             
@@ -1697,10 +1811,29 @@ ${contentToTranslate}
                 
                 // Skip chunks without proper heading (including template header)
                 if (!hasProperHeading(chunk)) {
+                    if (this.settings.debugLogging) {
+                        llmLogger.debug(`Chunk ${i+1}: No proper headings found, preserving unchanged`);
+                    }
+                    
                     logger.debug(`[addTimestampLinksInChunks] Preserving non-section chunk ${i+1} unchanged`);
                     // Ensure chunk ends with newline
                     processedChunks.push(ensureTrailingNewline(chunk));
                     continue;
+                }
+                
+                if (this.settings.debugLogging) {
+                    llmLogger.debug(`\n===== PROCESSING CHUNK ${i+1} of ${chunks.length} =====`);
+                    llmLogger.debug(`Chunk size: ${chunk.length} characters`);
+                    
+                    // Extract and show headings in this chunk
+                    const chunkHeadings: string[] = [];
+                    const headingRegex = /^(#{1,6})\s+(.+)$/gm;
+                    let match;
+                    while ((match = headingRegex.exec(chunk)) !== null) {
+                        chunkHeadings.push(match[2].trim());
+                    }
+                    
+                    llmLogger.debug(`Headings in chunk ${i+1}: ${chunkHeadings.join(', ')}`);
                 }
                 
                 logger.debug(`[addTimestampLinksInChunks] Processing chunk ${i+1} of ${chunks.length}, length: ${chunk.length}`);
@@ -1726,10 +1859,71 @@ ${contentToTranslate}
                     chunk + "\n\n" +
                     referenceSection;
                 
+                // Restructure the prompt order to optimize for Google LLMs
+                const restructuredPrompt = 
+                    "INSTRUCTIONS:\n" + timestampConfig.userPrompt + "\n\n" +
+                    "INSTRUCTION INPUT DATA - TIMESTAMPS TRANSCRIPT:\n" + transcriptContent + "\n\n" +
+                    "INPUT NOTE TO BE MODIFIED WITH TIMESTAMPS:\n" + chunk;
+                
+                if (this.settings.debugLogging) {
+                    llmLogger.debug(`CHUNK ${i+1} PROMPT:`);
+                    llmLogger.debug("----------------------------------------");
+                    llmLogger.debug(timestampConfig.userPrompt);
+                    llmLogger.debug("----------------------------------------");
+                    llmLogger.debug(`CHUNK ${i+1} CONTENT:`);
+                    llmLogger.debug("----------------------------------------");
+                    llmLogger.debug(chunk);
+                    llmLogger.debug("----------------------------------------");
+                    llmLogger.debug(`CHUNK ${i+1} COMPLETE FORMATTED PROMPT:`);
+                    llmLogger.debug("========================================");
+                    llmLogger.debug(this.settings.selectedLLM === 'google' ? restructuredPrompt : chunkPrompt);
+                    llmLogger.debug("========================================");
+                }
+                
                 try {
                     // Create chunk-specific summarizer with base config
-                    const maxTokens = Math.floor(this.getMaxTokensForTimestampPass() * 0.9); // Use 90% of the limit to provide headroom
-                    logger.debug(`[addTimestampLinksInChunks] Using ${maxTokens} tokens (90% of ${this.getMaxTokensForTimestampPass()})`);
+                    // Dynamically calculate token limit based on content and transcript size
+                    const contentLength = chunk.length;
+                    const transcriptLength = transcript ? transcript.length : 0;
+                    
+                    // Estimate tokens (rough approximation: 4 chars per token)
+                    const estimatedContentTokens = Math.ceil(contentLength / 4);
+                    const estimatedTranscriptTokens = Math.ceil(transcriptLength / 4);
+                    
+                    // Calculate required tokens - give more space for larger content or transcript
+                    const totalEstimatedInputTokens = estimatedContentTokens + estimatedTranscriptTokens;
+                    const modelMaxTokens = this.getMaxTokensForTimestampPass();
+                    
+                    // Dynamic scaling based on content size and model capabilities
+                    let percentageToUse = 0.9; // Default to 90%
+                    
+                    // For larger context window models, we can be more aggressive with output allocation
+                    const isLargeContextModel = modelMaxTokens >= 8000;
+                    
+                    // If we have large content or transcript, adjust the percentage based on model capabilities
+                    if (totalEstimatedInputTokens > modelMaxTokens / 3) {
+                        if (isLargeContextModel) {
+                            // Large context models can handle more output even with large inputs
+                            // Minimum 70% for large context models
+                            percentageToUse = Math.max(0.7, 0.9 - (totalEstimatedInputTokens / modelMaxTokens * 0.2));
+                        } else {
+                            // Standard models need more conservative allocation
+                            // Minimum 60% for standard models
+                            percentageToUse = Math.max(0.6, 0.9 - (totalEstimatedInputTokens / modelMaxTokens * 0.3));
+                        }
+                    }
+                    
+                    const maxTokens = Math.floor(modelMaxTokens * percentageToUse);
+                    
+                    if (this.settings.debugLogging) {
+                        llmLogger.debug(`[addTimestampLinksInChunks] Content length: ${contentLength} chars (est. ${estimatedContentTokens} tokens)`);
+                        llmLogger.debug(`[addTimestampLinksInChunks] Transcript length: ${transcriptLength} chars (est. ${estimatedTranscriptTokens} tokens)`);
+                        llmLogger.debug(`[addTimestampLinksInChunks] Estimated total input tokens: ${totalEstimatedInputTokens}`);
+                        llmLogger.debug(`[addTimestampLinksInChunks] Model has large context window: ${isLargeContextModel}`);
+                        llmLogger.debug(`[addTimestampLinksInChunks] Using ${percentageToUse * 100}% of max tokens: ${maxTokens} of ${modelMaxTokens}`);
+                    }
+                    
+                    logger.debug(`[addTimestampLinksInChunks] Using ${maxTokens} tokens (${Math.round(percentageToUse * 100)}% of ${modelMaxTokens})`);
                     
                     const chunkSummarizer = new TranscriptSummarizer({
                         model: this.getModelForProvider(this.settings.selectedLLM),
@@ -1740,11 +1934,32 @@ ${contentToTranslate}
                     }, this.settings.apiKeys);
                     
                     // Process the chunk
-                    const processedChunk = await chunkSummarizer.summarize(chunkPrompt, this.settings.selectedLLM);
+                    const processedChunk = await chunkSummarizer.summarize(
+                        this.settings.selectedLLM === 'google' ? restructuredPrompt : chunkPrompt, 
+                        this.settings.selectedLLM
+                    );
+                    
+                    // Log LLM response for this chunk if debug is enabled
+                    if (this.settings.debugLogging) {
+                        llmLogger.debug(`CHUNK ${i+1} LLM RESPONSE:`);
+                        llmLogger.debug("========================================");
+                        llmLogger.debug(processedChunk || "Empty response from LLM");
+                        llmLogger.debug("========================================");
+                    }
                     
                     if (processedChunk) {
                         // Validate processed chunk has timestamp link
                         const hasLink = hasTimestampLinks(processedChunk, videoId);
+                        
+                        // Log link validation result if debug is enabled
+                        if (this.settings.debugLogging) {
+                            llmLogger.debug(`CHUNK ${i+1} has timestamp links: ${hasLink}`);
+                            
+                            if (hasLink) {
+                                const linkCount = countTimestampLinks(processedChunk);
+                                llmLogger.debug(`CHUNK ${i+1} contains ${linkCount} timestamp links`);
+                            }
+                        }
                         
                         // Ensure chunk ends with a newline to prevent wrapping
                         let finalChunk = ensureTrailingNewline(processedChunk);
@@ -1763,6 +1978,13 @@ ${contentToTranslate}
                     }
                 } catch (e) {
                     logger.error(`[addTimestampLinksInChunks] Error processing chunk ${i+1}:`, e);
+                    
+                    if (this.settings.debugLogging) {
+                        llmLogger.debug(`ERROR PROCESSING CHUNK ${i+1}:`);
+                        llmLogger.debug(e.message || "Unknown error");
+                        llmLogger.debug(`Using original chunk content instead`);
+                    }
+                    
                     // Push original chunk with newline
                     processedChunks.push(ensureTrailingNewline(chunk));
                 }
@@ -1774,6 +1996,19 @@ ${contentToTranslate}
             
             // Verify we have some timestamp links
             const linkCount = countTimestampLinks(combinedContent);
+            
+            if (this.settings.debugLogging) {
+                llmLogger.debug("CHUNKED PROCESSING COMPLETE");
+                llmLogger.debug(`Total timestamp links found: ${linkCount}`);
+                
+                if (linkCount > 0) {
+                    llmLogger.debug("CHUNKED PROCESSING SUCCESSFUL");
+                } else {
+                    llmLogger.debug("CHUNKED PROCESSING FAILED - No timestamp links added");
+                }
+                
+                llmLogger.debug("========================================");
+            }
             
             if (linkCount > 0) {
                 // Update the note file with the combined content
@@ -1806,38 +2041,55 @@ ${contentToTranslate}
 
     // Method to get appropriate max tokens for the timestamp linking pass based on the model
     private getMaxTokensForTimestampPass(): number {
-        const selectedLLM = this.settings.selectedLLM;
-        const selectedModel = this.settings.selectedModels[selectedLLM];
+        // Get the currently selected LLM provider
+        const selectedProvider = this.settings.selectedLLM;
         
-        // Set token limits based on model capabilities
-        if (selectedLLM === 'openai') {
-            // OpenAI models
-            if (selectedModel.includes('gpt-4')) {
-                return 4096; // GPT-4 models typically support 4K completion tokens
-            } else if (selectedModel.includes('gpt-3.5')) {
-                return 3072; // GPT-3.5 typically supports 4K tokens but being conservative
-            } else if (selectedModel.includes('o1') || selectedModel.includes('o3')) {
-                return 4096; // OpenAI o1/o3 models
+        // Model-specific token limits based on context window sizes
+        if (selectedProvider === "openai") {
+            const model = this.settings.selectedModels.openai;
+            if (model.includes("gpt-4-turbo") || model.includes("gpt-4-32k")) {
+                return 16384; // Large context GPT-4 Turbo and 32k
+            } else if (model.includes("gpt-4")) {
+                return 6144;  // Standard GPT-4
+            } else if (model.includes("gpt-3.5-turbo-16k")) {
+                return 12288; // GPT-3.5 Turbo 16k
+            } else {
+                return 4096;  // Default GPT-3.5 Turbo
             }
-            return 3072; // Default for OpenAI models
-        } else if (selectedLLM === 'anthropic') {
-            // Anthropic models support higher token counts but API has a 4K limit for completion
-            if (selectedModel.includes('claude-3') || selectedModel.includes('claude-3.5') || selectedModel.includes('claude-3.7')) {
-                return 4096; // Claude-3 models API limit is 4K for completion tokens
+        } else if (selectedProvider === "anthropic") {
+            const model = this.settings.selectedModels.anthropic;
+            if (model.includes("claude-3-opus")) {
+                return 24576; // Claude 3 Opus has 200k context but we'll be conservative
+            } else if (model.includes("claude-3-sonnet")) {
+                return 16384; // Claude 3 Sonnet
+            } else if (model.includes("claude-2")) {
+                return 12288; // Claude 2
+            } else {
+                return 8192;  // Claude 1 or other Anthropic models
             }
-            return 4096; // Conservative default for other Claude models
-        } else if (selectedLLM === 'google') {
-            // Gemini models
-            if (selectedModel.includes('gemini-1.5')) {
-                return 8192; // Gemini 1.5 models can handle larger outputs
+        } else if (selectedProvider === "google") {
+            const model = this.settings.selectedModels.google;
+            if (model.includes("gemini-1.5")) {
+                return 16384; // Gemini 1.5 models have large context
+            } else if (model.includes("gemini-pro")) {
+                return 8192;  // Gemini Pro
+            } else {
+                return 4096;  // Other Google models
             }
-            return 4096; // Default for Google models
-        } else if (selectedLLM === 'ollama') {
-            // Local models through Ollama
-            return 4096; // Conservative default for local models
+        } else if (selectedProvider === "ollama") {
+            const model = this.settings.selectedModels.ollama.toLowerCase();
+            if (model.includes("llama-3")) {
+                return 8192;  // Llama 3 models
+            } else if (model.includes("mistral") || model.includes("mixtral")) {
+                return 6144;  // Mistral and Mixtral models
+            } else if (model.includes("llama-2-70b")) {
+                return 4096;  // Llama 2 70B
+            } else {
+                return 3072;  // Conservative default for other Ollama models
+            }
         }
         
-        // Fallback default - be conservative with token limit
+        // Conservative default if provider not recognized
         return 4096;
     }
 
@@ -3147,23 +3399,13 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 // Add OpenAI option
                 dropdown.addOption('openai', 'OpenAI (ChatGPT)');
                 
-                // Only add Anthropic option on desktop
-                if (!(this.app as any).isMobile) {
-                    dropdown.addOption('anthropic', 'Anthropic (Claude)');
-                }
-                
-                // Always add Google and Ollama options
+                // Always add Anthropic, Google and Ollama options since they all work on any platform now
+                dropdown.addOption('anthropic', 'Anthropic (Claude)');
                 dropdown.addOption('google', 'Google (Gemini)');
                 dropdown.addOption('ollama', 'Ollama (Local Models)');
                 
-                // If current value is Anthropic but we're on mobile, switch to OpenAI
+                // Set the current value
                 let currentValue = this.plugin.settings.selectedLLM;
-                if ((this.app as any).isMobile && currentValue === 'anthropic') {
-                    currentValue = 'openai';
-                    // Also update the settings
-                    this.plugin.settings.selectedLLM = 'openai';
-                    this.plugin.saveSettings();
-                }
                 
                 // Set the current value
                 dropdown.setValue(currentValue);
@@ -3300,40 +3542,19 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             'gpt-4-turbo'                  // default model
         );
         
-        // Handle Anthropic settings based on platform
-        if (!(this.app as any).isMobile) {
-            // On desktop: Show normal Anthropic settings
-            createProviderSetting(
-                'anthropic',
-                'Anthropic',
-                'sk-ant-...',
-                [
-                    'claude-3-7-sonnet-20250219',
-                    'claude-3-5-sonnet-20241022',
-                    'claude-3-opus-20240229',
-                    'claude-3-haiku-20240307'
-                ],
-                'claude-3-sonnet-20240229'
-            );
-        } else {
-            // On mobile: Just show a notice about Anthropic unavailability
-            const noticeEl = settingsContainer.createEl('div', {
-                cls: 'anthropic-unavailable-notice',
-                attr: { 
-                    style: 'background: var(--background-secondary); padding: 10px; border-radius: 5px; margin-bottom: 15px;'
-                }
-            });
-            
-            noticeEl.createEl('div', {
-                text: 'Anthropic (Claude)',
-                attr: { style: 'font-weight: bold; margin-bottom: 5px;' }
-            });
-            
-            noticeEl.createEl('div', {
-                text: 'Anthropic is not available on mobile devices since it requires Node.js.',
-                attr: { style: 'color: var(--text-error);' }
-            });
-        }
+        // Handle Anthropic settings for all platforms (now works everywhere)
+        createProviderSetting(
+            'anthropic',
+            'Anthropic',
+            'sk-ant-...',
+            [
+                'claude-3-7-sonnet-20250219',
+                'claude-3-5-sonnet-20241022',
+                'claude-3-opus-20240229',
+                'claude-3-haiku-20240307'
+            ],
+            'claude-3-sonnet-20240229'
+        );
         
         // Google provider settings (always shown on all platforms)
         createProviderSetting(

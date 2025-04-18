@@ -3,9 +3,17 @@
  * Uses a direct approach to extract transcripts from YouTube videos
  */
 
+// Import for HTTP requests in Obsidian
+import { obsidianFetch } from '../utils/fetch-shim';
+
+/**
+ * YouTube Transcript Extractor
+ * Uses a direct approach to extract transcripts from YouTube videos
+ */
+
 // Import HTTP fetch shim - IMPORTANT: Always use obsidianFetch instead of direct requestUrl
 // to ensure consistent behavior across desktop and mobile platforms
-import { obsidianFetch } from "src/utils/fetch-shim";
+import { obsidianFetch } from '../utils/fetch-shim';
 
 interface TranscriptSegment {
     text: string;
@@ -24,25 +32,6 @@ interface TranscriptMetadata {
 }
 
 export class YouTubeTranscriptExtractor {
-    /**
-     * Helper function to convert relative YouTube URLs to absolute URLs
-     * YouTube API sometimes returns relative URLs that need to be converted
-     * to absolute URLs before using with obsidianFetch
-     * 
-     * @param url The potentially relative URL
-     * @param isMobile Whether to use mobile YouTube domain
-     * @returns An absolute URL
-     */
-    private static makeAbsoluteUrl(url: string, isMobile: boolean = false): string {
-        if (url.startsWith('/')) {
-            const domain = isMobile ? 'https://m.youtube.com' : 'https://www.youtube.com';
-            const absoluteUrl = domain + url;
-            console.log(`Fixed relative URL to absolute: ${url} → ${absoluteUrl}`);
-            return absoluteUrl;
-        }
-        return url;
-    }
-    
     /**
      * Extracts a transcript from a YouTube video
      * @param videoId YouTube video ID
@@ -120,11 +109,7 @@ export class YouTubeTranscriptExtractor {
                 
                 // Fetch the caption data in JSON format
                 // On mobile, the fmt=json3 parameter might not work, so we need to be ready to handle XML format too
-                let captionsJsonUrl = chosenTrack.baseUrl + "&fmt=json3";
-                
-                // Ensure we have an absolute URL for the captions
-                captionsJsonUrl = this.makeAbsoluteUrl(captionsJsonUrl, isMobile);
-                
+                const captionsJsonUrl = chosenTrack.baseUrl + "&fmt=json3";
                 let captionsResponse;
                 let responseText;
                 
@@ -134,11 +119,7 @@ export class YouTubeTranscriptExtractor {
                     if (!captionsResponse.ok) {
                         // JSON format failed, try without format specifier (default XML format)
                         console.log("JSON format failed, trying default format");
-                        
-                        // Get the base URL with absolute URL handling
-                        const baseUrl = this.makeAbsoluteUrl(chosenTrack.baseUrl, isMobile);
-                        
-                        captionsResponse = await obsidianFetch(baseUrl);
+                        captionsResponse = await obsidianFetch(chosenTrack.baseUrl);
                         
                         if (!captionsResponse.ok) {
                             throw new Error(`Failed to fetch track: HTTP ${captionsResponse.status}`);
@@ -419,11 +400,8 @@ export class YouTubeTranscriptExtractor {
             }
             
             // Try a different caption format that might be more compatible with mobile
-            let captionsXmlUrl = chosenTrack.baseUrl;
+            const captionsXmlUrl = chosenTrack.baseUrl;
             console.log(`Fetching captions from: ${captionsXmlUrl}`);
-            
-            // Ensure we have an absolute URL for the captions
-            captionsXmlUrl = this.makeAbsoluteUrl(captionsXmlUrl, true);
             
             const captionsResponse = await obsidianFetch(captionsXmlUrl);
             

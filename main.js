@@ -34,7 +34,10 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __publicField = (obj, key, value) => {
+  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  return value;
+};
 
 // node_modules/decamelize/index.js
 var require_decamelize = __commonJS({
@@ -455,7 +458,8 @@ var require_eventemitter3 = __commonJS({
     }
     if (Object.create) {
       Events.prototype = /* @__PURE__ */ Object.create(null);
-      if (!new Events().__proto__) prefix = false;
+      if (!new Events().__proto__)
+        prefix = false;
     }
     function EE(fn, context, once) {
       this.fn = fn;
@@ -467,14 +471,19 @@ var require_eventemitter3 = __commonJS({
         throw new TypeError("The listener must be a function");
       }
       var listener = new EE(fn, context || emitter, once), evt = prefix ? prefix + event : event;
-      if (!emitter._events[evt]) emitter._events[evt] = listener, emitter._eventsCount++;
-      else if (!emitter._events[evt].fn) emitter._events[evt].push(listener);
-      else emitter._events[evt] = [emitter._events[evt], listener];
+      if (!emitter._events[evt])
+        emitter._events[evt] = listener, emitter._eventsCount++;
+      else if (!emitter._events[evt].fn)
+        emitter._events[evt].push(listener);
+      else
+        emitter._events[evt] = [emitter._events[evt], listener];
       return emitter;
     }
     function clearEvent(emitter, evt) {
-      if (--emitter._eventsCount === 0) emitter._events = new Events();
-      else delete emitter._events[evt];
+      if (--emitter._eventsCount === 0)
+        emitter._events = new Events();
+      else
+        delete emitter._events[evt];
     }
     function EventEmitter() {
       this._events = new Events();
@@ -482,9 +491,11 @@ var require_eventemitter3 = __commonJS({
     }
     EventEmitter.prototype.eventNames = function eventNames() {
       var names = [], events, name;
-      if (this._eventsCount === 0) return names;
+      if (this._eventsCount === 0)
+        return names;
       for (name in events = this._events) {
-        if (has2.call(events, name)) names.push(prefix ? name.slice(1) : name);
+        if (has2.call(events, name))
+          names.push(prefix ? name.slice(1) : name);
       }
       if (Object.getOwnPropertySymbols) {
         return names.concat(Object.getOwnPropertySymbols(events));
@@ -493,8 +504,10 @@ var require_eventemitter3 = __commonJS({
     };
     EventEmitter.prototype.listeners = function listeners(event) {
       var evt = prefix ? prefix + event : event, handlers = this._events[evt];
-      if (!handlers) return [];
-      if (handlers.fn) return [handlers.fn];
+      if (!handlers)
+        return [];
+      if (handlers.fn)
+        return [handlers.fn];
       for (var i = 0, l = handlers.length, ee = new Array(l); i < l; i++) {
         ee[i] = handlers[i].fn;
       }
@@ -502,16 +515,20 @@ var require_eventemitter3 = __commonJS({
     };
     EventEmitter.prototype.listenerCount = function listenerCount(event) {
       var evt = prefix ? prefix + event : event, listeners = this._events[evt];
-      if (!listeners) return 0;
-      if (listeners.fn) return 1;
+      if (!listeners)
+        return 0;
+      if (listeners.fn)
+        return 1;
       return listeners.length;
     };
     EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
       var evt = prefix ? prefix + event : event;
-      if (!this._events[evt]) return false;
+      if (!this._events[evt])
+        return false;
       var listeners = this._events[evt], len = arguments.length, args, i;
       if (listeners.fn) {
-        if (listeners.once) this.removeListener(event, listeners.fn, void 0, true);
+        if (listeners.once)
+          this.removeListener(event, listeners.fn, void 0, true);
         switch (len) {
           case 1:
             return listeners.fn.call(listeners.context), true;
@@ -533,7 +550,8 @@ var require_eventemitter3 = __commonJS({
       } else {
         var length = listeners.length, j;
         for (i = 0; i < length; i++) {
-          if (listeners[i].once) this.removeListener(event, listeners[i].fn, void 0, true);
+          if (listeners[i].once)
+            this.removeListener(event, listeners[i].fn, void 0, true);
           switch (len) {
             case 1:
               listeners[i].fn.call(listeners[i].context);
@@ -548,9 +566,10 @@ var require_eventemitter3 = __commonJS({
               listeners[i].fn.call(listeners[i].context, a1, a2, a3);
               break;
             default:
-              if (!args) for (j = 1, args = new Array(len - 1); j < len; j++) {
-                args[j - 1] = arguments[j];
-              }
+              if (!args)
+                for (j = 1, args = new Array(len - 1); j < len; j++) {
+                  args[j - 1] = arguments[j];
+                }
               listeners[i].fn.apply(listeners[i].context, args);
           }
         }
@@ -565,7 +584,8 @@ var require_eventemitter3 = __commonJS({
     };
     EventEmitter.prototype.removeListener = function removeListener(event, fn, context, once) {
       var evt = prefix ? prefix + event : event;
-      if (!this._events[evt]) return this;
+      if (!this._events[evt])
+        return this;
       if (!fn) {
         clearEvent(this, evt);
         return this;
@@ -581,8 +601,10 @@ var require_eventemitter3 = __commonJS({
             events.push(listeners[i]);
           }
         }
-        if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;
-        else clearEvent(this, evt);
+        if (events.length)
+          this._events[evt] = events.length === 1 ? events[0] : events;
+        else
+          clearEvent(this, evt);
       }
       return this;
     };
@@ -590,7 +612,8 @@ var require_eventemitter3 = __commonJS({
       var evt;
       if (event) {
         evt = prefix ? prefix + event : event;
-        if (this._events[evt]) clearEvent(this, evt);
+        if (this._events[evt])
+          clearEvent(this, evt);
       } else {
         this._events = new Events();
         this._eventsCount = 0;
@@ -1352,8 +1375,6 @@ var require_semver = __commonJS({
             this.inc("patch", identifier, identifierBase);
             this.inc("pre", identifier, identifierBase);
             break;
-          // If the input is a non-prerelease version, this acts the same as
-          // prepatch.
           case "prerelease":
             if (this.prerelease.length === 0) {
               this.inc("patch", identifier, identifierBase);
@@ -1387,8 +1408,6 @@ var require_semver = __commonJS({
             }
             this.prerelease = [];
             break;
-          // This probably shouldn't be used publicly.
-          // 1.0.0 'pre' would become 1.0.0-0 which is the wrong direction.
           case "pre": {
             const base = Number(identifierBase) ? 1 : 0;
             if (this.prerelease.length === 0) {
@@ -2428,7 +2447,6 @@ var require_min_version = __commonJS({
                 compver.prerelease.push(0);
               }
               compver.raw = compver.format();
-            /* fallthrough */
             case "":
             case ">=":
               if (!setMin || gt(compver, setMin)) {
@@ -2438,7 +2456,6 @@ var require_min_version = __commonJS({
             case "<":
             case "<=":
               break;
-            /* istanbul ignore next */
             default:
               throw new Error(`Unexpected operation: ${comparator.operator}`);
           }
@@ -2634,18 +2651,19 @@ var require_subset = __commonJS({
       sub = new Range(sub, options);
       dom = new Range(dom, options);
       let sawNonNull = false;
-      OUTER: for (const simpleSub of sub.set) {
-        for (const simpleDom of dom.set) {
-          const isSub = simpleSubset(simpleSub, simpleDom, options);
-          sawNonNull = sawNonNull || isSub !== null;
-          if (isSub) {
-            continue OUTER;
+      OUTER:
+        for (const simpleSub of sub.set) {
+          for (const simpleDom of dom.set) {
+            const isSub = simpleSubset(simpleSub, simpleDom, options);
+            sawNonNull = sawNonNull || isSub !== null;
+            if (isSub) {
+              continue OUTER;
+            }
+          }
+          if (sawNonNull) {
+            return false;
           }
         }
-        if (sawNonNull) {
-          return false;
-        }
-      }
       return true;
     };
     var minimumVersionWithPreRelease = [new Comparator(">=0.0.0-0")];
@@ -3037,7 +3055,8 @@ var require_base64_js = __commonJS({
         throw new Error("Invalid string. Length must be a multiple of 4");
       }
       var validLen = b64.indexOf("=");
-      if (validLen === -1) validLen = len2;
+      if (validLen === -1)
+        validLen = len2;
       var placeHoldersLen = validLen === len2 ? 0 : 4 - validLen % 4;
       return [validLen, placeHoldersLen];
     }
@@ -3122,9 +3141,11 @@ var require_zero_fill = __commonJS({
           return zeroFill(width, number2, pad2);
         };
       }
-      if (pad === void 0) pad = "0";
+      if (pad === void 0)
+        pad = "0";
       width -= number.toString().length;
-      if (width > 0) return new Array(width + (/\./.test(number) ? 2 : 1)).join(pad) + number;
+      if (width > 0)
+        return new Array(width + (/\./.test(number) ? 2 : 1)).join(pad) + number;
       return number + "";
     };
   }
@@ -3180,7 +3201,8 @@ var require_hh_mm_ss = __commonJS({
         throw new Error(TIME_FORMAT_ERRMSG);
       }
       let result = re.exec(time3);
-      if (!result) throw new Error();
+      if (!result)
+        throw new Error();
       let negative = result[1] === "-";
       let hours = result[2] | 0;
       let minutes = result[3] | 0;
@@ -3243,176 +3265,10 @@ __export(main_exports, {
   default: () => YouTubeTranscriptPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian5 = require("obsidian");
+var import_obsidian4 = require("obsidian");
 
-// src/youtube-transcript.ts
+// src/utils/fetch-shim.ts
 var import_obsidian = require("obsidian");
-var YouTubeTranscriptExtractor = class {
-  /**
-   * Extracts a transcript from a YouTube video
-   * @param videoId YouTube video ID
-   * @param options Optional language and country settings
-   * @returns Promise with transcript segments
-   */
-  static async fetchTranscript(videoId, options = {}) {
-    var _a2, _b;
-    try {
-      const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
-      const response = await (0, import_obsidian.requestUrl)(watchUrl);
-      if (response.status < 200 || response.status >= 300) {
-        throw new Error(`Failed to fetch watch page: HTTP ${response.status}`);
-      }
-      const body = response.text;
-      const playerResponseRegex = /ytInitialPlayerResponse\s*=\s*({.+?})\s*;\s*(?:var\s+(?:meta|head)|<\/script|\n)/;
-      const match = body.match(playerResponseRegex);
-      if (!match) {
-        throw new Error("Unable to locate ytInitialPlayerResponse in watch page HTML.");
-      }
-      const playerResponse = JSON.parse(match[1]);
-      const tracks = ((_b = (_a2 = playerResponse == null ? void 0 : playerResponse.captions) == null ? void 0 : _a2.playerCaptionsTracklistRenderer) == null ? void 0 : _b.captionTracks) || [];
-      if (!tracks.length) {
-        throw new Error("No caption tracks available for this video.");
-      }
-      tracks.sort((t1, t2) => {
-        if (options.lang) {
-          if (t1.languageCode === options.lang && t2.languageCode !== options.lang) return -1;
-          if (t1.languageCode !== options.lang && t2.languageCode === options.lang) return 1;
-        }
-        if (t1.languageCode === "en" && t2.languageCode !== "en") return -1;
-        if (t1.languageCode !== "en" && t2.languageCode === "en") return 1;
-        if (t1.kind !== "asr" && t2.kind === "asr") return -1;
-        if (t1.kind === "asr" && t2.kind !== "asr") return 1;
-        return 0;
-      });
-      const chosenTrack = tracks[0];
-      if (!(chosenTrack == null ? void 0 : chosenTrack.baseUrl)) {
-        throw new Error("Chosen track does not have a baseUrl.");
-      }
-      const captionsJsonUrl = chosenTrack.baseUrl + "&fmt=json3";
-      const captionsResponse = await (0, import_obsidian.requestUrl)(captionsJsonUrl);
-      if (captionsResponse.status < 200 || captionsResponse.status >= 300) {
-        throw new Error(`Failed to fetch track: HTTP ${captionsResponse.status}`);
-      }
-      const transcriptJson = JSON.parse(captionsResponse.text);
-      const events = transcriptJson.events || [];
-      const segments = [];
-      events.filter((e) => e.segs && Array.isArray(e.segs)).forEach((e) => {
-        const startMs = e.tStartMs ? parseInt(e.tStartMs) : 0;
-        const durationMs = e.dDurationMs ? parseInt(e.dDurationMs) : 0;
-        const text = e.segs.map((seg) => seg.utf8 || "").join("").replace(/[\u200B-\u200D\uFEFF]/g, "");
-        if (text.trim()) {
-          segments.push({
-            text: text.trim(),
-            start: startMs / 1e3,
-            // Convert to seconds
-            duration: durationMs / 1e3
-            // Convert to seconds
-          });
-        }
-      });
-      if (segments.length === 0) {
-        throw new Error("No transcript segments found.");
-      }
-      return segments;
-    } catch (error) {
-      console.error("Error fetching transcript from YouTube:", error);
-      if (error.message && (error.message.includes("CORS") || error.message.includes("Cross-Origin") || error.message.includes("Access-Control-Allow-Origin"))) {
-        throw new Error("CORS policy blocked the request. Please try a different video or check your internet connection.");
-      }
-      if (error.message && (error.message.includes("network") || error.message.includes("fetch") || error.message.includes("connect") || error.message.includes("timeout"))) {
-        throw new Error("Network error while fetching transcript. Please check your internet connection.");
-      }
-      throw error;
-    }
-  }
-  /**
-   * Get video metadata from the player response
-   * @param videoId YouTube video ID
-   * @returns Promise with metadata
-   */
-  static async getVideoMetadata(videoId) {
-    var _a2, _b;
-    try {
-      const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
-      const response = await (0, import_obsidian.requestUrl)(watchUrl);
-      if (response.status < 200 || response.status >= 300) {
-        throw new Error(`Failed to fetch watch page: HTTP ${response.status}`);
-      }
-      const body = response.text;
-      const playerResponseRegex = /ytInitialPlayerResponse\s*=\s*({.+?})\s*;\s*(?:var\s+(?:meta|head)|<\/script|\n)/;
-      const match = body.match(playerResponseRegex);
-      if (!match) {
-        throw new Error("Unable to locate ytInitialPlayerResponse in watch page HTML.");
-      }
-      const playerResponse = JSON.parse(match[1]);
-      return {
-        title: (_a2 = playerResponse == null ? void 0 : playerResponse.videoDetails) == null ? void 0 : _a2.title,
-        author: (_b = playerResponse == null ? void 0 : playerResponse.videoDetails) == null ? void 0 : _b.author
-      };
-    } catch (error) {
-      console.error("Error fetching video metadata:", error);
-      return {};
-    }
-  }
-  /**
-   * Combines transcript segments into a single text
-   * @param segments Array of transcript segments
-   * @returns Combined transcript text
-   */
-  static combineTranscript(segments) {
-    return segments.map((segment) => segment.text).join(" ");
-  }
-  /**
-   * Extracts video ID from a YouTube URL
-   * @param url YouTube video URL
-   * @returns Video ID or null if not found
-   */
-  static extractVideoId(url) {
-    url = url.trim();
-    if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("www.")) {
-      url = "https://" + url;
-    }
-    try {
-      const urlObj = new URL(url);
-      const hostname = urlObj.hostname;
-      const pathname = urlObj.pathname;
-      if (hostname.includes("youtube.com") && pathname === "/watch") {
-        return urlObj.searchParams.get("v");
-      }
-      if (hostname === "youtu.be") {
-        return pathname.substring(1);
-      }
-      if (hostname.includes("youtube.com") && pathname.startsWith("/embed/")) {
-        return pathname.split("/")[2];
-      }
-      if (hostname.includes("youtube.com") && pathname.startsWith("/v/")) {
-        return pathname.split("/")[2];
-      }
-      if (hostname.includes("youtube.com") && pathname.startsWith("/shorts/")) {
-        return pathname.split("/")[2];
-      }
-      if (hostname.includes("music.youtube.com") && pathname === "/watch") {
-        return urlObj.searchParams.get("v");
-      }
-    } catch (error) {
-      console.error("Error parsing YouTube URL:", error);
-      const patterns = [
-        /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
-        /youtube\.com\/embed\/([^?&\n/]+)/,
-        /youtube\.com\/v\/([^?&\n/]+)/,
-        /youtube\.com\/shorts\/([^?&\n/]+)/,
-        /music\.youtube\.com\/watch\?v=([^&\n?#]+)/
-      ];
-      for (const pattern of patterns) {
-        const match = url.match(pattern);
-        if (match && match[1]) {
-          return match[1];
-        }
-      }
-    }
-    return null;
-  }
-};
 
 // src/utils/logger.ts
 var LogLevel = /* @__PURE__ */ ((LogLevel2) => {
@@ -3530,7 +3386,6 @@ var transcriptLogger = getLogger("TRANSCRIPT");
 var uiLogger = getLogger("UI");
 
 // src/utils/fetch-shim.ts
-var import_obsidian2 = require("obsidian");
 var logger = getLogger("FETCH");
 async function obsidianFetch(input, init2) {
   var _a2;
@@ -3604,7 +3459,7 @@ async function obsidianFetch(input, init2) {
       method: options.method,
       headers: options.headers
     })}`);
-    const res = await (0, import_obsidian2.requestUrl)(options);
+    const res = await (0, import_obsidian.requestUrl)(options);
     const responseInit = {
       status: res.status,
       statusText: res.status.toString(),
@@ -3623,9 +3478,418 @@ async function obsidianFetch(input, init2) {
     });
   }
 }
-function isPlatformMobile() {
-  return app.isMobile === true;
-}
+
+// src/youtube-transcript.ts
+var YouTubeTranscriptExtractor = class {
+  /**
+   * Helper function to convert relative YouTube URLs to absolute URLs
+   * YouTube API sometimes returns relative URLs that need to be converted
+   * to absolute URLs before using with obsidianFetch
+   * 
+   * @param url The potentially relative URL
+   * @param isMobile Whether to use mobile YouTube domain
+   * @returns An absolute URL
+   */
+  static makeAbsoluteUrl(url, isMobile = false) {
+    if (url.startsWith("/")) {
+      const domain = isMobile ? "https://m.youtube.com" : "https://www.youtube.com";
+      const absoluteUrl = domain + url;
+      console.log(`Fixed relative URL to absolute: ${url} \u2192 ${absoluteUrl}`);
+      return absoluteUrl;
+    }
+    return url;
+  }
+  /**
+   * Extracts a transcript from a YouTube video
+   * @param videoId YouTube video ID
+   * @param options Optional language and country settings
+   * @returns Promise with transcript segments
+   */
+  static async fetchTranscript(videoId, options = {}) {
+    var _a2, _b, _c;
+    try {
+      const isMobile = ((_a2 = window.app) == null ? void 0 : _a2.isMobile) === true;
+      const watchUrl = isMobile ? `https://m.youtube.com/watch?v=${videoId}&hl=${options.lang || "en"}&gl=${options.country || "US"}` : `https://www.youtube.com/watch?v=${videoId}`;
+      console.log(`Fetching YouTube transcript with URL: ${watchUrl} (isMobile: ${isMobile})`);
+      try {
+        const response = await obsidianFetch(watchUrl);
+        if (!response.ok) {
+          console.error(`Failed to fetch watch page: HTTP ${response.status}`);
+          throw new Error(`Failed to fetch watch page: HTTP ${response.status}`);
+        }
+        const body = await response.text();
+        const playerResponseRegex = /ytInitialPlayerResponse\s*=\s*({.+?})\s*;\s*(?:var\s+(?:meta|head)|<\/script|\n)/;
+        const match = body.match(playerResponseRegex);
+        if (!match) {
+          console.error("Unable to locate ytInitialPlayerResponse in watch page HTML.");
+          throw new Error("Unable to locate ytInitialPlayerResponse in watch page HTML.");
+        }
+        const playerResponse = JSON.parse(match[1]);
+        const tracks = ((_c = (_b = playerResponse == null ? void 0 : playerResponse.captions) == null ? void 0 : _b.playerCaptionsTracklistRenderer) == null ? void 0 : _c.captionTracks) || [];
+        if (!tracks.length) {
+          console.error("No caption tracks available for this video.");
+          throw new Error("No caption tracks available for this video.");
+        }
+        tracks.sort((t1, t2) => {
+          if (options.lang) {
+            if (t1.languageCode === options.lang && t2.languageCode !== options.lang)
+              return -1;
+            if (t1.languageCode !== options.lang && t2.languageCode === options.lang)
+              return 1;
+          }
+          if (t1.languageCode === "en" && t2.languageCode !== "en")
+            return -1;
+          if (t1.languageCode !== "en" && t2.languageCode === "en")
+            return 1;
+          if (t1.kind !== "asr" && t2.kind === "asr")
+            return -1;
+          if (t1.kind === "asr" && t2.kind !== "asr")
+            return 1;
+          return 0;
+        });
+        const chosenTrack = tracks[0];
+        if (!(chosenTrack == null ? void 0 : chosenTrack.baseUrl)) {
+          throw new Error("Chosen track does not have a baseUrl.");
+        }
+        let captionsJsonUrl = chosenTrack.baseUrl + "&fmt=json3";
+        captionsJsonUrl = this.makeAbsoluteUrl(captionsJsonUrl, isMobile);
+        let captionsResponse;
+        let responseText;
+        try {
+          captionsResponse = await obsidianFetch(captionsJsonUrl);
+          if (!captionsResponse.ok) {
+            console.log("JSON format failed, trying default format");
+            const baseUrl = this.makeAbsoluteUrl(chosenTrack.baseUrl, isMobile);
+            captionsResponse = await obsidianFetch(baseUrl);
+            if (!captionsResponse.ok) {
+              throw new Error(`Failed to fetch track: HTTP ${captionsResponse.status}`);
+            }
+            responseText = await captionsResponse.text();
+            if (responseText.trim().startsWith("<")) {
+              console.log("Detected XML response, parsing XML format");
+              return this.parseXmlCaptions(responseText, videoId);
+            }
+          } else {
+            responseText = await captionsResponse.text();
+          }
+        } catch (captionError) {
+          if (isMobile) {
+            console.log("Error fetching captions, trying alternative method");
+            return await this.fetchTranscriptAlternative(videoId, options);
+          }
+          throw captionError;
+        }
+        const transcriptJson = JSON.parse(responseText);
+        const events = transcriptJson.events || [];
+        const segments = [];
+        events.filter((e) => e.segs && Array.isArray(e.segs)).forEach((e) => {
+          const startMs = e.tStartMs ? parseInt(e.tStartMs) : 0;
+          const durationMs = e.dDurationMs ? parseInt(e.dDurationMs) : 0;
+          const text = e.segs.map((seg) => seg.utf8 || "").join("").replace(/[\u200B-\u200D\uFEFF]/g, "");
+          if (text.trim()) {
+            segments.push({
+              text: text.trim(),
+              start: startMs / 1e3,
+              // Convert to seconds
+              duration: durationMs / 1e3
+              // Convert to seconds
+            });
+          }
+        });
+        if (segments.length === 0) {
+          throw new Error("No transcript segments found.");
+        }
+        return segments;
+      } catch (fetchError) {
+        console.error("Error fetching YouTube page:", fetchError);
+        if (isMobile) {
+          console.log("Trying alternative mobile approach...");
+          return await this.fetchTranscriptAlternative(videoId, options);
+        }
+        throw fetchError;
+      }
+    } catch (error) {
+      console.error("Error fetching transcript from YouTube:", error);
+      if (error.message && (error.message.includes("CORS") || error.message.includes("Cross-Origin") || error.message.includes("Access-Control-Allow-Origin"))) {
+        throw new Error("CORS policy blocked the request. Please try a different video or check your internet connection.");
+      }
+      if (error.message && (error.message.includes("network") || error.message.includes("fetch") || error.message.includes("connect") || error.message.includes("timeout"))) {
+        throw new Error("Network error while fetching transcript. Please check your internet connection.");
+      }
+      throw error;
+    }
+  }
+  /**
+   * Get video metadata from the player response
+   * @param videoId YouTube video ID
+   * @returns Promise with metadata
+   */
+  static async getVideoMetadata(videoId) {
+    var _a2, _b;
+    try {
+      const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
+      const response = await obsidianFetch(watchUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch watch page: HTTP ${response.status}`);
+      }
+      const body = await response.text();
+      const playerResponseRegex = /ytInitialPlayerResponse\s*=\s*({.+?})\s*;\s*(?:var\s+(?:meta|head)|<\/script|\n)/;
+      const match = body.match(playerResponseRegex);
+      if (!match) {
+        throw new Error("Unable to locate ytInitialPlayerResponse in watch page HTML.");
+      }
+      const playerResponse = JSON.parse(match[1]);
+      return {
+        title: (_a2 = playerResponse == null ? void 0 : playerResponse.videoDetails) == null ? void 0 : _a2.title,
+        author: (_b = playerResponse == null ? void 0 : playerResponse.videoDetails) == null ? void 0 : _b.author
+      };
+    } catch (error) {
+      console.error("Error fetching video metadata:", error);
+      return {};
+    }
+  }
+  /**
+   * Combines transcript segments into a single text
+   * @param segments Array of transcript segments
+   * @returns Combined transcript text
+   */
+  static combineTranscript(segments) {
+    return segments.map((segment) => segment.text).join(" ");
+  }
+  /**
+   * Extracts video ID from a YouTube URL
+   * @param url YouTube video URL
+   * @returns Video ID or null if not found
+   */
+  static extractVideoId(url) {
+    url = url.trim();
+    if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("www.")) {
+      url = "https://" + url;
+    }
+    try {
+      const urlObj = new URL(url);
+      const hostname = urlObj.hostname;
+      const pathname = urlObj.pathname;
+      if (hostname.includes("youtube.com") && pathname === "/watch") {
+        return urlObj.searchParams.get("v");
+      }
+      if (hostname === "youtu.be") {
+        return pathname.substring(1);
+      }
+      if (hostname.includes("youtube.com") && pathname.startsWith("/embed/")) {
+        return pathname.split("/")[2];
+      }
+      if (hostname.includes("youtube.com") && pathname.startsWith("/v/")) {
+        return pathname.split("/")[2];
+      }
+      if (hostname.includes("youtube.com") && pathname.startsWith("/shorts/")) {
+        return pathname.split("/")[2];
+      }
+      if (hostname.includes("music.youtube.com") && pathname === "/watch") {
+        return urlObj.searchParams.get("v");
+      }
+    } catch (error) {
+      console.error("Error parsing YouTube URL:", error);
+      const patterns = [
+        /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
+        /youtube\.com\/embed\/([^?&\n/]+)/,
+        /youtube\.com\/v\/([^?&\n/]+)/,
+        /youtube\.com\/shorts\/([^?&\n/]+)/,
+        /music\.youtube\.com\/watch\?v=([^&\n?#]+)/
+      ];
+      for (const pattern of patterns) {
+        const match = url.match(pattern);
+        if (match && match[1]) {
+          return match[1];
+        }
+      }
+    }
+    return null;
+  }
+  /**
+   * Alternative method to fetch transcripts on mobile platforms
+   * Uses a different approach that may be more compatible with mobile restrictions
+   * @param videoId YouTube video ID
+   * @param options Optional language and country settings
+   * @returns Promise with transcript segments
+   */
+  static async fetchTranscriptAlternative(videoId, options = {}) {
+    var _a2, _b;
+    try {
+      const mobileWatchUrl = `https://m.youtube.com/watch?v=${videoId}&hl=${options.lang || "en"}&gl=${options.country || "US"}`;
+      console.log(`Using alternative mobile approach with URL: ${mobileWatchUrl}`);
+      const response = await obsidianFetch(mobileWatchUrl);
+      if (!response.ok) {
+        console.error(`Mobile approach failed with HTTP ${response.status}`);
+        throw new Error(`Mobile approach failed: HTTP ${response.status}`);
+      }
+      const body = await response.text();
+      const playerResponseRegex = /ytInitialPlayerResponse\s*=\s*({.+?})\s*;/;
+      const match = body.match(playerResponseRegex);
+      if (!match) {
+        console.error("Unable to locate player response in mobile HTML");
+        console.log("Attempting to extract visible text as fallback");
+        return this.createFallbackTranscript(body, videoId);
+      }
+      const playerResponse = JSON.parse(match[1]);
+      const tracks = ((_b = (_a2 = playerResponse == null ? void 0 : playerResponse.captions) == null ? void 0 : _a2.playerCaptionsTracklistRenderer) == null ? void 0 : _b.captionTracks) || [];
+      if (!tracks.length) {
+        console.error("No caption tracks in mobile response");
+        return this.createFallbackTranscript(body, videoId);
+      }
+      tracks.sort((t1, t2) => {
+        if (options.lang) {
+          if (t1.languageCode === options.lang && t2.languageCode !== options.lang)
+            return -1;
+          if (t1.languageCode !== options.lang && t2.languageCode === options.lang)
+            return 1;
+        }
+        if (t1.languageCode === "en" && t2.languageCode !== "en")
+          return -1;
+        if (t1.languageCode !== "en" && t2.languageCode === "en")
+          return 1;
+        if (t1.kind !== "asr" && t2.kind === "asr")
+          return -1;
+        if (t1.kind === "asr" && t2.kind !== "asr")
+          return 1;
+        return 0;
+      });
+      const chosenTrack = tracks[0];
+      if (!(chosenTrack == null ? void 0 : chosenTrack.baseUrl)) {
+        console.error("No baseUrl for chosen track in mobile response");
+        return this.createFallbackTranscript(body, videoId);
+      }
+      let captionsXmlUrl = chosenTrack.baseUrl;
+      console.log(`Fetching captions from: ${captionsXmlUrl}`);
+      captionsXmlUrl = this.makeAbsoluteUrl(captionsXmlUrl, true);
+      const captionsResponse = await obsidianFetch(captionsXmlUrl);
+      if (!captionsResponse.ok) {
+        console.error(`Failed to fetch captions XML: HTTP ${captionsResponse.status}`);
+        return this.createFallbackTranscript(body, videoId);
+      }
+      const xmlText = await captionsResponse.text();
+      const segments = [];
+      const textRegex = /<text\s+start="([^"]+)"\s+dur="([^"]+)"(?:[^>]*)>([\s\S]*?)<\/text>/g;
+      let match2;
+      while ((match2 = textRegex.exec(xmlText)) !== null) {
+        const startTime = parseFloat(match2[1]);
+        const duration = parseFloat(match2[2]);
+        let text = match2[3].replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, " ").replace(/<[^>]*>/g, "");
+        text = text.trim();
+        if (text) {
+          segments.push({
+            text,
+            start: startTime,
+            duration
+          });
+        }
+      }
+      if (segments.length === 0) {
+        console.error("No segments extracted from XML");
+        return this.createFallbackTranscript(body, videoId);
+      }
+      return segments;
+    } catch (error) {
+      console.error("Error in alternative transcript fetch:", error);
+      return [
+        {
+          text: `Transcript extraction failed on mobile. Please try again on desktop or use a different video. Error: ${error.message}`,
+          start: 0,
+          duration: 0
+        }
+      ];
+    }
+  }
+  /**
+   * Creates a fallback transcript by extracting any visible text from the video page
+   * Used as last resort when normal extraction methods fail
+   * @param html HTML content of the video page
+   * @param videoId Video ID for reference
+   * @returns A basic transcript segments array
+   */
+  static createFallbackTranscript(html, videoId) {
+    console.log(`Creating fallback transcript for video ${videoId}`);
+    try {
+      const segments = [];
+      segments.push({
+        text: "MOBILE COMPATIBILITY NOTICE: Using simplified transcript format due to mobile platform limitations.",
+        start: 0,
+        duration: 0
+      });
+      const titleMatch = html.match(/<title>(.*?)<\/title>/);
+      const title = titleMatch ? titleMatch[1].replace(" - YouTube", "").trim() : `Video ${videoId}`;
+      segments.push({
+        text: `Title: ${title}`,
+        start: 1,
+        duration: 0
+      });
+      const descriptionMatch = html.match(/<meta\s+name="description"\s+content="([^"]+)"/);
+      if (descriptionMatch) {
+        segments.push({
+          text: `Description: ${descriptionMatch[1].trim()}`,
+          start: 2,
+          duration: 0
+        });
+      }
+      segments.push({
+        text: "Note: Full transcript with timestamps couldn't be extracted on this mobile device. For best results, try using a desktop browser or a different video.",
+        start: 3,
+        duration: 0
+      });
+      return Promise.resolve(segments);
+    } catch (e) {
+      console.error("Error creating fallback transcript:", e);
+      return Promise.resolve([
+        {
+          text: `Transcript extraction failed on mobile for video ${videoId}. Please try on desktop or with a different video.`,
+          start: 0,
+          duration: 0
+        }
+      ]);
+    }
+  }
+  /**
+   * Parses YouTube captions in XML format
+   * @param xmlText The XML content of captions
+   * @param videoId Video ID for reference
+   * @returns Parsed transcript segments
+   */
+  static parseXmlCaptions(xmlText, videoId) {
+    console.log(`Parsing XML captions for video ${videoId}`);
+    try {
+      const segments = [];
+      const textRegex = /<text\s+start="([^"]+)"\s+dur="([^"]+)"(?:[^>]*)>([\s\S]*?)<\/text>/g;
+      let match;
+      while ((match = textRegex.exec(xmlText)) !== null) {
+        const startTime = parseFloat(match[1]);
+        const duration = parseFloat(match[2]);
+        let text = match[3].replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, " ").replace(/<[^>]*>/g, "");
+        text = text.trim();
+        if (text) {
+          segments.push({
+            text,
+            start: startTime,
+            duration
+          });
+        }
+      }
+      if (segments.length === 0) {
+        console.error("No segments extracted from XML");
+        throw new Error("Failed to parse XML captions: No text segments found");
+      }
+      return segments;
+    } catch (e) {
+      console.error("Error parsing XML captions:", e);
+      return [
+        {
+          text: `Failed to parse YouTube captions for video ${videoId}. Error: ${e.message}`,
+          start: 0,
+          duration: 0
+        }
+      ];
+    }
+  }
+};
 
 // node_modules/openai/internal/qs/formats.mjs
 var default_format = "RFC3986";
@@ -4113,7 +4377,8 @@ function getRuntime({ manuallyImported } = {}) {
 
 // node_modules/openai/_shims/index.mjs
 var init = () => {
-  if (!kind) setShims(getRuntime(), { auto: true });
+  if (!kind)
+    setShims(getRuntime(), { auto: true });
 };
 init();
 
@@ -4223,14 +4488,19 @@ var ContentFilterFinishReasonError = class extends OpenAIError {
 
 // node_modules/openai/internal/decoders/line.mjs
 var __classPrivateFieldSet = function(receiver, state, value, kind2, f) {
-  if (kind2 === "m") throw new TypeError("Private method is not writable");
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  if (kind2 === "m")
+    throw new TypeError("Private method is not writable");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind2 === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 };
 var __classPrivateFieldGet = function(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _LineDecoder_carriageReturnIndex;
@@ -4711,14 +4981,19 @@ var addFormValue = async (form, key, value) => {
 
 // node_modules/openai/core.mjs
 var __classPrivateFieldSet2 = function(receiver, state, value, kind2, f) {
-  if (kind2 === "m") throw new TypeError("Private method is not writable");
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  if (kind2 === "m")
+    throw new TypeError("Private method is not writable");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind2 === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 };
 var __classPrivateFieldGet2 = function(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _AbstractPage_client;
@@ -5766,14 +6041,19 @@ var isToolMessage = (message) => {
 
 // node_modules/openai/lib/EventStream.mjs
 var __classPrivateFieldSet3 = function(receiver, state, value, kind2, f) {
-  if (kind2 === "m") throw new TypeError("Private method is not writable");
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  if (kind2 === "m")
+    throw new TypeError("Private method is not writable");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind2 === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 };
 var __classPrivateFieldGet3 = function(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _EventStream_instances;
@@ -6102,8 +6382,10 @@ function validateInputTools(tools) {
 
 // node_modules/openai/lib/AbstractChatCompletionRunner.mjs
 var __classPrivateFieldGet4 = function(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _AbstractChatCompletionRunner_instances;
@@ -6698,14 +6980,19 @@ var partialParse = (input) => parseJSON(input, Allow.ALL ^ Allow.NUM);
 
 // node_modules/openai/lib/ChatCompletionStream.mjs
 var __classPrivateFieldSet4 = function(receiver, state, value, kind2, f) {
-  if (kind2 === "m") throw new TypeError("Private method is not writable");
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  if (kind2 === "m")
+    throw new TypeError("Private method is not writable");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind2 === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 };
 var __classPrivateFieldGet5 = function(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _ChatCompletionStream_instances;
@@ -7322,14 +7609,19 @@ Realtime.TranscriptionSessions = TranscriptionSessions;
 
 // node_modules/openai/lib/AssistantStream.mjs
 var __classPrivateFieldGet6 = function(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var __classPrivateFieldSet5 = function(receiver, state, value, kind2, f) {
-  if (kind2 === "m") throw new TypeError("Private method is not writable");
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  if (kind2 === "m")
+    throw new TypeError("Private method is not writable");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind2 === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 };
 var _AssistantStream_instances;
@@ -8042,7 +8334,6 @@ var Runs = class extends APIResource {
         headers: { ...options == null ? void 0 : options.headers, ...headers }
       }).withResponse();
       switch (run.status) {
-        //If we are in any sort of intermediate state we poll
         case "queued":
         case "in_progress":
         case "cancelling":
@@ -8060,7 +8351,6 @@ var Runs = class extends APIResource {
           }
           await sleep(sleepInterval);
           break;
-        //We return the run in any terminal state.
         case "requires_action":
         case "incomplete":
         case "cancelled":
@@ -8586,14 +8876,19 @@ var InputItems = class extends APIResource {
 
 // node_modules/openai/lib/responses/ResponseStream.mjs
 var __classPrivateFieldSet6 = function(receiver, state, value, kind2, f) {
-  if (kind2 === "m") throw new TypeError("Private method is not writable");
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  if (kind2 === "m")
+    throw new TypeError("Private method is not writable");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind2 === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 };
 var __classPrivateFieldGet7 = function(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _ResponseStream_instances;
@@ -9411,26 +9706,26 @@ function createOpenAIClient(apiKey) {
   logger2.debug("Creating OpenAI client");
   const customFetch = async (url, init2) => {
     try {
-      let requestUrl3;
+      let requestUrl2;
       if (typeof url === "string") {
-        requestUrl3 = url;
+        requestUrl2 = url;
       } else if (url instanceof URL) {
-        requestUrl3 = url.toString();
+        requestUrl2 = url.toString();
       } else if (url instanceof Request) {
-        requestUrl3 = url.url;
+        requestUrl2 = url.url;
       } else {
         logger2.error("Invalid URL type:", typeof url);
         throw new TypeError("Invalid URL type");
       }
       try {
-        const parsedUrl = new URL(requestUrl3);
-        requestUrl3 = parsedUrl.toString();
+        const parsedUrl = new URL(requestUrl2);
+        requestUrl2 = parsedUrl.toString();
       } catch (e) {
-        logger2.error("Invalid URL format:", requestUrl3);
-        throw new Error(`Invalid URL format: ${requestUrl3}`);
+        logger2.error("Invalid URL format:", requestUrl2);
+        throw new Error(`Invalid URL format: ${requestUrl2}`);
       }
-      logger2.debug(`OpenAI fetch: ${requestUrl3}`);
-      return obsidianFetch(requestUrl3, init2);
+      logger2.debug(`OpenAI fetch: ${requestUrl2}`);
+      return obsidianFetch(requestUrl2, init2);
     } catch (error) {
       logger2.error("Error in OpenAI fetch:", error);
       throw error;
@@ -9661,230 +9956,120 @@ var logger5 = getLogger("OLLAMA");
 var OllamaClient = class {
   constructor(baseUrl = "http://localhost:11434") {
     this.baseUrl = baseUrl;
-    logger5.debug("Creating Ollama client with base URL:", baseUrl);
+    logger5.debug("Ollama client created with base URL:", baseUrl);
   }
   /**
    * Check if Ollama can be used on the current platform
-   * @returns true if Ollama can be used (desktop only)
    */
   isAvailable() {
-    const available = !isPlatformMobile();
-    if (!available) {
-      logger5.debug("Ollama is not available on mobile platforms");
-    }
-    return available;
+    return true;
   }
   /**
-   * Check if the Ollama server is running
-   * @returns true if the server is up and running
+   * Validate that the Ollama server is accessible
    */
-  async isServerRunning() {
-    if (!this.isAvailable()) {
-      return false;
-    }
+  async validateConnection() {
     try {
-      const response = await obsidianFetch(`${this.baseUrl}/api/tags`, {
-        method: "GET"
-      });
-      return response.ok;
-    } catch (error) {
-      logger5.error("Error checking Ollama server:", error);
-      return false;
-    }
-  }
-  /**
-   * Get a list of all available models
-   */
-  async listModels() {
-    if (!this.isAvailable()) {
-      throw new Error("Ollama is not available on mobile platforms");
-    }
-    try {
-      const response = await obsidianFetch(`${this.baseUrl}/api/tags`, {
-        method: "GET"
-      });
+      const response = await obsidianFetch(`${this.baseUrl}/api/version`);
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Ollama API error: ${errorText}`);
+        logger5.error(`Ollama server returned error status: ${response.status}`);
+        return false;
       }
-      return response.json();
+      const data = await response.json();
+      logger5.debug("Ollama version check successful:", data);
+      return true;
     } catch (error) {
-      logger5.error("Error listing Ollama models:", error);
-      throw error;
+      logger5.error("Ollama server connection failed:", error);
+      return false;
     }
   }
   /**
-   * Generate a completion from a prompt
-   * 
-   * @param model The model to use (e.g., "llama3")
-   * @param prompt The prompt text
-   * @param options Additional options
-   * @returns The generation response
+   * Generate a completion from Ollama
    */
-  async generate(model, prompt, options = {}) {
-    if (!this.isAvailable()) {
-      throw new Error("Ollama is not available on mobile platforms");
-    }
+  async generateCompletion(model, prompt, options = {}) {
+    const { system, temperature = 0.7, max_tokens } = options;
     try {
-      const systemPrompt = options.system || "";
       const requestBody = {
         model,
         prompt,
-        system: systemPrompt,
-        temperature: options.temperature !== void 0 ? options.temperature : 0.7,
-        num_predict: options.max_tokens || 1024,
-        // Add any other Ollama-specific options
-        ...options
+        stream: false,
+        options: {
+          temperature
+        }
       };
-      logger5.debug(`Generating with model ${model}`);
+      if (system) {
+        requestBody.system = system;
+      }
+      if (max_tokens) {
+        requestBody.options.num_predict = max_tokens;
+      }
       const response = await obsidianFetch(`${this.baseUrl}/api/generate`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(requestBody)
       });
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Ollama API error: ${errorText}`);
+        logger5.error("Ollama API error:", errorText);
+        throw new Error(`Ollama API error: ${response.status} - ${errorText}`);
       }
-      try {
-        const responseText = await response.text();
-        if (responseText.includes("\n")) {
-          logger5.debug("Detected streaming response format from Ollama");
-          try {
-            const jsonLines = responseText.trim().split("\n");
-            let combinedContent = "";
-            for (const line of jsonLines) {
-              if (line.trim()) {
-                try {
-                  const jsonObj = JSON.parse(line);
-                  if (jsonObj.response) {
-                    combinedContent += jsonObj.response;
-                  }
-                } catch (lineError) {
-                  logger5.debug(`Skipping invalid JSON line: ${line}`);
-                }
-              }
-            }
-            return {
-              response: combinedContent,
-              error: false
-            };
-          } catch (streamError) {
-            logger5.error("Error processing streaming response:", streamError);
-            return {
-              response: responseText.trim(),
-              error: false,
-              rawResponse: responseText
-            };
-          }
-        }
-        try {
-          return JSON.parse(responseText);
-        } catch (jsonError) {
-          logger5.error("Failed to parse Ollama response as JSON:", jsonError);
-          logger5.debug("Raw response:", responseText);
-          return {
-            response: responseText.trim(),
-            error: false,
-            rawResponse: responseText
-          };
-        }
-      } catch (textError) {
-        logger5.error("Error reading Ollama response as text:", textError);
-        throw textError;
-      }
+      const data = await response.json();
+      return data;
     } catch (error) {
-      logger5.error("Error in Ollama generate:", error);
+      logger5.error("Error in Ollama generateCompletion:", error);
       throw error;
     }
   }
   /**
-   * Create a chat completion (simpler interface)
-   * 
-   * @param model The model to use
-   * @param messages The chat messages
-   * @param options Additional options
-   * @returns The chat completion response
+   * Create a chat completion - wrapper around generate for more OpenAI-like interface
    */
   async createChatCompletion(model, messages, options = {}) {
-    if (!this.isAvailable()) {
-      throw new Error("Ollama is not available on mobile platforms");
-    }
     try {
-      const requestBody = {
-        model,
-        messages,
-        temperature: options.temperature !== void 0 ? options.temperature : 0.7,
-        num_predict: options.max_tokens || 1024,
-        // Add any other Ollama-specific options
-        ...options
-      };
-      logger5.debug(`Chat completion with model ${model}`);
-      const response = await obsidianFetch(`${this.baseUrl}/api/chat`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody)
+      let systemPrompt = options.system || "";
+      if (!systemPrompt && messages.length > 0 && messages[0].role === "system") {
+        systemPrompt = messages[0].content;
+        messages = messages.slice(1);
+      }
+      let prompt = "";
+      messages.forEach((message) => {
+        if (message.role === "user") {
+          prompt += `
+Human: ${message.content}`;
+        } else if (message.role === "assistant") {
+          prompt += `
+Assistant: ${message.content}`;
+        }
       });
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Ollama API error: ${errorText}`);
-      }
-      try {
-        const responseText = await response.text();
-        if (responseText.includes("\n")) {
-          logger5.debug("Detected streaming response format from Ollama");
-          try {
-            const jsonLines = responseText.trim().split("\n");
-            let combinedContent = "";
-            for (const line of jsonLines) {
-              if (line.trim()) {
-                try {
-                  const jsonObj = JSON.parse(line);
-                  if (jsonObj.message && jsonObj.message.content) {
-                    combinedContent += jsonObj.message.content;
-                  }
-                } catch (lineError) {
-                  logger5.debug(`Skipping invalid JSON line: ${line}`);
-                }
-              }
-            }
-            return {
-              message: {
-                content: combinedContent,
-                role: "assistant"
-              }
-            };
-          } catch (streamError) {
-            logger5.error("Error processing streaming response:", streamError);
-            return {
-              message: {
-                content: responseText.trim(),
-                role: "assistant"
-              },
-              rawResponse: responseText
-            };
-          }
-        }
-        try {
-          return JSON.parse(responseText);
-        } catch (jsonError) {
-          logger5.error("Failed to parse Ollama chat response as JSON:", jsonError);
-          logger5.debug("Raw response:", responseText);
-          const content = responseText.trim();
-          return {
+      prompt += "\nAssistant:";
+      const result = await this.generateCompletion(model, prompt, {
+        system: systemPrompt,
+        temperature: options.temperature,
+        max_tokens: options.max_tokens
+      });
+      return {
+        id: "ollama-" + Date.now(),
+        object: "chat.completion",
+        created: Math.floor(Date.now() / 1e3),
+        model,
+        choices: [
+          {
+            index: 0,
             message: {
-              content,
-              role: "assistant"
+              role: "assistant",
+              content: result.response
             },
-            rawResponse: responseText
-          };
+            finish_reason: "stop"
+          }
+        ],
+        usage: {
+          prompt_tokens: result.prompt_eval_count || 0,
+          completion_tokens: result.eval_count || 0,
+          total_tokens: (result.prompt_eval_count || 0) + (result.eval_count || 0)
         }
-      } catch (textError) {
-        logger5.error("Error reading Ollama chat response as text:", textError);
-        throw textError;
-      }
+      };
     } catch (error) {
-      logger5.error("Error in Ollama chat completion:", error);
+      logger5.error("Error in Ollama createChatCompletion:", error);
       throw error;
     }
   }
@@ -9902,16 +10087,11 @@ var LLMFactory = class {
     logger6.debug("Created LLM Factory");
   }
   /**
-   * Get the best available LLM provider for the current platform
+   * Get the selected LLM provider
    * @returns The provider ID
    */
   getBestProvider() {
-    const selectedProvider = this.settings.selectedLLM;
-    if (isPlatformMobile() && selectedProvider === "ollama") {
-      logger6.debug("Ollama selected but on mobile - falling back to default");
-      return "google";
-    }
-    return selectedProvider;
+    return this.settings.selectedLLM;
   }
   /**
    * Get the OpenAI client
@@ -9976,10 +10156,6 @@ var LLMFactory = class {
       case "google":
         return this.getGeminiClient();
       case "ollama":
-        if (isPlatformMobile()) {
-          logger6.warn("Tried to get Ollama client on mobile - falling back to Google");
-          return this.getGeminiClient();
-        }
         return this.getOllamaClient();
       default:
         throw new Error(`Unknown LLM provider: ${provider}`);
@@ -11571,14 +11747,19 @@ var isDirty = (x) => x.status === "dirty";
 var isValid = (x) => x.status === "valid";
 var isAsync = (x) => typeof Promise !== "undefined" && x instanceof Promise;
 function __classPrivateFieldGet8(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 }
 function __classPrivateFieldSet7(receiver, state, value, kind2, f) {
-  if (kind2 === "m") throw new TypeError("Private method is not writable");
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  if (kind2 === "m")
+    throw new TypeError("Private method is not writable");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind2 === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 }
 var errorUtil;
@@ -13424,7 +13605,8 @@ var ZodObject = class _ZodObject extends ZodType {
           });
           status.dirty();
         }
-      } else if (unknownKeys === "strip") ;
+      } else if (unknownKeys === "strip")
+        ;
       else {
         throw new Error(`Internal ZodObject error: invalid unknownKeys value.`);
       }
@@ -18956,10 +19138,8 @@ function _deepClone(obj) {
   switch (typeof obj) {
     case "object":
       return JSON.parse(JSON.stringify(obj));
-    //Faster than ES5 clone - http://jsperf.com/deep-cloning-of-objects/5
     case "undefined":
       return null;
-    //this is how JSON.stringify behaves for array items
     default:
       return obj;
   }
@@ -29399,14 +29579,6 @@ var get$ref2 = (item, refs) => {
   switch (refs.$refStrategy) {
     case "root":
       return { $ref: item.path.join("/") };
-    // this case is needed as OpenAI strict mode doesn't support top-level `$ref`s, i.e.
-    // the top-level schema *must* be `{"type": "object", "properties": {...}}` but if we ever
-    // need to define a `$ref`, relative `$ref`s aren't supported, so we need to extract
-    // the schema to `#/definitions/` and reference that.
-    //
-    // e.g. if we need to reference a schema at
-    // `["#","definitions","contactPerson","properties","person1","properties","name"]`
-    // then we'll extract it out to `contactPerson_properties_person1_properties_name`
     case "extract-to-root":
       const name = item.path.slice(refs.basePath.length + 1).join("_");
       if (name !== refs.name && refs.nameStrategy === "duplicate-ref") {
@@ -31521,17 +31693,19 @@ function __await(v) {
   return this instanceof __await ? (this.v = v, this) : new __await(v);
 }
 function __asyncGenerator(thisArg, _arguments, generator) {
-  if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+  if (!Symbol.asyncIterator)
+    throw new TypeError("Symbol.asyncIterator is not defined.");
   var g = generator.apply(thisArg, _arguments || []), i, q = [];
   return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function() {
     return this;
   }, i;
   function verb(n) {
-    if (g[n]) i[n] = function(v) {
-      return new Promise(function(a, b) {
-        q.push([n, v, a, b]) > 1 || resume(n, v);
-      });
-    };
+    if (g[n])
+      i[n] = function(v) {
+        return new Promise(function(a, b) {
+          q.push([n, v, a, b]) > 1 || resume(n, v);
+        });
+      };
   }
   function resume(n, v) {
     try {
@@ -31550,7 +31724,8 @@ function __asyncGenerator(thisArg, _arguments, generator) {
     resume("throw", value);
   }
   function settle(f, v) {
-    if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]);
+    if (f(v), q.shift(), q.length)
+      resume(q[0][0], q[0][1]);
   }
 }
 var responseLineRE = /^data\: (.*)(?:\n\n|\r\r|\r\n\r\n)/;
@@ -37374,10 +37549,8 @@ function _deepClone2(obj) {
   switch (typeof obj) {
     case "object":
       return JSON.parse(JSON.stringify(obj));
-    //Faster than ES5 clone - http://jsperf.com/deep-cloning-of-objects/5
     case "undefined":
       return null;
-    //this is how JSON.stringify behaves for array items
     default:
       return obj;
   }
@@ -44722,10 +44895,6 @@ function getMessageAuthor(message) {
 }
 function convertAuthorToRole(author) {
   switch (author) {
-    /**
-     *  Note: Gemini currently is not supporting system messages
-     *  we will convert them to human messages and merge with following
-     * */
     case "ai":
     case "model":
       return "model";
@@ -45798,19 +45967,19 @@ var logger7 = getLogger("LANGCHAIN_FETCHER");
 function createLangChainFetcher() {
   return async (url, init2) => {
     try {
-      let requestUrl3;
+      let requestUrl2;
       if (typeof url === "string") {
-        requestUrl3 = url;
+        requestUrl2 = url;
       } else if (url instanceof URL) {
-        requestUrl3 = url.toString();
+        requestUrl2 = url.toString();
       } else if (url instanceof Request) {
-        requestUrl3 = url.url;
+        requestUrl2 = url.url;
       } else {
         logger7.error("Invalid URL type:", typeof url);
         throw new TypeError("Invalid URL type");
       }
       try {
-        const parsedUrl = new URL(requestUrl3);
+        const parsedUrl = new URL(requestUrl2);
         if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
           throw new Error(`Invalid protocol: ${parsedUrl.protocol}`);
         }
@@ -45823,12 +45992,12 @@ function createLangChainFetcher() {
             throw new Error("OpenAI API requires /v1/ path");
           }
         }
-        requestUrl3 = parsedUrl.toString();
+        requestUrl2 = parsedUrl.toString();
       } catch (e) {
-        logger7.error(`Invalid URL: ${requestUrl3}`, e);
-        throw new TypeError(`Invalid URL: ${requestUrl3}`);
+        logger7.error(`Invalid URL: ${requestUrl2}`, e);
+        throw new TypeError(`Invalid URL: ${requestUrl2}`);
       }
-      logger7.debug(`LangChain fetch: ${requestUrl3}`);
+      logger7.debug(`LangChain fetch: ${requestUrl2}`);
       if (init2 == null ? void 0 : init2.headers) {
         const headers = init2.headers;
         if (init2.method === "POST" && init2.body && !headers["Content-Type"]) {
@@ -45837,7 +46006,7 @@ function createLangChainFetcher() {
         }
         logger7.debug(`Authorization header present: ${!!headers["Authorization"]}`);
       }
-      return obsidianFetch(requestUrl3, init2);
+      return obsidianFetch(requestUrl2, init2);
     } catch (error) {
       logger7.error("LangChain fetch error:", error);
       throw error;
@@ -46025,10 +46194,6 @@ var TranscriptSummarizer = class {
       llmLogger2.info("Model:", this.config.model);
       llmLogger2.info("Temperature:", this.config.temperature);
       llmLogger2.info("Max tokens:", this.config.maxTokens);
-      if (isPlatformMobile() && provider === "ollama") {
-        llmLogger2.warn("Ollama provider requested on mobile - falling back to Google");
-        provider = "google";
-      }
       if (!this.apiKeys[provider] || this.apiKeys[provider].trim() === "") {
         llmLogger2.error(`API key missing for provider: ${provider}`);
         throw new Error(`API key for ${provider} is missing or empty.`);
@@ -46093,11 +46258,10 @@ ${transcript}`;
    * Use the Ollama client directly (not supported by LangChain in this implementation)
    */
   async summarizeWithOllama(transcript) {
-    var _a2;
     const client2 = this.llmFactory.getOllamaClient();
-    const isRunning = await client2.isServerRunning();
+    const isRunning = await client2.validateConnection();
     if (!isRunning) {
-      throw new Error("Ollama server is not running. Please start Ollama on your computer.");
+      throw new Error("Ollama server is not accessible. Please ensure Ollama is running and accessible.");
     }
     try {
       const response = await client2.createChatCompletion(
@@ -46108,22 +46272,13 @@ ${transcript}`;
         ],
         {
           temperature: this.config.temperature,
-          num_predict: this.config.maxTokens
+          max_tokens: this.config.maxTokens
         }
       );
-      return ((_a2 = response.message) == null ? void 0 : _a2.content) || "";
+      return response.choices[0].message.content || "";
     } catch (chatError) {
-      llmLogger2.warn("Ollama chat completion failed, falling back to generate API:", chatError);
-      const response = await client2.generate(
-        this.config.model,
-        this.config.userPrompt + "\n\nTranscript:\n" + transcript,
-        {
-          system: this.config.systemPrompt,
-          temperature: this.config.temperature,
-          num_predict: this.config.maxTokens
-        }
-      );
-      return response.response || "";
+      llmLogger2.warn("Ollama chat completion failed:", chatError);
+      throw new Error("Ollama chat completion failed. Please check your configuration and ensure Ollama is running.");
     }
   }
   /**
@@ -46235,7 +46390,8 @@ function handleApiError(error, apiName, context) {
 
 // src/utils/path-utils.ts
 function normalizePath(path3, removeLeadingSlash = true) {
-  if (!path3) return "";
+  if (!path3)
+    return "";
   let normalized = path3.trim();
   if (removeLeadingSlash && normalized.startsWith("/")) {
     normalized = normalized.substring(1);
@@ -46247,7 +46403,8 @@ function normalizePath(path3, removeLeadingSlash = true) {
 }
 async function ensureFolder(vault, folderPath) {
   var _a2;
-  if (!folderPath || folderPath.trim() === "") return;
+  if (!folderPath || folderPath.trim() === "")
+    return;
   const normalizedPath = normalizePath(folderPath);
   try {
     await vault.createFolder(normalizedPath);
@@ -46258,18 +46415,21 @@ async function ensureFolder(vault, folderPath) {
   }
 }
 function joinPaths(...segments) {
-  if (segments.length === 0) return "";
+  if (segments.length === 0)
+    return "";
   const filteredSegments = segments.filter((segment) => segment != null && segment !== "");
-  if (filteredSegments.length === 0) return "";
+  if (filteredSegments.length === 0)
+    return "";
   return normalizePath(filteredSegments.join("/"));
 }
 function sanitizePathComponent(text) {
-  if (!text) return "";
+  if (!text)
+    return "";
   return text.replace(/[\\/:*?"<>|]/g, "-").replace(/\s+/g, "-").replace(/-+/g, "-").trim();
 }
 
 // src/utils/form-utils.ts
-var import_obsidian3 = require("obsidian");
+var import_obsidian2 = require("obsidian");
 function validateRequired(value, fieldName = "field") {
   if (!value || value.trim() === "") {
     return {
@@ -46337,7 +46497,7 @@ function getPromptConfig(settings, summaryMode = "extensive" /* EXTENSIVE */) {
   }
 }
 function getTimestampLinkConfig(settings, videoId) {
-  const timestampTemperature = 0.7;
+  const timestampTemperature = 0.2;
   return {
     systemPrompt: settings.timestampSystemPrompt,
     userPrompt: settings.timestampUserPrompt.replace(/VIDEO_ID/g, videoId),
@@ -46352,7 +46512,7 @@ function cleanTranscript(transcript) {
 }
 
 // src/utils/youtube-utils.ts
-var import_obsidian4 = require("obsidian");
+var import_obsidian3 = require("obsidian");
 function isYoutubeUrl(url) {
   try {
     if (!url.match(/^(https?:\/\/)?(www\.|m\.)?(youtube\.com|youtu\.be)/i)) {
@@ -46423,9 +46583,9 @@ function showNotice(message, timeout = 5e3) {
       const fileName = file.split("/").pop() || file;
       debugInfo = ` [${fileName}:${line}]`;
     }
-    new import_obsidian4.Notice(message + debugInfo, timeout);
+    new import_obsidian3.Notice(message + debugInfo, timeout);
   } catch (e) {
-    new import_obsidian4.Notice(message);
+    new import_obsidian3.Notice(message);
   }
 }
 
@@ -46777,7 +46937,7 @@ EXACTLY HOW TO DO THIS:
   // License settings
   licenseAccepted: false
 };
-var YouTubeTranscriptPlugin = class extends import_obsidian5.Plugin {
+var YouTubeTranscriptPlugin = class extends import_obsidian4.Plugin {
   // Replace the duplicated showNotice method with a wrapper that calls the shared utility
   showNotice(message, timeout = 5e3) {
     showNotice(message, timeout);
@@ -47087,7 +47247,7 @@ var YouTubeTranscriptPlugin = class extends import_obsidian5.Plugin {
       }
       const selectedLlm = this.settings.selectedLLM;
       if (!this.settings.apiKeys[selectedLlm] || this.settings.apiKeys[selectedLlm].trim() === "") {
-        new import_obsidian5.Notice(`YouTube Transcript Plugin: No API key configured for ${selectedLlm}. Please add your API key in the plugin settings.`);
+        new import_obsidian4.Notice(`YouTube Transcript Plugin: No API key configured for ${selectedLlm}. Please add your API key in the plugin settings.`);
         return;
       }
       new YouTubeTranscriptModal(this.app, this).open();
@@ -47102,7 +47262,7 @@ var YouTubeTranscriptPlugin = class extends import_obsidian5.Plugin {
         }
         const selectedLlm = this.settings.selectedLLM;
         if (!this.settings.apiKeys[selectedLlm] || this.settings.apiKeys[selectedLlm].trim() === "") {
-          new import_obsidian5.Notice(`YouTube Transcript Plugin: No API key configured for ${selectedLlm}. Please add your API key in the plugin settings.`);
+          new import_obsidian4.Notice(`YouTube Transcript Plugin: No API key configured for ${selectedLlm}. Please add your API key in the plugin settings.`);
           return;
         }
         new YouTubeTranscriptModal(this.app, this).open();
@@ -47233,7 +47393,8 @@ var YouTubeTranscriptPlugin = class extends import_obsidian5.Plugin {
         } else if (segment.segs && Array.isArray(segment.segs)) {
           segmentText = segment.segs.map((s) => s.utf8 || "").join("").trim();
         }
-        if (!segmentText) return;
+        if (!segmentText)
+          return;
         if (isFirstSegment || segmentTimeSeconds - currentChunk.startSeconds >= ONE_MINUTE_SECONDS) {
           if (!isFirstSegment && currentChunk.text) {
             chunks.push({
@@ -47264,7 +47425,7 @@ var YouTubeTranscriptPlugin = class extends import_obsidian5.Plugin {
       formattedTranscript = "\n";
       chunks.forEach((chunk) => {
         const escapedText = chunk.text.replace(/:/g, "\\:");
-        formattedTranscript += `    [${chunk.time}] ${escapedText}
+        formattedTranscript += `    [${chunk.time}] [TimeIndex:${Math.round(chunk.seconds)}] ${escapedText}
 `;
       });
     } else {
@@ -47723,11 +47884,57 @@ Transcript info:
       }, this.settings.apiKeys);
       const referenceSection = "----- REFERENCE MATERIAL (DO NOT INCLUDE IN OUTPUT) -----\nVIDEO_ID: " + videoId + "\n" + (transcript ? "TRANSCRIPT:\n" + transcript + "\n" : "") + "----- END REFERENCE MATERIAL -----";
       let formattedPrompt = timestampConfig.userPrompt + "\n\n" + contentWithoutFrontmatter + "\n\n" + referenceSection;
+      const restructuredPrompt = "INSTRUCTIONS:\n" + timestampConfig.userPrompt + "\n\nINSTRUCTION INPUT DATA - TIMESTAMPS TRANSCRIPT:\n" + (transcript ? transcript : "No transcript available") + "\n\nINPUT NOTE TO BE MODIFIED WITH TIMESTAMPS:\n" + contentWithoutFrontmatter;
       this.showNotice("Adding timestamp links with LLM...", 5e3);
+      if (this.settings.debugLogging) {
+        llmLogger4.debug("==================== TIMESTAMP LINKING DEBUG ====================");
+        llmLogger4.debug(`Processing file: ${filePath}`);
+        llmLogger4.debug(`Video ID: ${videoId}`);
+        llmLogger4.debug(`Number of headings found: ${headings.length}`);
+        llmLogger4.debug(`First few headings: ${headings.slice(0, 3).join(", ")}${headings.length > 3 ? "..." : ""}`);
+        llmLogger4.debug(`LLM Provider: ${this.settings.selectedLLM}`);
+        llmLogger4.debug(`Model: ${this.settings.selectedModels[this.settings.selectedLLM]}`);
+        llmLogger4.debug(`Max tokens: ${this.getMaxTokensForTimestampPass()}`);
+        llmLogger4.debug(`Temperature: ${timestampConfig.temperature}`);
+        llmLogger4.debug("SYSTEM PROMPT:");
+        llmLogger4.debug("----------------------------------------");
+        llmLogger4.debug(timestampConfig.systemPrompt);
+        llmLogger4.debug("----------------------------------------");
+        llmLogger4.debug("USER PROMPT:");
+        llmLogger4.debug("----------------------------------------");
+        llmLogger4.debug(timestampConfig.userPrompt);
+        llmLogger4.debug("----------------------------------------");
+        llmLogger4.debug("CONTENT BEING PROCESSED:");
+        llmLogger4.debug("----------------------------------------");
+        llmLogger4.debug(contentWithoutFrontmatter);
+        llmLogger4.debug("----------------------------------------");
+        if (transcript) {
+          const transcriptExcerpt = transcript.length > 500 ? transcript.substring(0, 500) + "... [truncated for log]" : transcript;
+          llmLogger4.debug("TRANSCRIPT EXCERPT:");
+          llmLogger4.debug("----------------------------------------");
+          llmLogger4.debug(transcriptExcerpt);
+          llmLogger4.debug("----------------------------------------");
+        } else {
+          llmLogger4.debug("NO TRANSCRIPT FOUND IN FRONTMATTER");
+        }
+        llmLogger4.debug("COMPLETE FORMATTED PROMPT BEING SENT TO LLM:");
+        llmLogger4.debug("========================================");
+        llmLogger4.debug(this.settings.selectedLLM === "google" ? restructuredPrompt : formattedPrompt);
+        llmLogger4.debug("========================================");
+      }
       logger12.debug("[addTimestampLinksSinglePass] Sending content to LLM (without frontmatter)...");
       let enhancedContent;
       try {
-        enhancedContent = await timestampLinkSummarizer.summarize(formattedPrompt, this.settings.selectedLLM);
+        enhancedContent = await timestampLinkSummarizer.summarize(
+          this.settings.selectedLLM === "google" ? restructuredPrompt : formattedPrompt,
+          this.settings.selectedLLM
+        );
+        if (this.settings.debugLogging) {
+          llmLogger4.debug("LLM RESPONSE:");
+          llmLogger4.debug("========================================");
+          llmLogger4.debug(enhancedContent || "Empty response from LLM");
+          llmLogger4.debug("========================================");
+        }
         logger12.debug("[addTimestampLinksSinglePass] Received LLM response, length:", enhancedContent ? enhancedContent.length : 0);
       } catch (e) {
         logger12.error("[addTimestampLinksSinglePass] Error during LLM call:", e);
@@ -47735,6 +47942,9 @@ Transcript info:
           logger12.debug("[addTimestampLinksSinglePass] Token limit error detected, retrying with reduced token limit");
           this.showNotice("Retrying with reduced token limit...", 5e3);
           const reducedTokens = Math.floor(this.getMaxTokensForTimestampPass() / 2);
+          if (this.settings.debugLogging) {
+            llmLogger4.debug(`Retrying with reduced token limit: ${reducedTokens}`);
+          }
           const reducedTokensSummarizer = new TranscriptSummarizer({
             model: this.getModelForProvider(this.settings.selectedLLM),
             temperature: timestampConfig.temperature,
@@ -47743,7 +47953,16 @@ Transcript info:
             userPrompt: timestampConfig.userPrompt
           }, this.settings.apiKeys);
           try {
-            enhancedContent = await reducedTokensSummarizer.summarize(formattedPrompt, this.settings.selectedLLM);
+            enhancedContent = await reducedTokensSummarizer.summarize(
+              this.settings.selectedLLM === "google" ? restructuredPrompt : formattedPrompt,
+              this.settings.selectedLLM
+            );
+            if (this.settings.debugLogging) {
+              llmLogger4.debug("LLM RESPONSE AFTER RETRY:");
+              llmLogger4.debug("========================================");
+              llmLogger4.debug(enhancedContent || "Empty response from LLM");
+              llmLogger4.debug("========================================");
+            }
             logger12.debug("[addTimestampLinksSinglePass] Second attempt successful with reduced tokens:", reducedTokens);
           } catch (retryError) {
             logger12.error("[addTimestampLinksSinglePass] Error on second attempt:", retryError);
@@ -47768,7 +47987,17 @@ Transcript info:
         );
         const linkCount = countTimestampLinks(enhancedContent);
         this.showNotice(`Added timestamp links to ${linkCount} section headings`, 5e3);
+        if (this.settings.debugLogging) {
+          llmLogger4.debug("TIMESTAMP LINKING SUCCESSFUL");
+          llmLogger4.debug(`Added ${linkCount} timestamp links`);
+          llmLogger4.debug("========================================");
+        }
         return enhancedContent;
+      }
+      if (this.settings.debugLogging) {
+        llmLogger4.debug("TIMESTAMP LINKING VALIDATION FAILED");
+        llmLogger4.debug("Validation of enhanced content against original content failed");
+        llmLogger4.debug("========================================");
       }
       return null;
     } catch (error) {
@@ -47840,16 +48069,43 @@ ${contentToTranslate}
     try {
       logger12.debug("[addTimestampLinksInChunks] Processing document in chunks");
       const { frontmatter, contentWithoutFrontmatter, transcript } = extractDocumentComponents(originalContent);
+      if (this.settings.debugLogging) {
+        llmLogger4.debug("==================== CHUNKED TIMESTAMP LINKING DEBUG ====================");
+        llmLogger4.debug(`Processing file: ${filePath} in chunks`);
+        llmLogger4.debug(`Video ID: ${videoId}`);
+        llmLogger4.debug(`Number of headings found: ${headings.length}`);
+        llmLogger4.debug(`Original content length: ${contentWithoutFrontmatter.length} characters`);
+        llmLogger4.debug(`Transcript length: ${transcript ? transcript.length : 0} characters`);
+      }
       const maxTokenLimit = this.getMaxTokensForTimestampPass();
       const chunks = createOptimizedChunks(contentWithoutFrontmatter, maxTokenLimit);
+      if (this.settings.debugLogging) {
+        llmLogger4.debug(`Split content into ${chunks.length} optimized chunks`);
+        llmLogger4.debug(`Chunk sizes: ${chunks.map((c) => c.length).join(", ")} characters`);
+      }
       logger12.debug(`[addTimestampLinksInChunks] Split content into ${chunks.length} optimized chunks`);
       let processedChunks = [];
       for (let i = 0; i < chunks.length; i++) {
         const chunk = chunks[i];
         if (!hasProperHeading(chunk)) {
+          if (this.settings.debugLogging) {
+            llmLogger4.debug(`Chunk ${i + 1}: No proper headings found, preserving unchanged`);
+          }
           logger12.debug(`[addTimestampLinksInChunks] Preserving non-section chunk ${i + 1} unchanged`);
           processedChunks.push(ensureTrailingNewline(chunk));
           continue;
+        }
+        if (this.settings.debugLogging) {
+          llmLogger4.debug(`
+===== PROCESSING CHUNK ${i + 1} of ${chunks.length} =====`);
+          llmLogger4.debug(`Chunk size: ${chunk.length} characters`);
+          const chunkHeadings = [];
+          const headingRegex = /^(#{1,6})\s+(.+)$/gm;
+          let match;
+          while ((match = headingRegex.exec(chunk)) !== null) {
+            chunkHeadings.push(match[2].trim());
+          }
+          llmLogger4.debug(`Headings in chunk ${i + 1}: ${chunkHeadings.join(", ")}`);
         }
         logger12.debug(`[addTimestampLinksInChunks] Processing chunk ${i + 1} of ${chunks.length}, length: ${chunk.length}`);
         this.showNotice(`Processing section ${i + 1} of ${chunks.length}...`, 2e3);
@@ -47857,9 +48113,46 @@ ${contentToTranslate}
         const transcriptContent = transcript.length > 0 ? transcript : "No transcript available, use default timestamps starting at 0 seconds.";
         const referenceSection = "----- REFERENCE MATERIAL (DO NOT INCLUDE IN OUTPUT) -----\nVIDEO_ID: " + videoId + "\nTRANSCRIPT:\n" + transcriptContent + "\n----- END REFERENCE MATERIAL -----";
         const chunkPrompt = timestampConfig.userPrompt + "\n\n" + chunk + "\n\n" + referenceSection;
+        const restructuredPrompt = "INSTRUCTIONS:\n" + timestampConfig.userPrompt + "\n\nINSTRUCTION INPUT DATA - TIMESTAMPS TRANSCRIPT:\n" + transcriptContent + "\n\nINPUT NOTE TO BE MODIFIED WITH TIMESTAMPS:\n" + chunk;
+        if (this.settings.debugLogging) {
+          llmLogger4.debug(`CHUNK ${i + 1} PROMPT:`);
+          llmLogger4.debug("----------------------------------------");
+          llmLogger4.debug(timestampConfig.userPrompt);
+          llmLogger4.debug("----------------------------------------");
+          llmLogger4.debug(`CHUNK ${i + 1} CONTENT:`);
+          llmLogger4.debug("----------------------------------------");
+          llmLogger4.debug(chunk);
+          llmLogger4.debug("----------------------------------------");
+          llmLogger4.debug(`CHUNK ${i + 1} COMPLETE FORMATTED PROMPT:`);
+          llmLogger4.debug("========================================");
+          llmLogger4.debug(this.settings.selectedLLM === "google" ? restructuredPrompt : chunkPrompt);
+          llmLogger4.debug("========================================");
+        }
         try {
-          const maxTokens = Math.floor(this.getMaxTokensForTimestampPass() * 0.9);
-          logger12.debug(`[addTimestampLinksInChunks] Using ${maxTokens} tokens (90% of ${this.getMaxTokensForTimestampPass()})`);
+          const contentLength = chunk.length;
+          const transcriptLength = transcript ? transcript.length : 0;
+          const estimatedContentTokens = Math.ceil(contentLength / 4);
+          const estimatedTranscriptTokens = Math.ceil(transcriptLength / 4);
+          const totalEstimatedInputTokens = estimatedContentTokens + estimatedTranscriptTokens;
+          const modelMaxTokens = this.getMaxTokensForTimestampPass();
+          let percentageToUse = 0.9;
+          const isLargeContextModel = modelMaxTokens >= 8e3;
+          if (totalEstimatedInputTokens > modelMaxTokens / 3) {
+            if (isLargeContextModel) {
+              percentageToUse = Math.max(0.7, 0.9 - totalEstimatedInputTokens / modelMaxTokens * 0.2);
+            } else {
+              percentageToUse = Math.max(0.6, 0.9 - totalEstimatedInputTokens / modelMaxTokens * 0.3);
+            }
+          }
+          const maxTokens = Math.floor(modelMaxTokens * percentageToUse);
+          if (this.settings.debugLogging) {
+            llmLogger4.debug(`[addTimestampLinksInChunks] Content length: ${contentLength} chars (est. ${estimatedContentTokens} tokens)`);
+            llmLogger4.debug(`[addTimestampLinksInChunks] Transcript length: ${transcriptLength} chars (est. ${estimatedTranscriptTokens} tokens)`);
+            llmLogger4.debug(`[addTimestampLinksInChunks] Estimated total input tokens: ${totalEstimatedInputTokens}`);
+            llmLogger4.debug(`[addTimestampLinksInChunks] Model has large context window: ${isLargeContextModel}`);
+            llmLogger4.debug(`[addTimestampLinksInChunks] Using ${percentageToUse * 100}% of max tokens: ${maxTokens} of ${modelMaxTokens}`);
+          }
+          logger12.debug(`[addTimestampLinksInChunks] Using ${maxTokens} tokens (${Math.round(percentageToUse * 100)}% of ${modelMaxTokens})`);
           const chunkSummarizer = new TranscriptSummarizer({
             model: this.getModelForProvider(this.settings.selectedLLM),
             temperature: timestampConfig.temperature,
@@ -47868,9 +48161,25 @@ ${contentToTranslate}
             userPrompt: timestampConfig.userPrompt
             // Use the base prompt, not the complete chunk prompt
           }, this.settings.apiKeys);
-          const processedChunk = await chunkSummarizer.summarize(chunkPrompt, this.settings.selectedLLM);
+          const processedChunk = await chunkSummarizer.summarize(
+            this.settings.selectedLLM === "google" ? restructuredPrompt : chunkPrompt,
+            this.settings.selectedLLM
+          );
+          if (this.settings.debugLogging) {
+            llmLogger4.debug(`CHUNK ${i + 1} LLM RESPONSE:`);
+            llmLogger4.debug("========================================");
+            llmLogger4.debug(processedChunk || "Empty response from LLM");
+            llmLogger4.debug("========================================");
+          }
           if (processedChunk) {
             const hasLink = hasTimestampLinks(processedChunk, videoId);
+            if (this.settings.debugLogging) {
+              llmLogger4.debug(`CHUNK ${i + 1} has timestamp links: ${hasLink}`);
+              if (hasLink) {
+                const linkCount2 = countTimestampLinks(processedChunk);
+                llmLogger4.debug(`CHUNK ${i + 1} contains ${linkCount2} timestamp links`);
+              }
+            }
             let finalChunk = ensureTrailingNewline(processedChunk);
             if (hasLink) {
               processedChunks.push(finalChunk);
@@ -47884,12 +48193,27 @@ ${contentToTranslate}
           }
         } catch (e) {
           logger12.error(`[addTimestampLinksInChunks] Error processing chunk ${i + 1}:`, e);
+          if (this.settings.debugLogging) {
+            llmLogger4.debug(`ERROR PROCESSING CHUNK ${i + 1}:`);
+            llmLogger4.debug(e.message || "Unknown error");
+            llmLogger4.debug(`Using original chunk content instead`);
+          }
           processedChunks.push(ensureTrailingNewline(chunk));
         }
       }
       const combinedContent = processedChunks.join("");
       const combinedNote = reconstructDocument(frontmatter, combinedContent);
       const linkCount = countTimestampLinks(combinedContent);
+      if (this.settings.debugLogging) {
+        llmLogger4.debug("CHUNKED PROCESSING COMPLETE");
+        llmLogger4.debug(`Total timestamp links found: ${linkCount}`);
+        if (linkCount > 0) {
+          llmLogger4.debug("CHUNKED PROCESSING SUCCESSFUL");
+        } else {
+          llmLogger4.debug("CHUNKED PROCESSING FAILED - No timestamp links added");
+        }
+        llmLogger4.debug("========================================");
+      }
       if (linkCount > 0) {
         await this.app.vault.modify(
           this.app.vault.getAbstractFileByPath(filePath),
@@ -47914,29 +48238,49 @@ ${contentToTranslate}
   }
   // Method to get appropriate max tokens for the timestamp linking pass based on the model
   getMaxTokensForTimestampPass() {
-    const selectedLLM = this.settings.selectedLLM;
-    const selectedModel = this.settings.selectedModels[selectedLLM];
-    if (selectedLLM === "openai") {
-      if (selectedModel.includes("gpt-4")) {
-        return 4096;
-      } else if (selectedModel.includes("gpt-3.5")) {
-        return 3072;
-      } else if (selectedModel.includes("o1") || selectedModel.includes("o3")) {
-        return 4096;
-      }
-      return 3072;
-    } else if (selectedLLM === "anthropic") {
-      if (selectedModel.includes("claude-3") || selectedModel.includes("claude-3.5") || selectedModel.includes("claude-3.7")) {
+    const selectedProvider = this.settings.selectedLLM;
+    if (selectedProvider === "openai") {
+      const model = this.settings.selectedModels.openai;
+      if (model.includes("gpt-4-turbo") || model.includes("gpt-4-32k")) {
+        return 16384;
+      } else if (model.includes("gpt-4")) {
+        return 6144;
+      } else if (model.includes("gpt-3.5-turbo-16k")) {
+        return 12288;
+      } else {
         return 4096;
       }
-      return 4096;
-    } else if (selectedLLM === "google") {
-      if (selectedModel.includes("gemini-1.5")) {
+    } else if (selectedProvider === "anthropic") {
+      const model = this.settings.selectedModels.anthropic;
+      if (model.includes("claude-3-opus")) {
+        return 24576;
+      } else if (model.includes("claude-3-sonnet")) {
+        return 16384;
+      } else if (model.includes("claude-2")) {
+        return 12288;
+      } else {
         return 8192;
       }
-      return 4096;
-    } else if (selectedLLM === "ollama") {
-      return 4096;
+    } else if (selectedProvider === "google") {
+      const model = this.settings.selectedModels.google;
+      if (model.includes("gemini-1.5")) {
+        return 16384;
+      } else if (model.includes("gemini-pro")) {
+        return 8192;
+      } else {
+        return 4096;
+      }
+    } else if (selectedProvider === "ollama") {
+      const model = this.settings.selectedModels.ollama.toLowerCase();
+      if (model.includes("llama-3")) {
+        return 8192;
+      } else if (model.includes("mistral") || model.includes("mixtral")) {
+        return 6144;
+      } else if (model.includes("llama-2-70b")) {
+        return 4096;
+      } else {
+        return 3072;
+      }
     }
     return 4096;
   }
@@ -47944,7 +48288,7 @@ ${contentToTranslate}
     return sanitizePathComponent(text);
   }
 };
-var YouTubeTranscriptModal = class extends import_obsidian5.Modal {
+var YouTubeTranscriptModal = class extends import_obsidian4.Modal {
   constructor(app2, plugin) {
     super(app2);
     this.isProcessing = false;
@@ -48219,7 +48563,8 @@ var YouTubeTranscriptModal = class extends import_obsidian5.Modal {
   }
   // Method to start the collection processing workflow
   async beginCollectionProcessing(sourceUrl, videoCount) {
-    if (this.isProcessing) return;
+    if (this.isProcessing)
+      return;
     try {
       this.isProcessing = true;
       const { contentEl } = this;
@@ -48374,7 +48719,8 @@ var YouTubeTranscriptModal = class extends import_obsidian5.Modal {
     folderSelectionModal.open();
   }
   async processTranscript() {
-    if (this.isProcessing) return;
+    if (this.isProcessing)
+      return;
     const url = this.urlInputEl.value.trim();
     const urlValidations = [
       validateRequired(url, "YouTube URL"),
@@ -48494,7 +48840,7 @@ var YouTubeTranscriptModal = class extends import_obsidian5.Modal {
     contentEl.empty();
   }
 };
-var YouTubeTranscriptSettingTab = class extends import_obsidian5.PluginSettingTab {
+var YouTubeTranscriptSettingTab = class extends import_obsidian4.PluginSettingTab {
   constructor(app2, plugin) {
     super(app2, plugin);
     this.plugin = plugin;
@@ -48700,7 +49046,7 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian5.PluginSettingTa
       updateSettingsState();
     });
     settingsContainer.createEl("h3", { text: "Template Plugin Settings" });
-    const templaterSetting = new import_obsidian5.Setting(settingsContainer).setName("Templater Plugin Template File").setDesc("Path to the Templater template file to use").addText((text) => text.setPlaceholder("templates/YouTubeTranscript.md").setValue(this.plugin.settings.templaterTemplateFile).onChange(async (value) => {
+    const templaterSetting = new import_obsidian4.Setting(settingsContainer).setName("Templater Plugin Template File").setDesc("Path to the Templater template file to use").addText((text) => text.setPlaceholder("templates/YouTubeTranscript.md").setValue(this.plugin.settings.templaterTemplateFile).onChange(async (value) => {
       this.plugin.settings.templaterTemplateFile = value;
       await this.plugin.saveSettings();
     }));
@@ -48718,7 +49064,7 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian5.PluginSettingTa
     });
     const exampleContainer = createDiv();
     settingsContainer.appendChild(exampleContainer);
-    const exampleSetting = new import_obsidian5.Setting(exampleContainer).setName("");
+    const exampleSetting = new import_obsidian4.Setting(exampleContainer).setName("");
     setTimeout(() => {
       const controlEl = exampleContainer.querySelector(".setting-item-control");
       if (controlEl) {
@@ -48787,19 +49133,19 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian5.PluginSettingTa
       infoIcon.addEventListener("mouseleave", removeTooltip);
       infoIcon.addEventListener("click", removeTooltip);
     });
-    new import_obsidian5.Setting(settingsContainer).setName("Transcript Root Folder").setDesc("The root folder where transcript subfolders will be organized (e.g., Inbox, Notes, etc.)").addText((text) => text.setPlaceholder("Inbox").setValue(this.plugin.settings.transcriptRootFolder).onChange(async (value) => {
+    new import_obsidian4.Setting(settingsContainer).setName("Transcript Root Folder").setDesc("The root folder where transcript subfolders will be organized (e.g., Inbox, Notes, etc.)").addText((text) => text.setPlaceholder("Inbox").setValue(this.plugin.settings.transcriptRootFolder).onChange(async (value) => {
       this.plugin.settings.transcriptRootFolder = value;
       await this.plugin.saveSettings();
     }));
-    new import_obsidian5.Setting(settingsContainer).setName("YouTube Data API Key").setDesc("Your Google Cloud Console API key for accessing public YouTube transcripts (not an OAuth token). Required for downloading channels and playlists.").addText((text) => text.setPlaceholder("AIza...").setValue(this.plugin.settings.youtubeApiKey).onChange(async (value) => {
+    new import_obsidian4.Setting(settingsContainer).setName("YouTube Data API Key").setDesc("Your Google Cloud Console API key for accessing public YouTube transcripts (not an OAuth token). Required for downloading channels and playlists.").addText((text) => text.setPlaceholder("AIza...").setValue(this.plugin.settings.youtubeApiKey).onChange(async (value) => {
       this.plugin.settings.youtubeApiKey = value;
       await this.plugin.saveSettings();
     }));
-    new import_obsidian5.Setting(settingsContainer).setName("Translate Language").setDesc('Target language code for translation (e.g., en, es, fr, de). Use "en" to keep content in English.').addText((text) => text.setPlaceholder("en").setValue(this.plugin.settings.translateLanguage).onChange(async (value) => {
+    new import_obsidian4.Setting(settingsContainer).setName("Translate Language").setDesc('Target language code for translation (e.g., en, es, fr, de). Use "en" to keep content in English.').addText((text) => text.setPlaceholder("en").setValue(this.plugin.settings.translateLanguage).onChange(async (value) => {
       this.plugin.settings.translateLanguage = value;
       await this.plugin.saveSettings();
     }));
-    new import_obsidian5.Setting(settingsContainer).setName("Translate Country").setDesc("Target country/region code for translation (e.g., US, GB, CA). Used for region-specific language variants.").addText((text) => text.setPlaceholder("US").setValue(this.plugin.settings.translateCountry).onChange(async (value) => {
+    new import_obsidian4.Setting(settingsContainer).setName("Translate Country").setDesc("Target country/region code for translation (e.g., US, GB, CA). Used for region-specific language variants.").addText((text) => text.setPlaceholder("US").setValue(this.plugin.settings.translateCountry).onChange(async (value) => {
       this.plugin.settings.translateCountry = value;
       await this.plugin.saveSettings();
     }));
@@ -48811,27 +49157,20 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian5.PluginSettingTa
       llmHeadingContainer,
       "Recommended by author: Google provider with gemini-2.0-flash model provides the best balance of quality and speed for most transcripts. Google offers a generous free quota that will suffice for most users' needs."
     );
-    new import_obsidian5.Setting(settingsContainer).setName("Select LLM").setDesc("Choose which LLM to use for summarization").addDropdown((dropdown) => {
+    new import_obsidian4.Setting(settingsContainer).setName("Select LLM").setDesc("Choose which LLM to use for summarization").addDropdown((dropdown) => {
       dropdown.addOption("openai", "OpenAI (ChatGPT)");
-      if (!this.app.isMobile) {
-        dropdown.addOption("anthropic", "Anthropic (Claude)");
-      }
+      dropdown.addOption("anthropic", "Anthropic (Claude)");
       dropdown.addOption("google", "Google (Gemini)");
       dropdown.addOption("ollama", "Ollama (Local Models)");
       let currentValue = this.plugin.settings.selectedLLM;
-      if (this.app.isMobile && currentValue === "anthropic") {
-        currentValue = "openai";
-        this.plugin.settings.selectedLLM = "openai";
-        this.plugin.saveSettings();
-      }
       dropdown.setValue(currentValue);
       dropdown.onChange(async (value) => {
         if (value === "google") {
           this.plugin.settings.maxTokens = 8192;
-          new import_obsidian5.Notice("Max tokens set to 8192 for Google provider");
+          new import_obsidian4.Notice("Max tokens set to 8192 for Google provider");
         } else {
           this.plugin.settings.maxTokens = 4096;
-          new import_obsidian5.Notice("Max tokens set to 4096");
+          new import_obsidian4.Notice("Max tokens set to 4096");
         }
         this.plugin.settings.selectedLLM = value;
         await this.plugin.saveSettings();
@@ -48840,7 +49179,7 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian5.PluginSettingTa
       return dropdown;
     });
     const createProviderSetting = (provider, displayName, placeholder, modelOptions, defaultModelValue) => {
-      const setting = new import_obsidian5.Setting(settingsContainer).setName(`${displayName} Settings`).setDesc("Your API key and model selection").addText((text) => text.setPlaceholder(placeholder).setValue(this.plugin.settings.apiKeys[provider]).onChange(async (value) => {
+      const setting = new import_obsidian4.Setting(settingsContainer).setName(`${displayName} Settings`).setDesc("Your API key and model selection").addText((text) => text.setPlaceholder(placeholder).setValue(this.plugin.settings.apiKeys[provider]).onChange(async (value) => {
         this.plugin.settings.apiKeys[provider] = value;
         await this.plugin.saveSettings();
       }));
@@ -48904,35 +49243,18 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian5.PluginSettingTa
       "gpt-4-turbo"
       // default model
     );
-    if (!this.app.isMobile) {
-      createProviderSetting(
-        "anthropic",
-        "Anthropic",
-        "sk-ant-...",
-        [
-          "claude-3-7-sonnet-20250219",
-          "claude-3-5-sonnet-20241022",
-          "claude-3-opus-20240229",
-          "claude-3-haiku-20240307"
-        ],
-        "claude-3-sonnet-20240229"
-      );
-    } else {
-      const noticeEl = settingsContainer.createEl("div", {
-        cls: "anthropic-unavailable-notice",
-        attr: {
-          style: "background: var(--background-secondary); padding: 10px; border-radius: 5px; margin-bottom: 15px;"
-        }
-      });
-      noticeEl.createEl("div", {
-        text: "Anthropic (Claude)",
-        attr: { style: "font-weight: bold; margin-bottom: 5px;" }
-      });
-      noticeEl.createEl("div", {
-        text: "Anthropic is not available on mobile devices since it requires Node.js.",
-        attr: { style: "color: var(--text-error);" }
-      });
-    }
+    createProviderSetting(
+      "anthropic",
+      "Anthropic",
+      "sk-ant-...",
+      [
+        "claude-3-7-sonnet-20250219",
+        "claude-3-5-sonnet-20241022",
+        "claude-3-opus-20240229",
+        "claude-3-haiku-20240307"
+      ],
+      "claude-3-sonnet-20240229"
+    );
     createProviderSetting(
       "google",
       "Google",
@@ -48970,12 +49292,12 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian5.PluginSettingTa
       ],
       "llama3"
     );
-    new import_obsidian5.Setting(settingsContainer).setName("Temperature").setDesc(`Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: ${this.plugin.settings.temperature}`).addSlider((slider) => slider.setLimits(0, 1, 0.1).setValue(this.plugin.settings.temperature).setDynamicTooltip().onChange(async (value) => {
+    new import_obsidian4.Setting(settingsContainer).setName("Temperature").setDesc(`Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: ${this.plugin.settings.temperature}`).addSlider((slider) => slider.setLimits(0, 1, 0.1).setValue(this.plugin.settings.temperature).setDynamicTooltip().onChange(async (value) => {
       this.plugin.settings.temperature = value;
       this.display();
       await this.plugin.saveSettings();
     }));
-    new import_obsidian5.Setting(settingsContainer).setName("Max Tokens").setDesc("Maximum length of summary output").addText((text) => text.setPlaceholder("1000").setValue(String(this.plugin.settings.maxTokens)).onChange(async (value) => {
+    new import_obsidian4.Setting(settingsContainer).setName("Max Tokens").setDesc("Maximum length of summary output").addText((text) => text.setPlaceholder("1000").setValue(String(this.plugin.settings.maxTokens)).onChange(async (value) => {
       const numValue = parseInt(value);
       if (!isNaN(numValue)) {
         this.plugin.settings.maxTokens = numValue;
@@ -48985,17 +49307,17 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian5.PluginSettingTa
       button.setIcon("alert-triangle").setTooltip("Max tokens should NOT be confused with the size of the context window. This setting reflects the maximum output returned by the model and is quite sensitive - exceeding this limit will cause the LLM to fail. 4096 is a standard limit (as of 2025), though this may increase in the future. If you use custom models, always ensure this parameter is aligned with your model's capabilities.");
     });
     settingsContainer.createEl("h3", { text: "Note Format Settings" });
-    new import_obsidian5.Setting(settingsContainer).setName("Prepend Date to Note Title").setDesc("Automatically add date to the beginning of note filenames").addDropdown((dropdown) => dropdown.addOption("true", "Enabled").addOption("false", "Disabled").setValue(this.plugin.settings.prependDate ? "true" : "false").onChange(async (value) => {
+    new import_obsidian4.Setting(settingsContainer).setName("Prepend Date to Note Title").setDesc("Automatically add date to the beginning of note filenames").addDropdown((dropdown) => dropdown.addOption("true", "Enabled").addOption("false", "Disabled").setValue(this.plugin.settings.prependDate ? "true" : "false").onChange(async (value) => {
       this.plugin.settings.prependDate = value === "true";
       await this.plugin.saveSettings();
     }));
-    new import_obsidian5.Setting(settingsContainer).setName("Date Format").setDesc("Format for date prepended to note titles").addDropdown((dropdown) => dropdown.addOption("YYYY-MM-DD", "YYYY-MM-DD (2023-12-31)").addOption("MM-DD-YYYY", "MM-DD-YYYY (12-31-2023)").addOption("DD-MM-YYYY", "DD-MM-YYYY (31-12-2023)").setValue(this.plugin.settings.dateFormat).onChange(async (value) => {
+    new import_obsidian4.Setting(settingsContainer).setName("Date Format").setDesc("Format for date prepended to note titles").addDropdown((dropdown) => dropdown.addOption("YYYY-MM-DD", "YYYY-MM-DD (2023-12-31)").addOption("MM-DD-YYYY", "MM-DD-YYYY (12-31-2023)").addOption("DD-MM-YYYY", "DD-MM-YYYY (31-12-2023)").setValue(this.plugin.settings.dateFormat).onChange(async (value) => {
       this.plugin.settings.dateFormat = value;
       await this.plugin.saveSettings();
     }));
     settingsContainer.createEl("h3", { text: "Prompt Settings" });
     settingsContainer.createEl("h4", { text: "Fast Summary Prompts", attr: { style: "margin-bottom: 10px;" } });
-    new import_obsidian5.Setting(settingsContainer).setName("System Prompt (Fast Summary)").setDesc("Instructions for the LLM's behavior when generating fast summaries").addTextArea((text) => {
+    new import_obsidian4.Setting(settingsContainer).setName("System Prompt (Fast Summary)").setDesc("Instructions for the LLM's behavior when generating fast summaries").addTextArea((text) => {
       const textComponent = text.setPlaceholder("You are a helpful assistant...").setValue(this.plugin.settings.systemPrompt).onChange(async (value) => {
         this.plugin.settings.systemPrompt = value;
         await this.plugin.saveSettings();
@@ -49010,7 +49332,7 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian5.PluginSettingTa
         this.display();
       });
     });
-    new import_obsidian5.Setting(settingsContainer).setName("User Prompt (Fast Summary)").setDesc("Specific instructions for summarizing the transcript quickly and concisely").addTextArea((text) => {
+    new import_obsidian4.Setting(settingsContainer).setName("User Prompt (Fast Summary)").setDesc("Specific instructions for summarizing the transcript quickly and concisely").addTextArea((text) => {
       const textComponent = text.setPlaceholder("Please summarize the following YouTube transcript...").setValue(this.plugin.settings.userPrompt).onChange(async (value) => {
         this.plugin.settings.userPrompt = value;
         await this.plugin.saveSettings();
@@ -49026,7 +49348,7 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian5.PluginSettingTa
       });
     });
     settingsContainer.createEl("h4", { text: "Extensive Summary Prompts", attr: { style: "margin-top: 20px; margin-bottom: 10px;" } });
-    new import_obsidian5.Setting(settingsContainer).setName("System Prompt (Extensive Summary)").setDesc("Instructions for the LLM's behavior when generating detailed, comprehensive summaries").addTextArea((text) => {
+    new import_obsidian4.Setting(settingsContainer).setName("System Prompt (Extensive Summary)").setDesc("Instructions for the LLM's behavior when generating detailed, comprehensive summaries").addTextArea((text) => {
       const textComponent = text.setPlaceholder("You are an analytical assistant...").setValue(this.plugin.settings.extensiveSystemPrompt).onChange(async (value) => {
         this.plugin.settings.extensiveSystemPrompt = value;
         await this.plugin.saveSettings();
@@ -49041,7 +49363,7 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian5.PluginSettingTa
         this.display();
       });
     });
-    new import_obsidian5.Setting(settingsContainer).setName("User Prompt (Extensive Summary)").setDesc("Specific instructions for creating detailed and structured notes from the transcript").addTextArea((text) => {
+    new import_obsidian4.Setting(settingsContainer).setName("User Prompt (Extensive Summary)").setDesc("Specific instructions for creating detailed and structured notes from the transcript").addTextArea((text) => {
       const textComponent = text.setPlaceholder("From the transcript below, create detailed and structured notes...").setValue(this.plugin.settings.extensiveUserPrompt).onChange(async (value) => {
         this.plugin.settings.extensiveUserPrompt = value;
         await this.plugin.saveSettings();
@@ -49056,18 +49378,18 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian5.PluginSettingTa
         this.display();
       });
     });
-    new import_obsidian5.Setting(settingsContainer).setName("Default Summary Mode").setDesc("Choose the default summary mode to use when the plugin starts. Fast Summary mode skips timestamp links for quicker processing.").addDropdown((dropdown) => dropdown.addOption("false", "Extensive Summary (Detailed)").addOption("true", "Fast Summary (Brief)").setValue(this.plugin.settings.useFastSummary ? "true" : "false").onChange(async (value) => {
+    new import_obsidian4.Setting(settingsContainer).setName("Default Summary Mode").setDesc("Choose the default summary mode to use when the plugin starts. Fast Summary mode skips timestamp links for quicker processing.").addDropdown((dropdown) => dropdown.addOption("false", "Extensive Summary (Detailed)").addOption("true", "Fast Summary (Brief)").setValue(this.plugin.settings.useFastSummary ? "true" : "false").onChange(async (value) => {
       this.plugin.settings.useFastSummary = value === "true";
       await this.plugin.saveSettings();
     }));
-    new import_obsidian5.Setting(settingsContainer).setName("Add YouTube Timestamp Links").setDesc("Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (Note: Disabled in Fast Summary Mode)").addDropdown((dropdown) => dropdown.addOption("true", "Enabled").addOption("false", "Disabled").setValue(this.plugin.settings.addTimestampLinks ? "true" : "false").onChange(async (value) => {
+    new import_obsidian4.Setting(settingsContainer).setName("Add YouTube Timestamp Links").setDesc("Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (Note: Disabled in Fast Summary Mode)").addDropdown((dropdown) => dropdown.addOption("true", "Enabled").addOption("false", "Disabled").setValue(this.plugin.settings.addTimestampLinks ? "true" : "false").onChange(async (value) => {
       this.plugin.settings.addTimestampLinks = value === "true";
       await this.plugin.saveSettings();
     })).addExtraButton((button) => {
       button.setIcon("info").setTooltip("When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in Fast Summary Mode.");
     });
     settingsContainer.createEl("h3", { text: "Advanced Settings" });
-    new import_obsidian5.Setting(settingsContainer).setName("Enable Debug Logging").setDesc("Enable detailed debug logs in the console. Useful for troubleshooting but may affect performance.").addDropdown((dropdown) => dropdown.addOption("true", "Enabled").addOption("false", "Disabled").setValue(this.plugin.settings.debugLogging ? "true" : "false").onChange(async (value) => {
+    new import_obsidian4.Setting(settingsContainer).setName("Enable Debug Logging").setDesc("Enable detailed debug logs in the console. Useful for troubleshooting but may affect performance.").addDropdown((dropdown) => dropdown.addOption("true", "Enabled").addOption("false", "Disabled").setValue(this.plugin.settings.debugLogging ? "true" : "false").onChange(async (value) => {
       this.plugin.settings.debugLogging = value === "true";
       if (this.plugin.settings.debugLogging) {
         setGlobalLogLevel(0 /* DEBUG */);
@@ -49138,7 +49460,7 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian5.PluginSettingTa
     return infoIcon;
   }
 };
-var TemplateFilePickerModal = class extends import_obsidian5.Modal {
+var TemplateFilePickerModal = class extends import_obsidian4.Modal {
   // Default fallback
   constructor(app2, callback) {
     var _a2, _b;
@@ -49190,7 +49512,8 @@ var TemplateFilePickerModal = class extends import_obsidian5.Modal {
   }
   updateTemplateList(query, listEl) {
     const templateListEl = listEl || document.querySelector(".template-list");
-    if (!templateListEl) return;
+    if (!templateListEl)
+      return;
     templateListEl.empty();
     const filteredTemplates = this.templates.filter(
       (t) => t.path.toLowerCase().includes(query)
@@ -49222,7 +49545,7 @@ var TemplateFilePickerModal = class extends import_obsidian5.Modal {
     contentEl.empty();
   }
 };
-var FolderPickerModal = class extends import_obsidian5.Modal {
+var FolderPickerModal = class extends import_obsidian4.Modal {
   constructor(app2, plugin, onSelectFolder) {
     super(app2);
     this.folders = [];
@@ -49290,8 +49613,10 @@ var FolderPickerModal = class extends import_obsidian5.Modal {
         }
       }
       this.folders.sort((a, b) => {
-        if (a.path === normalizedRootFolder) return -1;
-        if (b.path === normalizedRootFolder) return 1;
+        if (a.path === normalizedRootFolder)
+          return -1;
+        if (b.path === normalizedRootFolder)
+          return 1;
         return a.path.localeCompare(b.path);
       });
     } catch (err) {
@@ -49395,7 +49720,8 @@ var FolderPickerModal = class extends import_obsidian5.Modal {
       } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
         e.preventDefault();
         const items = Array.from(folderListEl.querySelectorAll(".folder-item"));
-        if (items.length === 0) return;
+        if (items.length === 0)
+          return;
         const curIndex = selectedItem ? items.indexOf(selectedItem) : -1;
         let newIndex;
         if (e.key === "ArrowDown") {
@@ -49416,7 +49742,7 @@ var FolderPickerModal = class extends import_obsidian5.Modal {
     this.close();
   }
 };
-var LicenseModal = class extends import_obsidian5.Modal {
+var LicenseModal = class extends import_obsidian4.Modal {
   constructor(app2) {
     super(app2);
   }
@@ -49534,7 +49860,7 @@ var LicenseModal = class extends import_obsidian5.Modal {
     contentEl.empty();
   }
 };
-var LicenseRequiredModal = class extends import_obsidian5.Modal {
+var LicenseRequiredModal = class extends import_obsidian4.Modal {
   constructor(app2) {
     super(app2);
   }
@@ -49619,7 +49945,7 @@ var LicenseRequiredModal = class extends import_obsidian5.Modal {
     contentEl.empty();
   }
 };
-var READMEModal = class extends import_obsidian5.Modal {
+var READMEModal = class extends import_obsidian4.Modal {
   constructor(app2) {
     super(app2);
   }
@@ -49873,7 +50199,7 @@ var READMEModal = class extends import_obsidian5.Modal {
     contentEl.empty();
   }
 };
-var TemplateViewModal = class extends import_obsidian5.Modal {
+var TemplateViewModal = class extends import_obsidian4.Modal {
   constructor(app2) {
     super(app2);
   }

@@ -23,6 +23,7 @@ yarn-error.log*
 # Logs
 logs
 *.log
+log.md
 
 # Testing
 coverage/

@@ -1,6 +1,5 @@
 import { getLogger } from '../utils/logger';
 import { LLMFactory } from './llm-factory';
-import { isPlatformMobile } from '../utils/fetch-shim';
 import { LangChainClient } from './langchain-client';
 
 interface LLMConfig {
@@ -49,12 +48,6 @@ export class TranscriptSummarizer {
             llmLogger.info("Model:", this.config.model);
             llmLogger.info("Temperature:", this.config.temperature);
             llmLogger.info("Max tokens:", this.config.maxTokens);
-            
-            // Handle platform-specific fallbacks
-            if (isPlatformMobile() && provider === 'ollama') {
-                llmLogger.warn("Ollama provider requested on mobile - falling back to Google");
-                provider = 'google';
-            }
             
             // Check if the API key exists before proceeding
             if (!this.apiKeys[provider] || this.apiKeys[provider].trim() === '') {
@@ -144,9 +137,9 @@ export class TranscriptSummarizer {
         const client = this.llmFactory.getOllamaClient();
         
         // Check if server is running
-        const isRunning = await client.isServerRunning();
+        const isRunning = await client.validateConnection();
         if (!isRunning) {
-            throw new Error("Ollama server is not running. Please start Ollama on your computer.");
+            throw new Error("Ollama server is not accessible. Please ensure Ollama is running and accessible.");
         }
         
         // Try the chat completion API first (better for newer models)
@@ -159,26 +152,15 @@ export class TranscriptSummarizer {
                 ],
                 {
                     temperature: this.config.temperature,
-                    num_predict: this.config.maxTokens
+                    max_tokens: this.config.maxTokens
                 }
             );
             
-            return response.message?.content || "";
+            return response.choices[0].message.content || "";
         } catch (chatError) {
-            // Fallback to legacy generate API
-            llmLogger.warn("Ollama chat completion failed, falling back to generate API:", chatError);
-            
-            const response = await client.generate(
-                this.config.model,
-                this.config.userPrompt + "\n\nTranscript:\n" + transcript,
-                {
-                    system: this.config.systemPrompt,
-                    temperature: this.config.temperature,
-                    num_predict: this.config.maxTokens
-                }
-            );
-            
-            return response.response || "";
+            // Fallback to simplified approach
+            llmLogger.warn("Ollama chat completion failed:", chatError);
+            throw new Error("Ollama chat completion failed. Please check your configuration and ensure Ollama is running.");
         }
     }
     
