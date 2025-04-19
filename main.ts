@@ -19,7 +19,6 @@ import {
     hasTimestampLinks,
     convertTimestampToSeconds
 } from './src/utils/timestamp-utils';
-import { setPluginPath, stopLocalProxy } from './src/proxy/anthropic-proxy';
 import path from 'path';
 import fs from 'fs';
 
@@ -102,9 +101,8 @@ const DEFAULT_SETTINGS: YouTubeTranscriptSettings = {
     userPrompt: `Extract structured notes from the transcript below without explanation or preface. Extract key points, main ideas, and important details. 
 FORMAT USING PROPER MARKDOWN HEADINGS with # syntax (not bold text).
 Specifically: 
-1. Use "# " for main headings
-2. Use "## " for subheadings 
-3. Use "### " for section headings with numbers (e.g., "### 1. Introduction")
+2. Use markdown numbered subheadings (e.g., "## 1. Topic")
+3. Use markdown numbered section headings (e.g., "### 1.1. Sub Topic")
 4. Do NOT use bold text (**text**) for headings
 5. Use bullet points for lists
 This document will be processed as Markdown for Obsidian, so proper heading syntax is essential.
@@ -122,9 +120,8 @@ Organize the content into clearly numbered sections based on major topic or them
 Extract structured notes from the transcript below without explanation or preface, extract key points, main ideas, and important details. 
 FORMAT USING PROPER MARKDOWN HEADINGS with # syntax (not bold text).
 Specifically:
-1. Use "# " for main headings
-2. Use "## " for subheadings
-3. Use "### " for section headings with numbers (e.g., "### 1. Introduction")
+2. Use markdown numbered subheadings (e.g., "## 1. Topic")
+3. Use markdown numbered section headings (e.g., "### 1.1. Sub Topic")
 4. Do NOT use bold text (**text**) for headings
 5. Use bullet points for lists
 
@@ -136,7 +133,7 @@ Start the output with the actual summary content only, no headers, no preamble, 
 Respond only with the raw answer, no intro or outro text.
 
 For each section:
-- Use the exact heading format "### 1. Title" (not "### Section 1: Title"). Number sections sequentially (1, 2, 3, etc.). IMPORTANT: Use actual Obsidian Markdown heading syntax with # symbols, not bold text.
+- Number sections sequentially (1, 2, 3, etc.). IMPORTANT: Use actual Obsidian Markdown heading syntax with # symbols, not bold text.
 - Write multiple detailed paragraphs, that explain the content and any theory, technical terms or definitions, models and frameworks thoroughly and in great detail drawn from the transcript.
 - Include below the paragraphs key concepts, terms, taxonomy, ontology , or ideas, and explain them clearly with examples where relevant.
 - Incorporate and explain important quotations direct from subject (person) , analogies, or references.
@@ -154,7 +151,9 @@ RULES:
 2. NEVER remove any content
 3. ALWAYS return the FULL original content PLUS timestamp links at the end of section headings
 4. If processing multiple sections, add timestamps to ALL headings
-5. ONLY process headings that follow the format: #, ##, ### number. text (e.g., # 1. Introduction)
+5. ONLY process markdown numbered headings 
+    a. for subheadings (e.g., "## 1. Topic")
+    b. for section headings (e.g., "## 1.1. Sub Topic")
 6. DO NOT process headings without numbers or dots
 7. DO NOT process horizontal rules (single #)
 8. Do NOT add a preamble or postamble or headers or titles, ONLY AMEND the links to add the seconds timestamp
@@ -221,25 +220,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
 
         this.initializeSummarizer();
         
-        // Variables for plugin path
-        let pluginBasePath = '';
-        
-        // @ts-ignore - Plugin does have manifest property but it's not in the type definition
-        const pluginId = this.manifest?.id || 'tubesage';
-        
-        // Simplified plugin path detection
-        try {
-            const vaultPath = this.app.vault.adapter.getBasePath();
-            
-            // The standard Obsidian plugin path
-            pluginBasePath = path.join(vaultPath, '.obsidian', 'plugins', pluginId);
-            
-            logger.info('Setting plugin path:', pluginBasePath);
-            setPluginPath(pluginBasePath);
-        } catch (error) {
-            logger.error('Error setting plugin path:', error);
-        }
-
         this.addSettingTab(new YouTubeTranscriptSettingTab(this.app, this));
         this.checkDependencies();
 
@@ -562,47 +542,26 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             }
         });
 
-        // Set up file watcher for plugin directory
-        this.fileWatcher = this.app.vault.adapter.watch(pluginBasePath, async () => {
-            // Reload settings when changes are detected
-            await this.loadSettings();
-            this.initializeSummarizer();
-            // Refresh the settings tab if it's open
-            // @ts-ignore - setting exists but TypeScript doesn't know about it
-            const settingsTab = this.app.setting.activeTab;
-            if (settingsTab && settingsTab.id === pluginId) {
-                settingsTab.display();
-            }
-        });
+        // Note: The file watcher setup has been removed as it was dependent on the anthropic proxy
+
     }
 
     async onunload() {
-        logger.info("Plugin unloading - starting cleanup");
+        logger.debug('Unloading YouTube Transcript Plugin');
         
-        // Set a timeout to ensure Obsidian doesn't hang during unload
-        const unloadTimeout = setTimeout(() => {
-            logger.error("Cleanup timed out - forcing exit");
-        }, 5000); // 5 seconds timeout
-        
-        try {
-            // Clean up file watcher when plugin is unloaded
-            if (this.fileWatcher) {
-                logger.info("Removing file watcher");
-                this.app.vault.adapter.unwatch(this.fileWatcher);
+        // Clean up file watcher if it exists
+        if (this.fileWatcher) {
+            try {
+                this.fileWatcher.close();
+                this.fileWatcher = null;
+                logger.debug('Closed file watcher');
+            } catch (error) {
+                logger.error('Error closing file watcher:', error);
             }
-            
-            // Remove the stylesheet
-            const styleEl = document.getElementById('youtube-transcript-styles');
-            if (styleEl) {
-                styleEl.remove();
-            }
-        } catch (error) {
-            logger.error("Error during plugin cleanup:", error);
-        } finally {
-            // Clear the timeout to prevent unnecessary warnings
-            clearTimeout(unloadTimeout);
-            logger.info("Plugin cleanup completed");
         }
+        
+        // Any other cleanup needed
+        console.log('YouTube Transcript Plugin unloaded');
     }
 
     private initializeSummarizer() {
@@ -784,11 +743,40 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             formattedTranscript = "\n";
             
             chunks.forEach((chunk) => {
-                // Escape any YAML special characters (colons are most important)
-                const escapedText = chunk.text.replace(/:/g, "\\:");
+                // Create the TimeIndex marker with unescaped colon
+                const timeIndexMarker = `[TimeIndex:${Math.round(chunk.seconds)}]`;
                 
-                // Include the TimeIndex which is needed for proper timestamp linking
-                formattedTranscript += `    [${chunk.time}] [TimeIndex:${Math.round(chunk.seconds)}] ${escapedText}\n`;
+                // Handle escaping of colons in the text portion only, excluding TimeIndex markers
+                let textContent = chunk.text;
+                
+                // Check if the text already contains TimeIndex markers
+                const timeIndexRegex = /\[TimeIndex:(\d+)\]/g;
+                const timeIndexMatches = [...textContent.matchAll(timeIndexRegex)];
+                const timeIndexParts: string[] = [];
+                
+                // If there are TimeIndex markers in the text, remove them before escaping colons
+                if (timeIndexMatches.length > 0) {
+                    // Extract and save all TimeIndex markers
+                    timeIndexMatches.forEach(match => {
+                        timeIndexParts.push(match[0]);
+                        textContent = textContent.replace(match[0], '');
+                    });
+                }
+                
+                // Now escape colons only in the remaining text
+                const escapedText = textContent.replace(/:/g, "\\:");
+                
+                // Position the TimeIndex marker right after the timestamp
+                formattedTranscript += `    [${chunk.time}] ${timeIndexMarker} ${escapedText}`;
+                
+                // Add back any TimeIndex markers that were in the original text at the end
+                if (timeIndexParts.length > 0) {
+                    timeIndexParts.forEach(marker => {
+                        formattedTranscript += ` ${marker}`;
+                    });
+                }
+                
+                formattedTranscript += "\n";
             });
         } else {
             // Fallback if segments is not an array
@@ -840,15 +828,10 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             throw handleApiError(error, this.settings.selectedLLM, 'Summarization');
         } finally {
             // If using Anthropic provider and fast summary mode or not adding timestamp links,
-            // stop the proxy server since no further LLM calls will be made
+            // log information about completion
             if (this.settings.selectedLLM === 'anthropic' && 
                 (this.settings.useFastSummary || !this.settings.addTimestampLinks)) {
-                try {
-                    llmLogger.info('[summarizeTranscript] Stopping Anthropic proxy server (fast summary or no timestamp links)');
-                    await stopLocalProxy();
-                } catch (error) {
-                    llmLogger.error('Error stopping Anthropic proxy server:', error);
-                }
+                llmLogger.info('[summarizeTranscript] Completed Anthropic processing (fast summary or no timestamp links)');
             }
         }
     }
@@ -923,7 +906,10 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     
                     if (timestampMatch) {
                         const timestamp = timestampMatch[1];
-                        const text = timestampMatch[2].trim();
+                        let text = timestampMatch[2].trim();
+                        
+                        // Remove any escaped backslashes from TimeIndex markers
+                        text = text.replace(/\[TimeIndex\\?:(\d+)\]/g, '[TimeIndex:$1]');
                         
                         // Convert timestamp to seconds for comparison
                         const parts = timestamp.split(':').map(Number);
@@ -986,15 +972,51 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 
                 // Format segments for YAML frontmatter
                 segments.forEach(segment => {
-                    // Escape colons and other YAML-sensitive characters
-                    let escapedText = segment.text.replace(/:/g, "\\:");
-                    
                     // Convert timestamp to seconds using our custom function
                     const timeIndex = convertTimestampToSeconds(segment.timestamp);
                     
-                    // Add formatted line with 4-space indentation for YAML block
-                    // Include both original timestamp and calculated timeIndex
-                    formattedTranscript += `    [${segment.timestamp}] [TimeIndex:${timeIndex}] ${escapedText}\n`;
+                    // Create the TimeIndex marker with unescaped colon
+                    const timeIndexMarker = `[TimeIndex:${timeIndex}]`;
+                    
+                    // Handle text content and existing TimeIndex markers
+                    let textContent = segment.text;
+                    
+                    // Find any existing TimeIndex markers
+                    const timeIndexRegex = /\[TimeIndex:(\d+)\]/g;
+                    const timeIndexMatches = [...textContent.matchAll(timeIndexRegex)];
+                    const timeIndexParts: string[] = [];
+                    
+                    // If there are TimeIndex markers in the text, remove them before escaping colons
+                    if (timeIndexMatches.length > 0) {
+                        // Extract and save all TimeIndex markers
+                        timeIndexMatches.forEach(match => {
+                            timeIndexParts.push(match[0]);
+                            textContent = textContent.replace(match[0], '');
+                        });
+                    }
+                    
+                    // Only escape colons in the text content, not in TimeIndex markers
+                    const escapedText = textContent.replace(/:/g, "\\:");
+                    
+                    // Check if the original transcript already has TimeIndex markers
+                    const hasTimeIndexInTranscript = transcript.includes('[TimeIndex:') || transcript.includes('[TimeIndex\\:');
+                    
+                    if (hasTimeIndexInTranscript) {
+                        // Position TimeIndex markers from the original text at the end
+                        let processedText = `    [${segment.timestamp}] ${timeIndexMarker} ${escapedText}`;
+                        
+                        // Add any additional TimeIndex markers that were in the original text
+                        if (timeIndexParts.length > 0) {
+                            timeIndexParts.forEach(marker => {
+                                processedText += ` ${marker}`;
+                            });
+                        }
+                        
+                        formattedTranscript += processedText + "\n";
+                    } else {
+                        // Position the TimeIndex marker right after the timestamp
+                        formattedTranscript += `    [${segment.timestamp}] ${timeIndexMarker} ${escapedText}\n`;
+                    }
                 });
             } else {
                 console.log("[DEBUG] Transcript does not contain timestamps");
@@ -1008,6 +1030,9 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             
             // Now use this properly formatted transcript
             transcript = formattedTranscript;
+            
+            // Final cleanup - ensure all TimeIndex markers are unescaped
+            transcript = transcript.replace(/\[TimeIndex\\:(\d+)\]/g, '[TimeIndex:$1]');
             
             // Normalize the folder path
             const normalizedFolder = normalizePath(folder || '');
@@ -1064,15 +1089,14 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             const llmTags = `llm/${llmProvider} model/${llmModel.replace(/[:\.]/g, "-")}`;
             ctx.user.llmTags = llmTags;
             
-            // Add debug info to help troubleshoot transcript formatting issues
-            // We'll include this in the note so it's visible
-            ctx.user.debugInfo = `
-Transcript info:
-- Length: ${transcript ? transcript.length : 'unknown'} characters
-- Contains timestamps: ${transcript ? transcript.includes('[00:') : 'unknown'}
-- LLM Provider: ${llmProvider}
-- LLM Model: ${llmModel}
-`;
+            // Debug info is only logged, not included in notes
+            if (this.settings.debugLogging) {
+                logger.debug(`Transcript info: 
+                - Length: ${transcript ? transcript.length : 'unknown'} characters
+                - Contains timestamps: ${transcript ? transcript.includes('[00:') : 'unknown'}
+                - LLM Provider: ${llmProvider}
+                - LLM Model: ${llmModel}`);
+            }
             
             // 5. Read and parse the template with our custom context
             const templateContent = await this.app.vault.read(templateFile);
@@ -1462,12 +1486,7 @@ Transcript info:
         } finally {
             // Stop the Anthropic proxy server if it was used
             if (this.settings.selectedLLM === 'anthropic') {
-                try {
-                    logger.info('[addSectionLinksToNote] Stopping Anthropic proxy server');
-                    await stopLocalProxy();
-                } catch (error) {
-                    logger.error('Error stopping Anthropic proxy server:', error);
-                }
+                logger.info('[addSectionLinksToNote] Completed Anthropic processing');
             }
         }
     }
@@ -1496,20 +1515,7 @@ Transcript info:
                 userPrompt: timestampConfig.userPrompt
             }, this.settings.apiKeys);
             
-            // Construct the prompt with clear instructions not to include reference materials in output
-            const referenceSection = 
-                "----- REFERENCE MATERIAL (DO NOT INCLUDE IN OUTPUT) -----\n" +
-                "VIDEO_ID: " + videoId + "\n" +
-                (transcript ? "TRANSCRIPT:\n" + transcript + "\n" : "") +
-                "----- END REFERENCE MATERIAL -----";
-
-            // Format the prompt with content and reference materials clearly separated
-            let formattedPrompt = 
-                timestampConfig.userPrompt + "\n\n" +
-                contentWithoutFrontmatter + "\n\n" +
-                referenceSection;
-                
-            // Restructure the prompt order to optimize for Google LLMs
+            // Restructure the prompt with clear section labels for all providers
             const restructuredPrompt = 
                 "INSTRUCTIONS:\n" + timestampConfig.userPrompt + "\n\n" +
                 "INSTRUCTION INPUT DATA - TIMESTAMPS TRANSCRIPT:\n" + 
@@ -1565,7 +1571,7 @@ Transcript info:
                 // Log the complete formatted prompt
                 llmLogger.debug("COMPLETE FORMATTED PROMPT BEING SENT TO LLM:");
                 llmLogger.debug("========================================");
-                llmLogger.debug(this.settings.selectedLLM === 'google' ? restructuredPrompt : formattedPrompt);
+                llmLogger.debug(restructuredPrompt);
                 llmLogger.debug("========================================");
             }
             
@@ -1574,7 +1580,7 @@ Transcript info:
             let enhancedContent;
             try {
                 enhancedContent = await timestampLinkSummarizer.summarize(
-                    this.settings.selectedLLM === 'google' ? restructuredPrompt : formattedPrompt, 
+                    restructuredPrompt, 
                     this.settings.selectedLLM
                 );
                 
@@ -1595,11 +1601,16 @@ Transcript info:
                     logger.debug("[addTimestampLinksSinglePass] Token limit error detected, retrying with reduced token limit");
                     this.showNotice("Retrying with reduced token limit...", 5000);
                     
-                    // Reduce token limit by half and try again
-                    const reducedTokens = Math.floor(this.getMaxTokensForTimestampPass() / 2);
+                    // Reduce token limit - be more aggressive for Anthropic models
+                    const isAnthropicModel = this.settings.selectedLLM === 'anthropic';
+                    const reductionFactor = isAnthropicModel ? 0.3 : 0.5; // 70% reduction for Anthropic, 50% for others
+                    const reducedTokens = Math.floor(this.getMaxTokensForTimestampPass() * reductionFactor);
                     
                     if (this.settings.debugLogging) {
                         llmLogger.debug(`Retrying with reduced token limit: ${reducedTokens}`);
+                        if (isAnthropicModel) {
+                            llmLogger.debug("Using extra conservative token limit for Anthropic model");
+                        }
                     }
                     
                     // Create a new summarizer with reduced tokens but same config otherwise
@@ -1613,7 +1624,7 @@ Transcript info:
                     
                     try {
                         enhancedContent = await reducedTokensSummarizer.summarize(
-                            this.settings.selectedLLM === 'google' ? restructuredPrompt : formattedPrompt, 
+                            restructuredPrompt, 
                             this.settings.selectedLLM
                         );
                         
@@ -1847,19 +1858,8 @@ ${contentToTranslate}
                     transcript : 
                     "No transcript available, use default timestamps starting at 0 seconds.";
                 
-                const referenceSection = 
-                    "----- REFERENCE MATERIAL (DO NOT INCLUDE IN OUTPUT) -----\n" +
-                    "VIDEO_ID: " + videoId + "\n" +
-                    "TRANSCRIPT:\n" + transcriptContent + "\n" +
-                    "----- END REFERENCE MATERIAL -----";
-
-                // Create specialized prompt for this chunk with clear separation of content and reference
-                const chunkPrompt = 
-                    timestampConfig.userPrompt + "\n\n" +
-                    chunk + "\n\n" +
-                    referenceSection;
                 
-                // Restructure the prompt order to optimize for Google LLMs
+                // Restructure the prompt with clear section labels for all providers
                 const restructuredPrompt = 
                     "INSTRUCTIONS:\n" + timestampConfig.userPrompt + "\n\n" +
                     "INSTRUCTION INPUT DATA - TIMESTAMPS TRANSCRIPT:\n" + transcriptContent + "\n\n" +
@@ -1876,7 +1876,7 @@ ${contentToTranslate}
                     llmLogger.debug("----------------------------------------");
                     llmLogger.debug(`CHUNK ${i+1} COMPLETE FORMATTED PROMPT:`);
                     llmLogger.debug("========================================");
-                    llmLogger.debug(this.settings.selectedLLM === 'google' ? restructuredPrompt : chunkPrompt);
+                    llmLogger.debug(restructuredPrompt);
                     llmLogger.debug("========================================");
                 }
                 
@@ -1900,9 +1900,16 @@ ${contentToTranslate}
                     // For larger context window models, we can be more aggressive with output allocation
                     const isLargeContextModel = modelMaxTokens >= 8000;
                     
+                    // Check if we're using Anthropic and apply more conservative scaling
+                    const isAnthropicModel = this.settings.selectedLLM === 'anthropic';
+                    
                     // If we have large content or transcript, adjust the percentage based on model capabilities
                     if (totalEstimatedInputTokens > modelMaxTokens / 3) {
-                        if (isLargeContextModel) {
+                        if (isAnthropicModel) {
+                            // Anthropic needs extra conservative allocation due to 4096 token output limit
+                            // Minimum 50% for Anthropic models to ensure timestamp links fit
+                            percentageToUse = Math.max(0.5, 0.7 - (totalEstimatedInputTokens / modelMaxTokens * 0.2));
+                        } else if (isLargeContextModel) {
                             // Large context models can handle more output even with large inputs
                             // Minimum 70% for large context models
                             percentageToUse = Math.max(0.7, 0.9 - (totalEstimatedInputTokens / modelMaxTokens * 0.2));
@@ -1910,6 +1917,11 @@ ${contentToTranslate}
                             // Standard models need more conservative allocation
                             // Minimum 60% for standard models
                             percentageToUse = Math.max(0.6, 0.9 - (totalEstimatedInputTokens / modelMaxTokens * 0.3));
+                        }
+                    } else {
+                        // For smaller inputs, we can still be more conservative with Anthropic
+                        if (isAnthropicModel) {
+                            percentageToUse = 0.7; // Use 70% for Anthropic even with smaller content
                         }
                     }
                     
@@ -1935,7 +1947,7 @@ ${contentToTranslate}
                     
                     // Process the chunk
                     const processedChunk = await chunkSummarizer.summarize(
-                        this.settings.selectedLLM === 'google' ? restructuredPrompt : chunkPrompt, 
+                        restructuredPrompt, 
                         this.settings.selectedLLM
                     );
                     
@@ -2044,53 +2056,54 @@ ${contentToTranslate}
         // Get the currently selected LLM provider
         const selectedProvider = this.settings.selectedLLM;
         
+        // Standard multiplier to allocate for output (reserve 15% of tokens for added links)
+        // Using a consistent 85% allocation for all models as requested
+        const outputMultiplier = 0.85;
+        
         // Model-specific token limits based on context window sizes
         if (selectedProvider === "openai") {
             const model = this.settings.selectedModels.openai;
             if (model.includes("gpt-4-turbo") || model.includes("gpt-4-32k")) {
-                return 16384; // Large context GPT-4 Turbo and 32k
+                return Math.floor(16384 * outputMultiplier); // Large context GPT-4 Turbo and 32k
             } else if (model.includes("gpt-4")) {
-                return 6144;  // Standard GPT-4
+                return Math.floor(6144 * outputMultiplier);  // Standard GPT-4
             } else if (model.includes("gpt-3.5-turbo-16k")) {
-                return 12288; // GPT-3.5 Turbo 16k
+                return Math.floor(12288 * outputMultiplier); // GPT-3.5 Turbo 16k
             } else {
-                return 4096;  // Default GPT-3.5 Turbo
+                return Math.floor(4096 * outputMultiplier);  // Default GPT-3.5 Turbo
             }
         } else if (selectedProvider === "anthropic") {
-            const model = this.settings.selectedModels.anthropic;
-            if (model.includes("claude-3-opus")) {
-                return 24576; // Claude 3 Opus has 200k context but we'll be conservative
-            } else if (model.includes("claude-3-sonnet")) {
-                return 16384; // Claude 3 Sonnet
-            } else if (model.includes("claude-2")) {
-                return 12288; // Claude 2
+            // Use standard 85% allocation for Anthropic models too
+            const model = this.settings.selectedModels.anthropic || "";
+            if (model.includes("claude-3-opus") || model.includes("claude-3-sonnet")) {
+                return Math.floor(4096 * outputMultiplier);
             } else {
-                return 8192;  // Claude 1 or other Anthropic models
+                return Math.floor(4096 * outputMultiplier);  // Standard allocation for Anthropic
             }
         } else if (selectedProvider === "google") {
             const model = this.settings.selectedModels.google;
             if (model.includes("gemini-1.5")) {
-                return 16384; // Gemini 1.5 models have large context
+                return Math.floor(16384 * outputMultiplier); // Gemini 1.5 models have large context
             } else if (model.includes("gemini-pro")) {
-                return 8192;  // Gemini Pro
+                return Math.floor(8192 * outputMultiplier);  // Gemini Pro
             } else {
-                return 4096;  // Other Google models
+                return Math.floor(4096 * outputMultiplier);  // Other Google models
             }
         } else if (selectedProvider === "ollama") {
             const model = this.settings.selectedModels.ollama.toLowerCase();
             if (model.includes("llama-3")) {
-                return 8192;  // Llama 3 models
+                return Math.floor(8192 * outputMultiplier);  // Llama 3 models
             } else if (model.includes("mistral") || model.includes("mixtral")) {
-                return 6144;  // Mistral and Mixtral models
+                return Math.floor(6144 * outputMultiplier);  // Mistral and Mixtral models
             } else if (model.includes("llama-2-70b")) {
-                return 4096;  // Llama 2 70B
+                return Math.floor(4096 * outputMultiplier);  // Llama 2 70B
             } else {
-                return 3072;  // Conservative default for other Ollama models
+                return Math.floor(3072 * outputMultiplier);  // Other Ollama models
             }
         }
         
         // Conservative default if provider not recognized
-        return 4096;
+        return Math.floor(4096 * outputMultiplier);
     }
 
     private sanitizePathComponent(text: string): string {
@@ -2689,9 +2702,9 @@ class YouTubeTranscriptModal extends Modal {
             // Only stop the proxy server if currently using Anthropic
             if (this.plugin.settings.selectedLLM === 'anthropic') {
                 try {
-                    await stopLocalProxy();
+                    logger.info('[beginCollectionProcessing] Completed Anthropic processing');
                 } catch (error) {
-                    console.error('Error stopping Anthropic proxy server:', error);
+                    console.error('Error during Anthropic processing:', error);
                 }
             }
             this.isProcessing = false;
@@ -2881,9 +2894,9 @@ class YouTubeTranscriptModal extends Modal {
             // Only stop the proxy server if it was started (only for Anthropic provider)
             if (this.plugin.settings.selectedLLM === 'anthropic') {
                 try {
-                    await stopLocalProxy();
+                    logger.info('[processTranscript] Completed Anthropic processing');
                 } catch (error) {
-                    console.error('Error stopping Anthropic proxy server:', error);
+                    console.error('Error during Anthropic processing:', error);
                 }
             }
             this.isProcessing = false;

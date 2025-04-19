@@ -18,6 +18,3 @@ transcript:  |
 >> <% tp.user.summary %> 
 
 >[!tip] Thoughts while consuming content - As Input to ideas
-
->[!note]- Debug Information (Hidden)
-><% tp.user.debugInfo %>

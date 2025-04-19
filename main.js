@@ -4878,10 +4878,10 @@ var SSEDecoder = class {
     return null;
   }
 };
-function partition(str2, delimiter2) {
-  const index = str2.indexOf(delimiter2);
+function partition(str2, delimiter) {
+  const index = str2.indexOf(delimiter);
   if (index !== -1) {
-    return [str2.substring(0, index), delimiter2, str2.substring(index + delimiter2.length)];
+    return [str2.substring(0, index), delimiter, str2.substring(index + delimiter.length)];
   }
   return [str2, "", ""];
 }
@@ -5140,29 +5140,29 @@ var APIClient = class {
   defaultIdempotencyKey() {
     return `stainless-node-retry-${uuid4()}`;
   }
-  get(path3, opts) {
-    return this.methodRequest("get", path3, opts);
+  get(path, opts) {
+    return this.methodRequest("get", path, opts);
   }
-  post(path3, opts) {
-    return this.methodRequest("post", path3, opts);
+  post(path, opts) {
+    return this.methodRequest("post", path, opts);
   }
-  patch(path3, opts) {
-    return this.methodRequest("patch", path3, opts);
+  patch(path, opts) {
+    return this.methodRequest("patch", path, opts);
   }
-  put(path3, opts) {
-    return this.methodRequest("put", path3, opts);
+  put(path, opts) {
+    return this.methodRequest("put", path, opts);
   }
-  delete(path3, opts) {
-    return this.methodRequest("delete", path3, opts);
+  delete(path, opts) {
+    return this.methodRequest("delete", path, opts);
   }
-  methodRequest(method, path3, opts) {
+  methodRequest(method, path, opts) {
     return this.request(Promise.resolve(opts).then(async (opts2) => {
       const body = opts2 && isBlobLike(opts2 == null ? void 0 : opts2.body) ? new DataView(await opts2.body.arrayBuffer()) : (opts2 == null ? void 0 : opts2.body) instanceof DataView ? opts2.body : (opts2 == null ? void 0 : opts2.body) instanceof ArrayBuffer ? new DataView(opts2.body) : opts2 && ArrayBuffer.isView(opts2 == null ? void 0 : opts2.body) ? new DataView(opts2.body.buffer) : opts2 == null ? void 0 : opts2.body;
-      return { method, path: path3, ...opts2, body };
+      return { method, path, ...opts2, body };
     }));
   }
-  getAPIList(path3, Page2, opts) {
-    return this.requestAPIList(Page2, { method: "get", path: path3, ...opts });
+  getAPIList(path, Page2, opts) {
+    return this.requestAPIList(Page2, { method: "get", path, ...opts });
   }
   calculateContentLength(body) {
     if (typeof body === "string") {
@@ -5182,10 +5182,10 @@ var APIClient = class {
   buildRequest(options, { retryCount = 0 } = {}) {
     var _a2, _b, _c, _d, _e, _f;
     options = { ...options };
-    const { method, path: path3, query, headers = {} } = options;
+    const { method, path, query, headers = {} } = options;
     const body = ArrayBuffer.isView(options.body) || options.__binaryRequest && typeof options.body === "string" ? options.body : isMultipartBody(options.body) ? options.body.body : options.body ? JSON.stringify(options.body, null, 2) : null;
     const contentLength = this.calculateContentLength(body);
-    const url = this.buildURL(path3, query);
+    const url = this.buildURL(path, query);
     if ("timeout" in options)
       validatePositiveInteger("timeout", options.timeout);
     options.timeout = (_a2 = options.timeout) != null ? _a2 : this.timeout;
@@ -5302,8 +5302,8 @@ var APIClient = class {
     const request = this.makeRequest(options, null);
     return new PagePromise(this, request, Page2);
   }
-  buildURL(path3, query) {
-    const url = isAbsoluteURL(path3) ? new URL(path3) : new URL(this.baseURL + (this.baseURL.endsWith("/") && path3.startsWith("/") ? path3.slice(1) : path3));
+  buildURL(path, query) {
+    const url = isAbsoluteURL(path) ? new URL(path) : new URL(this.baseURL + (this.baseURL.endsWith("/") && path.startsWith("/") ? path.slice(1) : path));
     const defaultQuery = this.defaultQuery();
     if (!isEmptyObj(defaultQuery)) {
       query = { ...defaultQuery, ...query };
@@ -10261,8 +10261,8 @@ function shallowCopy(obj) {
 }
 function replaceSecrets(root3, secretsMap) {
   const result = shallowCopy(root3);
-  for (const [path3, secretId] of Object.entries(secretsMap)) {
-    const [last, ...partsReverse] = path3.split(".").reverse();
+  for (const [path, secretId] of Object.entries(secretsMap)) {
+    const [last, ...partsReverse] = path.split(".").reverse();
     let current = result;
     for (const part of partsReverse.reverse()) {
       if (current[part] === void 0) {
@@ -11639,8 +11639,8 @@ function getErrorMap() {
   return overrideErrorMap;
 }
 var makeIssue = (params) => {
-  const { data, path: path3, errorMaps, issueData } = params;
-  const fullPath = [...path3, ...issueData.path || []];
+  const { data, path, errorMaps, issueData } = params;
+  const fullPath = [...path, ...issueData.path || []];
   const fullIssue = {
     ...issueData,
     path: fullPath
@@ -11770,11 +11770,11 @@ var errorUtil;
 var _ZodEnum_cache;
 var _ZodNativeEnum_cache;
 var ParseInputLazyPath = class {
-  constructor(parent, value, path3, key) {
+  constructor(parent, value, path, key) {
     this._cachedPath = [];
     this.parent = parent;
     this.data = value;
-    this._path = path3;
+    this._path = path;
     this._key = key;
   }
   get path() {
@@ -16102,37 +16102,37 @@ var Client = class _Client {
     }
     return runParams;
   }
-  async _getResponse(path3, queryParams) {
+  async _getResponse(path, queryParams) {
     var _a2;
     const paramsString = (_a2 = queryParams == null ? void 0 : queryParams.toString()) != null ? _a2 : "";
-    const url = `${this.apiUrl}${path3}?${paramsString}`;
+    const url = `${this.apiUrl}${path}?${paramsString}`;
     const response = await this.caller.call(_getFetchImplementation(), url, {
       method: "GET",
       headers: this.headers,
       signal: AbortSignal.timeout(this.timeout_ms),
       ...this.fetchOptions
     });
-    await raiseForStatus(response, `Failed to fetch ${path3}`);
+    await raiseForStatus(response, `Failed to fetch ${path}`);
     return response;
   }
-  async _get(path3, queryParams) {
-    const response = await this._getResponse(path3, queryParams);
+  async _get(path, queryParams) {
+    const response = await this._getResponse(path, queryParams);
     return response.json();
   }
-  async *_getPaginated(path3, queryParams = new URLSearchParams(), transform) {
+  async *_getPaginated(path, queryParams = new URLSearchParams(), transform) {
     let offset = Number(queryParams.get("offset")) || 0;
     const limit2 = Number(queryParams.get("limit")) || 100;
     while (true) {
       queryParams.set("offset", String(offset));
       queryParams.set("limit", String(limit2));
-      const url = `${this.apiUrl}${path3}?${queryParams}`;
+      const url = `${this.apiUrl}${path}?${queryParams}`;
       const response = await this.caller.call(_getFetchImplementation(), url, {
         method: "GET",
         headers: this.headers,
         signal: AbortSignal.timeout(this.timeout_ms),
         ...this.fetchOptions
       });
-      await raiseForStatus(response, `Failed to fetch ${path3}`);
+      await raiseForStatus(response, `Failed to fetch ${path}`);
       const items = transform ? transform(await response.json()) : await response.json();
       if (items.length === 0) {
         break;
@@ -16144,10 +16144,10 @@ var Client = class _Client {
       offset += items.length;
     }
   }
-  async *_getCursorPaginatedList(path3, body = null, requestMethod = "POST", dataKey = "runs") {
+  async *_getCursorPaginatedList(path, body = null, requestMethod = "POST", dataKey = "runs") {
     const bodyParams = body ? { ...body } : {};
     while (true) {
-      const response = await this.caller.call(_getFetchImplementation(), `${this.apiUrl}${path3}`, {
+      const response = await this.caller.call(_getFetchImplementation(), `${this.apiUrl}${path}`, {
         method: requestMethod,
         headers: { ...this.headers, "Content-Type": "application/json" },
         signal: AbortSignal.timeout(this.timeout_ms),
@@ -17036,19 +17036,19 @@ Message: ${result.detail.join("\n")}`);
     return result;
   }
   async hasProject({ projectId, projectName }) {
-    let path3 = "/sessions";
+    let path = "/sessions";
     const params = new URLSearchParams();
     if (projectId !== void 0 && projectName !== void 0) {
       throw new Error("Must provide either projectName or projectId, not both");
     } else if (projectId !== void 0) {
       assertUuid(projectId);
-      path3 += `/${projectId}`;
+      path += `/${projectId}`;
     } else if (projectName !== void 0) {
       params.append("name", projectName);
     } else {
       throw new Error("Must provide projectName or projectId");
     }
-    const response = await this.caller.call(_getFetchImplementation(), `${this.apiUrl}${path3}?${params}`, {
+    const response = await this.caller.call(_getFetchImplementation(), `${this.apiUrl}${path}?${params}`, {
       method: "GET",
       headers: this.headers,
       signal: AbortSignal.timeout(this.timeout_ms),
@@ -17068,13 +17068,13 @@ Message: ${result.detail.join("\n")}`);
     }
   }
   async readProject({ projectId, projectName, includeStats }) {
-    let path3 = "/sessions";
+    let path = "/sessions";
     const params = new URLSearchParams();
     if (projectId !== void 0 && projectName !== void 0) {
       throw new Error("Must provide either projectName or projectId, not both");
     } else if (projectId !== void 0) {
       assertUuid(projectId);
-      path3 += `/${projectId}`;
+      path += `/${projectId}`;
     } else if (projectName !== void 0) {
       params.append("name", projectName);
     } else {
@@ -17083,7 +17083,7 @@ Message: ${result.detail.join("\n")}`);
     if (includeStats !== void 0) {
       params.append("include_stats", includeStats.toString());
     }
-    const response = await this._get(path3, params);
+    const response = await this._get(path, params);
     let result;
     if (Array.isArray(response)) {
       if (response.length === 0) {
@@ -17230,19 +17230,19 @@ Message: ${result.detail.join("\n")}`);
     return result;
   }
   async readDataset({ datasetId, datasetName }) {
-    let path3 = "/datasets";
+    let path = "/datasets";
     const params = new URLSearchParams({ limit: "1" });
     if (datasetId !== void 0 && datasetName !== void 0) {
       throw new Error("Must provide either datasetName or datasetId, not both");
     } else if (datasetId !== void 0) {
       assertUuid(datasetId);
-      path3 += `/${datasetId}`;
+      path += `/${datasetId}`;
     } else if (datasetName !== void 0) {
       params.append("name", datasetName);
     } else {
       throw new Error("Must provide datasetName or datasetId");
     }
-    const response = await this._get(path3, params);
+    const response = await this._get(path, params);
     let result;
     if (Array.isArray(response)) {
       if (response.length === 0) {
@@ -17286,20 +17286,20 @@ Message: ${result.detail.join("\n")}`);
     return response;
   }
   async readDatasetOpenaiFinetuning({ datasetId, datasetName }) {
-    const path3 = "/datasets";
+    const path = "/datasets";
     if (datasetId !== void 0) {
     } else if (datasetName !== void 0) {
       datasetId = (await this.readDataset({ datasetName })).id;
     } else {
       throw new Error("Must provide datasetName or datasetId");
     }
-    const response = await this._getResponse(`${path3}/${datasetId}/openai_ft`);
+    const response = await this._getResponse(`${path}/${datasetId}/openai_ft`);
     const datasetText = await response.text();
     const dataset = datasetText.trim().split("\n").map((line) => JSON.parse(line));
     return dataset;
   }
   async *listDatasets({ limit: limit2 = 100, offset = 0, datasetIds, datasetName, datasetNameContains, metadata } = {}) {
-    const path3 = "/datasets";
+    const path = "/datasets";
     const params = new URLSearchParams({
       limit: limit2.toString(),
       offset: offset.toString()
@@ -17318,7 +17318,7 @@ Message: ${result.detail.join("\n")}`);
     if (metadata !== void 0) {
       params.append("metadata", JSON.stringify(metadata));
     }
-    for await (const datasets of this._getPaginated(path3, params)) {
+    for await (const datasets of this._getPaginated(path, params)) {
       yield* datasets;
     }
   }
@@ -17345,7 +17345,7 @@ Message: ${result.detail.join("\n")}`);
     return await response.json();
   }
   async deleteDataset({ datasetId, datasetName }) {
-    let path3 = "/datasets";
+    let path = "/datasets";
     let datasetId_ = datasetId;
     if (datasetId !== void 0 && datasetName !== void 0) {
       throw new Error("Must provide either datasetName or datasetId, not both");
@@ -17355,17 +17355,17 @@ Message: ${result.detail.join("\n")}`);
     }
     if (datasetId_ !== void 0) {
       assertUuid(datasetId_);
-      path3 += `/${datasetId_}`;
+      path += `/${datasetId_}`;
     } else {
       throw new Error("Must provide datasetName or datasetId");
     }
-    const response = await this.caller.call(_getFetchImplementation(), this.apiUrl + path3, {
+    const response = await this.caller.call(_getFetchImplementation(), this.apiUrl + path, {
       method: "DELETE",
       headers: this.headers,
       signal: AbortSignal.timeout(this.timeout_ms),
       ...this.fetchOptions
     });
-    await raiseForStatus(response, `delete ${path3}`);
+    await raiseForStatus(response, `delete ${path}`);
     await response.json();
   }
   async indexDataset({ datasetId, datasetName, tag }) {
@@ -17522,8 +17522,8 @@ Message: ${result.detail.join("\n")}`);
   }
   async readExample(exampleId) {
     assertUuid(exampleId);
-    const path3 = `/examples/${exampleId}`;
-    return await this._get(path3);
+    const path = `/examples/${exampleId}`;
+    return await this._get(path);
   }
   async *listExamples({ datasetId, datasetName, exampleIds, asOf, splits, inlineS3Urls, metadata, limit: limit2, offset, filter } = {}) {
     let datasetId_;
@@ -17580,14 +17580,14 @@ Message: ${result.detail.join("\n")}`);
   }
   async deleteExample(exampleId) {
     assertUuid(exampleId);
-    const path3 = `/examples/${exampleId}`;
-    const response = await this.caller.call(_getFetchImplementation(), this.apiUrl + path3, {
+    const path = `/examples/${exampleId}`;
+    const response = await this.caller.call(_getFetchImplementation(), this.apiUrl + path, {
       method: "DELETE",
       headers: this.headers,
       signal: AbortSignal.timeout(this.timeout_ms),
       ...this.fetchOptions
     });
-    await raiseForStatus(response, `delete ${path3}`);
+    await raiseForStatus(response, `delete ${path}`);
     await response.json();
   }
   async updateExample(exampleId, update) {
@@ -17754,20 +17754,20 @@ Message: ${result.detail.join("\n")}`);
   }
   async readFeedback(feedbackId) {
     assertUuid(feedbackId);
-    const path3 = `/feedback/${feedbackId}`;
-    const response = await this._get(path3);
+    const path = `/feedback/${feedbackId}`;
+    const response = await this._get(path);
     return response;
   }
   async deleteFeedback(feedbackId) {
     assertUuid(feedbackId);
-    const path3 = `/feedback/${feedbackId}`;
-    const response = await this.caller.call(_getFetchImplementation(), this.apiUrl + path3, {
+    const path = `/feedback/${feedbackId}`;
+    const response = await this.caller.call(_getFetchImplementation(), this.apiUrl + path, {
       method: "DELETE",
       headers: this.headers,
       signal: AbortSignal.timeout(this.timeout_ms),
       ...this.fetchOptions
     });
-    await raiseForStatus(response, `delete ${path3}`);
+    await raiseForStatus(response, `delete ${path}`);
     await response.json();
   }
   async *listFeedback({ runIds, feedbackKeys, feedbackSourceTypes } = {}) {
@@ -19158,13 +19158,13 @@ function isInteger(str2) {
   }
   return true;
 }
-function escapePathComponent(path3) {
-  if (path3.indexOf("/") === -1 && path3.indexOf("~") === -1)
-    return path3;
-  return path3.replace(/~/g, "~0").replace(/\//g, "~1");
+function escapePathComponent(path) {
+  if (path.indexOf("/") === -1 && path.indexOf("~") === -1)
+    return path;
+  return path.replace(/~/g, "~0").replace(/\//g, "~1");
 }
-function unescapePathComponent(path3) {
-  return path3.replace(/~1/g, "/").replace(/~0/g, "~");
+function unescapePathComponent(path) {
+  return path.replace(/~1/g, "/").replace(/~0/g, "~");
 }
 function hasUndefined(obj) {
   if (obj === void 0) {
@@ -19366,8 +19366,8 @@ function applyOperation(document2, operation, validateOperation = false, mutateD
     if (!mutateDocument) {
       document2 = _deepClone(document2);
     }
-    const path3 = operation.path || "";
-    const keys = path3.split("/");
+    const path = operation.path || "";
+    const keys = path.split("/");
     let obj = document2;
     let t = 1;
     let len = keys.length;
@@ -19554,7 +19554,7 @@ function _areEquals(a, b) {
 }
 
 // node_modules/@langchain/openai/node_modules/@langchain/core/dist/utils/fast-json-patch/src/duplex.js
-function _generate(mirror, obj, patches, path3, invertible) {
+function _generate(mirror, obj, patches, path, invertible) {
   if (obj === mirror) {
     return;
   }
@@ -19571,20 +19571,20 @@ function _generate(mirror, obj, patches, path3, invertible) {
     if (hasOwnProperty(obj, key) && !(obj[key] === void 0 && oldVal !== void 0 && Array.isArray(obj) === false)) {
       var newVal = obj[key];
       if (typeof oldVal == "object" && oldVal != null && typeof newVal == "object" && newVal != null && Array.isArray(oldVal) === Array.isArray(newVal)) {
-        _generate(oldVal, newVal, patches, path3 + "/" + escapePathComponent(key), invertible);
+        _generate(oldVal, newVal, patches, path + "/" + escapePathComponent(key), invertible);
       } else {
         if (oldVal !== newVal) {
           changed = true;
           if (invertible) {
             patches.push({
               op: "test",
-              path: path3 + "/" + escapePathComponent(key),
+              path: path + "/" + escapePathComponent(key),
               value: _deepClone(oldVal)
             });
           }
           patches.push({
             op: "replace",
-            path: path3 + "/" + escapePathComponent(key),
+            path: path + "/" + escapePathComponent(key),
             value: _deepClone(newVal)
           });
         }
@@ -19593,20 +19593,20 @@ function _generate(mirror, obj, patches, path3, invertible) {
       if (invertible) {
         patches.push({
           op: "test",
-          path: path3 + "/" + escapePathComponent(key),
+          path: path + "/" + escapePathComponent(key),
           value: _deepClone(oldVal)
         });
       }
       patches.push({
         op: "remove",
-        path: path3 + "/" + escapePathComponent(key)
+        path: path + "/" + escapePathComponent(key)
       });
       deleted = true;
     } else {
       if (invertible) {
-        patches.push({ op: "test", path: path3, value: mirror });
+        patches.push({ op: "test", path, value: mirror });
       }
-      patches.push({ op: "replace", path: path3, value: obj });
+      patches.push({ op: "replace", path, value: obj });
       changed = true;
     }
   }
@@ -19618,7 +19618,7 @@ function _generate(mirror, obj, patches, path3, invertible) {
     if (!hasOwnProperty(mirror, key) && obj[key] !== void 0) {
       patches.push({
         op: "add",
-        path: path3 + "/" + escapePathComponent(key),
+        path: path + "/" + escapePathComponent(key),
         value: _deepClone(obj[key])
       });
     }
@@ -25167,10 +25167,10 @@ var Runnable = class extends Serializable {
       }
       const paths = log.ops.filter((op) => op.path.startsWith("/logs/")).map((op) => op.path.split("/")[2]);
       const dedupedPaths = [...new Set(paths)];
-      for (const path3 of dedupedPaths) {
+      for (const path of dedupedPaths) {
         let eventType;
         let data = {};
-        const logEntry = runLog.state.logs[path3];
+        const logEntry = runLog.state.logs[path];
         if (logEntry.end_time === void 0) {
           if (logEntry.streamed_output.length > 0) {
             eventType = "stream";
@@ -32467,8 +32467,8 @@ function shallowCopy2(obj) {
 }
 function replaceSecrets2(root3, secretsMap) {
   const result = shallowCopy2(root3);
-  for (const [path3, secretId] of Object.entries(secretsMap)) {
-    const [last, ...partsReverse] = path3.split(".").reverse();
+  for (const [path, secretId] of Object.entries(secretsMap)) {
+    const [last, ...partsReverse] = path.split(".").reverse();
     let current = result;
     for (const part of partsReverse.reverse()) {
       if (current[part] === void 0) {
@@ -34119,37 +34119,37 @@ var Client2 = class _Client {
     }
     return runParams;
   }
-  async _getResponse(path3, queryParams) {
+  async _getResponse(path, queryParams) {
     var _a2;
     const paramsString = (_a2 = queryParams == null ? void 0 : queryParams.toString()) != null ? _a2 : "";
-    const url = `${this.apiUrl}${path3}?${paramsString}`;
+    const url = `${this.apiUrl}${path}?${paramsString}`;
     const response = await this.caller.call(_getFetchImplementation2(), url, {
       method: "GET",
       headers: this.headers,
       signal: AbortSignal.timeout(this.timeout_ms),
       ...this.fetchOptions
     });
-    await raiseForStatus2(response, `Failed to fetch ${path3}`);
+    await raiseForStatus2(response, `Failed to fetch ${path}`);
     return response;
   }
-  async _get(path3, queryParams) {
-    const response = await this._getResponse(path3, queryParams);
+  async _get(path, queryParams) {
+    const response = await this._getResponse(path, queryParams);
     return response.json();
   }
-  async *_getPaginated(path3, queryParams = new URLSearchParams(), transform) {
+  async *_getPaginated(path, queryParams = new URLSearchParams(), transform) {
     let offset = Number(queryParams.get("offset")) || 0;
     const limit2 = Number(queryParams.get("limit")) || 100;
     while (true) {
       queryParams.set("offset", String(offset));
       queryParams.set("limit", String(limit2));
-      const url = `${this.apiUrl}${path3}?${queryParams}`;
+      const url = `${this.apiUrl}${path}?${queryParams}`;
       const response = await this.caller.call(_getFetchImplementation2(), url, {
         method: "GET",
         headers: this.headers,
         signal: AbortSignal.timeout(this.timeout_ms),
         ...this.fetchOptions
       });
-      await raiseForStatus2(response, `Failed to fetch ${path3}`);
+      await raiseForStatus2(response, `Failed to fetch ${path}`);
       const items = transform ? transform(await response.json()) : await response.json();
       if (items.length === 0) {
         break;
@@ -34161,10 +34161,10 @@ var Client2 = class _Client {
       offset += items.length;
     }
   }
-  async *_getCursorPaginatedList(path3, body = null, requestMethod = "POST", dataKey = "runs") {
+  async *_getCursorPaginatedList(path, body = null, requestMethod = "POST", dataKey = "runs") {
     const bodyParams = body ? { ...body } : {};
     while (true) {
-      const response = await this.caller.call(_getFetchImplementation2(), `${this.apiUrl}${path3}`, {
+      const response = await this.caller.call(_getFetchImplementation2(), `${this.apiUrl}${path}`, {
         method: requestMethod,
         headers: { ...this.headers, "Content-Type": "application/json" },
         signal: AbortSignal.timeout(this.timeout_ms),
@@ -35104,19 +35104,19 @@ Message: ${result.detail.join("\n")}`);
     return result;
   }
   async hasProject({ projectId, projectName }) {
-    let path3 = "/sessions";
+    let path = "/sessions";
     const params = new URLSearchParams();
     if (projectId !== void 0 && projectName !== void 0) {
       throw new Error("Must provide either projectName or projectId, not both");
     } else if (projectId !== void 0) {
       assertUuid2(projectId);
-      path3 += `/${projectId}`;
+      path += `/${projectId}`;
     } else if (projectName !== void 0) {
       params.append("name", projectName);
     } else {
       throw new Error("Must provide projectName or projectId");
     }
-    const response = await this.caller.call(_getFetchImplementation2(), `${this.apiUrl}${path3}?${params}`, {
+    const response = await this.caller.call(_getFetchImplementation2(), `${this.apiUrl}${path}?${params}`, {
       method: "GET",
       headers: this.headers,
       signal: AbortSignal.timeout(this.timeout_ms),
@@ -35136,13 +35136,13 @@ Message: ${result.detail.join("\n")}`);
     }
   }
   async readProject({ projectId, projectName, includeStats }) {
-    let path3 = "/sessions";
+    let path = "/sessions";
     const params = new URLSearchParams();
     if (projectId !== void 0 && projectName !== void 0) {
       throw new Error("Must provide either projectName or projectId, not both");
     } else if (projectId !== void 0) {
       assertUuid2(projectId);
-      path3 += `/${projectId}`;
+      path += `/${projectId}`;
     } else if (projectName !== void 0) {
       params.append("name", projectName);
     } else {
@@ -35151,7 +35151,7 @@ Message: ${result.detail.join("\n")}`);
     if (includeStats !== void 0) {
       params.append("include_stats", includeStats.toString());
     }
-    const response = await this._get(path3, params);
+    const response = await this._get(path, params);
     let result;
     if (Array.isArray(response)) {
       if (response.length === 0) {
@@ -35298,19 +35298,19 @@ Message: ${result.detail.join("\n")}`);
     return result;
   }
   async readDataset({ datasetId, datasetName }) {
-    let path3 = "/datasets";
+    let path = "/datasets";
     const params = new URLSearchParams({ limit: "1" });
     if (datasetId !== void 0 && datasetName !== void 0) {
       throw new Error("Must provide either datasetName or datasetId, not both");
     } else if (datasetId !== void 0) {
       assertUuid2(datasetId);
-      path3 += `/${datasetId}`;
+      path += `/${datasetId}`;
     } else if (datasetName !== void 0) {
       params.append("name", datasetName);
     } else {
       throw new Error("Must provide datasetName or datasetId");
     }
-    const response = await this._get(path3, params);
+    const response = await this._get(path, params);
     let result;
     if (Array.isArray(response)) {
       if (response.length === 0) {
@@ -35354,20 +35354,20 @@ Message: ${result.detail.join("\n")}`);
     return response;
   }
   async readDatasetOpenaiFinetuning({ datasetId, datasetName }) {
-    const path3 = "/datasets";
+    const path = "/datasets";
     if (datasetId !== void 0) {
     } else if (datasetName !== void 0) {
       datasetId = (await this.readDataset({ datasetName })).id;
     } else {
       throw new Error("Must provide either datasetName or datasetId");
     }
-    const response = await this._getResponse(`${path3}/${datasetId}/openai_ft`);
+    const response = await this._getResponse(`${path}/${datasetId}/openai_ft`);
     const datasetText = await response.text();
     const dataset = datasetText.trim().split("\n").map((line) => JSON.parse(line));
     return dataset;
   }
   async *listDatasets({ limit: limit2 = 100, offset = 0, datasetIds, datasetName, datasetNameContains, metadata } = {}) {
-    const path3 = "/datasets";
+    const path = "/datasets";
     const params = new URLSearchParams({
       limit: limit2.toString(),
       offset: offset.toString()
@@ -35386,7 +35386,7 @@ Message: ${result.detail.join("\n")}`);
     if (metadata !== void 0) {
       params.append("metadata", JSON.stringify(metadata));
     }
-    for await (const datasets of this._getPaginated(path3, params)) {
+    for await (const datasets of this._getPaginated(path, params)) {
       yield* datasets;
     }
   }
@@ -35447,7 +35447,7 @@ Message: ${result.detail.join("\n")}`);
     await raiseForStatus2(response, "update dataset tags");
   }
   async deleteDataset({ datasetId, datasetName }) {
-    let path3 = "/datasets";
+    let path = "/datasets";
     let datasetId_ = datasetId;
     if (datasetId !== void 0 && datasetName !== void 0) {
       throw new Error("Must provide either datasetName or datasetId, not both");
@@ -35457,17 +35457,17 @@ Message: ${result.detail.join("\n")}`);
     }
     if (datasetId_ !== void 0) {
       assertUuid2(datasetId_);
-      path3 += `/${datasetId_}`;
+      path += `/${datasetId_}`;
     } else {
       throw new Error("Must provide datasetName or datasetId");
     }
-    const response = await this.caller.call(_getFetchImplementation2(), this.apiUrl + path3, {
+    const response = await this.caller.call(_getFetchImplementation2(), this.apiUrl + path, {
       method: "DELETE",
       headers: this.headers,
       signal: AbortSignal.timeout(this.timeout_ms),
       ...this.fetchOptions
     });
-    await raiseForStatus2(response, `delete ${path3}`);
+    await raiseForStatus2(response, `delete ${path}`);
     await response.json();
   }
   async indexDataset({ datasetId, datasetName, tag }) {
@@ -35650,8 +35650,8 @@ Message: ${result.detail.join("\n")}`);
   }
   async readExample(exampleId) {
     assertUuid2(exampleId);
-    const path3 = `/examples/${exampleId}`;
-    const rawExample = await this._get(path3);
+    const path = `/examples/${exampleId}`;
+    const rawExample = await this._get(path);
     const { attachment_urls, ...rest } = rawExample;
     const example = rest;
     if (attachment_urls) {
@@ -35734,14 +35734,14 @@ Message: ${result.detail.join("\n")}`);
   }
   async deleteExample(exampleId) {
     assertUuid2(exampleId);
-    const path3 = `/examples/${exampleId}`;
-    const response = await this.caller.call(_getFetchImplementation2(), this.apiUrl + path3, {
+    const path = `/examples/${exampleId}`;
+    const response = await this.caller.call(_getFetchImplementation2(), this.apiUrl + path, {
       method: "DELETE",
       headers: this.headers,
       signal: AbortSignal.timeout(this.timeout_ms),
       ...this.fetchOptions
     });
-    await raiseForStatus2(response, `delete ${path3}`);
+    await raiseForStatus2(response, `delete ${path}`);
     await response.json();
   }
   async updateExample(exampleIdOrUpdate, update) {
@@ -35956,20 +35956,20 @@ Message: ${result.detail.join("\n")}`);
   }
   async readFeedback(feedbackId) {
     assertUuid2(feedbackId);
-    const path3 = `/feedback/${feedbackId}`;
-    const response = await this._get(path3);
+    const path = `/feedback/${feedbackId}`;
+    const response = await this._get(path);
     return response;
   }
   async deleteFeedback(feedbackId) {
     assertUuid2(feedbackId);
-    const path3 = `/feedback/${feedbackId}`;
-    const response = await this.caller.call(_getFetchImplementation2(), this.apiUrl + path3, {
+    const path = `/feedback/${feedbackId}`;
+    const response = await this.caller.call(_getFetchImplementation2(), this.apiUrl + path, {
       method: "DELETE",
       headers: this.headers,
       signal: AbortSignal.timeout(this.timeout_ms),
       ...this.fetchOptions
     });
-    await raiseForStatus2(response, `delete ${path3}`);
+    await raiseForStatus2(response, `delete ${path}`);
     await response.json();
   }
   async *listFeedback({ runIds, feedbackKeys, feedbackSourceTypes } = {}) {
@@ -37569,13 +37569,13 @@ function isInteger2(str2) {
   }
   return true;
 }
-function escapePathComponent2(path3) {
-  if (path3.indexOf("/") === -1 && path3.indexOf("~") === -1)
-    return path3;
-  return path3.replace(/~/g, "~0").replace(/\//g, "~1");
+function escapePathComponent2(path) {
+  if (path.indexOf("/") === -1 && path.indexOf("~") === -1)
+    return path;
+  return path.replace(/~/g, "~0").replace(/\//g, "~1");
 }
-function unescapePathComponent2(path3) {
-  return path3.replace(/~1/g, "/").replace(/~0/g, "~");
+function unescapePathComponent2(path) {
+  return path.replace(/~1/g, "/").replace(/~0/g, "~");
 }
 function hasUndefined2(obj) {
   if (obj === void 0) {
@@ -37777,8 +37777,8 @@ function applyOperation2(document2, operation, validateOperation = false, mutate
     if (!mutateDocument) {
       document2 = _deepClone2(document2);
     }
-    const path3 = operation.path || "";
-    const keys = path3.split("/");
+    const path = operation.path || "";
+    const keys = path.split("/");
     let obj = document2;
     let t = 1;
     let len = keys.length;
@@ -42346,10 +42346,10 @@ var Runnable2 = class extends Serializable2 {
       }
       const paths = log.ops.filter((op) => op.path.startsWith("/logs/")).map((op) => op.path.split("/")[2]);
       const dedupedPaths = [...new Set(paths)];
-      for (const path3 of dedupedPaths) {
+      for (const path of dedupedPaths) {
         let eventType;
         let data = {};
-        const logEntry = runLog.state.logs[path3];
+        const logEntry = runLog.state.logs[path];
         if (logEntry.end_time === void 0) {
           if (logEntry.streamed_output.length > 0) {
             eventType = "stream";
@@ -44830,6 +44830,23 @@ var BaseChatModel2 = class _BaseChatModel extends BaseLanguageModel2 {
     });
   }
 };
+var SimpleChatModel = class extends BaseChatModel2 {
+  async _generate(messages, options, runManager) {
+    const text = await this._call(messages, options, runManager);
+    const message = new AIMessage2(text);
+    if (typeof message.content !== "string") {
+      throw new Error("Cannot generate with a simple chat model when output is not a string.");
+    }
+    return {
+      generations: [
+        {
+          text: message.content,
+          message
+        }
+      ]
+    };
+  }
+};
 
 // node_modules/@langchain/google-genai/dist/utils/zod_to_genai_parameters.js
 function removeAdditionalProperties(obj) {
@@ -45962,6 +45979,536 @@ var ChatGoogleGenerativeAI = class extends BaseChatModel2 {
   }
 };
 
+// node_modules/@langchain/community/dist/utils/ollama.js
+async function* createOllamaStream(url, params, options) {
+  let formattedUrl = url;
+  if (formattedUrl.startsWith("http://localhost:")) {
+    formattedUrl = formattedUrl.replace("http://localhost:", "http://127.0.0.1:");
+  }
+  const response = await fetch(formattedUrl, {
+    method: "POST",
+    body: JSON.stringify(params),
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers
+    },
+    signal: options.signal
+  });
+  if (!response.ok) {
+    let error;
+    const responseText = await response.text();
+    try {
+      const json = JSON.parse(responseText);
+      error = new Error(`Ollama call failed with status code ${response.status}: ${json.error}`);
+    } catch (e) {
+      error = new Error(`Ollama call failed with status code ${response.status}: ${responseText}`);
+    }
+    error.response = response;
+    throw error;
+  }
+  if (!response.body) {
+    throw new Error("Could not begin Ollama stream. Please check the given URL and try again.");
+  }
+  const stream = IterableReadableStream2.fromReadableStream(response.body);
+  const decoder = new TextDecoder();
+  let extra = "";
+  for await (const chunk of stream) {
+    const decoded = extra + decoder.decode(chunk);
+    const lines = decoded.split("\n");
+    extra = lines.pop() || "";
+    for (const line of lines) {
+      try {
+        yield JSON.parse(line);
+      } catch (e) {
+        console.warn(`Received a non-JSON parseable chunk: ${line}`);
+      }
+    }
+  }
+}
+async function* createOllamaGenerateStream(baseUrl, params, options) {
+  yield* createOllamaStream(`${baseUrl}/api/generate`, params, options);
+}
+async function* createOllamaChatStream(baseUrl, params, options) {
+  yield* createOllamaStream(`${baseUrl}/api/chat`, params, options);
+}
+
+// node_modules/@langchain/community/dist/chat_models/ollama.js
+var ChatOllama = class extends SimpleChatModel {
+  static lc_name() {
+    return "ChatOllama";
+  }
+  constructor(fields) {
+    var _a2, _b, _c, _d;
+    super(fields);
+    Object.defineProperty(this, "lc_serializable", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: true
+    });
+    Object.defineProperty(this, "model", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: "llama2"
+    });
+    Object.defineProperty(this, "baseUrl", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: "http://localhost:11434"
+    });
+    Object.defineProperty(this, "keepAlive", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: "5m"
+    });
+    Object.defineProperty(this, "embeddingOnly", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "f16KV", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "frequencyPenalty", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "headers", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "logitsAll", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "lowVram", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "mainGpu", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "mirostat", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "mirostatEta", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "mirostatTau", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "numBatch", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "numCtx", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "numGpu", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "numGqa", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "numKeep", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "numPredict", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "numThread", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "penalizeNewline", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "presencePenalty", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "repeatLastN", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "repeatPenalty", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "ropeFrequencyBase", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "ropeFrequencyScale", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "temperature", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "stop", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "tfsZ", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "topK", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "topP", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "typicalP", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "useMLock", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "useMMap", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "vocabOnly", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    Object.defineProperty(this, "format", {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: void 0
+    });
+    this.model = (_a2 = fields.model) != null ? _a2 : this.model;
+    this.baseUrl = ((_b = fields.baseUrl) == null ? void 0 : _b.endsWith("/")) ? fields.baseUrl.slice(0, -1) : (_c = fields.baseUrl) != null ? _c : this.baseUrl;
+    this.keepAlive = (_d = fields.keepAlive) != null ? _d : this.keepAlive;
+    this.embeddingOnly = fields.embeddingOnly;
+    this.f16KV = fields.f16KV;
+    this.frequencyPenalty = fields.frequencyPenalty;
+    this.headers = fields.headers;
+    this.logitsAll = fields.logitsAll;
+    this.lowVram = fields.lowVram;
+    this.mainGpu = fields.mainGpu;
+    this.mirostat = fields.mirostat;
+    this.mirostatEta = fields.mirostatEta;
+    this.mirostatTau = fields.mirostatTau;
+    this.numBatch = fields.numBatch;
+    this.numCtx = fields.numCtx;
+    this.numGpu = fields.numGpu;
+    this.numGqa = fields.numGqa;
+    this.numKeep = fields.numKeep;
+    this.numPredict = fields.numPredict;
+    this.numThread = fields.numThread;
+    this.penalizeNewline = fields.penalizeNewline;
+    this.presencePenalty = fields.presencePenalty;
+    this.repeatLastN = fields.repeatLastN;
+    this.repeatPenalty = fields.repeatPenalty;
+    this.ropeFrequencyBase = fields.ropeFrequencyBase;
+    this.ropeFrequencyScale = fields.ropeFrequencyScale;
+    this.temperature = fields.temperature;
+    this.stop = fields.stop;
+    this.tfsZ = fields.tfsZ;
+    this.topK = fields.topK;
+    this.topP = fields.topP;
+    this.typicalP = fields.typicalP;
+    this.useMLock = fields.useMLock;
+    this.useMMap = fields.useMMap;
+    this.vocabOnly = fields.vocabOnly;
+    this.format = fields.format;
+  }
+  getLsParams(options) {
+    var _a2;
+    const params = this.invocationParams(options);
+    return {
+      ls_provider: "ollama",
+      ls_model_name: this.model,
+      ls_model_type: "chat",
+      ls_temperature: (_a2 = this.temperature) != null ? _a2 : void 0,
+      ls_stop: this.stop,
+      ls_max_tokens: params.options.num_predict
+    };
+  }
+  _llmType() {
+    return "ollama";
+  }
+  /**
+   * A method that returns the parameters for an Ollama API call. It
+   * includes model and options parameters.
+   * @param options Optional parsed call options.
+   * @returns An object containing the parameters for an Ollama API call.
+   */
+  invocationParams(options) {
+    var _a2;
+    return {
+      model: this.model,
+      format: this.format,
+      keep_alive: this.keepAlive,
+      options: {
+        embedding_only: this.embeddingOnly,
+        f16_kv: this.f16KV,
+        frequency_penalty: this.frequencyPenalty,
+        logits_all: this.logitsAll,
+        low_vram: this.lowVram,
+        main_gpu: this.mainGpu,
+        mirostat: this.mirostat,
+        mirostat_eta: this.mirostatEta,
+        mirostat_tau: this.mirostatTau,
+        num_batch: this.numBatch,
+        num_ctx: this.numCtx,
+        num_gpu: this.numGpu,
+        num_gqa: this.numGqa,
+        num_keep: this.numKeep,
+        num_predict: this.numPredict,
+        num_thread: this.numThread,
+        penalize_newline: this.penalizeNewline,
+        presence_penalty: this.presencePenalty,
+        repeat_last_n: this.repeatLastN,
+        repeat_penalty: this.repeatPenalty,
+        rope_frequency_base: this.ropeFrequencyBase,
+        rope_frequency_scale: this.ropeFrequencyScale,
+        temperature: this.temperature,
+        stop: (_a2 = options == null ? void 0 : options.stop) != null ? _a2 : this.stop,
+        tfs_z: this.tfsZ,
+        top_k: this.topK,
+        top_p: this.topP,
+        typical_p: this.typicalP,
+        use_mlock: this.useMLock,
+        use_mmap: this.useMMap,
+        vocab_only: this.vocabOnly
+      }
+    };
+  }
+  _combineLLMOutput() {
+    return {};
+  }
+  /** @deprecated */
+  async *_streamResponseChunksLegacy(input, options, runManager) {
+    var _a2;
+    const stream = createOllamaGenerateStream(this.baseUrl, {
+      ...this.invocationParams(options),
+      prompt: this._formatMessagesAsPrompt(input)
+    }, {
+      ...options,
+      headers: this.headers
+    });
+    for await (const chunk of stream) {
+      if (!chunk.done) {
+        yield new ChatGenerationChunk2({
+          text: chunk.response,
+          message: new AIMessageChunk2({ content: chunk.response })
+        });
+        await (runManager == null ? void 0 : runManager.handleLLMNewToken((_a2 = chunk.response) != null ? _a2 : ""));
+      } else {
+        yield new ChatGenerationChunk2({
+          text: "",
+          message: new AIMessageChunk2({ content: "" }),
+          generationInfo: {
+            model: chunk.model,
+            total_duration: chunk.total_duration,
+            load_duration: chunk.load_duration,
+            prompt_eval_count: chunk.prompt_eval_count,
+            prompt_eval_duration: chunk.prompt_eval_duration,
+            eval_count: chunk.eval_count,
+            eval_duration: chunk.eval_duration
+          }
+        });
+      }
+    }
+  }
+  async *_streamResponseChunks(input, options, runManager) {
+    var _a2, _b;
+    try {
+      const stream = await this.caller.call(async () => createOllamaChatStream(this.baseUrl, {
+        ...this.invocationParams(options),
+        messages: this._convertMessagesToOllamaMessages(input)
+      }, {
+        ...options,
+        headers: this.headers
+      }));
+      for await (const chunk of stream) {
+        if (!chunk.done) {
+          yield new ChatGenerationChunk2({
+            text: chunk.message.content,
+            message: new AIMessageChunk2({ content: chunk.message.content })
+          });
+          await (runManager == null ? void 0 : runManager.handleLLMNewToken((_a2 = chunk.message.content) != null ? _a2 : ""));
+        } else {
+          yield new ChatGenerationChunk2({
+            text: "",
+            message: new AIMessageChunk2({ content: "" }),
+            generationInfo: {
+              model: chunk.model,
+              total_duration: chunk.total_duration,
+              load_duration: chunk.load_duration,
+              prompt_eval_count: chunk.prompt_eval_count,
+              prompt_eval_duration: chunk.prompt_eval_duration,
+              eval_count: chunk.eval_count,
+              eval_duration: chunk.eval_duration
+            }
+          });
+        }
+      }
+    } catch (e) {
+      if (((_b = e.response) == null ? void 0 : _b.status) === 404) {
+        console.warn("[WARNING]: It seems you are using a legacy version of Ollama. Please upgrade to a newer version for better chat support.");
+        yield* this._streamResponseChunksLegacy(input, options, runManager);
+      } else {
+        throw e;
+      }
+    }
+  }
+  _convertMessagesToOllamaMessages(messages) {
+    return messages.map((message) => {
+      var _a2;
+      let role;
+      if (message._getType() === "human") {
+        role = "user";
+      } else if (message._getType() === "ai") {
+        role = "assistant";
+      } else if (message._getType() === "system") {
+        role = "system";
+      } else {
+        throw new Error(`Unsupported message type for Ollama: ${message._getType()}`);
+      }
+      let content = "";
+      const images = [];
+      if (typeof message.content === "string") {
+        content = message.content;
+      } else {
+        for (const contentPart of message.content) {
+          if (contentPart.type === "text") {
+            content = `${content}
+${contentPart.text}`;
+          } else if (contentPart.type === "image_url" && typeof contentPart.image_url === "string") {
+            const imageUrlComponents = contentPart.image_url.split(",");
+            images.push((_a2 = imageUrlComponents[1]) != null ? _a2 : imageUrlComponents[0]);
+          } else {
+            throw new Error(`Unsupported message content type. Must either have type "text" or type "image_url" with a string "image_url" field.`);
+          }
+        }
+      }
+      return {
+        role,
+        content,
+        images
+      };
+    });
+  }
+  /** @deprecated */
+  _formatMessagesAsPrompt(messages) {
+    const formattedMessages = messages.map((message) => {
+      let messageText;
+      if (message._getType() === "human") {
+        messageText = `[INST] ${message.content} [/INST]`;
+      } else if (message._getType() === "ai") {
+        messageText = message.content;
+      } else if (message._getType() === "system") {
+        messageText = `<<SYS>> ${message.content} <</SYS>>`;
+      } else if (ChatMessage2.isInstance(message)) {
+        messageText = `
+
+${message.role[0].toUpperCase()}${message.role.slice(1)}: ${message.content}`;
+      } else {
+        console.warn(`Unsupported message type passed to Ollama: "${message._getType()}"`);
+        messageText = "";
+      }
+      return messageText;
+    }).join("\n");
+    return formattedMessages;
+  }
+  /** @ignore */
+  async _call(messages, options, runManager) {
+    const chunks = [];
+    for await (const chunk of this._streamResponseChunks(messages, options, runManager)) {
+      chunks.push(chunk.message.content);
+    }
+    return chunks.join("");
+  }
+};
+
 // src/llm/langchain-fetcher.ts
 var logger7 = getLogger("LANGCHAIN_FETCHER");
 function createLangChainFetcher() {
@@ -46020,69 +46567,8 @@ function getLangChainConfiguration(options = {}) {
   };
 }
 
-// src/llm/anthropic-proxy-client.ts
-var logger8 = getLogger("ANTHROPIC_PROXY");
-var AnthropicProxyClient = class {
-  constructor(apiKey) {
-    this.baseUrl = "https://api.anthropic.com";
-    this.apiVersion = "2023-06-01";
-    this.apiKey = apiKey;
-    logger8.debug("Created Anthropic proxy client");
-  }
-  /**
-   * Send a message to Anthropic's Claude API directly
-   */
-  async createMessage(params) {
-    var _a2;
-    try {
-      const url = `${this.baseUrl}/v1/messages`;
-      logger8.debug(`Sending request to ${url}`);
-      const response = await obsidianFetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-Key": this.apiKey,
-          "anthropic-version": this.apiVersion
-        },
-        body: JSON.stringify(params)
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        logger8.error("Anthropic API error:", errorData);
-        throw new Error(`Anthropic API error: ${((_a2 = errorData.error) == null ? void 0 : _a2.message) || JSON.stringify(errorData)}`);
-      }
-      return response.json();
-    } catch (error) {
-      logger8.error(`Error in AnthropicProxyClient.createMessage:`, error);
-      throw error;
-    }
-  }
-  /**
-   * Generate a completion with Claude
-   */
-  async generateCompletion(systemPrompt, userPrompt, options) {
-    try {
-      logger8.debug(`Generating completion with model ${options.model}`);
-      const response = await this.createMessage({
-        model: options.model,
-        system: systemPrompt,
-        messages: [{ role: "user", content: userPrompt }],
-        max_tokens: options.maxTokens,
-        temperature: options.temperature
-      });
-      if (!response.content || !response.content[0] || !response.content[0].text) {
-        throw new Error("Invalid response from Anthropic API");
-      }
-      return response.content[0].text;
-    } catch (error) {
-      logger8.error("Error generating completion:", error);
-      throw error;
-    }
-  }
-};
-
 // src/llm/langchain-client.ts
-var logger9 = getLogger("LANGCHAIN");
+var logger8 = getLogger("LANGCHAIN");
 var LangChainClient = class {
   constructor(options) {
     var _a2, _b;
@@ -46091,7 +46577,7 @@ var LangChainClient = class {
     this.apiKey = options.apiKey;
     this.temperature = (_a2 = options.temperature) != null ? _a2 : 0.7;
     this.maxTokens = (_b = options.maxTokens) != null ? _b : 1024;
-    logger9.debug(`Creating LangChain client for ${this.provider} with model ${this.model}`);
+    logger8.debug(`Creating LangChain client for ${this.provider} with model ${this.model}`);
   }
   /**
    * Generate a completion using the appropriate LangChain model
@@ -46106,38 +46592,103 @@ var LangChainClient = class {
         new SystemMessage2(systemPrompt),
         new HumanMessage2(userPrompt)
       ];
-      let response;
       switch (this.provider) {
         case "openai": {
-          logger9.debug(`Using OpenAI with model ${this.model}`);
+          logger8.debug(`Using OpenAI with model ${this.model}`);
           const model = new ChatOpenAI({
             ...config2,
             modelName: this.model,
             maxTokens: this.maxTokens
           });
-          response = await model.invoke(messages);
-          return response.content;
+          const response = await model.invoke(messages);
+          return String(response.content);
         }
         case "anthropic": {
-          logger9.debug(`Using Anthropic proxy with model ${this.model}`);
+          logger8.debug(`Using Anthropic with model ${this.model}`);
           try {
-            const anthropicProxy = new AnthropicProxyClient(this.apiKey);
-            return await anthropicProxy.generateCompletion(
-              systemPrompt,
-              userPrompt,
-              {
-                model: this.model,
-                temperature: this.temperature,
-                maxTokens: this.maxTokens
-              }
+            logger8.debug(
+              "Message format debug:",
+              messages.map((m) => ({
+                type: m.constructor.name,
+                keys: Object.keys(m),
+                stringified: JSON.stringify(m)
+              }))
             );
+            let systemPromptContent = "";
+            let userPromptContent = "";
+            for (const msg of messages) {
+              const getContent = (m) => {
+                if (typeof m === "string")
+                  return m;
+                if (m === null || typeof m !== "object")
+                  return String(m);
+                if ("content" in m)
+                  return String(m.content);
+                if ("text" in m)
+                  return String(m.text);
+                if ("value" in m)
+                  return String(m.value);
+                return JSON.stringify(m);
+              };
+              if (msg instanceof SystemMessage2) {
+                systemPromptContent = getContent(msg);
+              } else if (msg instanceof HumanMessage2) {
+                userPromptContent = getContent(msg);
+              }
+            }
+            const formattedMessages = [
+              { role: "user", content: userPromptContent }
+            ];
+            const payload = {
+              model: this.model,
+              messages: formattedMessages,
+              max_tokens: this.maxTokens,
+              temperature: this.temperature,
+              system: systemPromptContent
+              // Anthropic requires system as a top-level parameter
+            };
+            logger8.debug(`Anthropic API Request - Model: ${this.model}`);
+            logger8.debug(`System prompt (${systemPromptContent.length} chars):
+${systemPromptContent}`);
+            logger8.debug(`User messages (${formattedMessages.length}):`);
+            formattedMessages.forEach((msg, i) => {
+              if (msg && msg.content) {
+                logger8.debug(`Message ${i + 1} (${String(msg.content).length} chars): ${msg.role}
+${msg.content}`);
+              } else {
+                logger8.debug(`Message ${i + 1}: [Invalid or null message]`);
+              }
+            });
+            logger8.debug(`Full payload: ${JSON.stringify(payload, null, 2)}`);
+            const response = await obsidianFetch("https://api.anthropic.com/v1/messages", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-api-key": this.apiKey,
+                "anthropic-version": "2023-06-01"
+              },
+              body: JSON.stringify(payload)
+            });
+            if (!response.ok) {
+              const errorText = await response.text();
+              throw new Error(`Anthropic API error: ${errorText}`);
+            }
+            const responseData = await response.json();
+            logger8.debug(`Anthropic API Response: ${JSON.stringify(responseData, null, 2)}`);
+            if (!responseData.content || !responseData.content[0] || !responseData.content[0].text) {
+              throw new Error("Invalid response format from Anthropic API");
+            }
+            const responseText = responseData.content[0].text;
+            logger8.debug(`Anthropic response text (${responseText.length} chars):
+${responseText}`);
+            return responseText;
           } catch (error) {
-            logger9.error("Error with Anthropic proxy client:", error);
+            logger8.error("Error with direct Anthropic API call:", error);
             throw error;
           }
         }
         case "google": {
-          logger9.debug(`Using Google Gemini with model ${this.model}`);
+          logger8.debug(`Using Google Gemini with model ${this.model}`);
           const model = new ChatGoogleGenerativeAI({
             ...config2,
             modelName: this.model,
@@ -46145,16 +46696,28 @@ var LangChainClient = class {
             maxTokens: this.maxTokens
             // Using maxTokens directly
           });
-          response = await model.invoke(messages);
-          return response.content;
+          const response = await model.invoke(messages);
+          return String(response.content);
+        }
+        case "ollama": {
+          logger8.debug(`Using Ollama with model ${this.model}`);
+          const model = new ChatOllama({
+            ...config2,
+            baseUrl: this.apiKey,
+            // Ollama uses the API key field to store the base URL
+            model: this.model,
+            temperature: this.temperature
+          });
+          const response = await model.invoke(messages);
+          return String(response.content);
         }
         default:
           throw new Error(`Unsupported LangChain provider: ${this.provider}`);
       }
     } catch (error) {
-      logger9.error(`Error in LangChain ${this.provider} completion:`, error);
+      logger8.error(`Error in LangChain ${this.provider} completion:`, error);
       if (error.response) {
-        logger9.error(`Status: ${error.response.status}, Data:`, error.response.data);
+        logger8.error(`Status: ${error.response.status}, Data:`, error.response.data);
       }
       if (error.message && error.message.includes("ERR_INVALID_ARGUMENT")) {
         throw new Error(`Invalid request to ${this.provider} API. Please check your API key and network connection.`);
@@ -46389,10 +46952,10 @@ function handleApiError(error, apiName, context) {
 }
 
 // src/utils/path-utils.ts
-function normalizePath(path3, removeLeadingSlash = true) {
-  if (!path3)
+function normalizePath(path, removeLeadingSlash = true) {
+  if (!path)
     return "";
-  let normalized = path3.trim();
+  let normalized = path.trim();
   if (removeLeadingSlash && normalized.startsWith("/")) {
     normalized = normalized.substring(1);
   }
@@ -46591,7 +47154,7 @@ function showNotice(message, timeout = 5e3) {
 
 // src/utils/timestamp-utils.ts
 var TimeFormat = __toESM(require_hh_mm_ss());
-var logger10 = getLogger("TIMESTAMP");
+var logger9 = getLogger("TIMESTAMP");
 function extractDocumentComponents(originalContent) {
   let frontmatter = "";
   let contentWithoutFrontmatter = originalContent;
@@ -46605,9 +47168,9 @@ function extractDocumentComponents(originalContent) {
       const transcriptMatch = frontmatterContent.match(/transcript:\s*\|\s*\n([\s\S]+?)(?:\n\w|$)/);
       if (transcriptMatch && transcriptMatch[1]) {
         transcript = transcriptMatch[1].trim();
-        logger10.debug("Successfully extracted transcript from frontmatter");
+        logger9.debug("Successfully extracted transcript from frontmatter");
       } else {
-        logger10.debug("Could not find transcript in frontmatter");
+        logger9.debug("Could not find transcript in frontmatter");
       }
     }
   }
@@ -46620,7 +47183,7 @@ function extractDocumentComponents(originalContent) {
 function reconstructDocument(frontmatter, enhancedContent) {
   let enhancedNote = frontmatter + "\n" + enhancedContent;
   if (enhancedNote.includes("---\n```") || enhancedNote.includes("---\r\n```")) {
-    logger10.debug("Removing unwanted code blocks after frontmatter");
+    logger9.debug("Removing unwanted code blocks after frontmatter");
     enhancedNote = enhancedNote.replace(/---[\r\n]+```/g, "---");
     enhancedNote = enhancedNote.replace(/```[\r\n]+(?!`)/g, "");
   }
@@ -46628,24 +47191,24 @@ function reconstructDocument(frontmatter, enhancedContent) {
 }
 function validateEnhancedContent(enhancedContent, originalContent, headings, videoId) {
   if (!enhancedContent.includes("#")) {
-    logger10.error("LLM response doesn't contain any markdown headings");
+    logger9.error("LLM response doesn't contain any markdown headings");
     return false;
   }
   if (enhancedContent.length < originalContent.length * 0.9) {
-    logger10.error("LLM output is suspiciously short, might have lost content");
+    logger9.error("LLM output is suspiciously short, might have lost content");
     return false;
   }
   const timestampLinkPattern = new RegExp(`\\[Watch\\]\\(https://www\\.youtube\\.com/watch\\?v=${videoId}&t=\\d+\\)`);
   const hasLinks = timestampLinkPattern.test(enhancedContent);
   if (!hasLinks) {
-    logger10.warn("No timestamp links found in LLM output");
+    logger9.warn("No timestamp links found in LLM output");
     return false;
   }
   return true;
 }
 function findContentHeadings(content) {
   const headings = [];
-  const headingRegex = /^(#+\s+\d+\.\s+.*?)$/gm;
+  const headingRegex = /^(#+\s+\d+(?:\.\d+)?\.?\s+.*?)$/gm;
   let match;
   while ((match = headingRegex.exec(content)) !== null) {
     const headingText = match[0];
@@ -46654,13 +47217,13 @@ function findContentHeadings(content) {
       position: match.index
     });
   }
-  logger10.debug(`Found ${headings.length} headings in content: ${headings.map((h) => h.text).join(", ")}`);
+  logger9.debug(`Found ${headings.length} headings in content: ${headings.map((h) => h.text).join(", ")}`);
   return headings;
 }
 function createOptimizedChunks(content, maxTokenLimit) {
   const headings = findContentHeadings(content);
   const chunks = [];
-  logger10.debug(`Found ${headings.length} headings in content`);
+  logger9.debug(`Found ${headings.length} headings in content`);
   if (headings.length === 0) {
     chunks.push(content);
     return chunks;
@@ -46668,7 +47231,7 @@ function createOptimizedChunks(content, maxTokenLimit) {
   if (headings[0].position > 0) {
     const templateHeader = content.substring(0, headings[0].position);
     chunks.push(templateHeader);
-    logger10.debug("Added template header as separate chunk");
+    logger9.debug("Added template header as separate chunk");
   }
   const maxChunkTokens = maxTokenLimit * 0.7;
   const avgTokensPerChar = 0.25;
@@ -46682,7 +47245,7 @@ function createOptimizedChunks(content, maxTokenLimit) {
     const sectionTokens = section.length * avgTokensPerChar;
     if (currentChunk && currentChunk.length * avgTokensPerChar + sectionTokens > maxChunkTokens) {
       chunks.push(currentChunk);
-      logger10.debug(`Added optimized chunk with ${currentHeadingCount} headings (${processedHeadings + 1}-${processedHeadings + currentHeadingCount})`);
+      logger9.debug(`Added optimized chunk with ${currentHeadingCount} headings (${processedHeadings + 1}-${processedHeadings + currentHeadingCount})`);
       currentChunk = section;
       currentHeadingCount = 1;
       processedHeadings += currentHeadingCount;
@@ -46694,10 +47257,10 @@ function createOptimizedChunks(content, maxTokenLimit) {
   if (currentChunk) {
     chunks.push(currentChunk);
     processedHeadings += currentHeadingCount;
-    logger10.debug(`Added final optimized chunk with ${currentHeadingCount} headings (${processedHeadings - currentHeadingCount + 1}-${processedHeadings})`);
+    logger9.debug(`Added final optimized chunk with ${currentHeadingCount} headings (${processedHeadings - currentHeadingCount + 1}-${processedHeadings})`);
   }
   if (processedHeadings !== headings.length) {
-    logger10.warn(`Warning: Processed ${processedHeadings} headings but found ${headings.length} total headings`);
+    logger9.warn(`Warning: Processed ${processedHeadings} headings but found ${headings.length} total headings`);
   }
   return chunks;
 }
@@ -46705,26 +47268,26 @@ function ensureTrailingNewline(chunk) {
   return chunk.endsWith("\n") ? chunk : chunk + "\n";
 }
 function countTimestampLinks(content) {
-  const headingsWithLinks = content.match(/^#+\s+\d+\.[^\n]*\[Watch\]/gm);
+  const headingsWithLinks = content.match(/^#+\s+\d+(?:\.\d+)?\.?\s+[^\n]*\[Watch\]/gm);
   return headingsWithLinks ? headingsWithLinks.length : 0;
 }
 function hasProperHeading(chunk) {
-  return !!chunk.match(/^#+\s+\d+/m);
+  return !!chunk.match(/^#+\s+\d+(?:\.\d+)?\.?\s+/m);
 }
 function hasTimestampLinks(chunk, videoId) {
   const timestampLinkPattern = new RegExp(`\\[Watch\\]\\(https://www\\.youtube\\.com/watch\\?v=${videoId}&t=\\d+\\)`);
   const hasLinks = timestampLinkPattern.test(chunk);
   if (!hasLinks) {
-    logger10.debug(`No timestamp links found in chunk. First 200 chars: ${chunk.substring(0, 200)}...`);
-    const headings = chunk.match(/^#+\s+\d+\./gm);
+    logger9.debug(`No timestamp links found in chunk. First 200 chars: ${chunk.substring(0, 200)}...`);
+    const headings = chunk.match(/^#+\s+\d+(?:\.\d+)?\.?\s+/gm);
     if (headings) {
-      logger10.debug(`Found ${headings.length} numbered headings but no timestamp links`);
+      logger9.debug(`Found ${headings.length} numbered headings but no timestamp links`);
     } else {
-      logger10.debug(`No numbered headings found in chunk`);
+      logger9.debug(`No numbered headings found in chunk`);
     }
   } else {
     const links = chunk.match(timestampLinkPattern);
-    logger10.debug(`Found ${links ? links.length : 0} timestamp links in chunk`);
+    logger9.debug(`Found ${links ? links.length : 0} timestamp links in chunk`);
   }
   return hasLinks;
 }
@@ -46732,100 +47295,13 @@ function convertTimestampToSeconds(timestamp) {
   try {
     return TimeFormat.toS(timestamp, "hh:mm:ss");
   } catch (error) {
-    logger10.error(`Error converting timestamp ${timestamp} to seconds: ${error}`);
+    logger9.error(`Error converting timestamp ${timestamp} to seconds: ${error}`);
     return 0;
   }
 }
 
-// src/proxy/anthropic-proxy.ts
-var import_child_process = require("child_process");
-var path = __toESM(require("path"));
-var fs = __toESM(require("fs"));
-var os = __toESM(require("os"));
-var logger11 = getLogger("ANTHROPIC-PROXY");
-var proxyServer = null;
-var isProxyRunning = false;
-var pluginPath = "";
-function setPluginPath(path3) {
-  pluginPath = path3;
-  logger11.debug("Plugin path set to:", pluginPath);
-}
-function stopLocalProxy() {
-  return new Promise((resolve) => {
-    if (!proxyServer) {
-      logger11.debug("No proxy server running to stop");
-      resolve();
-      return;
-    }
-    logger11.debug("Stopping proxy server gracefully");
-    try {
-      const pid = proxyServer.pid;
-      logger11.debug(`Proxy server process ID: ${pid}`);
-      let cleanlyTerminated = false;
-      const finalCleanup = () => {
-        logger11.debug("Final cleanup of proxy resources");
-        proxyServer = null;
-        isProxyRunning = false;
-        resolve();
-      };
-      const isWindows = process.platform === "win32";
-      if (isWindows) {
-        logger11.debug("Windows platform detected, using standard kill");
-        proxyServer.kill();
-      } else {
-        logger11.debug("Unix platform detected, using SIGTERM");
-        proxyServer.kill("SIGTERM");
-      }
-      proxyServer.on("exit", (code) => {
-        logger11.debug(`Proxy server stopped gracefully with code ${code}`);
-        cleanlyTerminated = true;
-        finalCleanup();
-      });
-      proxyServer.on("close", () => {
-        logger11.debug("Proxy server process closed");
-        cleanlyTerminated = true;
-        finalCleanup();
-      });
-      setTimeout(() => {
-        if (proxyServer && !cleanlyTerminated) {
-          logger11.warn("Graceful shutdown timed out, forcing termination");
-          try {
-            if (isWindows) {
-              if (pid) {
-                logger11.debug(`Using taskkill for PID ${pid}`);
-                try {
-                  const { execSync } = require("child_process");
-                  execSync(`taskkill /F /PID ${pid}`, { timeout: 1e3 });
-                  logger11.debug(`taskkill successful for PID ${pid}`);
-                } catch (taskkillError) {
-                  logger11.error(`taskkill failed: ${taskkillError}`);
-                  proxyServer.kill();
-                }
-              } else {
-                proxyServer.kill();
-              }
-            } else {
-              logger11.debug("Sending SIGKILL to force termination");
-              proxyServer.kill("SIGKILL");
-            }
-          } catch (e) {
-            logger11.error(`Error during forced termination: ${e}`);
-          }
-          setTimeout(finalCleanup, 500);
-        }
-      }, 2e3);
-    } catch (e) {
-      logger11.error(`Error stopping proxy server: ${e}`);
-      proxyServer = null;
-      isProxyRunning = false;
-      resolve();
-    }
-  });
-}
-
 // main.ts
-var import_path = __toESM(require("path"));
-var logger12 = getLogger("PLUGIN");
+var logger10 = getLogger("PLUGIN");
 var transcriptLogger2 = getLogger("TRANSCRIPT");
 var llmLogger4 = getLogger("LLM");
 var DEFAULT_SETTINGS = {
@@ -46850,9 +47326,8 @@ var DEFAULT_SETTINGS = {
   userPrompt: `Extract structured notes from the transcript below without explanation or preface. Extract key points, main ideas, and important details. 
 FORMAT USING PROPER MARKDOWN HEADINGS with # syntax (not bold text).
 Specifically: 
-1. Use "# " for main headings
-2. Use "## " for subheadings 
-3. Use "### " for section headings with numbers (e.g., "### 1. Introduction")
+2. Use markdown numbered subheadings (e.g., "## 1. Topic")
+3. Use markdown numbered section headings (e.g., "### 1.1. Sub Topic")
 4. Do NOT use bold text (**text**) for headings
 5. Use bullet points for lists
 This document will be processed as Markdown for Obsidian, so proper heading syntax is essential.
@@ -46870,9 +47345,8 @@ Organize the content into clearly numbered sections based on major topic or them
 Extract structured notes from the transcript below without explanation or preface, extract key points, main ideas, and important details. 
 FORMAT USING PROPER MARKDOWN HEADINGS with # syntax (not bold text).
 Specifically:
-1. Use "# " for main headings
-2. Use "## " for subheadings
-3. Use "### " for section headings with numbers (e.g., "### 1. Introduction")
+2. Use markdown numbered subheadings (e.g., "## 1. Topic")
+3. Use markdown numbered section headings (e.g., "### 1.1. Sub Topic")
 4. Do NOT use bold text (**text**) for headings
 5. Use bullet points for lists
 
@@ -46884,7 +47358,7 @@ Start the output with the actual summary content only, no headers, no preamble, 
 Respond only with the raw answer, no intro or outro text.
 
 For each section:
-- Use the exact heading format "### 1. Title" (not "### Section 1: Title"). Number sections sequentially (1, 2, 3, etc.). IMPORTANT: Use actual Obsidian Markdown heading syntax with # symbols, not bold text.
+- Number sections sequentially (1, 2, 3, etc.). IMPORTANT: Use actual Obsidian Markdown heading syntax with # symbols, not bold text.
 - Write multiple detailed paragraphs, that explain the content and any theory, technical terms or definitions, models and frameworks thoroughly and in great detail drawn from the transcript.
 - Include below the paragraphs key concepts, terms, taxonomy, ontology , or ideas, and explain them clearly with examples where relevant.
 - Incorporate and explain important quotations direct from subject (person) , analogies, or references.
@@ -46902,7 +47376,9 @@ RULES:
 2. NEVER remove any content
 3. ALWAYS return the FULL original content PLUS timestamp links at the end of section headings
 4. If processing multiple sections, add timestamps to ALL headings
-5. ONLY process headings that follow the format: #, ##, ### number. text (e.g., # 1. Introduction)
+5. ONLY process markdown numbered headings 
+    a. for subheadings (e.g., "## 1. Topic")
+    b. for section headings (e.g., "## 1.1. Sub Topic")
 6. DO NOT process headings without numbers or dots
 7. DO NOT process horizontal rules (single #)
 8. Do NOT add a preamble or postamble or headers or titles, ONLY AMEND the links to add the seconds timestamp
@@ -46943,7 +47419,6 @@ var YouTubeTranscriptPlugin = class extends import_obsidian4.Plugin {
     showNotice(message, timeout);
   }
   async onload() {
-    var _a2;
     await this.loadSettings();
     if (this.settings.selectedLLM === "google") {
       this.settings.maxTokens = 8192;
@@ -46957,16 +47432,6 @@ var YouTubeTranscriptPlugin = class extends import_obsidian4.Plugin {
       setGlobalLogLevel(1 /* INFO */);
     }
     this.initializeSummarizer();
-    let pluginBasePath = "";
-    const pluginId = ((_a2 = this.manifest) == null ? void 0 : _a2.id) || "tubesage";
-    try {
-      const vaultPath = this.app.vault.adapter.getBasePath();
-      pluginBasePath = import_path.default.join(vaultPath, ".obsidian", "plugins", pluginId);
-      logger12.info("Setting plugin path:", pluginBasePath);
-      setPluginPath(pluginBasePath);
-    } catch (error) {
-      logger12.error("Error setting plugin path:", error);
-    }
     this.addSettingTab(new YouTubeTranscriptSettingTab(this.app, this));
     this.checkDependencies();
     const styleEl = document.createElement("style");
@@ -47268,35 +47733,19 @@ var YouTubeTranscriptPlugin = class extends import_obsidian4.Plugin {
         new YouTubeTranscriptModal(this.app, this).open();
       }
     });
-    this.fileWatcher = this.app.vault.adapter.watch(pluginBasePath, async () => {
-      await this.loadSettings();
-      this.initializeSummarizer();
-      const settingsTab = this.app.setting.activeTab;
-      if (settingsTab && settingsTab.id === pluginId) {
-        settingsTab.display();
-      }
-    });
   }
   async onunload() {
-    logger12.info("Plugin unloading - starting cleanup");
-    const unloadTimeout = setTimeout(() => {
-      logger12.error("Cleanup timed out - forcing exit");
-    }, 5e3);
-    try {
-      if (this.fileWatcher) {
-        logger12.info("Removing file watcher");
-        this.app.vault.adapter.unwatch(this.fileWatcher);
+    logger10.debug("Unloading YouTube Transcript Plugin");
+    if (this.fileWatcher) {
+      try {
+        this.fileWatcher.close();
+        this.fileWatcher = null;
+        logger10.debug("Closed file watcher");
+      } catch (error) {
+        logger10.error("Error closing file watcher:", error);
       }
-      const styleEl = document.getElementById("youtube-transcript-styles");
-      if (styleEl) {
-        styleEl.remove();
-      }
-    } catch (error) {
-      logger12.error("Error during plugin cleanup:", error);
-    } finally {
-      clearTimeout(unloadTimeout);
-      logger12.info("Plugin cleanup completed");
     }
+    console.log("YouTube Transcript Plugin unloaded");
   }
   initializeSummarizer() {
     this.summarizer = new TranscriptSummarizer({
@@ -47424,9 +47873,25 @@ var YouTubeTranscriptPlugin = class extends import_obsidian4.Plugin {
       transcriptLogger2.debug(`Created ${chunks.length} exactly time-based chunks`);
       formattedTranscript = "\n";
       chunks.forEach((chunk) => {
-        const escapedText = chunk.text.replace(/:/g, "\\:");
-        formattedTranscript += `    [${chunk.time}] [TimeIndex:${Math.round(chunk.seconds)}] ${escapedText}
-`;
+        const timeIndexMarker = `[TimeIndex:${Math.round(chunk.seconds)}]`;
+        let textContent = chunk.text;
+        const timeIndexRegex = /\[TimeIndex:(\d+)\]/g;
+        const timeIndexMatches = [...textContent.matchAll(timeIndexRegex)];
+        const timeIndexParts = [];
+        if (timeIndexMatches.length > 0) {
+          timeIndexMatches.forEach((match) => {
+            timeIndexParts.push(match[0]);
+            textContent = textContent.replace(match[0], "");
+          });
+        }
+        const escapedText = textContent.replace(/:/g, "\\:");
+        formattedTranscript += `    [${chunk.time}] ${timeIndexMarker} ${escapedText}`;
+        if (timeIndexParts.length > 0) {
+          timeIndexParts.forEach((marker) => {
+            formattedTranscript += ` ${marker}`;
+          });
+        }
+        formattedTranscript += "\n";
       });
     } else {
       formattedTranscript = "\n    Unable to format transcript properly";
@@ -47463,12 +47928,7 @@ var YouTubeTranscriptPlugin = class extends import_obsidian4.Plugin {
       throw handleApiError(error, this.settings.selectedLLM, "Summarization");
     } finally {
       if (this.settings.selectedLLM === "anthropic" && (this.settings.useFastSummary || !this.settings.addTimestampLinks)) {
-        try {
-          llmLogger4.info("[summarizeTranscript] Stopping Anthropic proxy server (fast summary or no timestamp links)");
-          await stopLocalProxy();
-        } catch (error) {
-          llmLogger4.error("Error stopping Anthropic proxy server:", error);
-        }
+        llmLogger4.info("[summarizeTranscript] Completed Anthropic processing (fast summary or no timestamp links)");
       }
     }
   }
@@ -47512,7 +47972,8 @@ var YouTubeTranscriptPlugin = class extends import_obsidian4.Plugin {
           const timestampMatch = line.match(/^\s*\[(\d{2}:\d{2}:\d{2})\]\s*(.*)/);
           if (timestampMatch) {
             const timestamp = timestampMatch[1];
-            const text = timestampMatch[2].trim();
+            let text = timestampMatch[2].trim();
+            text = text.replace(/\[TimeIndex\\?:(\d+)\]/g, "[TimeIndex:$1]");
             const parts = timestamp.split(":").map(Number);
             const seconds = parts[0] * 3600 + parts[1] * 60 + parts[2];
             parsedLines.push({
@@ -47551,10 +48012,32 @@ var YouTubeTranscriptPlugin = class extends import_obsidian4.Plugin {
         }
         console.log(`[DEBUG] Organized ${originalLines.length} lines into ${segments.length} \u226560-second blocks`);
         segments.forEach((segment) => {
-          let escapedText = segment.text.replace(/:/g, "\\:");
           const timeIndex = convertTimestampToSeconds(segment.timestamp);
-          formattedTranscript += `    [${segment.timestamp}] [TimeIndex:${timeIndex}] ${escapedText}
+          const timeIndexMarker = `[TimeIndex:${timeIndex}]`;
+          let textContent = segment.text;
+          const timeIndexRegex = /\[TimeIndex:(\d+)\]/g;
+          const timeIndexMatches = [...textContent.matchAll(timeIndexRegex)];
+          const timeIndexParts = [];
+          if (timeIndexMatches.length > 0) {
+            timeIndexMatches.forEach((match) => {
+              timeIndexParts.push(match[0]);
+              textContent = textContent.replace(match[0], "");
+            });
+          }
+          const escapedText = textContent.replace(/:/g, "\\:");
+          const hasTimeIndexInTranscript = transcript.includes("[TimeIndex:") || transcript.includes("[TimeIndex\\:");
+          if (hasTimeIndexInTranscript) {
+            let processedText = `    [${segment.timestamp}] ${timeIndexMarker} ${escapedText}`;
+            if (timeIndexParts.length > 0) {
+              timeIndexParts.forEach((marker) => {
+                processedText += ` ${marker}`;
+              });
+            }
+            formattedTranscript += processedText + "\n";
+          } else {
+            formattedTranscript += `    [${segment.timestamp}] ${timeIndexMarker} ${escapedText}
 `;
+          }
         });
       } else {
         console.log("[DEBUG] Transcript does not contain timestamps");
@@ -47562,6 +48045,7 @@ var YouTubeTranscriptPlugin = class extends import_obsidian4.Plugin {
         this.showNotice("Warning: No timestamps found in transcript. Timestamps are required for proper processing.", 5e3);
       }
       transcript = formattedTranscript;
+      transcript = transcript.replace(/\[TimeIndex\\:(\d+)\]/g, "[TimeIndex:$1]");
       const normalizedFolder = normalizePath(folder || "");
       if (normalizedFolder) {
         await ensureFolder(this.app.vault, normalizedFolder);
@@ -47594,13 +48078,13 @@ var YouTubeTranscriptPlugin = class extends import_obsidian4.Plugin {
       ctx.user.llmModel = llmModel;
       const llmTags = `llm/${llmProvider} model/${llmModel.replace(/[:\.]/g, "-")}`;
       ctx.user.llmTags = llmTags;
-      ctx.user.debugInfo = `
-Transcript info:
-- Length: ${transcript ? transcript.length : "unknown"} characters
-- Contains timestamps: ${transcript ? transcript.includes("[00:") : "unknown"}
-- LLM Provider: ${llmProvider}
-- LLM Model: ${llmModel}
-`;
+      if (this.settings.debugLogging) {
+        logger10.debug(`Transcript info: 
+                - Length: ${transcript ? transcript.length : "unknown"} characters
+                - Contains timestamps: ${transcript ? transcript.includes("[00:") : "unknown"}
+                - LLM Provider: ${llmProvider}
+                - LLM Model: ${llmModel}`);
+      }
       const templateContent = await this.app.vault.read(templateFile);
       const parsedContent = await templater.parser.parse_commands(templateContent, ctx);
       const fileName = `${datePrefix}${sanitizedTitle}.md`;
@@ -47621,17 +48105,17 @@ Transcript info:
   }
   // Add a debugging method to help troubleshoot
   debugSettings() {
-    logger12.debug("=== DEBUG SETTINGS ===");
-    logger12.info("Selected LLM:", this.settings.selectedLLM);
-    logger12.debug("Selected Models:", JSON.stringify(this.settings.selectedModels));
+    logger10.debug("=== DEBUG SETTINGS ===");
+    logger10.info("Selected LLM:", this.settings.selectedLLM);
+    logger10.debug("Selected Models:", JSON.stringify(this.settings.selectedModels));
     const apiKeyStatus = Object.entries(this.settings.apiKeys).map(([provider, key]) => {
       return `${provider}: ${key ? "\u2713" : "\u2717"}`;
     }).join(", ");
-    logger12.info("API Keys configured:", apiKeyStatus);
+    logger10.info("API Keys configured:", apiKeyStatus);
     if (!this.settings.apiKeys[this.settings.selectedLLM]) {
-      logger12.warn(`No API key configured for selected LLM: ${this.settings.selectedLLM}`);
+      logger10.warn(`No API key configured for selected LLM: ${this.settings.selectedLLM}`);
     }
-    logger12.debug("=====================");
+    logger10.debug("=====================");
   }
   // Check for required dependencies
   checkDependencies() {
@@ -47826,10 +48310,10 @@ Transcript info:
         headingPositions.push(match.index);
       }
       if (headings.length === 0) {
-        logger12.debug("[addSectionLinksToNote] No headings found in note");
+        logger10.debug("[addSectionLinksToNote] No headings found in note");
         return;
       }
-      logger12.debug(`[addSectionLinksToNote] Found ${headings.length} headings`);
+      logger10.debug(`[addSectionLinksToNote] Found ${headings.length} headings`);
       const needsTranslation = this.settings.translateLanguage !== "en" || this.settings.translateCountry !== "US";
       let contentWithLinks;
       if (headings.length > 5) {
@@ -47857,16 +48341,11 @@ Transcript info:
         );
       }
     } catch (error) {
-      logger12.error("[addSectionLinksToNote] Error:", error);
+      logger10.error("[addSectionLinksToNote] Error:", error);
       throw error;
     } finally {
       if (this.settings.selectedLLM === "anthropic") {
-        try {
-          logger12.info("[addSectionLinksToNote] Stopping Anthropic proxy server");
-          await stopLocalProxy();
-        } catch (error) {
-          logger12.error("Error stopping Anthropic proxy server:", error);
-        }
+        logger10.info("[addSectionLinksToNote] Completed Anthropic processing");
       }
     }
   }
@@ -47882,8 +48361,6 @@ Transcript info:
         systemPrompt: timestampConfig.systemPrompt,
         userPrompt: timestampConfig.userPrompt
       }, this.settings.apiKeys);
-      const referenceSection = "----- REFERENCE MATERIAL (DO NOT INCLUDE IN OUTPUT) -----\nVIDEO_ID: " + videoId + "\n" + (transcript ? "TRANSCRIPT:\n" + transcript + "\n" : "") + "----- END REFERENCE MATERIAL -----";
-      let formattedPrompt = timestampConfig.userPrompt + "\n\n" + contentWithoutFrontmatter + "\n\n" + referenceSection;
       const restructuredPrompt = "INSTRUCTIONS:\n" + timestampConfig.userPrompt + "\n\nINSTRUCTION INPUT DATA - TIMESTAMPS TRANSCRIPT:\n" + (transcript ? transcript : "No transcript available") + "\n\nINPUT NOTE TO BE MODIFIED WITH TIMESTAMPS:\n" + contentWithoutFrontmatter;
       this.showNotice("Adding timestamp links with LLM...", 5e3);
       if (this.settings.debugLogging) {
@@ -47919,14 +48396,14 @@ Transcript info:
         }
         llmLogger4.debug("COMPLETE FORMATTED PROMPT BEING SENT TO LLM:");
         llmLogger4.debug("========================================");
-        llmLogger4.debug(this.settings.selectedLLM === "google" ? restructuredPrompt : formattedPrompt);
+        llmLogger4.debug(restructuredPrompt);
         llmLogger4.debug("========================================");
       }
-      logger12.debug("[addTimestampLinksSinglePass] Sending content to LLM (without frontmatter)...");
+      logger10.debug("[addTimestampLinksSinglePass] Sending content to LLM (without frontmatter)...");
       let enhancedContent;
       try {
         enhancedContent = await timestampLinkSummarizer.summarize(
-          this.settings.selectedLLM === "google" ? restructuredPrompt : formattedPrompt,
+          restructuredPrompt,
           this.settings.selectedLLM
         );
         if (this.settings.debugLogging) {
@@ -47935,15 +48412,20 @@ Transcript info:
           llmLogger4.debug(enhancedContent || "Empty response from LLM");
           llmLogger4.debug("========================================");
         }
-        logger12.debug("[addTimestampLinksSinglePass] Received LLM response, length:", enhancedContent ? enhancedContent.length : 0);
+        logger10.debug("[addTimestampLinksSinglePass] Received LLM response, length:", enhancedContent ? enhancedContent.length : 0);
       } catch (e) {
-        logger12.error("[addTimestampLinksSinglePass] Error during LLM call:", e);
+        logger10.error("[addTimestampLinksSinglePass] Error during LLM call:", e);
         if (e.message && (e.message.includes("max_tokens") || e.message.includes("token limit"))) {
-          logger12.debug("[addTimestampLinksSinglePass] Token limit error detected, retrying with reduced token limit");
+          logger10.debug("[addTimestampLinksSinglePass] Token limit error detected, retrying with reduced token limit");
           this.showNotice("Retrying with reduced token limit...", 5e3);
-          const reducedTokens = Math.floor(this.getMaxTokensForTimestampPass() / 2);
+          const isAnthropicModel = this.settings.selectedLLM === "anthropic";
+          const reductionFactor = isAnthropicModel ? 0.3 : 0.5;
+          const reducedTokens = Math.floor(this.getMaxTokensForTimestampPass() * reductionFactor);
           if (this.settings.debugLogging) {
             llmLogger4.debug(`Retrying with reduced token limit: ${reducedTokens}`);
+            if (isAnthropicModel) {
+              llmLogger4.debug("Using extra conservative token limit for Anthropic model");
+            }
           }
           const reducedTokensSummarizer = new TranscriptSummarizer({
             model: this.getModelForProvider(this.settings.selectedLLM),
@@ -47954,7 +48436,7 @@ Transcript info:
           }, this.settings.apiKeys);
           try {
             enhancedContent = await reducedTokensSummarizer.summarize(
-              this.settings.selectedLLM === "google" ? restructuredPrompt : formattedPrompt,
+              restructuredPrompt,
               this.settings.selectedLLM
             );
             if (this.settings.debugLogging) {
@@ -47963,9 +48445,9 @@ Transcript info:
               llmLogger4.debug(enhancedContent || "Empty response from LLM");
               llmLogger4.debug("========================================");
             }
-            logger12.debug("[addTimestampLinksSinglePass] Second attempt successful with reduced tokens:", reducedTokens);
+            logger10.debug("[addTimestampLinksSinglePass] Second attempt successful with reduced tokens:", reducedTokens);
           } catch (retryError) {
-            logger12.error("[addTimestampLinksSinglePass] Error on second attempt:", retryError);
+            logger10.error("[addTimestampLinksSinglePass] Error on second attempt:", retryError);
             this.showNotice(`Failed to add timestamp links: ${retryError.message}`, 5e3);
             return null;
           }
@@ -47975,7 +48457,7 @@ Transcript info:
         }
       }
       if (!enhancedContent) {
-        logger12.error("[addTimestampLinksSinglePass] Failed to add timestamp links (empty response from LLM)");
+        logger10.error("[addTimestampLinksSinglePass] Failed to add timestamp links (empty response from LLM)");
         this.showNotice("Failed to add timestamp links (empty response from LLM)", 5e3);
         return null;
       }
@@ -48001,7 +48483,7 @@ Transcript info:
       }
       return null;
     } catch (error) {
-      logger12.error("[addTimestampLinksSinglePass] Error:", error);
+      logger10.error("[addTimestampLinksSinglePass] Error:", error);
       this.showNotice(`Error adding timestamp links: ${error.message}`, 5e3);
       return null;
     }
@@ -48010,7 +48492,7 @@ Transcript info:
   async translateContent(filePath, contentToTranslate, targetLang, targetCountry) {
     try {
       this.showNotice(`Translating content to ${targetLang.toUpperCase()}-${targetCountry}...`, 5e3);
-      logger12.debug("[translateContent] Starting translation process");
+      logger10.debug("[translateContent] Starting translation process");
       const { frontmatter } = extractDocumentComponents(await this.app.vault.read(this.app.vault.getAbstractFileByPath(filePath)));
       const translationSummarizer = new TranscriptSummarizer({
         model: this.getModelForProvider(this.settings.selectedLLM),
@@ -48038,14 +48520,14 @@ ${contentToTranslate}
       let translatedContent;
       try {
         translatedContent = await translationSummarizer.summarize(translationPrompt, this.settings.selectedLLM);
-        logger12.debug("[translateContent] Received translated content, length:", translatedContent ? translatedContent.length : 0);
+        logger10.debug("[translateContent] Received translated content, length:", translatedContent ? translatedContent.length : 0);
       } catch (e) {
-        logger12.error("[translateContent] Error during translation:", e);
+        logger10.error("[translateContent] Error during translation:", e);
         this.showNotice(`Translation error: ${e.message}`, 5e3);
         return;
       }
       if (!translatedContent) {
-        logger12.error("[translateContent] Failed to translate content (empty response)");
+        logger10.error("[translateContent] Failed to translate content (empty response)");
         this.showNotice("Failed to translate content (empty response from LLM)", 5e3);
         return;
       }
@@ -48056,7 +48538,7 @@ ${contentToTranslate}
       );
       this.showNotice(`Successfully translated content to ${targetLang.toUpperCase()}-${targetCountry}`, 5e3);
     } catch (error) {
-      logger12.error("[translateContent] Error:", error);
+      logger10.error("[translateContent] Error:", error);
       this.showNotice(`Error translating content: ${error.message}`, 5e3);
     }
   }
@@ -48067,7 +48549,7 @@ ${contentToTranslate}
   // Process document in chunks based on section headings
   async addTimestampLinksInChunks(filePath, videoId, originalContent, headings, headingPositions) {
     try {
-      logger12.debug("[addTimestampLinksInChunks] Processing document in chunks");
+      logger10.debug("[addTimestampLinksInChunks] Processing document in chunks");
       const { frontmatter, contentWithoutFrontmatter, transcript } = extractDocumentComponents(originalContent);
       if (this.settings.debugLogging) {
         llmLogger4.debug("==================== CHUNKED TIMESTAMP LINKING DEBUG ====================");
@@ -48083,7 +48565,7 @@ ${contentToTranslate}
         llmLogger4.debug(`Split content into ${chunks.length} optimized chunks`);
         llmLogger4.debug(`Chunk sizes: ${chunks.map((c) => c.length).join(", ")} characters`);
       }
-      logger12.debug(`[addTimestampLinksInChunks] Split content into ${chunks.length} optimized chunks`);
+      logger10.debug(`[addTimestampLinksInChunks] Split content into ${chunks.length} optimized chunks`);
       let processedChunks = [];
       for (let i = 0; i < chunks.length; i++) {
         const chunk = chunks[i];
@@ -48091,7 +48573,7 @@ ${contentToTranslate}
           if (this.settings.debugLogging) {
             llmLogger4.debug(`Chunk ${i + 1}: No proper headings found, preserving unchanged`);
           }
-          logger12.debug(`[addTimestampLinksInChunks] Preserving non-section chunk ${i + 1} unchanged`);
+          logger10.debug(`[addTimestampLinksInChunks] Preserving non-section chunk ${i + 1} unchanged`);
           processedChunks.push(ensureTrailingNewline(chunk));
           continue;
         }
@@ -48107,12 +48589,10 @@ ${contentToTranslate}
           }
           llmLogger4.debug(`Headings in chunk ${i + 1}: ${chunkHeadings.join(", ")}`);
         }
-        logger12.debug(`[addTimestampLinksInChunks] Processing chunk ${i + 1} of ${chunks.length}, length: ${chunk.length}`);
+        logger10.debug(`[addTimestampLinksInChunks] Processing chunk ${i + 1} of ${chunks.length}, length: ${chunk.length}`);
         this.showNotice(`Processing section ${i + 1} of ${chunks.length}...`, 2e3);
         const timestampConfig = getTimestampLinkConfig(this.settings, videoId);
         const transcriptContent = transcript.length > 0 ? transcript : "No transcript available, use default timestamps starting at 0 seconds.";
-        const referenceSection = "----- REFERENCE MATERIAL (DO NOT INCLUDE IN OUTPUT) -----\nVIDEO_ID: " + videoId + "\nTRANSCRIPT:\n" + transcriptContent + "\n----- END REFERENCE MATERIAL -----";
-        const chunkPrompt = timestampConfig.userPrompt + "\n\n" + chunk + "\n\n" + referenceSection;
         const restructuredPrompt = "INSTRUCTIONS:\n" + timestampConfig.userPrompt + "\n\nINSTRUCTION INPUT DATA - TIMESTAMPS TRANSCRIPT:\n" + transcriptContent + "\n\nINPUT NOTE TO BE MODIFIED WITH TIMESTAMPS:\n" + chunk;
         if (this.settings.debugLogging) {
           llmLogger4.debug(`CHUNK ${i + 1} PROMPT:`);
@@ -48125,7 +48605,7 @@ ${contentToTranslate}
           llmLogger4.debug("----------------------------------------");
           llmLogger4.debug(`CHUNK ${i + 1} COMPLETE FORMATTED PROMPT:`);
           llmLogger4.debug("========================================");
-          llmLogger4.debug(this.settings.selectedLLM === "google" ? restructuredPrompt : chunkPrompt);
+          llmLogger4.debug(restructuredPrompt);
           llmLogger4.debug("========================================");
         }
         try {
@@ -48137,11 +48617,18 @@ ${contentToTranslate}
           const modelMaxTokens = this.getMaxTokensForTimestampPass();
           let percentageToUse = 0.9;
           const isLargeContextModel = modelMaxTokens >= 8e3;
+          const isAnthropicModel = this.settings.selectedLLM === "anthropic";
           if (totalEstimatedInputTokens > modelMaxTokens / 3) {
-            if (isLargeContextModel) {
+            if (isAnthropicModel) {
+              percentageToUse = Math.max(0.5, 0.7 - totalEstimatedInputTokens / modelMaxTokens * 0.2);
+            } else if (isLargeContextModel) {
               percentageToUse = Math.max(0.7, 0.9 - totalEstimatedInputTokens / modelMaxTokens * 0.2);
             } else {
               percentageToUse = Math.max(0.6, 0.9 - totalEstimatedInputTokens / modelMaxTokens * 0.3);
+            }
+          } else {
+            if (isAnthropicModel) {
+              percentageToUse = 0.7;
             }
           }
           const maxTokens = Math.floor(modelMaxTokens * percentageToUse);
@@ -48152,7 +48639,7 @@ ${contentToTranslate}
             llmLogger4.debug(`[addTimestampLinksInChunks] Model has large context window: ${isLargeContextModel}`);
             llmLogger4.debug(`[addTimestampLinksInChunks] Using ${percentageToUse * 100}% of max tokens: ${maxTokens} of ${modelMaxTokens}`);
           }
-          logger12.debug(`[addTimestampLinksInChunks] Using ${maxTokens} tokens (${Math.round(percentageToUse * 100)}% of ${modelMaxTokens})`);
+          logger10.debug(`[addTimestampLinksInChunks] Using ${maxTokens} tokens (${Math.round(percentageToUse * 100)}% of ${modelMaxTokens})`);
           const chunkSummarizer = new TranscriptSummarizer({
             model: this.getModelForProvider(this.settings.selectedLLM),
             temperature: timestampConfig.temperature,
@@ -48162,7 +48649,7 @@ ${contentToTranslate}
             // Use the base prompt, not the complete chunk prompt
           }, this.settings.apiKeys);
           const processedChunk = await chunkSummarizer.summarize(
-            this.settings.selectedLLM === "google" ? restructuredPrompt : chunkPrompt,
+            restructuredPrompt,
             this.settings.selectedLLM
           );
           if (this.settings.debugLogging) {
@@ -48184,15 +48671,15 @@ ${contentToTranslate}
             if (hasLink) {
               processedChunks.push(finalChunk);
             } else {
-              logger12.warn("[addTimestampLinksInChunks] No timestamp link added to chunk", i + 1);
+              logger10.warn("[addTimestampLinksInChunks] No timestamp link added to chunk", i + 1);
               processedChunks.push(ensureTrailingNewline(chunk));
             }
           } else {
-            logger12.warn("[addTimestampLinksInChunks] Empty response for chunk", i + 1);
+            logger10.warn("[addTimestampLinksInChunks] Empty response for chunk", i + 1);
             processedChunks.push(ensureTrailingNewline(chunk));
           }
         } catch (e) {
-          logger12.error(`[addTimestampLinksInChunks] Error processing chunk ${i + 1}:`, e);
+          logger10.error(`[addTimestampLinksInChunks] Error processing chunk ${i + 1}:`, e);
           if (this.settings.debugLogging) {
             llmLogger4.debug(`ERROR PROCESSING CHUNK ${i + 1}:`);
             llmLogger4.debug(e.message || "Unknown error");
@@ -48222,12 +48709,12 @@ ${contentToTranslate}
         this.showNotice(`Added ${linkCount} timestamp links using chunked processing`, 5e3);
         return combinedContent;
       } else {
-        logger12.error("[addTimestampLinksInChunks] No timestamp links were added in any chunk");
+        logger10.error("[addTimestampLinksInChunks] No timestamp links were added in any chunk");
         this.showNotice("Failed to add any timestamp links", 5e3);
         return null;
       }
     } catch (error) {
-      logger12.error("[addTimestampLinksInChunks] Error:", error);
+      logger10.error("[addTimestampLinksInChunks] Error:", error);
       this.showNotice(`Error in chunked processing: ${error.message}`, 5e3);
       return null;
     }
@@ -48239,50 +48726,47 @@ ${contentToTranslate}
   // Method to get appropriate max tokens for the timestamp linking pass based on the model
   getMaxTokensForTimestampPass() {
     const selectedProvider = this.settings.selectedLLM;
+    const outputMultiplier = 0.85;
     if (selectedProvider === "openai") {
       const model = this.settings.selectedModels.openai;
       if (model.includes("gpt-4-turbo") || model.includes("gpt-4-32k")) {
-        return 16384;
+        return Math.floor(16384 * outputMultiplier);
       } else if (model.includes("gpt-4")) {
-        return 6144;
+        return Math.floor(6144 * outputMultiplier);
       } else if (model.includes("gpt-3.5-turbo-16k")) {
-        return 12288;
+        return Math.floor(12288 * outputMultiplier);
       } else {
-        return 4096;
+        return Math.floor(4096 * outputMultiplier);
       }
     } else if (selectedProvider === "anthropic") {
-      const model = this.settings.selectedModels.anthropic;
-      if (model.includes("claude-3-opus")) {
-        return 24576;
-      } else if (model.includes("claude-3-sonnet")) {
-        return 16384;
-      } else if (model.includes("claude-2")) {
-        return 12288;
+      const model = this.settings.selectedModels.anthropic || "";
+      if (model.includes("claude-3-opus") || model.includes("claude-3-sonnet")) {
+        return Math.floor(4096 * outputMultiplier);
       } else {
-        return 8192;
+        return Math.floor(4096 * outputMultiplier);
       }
     } else if (selectedProvider === "google") {
       const model = this.settings.selectedModels.google;
       if (model.includes("gemini-1.5")) {
-        return 16384;
+        return Math.floor(16384 * outputMultiplier);
       } else if (model.includes("gemini-pro")) {
-        return 8192;
+        return Math.floor(8192 * outputMultiplier);
       } else {
-        return 4096;
+        return Math.floor(4096 * outputMultiplier);
       }
     } else if (selectedProvider === "ollama") {
       const model = this.settings.selectedModels.ollama.toLowerCase();
       if (model.includes("llama-3")) {
-        return 8192;
+        return Math.floor(8192 * outputMultiplier);
       } else if (model.includes("mistral") || model.includes("mixtral")) {
-        return 6144;
+        return Math.floor(6144 * outputMultiplier);
       } else if (model.includes("llama-2-70b")) {
-        return 4096;
+        return Math.floor(4096 * outputMultiplier);
       } else {
-        return 3072;
+        return Math.floor(3072 * outputMultiplier);
       }
     }
-    return 4096;
+    return Math.floor(4096 * outputMultiplier);
   }
   sanitizePathComponent(text) {
     return sanitizePathComponent(text);
@@ -48694,9 +49178,9 @@ var YouTubeTranscriptModal = class extends import_obsidian4.Modal {
     } finally {
       if (this.plugin.settings.selectedLLM === "anthropic") {
         try {
-          await stopLocalProxy();
+          logger10.info("[beginCollectionProcessing] Completed Anthropic processing");
         } catch (error) {
-          console.error("Error stopping Anthropic proxy server:", error);
+          console.error("Error during Anthropic processing:", error);
         }
       }
       this.isProcessing = false;
@@ -48827,9 +49311,9 @@ var YouTubeTranscriptModal = class extends import_obsidian4.Modal {
     } finally {
       if (this.plugin.settings.selectedLLM === "anthropic") {
         try {
-          await stopLocalProxy();
+          logger10.info("[processTranscript] Completed Anthropic processing");
         } catch (error) {
-          console.error("Error stopping Anthropic proxy server:", error);
+          console.error("Error during Anthropic processing:", error);
         }
       }
       this.isProcessing = false;
@@ -49393,10 +49877,10 @@ var YouTubeTranscriptSettingTab = class extends import_obsidian4.PluginSettingTa
       this.plugin.settings.debugLogging = value === "true";
       if (this.plugin.settings.debugLogging) {
         setGlobalLogLevel(0 /* DEBUG */);
-        logger12.debug("Debug logging enabled from settings");
+        logger10.debug("Debug logging enabled from settings");
       } else {
         setGlobalLogLevel(1 /* INFO */);
-        logger12.info("Debug logging disabled from settings");
+        logger10.info("Debug logging disabled from settings");
       }
       await this.plugin.saveSettings();
     })).addExtraButton((button) => {
@@ -49481,9 +49965,9 @@ var TemplateFilePickerModal = class extends import_obsidian4.Modal {
     const allFiles = this.app.vault.getMarkdownFiles();
     console.log("[DEBUG] Total markdown files in vault:", allFiles.length);
     this.templates = allFiles.filter((file) => {
-      const path3 = file.path.toLowerCase();
+      const path = file.path.toLowerCase();
       const templatesFolder = this.templatesFolder.toLowerCase();
-      const isTemplate = path3.startsWith(templatesFolder + "/") || path3 === templatesFolder || path3.includes("/" + templatesFolder + "/");
+      const isTemplate = path.startsWith(templatesFolder + "/") || path === templatesFolder || path.includes("/" + templatesFolder + "/");
       if (isTemplate) {
         console.log("[DEBUG] Found template file:", file.path);
       }
@@ -49573,8 +50057,8 @@ var FolderPickerModal = class extends import_obsidian4.Modal {
       }
       const files = this.app.vault.getAllLoadedFiles();
       const rootFolderObj = files.find((f) => {
-        const path3 = f.path || "";
-        return path3 === rootFolder || path3 === normalizedRootFolder;
+        const path = f.path || "";
+        return path === rootFolder || path === normalizedRootFolder;
       });
       this.folders.push({
         path: normalizedRootFolder,
@@ -49599,13 +50083,13 @@ var FolderPickerModal = class extends import_obsidian4.Modal {
       const normalizedRootFolderPrefix = normalizedRootFolder + "/";
       for (const file of files) {
         if (file && file.type === "folder") {
-          const path3 = file.path || "";
-          if (path3.startsWith(rootFolderPrefix) || path3.startsWith(normalizedRootFolderPrefix)) {
-            const normalizedPath = normalizePath(path3, false);
+          const path = file.path || "";
+          if (path.startsWith(rootFolderPrefix) || path.startsWith(normalizedRootFolderPrefix)) {
+            const normalizedPath = normalizePath(path, false);
             if (!uniquePaths.has(normalizedPath)) {
               this.folders.push({
                 path: normalizedPath,
-                name: path3
+                name: path
               });
               uniquePaths.add(normalizedPath);
             }

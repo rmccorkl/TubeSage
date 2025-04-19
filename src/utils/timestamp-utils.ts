@@ -125,14 +125,14 @@ export function findContentHeadings(content: string): { text: string; position: 
     
     // Find all headings in the content that match our expected format
     // This will match:
-    // - ### 1. Heading
-    // - ## 2. Heading
-    // - # 3. Heading
+    // - ### 1.1. Heading (section heading)
+    // - ## 1. Heading (subheading)
+    // - # 1. Heading (main heading)
     // But not:
     // - # Heading (without number)
     // - ## Heading (without number)
     // - # (horizontal rule)
-    const headingRegex = /^(#+\s+\d+\.\s+.*?)$/gm;
+    const headingRegex = /^(#+\s+\d+(?:\.\d+)?\.?\s+.*?)$/gm;
     let match;
     
     while ((match = headingRegex.exec(content)) !== null) {
@@ -241,7 +241,7 @@ export function ensureTrailingNewline(chunk: string): string {
  * @returns The number of headings with timestamp links
  */
 export function countTimestampLinks(content: string): number {
-    const headingsWithLinks = content.match(/^#+\s+\d+\.[^\n]*\[Watch\]/gm);
+    const headingsWithLinks = content.match(/^#+\s+\d+(?:\.\d+)?\.?\s+[^\n]*\[Watch\]/gm);
     return headingsWithLinks ? headingsWithLinks.length : 0;
 }
 
@@ -252,7 +252,7 @@ export function countTimestampLinks(content: string): number {
  * @returns Whether the chunk contains a proper section heading
  */
 export function hasProperHeading(chunk: string): boolean {
-    return !!chunk.match(/^#+\s+\d+/m);
+    return !!chunk.match(/^#+\s+\d+(?:\.\d+)?\.?\s+/m);
 }
 
 /**
@@ -270,8 +270,8 @@ export function hasTimestampLinks(chunk: string, videoId: string): boolean {
         // Log the first few hundred characters to see what's coming back
         logger.debug(`No timestamp links found in chunk. First 200 chars: ${chunk.substring(0, 200)}...`);
         
-        // Check if we have any headings
-        const headings = chunk.match(/^#+\s+\d+\./gm);
+        // Check if we have any headings with proper format
+        const headings = chunk.match(/^#+\s+\d+(?:\.\d+)?\.?\s+/gm);
         if (headings) {
             logger.debug(`Found ${headings.length} numbered headings but no timestamp links`);
         } else {
