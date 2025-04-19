@@ -1,6 +1,6 @@
 #  TubeSage : YouTube Transcript LLM for Obsidian
 
-TubeSage An Obsidian plugin to extract YouTube transcripts, summarize them with LLMs, and create notes using Templater.
+TubeSage is an Obsidian plugin to extract YouTube transcripts, summarize them with LLMs, and create notes using Templater.
 
 ## Features
 
@@ -15,10 +15,11 @@ TubeSage An Obsidian plugin to extract YouTube transcripts, summarize them with 
 - Add timestamp links to sections for easy video navigation
 - Two summary modes: Fast and Extensive
 - Customize summarization parameters and prompts
+- Cross-platform support for both desktop and mobile Obsidian
 
 ## Requirements
 
-- [Obsidian](https://obsidian.md/) v0.15.0+
+- [Obsidian](https://obsidian.md/) v1.2.0+
 - [Templater plugin](https://github.com/SilentVoid13/Templater) installed and enabled
 - API key for your chosen LLM provider (OpenAI, Anthropic, or Google)
 - YouTube API key (required for channel/playlist features) - see [instructions below](#creating-a-youtube-api-key)
@@ -67,17 +68,68 @@ TubeSage An Obsidian plugin to extract YouTube transcripts, summarize them with 
 - Enhanced validation of generated timestamp links
 - Smart retry system for failed timestamp generation
 
-### Anthropic API Improvements
-- Added proxy server health monitoring
-- Better Node.js detection and error handling
-- More robust error recovery for network issues
+### Mobile Support Enhancements
+- Added fallback extraction methods optimized for mobile platforms
+- Improved error handling for mobile-specific limitations
+- Adaptive processing for iOS and Android
 
 ### Documentation Updates
 - Updated workflow diagrams in the `/docs` folder
 - Enhanced data flow documentation with detailed diagrams
 - Added component interaction visualizations
 
-For detailed technical documentation, see the updated diagrams in the `/docs` directory.
+## Technical Architecture
+
+TubeSage uses a modular, factory-based architecture for maximum flexibility and cross-platform compatibility.
+
+### Architecture Diagrams
+
+Two comprehensive diagrams in the `/docs` directory explain the plugin's architecture:
+
+#### [Data Flow Diagram](/docs/data-flow-diagram.md)
+This diagram illustrates how data moves through the system:
+- Transcript extraction from YouTube with platform-specific optimizations
+- LLM Factory pattern for client management
+- Integration with multiple LLM providers
+- Cross-platform fetch handling
+- Template application and note creation
+
+#### [Workflow Diagram](/docs/workflow-diagram.md)
+This diagram details the user and system workflow:
+- Plugin setup and configuration process
+- User interaction paths (single video, channel, playlist)
+- Platform detection and adaptation (mobile vs desktop)
+- Error handling with fallback mechanisms
+- LLM provider selection and processing
+- Batch processing options
+
+### Key Components
+
+- **Main Module** (`main.ts`): Core plugin file that initializes and coordinates the plugin
+- **Transcript Extractor** (`src/youtube-transcript.ts`): YouTube transcript extraction with mobile fallbacks
+- **LLM Factory** (`src/llm/llm-factory.ts`): Factory pattern for creating and managing LLM clients
+- **LLM Clients**: Specialized clients for each provider:
+  - `src/llm/openai-client.ts`: OpenAI API integration
+  - `src/llm/anthropic-client.ts`: Anthropic API integration
+  - `src/llm/gemini-client.ts`: Google Gemini API integration
+  - `src/llm/ollama-client.ts`: Local Ollama integration
+- **LangChain Integration** (`src/llm/langchain-client.ts`): Unified interface for LLM providers
+- **Fetch Shim** (`src/utils/fetch-shim.ts`): Cross-platform HTTP requests
+- **Utilities**:
+  - `src/utils/logger.ts`: Centralized logging system
+  - `src/utils/error-utils.ts`: Standardized error handling
+  - `src/utils/performance-monitor.ts`: Performance tracking
+
+The UI is implemented using Obsidian's native Modal component, making it lightweight and consistent with Obsidian's user interface patterns.
+
+## Cross-Platform API Access
+
+TubeSage uses a custom-built fetch shim to ensure all LLM providers work seamlessly across both desktop and mobile Obsidian:
+
+- **Unified Interface**: All LLM providers (OpenAI, Anthropic, Google) use the same fetch implementation
+- **Mobile Compatibility**: Works on iOS and Android without requiring Node.js
+- **Error Handling**: Robust error recovery and detailed logging
+- **LangChain Integration**: Uses LangChain with our custom fetcher for standardized LLM interactions
 
 ## Creating a YouTube API Key
 
@@ -116,7 +168,7 @@ To process YouTube playlists and channels within limits, you need a YouTube Data
 
 7. Add the API Key to the Plugin
    - Copy your new API key
-   - In Obsidian, go to Settings > YouTube Transcript Plugin
+   - In Obsidian, go to Settings > TubeSage
    - Paste your API key in the "YouTube Data API Key" field
 
 Note about Quotas: The YouTube Data API has daily quotas (by default, 10,000 units per day). Fetching a channel or playlist typically uses 1-100 units depending on the size. If you exceed your quota, you'll need to wait until it resets the next day or request a quota increase from Google.
@@ -140,7 +192,8 @@ Note about Quotas: The YouTube Data API has daily quotas (by default, 10,000 uni
 You can also process entire YouTube channels or playlists:
 1. Enter a YouTube channel or playlist URL
 2. Choose how many videos to process
-3. The plugin will create notes for each video in the collection
+3. Configure batch processing settings (sequential or parallel)
+4. The plugin will create notes for each video in the collection
 
 ## Configuration
 
@@ -175,6 +228,32 @@ You can also process entire YouTube channels or playlists:
    - Enable debug logging for troubleshooting
    - Configure performance monitoring options
    - Set batch processing parameters
+   - Adjust mobile compatibility options
+
+## LLM Provider Selection Guide
+
+### When to use each LLM provider:
+
+#### OpenAI
+- **Best for**: General-purpose summaries, structured outlines, content categorization
+- **Strengths**: Well-structured responses, follows instructions precisely, good with timestamps
+- **Models**: GPT-4o recommended for best quality, GPT-3.5-Turbo for faster processing
+
+#### Anthropic
+- **Best for**: Nuanced discussions, complex topics, longer videos
+- **Strengths**: More nuanced understanding of content, better with abstract concepts
+- **Models**: Claude 3 Opus for highest quality, Claude 3 Haiku for speed
+
+#### Google
+- **Best for**: Factual summaries, technical content
+- **Strengths**: Strong with factual data, good balance of speed and quality
+- **Models**: Gemini Pro for best results
+
+#### Ollama
+- **Best for**: Privacy-focused users, offline work, faster local processing
+- **Strengths**: Complete privacy, no data sharing, works offline
+- **Requirements**: Ollama must be installed and running locally
+- **Models**: Various options depending on your local setup
 
 ## License
 
@@ -187,33 +266,4 @@ If you find this plugin useful, consider supporting its development:
 
 ## GitHub Repository
 
-For issues, feature requests, or contributions, please visit the [GitHub repository](https://github.com/yourusername/youtube-transcript-llm).
-
-## Architecture
-
-This plugin uses a clean, framework-free approach utilizing the native Obsidian API.
-
-Key components:
-- `main.ts` - Main plugin file
-- `src/youtube-transcript.ts` - YouTube transcript extraction
-- `src/llm/transcript-summarizer.ts` - LLM integrations for summarization
-- `src/llm/langchain-client.ts` - LangChain integration for unified LLM access
-- `src/utils/fetch-shim.ts` - Cross-platform fetch implementation for API calls
-- `src/utils/youtube-utils.ts` - Shared utility functions for YouTube URL handling
-- `src/utils/error-utils.ts` - Standardized error handling utilities
-- `src/utils/logger.ts` - Centralized logging system
-- `src/utils/performance-monitor.ts` - Performance tracking and optimization
-
-The UI is implemented using Obsidian's native Modal component, making it lightweight and consistent with Obsidian's user interface patterns.
-
-## Cross-Platform API Access
-
-TubeSage uses a custom-built fetch shim to ensure all LLM providers work seamlessly across both desktop and mobile Obsidian:
-
-- **Unified Interface**: All LLM providers (OpenAI, Anthropic, Google) use the same fetch implementation
-- **Mobile Compatibility**: Works on iOS and Android without requiring Node.js
-- **Error Handling**: Robust error recovery and detailed logging
-- **LangChain Integration**: Uses LangChain with our custom fetcher for standardized LLM interactions
-
-This approach ensures maximum compatibility while maintaining excellent performance on all platforms.
-
+For issues, feature requests, or contributions, please visit the [GitHub repository](https://github.com/rmccorkl/TubeSage).
