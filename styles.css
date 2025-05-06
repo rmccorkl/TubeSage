@@ -1,0 +1,29 @@
+/* TubeSage Plugin Styles */
+
+.tubesage-processing-modal {
+    width: 150px;
+    height: auto;
+    min-height: 50px;
+}
+
+.youtube-transcript-form .error {
+    color: var(--text-error);
+    margin-bottom: 15px;
+    padding: 8px;
+    background: var(--background-modifier-error);
+    border-radius: 4px;
+}
+
+.hidden-by-validation {
+    display: none;
+}
+
+.hidden-by-script {
+    display: none;
+}
+
+.url-validation-hidden {
+    display: none;
+}
+
+/* Add any other plugin-specific styles here */ 

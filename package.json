@@ -1,0 +1,46 @@
+{
+    "name": "tubesage",
+    "version": "1.0.0",
+    "description": "Create comprehensive notes from YouTube transcripts them using LLMs",
+    "main": "main.js",
+    "scripts": {
+        "dev": "node esbuild.config.mjs",
+        "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+        "deploy": "chmod +x scripts/deploy.sh && ./scripts/deploy.sh",
+        "version": "node version-bump.mjs && git add manifest.json versions.json"
+    },
+    "keywords": [
+        "obsidian",
+        "youtube",
+        "transcript",
+        "llm",
+        "templater"
+    ],
+    "author": "Richard McCorkle",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/express": "^4.17.21",
+        "@types/node": "^20.11.19",
+        "@typescript-eslint/eslint-plugin": "^7.0.1",
+        "@typescript-eslint/parser": "^7.0.1",
+        "builtin-modules": "^3.3.0",
+        "esbuild": "0.19.12",
+        "obsidian": "latest",
+        "tslib": "2.4.0",
+        "typescript": "^5.8.3"
+    },
+    "dependencies": {
+        "@langchain/anthropic": "^0.2.0",
+        "@langchain/community": "^0.3.38",
+        "@langchain/core": "^0.3.17",
+        "@langchain/google-genai": "^0.1.12",
+        "@langchain/openai": "^0.2.0",
+        "express": "^4.18.3",
+        "hh-mm-ss": "^1.2.0",
+        "http-proxy-middleware": "^2.0.6",
+        "langchain": "^0.2.0",
+        "parse-duration": "^2.1.4",
+        "youtube-transcript": "^1.0.6",
+        "youtube-transcript-api": "^1.1.2"
+    }
+}
