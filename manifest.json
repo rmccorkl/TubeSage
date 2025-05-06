@@ -3,7 +3,7 @@
     "name": "TubeSage",
     "version": "1.0.0",
     "minAppVersion": "1.2.0",
-    "description": "Create comprehensive notes from YouTube transcripts them using LLMs",
+    "description": "Create comprehensive notes from YouTube transcripts using LLMs",
     "author": "Richard McCorkle",
     "authorUrl": "https://github.com/rmccorkl",
     "isDesktopOnly": false
