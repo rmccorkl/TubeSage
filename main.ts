@@ -2211,12 +2211,12 @@ ${contentToTranslate}
     // Utility method to detect if we're running on a mobile device
     private isMobileDevice(): boolean {
         // Check if the app's isMobile property is true first (most reliable in Obsidian)
-        if ((window as any).app?.isMobile === true) {
+        if ((window as ObsidianAppWindow).app?.isMobile === true) {
             return true;
         }
         
         // Fallback to checking the userAgent string
-        const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera || '';
+        const userAgent = navigator.userAgent || navigator.vendor || (window as ObsidianAppWindow).opera || '';
         return (
             /android/i.test(userAgent) ||
             /iPad|iPhone|iPod/.test(userAgent) ||
@@ -3192,7 +3192,7 @@ class YouTubeTranscriptModal extends Modal {
 
     // Simple helper to detect mobile devices
     private isMobile(): boolean {
-        return (window as any).app?.isMobile === true;
+        return (window as ObsidianAppWindow).app?.isMobile === true;
     }
 }
 
@@ -5610,4 +5610,16 @@ class TemplateViewModal extends Modal {
         const { contentEl } = this;
         contentEl.empty();
     }
+}
+
+// Add this interface at the top of the file after the existing imports
+interface ObsidianAppWindow extends Window {
+    app?: {
+        isMobile?: boolean;
+        plugins?: Record<string, unknown>;
+        vault?: Record<string, unknown>;
+        workspace?: Record<string, unknown>;
+        setting?: Record<string, unknown>;
+    };
+    opera?: string;
 }

@@ -62,7 +62,7 @@ export class LangChainClient {
             maxTokens: this.maxTokens
           });
           
-          const response = await model.invoke(messages as any); // TODO: Fix type properly rather than using any
+          const response = await model.invoke(messages);
           return String(response.content);
         }
           
@@ -176,7 +176,7 @@ export class LangChainClient {
             maxTokens: this.maxTokens // Using maxTokens directly
           });
           
-          const response = await model.invoke(messages as any); // TODO: Fix type properly rather than using any
+          const response = await model.invoke(messages);
           return String(response.content);
         }
            
@@ -190,7 +190,7 @@ export class LangChainClient {
             temperature: this.temperature,
           });
           
-          const response = await model.invoke(messages as any); // TODO: Fix type properly rather than using any
+          const response = await model.invoke(messages);
           return String(response.content);
         }
 
