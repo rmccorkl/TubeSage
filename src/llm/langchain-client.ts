@@ -62,7 +62,10 @@ export class LangChainClient {
             maxTokens: this.maxTokens
           });
           
-          const response = await model.invoke(messages);
+          // TODO: Revisit this type casting when LangChain's type definitions are more stable
+          // Type cast to any[] is needed because LangChain's type definitions for invoke()
+          // expect an array type that's not directly compatible with (SystemMessage | HumanMessage)[]
+          const response = await model.invoke(messages as any[]);
           return String(response.content);
         }
           
@@ -176,7 +179,8 @@ export class LangChainClient {
             maxTokens: this.maxTokens // Using maxTokens directly
           });
           
-          const response = await model.invoke(messages);
+          // Type cast needed for compatibility with LangChain's invoke() method
+          const response = await model.invoke(messages as any[]);
           return String(response.content);
         }
            
@@ -190,7 +194,8 @@ export class LangChainClient {
             temperature: this.temperature,
           });
           
-          const response = await model.invoke(messages);
+          // Type cast needed for compatibility with LangChain's invoke() method
+          const response = await model.invoke(messages as any[]);
           return String(response.content);
         }
 

@@ -79,24 +79,34 @@ export function displayValidationResult(
         // Set error message, with a fallback if none provided
         const message = result.message || 'An error occurred';
         element.setText(message);
-        element.style.display = 'block';
         
-        // Apply style class if provided
+        // Show the error element by adding visible class and removing hidden class
+        element.addClass('tubesage-error-visible');
+        element.removeClass('tubesage-error-hidden');
+        
+        // Apply style class if provided, ensuring it's namespaced
         if (styleClass) {
-            element.addClass(styleClass);
+            // If styleClass already has tubesage- prefix, use it as is
+            // Otherwise add the prefix to ensure proper namespacing
+            const namespacedClass = styleClass.startsWith('tubesage-') 
+                ? styleClass 
+                : `tubesage-${styleClass}`;
+            element.addClass(namespacedClass);
         }
         
         // Auto-hide after timeout if provided
         if (timeout) {
             setTimeout(() => {
-                element.style.display = 'none';
+                element.addClass('tubesage-error-hidden');
+                element.removeClass('tubesage-error-visible');
             }, timeout);
         }
         
         return false;
     } else {
         // Hide error element if validation passed
-        element.style.display = 'none';
+        element.addClass('tubesage-error-hidden');
+        element.removeClass('tubesage-error-visible');
         return true;
     }
 }
@@ -117,12 +127,17 @@ export function validateInputField(
     // Check all validations
     for (const validation of validations) {
         if (!validation.isValid) {
-            return displayValidationResult(validation, { element: errorEl });
+            // Explicitly use the namespaced error class for consistency
+            return displayValidationResult(validation, { 
+                element: errorEl,
+                styleClass: 'tubesage-error'
+            });
         }
     }
     
     // All validations passed
-    errorEl.style.display = 'none';
+    errorEl.addClass('tubesage-error-hidden');
+    errorEl.removeClass('tubesage-error-visible');
     return true;
 }
 

@@ -515,6 +515,31 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     opacity: 1;
                 }
             }
+
+            /* Helper display classes introduced during style→CSS refactor */
+            .tubesage-display-block {
+                display: block;
+            }
+            .tubesage-display-none {
+                display: none;
+            }
+
+            /* Validation message visibility + color helpers */
+            .tubesage-validation-visible {
+                display: block;
+            }
+            .tubesage-validation-hidden {
+                display: none;
+            }
+            .tubesage-validation-error {
+                color: var(--text-error);
+            }
+            .tubesage-validation-success {
+                color: var(--text-success);
+            }
+            .tubesage-validation-accent {
+                color: var(--text-accent);
+            }
         `;
         document.head.appendChild(styleEl);
 
@@ -2274,7 +2299,9 @@ class YouTubeTranscriptModal extends Modal {
     // Helper method to hide error message
     private hideError(): void {
         if (this.errorEl) {
-            this.errorEl.style.display = 'none';
+            // Use class toggling for consistency with displayValidationResult
+            this.errorEl.addClass('tubesage-error-hidden');
+            this.errorEl.removeClass('tubesage-error-visible');
         }
     }
     
@@ -2316,15 +2343,14 @@ class YouTubeTranscriptModal extends Modal {
         
         // Create a URL validation message element
         const urlValidationEl = urlGroup.createEl('div', { 
-            cls: 'validation-message',
+            cls: ['validation-message', 'tubesage-validation-hidden'],
             attr: { style: 'margin-top: 5px; font-size: 12px;' }
         });
-        urlValidationEl.style.display = 'none';
         
         // Add channel selection container (initially hidden)
         const channelOptionsContainer = formEl.createEl('div', { 
-            cls: 'channel-options',
-            attr: { style: 'display: none; margin-top: 15px; background: var(--background-secondary); padding: 15px; border-radius: 5px;' }
+            cls: ['channel-options', 'tubesage-display-none'],
+            attr: { style: 'margin-top: 15px; background: var(--background-secondary); padding: 15px; border-radius: 5px;' }
         });
         
         // Add channel message
@@ -2490,14 +2516,9 @@ class YouTubeTranscriptModal extends Modal {
         });
         
         // Error message container
-        this.errorEl = formEl.createEl('div', { cls: 'error' });
-        this.errorEl.style.display = 'none';
-        this.errorEl.style.color = 'var(--text-normal)';
-        this.errorEl.style.marginTop = '10px';
-        this.errorEl.style.padding = '10px';
-        this.errorEl.style.borderRadius = '4px';
-        this.errorEl.style.backgroundColor = 'var(--background-modifier-error)';
-        this.errorEl.style.border = '1px solid var(--background-modifier-error-hover)';
+        this.errorEl = formEl.createEl('div', { cls: ['tubesage-error', 'tubesage-error-hidden'] });
+        // All other inline styles for this.errorEl (color, marginTop, padding, etc.) are removed
+        // as they will be handled by the .tubesage-error CSS class.
         
         // Add real-time validation on URL change
         this.urlInputEl.addEventListener('input', () => {
@@ -2506,32 +2527,42 @@ class YouTubeTranscriptModal extends Modal {
             // First check if it's a valid URL
             if (url && !this.isYoutubeUrl(url)) {
                 urlValidationEl.setText('Not a valid YouTube URL. Only video, playlist, and channel URLs are supported.');
-                urlValidationEl.style.color = 'var(--text-error)';
-                urlValidationEl.style.display = 'block';
+                urlValidationEl.removeClass('tubesage-validation-success', 'tubesage-validation-accent');
+                urlValidationEl.addClass('tubesage-validation-error', 'tubesage-validation-visible');
+                urlValidationEl.removeClass('tubesage-validation-hidden');
                 return;
             }
             
             // Check if it's a channel URL
             if (url && this.isYoutubeChannelOrPlaylistUrl(url)) {
                 urlValidationEl.setText('YouTube channel or playlist URL detected');
-                urlValidationEl.style.color = 'var(--text-accent)';
-                urlValidationEl.style.display = 'block';
+                urlValidationEl.removeClass('tubesage-validation-error', 'tubesage-validation-success');
+                urlValidationEl.addClass('tubesage-validation-accent', 'tubesage-validation-visible');
+                urlValidationEl.removeClass('tubesage-validation-hidden');
                 
                 // Show channel options, hide title input
-                channelOptionsContainer.style.display = 'block';
-                titleGroup.style.display = 'none';
+                channelOptionsContainer.addClass('tubesage-display-block');
+                channelOptionsContainer.removeClass('tubesage-display-none');
+                titleGroup.addClass('tubesage-display-none');
+                titleGroup.removeClass('tubesage-display-block');
             } else if (url) {
                 urlValidationEl.setText('YouTube video URL detected');
-                urlValidationEl.style.color = 'var(--text-success)';
-                urlValidationEl.style.display = 'block';
+                urlValidationEl.removeClass('tubesage-validation-error', 'tubesage-validation-accent');
+                urlValidationEl.addClass('tubesage-validation-success', 'tubesage-validation-visible');
+                urlValidationEl.removeClass('tubesage-validation-hidden');
                 
                 // Hide channel options, show title input
-                channelOptionsContainer.style.display = 'none';
-                titleGroup.style.display = 'block';
+                channelOptionsContainer.addClass('tubesage-display-none');
+                channelOptionsContainer.removeClass('tubesage-display-block');
+                titleGroup.addClass('tubesage-display-block');
+                titleGroup.removeClass('tubesage-display-none');
             } else {
-                urlValidationEl.style.display = 'none';
-                channelOptionsContainer.style.display = 'none';
-                titleGroup.style.display = 'block';
+                urlValidationEl.addClass('tubesage-validation-hidden');
+                urlValidationEl.removeClass('tubesage-validation-visible');
+                channelOptionsContainer.addClass('tubesage-display-none');
+                channelOptionsContainer.removeClass('tubesage-display-block');
+                titleGroup.addClass('tubesage-display-block');
+                titleGroup.removeClass('tubesage-display-none');
             }
         });
         
@@ -2543,10 +2574,12 @@ class YouTubeTranscriptModal extends Modal {
                 
                 if (url && this.isYoutubeUrl(url)) {
                     if (this.isYoutubeChannelOrPlaylistUrl(url)) {
-                        // If it's a channel URL, don't focus title - show channel options
-                        channelOptionsContainer.style.display = 'block';
-                        titleGroup.style.display = 'none';
-                    } else if (this.titleInputEl.style.display !== 'none') {
+                        // If it's a channel or playlist URL, show channel options and hide the title input
+                        channelOptionsContainer.addClass('tubesage-display-block');
+                        channelOptionsContainer.removeClass('tubesage-display-none');
+                        titleGroup.addClass('tubesage-display-none');
+                        titleGroup.removeClass('tubesage-display-block');
+                    } else if (!titleGroup.hasClass('tubesage-display-none')) {
                         // Only focus title if it's visible (single video mode)
                         this.titleInputEl.focus();
                     }

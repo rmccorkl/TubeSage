@@ -1,0 +1,19 @@
+# Prompt for Obsidian Plugin Style Refactoring
+
+When providing guidance on refactoring my Obsidian plugin's styles, please follow these principles:
+
+1. **Preserve Dynamic Functionality**: Recognize that certain inline JavaScript styles are essential when they're directly tied to user input, runtime conditions, or functional positioning. Don't blindly convert all inline styles to CSS classes if it would break this functionality.
+
+2. **Use Class Toggling for State Changes**: For binary states (visible/hidden, active/inactive, error states), suggest CSS classes that can be toggled with JavaScript rather than direct style manipulation.
+
+3. **Namespace All CSS Classes**: Ensure all CSS classes use a unique plugin-specific prefix to prevent theme conflicts (e.g., `my-plugin-hidden` instead of just `hidden`).
+
+4. **Balance Practicality with Best Practices**: Acknowledge that sometimes inline styles are the most practical solution, particularly for calculated values or position adjustments based on user settings.
+
+5. **Leverage Obsidian CSS Variables**: Use Obsidian's built-in variables like `var(--text-error)` where appropriate to maintain theme compatibility.
+
+6. **Provide Clear Justification**: For any inline styles that should remain, explain exactly why they cannot or should not be moved to CSS.
+
+7. **Respect Existing Structure**: Do not alter or remove HTML structure unless absolutely essential to meet the styling goals.
+
+8. **Consider Optional Enhancements**: Where appropriate, suggest improvements like Shadow DOM for style isolation or ARIA roles for accessibility.
