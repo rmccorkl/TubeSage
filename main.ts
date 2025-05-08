@@ -213,6 +213,25 @@ EXACTLY HOW TO DO THIS:
     licenseAccepted: false,
 };
 
+// Define a simple interface for the model object from OpenAI API
+interface OpenAIModel {
+    id: string;
+    object: string;
+    created: number;
+    owned_by: string;
+    // Add other relevant properties if needed in the future
+}
+
+// Define a simple interface for the model object from Google Generative AI API
+interface GoogleModel {
+    name: string; // e.g., "models/gemini-1.5-pro-latest"
+    displayName?: string; // e.g., "Gemini 1.5 Pro"
+    version?: string;
+    description?: string;
+    supportedGenerationMethods?: string[];
+    // Add other relevant properties if needed
+}
+
 export default class YouTubeTranscriptPlugin extends Plugin {
     settings: YouTubeTranscriptSettings;
     private summarizer: TranscriptSummarizer;
@@ -2121,6 +2140,105 @@ ${contentToTranslate}
             /Mobile|Android|iP(hone|od|ad)/.test(userAgent)
         );
     }
+
+    async fetchOpenAIModels(apiKey: string): Promise<string[]> {
+        if (!apiKey || apiKey.trim() === "") {
+            this.showNotice("OpenAI API key is missing. Cannot fetch models.", 5000);
+            logger.warn("[fetchOpenAIModels] OpenAI API key is missing.");
+            return []; // Return empty array or a default list
+        }
+
+        const url = "https://api.openai.com/v1/models";
+        try {
+            this.showNotice("Fetching OpenAI models...", 3000);
+            const response = await obsidianFetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ message: response.statusText }));
+                const errorMessage = errorData.error?.message || errorData.message || `HTTP error ${response.status}`;
+                logger.error(`[fetchOpenAIModels] Failed to fetch OpenAI models: ${errorMessage}`);
+                this.showNotice(`Failed to fetch OpenAI models: ${errorMessage}`, 5000);
+                return []; // Or a default list
+            }
+
+            const data = await response.json();
+            if (data && Array.isArray(data.data)) {
+                const modelIds = data.data
+                    .map((model: OpenAIModel) => model.id)
+                    .filter((id: string) => 
+                        id.includes('gpt') || 
+                        id.includes('text-davinci') // Include some older models if user wants
+                        // Add other filters if needed, e.g., based on capabilities
+                    )
+                    .sort(); // Sort them alphabetically
+                
+                logger.info(`[fetchOpenAIModels] Successfully fetched ${modelIds.length} OpenAI models.`);
+                this.showNotice("OpenAI models updated!", 3000);
+                return modelIds;
+            } else {
+                logger.warn("[fetchOpenAIModels] Unexpected response structure from OpenAI API.");
+                this.showNotice("Could not parse OpenAI models from API response.", 5000);
+                return [];
+            }
+        } catch (error) {
+            const errorMessage = getSafeErrorMessage(error);
+            logger.error("[fetchOpenAIModels] Error fetching or parsing OpenAI models:", errorMessage);
+            this.showNotice(`Error fetching OpenAI models: ${errorMessage}`, 5000);
+            return []; // Or a default list
+        }
+    }
+
+    async fetchGoogleModels(apiKey: string): Promise<string[]> {
+        if (!apiKey || apiKey.trim() === "") {
+            this.showNotice("Google API key is missing. Cannot fetch models.", 5000);
+            logger.warn("[fetchGoogleModels] Google API key is missing.");
+            return [];
+        }
+
+        const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
+        try {
+            this.showNotice("Fetching Google models...", 3000);
+            const response = await obsidianFetch(url, { method: 'GET' });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ message: response.statusText }));
+                const errorMessage = errorData.error?.message || errorData.message || `HTTP error ${response.status}`;
+                logger.error(`[fetchGoogleModels] Failed to fetch Google models: ${errorMessage}`);
+                this.showNotice(`Failed to fetch Google models: ${errorMessage}`, 5000);
+                return [];
+            }
+
+            const data = await response.json();
+            if (data && Array.isArray(data.models)) {
+                const modelIds = data.models
+                    .filter((model: GoogleModel) => 
+                        model.name && 
+                        !model.name.includes('embed') && 
+                        model.supportedGenerationMethods?.includes('generateContent')
+                    )
+                    .map((model: GoogleModel) => model.name.startsWith('models/') ? model.name.substring('models/'.length) : model.name) // Strip "models/" prefix
+                    .sort();
+                
+                logger.info(`[fetchGoogleModels] Successfully fetched ${modelIds.length} Google models (names stripped).`);
+                this.showNotice("Google models updated!", 3000);
+                return modelIds;
+            } else {
+                logger.warn("[fetchGoogleModels] Unexpected response structure from Google API.");
+                this.showNotice("Could not parse Google models from API response.", 5000);
+                return [];
+            }
+        } catch (error) {
+            const errorMessage = getSafeErrorMessage(error);
+            logger.error("[fetchGoogleModels] Error fetching or parsing Google models:", errorMessage);
+            this.showNotice(`Error fetching Google models: ${errorMessage}`, 5000);
+            return [];
+        }
+    }
 }
 
 class YouTubeTranscriptModal extends Modal {
@@ -3698,37 +3816,79 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             
             // Add dropdown for preset models
             setting.addDropdown(dropdown => {
-                // Store reference
                 modelDropdown = dropdown;
-                
-                // Add all models to dropdown
                 modelOptions.forEach(model => dropdown.addOption(model, model));
-                
-                // Add "Custom" option
                 dropdown.addOption('custom', '-- Custom Model --');
-                
-                // Determine the current selection
                 const currentModel = this.plugin.settings.selectedModels[provider];
                 let validSelection = modelOptions.includes(currentModel) ? currentModel : 'custom';
-                
-                // Set current selection
                 dropdown.setValue(validSelection)
                     .onChange(async (value: string) => {
                         if (value !== 'custom') {
-                            // Update model with dropdown selection
                             this.plugin.settings.selectedModels[provider] = value;
-                            // Clear custom field
-                            customField.setValue('');
+                            customField.setValue(''); // Clear custom if a preset is chosen
                             await this.plugin.saveSettings();
                         }
                     });
-                
                 return dropdown;
             });
-            
+
+            // Add refresh button ONLY for OpenAI OR Google provider
+            if (provider === 'openai' || provider === 'google') {
+                setting.addExtraButton(button => {
+                    button
+                        .setIcon('refresh-cw') // Refresh icon
+                        .setTooltip(`Refresh ${displayName} model list`)
+                        .onClick(async () => {
+                            const apiKey = this.plugin.settings.apiKeys[provider];
+                            if (!apiKey || apiKey.trim() === '') {
+                                this.plugin.showNotice(`${displayName} API key is required to refresh models.`, 5000);
+                                return;
+                            }
+
+                            let fetchedModels: string[] = [];
+                            if (provider === 'openai') {
+                                fetchedModels = await this.plugin.fetchOpenAIModels(apiKey);
+                            } else if (provider === 'google') {
+                                fetchedModels = await this.plugin.fetchGoogleModels(apiKey);
+                            }
+
+                            if (fetchedModels.length > 0) {
+                                const currentSelectedModel = this.plugin.settings.selectedModels[provider];
+                                // @ts-ignore - selectEl is part of the dropdown
+                                const options = modelDropdown.selectEl.options;
+                                for (let i = options.length - 1; i >= 0; i--) {
+                                    if (options[i].value !== 'custom') {
+                                        modelDropdown.selectEl.remove(i);
+                                    }
+                                }
+                                fetchedModels.forEach(modelId => modelDropdown.addOption(modelId, modelId));
+                                // @ts-ignore - selectEl is part of the dropdown
+                                modelDropdown.selectEl.appendChild(modelDropdown.selectEl.querySelector('option[value="custom"]'));
+
+                                if (fetchedModels.includes(currentSelectedModel)) {
+                                    modelDropdown.setValue(currentSelectedModel);
+                                } else if (fetchedModels.includes(defaultModelValue)) {
+                                    modelDropdown.setValue(defaultModelValue);
+                                    this.plugin.settings.selectedModels[provider] = defaultModelValue;
+                                    await this.plugin.saveSettings();
+                                } else if (fetchedModels.length > 0) {
+                                    modelDropdown.setValue(fetchedModels[0]);
+                                    this.plugin.settings.selectedModels[provider] = fetchedModels[0];
+                                    await this.plugin.saveSettings();
+                                } else {
+                                    modelDropdown.setValue('custom');
+                                }
+                                this.plugin.showNotice(`${displayName} model list refreshed.`, 3000);
+                            } else {
+                                this.plugin.showNotice(`Could not refresh ${displayName} models. Using existing list.`, 4000);
+                            }
+                        });
+                });
+            }
+
             // Reference to store custom field
             let customField: any;
-            
+
             // Add custom model field
             setting.addText(text => {
                 // Store reference
