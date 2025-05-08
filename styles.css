@@ -76,4 +76,284 @@
     display: none;
 }
 
-/* Add any other plugin-specific styles here */ 
+/* Add any other plugin-specific styles here */
+
+/* -------------------------------------------------------
+   Static UI styles moved from inline injection in main.ts
+   ------------------------------------------------------- */
+
+.youtube-transcript-modal-container,
+.youtube-transcript-form {
+    width: 100%;
+    padding: 20px;
+}
+
+.youtube-transcript-form .form-group {
+    margin-bottom: 15px;
+}
+
+.youtube-transcript-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.youtube-transcript-form input {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    background: var(--background-primary);
+    color: var(--text-normal);
+}
+
+/* Folder-picker + misc shared components */
+.folder-search-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    background-color: var(--background-secondary);
+    color: var(--text-normal);
+    font-size: 14px;
+}
+
+.folder-picker-subtitle {
+    margin-top: -10px;
+    margin-bottom: 15px;
+    color: var(--text-muted);
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.folder-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    margin-bottom: 15px;
+    background-color: var(--background-primary);
+}
+
+.folder-item {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--background-modifier-border);
+    font-family: var(--font-interface);
+    transition: background-color 0.1s ease;
+}
+
+.folder-item:hover {
+    background-color: var(--background-modifier-hover);
+}
+
+.folder-item.selected {
+    background-color: var(--background-modifier-hover);
+    font-weight: 500;
+}
+
+.folder-icon {
+    margin-right: 8px;
+    font-size: 16px;
+    color: var(--text-accent);
+    opacity: 0.8;
+}
+
+.folder-path {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+}
+
+.empty-state {
+    padding: 20px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.instruction-text {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.status-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.status-text {
+    margin-bottom: 20px;
+    color: var(--text-normal);
+}
+
+.close-button,
+.back-button {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin-top: 15px;
+    background-color: var(--interactive-accent);
+    color: var(--text-on-accent);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.back-button {
+    background-color: var(--background-modifier-border);
+    color: var(--text-normal);
+}
+
+.error-message {
+    color: var(--text-error);
+    margin: 15px 0;
+    padding: 8px;
+    background: var(--background-modifier-error);
+    border-radius: 4px;
+}
+
+/* Toggle switch */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    padding: 10px;
+    background: var(--background-secondary);
+    border-radius: 5px;
+}
+
+.toggle-label {
+    flex: 1;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--background-modifier-border);
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: var(--interactive-accent);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(26px);
+}
+
+.summary-info {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* Pulse loader */
+.pulse-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    height: 40px;
+    border: none;
+    background: none;
+    box-shadow: none;
+}
+
+.pulse-bar {
+    width: 8px;
+    height: 40px;
+    margin: 0 3px;
+    border-radius: 4px;
+    background-color: var(--interactive-accent);
+    animation: pulse 1.5s ease-in-out infinite;
+    display: inline-block;
+}
+
+.pulse-bar:nth-child(1) { animation-delay: 0s;   }
+.pulse-bar:nth-child(2) { animation-delay: 0.2s; }
+.pulse-bar:nth-child(3) { animation-delay: 0.4s; }
+.pulse-bar:nth-child(4) { animation-delay: 0.6s; }
+.pulse-bar:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes pulse {
+    0%, 100% { height: 5px;  opacity: 0.3; }
+    50%      { height: 40px; opacity: 1;   }
+}
+
+/* Channel / playlist options panel */
+.channel-options {
+    margin-top: 15px;
+    background: var(--background-secondary);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.channel-options .channel-message {
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+/* Process button */
+.tubesage-process-btn {
+    padding: 8px 15px;
+    background: var(--interactive-accent);
+    color: var(--text-on-accent);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Video-count dropdown */
+.video-count-dropdown {
+    padding: 5px;
+    border-radius: 4px;
+    width: 60px;
+}
+
+/* Validation message default spacing */
+.validation-message {
+    margin-top: 5px;
+    font-size: 12px;
+} 

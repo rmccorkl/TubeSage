@@ -250,23 +250,37 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         const styleEl = document.createElement('style');
         styleEl.id = 'youtube-transcript-styles';
         styleEl.textContent = `
+            /* Runtime helper classes — must be inline so they exist even
+               if the external stylesheet fails to load */
+
+            .tubesage-display-block { display: block; }
+            .tubesage-display-none  { display: none;  }
+
+            .tubesage-validation-visible  { display: block; }
+            .tubesage-validation-hidden   { display: none;  }
+            .tubesage-validation-error    { color: var(--text-error); }
+            .tubesage-validation-success  { color: var(--text-success); }
+            .tubesage-validation-accent   { color: var(--text-accent);  }
+
+            /* Basic form layout (added inline to guarantee availability even if external CSS fails to load) */
             .youtube-transcript-modal-container,
             .youtube-transcript-form {
                 width: 100%;
                 padding: 20px;
             }
-            
+
             .youtube-transcript-form .form-group {
                 margin-bottom: 15px;
             }
-            
+
             .youtube-transcript-form label {
                 display: block;
                 margin-bottom: 5px;
                 font-weight: 500;
             }
-            
+
             .youtube-transcript-form input {
+                display: block;
                 width: 100%;
                 padding: 8px;
                 border: 1px solid var(--background-modifier-border);
@@ -274,16 +288,33 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 background: var(--background-primary);
                 color: var(--text-normal);
             }
-            
-            .youtube-transcript-form .error {
-                color: var(--text-error);
-                margin-bottom: 15px;
-                padding: 8px;
-                background: var(--background-modifier-error);
-                border-radius: 4px;
+
+            /* Fast Summary Mode boxed toggle styles */
+            .toggle-container {
+                display: flex;
+                align-items: center;
+                margin: 15px 0;
+                padding: 10px;
+                background: var(--background-secondary);
+                border-radius: 5px;
             }
-            
+
+            .toggle-label {
+                flex: 1;
+                font-size: 14px;
+                margin-right: 10px;
+            }
+
+            .summary-info {
+                font-size: 12px;
+                color: var(--text-muted);
+                margin-top: 5px;
+                font-style: italic;
+            }
+
+            /* Folder-picker modal styles (kept inline to guarantee availability) */
             .folder-search-input {
+                display: block;
                 width: 100%;
                 padding: 8px;
                 margin-bottom: 15px;
@@ -293,24 +324,16 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 color: var(--text-normal);
                 font-size: 14px;
             }
-            
-            .folder-picker-subtitle {
-                margin-top: -10px;
-                margin-bottom: 15px;
-                color: var(--text-muted);
-                font-size: 0.9em;
-                text-align: center;
-            }
-            
+
             .folder-list {
-                max-height: 300px;
+                max-height: 240px; /* ≈8 items before scroll */
                 overflow-y: auto;
                 border: 1px solid var(--background-modifier-border);
                 border-radius: 4px;
                 margin-bottom: 15px;
                 background-color: var(--background-primary);
             }
-            
+
             .folder-item {
                 display: flex;
                 align-items: center;
@@ -320,23 +343,23 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 font-family: var(--font-interface);
                 transition: background-color 0.1s ease;
             }
-            
+
             .folder-item:hover {
                 background-color: var(--background-modifier-hover);
             }
-            
+
             .folder-item.selected {
                 background-color: var(--background-modifier-hover);
                 font-weight: 500;
             }
-            
+
             .folder-icon {
                 margin-right: 8px;
                 font-size: 16px;
                 color: var(--text-accent);
                 opacity: 0.8;
             }
-            
+
             .folder-path {
                 flex: 1;
                 white-space: nowrap;
@@ -344,201 +367,49 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 text-overflow: ellipsis;
                 font-size: 14px;
             }
-            
-            .empty-state {
-                padding: 20px;
-                text-align: center;
-                color: var(--text-muted);
-            }
-            
-            .instruction-text {
-                text-align: center;
-                color: var(--text-muted);
-                font-size: 0.9em;
-                margin-top: 10px;
-                margin-bottom: 10px;
-            }
-            
-            .status-container {
-                text-align: center;
-                padding: 20px;
-            }
-            
-            .status-text {
-                margin-bottom: 20px;
-                color: var(--text-normal);
-            }
-            
-            .close-button, 
-            .back-button {
-                display: block;
-                width: 100%;
-                padding: 8px;
-                margin-top: 15px;
-                background-color: var(--interactive-accent);
-                color: var(--text-on-accent);
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-            
-            .back-button {
-                background-color: var(--background-modifier-border);
-                color: var(--text-normal);
-            }
-            
-            .error-message {
-                color: var(--text-error);
-                margin: 15px 0;
-                padding: 8px;
-                background: var(--background-modifier-error);
-                border-radius: 4px;
-            }
-            
-            /* Toggle switch for summary mode */
-            .toggle-container {
-                display: flex;
-                align-items: center;
-                margin: 15px 0;
-                padding: 10px;
-                background: var(--background-secondary);
-                border-radius: 5px;
-            }
-            
-            .toggle-label {
-                flex: 1;
-                font-size: 14px;
-                margin-right: 10px;
-            }
-            
-            .toggle-switch {
-                position: relative;
-                display: inline-block;
-                width: 50px;
-                height: 24px;
-            }
-            
-            .toggle-switch input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-            
-            .toggle-slider {
-                position: absolute;
-                cursor: pointer;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: var(--background-modifier-border);
-                transition: .4s;
-                border-radius: 24px;
-            }
-            
-            .toggle-slider:before {
-                position: absolute;
-                content: "";
-                height: 18px;
-                width: 18px;
-                left: 3px;
-                bottom: 3px;
-                background-color: white;
-                transition: .4s;
-                border-radius: 50%;
-            }
-            
-            input:checked + .toggle-slider {
-                background-color: var(--interactive-accent);
-            }
-            
-            input:checked + .toggle-slider:before {
-                transform: translateX(26px);
-            }
-            
-            .summary-info {
-                font-size: 12px;
-                color: var(--text-muted);
-                margin-top: 5px;
-                font-style: italic;
-            }
-            
-            /* Pulse animation styles */
+
+            /* Pulse loader (runtime critical styles) */
             .pulse-container {
-                display: flex;
+                display: inline-flex;
                 justify-content: center;
-                align-items: center;
-                margin: 0px 0;
-                height: 40px;
-                border: none;
+                height: 60px; /* Taller to accommodate full animation */
                 background: none;
-                box-shadow: none;
+                border: none;
+                padding: 0;
+                align-items: center; /* Center bars vertically */
             }
-            
+
             .pulse-bar {
                 width: 8px;
-                height: 40px;
+                height: 30px; /* Default height at rest */
                 margin: 0 3px;
                 border-radius: 4px;
                 background-color: var(--interactive-accent);
                 animation: pulse 1.5s ease-in-out infinite;
                 display: inline-block;
+                transform-origin: center; /* Grow from middle */
             }
-            
-            .pulse-bar:nth-child(1) { 
-                animation-delay: 0s; 
-            }
-            
-            .pulse-bar:nth-child(2) { 
-                animation-delay: 0.2s; 
-            }
-            
-            .pulse-bar:nth-child(3) { 
-                animation-delay: 0.4s; 
-            }
-            
-            .pulse-bar:nth-child(4) { 
-                animation-delay: 0.6s; 
-            }
-            
-            .pulse-bar:nth-child(5) { 
-                animation-delay: 0.8s; 
-            }
-            
+
+            .pulse-bar:nth-child(1) { animation-delay: 0s;   }
+            .pulse-bar:nth-child(2) { animation-delay: 0.2s; }
+            .pulse-bar:nth-child(3) { animation-delay: 0.4s; }
+            .pulse-bar:nth-child(4) { animation-delay: 0.6s; }
+            .pulse-bar:nth-child(5) { animation-delay: 0.8s; }
+
             @keyframes pulse {
-                0%, 100% { 
-                    height: 5px;
-                    opacity: 0.3;
-                }
-                50% { 
-                    height: 40px;
-                    opacity: 1;
-                }
+                0%, 100% { height: 10px; opacity: 0.3; transform: scaleY(0.25); }
+                50%      { height: 30px; opacity: 1;   transform: scaleY(1); }
             }
 
-            /* Helper display classes introduced during style→CSS refactor */
-            .tubesage-display-block {
-                display: block;
-            }
-            .tubesage-display-none {
-                display: none;
-            }
-
-            /* Validation message visibility + color helpers */
-            .tubesage-validation-visible {
-                display: block;
-            }
-            .tubesage-validation-hidden {
-                display: none;
-            }
-            .tubesage-validation-error {
-                color: var(--text-error);
-            }
-            .tubesage-validation-success {
-                color: var(--text-success);
-            }
-            .tubesage-validation-accent {
-                color: var(--text-accent);
+            /* Processing modal container */
+            .tubesage-processing-modal {
+                width: 150px !important;
+                max-width: 150px !important;
+                height: 80px !important; /* Fixed height to prevent resizing */
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                padding: 10px 0 !important;
             }
         `;
         document.head.appendChild(styleEl);
@@ -2343,20 +2214,18 @@ class YouTubeTranscriptModal extends Modal {
         
         // Create a URL validation message element
         const urlValidationEl = urlGroup.createEl('div', { 
-            cls: ['validation-message', 'tubesage-validation-hidden'],
-            attr: { style: 'margin-top: 5px; font-size: 12px;' }
+            cls: ['validation-message', 'tubesage-validation-hidden']
         });
         
         // Add channel selection container (initially hidden)
         const channelOptionsContainer = formEl.createEl('div', { 
-            cls: ['channel-options', 'tubesage-display-none'],
-            attr: { style: 'margin-top: 15px; background: var(--background-secondary); padding: 15px; border-radius: 5px;' }
+            cls: ['channel-options', 'tubesage-display-none']
         });
         
         // Add channel message
         channelOptionsContainer.createEl('div', { 
             text: 'This is a YouTube channel or playlist URL. How many videos would you like to process? Max hard limit is 50.',
-            attr: { style: 'margin-bottom: 10px; font-weight: 500;' }
+            cls: 'channel-message'
         });
         
         // Create a container for controls with different layout based on device
@@ -2430,9 +2299,9 @@ class YouTubeTranscriptModal extends Modal {
         
         // Dropdown for selecting number of videos - add to the limitedOptionContainer
         const videoCountDropdown = limitedOptionContainer.createEl('select', {
+            cls: 'video-count-dropdown',
             attr: {
-                id: 'video-count-dropdown',
-                style: 'padding: 5px; border-radius: 4px; width: 60px;'
+                id: 'video-count-dropdown'
             }
         });
         
@@ -2458,9 +2327,9 @@ class YouTubeTranscriptModal extends Modal {
         
         const processBtn = processBtnContainer.createEl('button', {
             text: 'Process',
-            attr: { 
-                style: 'padding: 8px 15px; background: var(--interactive-accent); color: var(--text-on-accent); border: none; border-radius: 4px; cursor: pointer;' + 
-                      (isMobile ? ' width: 100%;' : '')
+            cls: 'tubesage-process-btn',
+            attr: {
+                style: isMobile ? 'width: 100%;' : ''
             }
         });
         
@@ -2692,18 +2561,15 @@ class YouTubeTranscriptModal extends Modal {
             const { contentEl } = this;
             contentEl.empty();
             
-            // Adjust modal size to fit the animation
+            // Adjust modal size to fit the animation using a CSS class
             const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
             if (modalEl && modalEl instanceof HTMLElement) {
-                modalEl.style.width = '150px';
-                modalEl.style.height = 'auto';
-                modalEl.style.minHeight = '50px';
+                modalEl.addClass('tubesage-processing-modal');
             }
             
             // Create a minimal container just for centering the pulse bars
             const pulseContainerEl = contentEl.createEl('div', { 
-                cls: 'pulse-container',
-                attr: { style: 'display: flex; justify-content: center; margin-top: 30px;' }
+                cls: 'pulse-container'
             });
             
             // Just create the pulse bars
@@ -2868,7 +2734,7 @@ class YouTubeTranscriptModal extends Modal {
                         // === NEW LOGGING LOGIC START (for collection items) ===
                         if (this.plugin.settings.debugLogging) {
                             const finalLogs = getLogsAsString();
-                            if (finalLogs) {
+                            if (finalLogs && finalLogs.trim() !== "") { // Only append if there are non-empty logs
                                 // Simplest approach to create debug section 
                                 const debugHeader = "\n\n> [!info]- Debug Information (hidden)\n> ```";
                                 const debugFooter = "\n> ```";
@@ -3029,18 +2895,15 @@ class YouTubeTranscriptModal extends Modal {
             const { contentEl } = this;
             contentEl.empty();
             
-            // Adjust modal size to fit the animation
+            // Adjust modal size to fit the animation using a CSS class
             const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
             if (modalEl && modalEl instanceof HTMLElement) {
-                modalEl.style.width = '150px';
-                modalEl.style.height = 'auto';
-                modalEl.style.minHeight = '50px';
+                modalEl.addClass('tubesage-processing-modal');
             }
             
             // Create a minimal container just for centering the pulse bars
             const pulseContainerEl = contentEl.createEl('div', { 
-                cls: 'pulse-container',
-                attr: { style: 'display: flex; justify-content: center; margin-top: 30px;' }
+                cls: 'pulse-container'
             });
             
             // Just create the pulse bars
@@ -3153,7 +3016,7 @@ class YouTubeTranscriptModal extends Modal {
             // Append debug logs if enabled, AFTER all processing is done
             if (this.plugin.settings.debugLogging) {
                 const finalLogs = getLogsAsString();
-                if (finalLogs) {
+                if (finalLogs && finalLogs.trim() !== "") { // Only append if there are non-empty logs
                     // Simplest approach to create debug section 
                     const debugHeader = "\n\n> [!info]- Debug Information (hidden)\n> ```";
                     const debugFooter = "\n> ```";

@@ -17,3 +17,16 @@ When providing guidance on refactoring my Obsidian plugin's styles, please follo
 7. **Respect Existing Structure**: Do not alter or remove HTML structure unless absolutely essential to meet the styling goals.
 
 8. **Consider Optional Enhancements**: Where appropriate, suggest improvements like Shadow DOM for style isolation or ARIA roles for accessibility.
+
+9. Be wary not to brake things the following  was a particulare hard issue to stop reoccurring avoid at all costs: 
+Root-cause found: the “channel options” block is no longer hidden at start because the new helper classes we’re now using (e.g. tubesage-display-none, tubesage-display-block, validation colour/visibility helpers) were never injected into the modal’s runtime stylesheet.
+Without a rule like .tubesage-display-none { display:none; } the element’s default display remained block, so it was always visible.
+Fixes applied:
+Added the missing helper CSS inside the injected styleEl (so it’s guaranteed to load even if the external styles.css isn’t picked up):
+• .tubesage-display-block / -none
+• .tubesage-validation-visible / -hidden / -error / -success / -accent
+Re-aligned the Enter-key handler with our class-based show/hide logic—removed the remaining inline style.display commands and replaced them with the same addClass/removeClass operations used in the input listener.
+This eliminates conflicting inline styles and keeps behaviour consistent.
+Result:
+• channelOptionsContainer now starts hidden, then appears only when a channel/playlist URL is detected via the real-time input listener (pasting or typing).
+• No more permanently-visible “All videos / Limited Number” panel.
