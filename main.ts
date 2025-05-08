@@ -430,6 +430,80 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 align-items: center !important;
                 padding: 10px 0 !important;
             }
+
+            /* Toggle switch styles (kept inline for guaranteed rendering) */
+            .toggle-container {
+                display: flex;
+                align-items: center;
+                margin: 15px 0;
+                padding: 10px;
+                background: var(--background-secondary);
+                border-radius: 5px;
+            }
+
+            .toggle-label {
+                flex: 1;
+                font-size: 14px;
+                margin-right: 10px;
+            }
+
+            .summary-info {
+                font-size: 12px;
+                color: var(--text-muted);
+                margin-top: 5px;
+                font-style: italic;
+            }
+
+            .toggle-switch {
+                position: relative;
+                display: inline-block;
+                width: 50px; /* Width of the toggle */
+                height: 24px; /* Height of the toggle */
+            }
+
+            .toggle-switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            .toggle-slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: var(--background-modifier-border); /* Off state color */
+                transition: .4s;
+                border-radius: 24px; /* Round edges */
+            }
+
+            .toggle-slider:before {
+                position: absolute;
+                content: "";
+                height: 18px; /* Knob height */
+                width: 18px;  /* Knob width */
+                left: 3px;    /* Position from left */
+                bottom: 3px;  /* Position from bottom */
+                background-color: white;
+                transition: .4s;
+                border-radius: 50%; /* Circular knob */
+            }
+
+            input:checked + .toggle-slider {
+                background-color: var(--interactive-accent); /* On state color */
+            }
+
+            input:checked + .toggle-slider:before {
+                transform: translateX(26px); /* Move knob to the right */
+            }
+
+            /* Channel options message spacing */
+            .channel-message {
+                margin-bottom: 15px; /* Add space below the message */
+                font-weight: 500; /* Keep original font-weight */
+            }
         `;
         document.head.appendChild(styleEl);
 
@@ -2303,7 +2377,7 @@ class YouTubeTranscriptModal extends Modal {
         contentEl.empty();
         
         // Add header
-        contentEl.createEl('h2', { text: 'Extract YouTube Transcript' });
+        contentEl.createEl('h2', { text: 'TubeSage: Create Note from YouTube Transcript' });
         
         // Build the input stage UI
         this.buildInputStage();
@@ -2314,7 +2388,7 @@ class YouTubeTranscriptModal extends Modal {
         contentEl.empty();
         
         // Add header
-        contentEl.createEl('h2', { text: 'Extract YouTube Transcript' });
+        contentEl.createEl('h2', { text: 'TubeSage: Create Note from YouTube Transcript' });
         
         // Check if we're on mobile
         const isMobile = this.isMobile();
@@ -2342,7 +2416,7 @@ class YouTubeTranscriptModal extends Modal {
         
         // Add channel message
         channelOptionsContainer.createEl('div', { 
-            text: 'This is a YouTube channel or playlist URL. How many videos would you like to process? Max hard limit is 50.',
+            text: 'How many videos would you like to process? Max hard limit is 50.',
             cls: 'channel-message'
         });
         
@@ -2445,9 +2519,10 @@ class YouTubeTranscriptModal extends Modal {
         
         const processBtn = processBtnContainer.createEl('button', {
             text: 'Process',
-            cls: 'tubesage-process-btn',
+            cls: 'tubesage-process-btn', // Keep class for other styles like padding, border-radius etc.
             attr: {
-                style: isMobile ? 'width: 100%;' : ''
+                // Add background-color directly inline to guarantee blue color
+                style: `background-color: var(--interactive-accent); ${isMobile ? 'width: 100%;' : ''}`
             }
         });
         
