@@ -9,16 +9,6 @@ declare module '@langchain/core/prompts' {
     }
 }
 
-declare module '@langchain/core/messages' {
-    export class HumanMessage {
-        constructor(content: string);
-    }
-
-    export class SystemMessage {
-        constructor(content: string);
-    }
-}
-
 declare module '@langchain/core/runnables' {
     export class RunnableSequence {
         static from(runnables: any[]): RunnableSequence;
@@ -27,6 +17,7 @@ declare module '@langchain/core/runnables' {
 }
 
 declare module '@langchain/openai' {
+    import { BaseMessageLike } from '@langchain/core/messages';
     export class ChatOpenAI {
         constructor(config: {
             modelName?: string;
@@ -34,11 +25,12 @@ declare module '@langchain/openai' {
             maxTokens?: number;
             apiKey?: string;
         });
-        invoke(messages: any[]): Promise<any>;
+        invoke(messages: BaseMessageLike[]): Promise<any>;
     }
 }
 
 declare module '@langchain/anthropic' {
+    import { BaseMessageLike } from '@langchain/core/messages';
     export class ChatAnthropic {
         constructor(config: {
             modelName?: string;
@@ -46,11 +38,12 @@ declare module '@langchain/anthropic' {
             maxTokens?: number;
             apiKey?: string;
         });
-        invoke(messages: any[]): Promise<any>;
+        invoke(messages: BaseMessageLike[]): Promise<any>;
     }
 }
 
 declare module '@langchain/google-genai' {
+    import { BaseMessageLike } from '@langchain/core/messages';
     export class ChatGoogleGenerativeAI {
         constructor(config: {
             modelName?: string;
@@ -58,6 +51,6 @@ declare module '@langchain/google-genai' {
             maxTokens?: number;
             apiKey?: string;
         });
-        invoke(messages: any[]): Promise<any>;
+        invoke(messages: BaseMessageLike[]): Promise<any>;
     }
 } 

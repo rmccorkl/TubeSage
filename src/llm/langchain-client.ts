@@ -1,7 +1,6 @@
-import { ChatAnthropic } from "@langchain/anthropic";
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import { ChatOllama } from "@langchain/community/chat_models/ollama";
+import { ChatOllama } from "@langchain/ollama";
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { getLogger } from "../utils/logger";
 import { getLangChainConfiguration } from "./langchain-fetcher";
@@ -65,7 +64,7 @@ export class LangChainClient {
           // TODO: Revisit this type casting when LangChain's type definitions are more stable
           // Type cast to any[] is needed because LangChain's type definitions for invoke()
           // expect an array type that's not directly compatible with (SystemMessage | HumanMessage)[]
-          const response = await model.invoke(messages as any[]);
+          const response = await model.invoke(messages);
           return String(response.content);
         }
           
@@ -180,7 +179,7 @@ export class LangChainClient {
           });
           
           // Type cast needed for compatibility with LangChain's invoke() method
-          const response = await model.invoke(messages as any[]);
+          const response = await model.invoke(messages);
           return String(response.content);
         }
            
@@ -195,7 +194,7 @@ export class LangChainClient {
           });
           
           // Type cast needed for compatibility with LangChain's invoke() method
-          const response = await model.invoke(messages as any[]);
+          const response = await model.invoke(messages);
           return String(response.content);
         }
 

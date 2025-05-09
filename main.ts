@@ -287,17 +287,17 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 width: 100%;
                 padding: 20px;
             }
-
+            
             .youtube-transcript-form .form-group {
                 margin-bottom: 15px;
             }
-
+            
             .youtube-transcript-form label {
                 display: block;
                 margin-bottom: 5px;
                 font-weight: 500;
             }
-
+            
             .youtube-transcript-form input {
                 display: block;
                 width: 100%;
@@ -307,7 +307,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 background: var(--background-primary);
                 color: var(--text-normal);
             }
-
+            
             /* Fast Summary Mode boxed toggle styles */
             .toggle-container {
                 display: flex;
@@ -323,7 +323,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 font-size: 14px;
                 margin-right: 10px;
             }
-
+            
             .summary-info {
                 font-size: 12px;
                 color: var(--text-muted);
@@ -343,7 +343,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 color: var(--text-normal);
                 font-size: 14px;
             }
-
+            
             .folder-list {
                 max-height: 240px; /* ≈8 items before scroll */
                 overflow-y: auto;
@@ -352,7 +352,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 margin-bottom: 15px;
                 background-color: var(--background-primary);
             }
-
+            
             .folder-item {
                 display: flex;
                 align-items: center;
@@ -362,23 +362,23 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 font-family: var(--font-interface);
                 transition: background-color 0.1s ease;
             }
-
+            
             .folder-item:hover {
                 background-color: var(--background-modifier-hover);
             }
-
+            
             .folder-item.selected {
                 background-color: var(--background-modifier-hover);
                 font-weight: 500;
             }
-
+            
             .folder-icon {
                 margin-right: 8px;
                 font-size: 16px;
                 color: var(--text-accent);
                 opacity: 0.8;
             }
-
+            
             .folder-path {
                 flex: 1;
                 white-space: nowrap;
@@ -386,7 +386,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 text-overflow: ellipsis;
                 font-size: 14px;
             }
-
+            
             /* Pulse loader (runtime critical styles) */
             .pulse-container {
                 display: inline-flex;
@@ -397,7 +397,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 padding: 0;
                 align-items: center; /* Center bars vertically */
             }
-
+            
             .pulse-bar {
                 width: 8px;
                 height: 30px; /* Default height at rest */
@@ -408,7 +408,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 display: inline-block;
                 transform-origin: center; /* Grow from middle */
             }
-
+            
             .pulse-bar:nth-child(1) { animation-delay: 0s;   }
             .pulse-bar:nth-child(2) { animation-delay: 0.2s; }
             .pulse-bar:nth-child(3) { animation-delay: 0.4s; }
@@ -430,7 +430,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 align-items: center !important;
                 padding: 10px 0 !important;
             }
-
+            
             /* Toggle switch styles (kept inline for guaranteed rendering) */
             .toggle-container {
                 display: flex;
@@ -440,7 +440,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 background: var(--background-secondary);
                 border-radius: 5px;
             }
-
+            
             .toggle-label {
                 flex: 1;
                 font-size: 14px;
@@ -453,20 +453,20 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 margin-top: 5px;
                 font-style: italic;
             }
-
+            
             .toggle-switch {
                 position: relative;
                 display: inline-block;
                 width: 50px; /* Width of the toggle */
                 height: 24px; /* Height of the toggle */
             }
-
+            
             .toggle-switch input {
                 opacity: 0;
                 width: 0;
                 height: 0;
             }
-
+            
             .toggle-slider {
                 position: absolute;
                 cursor: pointer;
@@ -478,7 +478,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 transition: .4s;
                 border-radius: 24px; /* Round edges */
             }
-
+            
             .toggle-slider:before {
                 position: absolute;
                 content: "";
@@ -490,15 +490,15 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 transition: .4s;
                 border-radius: 50%; /* Circular knob */
             }
-
+            
             input:checked + .toggle-slider {
                 background-color: var(--interactive-accent); /* On state color */
             }
-
+            
             input:checked + .toggle-slider:before {
                 transform: translateX(26px); /* Move knob to the right */
             }
-
+            
             /* Channel options message spacing */
             .channel-message {
                 margin-bottom: 15px; /* Add space below the message */
@@ -607,6 +607,20 @@ export default class YouTubeTranscriptPlugin extends Plugin {
 
     async loadSettings() {
         this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+        // --- Fix legacy string booleans (mobile settings files might contain "true"/"false" strings) ---
+        const coerceBool = (val: unknown, defaultVal: boolean): boolean => {
+            if (typeof val === 'boolean') return val;
+            if (typeof val === 'string') return val.toLowerCase() === 'true';
+            return defaultVal;
+        };
+
+        // Ensure all boolean flags are actual booleans
+        this.settings.debugLogging    = coerceBool(this.settings.debugLogging, DEFAULT_SETTINGS.debugLogging);
+        this.settings.prependDate     = coerceBool(this.settings.prependDate, DEFAULT_SETTINGS.prependDate);
+        this.settings.addTimestampLinks = coerceBool(this.settings.addTimestampLinks, DEFAULT_SETTINGS.addTimestampLinks);
+        this.settings.useFastSummary  = coerceBool(this.settings.useFastSummary, DEFAULT_SETTINGS.useFastSummary);
+        this.settings.licenseAccepted = coerceBool(this.settings.licenseAccepted, DEFAULT_SETTINGS.licenseAccepted);
+        // ---------------------------------------------------------------------------
     }
 
     async saveSettings() {
@@ -2520,7 +2534,7 @@ class YouTubeTranscriptModal extends Modal {
         const processBtn = processBtnContainer.createEl('button', {
             text: 'Process',
             cls: 'tubesage-process-btn', // Keep class for other styles like padding, border-radius etc.
-            attr: {
+            attr: { 
                 // Add background-color directly inline to guarantee blue color
                 style: `background-color: var(--interactive-accent); ${isMobile ? 'width: 100%;' : ''}`
             }
@@ -3960,10 +3974,10 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         });
                 });
             }
-
+            
             // Reference to store custom field
             let customField: any;
-
+            
             // Add custom model field
             setting.addText(text => {
                 // Store reference
