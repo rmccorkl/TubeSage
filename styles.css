@@ -332,7 +332,10 @@ input:checked + .toggle-slider:before {
 
 .channel-options .channel-message {
     margin-bottom: 10px;
-    font-weight: 500;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
 }
 
 /* Process button */
@@ -343,6 +346,10 @@ input:checked + .toggle-slider:before {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.tubesage-process-btn-mobile {
+    width: 100%;
 }
 
 /* Video-count dropdown */
@@ -356,4 +363,663 @@ input:checked + .toggle-slider:before {
 .validation-message {
     margin-top: 5px;
     font-size: 12px;
+}
+
+/* Icon button styling for settings tab */
+.tubesage-icon-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px; /* Match existing inline style */
+    border-radius: 4px; /* Match existing inline style */
+    color: var(--text-normal); /* Match existing inline style */
+    display: flex; /* Match existing inline style */
+    align-items: center; /* Match existing inline style */
+    justify-content: center; /* Match existing inline style */
+}
+
+.tubesage-icon-button-hover {
+    background: var(--background-modifier-hover);
+}
+
+/* Styling for the settings container when license is not accepted */
+.tubesage-settings-container-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    user-select: none;
+    filter: grayscale(30%);
+}
+
+/* Settings Tab Tooltip Styling */
+.tubesage-settings-tooltip {
+    position: absolute;
+    z-index: 1000;
+    background-color: var(--background-secondary);
+    color: var(--text-normal);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    max-width: 300px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    /* top and left are set dynamically in JS */
+}
+
+/* License Acceptance Toggle Switch in Settings */
+.tubesage-license-toggle-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 40px; /* Specific width for license toggle */
+    height: 20px; /* Specific height for license toggle */
+}
+
+.tubesage-license-toggle-input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.tubesage-license-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--background-modifier-border); /* Unchecked state background */
+    transition: .4s;
+    border-radius: 20px; /* Specific border-radius for license toggle */
+}
+
+.tubesage-license-toggle-knob {
+    position: absolute;
+    content: ""; /* Necessary for :before/:after, but here it's a span */
+    height: 16px; /* Specific knob height */
+    width: 16px;  /* Specific knob width */
+    left: 2px;    /* Initial position from left */
+    bottom: 2px;  /* Position from bottom */
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%; /* Circular knob */
+}
+
+/* Styles for the checked state */
+.tubesage-license-toggle-input:checked + .tubesage-license-toggle-slider {
+    background-color: var(--interactive-accent);
+}
+
+.tubesage-license-toggle-input:checked + .tubesage-license-toggle-slider .tubesage-license-toggle-knob {
+    transform: translateX(20px); /* 40px (wrapper) - 16px (knob) - 2px (left offset) - 2px (space for right side) = 20px */
+}
+
+/* Styling for TextAreas used for prompts in settings */
+.tubesage-prompt-textarea {
+    width: 65% !important;
+    flex: 0 0 65% !important; /* reserve 65% of row */
+    min-width: 300px;
+    max-width: 700px;
+    min-height: 100px;
+}
+
+/* For rows containing our prompt textarea, allow wrapping so label/description flow below if needed */
+.setting-item:has(.tubesage-prompt-textarea) {
+    flex-wrap: wrap;
+}
+
+/* Styling for H4 subheaders in the Prompt Settings section */
+.tubesage-settings-prompt-subheader {
+    margin-bottom: 10px;
+}
+
+.tubesage-settings-prompt-subheader-extensive {
+    margin-top: 20px;
+}
+
+/* Styling for info icons in the settings tab */
+.tubesage-settings-info-icon {
+    cursor: help;
+    color: var(--text-muted);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Styling for the template file picker list in settings */
+.template-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+/* Styling for individual template items in the picker list */
+.template-item {
+    padding: 5px; /* Match existing inline style */
+    cursor: pointer; /* Match existing inline style */
+    border-bottom: 1px solid var(--background-modifier-border); /* Match existing inline style */
+    font-family: var(--font-interface); /* Consistent with folder-item */
+    transition: background-color 0.1s ease; /* Consistent with folder-item for smooth hover */
+}
+
+.template-item:hover {
+    background-color: var(--background-modifier-hover);
+}
+
+/* Styling for the scrollable license text container in LicenseModal */
+.tubesage-license-container {
+    height: 600px; /* fixed height as requested */
+    max-height: 600px; /* ensure no expansion */
+    overflow-y: scroll; /* always show scrollbar */
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    margin-top: 10px;
+    padding: 20px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    font-family: var(--font-monospace);
+}
+
+/* Styles for elements within LicenseModal */
+.tubesage-license-h3 {
+    margin-top: 16px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--background-modifier-border);
+    padding-bottom: 8px;
+}
+
+.tubesage-license-list-item {
+    margin-bottom: 8px;
+}
+
+.tubesage-license-list-item-title-segment {
+    font-weight: bold;
+}
+
+.tubesage-license-sub-item {
+    margin-left: 20px;
+    margin-bottom: 4px;
+}
+
+.tubesage-license-paragraph {
+    margin-bottom: 8px;
+    max-width: 100%; /* Ensure text wraps and respects container */
+    word-break: normal; /* Default, but explicit */
+    overflow-wrap: normal; /* Default, but explicit */
+    white-space: pre-wrap; /* Important for preserving line breaks from license file */
+}
+
+.tubesage-license-spacer {
+    height: 8px;
+}
+
+.tubesage-license-close-button {
+    padding: 8px 16px;
+    background-color: var(--interactive-accent);
+    color: var(--text-on-accent);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    /* margin-top will be handled by its container if needed, or can be added here */
+}
+
+/* Styling for the error message in LicenseModal if license file fails to load */
+.tubesage-license-load-error {
+    color: var(--text-error);
+}
+
+/* Styling for the footer container in LicenseModal */
+.tubesage-license-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; /* center child button */
+    align-items: center;
+    width: 100%;
+}
+
+/* Styles for elements within LicenseRequiredModal */
+.tubesage-license-required-title {
+    text-align: center;
+    color: var(--text-error);
+}
+
+.tubesage-license-required-icon-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.tubesage-license-required-icon {
+    font-size: 48px;
+    color: var(--text-warning);
+}
+
+.tubesage-license-required-message-container {
+    margin-bottom: 20px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.tubesage-license-required-message-bold {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.tubesage-license-required-steps-container {
+    background-color: var(--background-secondary);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.tubesage-license-required-steps-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.tubesage-license-required-steps-list {
+    margin-left: 15px;
+    margin-top: 0; /* Override default browser ol margin */
+}
+
+.tubesage-license-required-step-item {
+    margin-bottom: 5px;
+}
+
+/* Styling for the button container and buttons in LicenseRequiredModal */
+.tubesage-license-required-button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.tubesage-license-required-button-primary {
+    padding: 8px 12px;
+    background-color: var(--interactive-accent);
+    color: var(--text-on-accent);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.tubesage-license-required-button-secondary {
+    padding: 8px 12px;
+    background-color: var(--background-modifier-border);
+    color: var(--text-normal);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    flex: 1;
+    margin-left: 10px;
+}
+
+/* Sizing for the READMEModal */
+.tubesage-readme-modal-size.modal {
+    width: 800px !important;
+    max-width: 85vw !important;
+    max-height: 90vh !important;
+    overflow-y: auto;
+}
+
+/* Styling for the scrollable README text container in READMEModal */
+.tubesage-readme-container {
+    height: 600px; /* fixed height as requested */
+    max-height: 600px; /* ensure no expansion */
+    overflow-y: scroll; /* always show scrollbar */
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    margin-top: 10px;
+    padding: 20px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    font-family: var(--font-interface);
+}
+
+/* Styles for elements within READMEModal content */
+.code-block-container { /* Existing class, adding styles */
+    background: var(--background-secondary);
+    border-radius: 4px;
+    padding: 8px;
+    margin: 10px 0;
+    overflow-x: auto;
+}
+
+.tubesage-readme-code-lang {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    font-family: var(--font-monospace);
+}
+
+.tubesage-readme-code-pre {
+    margin: 0;
+    overflow-x: auto;
+}
+
+.tubesage-readme-code-inline {
+    font-family: var(--font-monospace);
+    display: block; /* Or inline-block if preferred for flow */
+}
+
+.tubesage-readme-h1 {
+    margin-top: 16px;
+    margin-bottom: 12px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--background-modifier-border);
+    padding-bottom: 8px;
+    font-size: 1.8em;
+}
+
+.tubesage-readme-h2 {
+    margin-top: 16px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 1.5em;
+}
+
+.tubesage-readme-h3 {
+    margin-top: 14px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 1.2em;
+}
+
+.tubesage-readme-h4 {
+    margin-top: 12px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.tubesage-readme-list-item {
+    margin: 4px 0 4px 20px;
+    display: flex;
+}
+
+.tubesage-readme-list-bullet {
+    margin-right: 6px;
+}
+
+.tubesage-readme-link {
+    color: var(--text-accent);
+    text-decoration: none;
+}
+
+.tubesage-readme-paragraph {
+    margin-bottom: 12px;
+    max-width: 100%;
+    line-height: 1.6;
+    /* white-space: pre-wrap; is on the container */
+}
+
+.tubesage-readme-spacer {
+    height: 8px;
+}
+
+/* Styles for YouTubeTranscriptModal controls, responsive to mobile/desktop */
+.tubesage-modal-controls-container {
+    display: flex;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.tubesage-modal-controls-container-mobile {
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tubesage-modal-controls-container-desktop {
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 15px;
+    flex-direction: row;
+    white-space: nowrap; /* prevent children from wrapping */
+}
+
+/* Ensure each radio option and limited container do not wrap */
+.tubesage-modal-radio-option,
+.tubesage-modal-limited-option-container {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+/* Prevent child containers from expanding and forcing line breaks */
+.tubesage-modal-controls-container-desktop > * {
+    flex: 0 0 auto;
+}
+
+/* Ensure limited option container doesn't stretch full width on desktop */
+.tubesage-modal-limited-option-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 0 0 auto;
+}
+
+.tubesage-modal-radio-option {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.tubesage-modal-radio-option-mobile {
+    justify-content: flex-start;
+}
+
+.tubesage-modal-radio-label {
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.tubesage-modal-process-btn-container {
+    /* Default desktop style */
+    margin-left: auto;
+}
+
+.tubesage-modal-process-btn-container-mobile {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 5px;
+    margin-left: 0; /* Override default desktop style */
+}
+
+/* Sizing for the TemplateViewModal */
+.tubesage-template-view-modal-size.modal {
+    width: 700px !important;
+    max-width: 80vw !important;
+}
+
+/* Styles for elements within TemplateViewModal */
+.tubesage-template-view-title {
+    font-size: 18px;
+    line-height: 1.4;
+    /* text-align: center; if needed, was not in original */
+}
+
+.tubesage-template-view-container {
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 20px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 4px;
+    margin-top: 10px;
+    white-space: pre-wrap;
+    font-family: var(--font-monospace);
+    line-height: 1.5;
+}
+
+.tubesage-template-view-copy-container {
+    display: flex;
+    justify-content: flex-end; /* push children to the far right */
+    width: 100%;
+    margin-left: auto;        /* ensure container itself aligns right if in flex context */
+    text-align: right;        /* fallback */
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.tubesage-template-view-copy-text {
+    font-size: 14px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+/* Note: .tubesage-icon-button and .tubesage-icon-button-hover are reused for the copy button */
+
+.tubesage-template-view-explanation {
+    margin-top: 15px;
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+.tubesage-template-view-variables-container {
+    margin-top: 15px;
+    border: 1px solid var(--background-modifier-border);
+    padding: 15px;
+    border-radius: 4px;
+}
+
+/* Note: .tubesage-license-footer and .tubesage-license-close-button are reused */
+
+/* Styles for elements within the YouTubeTranscriptSettingTab */
+.tubesage-settings-main-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 20px 0; /* reset top margin, add bottom spacing */
+    color: var(--text-normal);
+    text-align: center !important;
+    align-self: center; /* if parent is flex */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tubesage-settings-support-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; /* Center text & inline elements */
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.tubesage-settings-support-heading {
+    margin-bottom: 8px;
+    /* font-size and font-weight will be inherited from h3 defaults or theme */
+}
+
+.tubesage-settings-support-desc {
+    margin-bottom: 12px;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.tubesage-settings-bmc-container {
+    margin-bottom: 20px;
+}
+
+.tubesage-settings-bmc-img {
+    height: 40px;
+    width: 145px;
+    max-width: 145px; /* Prevent the image from expanding */
+    display: block;
+}
+
+.tubesage-settings-action-buttons-container {
+    display: flex;
+    flex-wrap: nowrap;          /* Keep all three items on one line */
+    justify-content: center;    /* Even spacing around items */
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.tubesage-settings-action-button-item-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 auto;  /* Let items size to content instead of stretching */
+}
+
+.tubesage-settings-action-button-label {
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+/* Container for settings section headers (h3 + info icon) */
+.tubesage-settings-heading-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Styling for status messages in FolderPickerModal */
+.tubesage-folder-picker-status-error {
+    font-size: 12px;
+    color: var(--text-error);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.tubesage-folder-picker-status-info {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Simple sizing for license and readme modals */
+.tubesage-license-modal-size.modal,
+.tubesage-readme-modal-size.modal {
+    width: 700px;
+    max-width: 80vw;
+    max-height: 650px; /* allow a bit of padding around the 600px content */
+    overflow-y: hidden; /* scrolling handled by inner container */
+}
+
+/* Font settings for containers */
+.tubesage-license-container {
+    font-family: var(--font-monospace);
+}
+
+.tubesage-readme-container {
+    font-family: var(--font-interface);
+}
+
+/* Sizing for the LicenseRequiredModal */
+.tubesage-license-required-modal-size.modal {
+    width: 500px;
+    max-width: 80vw;
+    max-height: 650px;
+    overflow-y: auto;
+}
+
+/* -------------------------------------------------------------
+   Generic modal-sizing helpers – applied via JS classList.add()
+   ------------------------------------------------------------- */
+.modal.tubesage-modal--narrow {
+    /* fixed but responsive width – tweak as desired */
+    width: 700px !important;
+    max-width: 85vw !important;
+}
+
+/* add this together with --narrow when you also want the
+   window height capped with an internal scroll area         */
+.modal.tubesage-modal--scroll {
+    max-height: 90vh !important; /* never exceed viewport */
+    overflow: hidden;           /* outer shell keeps header/footer visible */
+}
+
+/* make the content area inside the scroll modal actually scroll */
+.modal.tubesage-modal--scroll .modal-content {
+    max-height: 600px; /* ≈ 22 lines; change to any px / em */
+    overflow-y: auto;
+}
+
+/* Keep the text containers themselves scrollable and bounded */
+.tubesage-license-container,
+.tubesage-readme-container {
+    max-height: 600px;     /* matches .modal-content */
+    overflow-y: auto;
 } 

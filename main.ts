@@ -504,6 +504,142 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 margin-bottom: 15px; /* Add space below the message */
                 font-weight: 500; /* Keep original font-weight */
             }
+
+            /* -------------------------  Settings-tab layout helpers  ------------------------- */
+            .tubesage-settings-support-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                margin-top: 10px;
+                margin-bottom: 30px;
+            }
+            .tubesage-settings-bmc-img {
+                height: 40px !important;
+                width: 145px !important;
+                max-width: 145px;
+                display: block;
+            }
+            .tubesage-settings-action-buttons-container {
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: center;
+                align-items: center;
+                gap: 20px;
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            .tubesage-settings-action-button-item-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex: 0 0 auto;
+            }
+            .tubesage-settings-action-button-label {
+                font-size: 14px;
+                margin-right: 8px;
+            }
+            /* License toggle in settings */
+            .tubesage-license-toggle-wrapper {
+                position: relative;
+                display: inline-block;
+                width: 40px;
+                height: 20px;
+            }
+            .tubesage-license-toggle-input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+            .tubesage-license-toggle-slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: var(--background-modifier-border);
+                transition: .4s;
+                border-radius: 20px;
+            }
+            .tubesage-license-toggle-knob {
+                position: absolute;
+                height: 16px;
+                width: 16px;
+                left: 2px;
+                bottom: 2px;
+                background-color: white;
+                transition: .4s;
+                border-radius: 50%;
+            }
+            .tubesage-license-toggle-input:checked + .tubesage-license-toggle-slider {
+                background-color: var(--interactive-accent);
+            }
+            .tubesage-license-toggle-input:checked + .tubesage-license-toggle-slider .tubesage-license-toggle-knob {
+                transform: translateX(20px);
+            }
+
+            /* ... existing code ... */
+            .tubesage-settings-container-disabled {
+                opacity: 0.5;
+                pointer-events: none;
+                user-select: none;
+                filter: grayscale(30%);
+            }
+            /* ... existing code ... */
+
+            /* ... existing code within runtime style block after heading helpers ... */
+            .tubesage-settings-heading-container h3 {
+                margin: 0;
+                flex: 0 0 auto;
+            }
+            .tubesage-settings-heading-container .tubesage-settings-info-icon {
+                flex: 0 0 auto;
+            }
+            /* Tooltip and heading alignment */
+            .tubesage-settings-heading-container {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .tubesage-settings-heading-container h3 {
+                margin: 0;
+                flex: 0 0 auto;
+                white-space: nowrap;
+            }
+            .tubesage-settings-heading-container .tubesage-settings-info-icon {
+                cursor: help;
+                flex: 0 0 auto;
+            }
+            /* Basic tooltip appearance (inline to guarantee) */
+            .tubesage-settings-tooltip {
+                position: absolute;
+                z-index: 1000;
+                background-color: var(--background-secondary);
+                color: var(--text-normal);
+                padding: 8px 12px;
+                border-radius: 4px;
+                font-size: 14px;
+                max-width: 300px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
+            /* Wider prompt textareas */
+            .tubesage-prompt-textarea {
+                width: 66.666%;  /* take roughly two-thirds of the settings row */
+                min-width: 300px;
+                max-width: 600px;
+            }
+            // ... existing code before end of runtime style block ...
+            .tubesage-license-container,
+            .tubesage-readme-container {
+                max-height: 300px !important; /* about 18 lines */
+                overflow-y: auto;
+            }
+            .tubesage-license-modal-size.modal,
+            .tubesage-readme-modal-size.modal {
+                max-height: 90vh !important;
+            }
+            // ... existing code ...
         `;
         document.head.appendChild(styleEl);
 
@@ -2407,7 +2543,7 @@ class YouTubeTranscriptModal extends Modal {
         // Check if we're on mobile
         const isMobile = this.isMobile();
         
-        // Create the form container - revert to original style
+        // Create the form container - revert to original appearance
         const formEl = contentEl.createEl('div', { cls: 'youtube-transcript-form' });
         
         // URL input group - first input
@@ -2436,31 +2572,21 @@ class YouTubeTranscriptModal extends Modal {
         
         // Create a container for controls with different layout based on device
         const controlsContainer = channelOptionsContainer.createEl('div', {
-            attr: { 
-                style: isMobile ? 
-                    // Mobile: Stack vertically with good spacing and left justification
-                    'display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; width: 100%;' : 
-                    // Desktop: Single line with horizontal layout
-                    'display: flex; align-items: center; flex-wrap: nowrap; gap: 15px; margin-bottom: 15px; width: 100%;' 
-            }
+            cls: ['tubesage-modal-controls-container', isMobile ? 'tubesage-modal-controls-container-mobile' : 'tubesage-modal-controls-container-desktop'],
+            attr: { style: 'display:flex; flex-direction:row; align-items:center; gap:15px; flex-wrap:nowrap; width:100%;' }
         });
         
         // Radio button for "All Videos"
         const allVideosContainer = controlsContainer.createEl('div', {
-            attr: { 
-                style: isMobile ? 
-                    'display: flex; align-items: center; white-space: nowrap; justify-content: flex-start;' :
-                    'display: flex; align-items: center; white-space: nowrap;'
-            }
+            cls: ['tubesage-modal-radio-option', isMobile ? 'tubesage-modal-radio-option-mobile' : '' ],
+            attr: { style: isMobile ? 'display:flex; align-items:center; white-space:nowrap; justify-content:flex-start;' : 'display:flex; align-items:center; white-space:nowrap;' }
         });
         
         // Create label first
         allVideosContainer.createEl('label', {
             text: 'All Videos',
-            attr: { 
-                for: 'all-videos-radio',
-                style: 'cursor: pointer; margin-right: 5px;'
-            }
+            cls: 'tubesage-modal-radio-label',
+            attr: { for: 'all-videos-radio' }
         });
         
         // Then add the radio button
@@ -2475,23 +2601,21 @@ class YouTubeTranscriptModal extends Modal {
         
         // Create container for limited videos option (radio + dropdown together)
         const limitedOptionContainer = controlsContainer.createEl('div', {
-            attr: { 
-                style: 'display: flex; align-items: center; gap: 10px; ' + (isMobile ? 'justify-content: flex-start; width: 100%;' : '')
-            }
+            cls: ['tubesage-modal-limited-option-container', isMobile ? 'tubesage-modal-limited-option-container-mobile' : ''],
+            attr: { style: isMobile ? 'display:flex; align-items:center; gap:10px; justify-content:flex-start; width:100%;' : 'display:flex; align-items:center; gap:10px;' }
         });
         
         // Radio button for "Limited Number"
         const limitedVideosContainer = limitedOptionContainer.createEl('div', {
-            attr: { style: 'display: flex; align-items: center; white-space: nowrap;' }
+            cls: 'tubesage-modal-radio-option',
+            attr: { style: 'display:flex; align-items:center; white-space:nowrap;' }
         });
         
         // Create label first
         limitedVideosContainer.createEl('label', {
             text: 'Limited Number:',
-            attr: { 
-                for: 'limited-videos-radio',
-                style: 'cursor: pointer; margin-right: 5px;'
-            }
+            cls: 'tubesage-modal-radio-label',
+            attr: { for: 'limited-videos-radio' }
         });
         
         // Then add the radio button
@@ -2524,21 +2648,19 @@ class YouTubeTranscriptModal extends Modal {
         
         // Process button in its own container for mobile layout
         const processBtnContainer = controlsContainer.createEl('div', {
-            attr: { 
-                style: isMobile ? 
-                    'width: 100%; display: flex; justify-content: flex-start; margin-top: 5px;' : 
-                    'margin-left: auto;'
-            }
+            cls: ['tubesage-modal-process-btn-container', isMobile ? 'tubesage-modal-process-btn-container-mobile' : ''],
+            attr: { style: isMobile ? 'width:100%; display:flex; justify-content:flex-start; margin-top:5px;' : 'margin-left:auto;' }
         });
         
         const processBtn = processBtnContainer.createEl('button', {
             text: 'Process',
-            cls: 'tubesage-process-btn', // Keep class for other styles like padding, border-radius etc.
-            attr: { 
-                // Add background-color directly inline to guarantee blue color
-                style: `background-color: var(--interactive-accent); ${isMobile ? 'width: 100%;' : ''}`
-            }
+            cls: 'tubesage-process-btn', // Keep class for other appearance like padding, border-radius etc.
+            // Inline appearance removed, background-color is in .tubesage-process-btn
+            // Conditional width is handled by adding/not adding tubesage-process-btn-mobile
         });
+        if (isMobile) {
+            processBtn.addClass('tubesage-process-btn-mobile');
+        }
         
         // Add event listener for process button
         processBtn.addEventListener('click', () => {
@@ -2593,8 +2715,6 @@ class YouTubeTranscriptModal extends Modal {
         
         // Error message container
         this.errorEl = formEl.createEl('div', { cls: ['tubesage-error', 'tubesage-error-hidden'] });
-        // All other inline styles for this.errorEl (color, marginTop, padding, etc.) are removed
-        // as they will be handled by the .tubesage-error CSS class.
         
         // Add real-time validation on URL change
         this.urlInputEl.addEventListener('input', () => {
@@ -2748,7 +2868,7 @@ class YouTubeTranscriptModal extends Modal {
         // Show folder picker - we'll process videos after folder selection
         const folderSelectionModal = new FolderPickerModal(
             this.app,
-            this.plugin,
+            this.plugin, // Revert to this.plugin
             (folderPath) => {
                 this.selectedFolder = folderPath;
                 this.beginCollectionProcessing(sourceUrl, videoCount);
@@ -3311,39 +3431,40 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         const { containerEl } = this;
         containerEl.empty();
         
-        // Create custom styled title that's larger and bolder than the subsections
-        const titleEl = containerEl.createEl('div', { 
-            attr: { 
-                style: 'font-size: 24px; font-weight: 700; margin-bottom: 16px; color: var(--text-normal); text-align: center;'
-            }
+        // Create custom appearance title that's larger and bolder than the subsections
+        const titleEl = containerEl.createEl('h1', { 
+            cls: 'tubesage-settings-main-title', // Apply new class
+            attr: { style: 'text-align:center; width:100%; margin:0 auto 20px auto;' }
         });
-        titleEl.setText('TubeSage - YouTube Transcript LLM Settings');
+        titleEl.setText('TubeSage Note Creation Settings');
         
         // Buy Me a Coffee section at the top
         const supportContainer = containerEl.createEl('div', {
-            attr: { 
-                style: 'display: flex; flex-direction: column; align-items: center; margin-top: 10px; margin-bottom: 30px;'
-            }
+            cls: 'tubesage-settings-support-container' // Apply new class
         });
         
-        // Support Development section with styled heading
+        // Support Development section with appearance heading
         supportContainer.createEl('h3', { 
             text: 'Support Development',
-            attr: { style: 'margin-bottom: 8px;' } 
+            cls: 'tubesage-settings-support-heading' // Apply new class
         });
         
-        // Support message in styled format
+        // Support message in appearance format
         const supportDesc = supportContainer.createEl('div', {
             text: 'If you find this plugin useful, consider supporting its development:',
-            attr: { 
-                style: 'margin-bottom: 12px; color: var(--text-muted); font-size: 13px;'
-            }
+            cls: 'tubesage-settings-support-desc' // Apply new class
         });
+        
+        // Spacer before Buy-Me-a-Coffee button
+        supportContainer.createEl('div', { attr: { style: 'height:10px;' } });
         
         // Buy Me a Coffee button in a container
         const bmcContainer = supportContainer.createEl('div', {
-            attr: { style: 'margin-bottom: 20px;' }
+            cls: 'tubesage-settings-bmc-container' // Apply new class
         });
+        
+        // Spacer after Buy-Me-a-Coffee button
+        supportContainer.createEl('div', { attr: { style: 'height:10px;' } });
         
         // Create the link
         const bmcLink = bmcContainer.createEl('a', {
@@ -3356,36 +3477,33 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Add the image
         bmcLink.createEl('img', {
+            cls: 'tubesage-settings-bmc-img', // Apply existing class
             attr: {
                 src: 'https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png',
-                alt: 'Buy Me A Coffee',
-                style: 'height: 40px; width: 145px;'
+                alt: 'Buy Me A Coffee'
+                // appearence: 'height: 40px; width: 145px;' // This line should be removed
             }
         });
         
         // Create a horizontal container for the remaining buttons
         const buttonsContainer = supportContainer.createEl('div', {
-            attr: { 
-                style: 'display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px; margin-bottom: 15px;'
-            }
+            cls: 'tubesage-settings-action-buttons-container' // Apply new class
         });
         
         // License button - in the middle
         const licenseButtonContainer = buttonsContainer.createEl('div', {
-            attr: { style: 'display: flex; justify-content: center; align-items: center; flex: 1;' }
+            cls: 'tubesage-settings-action-button-item-container' // Apply new class (reused)
         });
         
         // License text
         licenseButtonContainer.createEl('span', { 
             text: 'License & Disclaimer', 
-            attr: { style: 'font-size: 14px; margin-right: 8px;' }
+            cls: 'tubesage-settings-action-button-label' // Apply new class (reused)
         });
         
         // Eye icon button for viewing license
         const licenseIconButton = licenseButtonContainer.createEl('button', {
-            attr: {
-                style: 'background: transparent; border: none; cursor: pointer; padding: 4px; border-radius: 4px; color: var(--text-normal); display: flex; align-items: center; justify-content: center;'
-            }
+            cls: 'tubesage-icon-button' // Apply base class
         });
         
         // Create an SVG for the eye icon
@@ -3416,11 +3534,11 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Add hover effect
         licenseIconButton.addEventListener('mouseenter', () => {
-            licenseIconButton.style.background = 'var(--background-modifier-hover)';
+            licenseIconButton.addClass('tubesage-icon-button-hover');
         });
         
         licenseIconButton.addEventListener('mouseleave', () => {
-            licenseIconButton.style.background = 'transparent';
+            licenseIconButton.removeClass('tubesage-icon-button-hover');
         });
         
         // Add click event to open license modal
@@ -3430,24 +3548,24 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // License acceptance toggle - on the right
         const toggleContainer = buttonsContainer.createEl('div', {
-            attr: { style: 'display: flex; align-items: center; justify-content: center; flex: 1;' }
+            cls: 'tubesage-settings-action-button-item-container' // Reuse class
         });
         
         toggleContainer.createEl('span', { 
             text: 'Accept License & Disclaimer', 
-            attr: { style: 'margin-right: 8px; font-size: 14px;' }
+            cls: 'tubesage-settings-action-button-label' // Reuse class
         });
         
         // Create the toggle switch
         const toggleWrapper = toggleContainer.createEl('div', {
-            attr: { style: 'position: relative; display: inline-block; width: 40px; height: 20px;' }
+            cls: 'tubesage-license-toggle-wrapper' // Apply new class
         });
         
         // Toggle input
         const toggleInput = toggleWrapper.createEl('input', {
+            cls: 'tubesage-license-toggle-input', // Apply new class
             attr: {
                 type: 'checkbox',
-                style: 'opacity: 0; width: 0; height: 0;',
                 id: 'license-toggle'
             }
         });
@@ -3457,24 +3575,15 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Create the toggle slider - using CSS that actually works in Obsidian
         const toggleSlider = toggleWrapper.createEl('span', {
-            attr: {
-                style: 'position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--background-modifier-border); transition: .4s; border-radius: 20px;'
-            }
+            cls: 'tubesage-license-toggle-slider' // Apply new class
         });
         
         // Create the slider knob
         const sliderKnob = toggleSlider.createEl('span', {
-            attr: {
-                style: `position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; 
-                       background-color: white; transition: .4s; border-radius: 50%;`
-            }
+            cls: 'tubesage-license-toggle-knob' // Apply new class
         });
         
-        // Initial toggle styling based on state
-        if (toggleInput.checked) {
-            toggleSlider.style.backgroundColor = 'var(--interactive-accent)';
-            sliderKnob.style.left = '22px';
-        }
+        // Initial toggle styling is now handled by CSS via :checked pseudo-selector
         
         // Make the toggle slider respond to clicks directly
         toggleSlider.addEventListener('click', (e) => {
@@ -3507,20 +3616,18 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // README button - after the license toggle
         const readmeButtonContainer = buttonsContainer.createEl('div', {
-            attr: { style: 'display: flex; justify-content: center; align-items: center; flex: 1;' }
+            cls: 'tubesage-settings-action-button-item-container' // Reuse class
         });
         
         // README text
         readmeButtonContainer.createEl('span', { 
             text: 'README', 
-            attr: { style: 'font-size: 14px; margin-right: 8px;' }
+            cls: 'tubesage-settings-action-button-label' // Reuse class
         });
         
         // Eye icon button for viewing README
         const readmeButton = readmeButtonContainer.createEl('button', {
-            attr: {
-                style: 'background: transparent; border: none; cursor: pointer; padding: 4px; border-radius: 4px; color: var(--text-normal); display: flex; align-items: center; justify-content: center;'
-            }
+            cls: 'tubesage-icon-button' // Apply base class
         });
         
         // Create an SVG for the eye icon
@@ -3551,11 +3658,11 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Add hover effect
         readmeButton.addEventListener('mouseenter', () => {
-            readmeButton.style.background = 'var(--background-modifier-hover)';
+            readmeButton.addClass('tubesage-icon-button-hover');
         });
         
         readmeButton.addEventListener('mouseleave', () => {
-            readmeButton.style.background = 'transparent';
+            readmeButton.removeClass('tubesage-icon-button-hover');
         });
         
         // Add click event to open README modal
@@ -3571,19 +3678,11 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Function to update settings container based on license acceptance
         const updateSettingsState = () => {
             if (this.plugin.settings.licenseAccepted) {
-                settingsContainer.style.opacity = '';
-                settingsContainer.style.pointerEvents = '';
-                settingsContainer.style.userSelect = '';
-                settingsContainer.style.filter = '';
-                toggleSlider.style.backgroundColor = 'var(--interactive-accent)';
-                sliderKnob.style.left = '22px';
+                settingsContainer.removeClass('tubesage-settings-container-disabled');
+                // Visual state of toggle now handled by CSS :checked
             } else {
-                settingsContainer.style.opacity = '0.5';
-                settingsContainer.style.pointerEvents = 'none';
-                settingsContainer.style.userSelect = 'none';
-                settingsContainer.style.filter = 'grayscale(30%)';
-                toggleSlider.style.backgroundColor = 'var(--background-modifier-border)';
-                sliderKnob.style.left = '2px';
+                settingsContainer.addClass('tubesage-settings-container-disabled');
+                // Visual state of toggle now handled by CSS
             }
         };
         
@@ -3662,17 +3761,15 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Transcript section
         const transcriptHeadingContainer = settingsContainer.createEl('div', {
-            attr: { style: 'display: flex; align-items: center; gap: 8px;' }
+            cls: 'tubesage-settings-heading-container' // Apply new class
         });
         
         transcriptHeadingContainer.createEl('h3', { text: 'Transcript Settings' });
         
         // Add info icon
         const infoIcon = transcriptHeadingContainer.createEl('span', {
-            attr: { 
-                style: 'cursor: help; color: var(--text-muted); font-size: 16px; display: flex; align-items: center; justify-content: center;',
-                'aria-label': 'Information about transcript extraction settings'
-            }
+            cls: 'tubesage-settings-info-icon', // Apply new class
+            attr: { 'aria-label': 'Information about transcript extraction settings' } // Keep aria-label
         });
         
         // Create SVG icon for info
@@ -3710,17 +3807,8 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Add tooltip on hover
         infoIcon.addEventListener('mouseenter', (e) => {
             const tooltip = document.createElement('div');
-            tooltip.className = 'transcript-settings-tooltip';
-            tooltip.textContent = 'Configure settings for YouTube transcript extraction. These settings control how transcripts are fetched, processed, and organized in your vault.';
-            tooltip.style.position = 'absolute';
-            tooltip.style.zIndex = '1000';
-            tooltip.style.backgroundColor = 'var(--background-secondary)';
-            tooltip.style.color = 'var(--text-normal)';
-            tooltip.style.padding = '8px 12px';
-            tooltip.style.borderRadius = '4px';
-            tooltip.style.fontSize = '14px';
-            tooltip.style.maxWidth = '300px';
-            tooltip.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
+            tooltip.className = 'tubesage-settings-tooltip'; // Apply new class
+            tooltip.textContent = 'Transcript Settings control how and where your extracted notes are saved, which YouTube Data API key to use (required for channel/playlist processing), and optional language-translation parameters.';
             tooltip.style.top = `${e.clientY + 10}px`;
             tooltip.style.left = `${e.clientX + 10}px`;
             
@@ -3806,7 +3894,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // LLM section
         const llmHeadingContainer = settingsContainer.createEl('div', {
-            attr: { style: 'display: flex; align-items: center; gap: 8px;' }
+            cls: 'tubesage-settings-heading-container' // Apply new class
         });
         
         llmHeadingContainer.createEl('h3', { text: 'LLM Settings' });
@@ -3814,7 +3902,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Add info icon
         const llmInfoIcon = this.createInfoIcon(
             llmHeadingContainer,
-            'Recommended by author: Google provider with gemini-2.0-flash model provides the best balance of quality and speed for most transcripts. Google offers a generous free quota that will suffice for most users\' needs.'
+            'LLM Settings let you choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; Max Tokens caps output length. The author\'s suggestion for most users: Google provider with the gemini-2.0-flash model—fast, inexpensive, and high-quality.'
         );
         
         new Setting(settingsContainer)
@@ -4153,7 +4241,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         settingsContainer.createEl('h3', { text: 'Prompt Settings' });
 
         // Create a sub-heading for Fast Summary prompts
-        settingsContainer.createEl('h4', { text: 'Fast Summary Prompts', attr: { style: 'margin-bottom: 10px;' } });
+        settingsContainer.createEl('h4', { text: 'Fast Summary Prompts', cls: 'tubesage-settings-prompt-subheader' });
         
         new Setting(settingsContainer)
             .setName('System Prompt (Fast Summary)')
@@ -4167,11 +4255,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         await this.plugin.saveSettings();
                     });
                 
-                // Access the DOM element and set its style
+                // Access the DOM element and set its appearance
                 // @ts-ignore - inputEl exists but TypeScript doesn't know about it
-                textComponent.inputEl.style.width = '400px';
-                // @ts-ignore - inputEl exists but TypeScript doesn't know about it
-                textComponent.inputEl.style.minHeight = '100px';
+                textComponent.inputEl.addClass('tubesage-prompt-textarea');
                 
                 return textComponent;
             })
@@ -4198,11 +4284,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         await this.plugin.saveSettings();
                     });
                 
-                // Access the DOM element and set its style
+                // Access the DOM element and set its appearance
                 // @ts-ignore - inputEl exists but TypeScript doesn't know about it
-                textComponent.inputEl.style.width = '400px';
-                // @ts-ignore - inputEl exists but TypeScript doesn't know about it
-                textComponent.inputEl.style.minHeight = '100px';
+                textComponent.inputEl.addClass('tubesage-prompt-textarea');
                 
                 return textComponent;
             })
@@ -4218,7 +4302,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             });
         
         // Create a sub-heading for Extensive Summary prompts
-        settingsContainer.createEl('h4', { text: 'Extensive Summary Prompts', attr: { style: 'margin-top: 20px; margin-bottom: 10px;' } });
+        settingsContainer.createEl('h4', { text: 'Extensive Summary Prompts', cls: 'tubesage-settings-prompt-subheader tubesage-settings-prompt-subheader-extensive' });
         
         new Setting(settingsContainer)
             .setName('System Prompt (Extensive Summary)')
@@ -4232,11 +4316,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         await this.plugin.saveSettings();
                     });
                 
-                // Access the DOM element and set its style
+                // Access the DOM element and set its appearance
                 // @ts-ignore - inputEl exists but TypeScript doesn't know about it
-                textComponent.inputEl.style.width = '400px';
-                // @ts-ignore - inputEl exists but TypeScript doesn't know about it
-                textComponent.inputEl.style.minHeight = '100px';
+                textComponent.inputEl.addClass('tubesage-prompt-textarea');
                 
                 return textComponent;
             })
@@ -4263,11 +4345,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         await this.plugin.saveSettings();
                     });
                 
-                // Access the DOM element and set its style
+                // Access the DOM element and set its appearance
                 // @ts-ignore - inputEl exists but TypeScript doesn't know about it
-                textComponent.inputEl.style.width = '400px';
-                // @ts-ignore - inputEl exists but TypeScript doesn't know about it
-                textComponent.inputEl.style.minHeight = '100px';
+                textComponent.inputEl.addClass('tubesage-prompt-textarea');
                 
                 return textComponent;
             })
@@ -4347,10 +4427,8 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
     private createInfoIcon(container: HTMLElement, tooltipText: string): HTMLElement {
         // Add info icon
         const infoIcon = container.createEl('span', {
-            attr: { 
-                style: 'cursor: help; color: var(--text-muted); font-size: 16px; display: flex; align-items: center; justify-content: center;',
-                'aria-label': 'Information'
-            }
+            cls: 'tubesage-settings-info-icon', // Apply new class
+            attr: { 'aria-label': 'Information' } // Keep aria-label
         });
         
         // Create SVG icon for info
@@ -4388,17 +4466,8 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Add tooltip on hover
         infoIcon.addEventListener('mouseenter', (e) => {
             const tooltip = document.createElement('div');
-            tooltip.className = 'settings-tooltip';
+            tooltip.className = 'tubesage-settings-tooltip'; // Apply new consistent class
             tooltip.textContent = tooltipText;
-            tooltip.style.position = 'absolute';
-            tooltip.style.zIndex = '1000';
-            tooltip.style.backgroundColor = 'var(--background-secondary)';
-            tooltip.style.color = 'var(--text-normal)';
-            tooltip.style.padding = '8px 12px';
-            tooltip.style.borderRadius = '4px';
-            tooltip.style.fontSize = '14px';
-            tooltip.style.maxWidth = '300px';
-            tooltip.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
             tooltip.style.top = `${e.clientY + 10}px`;
             tooltip.style.left = `${e.clientX + 10}px`;
             
@@ -4413,6 +4482,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             infoIcon.addEventListener('mouseleave', removeTooltip);
             infoIcon.addEventListener('click', removeTooltip);
         });
+        
+        // Provide native tooltip fallback
+        infoIcon.setAttr('title', tooltipText);
         
         return infoIcon;
     }
@@ -4493,11 +4565,8 @@ class TemplateFilePickerModal extends Modal {
             this.updateTemplateList(query);
         });
 
-        // Create template list container
-        const templateListEl = contentEl.createEl('div', { cls: 'template-list' });
-        templateListEl.style.maxHeight = '300px';
-        templateListEl.style.overflow = 'auto';
-        templateListEl.style.marginTop = '10px';
+        // Create template list container – reuse folder-list styling for consistency
+        const templateListEl = contentEl.createEl('div', { cls: ['template-list', 'folder-list'] });
         
         // Populate initial list
         this.updateTemplateList('', templateListEl);
@@ -4514,25 +4583,19 @@ class TemplateFilePickerModal extends Modal {
         );
         
         for (const template of filteredTemplates) {
-            const item = templateListEl.createEl('div', { cls: 'template-item' });
-            item.style.padding = '5px';
-            item.style.cursor = 'pointer';
-            item.style.borderBottom = '1px solid var(--background-modifier-border)';
+            const item = templateListEl.createEl('div', { cls: ['template-item', 'folder-item'] });
             
-            item.createEl('span', { text: template.path });
+            // Reuse icon appearance
+            const iconEl = item.createEl('span', { cls: 'folder-icon' });
+            iconEl.setText('📄');
+            
+            // Path span – mimic folder picker
+            item.createEl('span', { text: template.path, cls: 'folder-path' });
             
             item.addEventListener('click', () => {
                 logger.debug("Selected template file:", template.path);
                 this.result(template.path);
                 this.close();
-            });
-            
-            item.addEventListener('mouseenter', () => {
-                item.style.backgroundColor = 'var(--background-modifier-hover)';
-            });
-            
-            item.addEventListener('mouseleave', () => {
-                item.style.backgroundColor = '';
             });
         }
         
@@ -4668,12 +4731,12 @@ class FolderPickerModal extends Modal {
         if (rootSubfolderCount <= 0) {
             contentEl.createEl('div', {
                 text: `No subfolders found under ${rootFolder}`,
-                attr: { style: 'font-size: 12px; color: var(--text-error); text-align: center; margin-bottom: 10px;' }
+                cls: 'tubesage-folder-picker-status-error' // Apply new class
             });
         } else {
             contentEl.createEl('div', {
                 text: `Found ${rootSubfolderCount} subfolder${rootSubfolderCount === 1 ? '' : 's'}`,
-                attr: { style: 'font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 10px;' }
+                cls: 'tubesage-folder-picker-status-info' // Apply new class
             });
         }
         
@@ -4833,7 +4896,7 @@ class LicenseModal extends Modal {
     async onOpen() {
         const { contentEl } = this;
         
-        // Set wider width for the modal using direct DOM manipulation
+        // Set wider width for the modal using direct DOM manipulation (original working method)
         const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
         if (modalEl && modalEl instanceof HTMLElement) {
             modalEl.style.width = "700px";
@@ -4884,7 +4947,7 @@ class LicenseModal extends Modal {
                 throw new Error('Could not find license file in any of the expected locations.');
             }
             
-            // Create a div for the license content with scrollable style
+            // Create a div for the license content with scrollable style (original inline style)
             const licenseContainer = contentEl.createEl('div', {
                 attr: {
                     style: 'max-height: 500px; overflow-y: auto; padding: 20px; border: 1px solid var(--background-modifier-border); border-radius: 4px; margin-top: 10px; white-space: pre-wrap; font-family: var(--font-monospace); line-height: 1.5;'
@@ -4899,32 +4962,21 @@ class LicenseModal extends Modal {
                 // Handle headers
                 if (line.startsWith('# ')) {
                     inList = false;
-                    licenseContainer.createEl('h3', { 
-                        text: line.substring(2),
-                        attr: { style: 'margin-top: 16px; margin-bottom: 12px; font-weight: 600; border-bottom: 1px solid var(--background-modifier-border); padding-bottom: 8px;' }
-                    });
+                    licenseContainer.createEl('h3', { text: line.substring(2), cls: 'tubesage-license-h3' });
                 }
                 // Handle list items
                 else if (line.match(/^\d+\.\s+\*\*.*\*\*/)) {
                     inList = true;
-                    const listItem = licenseContainer.createEl('div', {
-                        attr: { style: 'margin-bottom: 8px;' }
-                    });
+                    const listItem = licenseContainer.createEl('div', { cls: 'tubesage-license-list-item' });
                     
                     // Extract and format the list item
                     const match = line.match(/^(\d+)\.\s+\*\*(.*?)\*\*:\s+(.*)/);
                     if (match) {
                         const [, number, title, content] = match;
                         
-                        listItem.createEl('span', {
-                            text: `${number}. `,
-                            attr: { style: 'font-weight: bold;' }
-                        });
+                        listItem.createEl('span', { text: `${number}. `, cls: 'tubesage-license-list-item-title-segment' });
                         
-                        listItem.createEl('span', {
-                            text: `${title}: `,
-                            attr: { style: 'font-weight: bold;' }
-                        });
+                        listItem.createEl('span', { text: `${title}: `, cls: 'tubesage-license-list-item-title-segment' });
                         
                         listItem.createSpan({ text: content });
                     } else {
@@ -4933,24 +4985,17 @@ class LicenseModal extends Modal {
                 }
                 // Handle list sub-items
                 else if (inList && line.match(/^\s+-\s+/)) {
-                    const subItem = licenseContainer.createEl('div', {
-                        attr: { style: 'margin-left: 20px; margin-bottom: 4px;' }
-                    });
+                    const subItem = licenseContainer.createEl('div', { cls: 'tubesage-license-sub-item' });
                     subItem.setText(line.replace(/^\s+-\s+/, '• '));
                 }
                 // Handle normal paragraphs
                 else if (line.trim() !== '') {
                     inList = false;
-                    licenseContainer.createEl('p', { 
-                        text: line,
-                        attr: { style: 'margin-bottom: 8px; max-width: 100%; word-break: normal; overflow-wrap: normal; white-space: pre-wrap;' }
-                    });
+                    licenseContainer.createEl('p', { text: line, cls: 'tubesage-license-paragraph' });
                 }
                 // Handle empty lines
                 else {
-                    licenseContainer.createEl('div', { 
-                        attr: { style: 'height: 8px;' }
-                    });
+                    licenseContainer.createEl('div', { cls: 'tubesage-license-spacer' });
                 }
             }
         } catch (error) {
@@ -4958,20 +5003,18 @@ class LicenseModal extends Modal {
             logger.error('Error loading license file:', error);
             contentEl.createEl('p', { 
                 text: 'Could not load license file. Please check that a license file (LICENSE.md or MIT-license-tubesage.md) exists in your plugin directory.',
-                attr: { style: 'color: var(--text-error);' }
+                cls: 'tubesage-license-load-error' // Apply new class
             });
         }
         
         // Add close button
         const footerEl = contentEl.createEl('div', {
-            attr: { style: 'margin-top: 20px; text-align: center;' }
+            cls: 'tubesage-license-footer' // Apply new class
         });
         
         const closeButton = footerEl.createEl('button', {
             text: 'Close',
-            attr: { 
-                style: 'padding: 8px 16px; background-color: var(--interactive-accent); color: var(--text-on-accent); border: none; border-radius: 4px; cursor: pointer;'
-            }
+            cls: 'tubesage-license-close-button' // Apply new class
         });
         
         closeButton.addEventListener('click', () => {
@@ -4994,7 +5037,7 @@ class LicenseRequiredModal extends Modal {
     onOpen() {
         const { contentEl } = this;
         
-        // Set a suitable width for the modal
+        // Set a suitable width for the modal (original working method)
         const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
         if (modalEl && modalEl instanceof HTMLElement) {
             modalEl.style.width = "500px";
@@ -5003,30 +5046,28 @@ class LicenseRequiredModal extends Modal {
         // Add title
         contentEl.createEl('h2', { 
             text: 'License Acceptance equired', 
-            attr: { style: 'text-align: center; color: var(--text-error);' }
+            cls: 'tubesage-license-required-title' // Apply new class
         });
         
         // Add warning icon
         const iconContainer = contentEl.createEl('div', { 
-            attr: { style: 'text-align: center; margin: 20px 0;' }
+            cls: 'tubesage-license-required-icon-container' // Apply new class
         });
         
         iconContainer.createEl('span', { 
-            attr: { 
-                style: 'font-size: 48px; color: var(--text-warning);',
-                'aria-hidden': 'true'
-            },
+            cls: 'tubesage-license-required-icon', // Apply new class
+            attr: { 'aria-hidden': 'true' },
             text: '⚠️'
         });
         
         // Add message
         const messageDiv = contentEl.createEl('div', {
-            attr: { style: 'margin-bottom: 20px; text-align: center; line-height: 1.5;' }
+            cls: 'tubesage-license-required-message-container' // Apply new class
         });
         
         messageDiv.createEl('p', {
             text: 'You must accept the plugin license before using this feature.',
-            attr: { style: 'font-weight: bold; margin-bottom: 10px;' }
+            cls: 'tubesage-license-required-message-bold' // Apply new class
         });
         
         messageDiv.createEl('p', {
@@ -5035,12 +5076,12 @@ class LicenseRequiredModal extends Modal {
         
         // Add instructions with steps
         const stepsDiv = contentEl.createEl('div', {
-            attr: { style: 'background-color: var(--background-secondary); padding: 15px; border-radius: 8px; margin-bottom: 20px;' }
+            cls: 'tubesage-license-required-steps-container' // Apply new class
         });
         
         stepsDiv.createEl('p', {
             text: 'How to accept the license:',
-            attr: { style: 'font-weight: bold; margin-bottom: 8px;' }
+            cls: 'tubesage-license-required-steps-title' // Apply new class
         });
         
         const steps = [
@@ -5052,35 +5093,31 @@ class LicenseRequiredModal extends Modal {
         ];
         
         const stepsList = stepsDiv.createEl('ol', {
-            attr: { style: 'margin-left: 15px; margin-top: 0;' }
+            cls: 'tubesage-license-required-steps-list' // Apply new class
         });
         
         steps.forEach(step => {
             stepsList.createEl('li', {
                 text: step,
-                attr: { style: 'margin-bottom: 5px;' }
+                cls: 'tubesage-license-required-step-item' // Apply new class
             });
         });
         
         // Add buttons
         const buttonContainer = contentEl.createEl('div', {
-            attr: { style: 'display: flex; justify-content: space-between; margin-top: 20px;' }
+            cls: 'tubesage-license-required-button-container' // Apply new class
         });
         
         // Open settings button
         const openSettingsButton = buttonContainer.createEl('button', {
             text: 'Open Plugin Settings',
-            attr: {
-                style: 'padding: 8px 12px; background-color: var(--interactive-accent); color: var(--text-on-accent); border: none; border-radius: 4px; cursor: pointer; flex: 1; margin-right: 10px;'
-            }
+            cls: 'tubesage-license-required-button-primary' // Apply new class
         });
         
         // Close button
         const closeButton = buttonContainer.createEl('button', {
             text: 'Close',
-            attr: {
-                style: 'padding: 8px 12px; background-color: var(--background-modifier-border); color: var(--text-normal); border: none; border-radius: 4px; cursor: pointer; flex: 1; margin-left: 10px;'
-            }
+            cls: 'tubesage-license-required-button-secondary' // Apply new class
         });
         
         // Add event listeners
@@ -5110,7 +5147,7 @@ class READMEModal extends Modal {
     async onOpen() {
         const { contentEl } = this;
         
-        // Set wider width for the modal using direct DOM manipulation
+        // Set wider width for the modal using direct DOM manipulation (original working method)
         const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
         if (modalEl && modalEl instanceof HTMLElement) {
             modalEl.style.width = "800px";
@@ -5159,7 +5196,7 @@ class READMEModal extends Modal {
                 throw new Error('Could not find README file in any of the expected locations.');
             }
             
-            // Create a div for the README content with scrollable style
+            // Create a div for the README content with scrollable style (original inline style)
             const readmeContainer = contentEl.createEl('div', {
                 attr: {
                     style: 'max-height: 550px; overflow-y: auto; padding: 20px; border: 1px solid var(--background-modifier-border); border-radius: 4px; margin-top: 10px; white-space: pre-wrap; font-family: var(--font-interface); line-height: 1.6;'
@@ -5182,31 +5219,23 @@ class READMEModal extends Modal {
                         
                         // Create code block container
                         const codeContainer = readmeContainer.createEl('div', {
-                            attr: { 
-                                style: 'background: var(--background-secondary); border-radius: 4px; padding: 8px; margin: 10px 0; overflow-x: auto;' 
-                            },
-                            cls: 'code-block-container'
+                            cls: 'code-block-container' // Style now in CSS
                         });
                         
                         // Add language tag if specified
                         if (codeLanguage) {
                             codeContainer.createEl('div', {
                                 text: codeLanguage,
-                                attr: { 
-                                    style: 'font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-family: var(--font-monospace);' 
-                                }
+                                cls: 'tubesage-readme-code-lang' // Apply new class
                             });
                         }
                         
                         // Create pre>code element for the code
                         const pre = codeContainer.createEl('pre', {
-                            attr: { style: 'margin: 0; overflow-x: auto;' }
+                            cls: 'tubesage-readme-code-pre' // Apply new class
                         });
                         pre.createEl('code', {
-                            attr: { 
-                                style: 'font-family: var(--font-monospace); display: block;',
-                                class: codeLanguage ? `language-${codeLanguage}` : ''
-                            }
+                            cls: `tubesage-readme-code-inline ${codeLanguage ? 'language-' + codeLanguage : ''}`.trim() // Apply new class and existing language class
                         });
                     } else {
                         // End of code block
@@ -5232,43 +5261,24 @@ class READMEModal extends Modal {
                 // Handle headers
                 if (line.startsWith('# ')) {
                     inList = false;
-                    readmeContainer.createEl('h1', { 
-                        text: line.substring(2),
-                        attr: { style: 'margin-top: 16px; margin-bottom: 12px; font-weight: 700; border-bottom: 1px solid var(--background-modifier-border); padding-bottom: 8px; font-size: 1.8em;' }
-                    });
+                    readmeContainer.createEl('h1', { text: line.substring(2), cls: 'tubesage-readme-h1' });
                 } else if (line.startsWith('## ')) {
                     inList = false;
-                    readmeContainer.createEl('h2', { 
-                        text: line.substring(3),
-                        attr: { style: 'margin-top: 16px; margin-bottom: 10px; font-weight: 600; font-size: 1.5em;' }
-                    });
+                    readmeContainer.createEl('h2', { text: line.substring(3), cls: 'tubesage-readme-h2' });
                 } else if (line.startsWith('### ')) {
                     inList = false;
-                    readmeContainer.createEl('h3', { 
-                        text: line.substring(4),
-                        attr: { style: 'margin-top: 14px; margin-bottom: 8px; font-weight: 600; font-size: 1.2em;' }
-                    });
+                    readmeContainer.createEl('h3', { text: line.substring(4), cls: 'tubesage-readme-h3' });
                 } else if (line.startsWith('#### ')) {
                     inList = false;
-                    readmeContainer.createEl('h4', { 
-                        text: line.substring(5),
-                        attr: { style: 'margin-top: 12px; margin-bottom: 6px; font-weight: 600; font-size: 1.1em;' }
-                    });
+                    readmeContainer.createEl('h4', { text: line.substring(5), cls: 'tubesage-readme-h4' });
                 }
                 // Handle list items
                 else if (line.match(/^[*\-\+]\s/)) {
                     inList = true;
-                    const listItem = readmeContainer.createEl('div', {
-                        attr: { 
-                            style: 'margin: 4px 0 4px 20px; display: flex;'
-                        }
-                    });
+                    const listItem = readmeContainer.createEl('div', { cls: 'tubesage-readme-list-item' });
                     
                     // Bullet
-                    listItem.createEl('span', {
-                        text: '• ',
-                        attr: { style: 'margin-right: 6px;' }
-                    });
+                    listItem.createEl('span', { text: '• ', cls: 'tubesage-readme-list-bullet' });
                     
                     // Content
                     const content = line.replace(/^[*\-\+]\s/, '');
@@ -5283,8 +5293,7 @@ class READMEModal extends Modal {
                                     text: part.text,
                                     attr: {
                                         href: part.url || '#',
-                                        style: 'color: var(--text-accent); text-decoration: none;',
-                                        target: '_blank'
+                                        cls: 'tubesage-readme-link' // Apply new class
                                     }
                                 });
                             } else {
@@ -5300,9 +5309,7 @@ class READMEModal extends Modal {
                 // Handle normal paragraphs
                 else if (line.trim() !== '') {
                     inList = false;
-                    const para = readmeContainer.createEl('p', { 
-                        attr: { style: 'margin-bottom: 12px; max-width: 100%; line-height: 1.6;' }
-                    });
+                    const para = readmeContainer.createEl('p', { cls: 'tubesage-readme-paragraph' });
                     
                     // Check for links
                     if (line.includes('[') && line.includes('](')) {
@@ -5314,8 +5321,7 @@ class READMEModal extends Modal {
                                     text: part.text,
                                     attr: {
                                         href: part.url || '#',
-                                        style: 'color: var(--text-accent); text-decoration: none;',
-                                        target: '_blank'
+                                        cls: 'tubesage-readme-link' // Apply new class
                                     }
                                 });
                             } else {
@@ -5330,9 +5336,7 @@ class READMEModal extends Modal {
                 }
                 // Handle empty lines with more spacing between sections
                 else {
-                    readmeContainer.createEl('div', { 
-                        attr: { style: 'height: 8px;' }
-                    });
+                    readmeContainer.createEl('div', { cls: 'tubesage-readme-spacer' });
                 }
             }
         } catch (error) {
@@ -5340,20 +5344,18 @@ class READMEModal extends Modal {
             logger.error('Error loading README file:', error);
             contentEl.createEl('p', { 
                 text: 'Could not load README file. Please check that README.md exists in your plugin directory.',
-                attr: { style: 'color: var(--text-error);' }
+                cls: 'tubesage-license-load-error' // Assumes this class is defined and appropriate
             });
         }
         
         // Add close button
         const footerEl = contentEl.createEl('div', {
-            attr: { style: 'margin-top: 20px; text-align: center;' }
+            cls: 'tubesage-license-footer' // Reuse existing class
         });
         
         const closeButton = footerEl.createEl('button', {
             text: 'Close',
-            attr: { 
-                style: 'padding: 8px 16px; background-color: var(--interactive-accent); color: var(--text-on-accent); border: none; border-radius: 4px; cursor: pointer;'
-            }
+            cls: 'tubesage-readme-close-button' // Apply new class for README modal specifically
         });
         
         closeButton.addEventListener('click', () => {
@@ -5539,7 +5541,7 @@ class TemplateViewModal extends Modal {
     async onOpen() {
         const { contentEl } = this;
         
-        // Set wider width for the modal using direct DOM manipulation
+        // Set wider width for the modal using direct DOM manipulation (original working method)
         const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
         if (modalEl && modalEl instanceof HTMLElement) {
             modalEl.style.width = "700px";
@@ -5548,7 +5550,7 @@ class TemplateViewModal extends Modal {
         
         contentEl.createEl('h2', { 
             text: 'Example Template: Copy and place in your Templater Plugin Specified Template directory',
-            attr: { style: 'font-size: 18px; line-height: 1.4;' }
+            cls: 'tubesage-template-view-title'
         });
 
         try {
@@ -5590,31 +5592,33 @@ class TemplateViewModal extends Modal {
                 throw new Error('Could not find template file in any of the expected locations.');
             }
             
-            // Create a div for the template content with scrollable style
+            // Create a div for the template content with scrollable style (original inline style)
             const templateContainer = contentEl.createEl('div', {
                 attr: {
-                    style: 'max-height: 500px; overflow-y: auto; padding: 20px; border: 1px solid var(--background-modifier-border); border-radius: 4px; margin-top: 10px; white-space: pre-wrap; font-family: var(--font-monospace); line-height: 1.5;'
+                    style: 'max-height: 250px; overflow-y: auto; padding: 20px; border: 1px solid var(--background-modifier-border); border-radius: 4px; margin-top: 10px; white-space: pre-wrap; font-family: var(--font-monospace); line-height: 1.5;'
                 }
+            });
+            
+            // Add a subtle separator line for spacing
+            contentEl.createEl('div', {
+                attr: { style: 'height:1px; background: var(--background-modifier-border); margin: 12px 0;' }
             });
             
             // Create a container for the copy button
             const copyContainer = contentEl.createEl('div', {
-                attr: {
-                    style: 'display: flex; justify-content: flex-end; margin-top: 8px; margin-bottom: 8px;'
-                }
+                cls: 'tubesage-template-view-copy-container',
+                attr: { style: 'display:flex; justify-content:flex-end; width:100%; margin-left:auto;' }
             });
             
             // Add copy text
             copyContainer.createEl('span', { 
                 text: 'Copy Template', 
-                attr: { style: 'font-size: 14px; margin-right: 8px; cursor: pointer;' }
+                cls: 'tubesage-template-view-copy-text'
             });
             
             // Copy icon button
             const copyButton = copyContainer.createEl('button', {
-                attr: {
-                    style: 'background: transparent; border: none; cursor: pointer; padding: 4px; border-radius: 4px; color: var(--text-normal); display: flex; align-items: center; justify-content: center;'
-                }
+                cls: 'tubesage-icon-button' // Reuse existing class
             });
             
             // Create an SVG for the copy icon
@@ -5645,11 +5649,11 @@ class TemplateViewModal extends Modal {
             
             // Add hover effect
             copyButton.addEventListener('mouseenter', () => {
-                copyButton.style.background = 'var(--background-modifier-hover)';
+                copyButton.addClass('tubesage-icon-button-hover'); // Reuse hover class logic
             });
             
             copyButton.addEventListener('mouseleave', () => {
-                copyButton.style.background = 'transparent';
+                copyButton.removeClass('tubesage-icon-button-hover'); // Reuse hover class logic
             });
             
             // Make the text also clickable
@@ -5695,16 +5699,12 @@ class TemplateViewModal extends Modal {
             // Add explanation
             contentEl.createEl('div', {
                 text: 'This is the example Templater template used for YouTube transcript notes. You can customize this template for your own needs.',
-                attr: {
-                    style: 'margin-top: 15px; font-style: italic; color: var(--text-muted);'
-                }
+                cls: 'tubesage-template-view-explanation'
             });
             
             // Add Templater variables explanation
             const variablesContainer = contentEl.createEl('div', {
-                attr: {
-                    style: 'margin-top: 15px; border: 1px solid var(--background-modifier-border); padding: 15px; border-radius: 4px;'
-                }
+                cls: 'tubesage-template-view-variables-container'
             });
             
             variablesContainer.createEl('h3', {text: 'Available Template Variables:'});
@@ -5730,20 +5730,19 @@ class TemplateViewModal extends Modal {
             logger.error('Error loading template file:', error);
             contentEl.createEl('p', { 
                 text: 'Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.',
-                attr: { style: 'color: var(--text-error);' }
+                cls: 'tubesage-license-load-error' // Reuse existing class for error messages
             });
         }
         
         // Add close button
         const footerEl = contentEl.createEl('div', {
-            attr: { style: 'margin-top: 20px; text-align: center;' }
+            cls: 'tubesage-license-footer', // Reuse existing class
+            attr: { style: 'display:flex; justify-content:flex-end; width:100%;' }
         });
         
         const closeButton = footerEl.createEl('button', {
             text: 'Close',
-            attr: { 
-                style: 'padding: 8px 16px; background-color: var(--interactive-accent); color: var(--text-on-accent); border: none; border-radius: 4px; cursor: pointer;'
-            }
+            cls: 'tubesage-license-close-button' // Reuse existing class
         });
         
         closeButton.addEventListener('click', () => {
