@@ -337,3 +337,15 @@ The integrated performance monitoring system helps optimize plugin operation:
 - **Optimization Suggestions**: Provides recommendations for improving performance
 - **Adaptive Processing**: Adjusts processing parameters based on performance metrics
 
+## Contribution Policy
+
+Thank you for your interest!
+
+This project is provided as-is under the MIT license.
+
+**I am happy to accept issues** for bug reports, feature suggestions, or general feedback.  
+However, **I am not accepting pull requests or external code contributions at this time.**
+
+If you’d like to make code changes or improvements, please fork the repository and work within your own fork.
+
+Thank you for your understanding and support!

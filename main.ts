@@ -629,6 +629,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 min-width: 300px;
                 max-width: 600px;
             }
+            .tubesage-mission-italic { font-style: italic; }
             // ... existing code before end of runtime style block ...
             .tubesage-license-container,
             .tubesage-readme-container {
@@ -3453,6 +3454,13 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         const supportDesc = supportContainer.createEl('div', {
             text: 'If you find this plugin useful, consider supporting its development:',
             cls: 'tubesage-settings-support-desc' // Apply new class
+        });
+
+        // Add italicized mission statement
+        const missionDesc = supportContainer.createEl('div', {
+            text: '…and help seed a bigger vision: technology that serves people and planet..',
+            cls: ['tubesage-settings-support-desc', 'tubesage-mission-italic'],
+            // attr: { style: 'font-style: italic;' } // Removed inline style
         });
         
         // Spacer before Buy-Me-a-Coffee button
