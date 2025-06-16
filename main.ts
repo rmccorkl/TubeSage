@@ -1,9 +1,10 @@
 import { App, Plugin, PluginSettingTab, Setting, Notice, Modal } from 'obsidian';
+import manifestData from './manifest.json';
 import { YouTubeTranscriptExtractor } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
 import { handleApiError, getSafeErrorMessage } from './src/utils/error-utils';
-import { getLogger, LogLevel, setGlobalLogLevel, clearLogs, getLogsAsString } from './src/utils/logger';
+import { getLogger, LogLevel, setGlobalLogLevel, clearLogs, getLogsAsString, getLogsForCallout } from './src/utils/logger';
 import { normalizePath, ensureFolder, joinPaths, sanitizePathComponent } from './src/utils/path-utils';
 import { validateRequired, validateYouTubeUrl, ValidationResult, displayValidationResult } from './src/utils/form-utils';
 import { getPromptConfig, cleanTranscript, SummaryMode, getTimestampLinkConfig } from './src/utils/prompt-utils';
@@ -86,6 +87,15 @@ interface YouTubeTranscriptSettings {
     
     // License settings
     licenseAccepted: boolean;
+    
+    // Cookie management settings
+    youtubeCookies?: {
+        desktop?: string;
+        mobile?: string;
+        lastBootstrap?: number;
+        timestamp?: number;
+    };
+    
 }
 
 const DEFAULT_SETTINGS: YouTubeTranscriptSettings = {
@@ -211,6 +221,10 @@ EXACTLY HOW TO DO THIS:
     
     // License settings
     licenseAccepted: false,
+    
+    // Cookie management - undefined means no cookies stored yet
+    youtubeCookies: undefined,
+    
 };
 
 // Define a simple interface for the model object from OpenAI API
@@ -242,6 +256,11 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         showNotice(message, timeout);
     }
 
+    // Get plugin version from manifest
+    getVersion(): string {
+        return manifestData.version || 'Unknown';
+    }
+
     async onload() {
         await this.loadSettings();
         
@@ -261,6 +280,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         }
 
         this.initializeSummarizer();
+        
         
         this.addSettingTab(new YouTubeTranscriptSettingTab(this.app, this));
         this.checkDependencies();
@@ -640,6 +660,97 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             .tubesage-readme-modal-size.modal {
                 max-height: 90vh !important;
             }
+            
+            /* License Required Modal Styles */
+            .tubesage-license-required-title {
+                color: var(--text-normal);
+                margin-bottom: 15px;
+                font-size: 1.1em;
+                font-weight: 500;
+            }
+            
+            .tubesage-license-required-icon-container {
+                display: none;
+            }
+            
+            .tubesage-license-required-message-container {
+                margin-bottom: 15px;
+                font-size: 14px;
+            }
+            
+            .tubesage-license-required-message-bold {
+                font-weight: 500;
+                color: var(--text-normal);
+                margin-bottom: 6px !important;
+                font-size: 14px;
+            }
+            
+            .tubesage-license-required-steps-container {
+                margin-bottom: 20px;
+                font-size: 13px;
+            }
+            
+            .tubesage-license-required-steps-title {
+                font-weight: 500;
+                margin-bottom: 8px;
+                color: var(--text-normal);
+                font-size: 13px;
+            }
+            
+            .tubesage-license-required-steps-list {
+                padding-left: 18px;
+                line-height: 1.4;
+                font-size: 13px;
+            }
+            
+            .tubesage-license-required-step-item {
+                margin-bottom: 4px;
+                color: var(--text-muted);
+                font-size: 13px;
+            }
+            
+            .tubesage-license-required-button-container {
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+                padding-top: 15px;
+                border-top: 1px solid var(--background-modifier-border);
+            }
+            
+            .tubesage-license-required-button-primary {
+                flex: 1;
+                padding: 8px 16px;
+                background-color: var(--interactive-accent);
+                color: var(--text-on-accent);
+                border: none;
+                border-radius: 4px;
+                font-size: 13px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+            
+            .tubesage-license-required-button-primary:hover {
+                background-color: var(--interactive-accent-hover);
+            }
+            
+            .tubesage-license-required-button-secondary {
+                flex: 1;
+                padding: 8px 16px;
+                background-color: var(--background-secondary);
+                color: var(--text-normal);
+                border: 1px solid var(--background-modifier-border);
+                border-radius: 4px;
+                font-size: 13px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+            
+            .tubesage-license-required-button-secondary:hover {
+                background-color: var(--background-modifier-hover);
+            }
+            
             // ... existing code ...
         `;
         document.head.appendChild(styleEl);
@@ -708,6 +819,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             }
         }
         
+        
         // Any other cleanup needed
         logger.info('YouTube Transcript Plugin unloaded');
     }
@@ -766,27 +878,61 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     }
 
     async extractTranscript(videoUrl: string): Promise<string> {
+        const result = await this.extractTranscriptWithMetadata(videoUrl);
+        return result.transcript;
+    }
+    
+    async extractTranscriptWithMetadata(videoUrl: string): Promise<{transcript: string, metadata: {title?: string, author?: string}}> {
+        return await this.extractTranscriptsWithMetadata([videoUrl]).then(results => results[0]);
+    }
+    
+    async extractTranscriptsWithMetadata(videoUrls: string[]): Promise<Array<{transcript: string, metadata: {title?: string, author?: string}}>> {
         try {
-            // Extract video ID from URL
-            let videoId = YouTubeTranscriptExtractor.extractVideoId(videoUrl);
+            transcriptLogger.debug(`Starting transcript extraction for ${videoUrls.length} URLs`);
             
-            transcriptLogger.debug("Starting transcript extraction for URL:", videoUrl);
+            const results: Array<{transcript: string, metadata: {title?: string, author?: string}}> = [];
             
-            if (!videoId) {
-                throw new Error('Invalid YouTube URL. Could not extract video ID.');
+            // Process each URL
+            for (let i = 0; i < videoUrls.length; i++) {
+                const videoUrl = videoUrls[i];
+                try {
+                    transcriptLogger.debug(`Processing video ${i + 1}/${videoUrls.length}: ${videoUrl}`);
+                    
+                    // Extract video ID from URL
+                    const videoId = YouTubeTranscriptExtractor.extractVideoId(videoUrl);
+                    
+                    if (!videoId) {
+                        throw new Error('Invalid YouTube URL. Could not extract video ID.');
+                    }
+                    
+                    // Get transcript segments and metadata using direct ScrapeCreators method
+                    const result = await YouTubeTranscriptExtractor.fetchTranscript(videoId, {
+                        lang: this.settings.translateLanguage,
+                        country: this.settings.translateCountry
+                    });
+                    
+                    // Format transcript with timestamps
+                    const formattedTranscript = this.formatTranscriptForYaml(result.segments);
+                    results.push({
+                        transcript: formattedTranscript,
+                        metadata: result.metadata
+                    });
+                    
+                } catch (error) {
+                    console.log(`Plugin: Failed to extract transcript for video ${i + 1}/${videoUrls.length}:`, error.message);
+                    transcriptLogger.error(`Failed to extract transcript for video ${i + 1}/${videoUrls.length}:`, error);
+                    // Continue with other videos, but include error result
+                    results.push({
+                        transcript: `[TRANSCRIPT EXTRACTION FAILED: ${error.message}]`,
+                        metadata: { title: 'Failed to extract', author: 'Unknown' }
+                    });
+                }
             }
             
-            // Get transcript segments with language and country settings
-            const transcriptSegments = await YouTubeTranscriptExtractor.fetchTranscript(videoId, {
-                lang: this.settings.translateLanguage,
-                country: this.settings.translateCountry
-            });
+            return results;
             
-            // Format transcript with timestamps
-            const formattedTranscript = this.formatTranscriptForYaml(transcriptSegments);
-            return formattedTranscript;
         } catch (error) {
-            // Use the new error handling utility with 'YouTube API' as the service name
+            // Use the new error handling utility
             throw handleApiError(error, 'YouTube API', 'Transcript Extraction');
         }
     }
@@ -959,9 +1105,9 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             llmLogger.debug(`[summarizeTranscript] Max Tokens: ${promptConfig.maxTokens}, Temperature: ${promptConfig.temperature}`);
             if (this.settings.debugLogging) { // Only log prompts/transcript in debug mode
                 llmLogger.debug("--- System Prompt ---");
-                llmLogger.debug(promptConfig.systemPrompt);
+                llmLogger.debug(truncateForLogs(promptConfig.systemPrompt, 200));
                 llmLogger.debug("--- User Prompt ---");
-                llmLogger.debug(promptConfig.userPrompt);
+                llmLogger.debug(truncateForLogs(promptConfig.userPrompt, 200));
                 // Log truncated transcript to avoid excessive length
                 llmLogger.debug("--- Cleaned Transcript (Excerpt) ---");
                 llmLogger.debug(truncateForLogs(cleanedTranscript, 300));
@@ -1797,13 +1943,13 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 // Log the system prompt
                 llmLogger.debug("SYSTEM PROMPT:");
                 llmLogger.debug("----------------------------------------");
-                llmLogger.debug(timestampConfig.systemPrompt);
+                llmLogger.debug(truncateForLogs(timestampConfig.systemPrompt, 200));
                 llmLogger.debug("----------------------------------------");
                 
                 // Log the user prompt
                 llmLogger.debug("USER PROMPT:");
                 llmLogger.debug("----------------------------------------");
-                llmLogger.debug(timestampConfig.userPrompt);
+                llmLogger.debug(truncateForLogs(timestampConfig.userPrompt, 200));
                 llmLogger.debug("----------------------------------------");
                 
                 // Log content being processed
@@ -1825,7 +1971,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 // Log the complete formatted prompt
                 llmLogger.debug("COMPLETE FORMATTED PROMPT BEING SENT TO LLM:");
                 llmLogger.debug("========================================");
-                llmLogger.debug(truncateForLogs(restructuredPrompt, 800));
+                llmLogger.debug(truncateForLogs(restructuredPrompt, 400));
                 llmLogger.debug("========================================");
             }
             
@@ -1842,7 +1988,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 if (this.settings.debugLogging) {
                     llmLogger.debug("LLM RESPONSE:");
                     llmLogger.debug("========================================");
-                    llmLogger.debug(truncateForLogs(enhancedContent || "Empty response from LLM", 800));
+                    llmLogger.debug(truncateForLogs(enhancedContent || "Empty response from LLM", 400));
                     llmLogger.debug("========================================");
                 }
                 
@@ -2145,7 +2291,7 @@ ${contentToTranslate}
                 if (this.settings.debugLogging) {
                     llmLogger.debug(`CHUNK ${i+1} PROMPT:`);
                     llmLogger.debug("----------------------------------------");
-                    llmLogger.debug(timestampConfig.userPrompt);
+                    llmLogger.debug(truncateForLogs(timestampConfig.userPrompt, 400));
                     llmLogger.debug("----------------------------------------");
                     llmLogger.debug(`CHUNK ${i+1} CONTENT:`);
                     llmLogger.debug("----------------------------------------");
@@ -2153,7 +2299,7 @@ ${contentToTranslate}
                     llmLogger.debug("----------------------------------------");
                     llmLogger.debug(`CHUNK ${i+1} COMPLETE FORMATTED PROMPT:`);
                     llmLogger.debug("========================================");
-                    llmLogger.debug(truncateForLogs(restructuredPrompt, 800));
+                    llmLogger.debug(truncateForLogs(restructuredPrompt, 400));
                     llmLogger.debug("========================================");
                 }
                 
@@ -2201,7 +2347,7 @@ ${contentToTranslate}
                     if (this.settings.debugLogging) {
                         llmLogger.debug(`CHUNK ${i+1} LLM RESPONSE:`);
                         llmLogger.debug("========================================");
-                        llmLogger.debug(truncateForLogs(processedChunk || "Empty response from LLM", 600));
+                        llmLogger.debug(truncateForLogs(processedChunk || "Empty response from LLM", 400));
                         llmLogger.debug("========================================");
                     }
                     
@@ -3061,25 +3207,13 @@ class YouTubeTranscriptModal extends Modal {
                         
                         // === NEW LOGGING LOGIC START (for collection items) ===
                         if (this.plugin.settings.debugLogging) {
-                            const finalLogs = getLogsAsString();
+                            const finalLogs = getLogsForCallout();
                             if (finalLogs && finalLogs.trim() !== "") { // Only append if there are non-empty logs
                                 // Simplest approach to create debug section 
                                 const debugHeader = "\n\n> [!info]- Debug Information (hidden)\n> ```";
                                 const debugFooter = "\n> ```";
                                 
-                                // Process log lines to add ">" prefix for callout formatting
-                                let formattedLogs = "";
-                                const logLines = finalLogs.split("\n");
-                                for (const line of logLines) {
-                                    formattedLogs += "> " + line + "\n";
-                                }
-                                
-                                // Remove the last newline for clean formatting
-                                if (formattedLogs.endsWith("\n")) {
-                                    formattedLogs = formattedLogs.slice(0, -1);
-                                }
-                                
-                                const debugSection = debugHeader + "\n" + formattedLogs + debugFooter;
+                                const debugSection = debugHeader + "\n" + finalLogs + debugFooter;
                                 
                                 try {
                                     // Recalculate notePath here as it's needed for appending
@@ -3251,43 +3385,71 @@ class YouTubeTranscriptModal extends Modal {
                 throw new Error('Failed to extract video ID from URL');
             }
             
-            // If no custom title was provided, fetch the YouTube title
-            if (!title) {
-                this.showNotice('Fetching video title from YouTube...', 5000);
-                try {
-                    const metadata = await YouTubeTranscriptExtractor.getVideoMetadata(videoId);
-                    if (metadata && metadata.title) {
-                        // Sanitize the YouTube title before using it
-                        title = sanitizeFilename(metadata.title);
-                        this.showNotice(`Using YouTube title: ${title}`, 3000);
-                    } else {
-                        title = `YouTube Video ${videoId}`;
-                        this.showNotice('Could not retrieve YouTube title, using fallback', 3000);
-                    }
-                } catch (titleError) {
-                    logger.error('Error fetching video title:', titleError);
+            // Extract transcript and metadata in one request
+            this.showNotice('Extracting transcript from YouTube...', 5000);
+            let transcript: string;
+            let transcriptFailed = false;
+            let extractedMetadata: {title?: string, author?: string} = {};
+            
+            try {
+                const result = await this.plugin.extractTranscriptWithMetadata(url);
+                transcript = result.transcript;
+                extractedMetadata = result.metadata;
+                
+                // If no custom title was provided, use the extracted title
+                if (!title && extractedMetadata.title) {
+                    title = sanitizeFilename(extractedMetadata.title);
+                    this.showNotice(`Using YouTube title: ${title}`, 3000);
+                } else if (!title) {
                     title = `YouTube Video ${videoId}`;
                     this.showNotice('Could not retrieve YouTube title, using fallback', 3000);
                 }
+                
+                if (!transcript) {
+                    transcriptFailed = true;
+                    transcript = '[TRANSCRIPT EXTRACTION FAILED: Empty result returned]';
+                    this.showNotice('Transcript extraction failed (empty result), continuing with debug note creation...', 5000);
+                } else if (transcript.includes('[TRANSCRIPT EXTRACTION FAILED')) {
+                    // Check if transcript contains failure message from error handling
+                    transcriptFailed = true;
+                    this.showNotice('Transcript extraction failed, continuing with debug note creation...', 5000);
+                } else {
+                    this.showNotice('Transcript extracted successfully', 5000);
+                }
+            } catch (transcriptError) {
+                transcriptFailed = true;
+                transcript = `[TRANSCRIPT EXTRACTION FAILED: ${getSafeErrorMessage(transcriptError)}]`;
+                this.showNotice('Transcript extraction failed, continuing with debug note creation...', 5000);
+                logger.error('Transcript extraction failed:', transcriptError);
+                
+                // Still set fallback title if not provided
+                if (!title) {
+                    title = `YouTube Video ${videoId}`;
+                    this.showNotice('Using fallback title due to extraction failure', 3000);
+                }
             }
             
-            // Extract transcript 
-            this.showNotice('Extracting transcript from YouTube...', 5000);
-            const transcript = await this.plugin.extractTranscript(url);
-            
-            if (!transcript) {
-                throw new Error('Failed to extract transcript (empty result)');
+            // Summarize transcript (skip if extraction failed)
+            let summary: string;
+            if (transcriptFailed) {
+                summary = '[SUMMARY SKIPPED: Transcript extraction failed - see debug information below]';
+                this.showNotice('Skipping AI summarization due to transcript failure...', 3000);
+            } else {
+                this.showNotice('Summarizing transcript with AI...', 5000);
+                try {
+                    summary = await this.plugin.summarizeTranscript(transcript);
+                    if (!summary) {
+                        summary = '[SUMMARY FAILED: Empty result returned from AI]';
+                        this.showNotice('AI summarization failed (empty result), continuing with note creation...', 5000);
+                    } else {
+                        this.showNotice('Summary generated successfully', 5000);
+                    }
+                } catch (summaryError) {
+                    summary = `[SUMMARY FAILED: ${getSafeErrorMessage(summaryError)}]`;
+                    this.showNotice('AI summarization failed, continuing with note creation...', 5000);
+                    logger.error('Summary generation failed:', summaryError);
+                }
             }
-            this.showNotice('Transcript extracted successfully', 5000);
-            
-            // Summarize transcript
-            this.showNotice('Summarizing transcript with AI...', 5000);
-            const summary = await this.plugin.summarizeTranscript(transcript);
-            
-            if (!summary) {
-                throw new Error('Failed to generate summary (empty result)');
-            }
-            this.showNotice('Summary generated', 5000);
             
             // Create note
             this.showNotice('Creating note with template...', 5000);
@@ -3324,8 +3486,8 @@ class YouTubeTranscriptModal extends Modal {
                 ? joinPaths(this.selectedFolder, `${datePrefix}${sanitizeFilename(title)}.md`)
                 : `${datePrefix}${sanitizeFilename(title)}.md`;
             
-            // Add section links in a second pass if enabled and not in fast summary mode
-            if (this.plugin.settings.addTimestampLinks && !this.plugin.settings.useFastSummary) {
+            // Add section links in a second pass if enabled and not in fast summary mode and transcript extraction succeeded
+            if (this.plugin.settings.addTimestampLinks && !this.plugin.settings.useFastSummary && !transcriptFailed) {
                 this.showNotice('Adding section timestamp links...', 3000);
                 try {
                     // Simple, small delay to allow file creation to complete
@@ -3338,30 +3500,20 @@ class YouTubeTranscriptModal extends Modal {
                     logger.error(`Error adding timestamp links: ${timestampError.message}`, timestampError);
                     this.showNotice(`Note created but timestamps could not be added: ${timestampError.message}`, 5000);
                 }
+            } else if (transcriptFailed) {
+                this.showNotice('Timestamp links skipped - no transcript available', 3000);
             }
 
             // === NEW LOGGING LOGIC START ===
             // Append debug logs if enabled, AFTER all processing is done
             if (this.plugin.settings.debugLogging) {
-                const finalLogs = getLogsAsString();
+                const finalLogs = getLogsForCallout();
                 if (finalLogs && finalLogs.trim() !== "") { // Only append if there are non-empty logs
                     // Simplest approach to create debug section 
                     const debugHeader = "\n\n> [!info]- Debug Information (hidden)\n> ```";
                     const debugFooter = "\n> ```";
                     
-                    // Process log lines to add ">" prefix for callout formatting
-                    let formattedLogs = "";
-                    const logLines = finalLogs.split("\n");
-                    for (const line of logLines) {
-                        formattedLogs += "> " + line + "\n";
-                    }
-                    
-                    // Remove the last newline for clean formatting
-                    if (formattedLogs.endsWith("\n")) {
-                        formattedLogs = formattedLogs.slice(0, -1);
-                    }
-                    
-                    const debugSection = debugHeader + "\n" + formattedLogs + debugFooter;
+                    const debugSection = debugHeader + "\n" + finalLogs + debugFooter;
                     
                     try {
                         const file = this.app.vault.getAbstractFileByPath(notePath) as ObsidianFile;
@@ -3391,8 +3543,44 @@ class YouTubeTranscriptModal extends Modal {
             // Use the getSafeErrorMessage utility instead of duplicating error handling logic
             const errorMessage = getSafeErrorMessage(err);
             
-            // Show error notice
-            this.showNotice(`Error: ${errorMessage}`, 5000);
+            // Create an error note with debug information if debug logging is enabled
+            if (this.plugin.settings.debugLogging) {
+                try {
+                    const url = this.urlInputEl.value.trim();
+                    const noteTitle = this.titleInputEl?.value.trim() || 'Failed YouTube Transcript';
+                    
+                    // Create error content with debug logs
+                    const finalLogs = getLogsForCallout();
+                    let errorContent = `# ${noteTitle}\n\n`;
+                    errorContent += `**Error occurred during processing:**\n\n`;
+                    errorContent += `> [!error] Processing Failed\n`;
+                    errorContent += `> ${errorMessage}\n\n`;
+                    errorContent += `**URL:** ${url}\n\n`;
+                    
+                    if (finalLogs && finalLogs.trim() !== "") {
+                        // Use the exact same format as successful notes
+                        const debugHeader = "\n\n> [!info]- Debug Information (hidden)\n> ```";
+                        const debugFooter = "\n> ```";
+                        
+                        const debugSection = debugHeader + "\n" + finalLogs + debugFooter;
+                        errorContent += debugSection;
+                    }
+                    
+                    // Create the error note
+                    const fileName = sanitizeFilename(noteTitle) + '.md';
+                    const notePath = normalizePath(joinPaths(this.selectedFolder, fileName));
+                    
+                    await this.app.vault.create(notePath, errorContent);
+                    this.showNotice(`Error note created with debug information: ${fileName}`, 8000);
+                    
+                } catch (noteError) {
+                    logger.error('Failed to create error note:', noteError);
+                    this.showNotice(`Error: ${errorMessage} (Also failed to create debug note)`, 5000);
+                }
+            } else {
+                // Show error notice
+                this.showNotice(`Error: ${errorMessage}`, 5000);
+            }
             
             // Close the modal on error
             this.close();
@@ -3435,9 +3623,15 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Create custom appearance title that's larger and bolder than the subsections
         const titleEl = containerEl.createEl('h1', { 
             cls: 'tubesage-settings-main-title', // Apply new class
-            attr: { style: 'text-align:center; width:100%; margin:0 auto 20px auto;' }
+            attr: { style: 'text-align:center; width:100%; margin:0 auto 10px auto;' }
         });
         titleEl.setText('TubeSage Note Creation Settings');
+        
+        // Add version display under the title
+        const versionEl = containerEl.createEl('div', {
+            attr: { style: 'text-align:center; color:var(--text-muted); font-size:0.9em; margin-bottom:20px;' }
+        });
+        versionEl.setText(`Version ${this.plugin.getVersion()}`);
         
         // Buy Me a Coffee section at the top
         const supportContainer = containerEl.createEl('div', {
@@ -4244,6 +4438,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                     this.plugin.settings.dateFormat = value;
                     await this.plugin.saveSettings();
                 }));
+
 
         // After the LLM Settings, add Prompt Settings
         settingsContainer.createEl('h3', { text: 'Prompt Settings' });
@@ -5053,7 +5248,7 @@ class LicenseRequiredModal extends Modal {
         
         // Add title
         contentEl.createEl('h2', { 
-            text: 'License Acceptance equired', 
+            text: 'License Acceptance Required', 
             cls: 'tubesage-license-required-title' // Apply new class
         });
         

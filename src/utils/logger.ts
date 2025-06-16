@@ -209,6 +209,53 @@ export function getLogsAsString(separator: string = '\n'): string {
 }
 
 /**
+ * Gets all log entries formatted for Obsidian callouts
+ * Each log entry is properly formatted to maintain callout structure
+ * @returns Formatted log messages for callout display
+ */
+export function getLogsForCallout(): string {
+    const MAX_LINE_LENGTH = 120; // Prevent very long lines from breaking callouts
+    
+    return logBuffer.map(entry => {
+        // Each log entry might contain multiple lines, so we need to add ">" prefix to each line
+        const lines = entry.formattedMessage.split('\n');
+        return lines.map(line => {
+            // Clean the line to prevent callout breaking (keep URLs as-is for debugging)
+            let cleanedLine = line
+                .replace(/\r/g, '') // Remove carriage returns
+                .replace(/\t/g, '    ') // Convert tabs to spaces
+                .replace(/[^\x20-\x7E\n]/g, ''); // Remove non-printable chars except newlines
+                // Note: Removed HTML entity escaping to show actual URLs in logs
+            
+            // Wrap very long lines to prevent callout breaking
+            if (cleanedLine.length > MAX_LINE_LENGTH) {
+                const wrappedLines = [];
+                while (cleanedLine.length > MAX_LINE_LENGTH) {
+                    // Find a good break point (space, comma, etc.)
+                    let breakPoint = MAX_LINE_LENGTH;
+                    const goodBreaks = [' ', ',', '&', '=', '?'];
+                    for (let i = MAX_LINE_LENGTH - 1; i > MAX_LINE_LENGTH - 20 && i > 0; i--) {
+                        if (goodBreaks.includes(cleanedLine[i])) {
+                            breakPoint = i + 1;
+                            break;
+                        }
+                    }
+                    
+                    wrappedLines.push('> ' + cleanedLine.substring(0, breakPoint));
+                    cleanedLine = '  ' + cleanedLine.substring(breakPoint); // Indent continuation
+                }
+                if (cleanedLine.trim()) {
+                    wrappedLines.push('> ' + cleanedLine);
+                }
+                return wrappedLines.join('\n');
+            } else {
+                return '> ' + cleanedLine;
+            }
+        }).join('\n');
+    }).join('\n');
+}
+
+/**
  * Clears the log buffer
  */
 export function clearLogs(): void {

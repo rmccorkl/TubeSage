@@ -1,6 +1,9 @@
 import esbuild from "esbuild";
 import process from "process";
 import builtins from "builtin-modules";
+import { createRequire } from "module";
+import path from "path";
+const require = createRequire(import.meta.url);
 
 const banner =
 `/*

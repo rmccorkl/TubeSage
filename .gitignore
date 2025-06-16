@@ -10,6 +10,7 @@ yarn-error.log*
 # IDE and editor files
 .idea/
 .vscode/
+.claude
 *.swp
 *.swo
 .DS_Store
@@ -37,3 +38,6 @@ node_modules
 main.js
 main.ts.working
 Style2CSS.txt
+
+# Chromium user data (contains browsing session data)
+chromium-user-data/

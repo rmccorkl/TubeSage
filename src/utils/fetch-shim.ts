@@ -116,7 +116,22 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
       headers: options.headers
     })}`);
     
-    const res = await requestUrl(options) as unknown as RequestUrlResponse;
+    let res: RequestUrlResponse;
+    try {
+      logger.debug('About to call requestUrl...');
+      logger.debug(`URL length: ${options.url.length} characters`);
+      logger.debug(`URL starts with: ${options.url.substring(0, 100)}...`);
+      res = await requestUrl(options) as unknown as RequestUrlResponse;
+      logger.debug(`requestUrl completed - Status: ${res?.status}, HasText: ${!!res?.text}`);
+    } catch (requestError) {
+      logger.error('requestUrl threw error:', requestError);
+      logger.error('requestError type:', typeof requestError);
+      logger.error('requestError message:', requestError?.message);
+      logger.error('requestError status:', (requestError as any)?.status);
+      logger.error('requestError instanceof Error:', requestError instanceof Error);
+      logger.error('requestError constructor:', requestError?.constructor?.name);
+      throw requestError; // Re-throw to be handled by outer catch
+    }
 
     // Create a proper Response object
     const responseInit: ResponseInit = {
@@ -132,14 +147,44 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
       return new Response(res.text, responseInit);
     }
   } catch (error) {
-    // Log error details
-    logger.error("Fetch shim error:", error);
+    // Enhanced error logging for debugging
+    logger.error("Fetch shim error - Raw error:", error);
+    logger.error("Error type:", typeof error);
+    logger.error("Error is null/undefined:", error == null);
     
-    // Return a standard error response
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    if (error) {
+      logger.error("Error message:", error?.message || 'No message');
+      logger.error("Error stack:", error?.stack || 'No stack');
+      logger.error("Error toString:", error?.toString() || 'Cannot convert to string');
+    }
+    
+    // Check if this is an HTTP error response from requestUrl
+    if (error && typeof error === 'object' && 'status' in error) {
+      // This is an HTTP error response, preserve the actual status code
+      const httpError = error as RequestUrlResponse;
+      logger.error(`HTTP error response - Status: ${httpError.status}, Text: ${httpError.text?.substring(0, 200)}`);
+      
+      return new Response(httpError.text || JSON.stringify({ error: `HTTP ${httpError.status}` }), {
+        status: httpError.status,
+        statusText: httpError.status.toString(),
+        headers: new Headers(httpError.headers || {})
+      });
+    }
+    
+    // Enhanced logging for other error types
+    if (error && typeof error === 'object') {
+      try {
+        logger.error("Error properties:", Object.keys(error));
+        logger.error("Full error object:", JSON.stringify(error, null, 2));
+      } catch (e) {
+        logger.error("Could not stringify error object:", e);
+        logger.error("Error has circular references or other issues");
+      }
+    }
+    
+    // For real network/connection errors, throw the original error
+    // This allows the calling code to handle 403/429/etc. properly
+    throw error;
   }
 }
 
