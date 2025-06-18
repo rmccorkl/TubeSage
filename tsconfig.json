@@ -20,10 +20,10 @@
             "ES6",
             "ES7"
         ],
-        "typeRoots": ["./src/types", "./node_modules/@types"]
     },
     "include": [
         "**/*.ts",
-        "src/types/**/*.d.ts"
+        "src/types/**/*.d.ts",
+        "types/**/*.d.ts"
     ]
 } 

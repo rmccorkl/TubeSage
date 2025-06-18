@@ -1,13 +1,12 @@
 {
     "name": "tubesage",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Create comprehensive notes from YouTube transcripts using LLMs",
     "main": "main.js",
     "scripts": {
         "dev": "node esbuild.config.mjs",
         "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-        "deploy": "chmod +x scripts/deploy.sh && ./scripts/deploy.sh",
-        "version": "node version-bump.mjs && git add manifest.json versions.json"
+        "deploy": "chmod +x scripts/deploy.sh && ./scripts/deploy.sh"
     },
     "keywords": [
         "obsidian",
@@ -26,7 +25,7 @@
         "adm-zip": "^0.5.16",
         "builtin-modules": "^3.3.0",
         "esbuild": "0.19.12",
-        "obsidian": "latest",
+        "obsidian": "^1.8.7",
         "tslib": "2.4.0",
         "typescript": "^5.8.3"
     },

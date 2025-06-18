@@ -451,18 +451,35 @@ input:checked + .toggle-slider:before {
     transform: translateX(20px); /* 40px (wrapper) - 16px (knob) - 2px (left offset) - 2px (space for right side) = 20px */
 }
 
-/* Styling for TextAreas used for prompts in settings */
+/* Styling for TextAreas used for prompts in settings - 50:50 layout */
 .tubesage-prompt-textarea {
-    width: 65% !important;
-    flex: 0 0 65% !important; /* reserve 65% of row */
+    width: 50% !important;
+    flex: 0 0 50% !important; /* reserve 50% of row */
     min-width: 300px;
-    max-width: 700px;
+    max-width: none;
     min-height: 100px;
 }
 
-/* For rows containing our prompt textarea, allow wrapping so label/description flow below if needed */
+/* For rows containing our prompt textarea, ensure 50:50 split */
 .setting-item:has(.tubesage-prompt-textarea) {
-    flex-wrap: wrap;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-start !important;
+}
+
+/* Make the info section (label/description) take exactly 50% and wrap text */
+.setting-item:has(.tubesage-prompt-textarea) .setting-item-info {
+    width: 50% !important;
+    flex: 0 0 50% !important;
+    padding-right: 15px !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+/* Ensure the control section (textarea) takes exactly 50% */
+.setting-item:has(.tubesage-prompt-textarea) .setting-item-control {
+    width: 50% !important;
+    flex: 0 0 50% !important;
 }
 
 /* Styling for H4 subheaders in the Prompt Settings section */
@@ -952,6 +969,31 @@ input:checked + .toggle-slider:before {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+/* TubeSage-specific heading styling using proper Obsidian approach */
+.setting-item-heading.tubesage-heading .setting-item-name {
+    font-size: 1.4em !important;
+    font-weight: 600 !important;
+    color: #007acc !important; /* Direct blue color */
+    margin-bottom: 5px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important; /* Space between heading and tooltip */
+}
+
+/* Ensure TubeSage headings have proper spacing - compact layout */
+.setting-item-heading.tubesage-heading {
+    margin-top: 10px !important;
+    margin-bottom: 5px !important;
+    padding-bottom: 2px !important;
+}
+
+/* Force left alignment of TubeSage heading rows */
+.setting-item-heading.tubesage-heading .setting-item-info {
+    text-align: left !important;
+    justify-content: flex-start !important;
 }
 
 /* Styling for status messages in FolderPickerModal */

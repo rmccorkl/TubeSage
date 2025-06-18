@@ -1,12 +1,12 @@
 # Data Flow Diagram - TubeSage
 
-This diagram describes the data flow throughout the TubeSage plugin for Obsidian.
+This diagram illustrates the comprehensive data flow throughout the TubeSage plugin for Obsidian, showing how information moves through the system's enhanced architecture and processing pipeline.
 
 ```mermaid
 %%{init: {
   'theme': 'dark',
   'themeVariables': {
-    'fontSize': '16px',
+    'fontSize': '14px',
     'primaryColor': '#7aa2f7',
     'primaryTextColor': '#ffffff',
     'primaryBorderColor': '#7aa2f7', 
@@ -16,234 +16,284 @@ This diagram describes the data flow throughout the TubeSage plugin for Obsidian
   },
   'flowchart': {
     'curve': 'basis',
-    'useMaxWidth': false,
+    'useMaxWidth': true,
     'htmlLabels': true,
-    'rankSpacing': 80,
-    'nodeSpacing': 60,
-    'arrowSize': 1.5,
-    'edgeLabelBackground': '#2d333b'
+    'rankSpacing': 70,
+    'nodeSpacing': 50
   }
 }}%%
 flowchart TD
-    %% Main components
-    YT[YouTube Website] --> |HTML response| TE[Transcript Extractor]
-    TE --> |Transcript segments| TP[Transcript Processor]
-    TP --> |Processed transcript| LS[LLM Summarizer]
-    LS --> |Summary| TSP[Timestamp Processor]
-    TSP --> |Enhanced Summary w/ Timestamps| OI[Obsidian Integration]
+    %% External Data Sources
+    YT[YouTube Platform] --> |Video HTML/JSON| ExtractorMobile[Mobile Transcript Extractor]
+    YT --> |Video HTML/JSON| ExtractorDesktop[Desktop Transcript Extractor]
+    YTAPI[YouTube Data API] --> |Channel/Playlist Data| BatchProcessor[Batch Processor]
     
-    %% Configurations and API Keys
-    Config[Plugin Settings] --> |LLM configuration| LS
-    Config --> |Timestamp settings| TSP
-    APIKeys[API Keys] --> |Authentication| LS
+    %% Core Processing Pipeline
+    ExtractorMobile --> |Raw Transcript| TranscriptProcessor[Transcript Processor]
+    ExtractorDesktop --> |Raw Transcript| TranscriptProcessor
+    TranscriptProcessor --> |Cleaned Transcript| ComplexityAnalyzer[Content Complexity Analyzer]
+    ComplexityAnalyzer --> |Analysis Results| ModelSelector[Smart Model Selector]
     
-    %% LLM Factory
-    LF[LLM Factory] --> |Provides client| LS
-    LS --> |Client request| LF
+    %% Configuration and Settings
+    UserSettings[User Settings] --> |LLM Config| LLMFactory[LLM Factory]
+    UserSettings --> |Processing Preferences| ModelSelector
+    UserSettings --> |API Keys| APIManager[API Key Manager]
+    APIManager --> |Credentials| LLMFactory
     
-    %% LLM Clients
-    LF --> OpenAI[OpenAI Client]
-    LF --> Anthropic[Anthropic Client]
-    LF --> Gemini[Gemini Client]
-    LF --> Ollama[Ollama Client]
-    LS --> |Uses| LC[LangChain Client]
+    %% LLM Factory and Clients
+    LLMFactory --> |Provider Selection| LangChainClient[LangChain Unified Client]
+    LLMFactory --> |Direct Connection| OllamaClient[Ollama Local Client]
     
-    %% API Connections with Fetch Shim
-    FetchShim[Fetch Shim] --> |Cross-platform requests| TE
-    FetchShim --> |Cross-platform requests| OpenAI
-    FetchShim --> |Cross-platform requests| Anthropic
-    FetchShim --> |Cross-platform requests| Gemini
-    FetchShim --> |Cross-platform requests| Ollama
-    FetchShim --> |Cross-platform requests| YTAPI
+    %% Cross-Platform Fetch Infrastructure
+    FetchShim[Obsidian Fetch Shim] --> |HTTP Requests| OpenAIAPI[OpenAI API]
+    FetchShim --> |HTTP Requests| AnthropicAPI[Anthropic API]
+    FetchShim --> |HTTP Requests| GeminiAPI[Google Gemini API]
+    FetchShim --> |HTTP Requests| YTAPI
+    FetchShim --> |HTTP Requests| YT
     
-    %% API Connections
-    OpenAI --> |Request| OpenAI_API[OpenAI API]
-    Anthropic --> |Request| Anthropic_API[Anthropic API]
-    Gemini --> |Request| Gemini_API[Google Gemini API]
-    Ollama --> |Request| Ollama_API[Ollama API]
+    %% LLM Processing Flow
+    ModelSelector --> |Selected Provider| LangChainClient
+    LangChainClient --> |API Calls via Fetch Shim| FetchShim
+    OllamaClient --> |Local API Calls| OllamaLocal[Local Ollama Server]
     
     %% API Responses
-    OpenAI_API --> |Response| OpenAI
-    Anthropic_API --> |Response| Anthropic
-    Gemini_API --> |Response| Gemini
-    Ollama_API --> |Response| Ollama
+    OpenAIAPI --> |Completion Response| LangChainClient
+    AnthropicAPI --> |Completion Response| LangChainClient
+    GeminiAPI --> |Completion Response| LangChainClient
+    OllamaLocal --> |Completion Response| OllamaClient
     
-    %% Templates
-    Templates[Templater Templates] --> |Formatting| OI
+    %% Response Processing
+    LangChainClient --> |AI Summary| ResponseProcessor[Response Processor]
+    OllamaClient --> |AI Summary| ResponseProcessor
+    TranscriptProcessor --> |Raw Transcript| ResponseProcessor
     
-    %% YouTube API for channel/playlist processing
-    YTAPI[YouTube Data API] --> |Channel/Playlist data| YT_Processor[YouTube Processor]
-    YT_Processor --> |Video URLs| TE
+    %% Timestamp Enhancement Pipeline
+    ResponseProcessor --> |Summary Content| TimestampProcessor[Timestamp Processor]
+    TimestampProcessor --> |Document Components| ComponentExtractor[Component Extractor]
+    ComponentExtractor --> |Content Chunks| ChunkOptimizer[Chunk Optimizer]
+    ChunkOptimizer --> |Optimized Chunks| TimestampLinker[Timestamp Link Generator]
+    TimestampLinker --> |Enhanced Chunks| LinkValidator[Link Validator]
+    LinkValidator --> |Validated Content| DocumentReconstructor[Document Reconstructor]
     
-    %% Final output
-    OI --> |Creates/Updates| Note[Obsidian Note]
+    %% Template and Note Creation
+    DocumentReconstructor --> |Enhanced Document| TemplateProcessor[Template Processor]
+    Templates[Templater Templates] --> |Template Data| TemplateProcessor
+    TemplateProcessor --> |Formatted Content| NoteCreator[Obsidian Note Creator]
+    NoteCreator --> |Final Note| ObsidianVault[Obsidian Vault]
     
-    %% Performance Monitoring
-    PMon[Performance Monitor] --> |Tracks| LS
-    PMon --> |Tracks| TE
-    PMon --> |Tracks| TSP
-    PMon --> |Metrics| Config
+    %% Performance Monitoring System
+    PerformanceMonitor[Performance Monitor] --> |Metrics Collection| MetricsCollector[Metrics Collector]
+    TranscriptProcessor --> |Processing Time| PerformanceMonitor
+    ResponseProcessor --> |LLM Response Time| PerformanceMonitor
+    TimestampProcessor --> |Enhancement Time| PerformanceMonitor
     
-    %% Smart Model Selection
-    SMS[Smart Model Selection] --> |Recommends| LF
-    TP --> |Transcript complexity| SMS
-    Config --> |User preferences| SMS
+    %% Performance Analysis
+    MetricsCollector --> |Performance Data| BottleneckAnalyzer[Bottleneck Analyzer]
+    BottleneckAnalyzer --> |Analysis Results| OptimizationEngine[Optimization Engine]
+    OptimizationEngine --> |Suggestions| UserInterface[User Interface]
     
-    %% Error handling
-    ErrorUtils[Error Utils] --> |Error handling| TE
-    ErrorUtils --> |Error handling| LS
-    ErrorUtils --> |Error recovery| TSP
-    ErrorUtils --> |Error recovery| FetchShim
+    %% Error Handling and Recovery
+    ErrorHandler[Smart Error Handler] --> |Error Analysis| RecoverySystem[Recovery System]
+    ExtractorMobile --> |Extraction Errors| ErrorHandler
+    ExtractorDesktop --> |Extraction Errors| ErrorHandler
+    LangChainClient --> |API Errors| ErrorHandler
+    OllamaClient --> |Connection Errors| ErrorHandler
+    TimestampLinker --> |Generation Errors| ErrorHandler
     
-    %% Subgraph for Transcript Extractor
-    subgraph Transcript_Extraction
-        TE --> |Parse HTML| YTR[YouTube Response]
-        YTR --> |Extract| Tracks[Caption Tracks]
-        Tracks --> |Select best| BestTrack[Best Track]
-        BestTrack --> |Fetch| JSON[Captions JSON/XML]
-        JSON --> |Parse| Events[Transcript Events]
-        Events --> |Convert| Segments[Transcript Segments]
-        
-        %% Mobile fallback path
-        TE --> |Mobile fallback| AltExtract[Alternative Extraction]
-        AltExtract --> |XML parsing| XMLParse[Parse XML Captions]
-        XMLParse --> Segments
-    end
+    %% Recovery Actions
+    RecoverySystem --> |Retry Parameters| ExtractorMobile
+    RecoverySystem --> |Retry Parameters| ExtractorDesktop
+    RecoverySystem --> |Fallback Methods| LLMFactory
+    RecoverySystem --> |Alternative Approaches| TimestampLinker
     
-    %% Subgraph for LLM Processing
-    subgraph LLM_Processing
-        LS --> |Creates| Prompt[LLM Prompt]
-        Prompt --> |System message| System[System Prompt]
-        Prompt --> |User message| User[User Prompt]
-        Prompt --> |Transcript| Content[Transcript Content]
-        Prompt --> |Reference material| RefMat[Reference Material Section]
-        
-        %% Mode selection
-        SummaryMode[Summary Mode] --> |Fast or Extensive| Prompt
-        SummaryMode --> |Configures| TokenLimit[Token Limit]
-    end
+    %% Batch Processing Data Flow
+    BatchProcessor --> |Video URLs| QueueManager[Processing Queue Manager]
+    QueueManager --> |Sequential Queue| SequentialProcessor[Sequential Processor]
+    QueueManager --> |Parallel Queue| ParallelProcessor[Parallel Processor]
+    SequentialProcessor --> |Individual Videos| TranscriptProcessor
+    ParallelProcessor --> |Concurrent Videos| TranscriptProcessor
     
-    %% Subgraph for Timestamp Processing
-    subgraph Timestamp_Processing
-        TSP --> |Extract| DocComponents[Document Components]
-        DocComponents --> |Frontmatter| FrontMatter[Extract Frontmatter]
-        DocComponents --> |Content| ContentChunks[Create Content Chunks]
-        ContentChunks --> |Optimized chunks| EnhanceChunks[Enhance with Timestamps]
-        EnhanceChunks --> |Timestamp LLM pass| AddLinks[Add Timestamp Links]
-        AddLinks --> |Validate| ValidateLinks[Validate Timestamp Links]
-        ValidateLinks --> |Reconstruct| ReconstructDoc[Reconstruct Document]
-        
-        %% Enhanced chunk processing
-        ContentChunks --> |Size optimization| ChunkSize[Optimize Chunk Size]
-        ChunkSize --> |Boundary detection| ChunkBoundary[Detect Chunk Boundaries]
-        ChunkBoundary --> EnhanceChunks
-    end
+    %% Mobile Platform Adaptations
+    PlatformDetector[Platform Detector] --> |Mobile Optimizations| ExtractorMobile
+    PlatformDetector --> |Desktop Features| ExtractorDesktop
+    PlatformDetector --> |Platform Config| FetchShim
     
-    %% Batch Processing
-    subgraph Batch_Processing
-        YT_Processor --> |Batch config| BatchConfig[Batch Configuration]
-        BatchConfig --> |Sequential| SeqProcess[Sequential Processing]
-        BatchConfig --> |Parallel| ParProcess[Parallel Processing]
-        ParProcess --> |Throttling| ThrottleControl[Throttle Control]
-        
-        ThrottleControl --> |Quota management| QuotaManager[API Quota Manager]
-        SeqProcess --> |Progress tracking| ProgressTracker[Progress Tracker]
-        ParProcess --> |Progress tracking| ProgressTracker
-    end
+    %% Data Validation and Quality
+    QualityChecker[Content Quality Checker] --> |Validation Results| ResponseProcessor
+    ResponseProcessor --> |Content Quality| QualityChecker
+    TimestampLinker --> |Link Quality| QualityChecker
     
-    %% Styling for specific node types
-    style YT fill:#ff9e64,stroke:#ff9e64,color:white,stroke-width:2px
-    style OpenAI_API fill:#f7768e,stroke:#f7768e,color:white,stroke-width:2px
-    style Anthropic_API fill:#f7768e,stroke:#f7768e,color:white,stroke-width:2px
-    style Gemini_API fill:#f7768e,stroke:#f7768e,color:white,stroke-width:2px
-    style Ollama_API fill:#f7768e,stroke:#f7768e,color:white,stroke-width:2px
-    style YTAPI fill:#f7768e,stroke:#f7768e,color:white,stroke-width:2px
-    style LF fill:#73daca,stroke:#73daca,color:#1a1b26,stroke-width:2px
-    style FetchShim fill:#73daca,stroke:#73daca,color:#1a1b26,stroke-width:2px
-    style PMon fill:#73daca,stroke:#73daca,color:#1a1b26,stroke-width:2px
-    style ErrorUtils fill:#73daca,stroke:#73daca,color:#1a1b26,stroke-width:2px
-    style SMS fill:#73daca,stroke:#73daca,color:#1a1b26,stroke-width:2px
-    style TE fill:#7aa2f7,stroke:#7aa2f7,color:white,stroke-width:2px
-    style TP fill:#7aa2f7,stroke:#7aa2f7,color:white,stroke-width:2px
-    style LS fill:#7aa2f7,stroke:#7aa2f7,color:white,stroke-width:2px
-    style TSP fill:#7aa2f7,stroke:#7aa2f7,color:white,stroke-width:2px
-    style OI fill:#7aa2f7,stroke:#7aa2f7,color:white,stroke-width:2px
-    style YT_Processor fill:#7aa2f7,stroke:#7aa2f7,color:white,stroke-width:2px
-    style Note fill:#9ece6a,stroke:#9ece6a,color:#1a1b26,stroke-width:2px
-    style OpenAI fill:#bb9af7,stroke:#bb9af7,color:white,stroke-width:2px
-    style Anthropic fill:#bb9af7,stroke:#bb9af7,color:white,stroke-width:2px
-    style Gemini fill:#bb9af7,stroke:#bb9af7,color:white,stroke-width:2px
-    style Ollama fill:#bb9af7,stroke:#bb9af7,color:white,stroke-width:2px
-    style LC fill:#bb9af7,stroke:#bb9af7,color:white,stroke-width:2px
-    style Transcript_Extraction fill:#414868,stroke:#7aa2f7,color:white,stroke-width:2px
-    style LLM_Processing fill:#414868,stroke:#bb9af7,color:white,stroke-width:2px
-    style Timestamp_Processing fill:#414868,stroke:#ff9e64,color:white,stroke-width:2px
-    style Batch_Processing fill:#414868,stroke:#f7768e,color:white,stroke-width:2px
+    %% Styling
+    style YT fill:#ff9e64,stroke:#ff9e64,color:white
+    style YTAPI fill:#ff9e64,stroke:#ff9e64,color:white
+    style OpenAIAPI fill:#f7768e,stroke:#f7768e,color:white
+    style AnthropicAPI fill:#f7768e,stroke:#f7768e,color:white
+    style GeminiAPI fill:#f7768e,stroke:#f7768e,color:white
+    style OllamaLocal fill:#f7768e,stroke:#f7768e,color:white
+    style FetchShim fill:#73daca,stroke:#73daca,color:#1a1b26
+    style LLMFactory fill:#73daca,stroke:#73daca,color:#1a1b26
+    style PerformanceMonitor fill:#73daca,stroke:#73daca,color:#1a1b26
+    style ErrorHandler fill:#73daca,stroke:#73daca,color:#1a1b26
+    style ModelSelector fill:#73daca,stroke:#73daca,color:#1a1b26
+    style ObsidianVault fill:#9ece6a,stroke:#9ece6a,color:#1a1b26
+    style LangChainClient fill:#bb9af7,stroke:#bb9af7,color:white
+    style OllamaClient fill:#bb9af7,stroke:#bb9af7,color:white
+    style TimestampProcessor fill:#bb9af7,stroke:#bb9af7,color:white
+    style ResponseProcessor fill:#bb9af7,stroke:#bb9af7,color:white
 ```
 
-## Component Descriptions
+## Data Flow Architecture Overview
 
-### Main Components
-- **YouTube Website**: Source of video data and transcript information
-- **Fetch Shim**: Platform-aware HTTP client for cross-platform compatibility, serving as a unified interface for all network requests
-- **Transcript Extractor**: Extracts transcript segments from YouTube videos with enhanced mobile device support and fallback mechanisms
-- **Transcript Processor**: Processes raw transcript segments into usable text, analyzing complexity for smart model selection
-- **LLM Factory**: Creates and manages different LLM clients through a factory pattern design
-- **LLM Summarizer**: Coordinates summarization across different LLM providers with LangChain integration
-- **Timestamp Processor**: Adds and validates YouTube timestamp links with improved chunk boundary optimization
-- **Performance Monitor**: Comprehensive tracking system for monitoring processing times across all components
-- **Error Utils**: Enhanced error recovery system with smart retry and fallback mechanisms
-- **Obsidian Integration**: Handles integration with Obsidian notes and templates
-- **Smart Model Selection**: New component that analyzes transcript complexity and recommends optimal LLM models
+TubeSage's data flow architecture is designed for maximum flexibility, reliability, and cross-platform compatibility. The system processes information through multiple specialized pipelines while maintaining consistent quality and performance monitoring.
 
-### LLM Clients
-- **OpenAI Client**: Interface for OpenAI API (GPT-4, GPT-4o, GPT-3.5, etc.)
-- **Anthropic Client**: Interface for Anthropic API (Claude 3 family models)
-- **Gemini Client**: Interface for Google's Gemini API
-- **Ollama Client**: Interface for local Ollama models
-- **LangChain Client**: Unified interface for multiple providers using LangChain with custom fetcher
+### 🔄 **Core Data Flow Patterns**
 
-### External APIs
-- **OpenAI API**: OpenAI's cloud API service
-- **Anthropic API**: Anthropic's cloud API service
-- **Google Gemini API**: Google's AI API service
-- **Ollama API**: Local API for running models
-- **YouTube Data API**: Google's API for accessing channel and playlist data
+#### **1. Multi-Source Input Pipeline**
+- **YouTube Platform**: Primary source for video content and transcript data
+- **YouTube Data API**: Secondary source for channel/playlist metadata and video listings
+- **User Settings**: Configuration data that influences all processing decisions
+- **Template System**: Formatting instructions for final note generation
 
-### Data Paths
-1. **YouTube to Note Creation**:
-   - YouTube video HTML → Extract transcript → Process transcript → Summarize with LLM → Add timestamp links → Format with templates → Create/update Obsidian note
+#### **2. Platform-Adaptive Extraction**
+- **Desktop Extractor**: Full-featured extraction using standard web APIs and parsing
+- **Mobile Extractor**: Optimized extraction methods designed for iOS/Android constraints
+- **Intelligent Fallback**: Automatic switching between extraction methods based on success rates
+- **Quality Validation**: Continuous validation of extracted content for completeness
 
-2. **Transcript Extraction**:
-   - Regular path: HTML parsing → Track selection → JSON fetching → Segment extraction
-   - Mobile fallback: Alternative extraction → XML parsing → Segment creation
+#### **3. Unified Processing Pipeline**
+- **Content Analysis**: Smart analysis of transcript complexity and length
+- **Model Selection**: AI-driven selection of optimal LLM models based on content characteristics
+- **Provider Abstraction**: Unified interface across multiple LLM providers
+- **Quality Assurance**: Multi-stage validation of processing results
 
-3. **LLM Processing**:
-   - Smart model selection based on transcript complexity and user preferences
-   - LLM Factory creates appropriate client
-   - Format prompt with system instructions, user prompt, transcript, and reference material
-   - Send to selected LLM provider via LangChain or direct API
-   - Process response into initial summary
-   
-4. **Timestamp Processing**:
-   - Extract document components (frontmatter, content)
-   - Create optimized content chunks with improved boundary detection
-   - Enhance chunks with timestamp links
-   - Validate links and reconstruct document
-   
-5. **Cross-Platform Compatibility**:
-   - Unified Fetch Shim provides platform-specific HTTP requests for all API communication
-   - Mobile-specific extraction fallbacks for device compatibility
-   - Enhanced error recovery for platform-specific issues
-   
-6. **Performance Monitoring**:
-   - Track processing times for each component
-   - Identify bottlenecks in the pipeline
-   - Report metrics for optimization
-   - Suggest performance improvements based on collected metrics
+### 🌐 **Cross-Platform Infrastructure**
 
-7. **Batch Processing**:
-   - Sequential or parallel processing of multiple videos
-   - Throttling controls to manage API rate limits
-   - Progress tracking for better user experience
-   - API quota management for YouTube Data API
+#### **Obsidian Fetch Shim**
+The custom fetch shim serves as the foundation for all network communication:
+- **Universal Compatibility**: Works identically on desktop and mobile Obsidian
+- **Protocol Abstraction**: Translates between different platform networking requirements
+- **Error Handling**: Comprehensive error recovery with platform-specific optimizations
+- **Performance Optimization**: Intelligent caching and request optimization
+
+#### **Platform Detection System**
+Automatic adaptation based on the runtime environment:
+- **Capability Detection**: Identifies available features and limitations
+- **Resource Optimization**: Adjusts processing intensity based on device capabilities
+- **Network Adaptation**: Optimizes request patterns for mobile network conditions
+- **Storage Management**: Platform-aware temporary file and cache management
+
+### 🤖 **Advanced LLM Integration**
+
+#### **Factory Pattern Architecture**
+The LLM Factory provides consistent access to multiple AI providers:
+- **Provider Abstraction**: Unified interface regardless of underlying API differences
+- **Credential Management**: Secure handling of API keys and authentication
+- **Connection Pooling**: Efficient management of API connections and rate limits
+- **Failover Support**: Automatic fallback to alternative providers when needed
+
+#### **LangChain Integration**
+Standardized AI processing through LangChain framework:
+- **Multi-Provider Support**: OpenAI, Anthropic, and Google Gemini integration
+- **Prompt Optimization**: Advanced prompt engineering for consistent results
+- **Response Processing**: Standardized handling of AI responses across providers
+- **Error Recovery**: Intelligent retry mechanisms with exponential backoff
+
+#### **Smart Model Selection**
+AI-driven optimization of model selection:
+- **Content Analysis**: Real-time analysis of transcript complexity and topic density
+- **Performance Prediction**: Historical data-based performance predictions
+- **Cost Optimization**: Balance between quality and processing cost/time
+- **User Preference Integration**: Respect for user preferences while suggesting optimizations
+
+### ⚡ **Performance Monitoring System**
+
+#### **Real-Time Metrics Collection**
+Comprehensive tracking of system performance:
+- **Component-Level Timing**: Separate metrics for each processing stage
+- **Resource Usage**: Memory, network, and CPU utilization tracking
+- **Quality Metrics**: Success rates, error frequencies, and output quality scores
+- **User Experience Metrics**: Response times and user satisfaction indicators
+
+#### **Intelligent Bottleneck Detection**
+Automated identification of performance issues:
+- **Pattern Recognition**: Machine learning-based detection of performance anomalies
+- **Root Cause Analysis**: Automated drilling down to identify specific bottlenecks
+- **Predictive Analysis**: Early warning systems for potential performance degradation
+- **Optimization Recommendations**: AI-generated suggestions for performance improvements
+
+### 🔧 **Enhanced Processing Pipelines**
+
+#### **Transcript Processing Pipeline**
+Multi-stage processing for optimal content extraction:
+1. **Raw Extraction**: Platform-specific extraction with multiple fallback methods
+2. **Content Cleaning**: Removal of artifacts, formatting normalization
+3. **Quality Validation**: Verification of transcript completeness and accuracy
+4. **Metadata Integration**: Combination with video metadata (title, description, duration)
+5. **Complexity Analysis**: Assessment of content complexity for downstream processing
+
+#### **AI Enhancement Pipeline**
+Sophisticated AI processing with quality controls:
+1. **Model Selection**: Smart selection based on content analysis
+2. **Prompt Engineering**: Dynamic prompt optimization based on content type
+3. **Response Generation**: AI processing with real-time monitoring
+4. **Quality Validation**: Multi-criteria validation of AI responses
+5. **Post-Processing**: Content refinement and formatting optimization
+
+#### **Timestamp Enhancement Pipeline**
+Advanced timestamp processing for navigation enhancement:
+1. **Document Parsing**: Intelligent extraction of content structure
+2. **Chunk Optimization**: Smart division of content for optimal processing
+3. **Heading Detection**: AI-powered identification of section boundaries
+4. **Link Generation**: Creation of precise YouTube timestamp links
+5. **Validation System**: Comprehensive validation with retry mechanisms
+6. **Document Reconstruction**: Seamless integration of enhanced content
+
+### 🔄 **Batch Processing Architecture**
+
+#### **Queue Management System**
+Sophisticated handling of multi-video processing:
+- **Priority Queuing**: Intelligent prioritization based on content type and user preferences
+- **Resource Allocation**: Dynamic allocation of processing resources
+- **Progress Tracking**: Real-time monitoring of batch processing progress
+- **Error Isolation**: Prevention of single-video failures from affecting entire batches
+
+#### **Parallel Processing Engine**
+Optimized concurrent processing capabilities:
+- **Concurrency Control**: Intelligent management of simultaneous processing threads
+- **Rate Limiting**: Automatic adherence to API rate limits and quotas
+- **Load Balancing**: Dynamic distribution of workload across available resources
+- **Failure Recovery**: Automatic retry and recovery mechanisms for failed operations
+
+### 🛡️ **Error Handling and Recovery**
+
+#### **Smart Error Recovery System**
+Advanced error handling with learning capabilities:
+- **Error Classification**: Automatic categorization of errors by type and severity
+- **Recovery Strategy Selection**: AI-driven selection of optimal recovery approaches
+- **Parameter Optimization**: Dynamic adjustment of processing parameters between retries
+- **Learning Integration**: Continuous improvement based on successful recovery patterns
+
+#### **Fallback Mechanisms**
+Comprehensive fallback systems for reliability:
+- **Extraction Fallbacks**: Multiple extraction methods with automatic switching
+- **Provider Fallbacks**: Automatic switching between LLM providers on failure
+- **Processing Fallbacks**: Alternative processing approaches for edge cases
+- **Quality Fallbacks**: Graceful degradation when optimal quality cannot be achieved
+
+### 📊 **Data Validation and Quality Control**
+
+#### **Multi-Stage Validation**
+Comprehensive quality assurance throughout the pipeline:
+- **Input Validation**: Verification of source data quality and completeness
+- **Processing Validation**: Real-time monitoring of processing quality
+- **Output Validation**: Final verification of generated content quality
+- **User Feedback Integration**: Continuous improvement based on user feedback
+
+#### **Quality Metrics System**
+Sophisticated quality measurement and optimization:
+- **Content Quality Scores**: AI-generated quality assessments
+- **User Satisfaction Metrics**: Tracking of user satisfaction and engagement
+- **Performance Benchmarks**: Continuous benchmarking against quality standards
+- **Improvement Tracking**: Monitoring of quality improvements over time
+
+This comprehensive data flow architecture ensures that TubeSage delivers consistent, high-quality results while maintaining excellent performance across all supported platforms and use cases.

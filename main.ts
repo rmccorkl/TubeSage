@@ -1,5 +1,6 @@
 import { App, Plugin, PluginSettingTab, Setting, Notice, Modal } from 'obsidian';
 import manifestData from './manifest.json';
+import stylesCSS from './styles.css';
 import { YouTubeTranscriptExtractor } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
@@ -751,7 +752,11 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 background-color: var(--background-modifier-hover);
             }
             
+            
             // ... existing code ...
+            
+            /* External styles.css */
+            ${stylesCSS}
         `;
         document.head.appendChild(styleEl);
 
@@ -2496,20 +2501,15 @@ ${contentToTranslate}
 
     // Utility method to detect if we're running on a mobile device
     private isMobileDevice(): boolean {
-        // Check if the app's isMobile property is true first (most reliable in Obsidian)
-        if ((window as ObsidianAppWindow).app?.isMobile === true) {
-            return true;
+        // Use Platform.isMobileApp (official Obsidian API) when available
+        // TypeScript may not recognize it due to outdated type definitions
+        const Platform = (window as any).Platform;
+        if (Platform && typeof Platform.isMobileApp === 'boolean') {
+            return Platform.isMobileApp;
         }
         
-        // Fallback to checking the userAgent string
-        const userAgent = navigator.userAgent || navigator.vendor || (window as ObsidianAppWindow).opera || '';
-        return (
-            /android/i.test(userAgent) ||
-            /iPad|iPhone|iPod/.test(userAgent) ||
-            /windows phone/i.test(userAgent) ||
-            /(tablet|ipad|playbook|silk)|(android(?!.*mobile))/i.test(userAgent) ||
-            /Mobile|Android|iP(hone|od|ad)/.test(userAgent)
-        );
+        // Fallback for compatibility
+        return (window as ObsidianAppWindow).app?.isMobile === true;
     }
 
     async fetchOpenAIModels(apiKey: string): Promise<string[]> {
@@ -3604,6 +3604,14 @@ class YouTubeTranscriptModal extends Modal {
 
     // Simple helper to detect mobile devices
     private isMobile(): boolean {
+        // Use Platform.isMobileApp (official Obsidian API) when available
+        // TypeScript may not recognize it due to outdated type definitions
+        const Platform = (window as any).Platform;
+        if (Platform && typeof Platform.isMobileApp === 'boolean') {
+            return Platform.isMobileApp;
+        }
+        
+        // Fallback for compatibility
         return (window as ObsidianAppWindow).app?.isMobile === true;
     }
 }
@@ -3620,12 +3628,6 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         const { containerEl } = this;
         containerEl.empty();
         
-        // Create custom appearance title that's larger and bolder than the subsections
-        const titleEl = containerEl.createEl('h1', { 
-            cls: 'tubesage-settings-main-title', // Apply new class
-            attr: { style: 'text-align:center; width:100%; margin:0 auto 10px auto;' }
-        });
-        titleEl.setText('TubeSage Note Creation Settings');
         
         // Add version display under the title
         const versionEl = containerEl.createEl('div', {
@@ -3638,11 +3640,11 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             cls: 'tubesage-settings-support-container' // Apply new class
         });
         
-        // Support Development section with appearance heading
-        supportContainer.createEl('h3', { 
-            text: 'Support Development',
-            cls: 'tubesage-settings-support-heading' // Apply new class
-        });
+        // Support section
+        const supportHeading = new Setting(supportContainer)
+            .setName('Support development')
+            .setHeading();
+        supportHeading.settingEl.addClass('tubesage-heading');
         
         // Support message in appearance format
         const supportDesc = supportContainer.createEl('div', {
@@ -3677,13 +3679,12 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             }
         });
         
-        // Add the image
+        // Add the image (bundled as base64 to avoid external dependencies)
         bmcLink.createEl('img', {
             cls: 'tubesage-settings-bmc-img', // Apply existing class
             attr: {
-                src: 'https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png',
+                src: 'data:image/png;base64,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',
                 alt: 'Buy Me A Coffee'
-                // appearence: 'height: 40px; width: 145px;' // This line should be removed
             }
         });
         
@@ -3900,11 +3901,14 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // ALL SETTINGS SECTIONS GO IN settingsContainer FROM HERE ON
         
-        // Template section
-        settingsContainer.createEl('h3', { text: 'Template Plugin Settings' });
+        // Template section  
+        const templatesHeading = new Setting(settingsContainer)
+            .setName('Templates')
+            .setHeading();
+        templatesHeading.settingEl.addClass('tubesage-heading');
         
         const templaterSetting = new Setting(settingsContainer)
-            .setName('Templater Plugin Template File')
+            .setName('Templater plugin template file')
             .setDesc('Path to the Templater template file to use')
             .addText(text => text
                 .setPlaceholder('templates/YouTubeTranscript.md')
@@ -3961,73 +3965,21 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 });
         });
         
-        // Transcript section
-        const transcriptHeadingContainer = settingsContainer.createEl('div', {
-            cls: 'tubesage-settings-heading-container' // Apply new class
-        });
+        // Transcript section with info icon
+        const transcriptHeading = (new Setting(settingsContainer)
+            .setName('Transcripts') as any)
+            .setHeading();
+        transcriptHeading.settingEl.addClass('tubesage-heading');
         
-        transcriptHeadingContainer.createEl('h3', { text: 'Transcript Settings' });
+        // Add info icon directly to the heading name element (adjacent to text)
+        this.createInfoIcon(
+            transcriptHeading.nameEl,
+            'Transcript Settings control how and where your extracted notes are saved, which YouTube Data API key to use (required for channel/playlist processing), and optional language-translation parameters.'
+        );
         
-        // Add info icon
-        const infoIcon = transcriptHeadingContainer.createEl('span', {
-            cls: 'tubesage-settings-info-icon', // Apply new class
-            attr: { 'aria-label': 'Information about transcript extraction settings' } // Keep aria-label
-        });
-        
-        // Create SVG icon for info
-        const infoSvgNamespace = "http://www.w3.org/2000/svg";
-        const infoSvg = document.createElementNS(infoSvgNamespace, "svg");
-        infoSvg.setAttrs({
-            viewBox: "0 0 24 24",
-            width: "16",
-            height: "16",
-            stroke: "currentColor",
-            fill: "none",
-            'stroke-width': "2",
-            'stroke-linecap': "round",
-            'stroke-linejoin': "round"
-        });
-        
-        // Create circle for info icon
-        const circle = document.createElementNS(infoSvgNamespace, "circle");
-        circle.setAttrs({ cx: "12", cy: "12", r: "10" });
-        infoSvg.appendChild(circle);
-        
-        // Create the i vertical line
-        const line = document.createElementNS(infoSvgNamespace, "line");
-        line.setAttrs({ x1: "12", y1: "16", x2: "12", y2: "12" });
-        infoSvg.appendChild(line);
-        
-        // Create the i dot
-        const dot = document.createElementNS(infoSvgNamespace, "line");
-        dot.setAttrs({ x1: "12", y1: "8", x2: "12.01", y2: "8" });
-        infoSvg.appendChild(dot);
-        
-        // Add the SVG to the icon container
-        infoIcon.appendChild(infoSvg);
-        
-        // Add tooltip on hover
-        infoIcon.addEventListener('mouseenter', (e) => {
-            const tooltip = document.createElement('div');
-            tooltip.className = 'tubesage-settings-tooltip'; // Apply new class
-            tooltip.textContent = 'Transcript Settings control how and where your extracted notes are saved, which YouTube Data API key to use (required for channel/playlist processing), and optional language-translation parameters.';
-            tooltip.style.top = `${e.clientY + 10}px`;
-            tooltip.style.left = `${e.clientX + 10}px`;
-            
-            document.body.appendChild(tooltip);
-            
-            const removeTooltip = () => {
-                document.body.removeChild(tooltip);
-                infoIcon.removeEventListener('mouseleave', removeTooltip);
-                infoIcon.removeEventListener('click', removeTooltip);
-            };
-            
-            infoIcon.addEventListener('mouseleave', removeTooltip);
-            infoIcon.addEventListener('click', removeTooltip);
-        });
         
         new Setting(settingsContainer)
-            .setName('Transcript Root Folder')
+            .setName('Transcript root folder')
             .setDesc('The root folder where transcript subfolders will be organized (e.g., Inbox, Notes, etc.)')
             .addText(text => text
                 .setPlaceholder('Inbox')
@@ -4040,7 +3992,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Removed "Use YouTube Data API v3" setting and CORS issue notice
         
         new Setting(settingsContainer)
-            .setName('YouTube Data API Key')
+            .setName('YouTube data API key')
             .setDesc('Your Google Cloud Console API key for accessing public YouTube transcripts (not an OAuth token). Required for downloading channels and playlists.')
             .addText(text => {
                 const textComponent = text
@@ -4073,7 +4025,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             });
         
         new Setting(settingsContainer)
-            .setName('Translate Language')
+            .setName('Translate language')
             .setDesc('Target language code for translation (e.g., en, es, fr, de). Use "en" to keep content in English.')
             .addText(text => text
                 .setPlaceholder('en')
@@ -4084,7 +4036,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 }));
         
         new Setting(settingsContainer)
-            .setName('Translate Country')
+            .setName('Translate country')
             .setDesc('Target country/region code for translation (e.g., US, GB, CA). Used for region-specific language variants.')
             .addText(text => text
                 .setPlaceholder('US')
@@ -4094,16 +4046,15 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                     await this.plugin.saveSettings();
                 }));
         
-        // LLM section
-        const llmHeadingContainer = settingsContainer.createEl('div', {
-            cls: 'tubesage-settings-heading-container' // Apply new class
-        });
+        // LLM section with info icon
+        const llmHeading = (new Setting(settingsContainer)
+            .setName('LLM') as any)
+            .setHeading();
+        llmHeading.settingEl.addClass('tubesage-heading');
         
-        llmHeadingContainer.createEl('h3', { text: 'LLM Settings' });
-        
-        // Add info icon
-        const llmInfoIcon = this.createInfoIcon(
-            llmHeadingContainer,
+        // Add info icon directly to the heading name element (adjacent to text)
+        this.createInfoIcon(
+            llmHeading.nameEl,
             'LLM Settings let you choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; Max Tokens caps output length. The author\'s suggestion for most users: Google provider with the gemini-2.0-flash model—fast, inexpensive, and high-quality.'
         );
         
@@ -4393,7 +4344,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 }));
         
         new Setting(settingsContainer)
-            .setName('Max Tokens')
+            .setName('Max tokens')
             .setDesc('Maximum length of summary output')
             .addText(text => text
                 .setPlaceholder('1000')
@@ -4411,11 +4362,14 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                     .setTooltip('Max tokens should NOT be confused with the size of the context window. This setting reflects the maximum output returned by the model and is quite sensitive - exceeding this limit will cause the LLM to fail. 4096 is a standard limit (as of 2025), though this may increase in the future. If you use custom models, always ensure this parameter is aligned with your model\'s capabilities.');
             });
         
-        // After the Transcript section (before the LLM section)
-        settingsContainer.createEl('h3', { text: 'Note Format Settings' });
+        // Note format section
+        const noteFormatHeading = new Setting(settingsContainer)
+            .setName('Note format')
+            .setHeading();
+        noteFormatHeading.settingEl.addClass('tubesage-heading');
         
         new Setting(settingsContainer)
-            .setName('Prepend Date to Note Title')
+            .setName('Prepend date to note title')
             .setDesc('Automatically add date to the beginning of note filenames')
             .addDropdown((dropdown: any) => dropdown
                 .addOption('true', 'Enabled')
@@ -4427,7 +4381,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 }));
 
         new Setting(settingsContainer)
-            .setName('Date Format')
+            .setName('Date format')
             .setDesc('Format for date prepended to note titles')
             .addDropdown((dropdown: any) => dropdown
                 .addOption('YYYY-MM-DD', 'YYYY-MM-DD (2023-12-31)')
@@ -4440,14 +4394,17 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 }));
 
 
-        // After the LLM Settings, add Prompt Settings
-        settingsContainer.createEl('h3', { text: 'Prompt Settings' });
+        // Prompt section
+        const promptsHeading = new Setting(settingsContainer)
+            .setName('Prompts')
+            .setHeading();
+        promptsHeading.settingEl.addClass('tubesage-heading');
 
         // Create a sub-heading for Fast Summary prompts
         settingsContainer.createEl('h4', { text: 'Fast Summary Prompts', cls: 'tubesage-settings-prompt-subheader' });
         
         new Setting(settingsContainer)
-            .setName('System Prompt (Fast Summary)')
+            .setName('System prompt (fast summary)')
             .setDesc('Instructions for the LLM\'s behavior when generating fast summaries')
             .addTextArea(text => {
                 const textComponent = text
@@ -4476,7 +4433,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             });
         
         new Setting(settingsContainer)
-            .setName('User Prompt (Fast Summary)')
+            .setName('User prompt (fast summary)')
             .setDesc('Specific instructions for summarizing the transcript quickly and concisely')
             .addTextArea(text => {
                 const textComponent = text
@@ -4508,7 +4465,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         settingsContainer.createEl('h4', { text: 'Extensive Summary Prompts', cls: 'tubesage-settings-prompt-subheader tubesage-settings-prompt-subheader-extensive' });
         
         new Setting(settingsContainer)
-            .setName('System Prompt (Extensive Summary)')
+            .setName('System prompt (extensive summary)')
             .setDesc('Instructions for the LLM\'s behavior when generating detailed, comprehensive summaries')
             .addTextArea(text => {
                 const textComponent = text
@@ -4537,7 +4494,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             });
         
         new Setting(settingsContainer)
-            .setName('User Prompt (Extensive Summary)')
+            .setName('User prompt (extensive summary)')
             .setDesc('Specific instructions for creating detailed and structured notes from the transcript')
             .addTextArea(text => {
                 const textComponent = text
@@ -4567,7 +4524,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Default Summary Mode Setting
         new Setting(settingsContainer)
-            .setName('Default Summary Mode')
+            .setName('Default summary mode')
             .setDesc('Choose the default summary mode to use when the plugin starts. Fast Summary mode skips timestamp links for quicker processing.')
             .addDropdown((dropdown: any) => dropdown
                 .addOption('false', 'Extensive Summary (Detailed)')
@@ -4580,7 +4537,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 
         // Add timestamp links setting
         new Setting(settingsContainer)
-            .setName('Add YouTube Timestamp Links')
+            .setName('Add YouTube timestamp links')
             .setDesc('Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (Note: Disabled in Fast Summary Mode)')
             .addDropdown(dropdown => dropdown
                 .addOption('true', 'Enabled')
@@ -4596,12 +4553,21 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                     .setTooltip('When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in Fast Summary Mode.');
             });
             
-        // Advanced Settings
-        settingsContainer.createEl('h3', { text: 'Advanced Settings' });
+        // Advanced section with info icon  
+        const advancedHeading = (new Setting(settingsContainer)
+            .setName('Advanced') as any)
+            .setHeading();
+        advancedHeading.settingEl.addClass('tubesage-heading');
+        
+        // Add info icon directly to the heading name element (adjacent to text)
+        this.createInfoIcon(
+            advancedHeading.nameEl,
+            'Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.'
+        );
         
         // Debug logging toggle
         new Setting(settingsContainer)
-            .setName('Enable Debug Logging')
+            .setName('Enable debug logging')
             .setDesc('Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.')
             .addDropdown(dropdown => dropdown
                 .addOption('true', 'Enabled')
