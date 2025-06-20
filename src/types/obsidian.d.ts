@@ -5,6 +5,7 @@ declare module 'obsidian' {
     }
     export class Plugin {
         app: App;
+        manifest: { version: string; [key: string]: any };
         loadData(): Promise<any>;
         saveData(data: any): Promise<void>;
         addSettingTab(tab: any): void;
@@ -74,4 +75,13 @@ declare module 'obsidian' {
         status: number;
         text: string;
     }>;
+
+    // Platform API for mobile detection
+    export const Platform: {
+        isMobile: boolean;
+        isAndroid: boolean;
+        isIOS: boolean;
+        isDesktop: boolean;
+        [key: string]: any;
+    };
 } 

@@ -1,4 +1,4 @@
-import { obsidianFetch, isPlatformMobile } from "../utils/fetch-shim";
+import { obsidianFetch } from "../utils/fetch-shim";
 import { getLogger } from "../utils/logger";
 
 const logger = getLogger('ANTHROPIC');

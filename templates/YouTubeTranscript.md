@@ -1,8 +1,9 @@
 ---
 title: "<% tp.user.title %>"
-url: "<% tp.user.videoUrl %>"
-date: <% tp.date.now() %>
-tags: youtube, transcript, <% tp.user.llmTags %>
+video_url: "<% tp.user.videoUrl %>"
+created: <% tp.date.now() %>
+tubesage_version: <% tp.user.version %>
+tags: <% tp.user.llmTags %>
 transcript:  |
 <% tp.user.transcript %>
 ---

@@ -187,23 +187,3 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
     throw error;
   }
 }
-
-/**
- * Detect if the current platform is mobile Obsidian
- */
-export function isPlatformMobile(): boolean {
-    // Use Platform.isMobileApp (official Obsidian API) when available
-    // TypeScript may not recognize it due to outdated type definitions
-    if (typeof window !== "undefined") {
-        const Platform = (window as any).Platform;
-        if (Platform && typeof Platform.isMobileApp === 'boolean') {
-            return Platform.isMobileApp;
-        }
-        
-        // Fallback for compatibility
-        return typeof (window as { app?: { isMobile?: boolean } }).app !== "undefined" &&
-            (window as { app?: { isMobile?: boolean } }).app?.isMobile === true;
-    }
-    
-    return false;
-} 

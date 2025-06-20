@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, Notice, Modal } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, Notice, Modal, Platform } from 'obsidian';
 import manifestData from './manifest.json';
 import stylesCSS from './styles.css';
 import { YouTubeTranscriptExtractor } from './src/youtube-transcript';
@@ -259,7 +259,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
 
     // Get plugin version from manifest
     getVersion(): string {
-        return manifestData.version || 'Unknown';
+        return this.manifest.version || 'Unknown';
     }
 
     async onload() {
@@ -289,479 +289,11 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // Add CSS for the modal
         const styleEl = document.createElement('style');
         styleEl.id = 'youtube-transcript-styles';
-        styleEl.textContent = `
-            /* Runtime helper classes — must be inline so they exist even
-               if the external stylesheet fails to load */
-
-            .tubesage-display-block { display: block; }
-            .tubesage-display-none  { display: none;  }
-
-            .tubesage-validation-visible  { display: block; }
-            .tubesage-validation-hidden   { display: none;  }
-            .tubesage-validation-error    { color: var(--text-error); }
-            .tubesage-validation-success  { color: var(--text-success); }
-            .tubesage-validation-accent   { color: var(--text-accent);  }
-
-            /* Basic form layout (added inline to guarantee availability even if external CSS fails to load) */
-            .youtube-transcript-modal-container,
-            .youtube-transcript-form {
-                width: 100%;
-                padding: 20px;
-            }
-            
-            .youtube-transcript-form .form-group {
-                margin-bottom: 15px;
-            }
-            
-            .youtube-transcript-form label {
-                display: block;
-                margin-bottom: 5px;
-                font-weight: 500;
-            }
-            
-            .youtube-transcript-form input {
-                display: block;
-                width: 100%;
-                padding: 8px;
-                border: 1px solid var(--background-modifier-border);
-                border-radius: 4px;
-                background: var(--background-primary);
-                color: var(--text-normal);
-            }
-            
-            /* Fast Summary Mode boxed toggle styles */
-            .toggle-container {
-                display: flex;
-                align-items: center;
-                margin: 15px 0;
-                padding: 10px;
-                background: var(--background-secondary);
-                border-radius: 5px;
-            }
-
-            .toggle-label {
-                flex: 1;
-                font-size: 14px;
-                margin-right: 10px;
-            }
-            
-            .summary-info {
-                font-size: 12px;
-                color: var(--text-muted);
-                margin-top: 5px;
-                font-style: italic;
-            }
-
-            /* Folder-picker modal styles (kept inline to guarantee availability) */
-            .folder-search-input {
-                display: block;
-                width: 100%;
-                padding: 8px;
-                margin-bottom: 15px;
-                border: 1px solid var(--background-modifier-border);
-                border-radius: 4px;
-                background-color: var(--background-secondary);
-                color: var(--text-normal);
-                font-size: 14px;
-            }
-            
-            .folder-list {
-                max-height: 240px; /* ≈8 items before scroll */
-                overflow-y: auto;
-                border: 1px solid var(--background-modifier-border);
-                border-radius: 4px;
-                margin-bottom: 15px;
-                background-color: var(--background-primary);
-            }
-            
-            .folder-item {
-                display: flex;
-                align-items: center;
-                padding: 5px 10px;
-                cursor: pointer;
-                border-bottom: 1px solid var(--background-modifier-border);
-                font-family: var(--font-interface);
-                transition: background-color 0.1s ease;
-            }
-            
-            .folder-item:hover {
-                background-color: var(--background-modifier-hover);
-            }
-            
-            .folder-item.selected {
-                background-color: var(--background-modifier-hover);
-                font-weight: 500;
-            }
-            
-            .folder-icon {
-                margin-right: 8px;
-                font-size: 16px;
-                color: var(--text-accent);
-                opacity: 0.8;
-            }
-            
-            .folder-path {
-                flex: 1;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                font-size: 14px;
-            }
-            
-            /* Pulse loader (runtime critical styles) */
-            .pulse-container {
-                display: inline-flex;
-                justify-content: center;
-                height: 60px; /* Taller to accommodate full animation */
-                background: none;
-                border: none;
-                padding: 0;
-                align-items: center; /* Center bars vertically */
-            }
-            
-            .pulse-bar {
-                width: 8px;
-                height: 30px; /* Default height at rest */
-                margin: 0 3px;
-                border-radius: 4px;
-                background-color: var(--interactive-accent);
-                animation: pulse 1.5s ease-in-out infinite;
-                display: inline-block;
-                transform-origin: center; /* Grow from middle */
-            }
-            
-            .pulse-bar:nth-child(1) { animation-delay: 0s;   }
-            .pulse-bar:nth-child(2) { animation-delay: 0.2s; }
-            .pulse-bar:nth-child(3) { animation-delay: 0.4s; }
-            .pulse-bar:nth-child(4) { animation-delay: 0.6s; }
-            .pulse-bar:nth-child(5) { animation-delay: 0.8s; }
-
-            @keyframes pulse {
-                0%, 100% { height: 10px; opacity: 0.3; transform: scaleY(0.25); }
-                50%      { height: 30px; opacity: 1;   transform: scaleY(1); }
-            }
-
-            /* Processing modal container */
-            .tubesage-processing-modal {
-                width: 150px !important;
-                max-width: 150px !important;
-                height: 80px !important; /* Fixed height to prevent resizing */
-                display: flex !important;
-                justify-content: center !important;
-                align-items: center !important;
-                padding: 10px 0 !important;
-            }
-            
-            /* Toggle switch styles (kept inline for guaranteed rendering) */
-            .toggle-container {
-                display: flex;
-                align-items: center;
-                margin: 15px 0;
-                padding: 10px;
-                background: var(--background-secondary);
-                border-radius: 5px;
-            }
-            
-            .toggle-label {
-                flex: 1;
-                font-size: 14px;
-                margin-right: 10px;
-            }
-
-            .summary-info {
-                font-size: 12px;
-                color: var(--text-muted);
-                margin-top: 5px;
-                font-style: italic;
-            }
-            
-            .toggle-switch {
-                position: relative;
-                display: inline-block;
-                width: 50px; /* Width of the toggle */
-                height: 24px; /* Height of the toggle */
-            }
-            
-            .toggle-switch input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-            
-            .toggle-slider {
-                position: absolute;
-                cursor: pointer;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: var(--background-modifier-border); /* Off state color */
-                transition: .4s;
-                border-radius: 24px; /* Round edges */
-            }
-            
-            .toggle-slider:before {
-                position: absolute;
-                content: "";
-                height: 18px; /* Knob height */
-                width: 18px;  /* Knob width */
-                left: 3px;    /* Position from left */
-                bottom: 3px;  /* Position from bottom */
-                background-color: white;
-                transition: .4s;
-                border-radius: 50%; /* Circular knob */
-            }
-            
-            input:checked + .toggle-slider {
-                background-color: var(--interactive-accent); /* On state color */
-            }
-            
-            input:checked + .toggle-slider:before {
-                transform: translateX(26px); /* Move knob to the right */
-            }
-            
-            /* Channel options message spacing */
-            .channel-message {
-                margin-bottom: 15px; /* Add space below the message */
-                font-weight: 500; /* Keep original font-weight */
-            }
-
-            /* -------------------------  Settings-tab layout helpers  ------------------------- */
-            .tubesage-settings-support-container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                margin-top: 10px;
-                margin-bottom: 30px;
-            }
-            .tubesage-settings-bmc-img {
-                height: 40px !important;
-                width: 145px !important;
-                max-width: 145px;
-                display: block;
-            }
-            .tubesage-settings-action-buttons-container {
-                display: flex;
-                flex-wrap: nowrap;
-                justify-content: center;
-                align-items: center;
-                gap: 20px;
-                width: 100%;
-                margin-bottom: 15px;
-            }
-            .tubesage-settings-action-button-item-container {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex: 0 0 auto;
-            }
-            .tubesage-settings-action-button-label {
-                font-size: 14px;
-                margin-right: 8px;
-            }
-            /* License toggle in settings */
-            .tubesage-license-toggle-wrapper {
-                position: relative;
-                display: inline-block;
-                width: 40px;
-                height: 20px;
-            }
-            .tubesage-license-toggle-input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-            .tubesage-license-toggle-slider {
-                position: absolute;
-                cursor: pointer;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: var(--background-modifier-border);
-                transition: .4s;
-                border-radius: 20px;
-            }
-            .tubesage-license-toggle-knob {
-                position: absolute;
-                height: 16px;
-                width: 16px;
-                left: 2px;
-                bottom: 2px;
-                background-color: white;
-                transition: .4s;
-                border-radius: 50%;
-            }
-            .tubesage-license-toggle-input:checked + .tubesage-license-toggle-slider {
-                background-color: var(--interactive-accent);
-            }
-            .tubesage-license-toggle-input:checked + .tubesage-license-toggle-slider .tubesage-license-toggle-knob {
-                transform: translateX(20px);
-            }
-
-            /* ... existing code ... */
-            .tubesage-settings-container-disabled {
-                opacity: 0.5;
-                pointer-events: none;
-                user-select: none;
-                filter: grayscale(30%);
-            }
-            /* ... existing code ... */
-
-            /* ... existing code within runtime style block after heading helpers ... */
-            .tubesage-settings-heading-container h3 {
-                margin: 0;
-                flex: 0 0 auto;
-            }
-            .tubesage-settings-heading-container .tubesage-settings-info-icon {
-                flex: 0 0 auto;
-            }
-            /* Tooltip and heading alignment */
-            .tubesage-settings-heading-container {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-            .tubesage-settings-heading-container h3 {
-                margin: 0;
-                flex: 0 0 auto;
-                white-space: nowrap;
-            }
-            .tubesage-settings-heading-container .tubesage-settings-info-icon {
-                cursor: help;
-                flex: 0 0 auto;
-            }
-            /* Basic tooltip appearance (inline to guarantee) */
-            .tubesage-settings-tooltip {
-                position: absolute;
-                z-index: 1000;
-                background-color: var(--background-secondary);
-                color: var(--text-normal);
-                padding: 8px 12px;
-                border-radius: 4px;
-                font-size: 14px;
-                max-width: 300px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            }
-            /* Wider prompt textareas */
-            .tubesage-prompt-textarea {
-                width: 66.666%;  /* take roughly two-thirds of the settings row */
-                min-width: 300px;
-                max-width: 600px;
-            }
-            .tubesage-mission-italic { font-style: italic; }
-            // ... existing code before end of runtime style block ...
-            .tubesage-license-container,
-            .tubesage-readme-container {
-                max-height: 300px !important; /* about 18 lines */
-                overflow-y: auto;
-            }
-            .tubesage-license-modal-size.modal,
-            .tubesage-readme-modal-size.modal {
-                max-height: 90vh !important;
-            }
-            
-            /* License Required Modal Styles */
-            .tubesage-license-required-title {
-                color: var(--text-normal);
-                margin-bottom: 15px;
-                font-size: 1.1em;
-                font-weight: 500;
-            }
-            
-            .tubesage-license-required-icon-container {
-                display: none;
-            }
-            
-            .tubesage-license-required-message-container {
-                margin-bottom: 15px;
-                font-size: 14px;
-            }
-            
-            .tubesage-license-required-message-bold {
-                font-weight: 500;
-                color: var(--text-normal);
-                margin-bottom: 6px !important;
-                font-size: 14px;
-            }
-            
-            .tubesage-license-required-steps-container {
-                margin-bottom: 20px;
-                font-size: 13px;
-            }
-            
-            .tubesage-license-required-steps-title {
-                font-weight: 500;
-                margin-bottom: 8px;
-                color: var(--text-normal);
-                font-size: 13px;
-            }
-            
-            .tubesage-license-required-steps-list {
-                padding-left: 18px;
-                line-height: 1.4;
-                font-size: 13px;
-            }
-            
-            .tubesage-license-required-step-item {
-                margin-bottom: 4px;
-                color: var(--text-muted);
-                font-size: 13px;
-            }
-            
-            .tubesage-license-required-button-container {
-                display: flex;
-                justify-content: space-between;
-                gap: 10px;
-                padding-top: 15px;
-                border-top: 1px solid var(--background-modifier-border);
-            }
-            
-            .tubesage-license-required-button-primary {
-                flex: 1;
-                padding: 8px 16px;
-                background-color: var(--interactive-accent);
-                color: var(--text-on-accent);
-                border: none;
-                border-radius: 4px;
-                font-size: 13px;
-                font-weight: 500;
-                cursor: pointer;
-                transition: background-color 0.2s ease;
-            }
-            
-            .tubesage-license-required-button-primary:hover {
-                background-color: var(--interactive-accent-hover);
-            }
-            
-            .tubesage-license-required-button-secondary {
-                flex: 1;
-                padding: 8px 16px;
-                background-color: var(--background-secondary);
-                color: var(--text-normal);
-                border: 1px solid var(--background-modifier-border);
-                border-radius: 4px;
-                font-size: 13px;
-                font-weight: 500;
-                cursor: pointer;
-                transition: background-color 0.2s ease;
-            }
-            
-            .tubesage-license-required-button-secondary:hover {
-                background-color: var(--background-modifier-hover);
-            }
-            
-            
-            // ... existing code ...
-            
-            /* External styles.css */
-            ${stylesCSS}
-        `;
+        styleEl.textContent = stylesCSS;
         document.head.appendChild(styleEl);
 
         // Add ribbon icon
-        this.addRibbonIcon('youtube', 'TubeSage: Youtube Note Creator', () => {
+        this.addRibbonIcon('youtube', 'TubeSage: Youtube note creator', () => {
             // Check if license has been accepted
             if (!this.settings.licenseAccepted) {
                 // Show license required modal if not accepted
@@ -1400,6 +932,9 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             // Add tags for LLM provider and model
             const llmTags = `llm/${llmProvider} model/${llmModel.replace(/[:\.]/g, "-")}`;
             ctx.user.llmTags = llmTags;
+            
+            // Add plugin version for frontmatter tracking
+            ctx.user.version = this.getVersion();
             
             // Debug info is only logged, not included in notes
             if (this.settings.debugLogging) {
@@ -2217,15 +1752,9 @@ ${contentToTranslate}
             const maxTokenLimit = this.getMaxTokensForTimestampPass();
             const chunks = createOptimizedChunks(contentWithoutFrontmatter, maxTokenLimit);
             
-            // Check if we're running on mobile for additional caution
-            const isMobile = this.isMobileDevice();
-            
             if (this.settings.debugLogging) {
                 llmLogger.debug(`Split content into ${chunks.length} optimized chunks`);
                 llmLogger.debug(`Chunk sizes: ${chunks.map(c => c.length).join(', ')} characters`);
-                if (isMobile) {
-                    llmLogger.debug(`Running on mobile device, using more conservative processing`);
-                }
             }
             
             logger.debug(`[addTimestampLinksInChunks] Split content into ${chunks.length} optimized chunks`);
@@ -2275,7 +1804,7 @@ ${contentToTranslate}
                 // Construct reference section with clear instructions not to include in output
                 // Reduce transcript size on mobile to prevent token overflow
                 let transcriptContent = "";
-                if (isMobile && transcript.length > 5000) {
+                if (Platform.isMobile && transcript.length > 5000) {
                     // On mobile with large transcripts, keep only a portion to save tokens
                     transcriptContent = transcript.substring(0, 5000) + "\n[Transcript truncated for mobile processing]";
                     if (this.settings.debugLogging) {
@@ -2479,7 +2008,7 @@ ${contentToTranslate}
         tokensToUse = Math.min(tokensToUse, providerHardLimit - 100);
         
         // Additional safety check - if on mobile, be more conservative
-        if (this.isMobileDevice()) {
+        if (Platform.isMobile) {
             tokensToUse = Math.min(tokensToUse, 2000); // Cap at 2000 on mobile
             
             if (this.settings.debugLogging) {
@@ -2499,18 +2028,6 @@ ${contentToTranslate}
         return sanitizePathComponent(text);
     }
 
-    // Utility method to detect if we're running on a mobile device
-    private isMobileDevice(): boolean {
-        // Use Platform.isMobileApp (official Obsidian API) when available
-        // TypeScript may not recognize it due to outdated type definitions
-        const Platform = (window as any).Platform;
-        if (Platform && typeof Platform.isMobileApp === 'boolean') {
-            return Platform.isMobileApp;
-        }
-        
-        // Fallback for compatibility
-        return (window as ObsidianAppWindow).app?.isMobile === true;
-    }
 
     async fetchOpenAIModels(apiKey: string): Promise<string[]> {
         if (!apiKey || apiKey.trim() === "") {
@@ -2674,7 +2191,7 @@ class YouTubeTranscriptModal extends Modal {
         contentEl.empty();
         
         // Add header
-        contentEl.createEl('h2', { text: 'TubeSage: Create Note from YouTube Transcript' });
+        contentEl.createEl('h2', { text: 'TubeSage: Create note from YouTube transcript' });
         
         // Build the input stage UI
         this.buildInputStage();
@@ -2685,10 +2202,10 @@ class YouTubeTranscriptModal extends Modal {
         contentEl.empty();
         
         // Add header
-        contentEl.createEl('h2', { text: 'TubeSage: Create Note from YouTube Transcript' });
+        contentEl.createEl('h2', { text: 'TubeSage: Create note from YouTube transcript' });
         
         // Check if we're on mobile
-        const isMobile = this.isMobile();
+        const isMobile = Platform.isMobile;
         
         // Create the form container - revert to original appearance
         const formEl = contentEl.createEl('div', { cls: 'youtube-transcript-form' });
@@ -3602,18 +3119,6 @@ class YouTubeTranscriptModal extends Modal {
         contentEl.empty();
     }
 
-    // Simple helper to detect mobile devices
-    private isMobile(): boolean {
-        // Use Platform.isMobileApp (official Obsidian API) when available
-        // TypeScript may not recognize it due to outdated type definitions
-        const Platform = (window as any).Platform;
-        if (Platform && typeof Platform.isMobileApp === 'boolean') {
-            return Platform.isMobileApp;
-        }
-        
-        // Fallback for compatibility
-        return (window as ObsidianAppWindow).app?.isMobile === true;
-    }
 }
 
 class YouTubeTranscriptSettingTab extends PluginSettingTab {
@@ -3629,11 +3134,6 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         containerEl.empty();
         
         
-        // Add version display under the title
-        const versionEl = containerEl.createEl('div', {
-            attr: { style: 'text-align:center; color:var(--text-muted); font-size:0.9em; margin-bottom:20px;' }
-        });
-        versionEl.setText(`Version ${this.plugin.getVersion()}`);
         
         // Buy Me a Coffee section at the top
         const supportContainer = containerEl.createEl('div', {
@@ -3755,7 +3255,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         });
         
         toggleContainer.createEl('span', { 
-            text: 'Accept License & Disclaimer', 
+            text: 'Accept license & disclaimer', 
             cls: 'tubesage-settings-action-button-label' // Reuse class
         });
         
@@ -4401,7 +3901,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         promptsHeading.settingEl.addClass('tubesage-heading');
 
         // Create a sub-heading for Fast Summary prompts
-        settingsContainer.createEl('h4', { text: 'Fast Summary Prompts', cls: 'tubesage-settings-prompt-subheader' });
+        settingsContainer.createEl('h4', { text: 'Fast summary prompts', cls: 'tubesage-settings-prompt-subheader' });
         
         new Setting(settingsContainer)
             .setName('System prompt (fast summary)')
@@ -4462,7 +3962,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             });
         
         // Create a sub-heading for Extensive Summary prompts
-        settingsContainer.createEl('h4', { text: 'Extensive Summary Prompts', cls: 'tubesage-settings-prompt-subheader tubesage-settings-prompt-subheader-extensive' });
+        settingsContainer.createEl('h4', { text: 'Extensive summary prompts', cls: 'tubesage-settings-prompt-subheader tubesage-settings-prompt-subheader-extensive' });
         
         new Setting(settingsContainer)
             .setName('System prompt (extensive summary)')
@@ -4684,7 +4184,7 @@ class TemplateFilePickerModal extends Modal {
     onOpen() {
         const { contentEl } = this;
         
-        contentEl.createEl('h2', { text: 'Select Template File' });
+        contentEl.createEl('h2', { text: 'Select template file' });
         
         // Get all markdown files in the vault
         // @ts-ignore - Using Obsidian API types
@@ -4893,7 +4393,7 @@ class FolderPickerModal extends Modal {
         const normalizedRootFolder = normalizePath(rootFolder, false); // Keep leading slash for display
         
         // Simple title only
-        contentEl.createEl('h2', { text: 'Select Folder Location' });
+        contentEl.createEl('h2', { text: 'Select folder location' });
         
         // Debug info about folder count
         const rootSubfolderCount = this.folders.length - 1; // Subtract root folder itself
@@ -5072,7 +4572,7 @@ class LicenseModal extends Modal {
             modalEl.style.maxWidth = "80vw";
         }
         
-        contentEl.createEl('h2', { text: 'TubeSage - YouTube Transcript Plugin License' });
+        contentEl.createEl('h2', { text: 'TubeSage - YouTube transcript plugin license' });
 
         try {
             // Get the plugin folder path
@@ -5214,7 +4714,7 @@ class LicenseRequiredModal extends Modal {
         
         // Add title
         contentEl.createEl('h2', { 
-            text: 'License Acceptance Required', 
+            text: 'License acceptance required', 
             cls: 'tubesage-license-required-title' // Apply new class
         });
         
@@ -5323,7 +4823,7 @@ class READMEModal extends Modal {
             modalEl.style.maxWidth = "85vw";
         }
         
-        contentEl.createEl('h2', { text: 'TubeSage - YouTube Transcript Plugin Documentation' });
+        contentEl.createEl('h2', { text: 'TubeSage - YouTube transcript plugin documentation' });
 
         try {
             // Get the plugin folder path
