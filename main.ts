@@ -2208,7 +2208,7 @@ class YouTubeTranscriptModal extends Modal {
         const isMobile = Platform.isMobile;
         
         // Create the form container - revert to original appearance
-        const formEl = contentEl.createEl('div', { cls: 'youtube-transcript-form' });
+        const formEl = contentEl.createEl('div', { cls: 'tubesage-transcript-form' });
         
         // URL input group - first input
         const urlGroup = formEl.createEl('div', { cls: 'form-group' });
@@ -3132,8 +3132,6 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
     display(): void {
         const { containerEl } = this;
         containerEl.empty();
-        
-        
         
         // Buy Me a Coffee section at the top
         const supportContainer = containerEl.createEl('div', {
