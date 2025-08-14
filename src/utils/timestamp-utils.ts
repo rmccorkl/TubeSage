@@ -102,12 +102,13 @@ export function validateEnhancedContent(
         return false;
     }
     
-    // Verify the output has timestamp links
+    // Verify the output has timestamp links (after conversion from TimeIndex markers)
     const timestampLinkPattern = new RegExp(`\\[Watch\\]\\(https://www\\.youtube\\.com/watch\\?v=${videoId}&t=\\d+\\)`);
     const hasLinks = timestampLinkPattern.test(enhancedContent);
     
     if (!hasLinks) {
-        logger.warn("No timestamp links found in LLM output");
+        logger.warn("No timestamp links found in final output");
+        logger.debug("Enhanced content sample:", enhancedContent.substring(0, 500));
         return false;
     }
     
@@ -256,33 +257,42 @@ export function hasProperHeading(chunk: string): boolean {
 }
 
 /**
- * Check if a chunk has valid timestamp links
+ * Check if a chunk has valid TimeIndex markers
  * 
  * @param chunk The content chunk
- * @param videoId The YouTube video ID
- * @returns Whether the chunk has valid timestamp links
+ * @param videoId The YouTube video ID (kept for compatibility but not used)
+ * @returns Whether the chunk has valid TimeIndex markers
  */
 export function hasTimestampLinks(chunk: string, videoId: string): boolean {
-    const timestampLinkPattern = new RegExp(`\\[Watch\\]\\(https://www\\.youtube\\.com/watch\\?v=${videoId}&t=\\d+\\)`);
-    const hasLinks = timestampLinkPattern.test(chunk);
+    const timeIndexPattern = /\[TimeIndex:\d+\]/;
+    const hasTimeIndex = timeIndexPattern.test(chunk);
     
-    if (!hasLinks) {
+    if (!hasTimeIndex) {
         // Log the first few hundred characters to see what's coming back
-        logger.debug(`No timestamp links found in chunk. First 200 chars: ${chunk.substring(0, 200)}...`);
+        logger.debug(`No TimeIndex markers found in chunk. First 200 chars: ${chunk.substring(0, 200)}...`);
         
         // Check if we have any headings with proper format
         const headings = chunk.match(/^#+\s+\d+(?:\.\d+)?\.?\s+/gm);
         if (headings) {
-            logger.debug(`Found ${headings.length} numbered headings but no timestamp links`);
+            logger.debug(`Found ${headings.length} numbered headings but no TimeIndex markers`);
         } else {
             logger.debug(`No numbered headings found in chunk`);
         }
+        
+        // Also check for final Watch URLs (after conversion from TimeIndex)
+        const timestampLinkPattern = new RegExp(`\\[Watch\\]\\(https://www\\.youtube\\.com/watch\\?v=${videoId}&t=\\d+\\)`);
+        const hasWatchLinks = timestampLinkPattern.test(chunk);
+        if (hasWatchLinks) {
+            const links = chunk.match(timestampLinkPattern);
+            logger.debug(`Found ${links ? links.length : 0} Watch links in chunk (converted from TimeIndex)`);
+            return true;
+        }
     } else {
-        const links = chunk.match(timestampLinkPattern);
-        logger.debug(`Found ${links ? links.length : 0} timestamp links in chunk`);
+        const markers = chunk.match(/\[TimeIndex:\d+\]/g);
+        logger.debug(`Found ${markers ? markers.length : 0} TimeIndex markers in chunk`);
     }
     
-    return hasLinks;
+    return hasTimeIndex;
 }
 
 /**
@@ -299,4 +309,40 @@ export function convertTimestampToSeconds(timestamp: string): number {
         logger.error(`Error converting timestamp ${timestamp} to seconds: ${error}`);
         return 0;
     }
+}
+
+/**
+ * Converts TimeIndex markers to Watch URLs in content
+ * 
+ * @param content The content containing TimeIndex markers
+ * @param videoId The YouTube video ID
+ * @returns Content with TimeIndex markers replaced with Watch URLs
+ */
+export function convertTimeIndexToWatchUrls(content: string, videoId: string): string {
+    logger.debug(`Converting TimeIndex markers to Watch URLs for video: ${videoId}`);
+    
+    // Pattern to match [TimeIndex:XXX] markers
+    const timeIndexPattern = /\[TimeIndex:(\d+)\]/g;
+    
+    // Count matches for logging
+    const matches = content.match(timeIndexPattern);
+    const matchCount = matches ? matches.length : 0;
+    logger.debug(`Found ${matchCount} TimeIndex markers to convert`);
+    
+    // Replace all TimeIndex markers with Watch URLs
+    const processedContent = content.replace(timeIndexPattern, (match, seconds) => {
+        const watchUrl = `[Watch](https://www.youtube.com/watch?v=${videoId}&t=${seconds})`;
+        logger.debug(`Converting ${match} to ${watchUrl}`);
+        return watchUrl;
+    });
+    
+    // Verify conversion
+    const remainingTimeIndex = processedContent.match(timeIndexPattern);
+    if (remainingTimeIndex) {
+        logger.warn(`Warning: ${remainingTimeIndex.length} TimeIndex markers remain unconverted`);
+    } else if (matchCount > 0) {
+        logger.debug(`Successfully converted all ${matchCount} TimeIndex markers to Watch URLs`);
+    }
+    
+    return processedContent;
 } 

@@ -1,5 +1,4 @@
 import { App, Plugin, PluginSettingTab, Setting, Notice, Modal, Platform } from 'obsidian';
-import manifestData from './manifest.json';
 import stylesCSS from './styles.css';
 import { YouTubeTranscriptExtractor } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
@@ -20,7 +19,8 @@ import {
     ensureTrailingNewline,
     hasProperHeading,
     hasTimestampLinks,
-    convertTimestampToSeconds
+    convertTimestampToSeconds,
+    convertTimeIndexToWatchUrls
 } from './src/utils/timestamp-utils';
 
 // Initialize logger
@@ -177,20 +177,20 @@ For each section:
 Start the response immediately with a short paragraph summarizing the main themes. Do not label it or describe it.
 At the end, have a conclusion section and list any books, people, or resources mentioned, along with a short explanation of their relevance.`,
     // Second pass - timestamp linking prompt
-    timestampSystemPrompt: 'You are a highly precise assistant that amends YouTube links to add timestamps to section headings in a note. You never include any reference material (like video IDs or transcripts) in your output.',
-    timestampUserPrompt: `TASK: Add YouTube timestamp links to each section heading in this document.
+    timestampSystemPrompt: 'You are a highly precise assistant that adds TimeIndex markers to section headings in a note. You never include any reference material (like video IDs or transcripts) in your output.',
+    timestampUserPrompt: `TASK: Add TimeIndex markers to each section heading in this document.
 
 RULES:
 1. NEVER summarize or modify the content unless translation is requested
 2. NEVER remove any content
-3. ALWAYS return the FULL original content PLUS timestamp links at the end of section headings
-4. If processing multiple sections, add timestamps to ALL headings
+3. ALWAYS return the FULL original content PLUS TimeIndex markers at the end of section headings
+4. If processing multiple sections, add TimeIndex markers to ALL headings
 5. ONLY process markdown numbered headings 
     a. for subheadings (e.g., "## 1. Topic")
     b. for section headings (e.g., "## 1.1. Sub Topic")
 6. DO NOT process headings without numbers or dots
 7. DO NOT process horizontal rules (single #)
-8. Do NOT add a preamble or postamble or headers or titles, ONLY AMEND the links to add the seconds timestamp
+8. Do NOT add a preamble or postamble or headers or titles, ONLY ADD TimeIndex markers to headings
 9. Respond only with the raw answer, no intro or outro text.
 10. NEVER include any reference material marked by ----- REFERENCE MATERIAL ----- blocks in your response.
 
@@ -202,12 +202,16 @@ EXACTLY HOW TO DO THIS:
 5. When matching the best section heading to the transcript segments:
    - Focus on semantic meaning of the section (topic), not just keyword matching
    - Simply use the TimeIndex value from the relevant transcript section
-   - Example: If you find the relevant transcript section has [TimeIndex:175], use t=175 in the link
+   - Example: If you find the relevant transcript section has [TimeIndex:175], add [TimeIndex:175] to the heading
    - DO NOT calculate seconds manually - just use the TimeIndex value directly
    - IMPORTANT: Only use TimeIndex values that actually appear in the transcript
    - ENSURE the TimeIndex value does not exceed the length of the video
-6. Add the timestamp link in the format: [Watch](https://www.youtube.com/watch?v=VIDEO_ID&t=TimeIndex)
-7. Place the link at the end of the heading line, after the heading text`,
+6. Add the TimeIndex marker in the format: [TimeIndex:SECONDS] where SECONDS is the number of seconds
+   - Example: If transcript shows [TimeIndex:175], add [TimeIndex:175] to the heading
+   - Always use the exact seconds value from the transcript's TimeIndex
+   - Transform heading "## 1. Introduction" to "## 1. Introduction [TimeIndex:175]"
+   - Another example: "### 3.1. The Scam of Government Bonds [TimeIndex:338]"
+7. Place the TimeIndex marker at the end of the heading line, after the heading text`,
     // Default to Extensive Summary
     useFastSummary: false,
     
@@ -1466,6 +1470,22 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 llmLogger.debug("==================== TIMESTAMP LINKING DEBUG ====================");
                 llmLogger.debug(`Processing file: ${filePath}`);
                 llmLogger.debug(`Video ID: ${videoId}`);
+                llmLogger.debug(`System Prompt: ${timestampConfig.systemPrompt}`);
+                llmLogger.debug(`User Prompt (first 500 chars): ${timestampConfig.userPrompt.substring(0, 500)}...`);
+                llmLogger.debug(`Restructured Prompt (first 500 chars): ${restructuredPrompt.substring(0, 500)}...`);
+                
+                // Check if transcript contains TimeIndex markers
+                if (processedTranscript) {
+                    const timeIndexInTranscript = processedTranscript.match(/\[TimeIndex:\d+\]/g);
+                    if (timeIndexInTranscript) {
+                        llmLogger.debug(`✅ Transcript contains ${timeIndexInTranscript.length} TimeIndex markers`);
+                        llmLogger.debug(`First few TimeIndex markers: ${timeIndexInTranscript.slice(0, 5).join(', ')}`);
+                    } else {
+                        llmLogger.debug("❌ No TimeIndex markers found in transcript");
+                    }
+                } else {
+                    llmLogger.debug("❌ No transcript provided to LLM");
+                }
                 llmLogger.debug(`Number of headings found: ${headings.length}`);
                 llmLogger.debug(`First few headings: ${headings.slice(0, 3).join(', ')}${headings.length > 3 ? '...' : ''}`);
                 llmLogger.debug(`LLM Provider: ${this.settings.selectedLLM}`);
@@ -1530,6 +1550,20 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     llmLogger.debug("========================================");
                     llmLogger.debug(truncateForLogs(enhancedContent || "Empty response from LLM", 400));
                     llmLogger.debug("========================================");
+                    
+                    // Check for TimeIndex markers in the response
+                    const timeIndexMatches = enhancedContent ? enhancedContent.match(/\[TimeIndex:\d+\]/g) : null;
+                    if (timeIndexMatches) {
+                        llmLogger.debug(`✅ Found ${timeIndexMatches.length} TimeIndex markers: ${timeIndexMatches.join(', ')}`);
+                    } else {
+                        llmLogger.debug("❌ No TimeIndex markers found in LLM response");
+                    }
+                    
+                    // Check for Watch URLs in the response (shouldn't be there with new prompt)
+                    const watchMatches = enhancedContent ? enhancedContent.match(/\[Watch\]\(https:\/\/www\.youtube\.com\/watch\?v=[^)]+\)/g) : null;
+                    if (watchMatches) {
+                        llmLogger.debug(`⚠️ Found ${watchMatches.length} Watch URLs (old format): ${watchMatches.slice(0, 3).join(', ')}`);
+                    }
                 }
                 
                 logger.debug("[addTimestampLinksSinglePass] Received LLM response, length:", enhancedContent ? enhancedContent.length : 0);
@@ -1589,11 +1623,21 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 return null;
             }
             
+            // First validate that we received TimeIndex markers from the LLM
+            if (!enhancedContent.includes('[TimeIndex:')) {
+                logger.error("[addTimestampLinksSinglePass] No TimeIndex markers found in LLM response");
+                this.showNotice("LLM did not add TimeIndex markers to headings", 5000);
+                return null;
+            }
+            
             // Reconstruct the document with original frontmatter and enhanced content
             let enhancedNote = reconstructDocument(frontmatter, enhancedContent);
             
-            // Validate the enhanced content using our utility
-            if (validateEnhancedContent(enhancedContent, contentWithoutFrontmatter, headings, videoId)) {
+            // Convert TimeIndex markers to Watch URLs deterministically (at the end of Pass 2)
+            enhancedNote = convertTimeIndexToWatchUrls(enhancedNote, videoId);
+            
+            // Validate the final enhanced note with Watch URLs
+            if (validateEnhancedContent(enhancedNote, contentWithoutFrontmatter, headings, videoId)) {
                 // Update the note file with the LLM-enhanced content
                 const file = this.app.vault.getAbstractFileByPath(filePath) as ObsidianFile;
                 if (file) {
@@ -1604,8 +1648,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     return null;
                 }
                 
-                // Count number of section headings with links
-                const linkCount = countTimestampLinks(enhancedContent);
+                // Count number of section headings with links (use final converted note)
+                const linkCount = countTimestampLinks(enhancedNote);
                 this.showNotice(`Added timestamp links to ${linkCount} section headings`, 5000);
                 
                 // Log the final output if debug logging is enabled
@@ -1930,10 +1974,13 @@ ${contentToTranslate}
             
             // Reconstruct document: frontmatter + processed content
             const combinedContent = processedChunks.join("");
-            const combinedNote = reconstructDocument(frontmatter, combinedContent);
+            let combinedNote = reconstructDocument(frontmatter, combinedContent);
             
-            // Verify we have some timestamp links
-            const linkCount = countTimestampLinks(combinedContent);
+            // Convert TimeIndex markers to Watch URLs deterministically (at the end of Pass 2)
+            combinedNote = convertTimeIndexToWatchUrls(combinedNote, videoId);
+            
+            // Verify we have some timestamp links (count from the converted note)
+            const linkCount = countTimestampLinks(combinedNote);
             
             if (this.settings.debugLogging) {
                 llmLogger.debug("CHUNKED PROCESSING COMPLETE");
