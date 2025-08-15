@@ -126,8 +126,8 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
     } catch (requestError) {
       logger.error('requestUrl threw error:', requestError);
       logger.error('requestError type:', typeof requestError);
-      logger.error('requestError message:', requestError?.message);
-      logger.error('requestError status:', (requestError as any)?.status);
+      logger.error('requestError message:', requestError instanceof Error ? requestError.message : 'Unknown error');
+      logger.error('requestError status:', 'status' in (requestError as object) ? (requestError as { status?: number }).status : 'No status');
       logger.error('requestError instanceof Error:', requestError instanceof Error);
       logger.error('requestError constructor:', requestError?.constructor?.name);
       throw requestError; // Re-throw to be handled by outer catch

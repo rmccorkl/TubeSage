@@ -3511,14 +3511,14 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         });
         
         // Transcript section with info icon
-        const transcriptHeading = (new Setting(settingsContainer)
-            .setName('Transcripts') as any)
+        const transcriptHeading = new Setting(settingsContainer)
+            .setName('Transcripts')
             .setHeading();
         transcriptHeading.settingEl.addClass('tubesage-heading');
         
         // Add info icon directly to the heading name element (adjacent to text)
         this.createInfoIcon(
-            transcriptHeading.nameEl,
+            (transcriptHeading.settingEl as HTMLElement).querySelector('.setting-item-name') as HTMLElement,
             'Transcript Settings control how and where your extracted notes are saved, which YouTube Data API key to use (required for channel/playlist processing), and optional language-translation parameters.'
         );
         
@@ -3592,14 +3592,14 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 }));
         
         // LLM section with info icon
-        const llmHeading = (new Setting(settingsContainer)
-            .setName('LLM') as any)
+        const llmHeading = new Setting(settingsContainer)
+            .setName('LLM')
             .setHeading();
         llmHeading.settingEl.addClass('tubesage-heading');
         
         // Add info icon directly to the heading name element (adjacent to text)
         this.createInfoIcon(
-            llmHeading.nameEl,
+            (llmHeading.settingEl as HTMLElement).querySelector('.setting-item-name') as HTMLElement,
             'LLM Settings let you choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; Max Tokens caps output length. The author\'s suggestion for most users: Google provider with the gemini-2.0-flash model—fast, inexpensive, and high-quality.'
         );
         
@@ -4099,14 +4099,14 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             });
             
         // Advanced section with info icon  
-        const advancedHeading = (new Setting(settingsContainer)
-            .setName('Advanced') as any)
+        const advancedHeading = new Setting(settingsContainer)
+            .setName('Advanced')
             .setHeading();
         advancedHeading.settingEl.addClass('tubesage-heading');
         
         // Add info icon directly to the heading name element (adjacent to text)
         this.createInfoIcon(
-            advancedHeading.nameEl,
+            (advancedHeading.settingEl as HTMLElement).querySelector('.setting-item-name') as HTMLElement,
             'Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.'
         );
         
@@ -4177,25 +4177,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Add the SVG to the icon container
         infoIcon.appendChild(infoSvg);
         
-        // Add tooltip on hover
-        infoIcon.addEventListener('mouseenter', (e) => {
-            const tooltip = document.createElement('div');
-            tooltip.className = 'tubesage-settings-tooltip'; // Apply new consistent class
-            tooltip.textContent = tooltipText;
-            tooltip.style.top = `${e.clientY + 10}px`;
-            tooltip.style.left = `${e.clientX + 10}px`;
-            
-            document.body.appendChild(tooltip);
-            
-            const removeTooltip = () => {
-                document.body.removeChild(tooltip);
-                infoIcon.removeEventListener('mouseleave', removeTooltip);
-                infoIcon.removeEventListener('click', removeTooltip);
-            };
-            
-            infoIcon.addEventListener('mouseleave', removeTooltip);
-            infoIcon.addEventListener('click', removeTooltip);
-        });
+        // Add tooltip using pure CSS approach
+        infoIcon.setAttribute('data-tooltip', tooltipText);
+        infoIcon.addClass('tubesage-settings-info-icon-with-tooltip');
         
         // Provide native tooltip fallback
         infoIcon.setAttr('title', tooltipText);
@@ -4610,11 +4594,10 @@ class LicenseModal extends Modal {
     async onOpen() {
         const { contentEl } = this;
         
-        // Set wider width for the modal using direct DOM manipulation (original working method)
+        // Add CSS class for proper styling
         const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
         if (modalEl && modalEl instanceof HTMLElement) {
-            modalEl.style.width = "700px";
-            modalEl.style.maxWidth = "80vw";
+            modalEl.addClass('tubesage-license-modal-size');
         }
         
         contentEl.createEl('h2', { text: 'TubeSage - YouTube transcript plugin license' });
@@ -4751,10 +4734,10 @@ class LicenseRequiredModal extends Modal {
     onOpen() {
         const { contentEl } = this;
         
-        // Set a suitable width for the modal (original working method)
+        // Add CSS class for proper styling
         const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
         if (modalEl && modalEl instanceof HTMLElement) {
-            modalEl.style.width = "500px";
+            modalEl.addClass('tubesage-license-required-modal-size');
         }
         
         // Add title
@@ -4861,11 +4844,10 @@ class READMEModal extends Modal {
     async onOpen() {
         const { contentEl } = this;
         
-        // Set wider width for the modal using direct DOM manipulation (original working method)
+        // Add CSS class for proper styling
         const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
         if (modalEl && modalEl instanceof HTMLElement) {
-            modalEl.style.width = "800px";
-            modalEl.style.maxWidth = "85vw";
+            modalEl.addClass('tubesage-readme-modal-size');
         }
         
         contentEl.createEl('h2', { text: 'TubeSage - YouTube transcript plugin documentation' });
@@ -5255,11 +5237,10 @@ class TemplateViewModal extends Modal {
     async onOpen() {
         const { contentEl } = this;
         
-        // Set wider width for the modal using direct DOM manipulation (original working method)
+        // Add CSS class for proper styling
         const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
         if (modalEl && modalEl instanceof HTMLElement) {
-            modalEl.style.width = "700px";
-            modalEl.style.maxWidth = "80vw";
+            modalEl.addClass('tubesage-template-view-modal-size');
         }
         
         contentEl.createEl('h2', { 
