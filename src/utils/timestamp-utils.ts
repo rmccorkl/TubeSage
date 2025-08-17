@@ -38,7 +38,8 @@ export function extractDocumentComponents(originalContent: string): DocumentComp
             const frontmatterContent = originalContent.substring(3, endFrontmatter).trim();
             
             // Look for transcript property in frontmatter
-            const transcriptMatch = frontmatterContent.match(/transcript:\s*\|\s*\n([\s\S]+?)(?:\n\w|$)/);
+            // Extract everything after "transcript: |" until the closing --- or another YAML property
+            const transcriptMatch = frontmatterContent.match(/transcript:\s*\|\s*\n([\s\S]+?)(?:\n(?:\w+:)|$)/);
             if (transcriptMatch && transcriptMatch[1]) {
                 transcript = transcriptMatch[1].trim();
                 logger.debug("Successfully extracted transcript from frontmatter");
@@ -102,12 +103,12 @@ export function validateEnhancedContent(
         return false;
     }
     
-    // Verify the output has timestamp links (after conversion from TimeIndex markers)
-    const timestampLinkPattern = new RegExp(`\\[Watch\\]\\(https://www\\.youtube\\.com/watch\\?v=${videoId}&t=\\d+\\)`);
+    // Verify the output has timestamp links in headings (after conversion from TimeIndex markers)
+    const timestampLinkPattern = new RegExp(`^#+\\s+.*?\\[Watch\\]\\(https://www\\.youtube\\.com/watch\\?v=${videoId}&t=\\d+\\)`, 'm');
     const hasLinks = timestampLinkPattern.test(enhancedContent);
     
     if (!hasLinks) {
-        logger.warn("No timestamp links found in final output");
+        logger.warn("No timestamp links found in headings in final output");
         logger.debug("Enhanced content sample:", enhancedContent.substring(0, 500));
         return false;
     }
@@ -279,12 +280,12 @@ export function hasTimestampLinks(chunk: string, videoId: string): boolean {
             logger.debug(`No numbered headings found in chunk`);
         }
         
-        // Also check for final Watch URLs (after conversion from TimeIndex)
-        const timestampLinkPattern = new RegExp(`\\[Watch\\]\\(https://www\\.youtube\\.com/watch\\?v=${videoId}&t=\\d+\\)`);
+        // Also check for Watch URLs in headings (after conversion from TimeIndex)
+        const timestampLinkPattern = new RegExp(`^#+\\s+.*?\\[Watch\\]\\(https://www\\.youtube\\.com/watch\\?v=${videoId}&t=\\d+\\)`, 'm');
         const hasWatchLinks = timestampLinkPattern.test(chunk);
         if (hasWatchLinks) {
-            const links = chunk.match(timestampLinkPattern);
-            logger.debug(`Found ${links ? links.length : 0} Watch links in chunk (converted from TimeIndex)`);
+            const links = chunk.match(/^#+\s+.*?\[Watch\]\([^)]+\)/gm);
+            logger.debug(`Found ${links ? links.length : 0} Watch links in headings (converted from TimeIndex)`);
             return true;
         }
     } else {
@@ -312,37 +313,48 @@ export function convertTimestampToSeconds(timestamp: string): number {
 }
 
 /**
- * Converts TimeIndex markers to Watch URLs in content
+ * Converts TimeIndex markers to Watch URLs ONLY in markdown headings
  * 
  * @param content The content containing TimeIndex markers
  * @param videoId The YouTube video ID
- * @returns Content with TimeIndex markers replaced with Watch URLs
+ * @returns Content with TimeIndex markers in headings replaced with Watch URLs
  */
 export function convertTimeIndexToWatchUrls(content: string, videoId: string): string {
-    logger.debug(`Converting TimeIndex markers to Watch URLs for video: ${videoId}`);
+    logger.debug(`Converting TimeIndex markers to Watch URLs for video: ${videoId} (headings only)`);
     
-    // Pattern to match [TimeIndex:XXX] markers
-    const timeIndexPattern = /\[TimeIndex:(\d+)\]/g;
+    // Split content into lines for processing
+    const lines = content.split('\n');
+    let convertedCount = 0;
     
-    // Count matches for logging
-    const matches = content.match(timeIndexPattern);
-    const matchCount = matches ? matches.length : 0;
-    logger.debug(`Found ${matchCount} TimeIndex markers to convert`);
-    
-    // Replace all TimeIndex markers with Watch URLs
-    const processedContent = content.replace(timeIndexPattern, (match, seconds) => {
-        const watchUrl = `[Watch](https://www.youtube.com/watch?v=${videoId}&t=${seconds})`;
-        logger.debug(`Converting ${match} to ${watchUrl}`);
-        return watchUrl;
+    // Process each line, only converting TimeIndex markers in markdown headings
+    const processedLines = lines.map(line => {
+        // Check if this line is a markdown heading (starts with #)
+        const headingMatch = line.match(/^(#+\s+.*?)(\[TimeIndex:(\d+)\])(.*?)$/);
+        
+        if (headingMatch) {
+            const headingStart = headingMatch[1]; // "## 1. Topic Title "
+            const timeIndexMarker = headingMatch[2]; // "[TimeIndex:123]"
+            const seconds = headingMatch[3]; // "123"
+            const headingEnd = headingMatch[4]; // any text after TimeIndex marker
+            
+            const watchUrl = `[Watch](https://www.youtube.com/watch?v=${videoId}&t=${seconds})`;
+            convertedCount++;
+            
+            logger.debug(`Converting heading TimeIndex: ${timeIndexMarker} to ${watchUrl}`);
+            return `${headingStart}${watchUrl}${headingEnd}`;
+        }
+        
+        // For non-heading lines, return unchanged (preserving TimeIndex markers)
+        return line;
     });
     
-    // Verify conversion
-    const remainingTimeIndex = processedContent.match(timeIndexPattern);
-    if (remainingTimeIndex) {
-        logger.warn(`Warning: ${remainingTimeIndex.length} TimeIndex markers remain unconverted`);
-    } else if (matchCount > 0) {
-        logger.debug(`Successfully converted all ${matchCount} TimeIndex markers to Watch URLs`);
-    }
+    logger.debug(`Successfully converted ${convertedCount} TimeIndex markers in headings to Watch URLs`);
     
-    return processedContent;
+    // Count remaining TimeIndex markers (should be preserved in transcript content)
+    const remainingContent = processedLines.join('\n');
+    const remainingTimeIndex = remainingContent.match(/\[TimeIndex:\d+\]/g);
+    const remainingCount = remainingTimeIndex ? remainingTimeIndex.length : 0;
+    logger.debug(`Preserved ${remainingCount} TimeIndex markers in non-heading content`);
+    
+    return remainingContent;
 } 

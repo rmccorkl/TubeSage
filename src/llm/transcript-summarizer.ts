@@ -19,8 +19,30 @@ export class TranscriptSummarizer {
     private llmFactory: LLMFactory;
 
     constructor(config: LLMConfig, apiKeys: Record<string, string>) {
-        this.config = config;
+        // Validate config
+        if (!config) {
+            llmLogger.error('TranscriptSummarizer: config is null or undefined');
+            throw new Error('TranscriptSummarizer: config is required');
+        }
+        
+        // Add safety checks for config properties
+        this.config = {
+            model: config.model || 'gemini-1.5-pro',
+            temperature: config.temperature !== undefined ? config.temperature : 0.7,
+            maxTokens: config.maxTokens || 4096,
+            systemPrompt: config.systemPrompt || 'You are a helpful assistant.',
+            userPrompt: config.userPrompt || 'Please process the following content:'
+        };
+        
         this.apiKeys = apiKeys;
+        
+        // Validate that essential config properties are present
+        if (!this.config.model) {
+            llmLogger.error('TranscriptSummarizer: model is missing from config');
+        }
+        if (this.config.maxTokens === undefined || this.config.maxTokens === null) {
+            llmLogger.error('TranscriptSummarizer: maxTokens is missing from config');
+        }
         
         // Initialize the LLM factory
         this.llmFactory = new LLMFactory({
@@ -35,14 +57,27 @@ export class TranscriptSummarizer {
         });
         
         llmLogger.debug('TranscriptSummarizer initialized with config:', {
-            model: config.model,
-            temperature: config.temperature,
-            maxTokens: config.maxTokens
+            model: this.config.model,
+            temperature: this.config.temperature,
+            maxTokens: this.config.maxTokens,
+            hasSystemPrompt: !!this.config.systemPrompt,
+            hasUserPrompt: !!this.config.userPrompt
         });
     }
 
     async summarize(transcript: string, provider: string): Promise<string> {
         try {
+            // Validate inputs
+            if (!provider || provider.trim() === '') {
+                llmLogger.error('TranscriptSummarizer.summarize: provider is empty or undefined');
+                throw new Error('Provider is required for summarization');
+            }
+            
+            if (!transcript || transcript.trim() === '') {
+                llmLogger.error('TranscriptSummarizer.summarize: transcript is empty or undefined');
+                throw new Error('Transcript is required for summarization');
+            }
+            
             llmLogger.info("Starting summarization with provider:", provider);
             llmLogger.info("Transcript length:", transcript.length);
             llmLogger.info("Model:", this.config.model);
@@ -106,6 +141,14 @@ export class TranscriptSummarizer {
     private async summarizeWithLangChain(transcript: string, provider: string, userPrompt?: string): Promise<string> {
         try {
             llmLogger.info(`Using LangChain for ${provider} summarization`);
+            
+            // Enhanced debugging for Google provider tracking
+            llmLogger.debug(`[summarizeWithLangChain] Provider: '${provider}'`);
+            llmLogger.debug(`[summarizeWithLangChain] Model from config: '${this.config.model}'`);
+            llmLogger.debug(`[summarizeWithLangChain] Model type: ${typeof this.config.model}`);
+            llmLogger.debug(`[summarizeWithLangChain] API Key present for ${provider}: ${!!this.apiKeys[provider]}`);
+            llmLogger.debug(`[summarizeWithLangChain] Temperature: ${this.config.temperature}, MaxTokens: ${this.config.maxTokens}`);
+            llmLogger.debug(`[summarizeWithLangChain] Full config object:`, JSON.stringify(this.config, null, 2));
             
             const langChainClient = new LangChainClient({
                 provider: provider,

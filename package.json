@@ -30,6 +30,8 @@
         "typescript": "^5.9.2"
     },
     "dependencies": {
+        "@anthropic-ai/tokenizer": "^0.0.4",
+        "@dqbd/tiktoken": "^1.0.22",
         "@langchain/anthropic": "^0.3.26",
         "@langchain/community": "^0.3.38",
         "@langchain/core": "^0.3.17",

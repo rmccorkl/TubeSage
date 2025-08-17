@@ -506,40 +506,44 @@ export class YouTubeTranscriptExtractor {
             const hostname = urlObj.hostname;
             const pathname = urlObj.pathname;
             
+            let videoId: string | null = null;
+            
             // youtube.com/watch?v=VIDEO_ID
             if (hostname.includes('youtube.com') && pathname === '/watch') {
-                return urlObj.searchParams.get('v');
+                videoId = urlObj.searchParams.get('v');
             }
-            
             // youtu.be/VIDEO_ID
-            if (hostname === 'youtu.be') {
+            else if (hostname === 'youtu.be') {
                 // The pathname includes the leading slash, so we remove it and strip query params
-                return pathname.substring(1).split('?')[0];
+                videoId = pathname.substring(1).split('?')[0];
             }
-            
             // youtube.com/embed/VIDEO_ID
-            if (hostname.includes('youtube.com') && pathname.startsWith('/embed/')) {
-                return pathname.split('/')[2];
+            else if (hostname.includes('youtube.com') && pathname.startsWith('/embed/')) {
+                videoId = pathname.split('/')[2];
             }
-            
             // youtube.com/v/VIDEO_ID
-            if (hostname.includes('youtube.com') && pathname.startsWith('/v/')) {
-                return pathname.split('/')[2];
+            else if (hostname.includes('youtube.com') && pathname.startsWith('/v/')) {
+                videoId = pathname.split('/')[2];
             }
-            
             // youtube.com/shorts/VIDEO_ID
-            if (hostname.includes('youtube.com') && pathname.startsWith('/shorts/')) {
-                return pathname.split('/')[2];
+            else if (hostname.includes('youtube.com') && pathname.startsWith('/shorts/')) {
+                videoId = pathname.split('/')[2];
             }
-            
             // youtube.com/live/VIDEO_ID - Add support for live URLs
-            if (hostname.includes('youtube.com') && pathname.startsWith('/live/')) {
-                return pathname.split('/')[2].split('?')[0]; // Handle potential query params
+            else if (hostname.includes('youtube.com') && pathname.startsWith('/live/')) {
+                videoId = pathname.split('/')[2].split('?')[0]; // Handle potential query params
+            }
+            // music.youtube.com/watch?v=VIDEO_ID
+            else if (hostname.includes('music.youtube.com') && pathname === '/watch') {
+                videoId = urlObj.searchParams.get('v');
             }
             
-            // music.youtube.com/watch?v=VIDEO_ID
-            if (hostname.includes('music.youtube.com') && pathname === '/watch') {
-                return urlObj.searchParams.get('v');
+            // Validate the extracted video ID
+            if (videoId && this.isValidVideoId(videoId)) {
+                return videoId;
+            } else if (videoId) {
+                transcriptLogger.error(`Invalid video ID extracted: '${videoId}' from URL: '${url}'`);
+                return null;
             }
         } catch (error) {
             transcriptLogger.error("Error parsing YouTube URL:", error);
@@ -557,12 +561,41 @@ export class YouTubeTranscriptExtractor {
             for (const pattern of patterns) {
                 const match = url.match(pattern);
                 if (match && match[1]) {
-                    return match[1];
+                    const videoId = match[1];
+                    // Validate the extracted video ID
+                    if (this.isValidVideoId(videoId)) {
+                        return videoId;
+                    } else {
+                        transcriptLogger.error(`Invalid video ID extracted: '${videoId}' from URL: '${url}'`);
+                        return null;
+                    }
                 }
             }
         }
         
         return null;
+    }
+
+    /**
+     * Validates if a string is a valid YouTube video ID
+     * @param videoId The video ID to validate
+     * @returns True if valid, false otherwise
+     */
+    static isValidVideoId(videoId: string): boolean {
+        if (!videoId || typeof videoId !== 'string') {
+            return false;
+        }
+        
+        // YouTube video IDs are typically 11 characters long and contain only alphanumeric characters, hyphens, and underscores
+        // They should not contain quotes, spaces, or other special characters
+        const validPattern = /^[a-zA-Z0-9_-]{11}$/;
+        const isValid = validPattern.test(videoId);
+        
+        if (!isValid) {
+            transcriptLogger.debug(`Video ID validation failed: '${videoId}' (length: ${videoId.length}, pattern match: ${validPattern.test(videoId)})`);
+        }
+        
+        return isValid;
     }
 
     /**

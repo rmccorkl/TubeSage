@@ -43,7 +43,8 @@ const context = await esbuild.context({
     treeShaking: true,
     outfile: "main.js",
     loader: {
-        '.css': 'text'
+        '.css': 'text',
+        '.wasm': 'file'
     },
     plugins: [],
 });

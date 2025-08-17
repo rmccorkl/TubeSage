@@ -11,7 +11,8 @@ yarn-error.log*
 .idea/
 .vscode/
 .claude
-CLAUDE.md
+./CLAUDE.md
+./doc/obsidian-plugin-template.md
 *.swp
 *.swo
 .DS_Store

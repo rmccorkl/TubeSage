@@ -9,6 +9,17 @@ import { obsidianFetch } from "../utils/fetch-shim";
 const logger = getLogger('LANGCHAIN');
 
 /**
+ * Helper function to truncate content for debug logging
+ */
+function truncateForDebug(content: string, maxLength: number = 200): string {
+  if (content.length <= maxLength) {
+    return content;
+  }
+  return content.substring(0, maxLength) + '...';
+}
+
+
+/**
  * A unified client for multiple LLM providers using LangChain
  */
 export class LangChainClient {
@@ -31,7 +42,20 @@ export class LangChainClient {
     this.temperature = options.temperature ?? 0.7;
     this.maxTokens = options.maxTokens ?? 1024;
     
-    logger.debug(`Creating LangChain client for ${this.provider} with model ${this.model}`);
+    // Enhanced debugging for Google provider
+    logger.debug(`[CONSTRUCTOR] Creating LangChain client for provider: '${this.provider}' with model: '${this.model}'`);
+    logger.debug(`[CONSTRUCTOR] Full options object:`, JSON.stringify(options, null, 2));
+    logger.debug(`[CONSTRUCTOR] Model type: ${typeof this.model}, Model value: ${this.model}`);
+    logger.debug(`[CONSTRUCTOR] API Key present: ${!!this.apiKey}, API Key length: ${this.apiKey?.length || 0}`);
+    
+    // Special validation for Google provider
+    if (this.provider === 'google') {
+      logger.debug(`[GOOGLE] Model validation - is undefined: ${this.model === undefined}, is null: ${this.model === null}, is empty string: ${this.model === ''}`);
+      if (!this.model || this.model === 'undefined' || this.model === 'null') {
+        logger.error(`[GOOGLE] CRITICAL: Model is invalid for Google provider: '${this.model}'`);
+        throw new Error(`Invalid model for Google provider: '${this.model}'. Expected a valid Gemini model ID like 'gemini-1.5-pro'`);
+      }
+    }
   }
   
   /**
@@ -41,7 +65,6 @@ export class LangChainClient {
     try {
       // Common configuration with our custom fetcher
       const config = getLangChainConfiguration({
-        temperature: this.temperature,
         apiKey: this.apiKey
       });
       
@@ -54,11 +77,20 @@ export class LangChainClient {
       switch (this.provider) {
         case 'openai': {
           logger.debug(`Using OpenAI with model ${this.model}`);
+          
+          // Special handling for GPT-5 temperature restrictions
+          let effectiveTemperature = this.temperature;
+          if (this.model === 'gpt-5') {
+            effectiveTemperature = 1; // GPT-5 only supports temperature=1
+            logger.debug(`GPT-5 detected: forcing temperature to 1 (was ${this.temperature})`);
+          }
+          
           // OpenAI uses 'maxTokens'
           const model = new ChatOpenAI({
             ...config,
             modelName: this.model,
-            maxTokens: this.maxTokens
+            maxTokens: this.maxTokens,
+            temperature: effectiveTemperature
           });
           
           // TODO: Revisit this type casting when LangChain's type definitions are more stable
@@ -73,14 +105,6 @@ export class LangChainClient {
           // Call Anthropic directly with our shim instead of using their SDK
           // This bypasses their browser environment detection completely
           try {
-            // Debug what's actually in these message objects
-            logger.debug("Message format debug:", 
-              messages.map(m => ({
-                type: m.constructor.name,
-                keys: Object.keys(m),
-                stringified: JSON.stringify(m)
-              }))
-            );
             
             // Extract original structured content
             let systemPromptContent = '';
@@ -119,18 +143,11 @@ export class LangChainClient {
               system: systemPromptContent // Anthropic requires system as a top-level parameter
             };
             
-            // Debug logging for Anthropic - full request details
+            // Debug logging for Anthropic - aligned with other providers
             logger.debug(`Anthropic API Request - Model: ${this.model}`);
-            logger.debug(`System prompt (${systemPromptContent.length} chars):\n${systemPromptContent}`);
-            logger.debug(`User messages (${formattedMessages.length}):`);
-            formattedMessages.forEach((msg, i) => {
-              if (msg && msg.content) {
-                logger.debug(`Message ${i+1} (${String(msg.content).length} chars): ${msg.role}\n${msg.content}`);
-              } else {
-                logger.debug(`Message ${i+1}: [Invalid or null message]`);
-              }
-            });
-            logger.debug(`Full payload: ${JSON.stringify(payload, null, 2)}`);
+            logger.debug(`System prompt (${systemPromptContent.length} chars): ${truncateForDebug(systemPromptContent)}`);
+            logger.debug(`User messages (${formattedMessages.length}): ${truncateForDebug(userPromptContent)}`);
+            logger.debug(`Temperature: ${this.temperature}, MaxTokens: ${this.maxTokens}`);
             
             // Make the request directly using our fetch shim
             const response = await obsidianFetch('https://api.anthropic.com/v1/messages', {
@@ -151,15 +168,15 @@ export class LangChainClient {
             
             const responseData = await response.json();
             
-            // Debug logging for response
-            logger.debug(`Anthropic API Response: ${JSON.stringify(responseData, null, 2)}`);
+            // Debug logging for response - truncated
+            logger.debug(`Anthropic API Response: ${responseData.usage ? `Usage: ${JSON.stringify(responseData.usage)}` : 'Success'}`);
             
             if (!responseData.content || !responseData.content[0] || !responseData.content[0].text) {
               throw new Error('Invalid response format from Anthropic API');
             }
             
             const responseText = responseData.content[0].text;
-            logger.debug(`Anthropic response text (${responseText.length} chars):\n${responseText}`);
+            logger.debug(`Anthropic response text (${responseText.length} chars): ${truncateForDebug(responseText)}`);
             
             return responseText;
           } catch (error) {
@@ -169,14 +186,29 @@ export class LangChainClient {
         }
           
         case 'google': {
-          logger.debug(`Using Google Gemini with model ${this.model}`);
-          // Google Gemini - use maxTokens as defined in the type definition
-          const model = new ChatGoogleGenerativeAI({
+          logger.debug(`[GOOGLE] Using Google Gemini with model: '${this.model}'`);
+          logger.debug(`[GOOGLE] Model name type: ${typeof this.model}, value: '${this.model}'`);
+          logger.debug(`[GOOGLE] Temperature: ${this.temperature}, MaxTokens: ${this.maxTokens}`);
+          logger.debug(`[GOOGLE] API Key present: ${!!this.apiKey}, length: ${this.apiKey?.length || 0}`);
+          logger.debug(`[GOOGLE] Config object:`, JSON.stringify(config, null, 2));
+          
+          // Pre-validate model before passing to ChatGoogleGenerativeAI
+          if (!this.model || typeof this.model !== 'string' || this.model.trim() === '') {
+            logger.error(`[GOOGLE] CRITICAL: Invalid model name: '${this.model}' (type: ${typeof this.model})`);
+            throw new Error(`Invalid Google model name: '${this.model}'. Expected a valid Gemini model ID.`);
+          }
+          
+          const modelConfig = {
             ...config,
-            modelName: this.model,
+            model: this.model,                 // Correct parameter name for ChatGoogleGenerativeAI
             temperature: this.temperature,
-            maxTokens: this.maxTokens // Using maxTokens directly
-          });
+            maxTokens: this.maxTokens
+          };
+          
+          logger.debug(`[GOOGLE] About to create ChatGoogleGenerativeAI with config:`, JSON.stringify(modelConfig, null, 2));
+          
+          // Google Gemini - use maxTokens as defined in the type definition
+          const model = new ChatGoogleGenerativeAI(modelConfig);
           
           // Type cast needed for compatibility with LangChain's invoke() method
           const response = await model.invoke(messages);
@@ -203,6 +235,20 @@ export class LangChainClient {
       }
     } catch (error) {
       logger.error(`Error in LangChain ${this.provider} completion:`, error);
+      
+      // Log comprehensive error details
+      logger.error(`Error type: ${typeof error}`);
+      logger.error(`Error constructor: ${error?.constructor?.name}`);
+      logger.error(`Error message: ${error?.message}`);
+      logger.error(`Error stack: ${error?.stack}`);
+      
+      // Log all error properties
+      if (error && typeof error === 'object') {
+        logger.error(`Error keys: ${Object.keys(error)}`);
+        Object.keys(error).forEach(key => {
+          logger.error(`Error.${key}:`, error[key]);
+        });
+      }
       
       if (error.response) {
         logger.error(`Status: ${error.response.status}, Data:`, error.response.data);

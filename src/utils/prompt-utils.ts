@@ -51,10 +51,14 @@ export interface PromptSettings {
  */
 export function getPromptConfig(
     settings: PromptSettings, 
-    summaryMode: SummaryMode = SummaryMode.EXTENSIVE
+    summaryMode: SummaryMode = SummaryMode.EXTENSIVE,
+    effectiveMaxTokens?: number
 ): PromptConfig {
     // Log the selected mode
     llmLogger.debug("Creating prompt config for mode:", summaryMode);
+    
+    // Use provided effective max tokens or fall back to settings value
+    const maxTokens = effectiveMaxTokens ?? settings.maxTokens;
     
     if (summaryMode === SummaryMode.FAST) {
         // Fast summary mode - reduced tokens for quicker processing
@@ -63,7 +67,7 @@ export function getPromptConfig(
         return {
             systemPrompt: settings.systemPrompt,
             userPrompt: settings.userPrompt,
-            maxTokens: Math.floor(settings.maxTokens * tokenReduction),
+            maxTokens: Math.floor(maxTokens * tokenReduction),
             temperature: settings.temperature
         };
     } else {
@@ -71,7 +75,7 @@ export function getPromptConfig(
         return {
             systemPrompt: settings.extensiveSystemPrompt,
             userPrompt: settings.extensiveUserPrompt,
-            maxTokens: settings.maxTokens,
+            maxTokens: maxTokens,
             temperature: settings.temperature
         };
     }
@@ -86,16 +90,38 @@ export function getPromptConfig(
  */
 export function getTimestampLinkConfig(
     settings: PromptSettings, 
-    videoId: string
+    videoId: string,
+    effectiveMaxTokens?: number
 ): PromptConfig {
     // For timestamp linking, we need a lower temperature for more deterministic output
     const timestampTemperature = 0.2;
     
-    // Use specific prompts for timestamp linking
+    // Use specific prompts for timestamp linking with safety checks
+    const systemPrompt = settings.timestampSystemPrompt || 'You are a highly precise assistant that adds TimeIndex markers to section headings in a note. You never include any reference material (like video IDs or transcripts) in your output.';
+    const userPrompt = (settings.timestampUserPrompt || `TASK: Add TimeIndex markers to each section heading in this document.
+
+CRITICAL: You must output TimeIndex markers in format [TimeIndex:SECONDS] - NOT YouTube Watch URLs!
+
+RULES:
+1. NEVER summarize or modify the content unless translation is requested
+2. NEVER remove any content
+3. ALWAYS return the FULL original content PLUS TimeIndex markers at the end of section headings
+4. If processing multiple sections, add TimeIndex markers to ALL headings
+5. ONLY process markdown numbered headings 
+    a. for subheadings (e.g., "## 1. Topic")
+    b. for section headings (e.g., "## 1.1. Sub Topic")
+
+EXACTLY HOW TO DO THIS:
+1. Identify ALL section headings in the document that follow the format: # number. text
+2. Look at the transcript which has timestamps in format: [HH:MM:SS] [TimeIndex:X] where X is the exact seconds value
+3. For each section heading, add the appropriate TimeIndex marker based on the content
+
+Video ID: VIDEO_ID`).replace(/VIDEO_ID/g, videoId);
+    
     return {
-        systemPrompt: settings.timestampSystemPrompt,
-        userPrompt: settings.timestampUserPrompt.replace(/VIDEO_ID/g, videoId),
-        maxTokens: settings.maxTokens,
+        systemPrompt: systemPrompt,
+        userPrompt: userPrompt,
+        maxTokens: effectiveMaxTokens ?? settings.maxTokens,
         temperature: timestampTemperature
     };
 }

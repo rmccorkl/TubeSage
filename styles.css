@@ -3,6 +3,11 @@
     width: 150px;
     height: auto;
     min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .tubesage-transcript-form .error {
@@ -257,7 +262,7 @@ input:checked + .toggle-slider:before {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0;
+    margin: 0 auto;
     height: 40px;
     border: none;
     background: none;
@@ -357,8 +362,8 @@ input:checked + .toggle-slider:before {
     content: attr(data-tooltip);
     position: absolute;
     top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0%;
+    transform: translateX(-10%);
     margin-top: 8px;
     z-index: 1000;
     background-color: var(--background-secondary);
@@ -987,12 +992,18 @@ input:checked + .toggle-slider:before {
         max-width: fit-content !important;
         padding: 10px !important;
         margin: 0 auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
     }
     
     /* Keep the pulse animation normal size */
     .pulse-container {
         width: fit-content;
         height: 40px;
+        margin: 0 auto !important;
     }
     
     .pulse-bar {

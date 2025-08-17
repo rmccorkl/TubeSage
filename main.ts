@@ -22,13 +22,15 @@ import {
     convertTimestampToSeconds,
     convertTimeIndexToWatchUrls
 } from './src/utils/timestamp-utils';
+import { getDynamicMaxTokens } from './src/utils/token-calculator';
+import type { Provider } from './src/utils/model-limits-registry';
+import { getEffectiveLimits, isModelSupported } from './src/utils/model-limits-registry';
 
 // Initialize logger
 const logger = getLogger('PLUGIN');
 const transcriptLogger = getLogger('TRANSCRIPT');
 const llmLogger = getLogger('LLM');
 
-// Helper function to truncate long logs to a reasonable length
 function truncateForLogs(text: string, maxLength: number = 500): string {
     if (!text) return '';
     if (text.length <= maxLength) return text;
@@ -56,6 +58,14 @@ interface YouTubeTranscriptSettings {
     selectedModels: Record<string, string>;
     temperature: number;
     maxTokens: number;
+    
+    // Custom model parameters (for models not in registry)
+    customModelLimits: Record<string, {
+        contextK: number;      // Context window in thousands (e.g., 400 for 400K)
+        maxOutputK: number;    // Max output in thousands (e.g., 128 for 128K)
+        inputMaxK?: number;    // Optional explicit input cap in thousands
+        reservePct?: number;   // Optional reserve percentage (default: 0.10 for cloud, 0.15 for local)
+    }>;
     
     // Prompt settings
     systemPrompt: string;
@@ -116,6 +126,9 @@ const DEFAULT_SETTINGS: YouTubeTranscriptSettings = {
     },
     temperature: 0.7,
     maxTokens: 1000,
+    
+    // Custom model parameters (for models not in registry)
+    customModelLimits: {},
     
     // Short (Fast) Summary prompt
     systemPrompt: `You are a helpful assistant that summarizes YouTube transcripts clearly and concisely using Markdown.
@@ -179,6 +192,8 @@ At the end, have a conclusion section and list any books, people, or resources m
     // Second pass - timestamp linking prompt
     timestampSystemPrompt: 'You are a highly precise assistant that adds TimeIndex markers to section headings in a note. You never include any reference material (like video IDs or transcripts) in your output.',
     timestampUserPrompt: `TASK: Add TimeIndex markers to each section heading in this document.
+
+CRITICAL: You must output TimeIndex markers in format [TimeIndex:SECONDS] - NOT YouTube Watch URLs!
 
 RULES:
 1. NEVER summarize or modify the content unless translation is requested
@@ -269,13 +284,18 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     async onload() {
         await this.loadSettings();
         
-        // Set appropriate max tokens based on provider when plugin first loads
-        if (this.settings.selectedLLM === 'google') {
-            this.settings.maxTokens = 8192;
-        } else {
-            this.settings.maxTokens = 4096;
+        // Set appropriate max tokens based on current provider and model using registry
+        const effectiveMaxTokens = this.getEffectiveMaxTokens();
+        
+        // Only update if the current setting is a legacy hardcoded value
+        if (this.settings.maxTokens === 4096 || this.settings.maxTokens === 8192 || this.settings.maxTokens === 1000) {
+            this.settings.maxTokens = effectiveMaxTokens;
+            await this.saveSettings();
+            
+            if (this.settings.debugLogging) {
+                logger.debug(`[onload] Updated maxTokens from legacy value to ${effectiveMaxTokens} for ${this.settings.selectedLLM}:${this.settings.selectedModels[this.settings.selectedLLM]}`);
+            }
         }
-        await this.saveSettings();
         
         // Set log level based on settings
         if (this.settings.debugLogging) {
@@ -366,27 +386,47 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     }
 
     private initializeSummarizer() {
+        const selectedProvider = this.settings.selectedLLM;
+        const selectedModel = this.getModelForProvider(selectedProvider);
+        
+        logger.debug(`[initializeSummarizer] Selected provider: '${selectedProvider}'`);
+        logger.debug(`[initializeSummarizer] Selected model: '${selectedModel}'`);
+        logger.debug(`[initializeSummarizer] Temperature: ${this.settings.temperature}, MaxTokens: ${this.settings.maxTokens}`);
+        logger.debug(`[initializeSummarizer] API Keys present:`, Object.keys(this.settings.apiKeys).reduce((acc, key) => {
+            acc[key] = !!this.settings.apiKeys[key];
+            return acc;
+        }, {} as Record<string, boolean>));
+        
         this.summarizer = new TranscriptSummarizer({
-            model: this.getModelForProvider(this.settings.selectedLLM),
+            model: selectedModel,
             temperature: this.settings.temperature,
-            maxTokens: this.settings.maxTokens,
+            maxTokens: this.getEffectiveMaxTokens(), // Use dynamic calculation for all models
             systemPrompt: this.settings.systemPrompt,
             userPrompt: this.settings.userPrompt
         }, this.settings.apiKeys);
     }
 
     private getModelForProvider(provider: string): string {
+        logger.debug(`[getModelForProvider] Getting model for provider: '${provider}'`);
+        logger.debug(`[getModelForProvider] selectedModels object:`, JSON.stringify(this.settings.selectedModels, null, 2));
+        
         if (this.settings.selectedModels[provider]) {
-            return this.settings.selectedModels[provider];
+            const selectedModel = this.settings.selectedModels[provider];
+            logger.debug(`[getModelForProvider] Found selected model for ${provider}: '${selectedModel}'`);
+            return selectedModel;
         }
         
         // Fallback to defaults if no selection exists
+        logger.debug(`[getModelForProvider] No selected model found for ${provider}, using fallback`);
         switch (provider) {
             case 'openai':
+                logger.debug(`[getModelForProvider] Using OpenAI fallback: 'gpt-4-turbo'`);
                 return 'gpt-4-turbo';
             case 'anthropic':
+                logger.debug(`[getModelForProvider] Using Anthropic fallback: 'claude-3-sonnet-20240229'`);
                 return 'claude-3-sonnet-20240229';
             case 'google':
+                logger.debug(`[getModelForProvider] Using Google fallback: 'gemini-1.5-pro'`);
                 return 'gemini-1.5-pro';
             case 'ollama':
                 return 'llama3.1';
@@ -396,7 +436,14 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     }
 
     async loadSettings() {
-        this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+        const loadedData = await this.loadData();
+        console.log('[SETTINGS DEBUG] Loaded data from storage:', loadedData);
+        console.log('[SETTINGS DEBUG] DEFAULT_SETTINGS.selectedLLM:', DEFAULT_SETTINGS.selectedLLM);
+        
+        this.settings = Object.assign({}, DEFAULT_SETTINGS, loadedData);
+        
+        console.log('[SETTINGS DEBUG] Final settings.selectedLLM:', this.settings.selectedLLM);
+        console.log('[SETTINGS DEBUG] All settings keys:', Object.keys(this.settings));
         // --- Fix legacy string booleans (mobile settings files might contain "true"/"false" strings) ---
         const coerceBool = (val: unknown, defaultVal: boolean): boolean => {
             if (typeof val === 'boolean') return val;
@@ -443,7 +490,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     const videoId = YouTubeTranscriptExtractor.extractVideoId(videoUrl);
                     
                     if (!videoId) {
-                        throw new Error('Invalid YouTube URL. Could not extract video ID.');
+                        throw new Error(`Invalid YouTube URL: '${videoUrl}'. Please ensure the URL is properly formatted without extra characters like quotes.`);
                     }
                     
                     // Get transcript segments and metadata using direct ScrapeCreators method
@@ -465,7 +512,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     // Continue with other videos, but include error result
                     results.push({
                         transcript: `[TRANSCRIPT EXTRACTION FAILED: ${error.message}]`,
-                        metadata: { title: 'Failed to extract', author: 'Unknown' }
+                        metadata: { title: `Error extracting from URL: ${videoUrl}`, author: 'Unknown' }
                     });
                 }
             }
@@ -637,8 +684,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             // Determine which prompt to use based on settings
             const summaryMode = this.settings.useFastSummary ? SummaryMode.FAST : SummaryMode.EXTENSIVE;
             
-            // Get the prompt configuration
-            const promptConfig = getPromptConfig(this.settings, summaryMode);
+            // Get the prompt configuration with dynamic max tokens
+            const promptConfig = getPromptConfig(this.settings, summaryMode, this.getEffectiveMaxTokens());
             
             // --- Add logging for the summarization step ---
             llmLogger.debug(`[summarizeTranscript] Starting ${summaryMode} summary.`);
@@ -658,16 +705,49 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             
             llmLogger.debug("Using token limit:", promptConfig.maxTokens); // Keep existing token log
             
+            // Store provider value before any potential context corruption
+            const selectedProvider = this.settings.selectedLLM;
+            
+            // Debug the config being passed to TranscriptSummarizer
+            const model = this.getModelForProvider(selectedProvider);
+            llmLogger.debug(`[DEBUG] Model: ${model}`);
+            llmLogger.debug(`[DEBUG] Temperature: ${promptConfig.temperature}`);
+            llmLogger.debug(`[DEBUG] MaxTokens: ${promptConfig.maxTokens}`);
+            llmLogger.debug(`[DEBUG] SystemPrompt length: ${promptConfig.systemPrompt?.length || 'undefined'}`);
+            llmLogger.debug(`[DEBUG] UserPrompt length: ${promptConfig.userPrompt?.length || 'undefined'}`);
+            llmLogger.debug(`[DEBUG] SelectedLLM: ${selectedProvider}`);
+            
+            // Safety check for settings and API keys
+            llmLogger.debug(`[DEBUG] Checking settings - exists: ${!!this.settings}`);
+            if (!this.settings) {
+                throw new Error('Plugin settings are not loaded');
+            }
+            
+            llmLogger.debug(`[DEBUG] Checking apiKeys - exists: ${!!this.settings.apiKeys}`);
+            llmLogger.debug(`[DEBUG] ApiKeys type: ${typeof this.settings.apiKeys}`);
+            llmLogger.debug(`[DEBUG] ApiKeys keys: ${this.settings.apiKeys ? Object.keys(this.settings.apiKeys) : 'none'}`);
+            
+            if (!this.settings.apiKeys) {
+                throw new Error('API keys are not configured in settings');
+            }
+            
             // Create a summarizer with the prompt configuration
+            llmLogger.debug(`[DEBUG] About to create TranscriptSummarizer...`);
             const tempSummarizer = new TranscriptSummarizer({
-                model: this.getModelForProvider(this.settings.selectedLLM),
+                model: model,
                 temperature: promptConfig.temperature,
                 maxTokens: promptConfig.maxTokens,
                 systemPrompt: promptConfig.systemPrompt,
                 userPrompt: promptConfig.userPrompt
             }, this.settings.apiKeys);
+            llmLogger.debug(`[DEBUG] TranscriptSummarizer created successfully`);
             
-            const summary = await tempSummarizer.summarize(cleanedTranscript, this.settings.selectedLLM);
+            llmLogger.debug(`[DEBUG] About to call summarize with provider: '${selectedProvider}'`);
+            llmLogger.debug(`[DEBUG] this object type:`, typeof this, this.constructor.name);
+            llmLogger.debug(`[DEBUG] this.settings exists:`, !!this.settings);
+            llmLogger.debug(`[DEBUG] Full settings.selectedLLM value:`, this.settings?.selectedLLM);
+            llmLogger.debug(`[DEBUG] Settings object keys:`, this.settings ? Object.keys(this.settings) : 'settings is null/undefined');
+            const summary = await tempSummarizer.summarize(cleanedTranscript, selectedProvider);
             
             // Add the creator support message at the beginning of the summary 
             const supportMessage = "Support Content Creators: If you found this content valuable, please consider supporting the YouTube creator by liking 👍 the video and subscribing to their channel. ";
@@ -795,6 +875,19 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                             seconds,
                             text
                         });
+                    } else if (line.trim().length > 0) {
+                        // Handle lines without timestamps - append to the last segment if it exists
+                        if (parsedLines.length > 0) {
+                            // Add this content to the last parsed line
+                            parsedLines[parsedLines.length - 1].text += ' ' + line.trim();
+                        } else {
+                            // If no timestamps yet, create a placeholder entry for time 0
+                            parsedLines.push({
+                                timestamp: '00:00:00',
+                                seconds: 0,
+                                text: line.trim()
+                            });
+                        }
                     }
                 });
                 
@@ -1306,7 +1399,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             const videoId = YouTubeTranscriptExtractor.extractVideoId(videoUrl);
             if (!videoId) {
                 logger.error(`Could not extract video ID from URL: ${videoUrl}`);
-                throw new Error('Could not extract video ID from URL');
+                throw new Error(`Invalid YouTube URL: '${videoUrl}'. Please ensure the URL is properly formatted without extra characters like quotes.`);
             }
 
             // Read the note content
@@ -1419,7 +1512,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 extractDocumentComponents(originalContent);
             
             // Get the timestamp link configuration
-            const timestampConfig = getTimestampLinkConfig(this.settings, videoId);
+            const timestampConfig = getTimestampLinkConfig(this.settings, videoId, this.getEffectiveMaxTokens());
             
             // Get the safely calculated max tokens from our updated method
             const maxTokens = this.getMaxTokensForTimestampPass();
@@ -1440,9 +1533,18 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 }
             }
             
+            // Debug the timestamp config being passed
+            const timestampModel = this.getModelForProvider(this.settings.selectedLLM);
+            llmLogger.debug(`[TIMESTAMP DEBUG] Model: ${timestampModel}`);
+            llmLogger.debug(`[TIMESTAMP DEBUG] Temperature: ${timestampConfig.temperature}`);
+            llmLogger.debug(`[TIMESTAMP DEBUG] MaxTokens: ${maxTokens}`);
+            llmLogger.debug(`[TIMESTAMP DEBUG] SystemPrompt length: ${timestampConfig.systemPrompt?.length || 'undefined'}`);
+            llmLogger.debug(`[TIMESTAMP DEBUG] UserPrompt length: ${timestampConfig.userPrompt?.length || 'undefined'}`);
+            llmLogger.debug(`[TIMESTAMP DEBUG] SelectedLLM: ${this.settings.selectedLLM}`);
+            
             // Create specialized summarizer for timestamp linking
             const timestampLinkSummarizer = new TranscriptSummarizer({
-                model: this.getModelForProvider(this.settings.selectedLLM),
+                model: timestampModel,
                 temperature: timestampConfig.temperature,
                 maxTokens: maxTokens,
                 systemPrompt: timestampConfig.systemPrompt,
@@ -1539,6 +1641,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             
             let enhancedContent;
             try {
+                llmLogger.debug(`[TIMESTAMP DEBUG] About to call summarize with provider: '${this.settings.selectedLLM}'`);
+                llmLogger.debug(`[TIMESTAMP DEBUG] Full settings.selectedLLM value:`, this.settings.selectedLLM);
                 enhancedContent = await timestampLinkSummarizer.summarize(
                     restructuredPrompt, 
                     this.settings.selectedLLM
@@ -1633,8 +1737,10 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             // Reconstruct the document with original frontmatter and enhanced content
             let enhancedNote = reconstructDocument(frontmatter, enhancedContent);
             
-            // Convert TimeIndex markers to Watch URLs deterministically (at the end of Pass 2)
-            enhancedNote = convertTimeIndexToWatchUrls(enhancedNote, videoId);
+            // Convert TimeIndex markers to Watch URLs ONLY in content, preserving frontmatter transcript
+            const { frontmatter: extractedFrontmatter, contentWithoutFrontmatter: extractedContent } = extractDocumentComponents(enhancedNote);
+            const convertedContent = convertTimeIndexToWatchUrls(extractedContent, videoId);
+            enhancedNote = reconstructDocument(extractedFrontmatter, convertedContent);
             
             // Validate the final enhanced note with Watch URLs
             if (validateEnhancedContent(enhancedNote, contentWithoutFrontmatter, headings, videoId)) {
@@ -1843,7 +1949,7 @@ ${contentToTranslate}
                 this.showNotice(`Processing section ${i+1} of ${chunks.length}...`, 2000);
                 
                 // Get timestamp link configuration
-                const timestampConfig = getTimestampLinkConfig(this.settings, videoId);
+                const timestampConfig = getTimestampLinkConfig(this.settings, videoId, this.getEffectiveMaxTokens());
                 
                 // Construct reference section with clear instructions not to include in output
                 // Reduce transcript size on mobile to prevent token overflow
@@ -1976,8 +2082,10 @@ ${contentToTranslate}
             const combinedContent = processedChunks.join("");
             let combinedNote = reconstructDocument(frontmatter, combinedContent);
             
-            // Convert TimeIndex markers to Watch URLs deterministically (at the end of Pass 2)
-            combinedNote = convertTimeIndexToWatchUrls(combinedNote, videoId);
+            // Convert TimeIndex markers to Watch URLs ONLY in content, preserving frontmatter transcript
+            const { frontmatter: extractedFrontmatter, contentWithoutFrontmatter: extractedContent } = extractDocumentComponents(combinedNote);
+            const convertedContent = convertTimeIndexToWatchUrls(extractedContent, videoId);
+            combinedNote = reconstructDocument(extractedFrontmatter, convertedContent);
             
             // Verify we have some timestamp links (count from the converted note)
             const linkCount = countTimestampLinks(combinedNote);
@@ -2033,41 +2141,57 @@ ${contentToTranslate}
         // Get the user's configured maxTokens setting
         const configuredMaxTokens = this.settings.maxTokens;
         
-        // Simple hard limits for each provider to prevent errors
-        const PROVIDER_MAX_LIMITS: Record<string, number> = {
-            'openai': 4096,     // OpenAI's max completion tokens limit
-            'anthropic': 4096,  // Anthropic's max completion tokens limit
-            'google': 8192,     // Google's max completion tokens limit
-            'ollama': 4096,     // Default Ollama limit
-            'default': 4096     // Default fallback
-        };
+        // Get the selected LLM provider and model
+        const selectedProvider = this.settings.selectedLLM as Provider;
+        const selectedModel = this.settings.selectedModels[selectedProvider] || 'gpt-4o'; // fallback to gpt-4o if not set
         
-        // Get the selected LLM provider
-        const selectedProvider = this.settings.selectedLLM;
-        
-        // Get the hard limit for the selected provider
-        const providerHardLimit = PROVIDER_MAX_LIMITS[selectedProvider] || PROVIDER_MAX_LIMITS.default;
-        
-        // Apply 85% multiplier to configured maxTokens
-        let tokensToUse = Math.floor(configuredMaxTokens * 0.85);
-        
-        // Never exceed provider's hard limit (minus a small buffer for safety)
-        tokensToUse = Math.min(tokensToUse, providerHardLimit - 100);
-        
-        // Additional safety check - if on mobile, be more conservative
-        if (Platform.isMobile) {
-            tokensToUse = Math.min(tokensToUse, 2000); // Cap at 2000 on mobile
+        try {
+            // Use effective max tokens calculation (same as main summarization, respects custom model params)
+            const effectiveMaxTokens = this.getEffectiveMaxTokens();
+            
+            // Apply 85% multiplier for timestamp linking (conservative approach)
+            let tokensToUse = Math.floor(effectiveMaxTokens * 0.85);
+            
+            // Additional mobile safety cap (maintain existing mobile behavior)
+            if (Platform.isMobile) {
+                tokensToUse = Math.min(tokensToUse, 2000);
+                
+                if (this.settings.debugLogging) {
+                    logger.debug(`[getMaxTokensForTimestampPass] Running on mobile, capping tokens at 2000`);
+                }
+            }
             
             if (this.settings.debugLogging) {
-                logger.debug(`[getMaxTokensForTimestampPass] Running on mobile, capping tokens at 2000`);
+                logger.debug(`[getMaxTokensForTimestampPass] Using ${tokensToUse} tokens (85% of effective limit ${effectiveMaxTokens}, configured: ${configuredMaxTokens}, model: ${selectedProvider}:${selectedModel})`);
             }
+            
+            return tokensToUse;
+            
+        } catch (error) {
+            // Fallback to legacy calculation if dynamic calculation fails
+            if (this.settings.debugLogging) {
+                logger.debug(`[getMaxTokensForTimestampPass] Dynamic calculation failed, using legacy fallback: ${error}`);
+            }
+            
+            // Legacy hard limits for fallback
+            const LEGACY_LIMITS: Record<string, number> = {
+                'openai': 4096,
+                'anthropic': 4096,
+                'google': 8192,
+                'ollama': 4096,
+                'default': 4096
+            };
+            
+            const providerHardLimit = LEGACY_LIMITS[selectedProvider] || LEGACY_LIMITS.default;
+            let tokensToUse = Math.floor(configuredMaxTokens * 0.85);
+            tokensToUse = Math.min(tokensToUse, providerHardLimit - 100);
+            
+            if (Platform.isMobile) {
+                tokensToUse = Math.min(tokensToUse, 2000);
+            }
+            
+            return tokensToUse;
         }
-        
-        if (this.settings.debugLogging) {
-            logger.debug(`[getMaxTokensForTimestampPass] Using ${tokensToUse} tokens (85% of configured ${configuredMaxTokens}, provider limit: ${providerHardLimit})`);
-        }
-        
-        return tokensToUse;
     }
 
     private sanitizePathComponent(text: string): string {
@@ -2075,6 +2199,61 @@ ${contentToTranslate}
         return sanitizePathComponent(text);
     }
 
+    /**
+     * Get the effective maxTokens for the current provider and model
+     * Uses registry values for known models, custom model limits for user-defined models, 
+     * or falls back to current setting
+     */
+    public getEffectiveMaxTokens(): number {
+        const provider = this.settings.selectedLLM as Provider;
+        const model = this.settings.selectedModels[provider];
+        
+        try {
+            // Check if this is a known model in our registry
+            if (isModelSupported(provider, model)) {
+                const limits = getEffectiveLimits(provider, model);
+                return limits.maxOutputEff;
+            } else {
+                // Check if user has defined custom limits for this model
+                const customKey = `${provider}:${model}`;
+                const customLimits = this.settings.customModelLimits[customKey];
+                
+                if (customLimits) {
+                    // Calculate effective limits for custom model
+                    const defaultReserve = provider === 'ollama' ? 0.15 : 0.10;
+                    const reserve = customLimits.reservePct ?? defaultReserve;
+                    const maxOutput = customLimits.maxOutputK * 1000; // Convert K to actual tokens
+                    return Math.floor(maxOutput * (1 - reserve));
+                } else {
+                    // No custom limits defined - use current user setting
+                    return this.settings.maxTokens;
+                }
+            }
+        } catch (error) {
+            // Fallback to current setting if anything goes wrong
+            return this.settings.maxTokens;
+        }
+    }
+
+    /**
+     * Register a custom model with the dynamic registry
+     */
+    public registerCustomModel(provider: Provider, modelId: string, limits: {
+        contextK: number;
+        maxOutputK: number;
+        inputMaxK?: number;
+        reservePct?: number;
+    }): void {
+        // Convert K values to actual tokens and register with the dynamic registry
+        const { upsertModel } = require('./src/utils/model-limits-registry');
+        
+        upsertModel(provider, modelId, {
+            context: limits.contextK * 1000,
+            maxOutput: limits.maxOutputK * 1000,
+            inputMax: limits.inputMaxK ? limits.inputMaxK * 1000 : undefined,
+            reserveOutputPct: limits.reservePct ?? (provider === 'ollama' ? 0.15 : 0.10)
+        });
+    }
 
     async fetchOpenAIModels(apiKey: string): Promise<string[]> {
         if (!apiKey || apiKey.trim() === "") {
@@ -2946,7 +3125,7 @@ class YouTubeTranscriptModal extends Modal {
             // Extract video ID
             const videoId = YouTubeTranscriptExtractor.extractVideoId(url);
             if (!videoId) {
-                throw new Error('Failed to extract video ID from URL');
+                throw new Error(`Invalid YouTube URL: '${url}'. Please ensure the URL is properly formatted without extra characters like quotes.`);
             }
             
             // Extract transcript and metadata in one request
@@ -3600,7 +3779,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Add info icon directly to the heading name element (adjacent to text)
         this.createInfoIcon(
             (llmHeading.settingEl as HTMLElement).querySelector('.setting-item-name') as HTMLElement,
-            'LLM Settings let you choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; Max Tokens caps output length. The author\'s suggestion for most users: Google provider with the gemini-2.0-flash model—fast, inexpensive, and high-quality.'
+            'LLM Settings let you choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; Max Tokens caps output length. The author\'s suggestion for most users: Google provider with the gemini-2.5-flash model—fast, inexpensive, and high-quality.'
         );
         
         new Setting(settingsContainer)
@@ -3623,17 +3802,17 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 
                 // Add change handler
                 dropdown.onChange(async (value: string) => {
-                    // Set appropriate max token value based on provider
-                    if (value === 'google') {
-                        this.plugin.settings.maxTokens = 8192;
-                        new Notice('Max tokens set to 8192 for Google provider');
-                    } else {
-                        this.plugin.settings.maxTokens = 4096;
-                        new Notice('Max tokens set to 4096');
-                    }
+                    // Update provider first
+                    this.plugin.settings.selectedLLM = value;
+                    
+                    // Set appropriate max token value using registry for known models
+                    const effectiveMaxTokens = this.plugin.getEffectiveMaxTokens();
+                    this.plugin.settings.maxTokens = effectiveMaxTokens;
+                    
+                    // Show notice with effective token limit
+                    new Notice(`Max tokens set to ${effectiveMaxTokens} for ${value} provider`);
                     
                     // Update settings
-                    this.plugin.settings.selectedLLM = value;
                     await this.plugin.saveSettings();
                     
                     // Refresh the display to update the max tokens field
@@ -3642,6 +3821,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 
                 return dropdown;
             });
+        
+        // Store reference to the settings tab instance
+        const settingTab = this;
         
         // Generic function for creating LLM provider settings
         const createProviderSetting = (
@@ -3701,7 +3883,41 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         if (value !== 'custom') {
                             this.plugin.settings.selectedModels[provider] = value;
                             customField.setValue(''); // Clear custom if a preset is chosen
+                            
+                            // Update maxTokens for the new model
+                            const effectiveMaxTokens = this.plugin.getEffectiveMaxTokens();
+                            this.plugin.settings.maxTokens = effectiveMaxTokens;
+                            
                             await this.plugin.saveSettings();
+                            
+                            // Show notice about the token limit change
+                            new Notice(`Model changed to ${value}. Max tokens updated to ${effectiveMaxTokens}`);
+                            
+                            // Refresh display to show updated maxTokens
+                            this.display();
+                        } else {
+                            // Custom model selected - initialize custom model limits if they don't exist
+                            const currentModel = this.plugin.settings.selectedModels[provider];
+                            if (currentModel && currentModel !== '') {
+                                const customKey = `${provider}:${currentModel}`;
+                                
+                                // Initialize custom limits if they don't exist
+                                if (!this.plugin.settings.customModelLimits[customKey]) {
+                                    this.plugin.settings.customModelLimits[customKey] = {
+                                        contextK: 128,
+                                        maxOutputK: 16,
+                                        inputMaxK: undefined,
+                                        reservePct: 0.1
+                                    };
+                                    
+                                    // Update maxTokens setting based on new custom limits
+                                    this.plugin.settings.maxTokens = this.plugin.getEffectiveMaxTokens();
+                                    await this.plugin.saveSettings();
+                                    
+                                    // Refresh display to show custom parameters
+                                    this.display();
+                                }
+                            }
                         }
                     });
                 return dropdown;
@@ -3746,12 +3962,40 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                                     modelDropdown.setValue(defaultModelValue);
                                     this.plugin.settings.selectedModels[provider] = defaultModelValue;
                                     await this.plugin.saveSettings();
+                                    
+                                    // Refresh display to show updated settings and clear stale state
+                                    this.display();
                                 } else if (fetchedModels.length > 0) {
                                     modelDropdown.setValue(fetchedModels[0]);
                                     this.plugin.settings.selectedModels[provider] = fetchedModels[0];
                                     await this.plugin.saveSettings();
+                                    
+                                    // Refresh display to show updated settings and clear stale state
+                                    this.display();
                                 } else {
                                     modelDropdown.setValue('custom');
+                                    
+                                    // Initialize custom model limits if they don't exist and we have a custom model set
+                                    const currentModel = this.plugin.settings.selectedModels[provider];
+                                    if (currentModel && currentModel !== '') {
+                                        const customKey = `${provider}:${currentModel}`;
+                                        
+                                        if (!this.plugin.settings.customModelLimits[customKey]) {
+                                            this.plugin.settings.customModelLimits[customKey] = {
+                                                contextK: 128,
+                                                maxOutputK: 16,
+                                                inputMaxK: undefined,
+                                                reservePct: 0.1
+                                            };
+                                            
+                                            // Update maxTokens setting based on new custom limits
+                                            this.plugin.settings.maxTokens = this.plugin.getEffectiveMaxTokens();
+                                            await this.plugin.saveSettings();
+                                        }
+                                    }
+                                    
+                                    // Refresh display to show custom model settings
+                                    this.display();
                                 }
                                 this.plugin.showNotice(`${displayName} model list refreshed.`, 3000);
                             } else {
@@ -3783,17 +4027,41 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                             this.plugin.settings.selectedModels[provider] = value;
                             // Set dropdown to custom
                             modelDropdown.setValue('custom');
+                            
+                            // Initialize custom model limits if they don't exist
+                            const customKey = `${provider}:${value}`;
+                            if (!this.plugin.settings.customModelLimits[customKey]) {
+                                this.plugin.settings.customModelLimits[customKey] = {
+                                    contextK: 128,
+                                    maxOutputK: 16,
+                                    inputMaxK: undefined,
+                                    reservePct: 0.1
+                                };
+                                
+                                // Update maxTokens setting based on new custom limits
+                                this.plugin.settings.maxTokens = this.plugin.getEffectiveMaxTokens();
+                            }
+                            
                             await this.plugin.saveSettings();
+                            
+                            // Refresh display to show updated settings and clear stale state
+                            this.display();
                         } else if (modelDropdown.getValue() === 'custom') {
                             // If custom field is cleared and dropdown is on custom, reset to default
                             modelDropdown.setValue(defaultModelValue);
                             this.plugin.settings.selectedModels[provider] = defaultModelValue;
                             await this.plugin.saveSettings();
+                            
+                            // Refresh display to show updated settings and clear stale state
+                            this.display();
                         }
                     });
                 
                 return text;
             });
+            
+            // Add custom model parameters section (initially hidden)
+            settingTab.addCustomModelParametersSection(settingsContainer, provider, customField, modelDropdown);
             
             return setting;
         };
@@ -3804,6 +4072,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             'OpenAI',                      // display name
             'sk-...',                      // API key placeholder
             [                              // model options
+                'gpt-5',                   // ✅ NEW: 400K context, 128K output
                 'gpt-4.5',
                 'gpt-4o',
                 'gpt-4o-mini',
@@ -3824,9 +4093,14 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             'Anthropic',
             'sk-ant-...',
             [
+                'claude-opus-4-0',              // ✅ NEW: 400K context, 32K output
+                'claude-opus-4-1',              // ✅ NEW: 400K context, 32K output
+                'claude-sonnet-4-0',            // ✅ NEW: 400K context, 16K output
                 'claude-3-7-sonnet-20250219',
                 'claude-3-5-sonnet-20241022',
+                'claude-3-5-haiku-20241022',   // ✅ Added from registry
                 'claude-3-opus-20240229',
+                'claude-3-sonnet-20240229',    // ✅ Added from registry
                 'claude-3-haiku-20240307'
             ],
             'claude-3-sonnet-20240229'
@@ -3838,7 +4112,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             'Google',
             'AIza...',
             [
+                'gemini-2.5-flash',            // ✅ NEW: 2M context, 16K output
                 'gemini-2.5-pro-exp-03-25',
+                'gemini-2.0-flash-exp',        // ✅ Added from registry
                 'gemini-2.0-pro-exp-02-05',
                 'gemini-2.0-flash',
                 'gemini-2.0-flash-lite',
@@ -3888,24 +4164,32 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                     await this.plugin.saveSettings();
                 }));
         
-        new Setting(settingsContainer)
-            .setName('Max tokens')
-            .setDesc('Maximum length of summary output')
-            .addText(text => text
-                .setPlaceholder('1000')
-                .setValue(String(this.plugin.settings.maxTokens))
-                .onChange(async (value: string) => {
-                    const numValue = parseInt(value);
-                    if (!isNaN(numValue)) {
-                        this.plugin.settings.maxTokens = numValue;
-                        await this.plugin.saveSettings();
-                    }
-                }))
-            .addExtraButton(button => {
-                button
-                    .setIcon('alert-triangle')
-                    .setTooltip('Max tokens should NOT be confused with the size of the context window. This setting reflects the maximum output returned by the model and is quite sensitive - exceeding this limit will cause the LLM to fail. 4096 is a standard limit (as of 2025), though this may increase in the future. If you use custom models, always ensure this parameter is aligned with your model\'s capabilities.');
-            });
+        // Only show Max Tokens setting for custom models - known models use dynamic calculation
+        const provider = this.plugin.settings.selectedLLM as Provider;
+        const model = this.plugin.settings.selectedModels[provider];
+        const isCustomModel = !isModelSupported(provider, model);
+        
+        if (isCustomModel) {
+            new Setting(settingsContainer)
+                .setName('Max tokens')
+                .setDesc('Maximum length of summary output for custom model')
+                .addText(text => text
+                    .setPlaceholder('1000')
+                    .setValue(String(this.plugin.settings.maxTokens))
+                    .onChange(async (value: string) => {
+                        const numValue = parseInt(value);
+                        if (!isNaN(numValue)) {
+                            this.plugin.settings.maxTokens = numValue;
+                            await this.plugin.saveSettings();
+                        }
+                    }))
+                .addExtraButton(button => {
+                    button
+                        .setIcon('alert-triangle')
+                        .setTooltip('Max tokens should NOT be confused with the size of the context window. This setting reflects the maximum output returned by the model and is quite sensitive - exceeding this limit will cause the LLM to fail. For custom models, ensure this parameter is aligned with your model\'s capabilities.');
+                });
+        }
+        // Note: Known models automatically calculate optimal max tokens using getEffectiveMaxTokens()
         
         // Note format section
         const noteFormatHeading = new Setting(settingsContainer)
@@ -4185,6 +4469,159 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         infoIcon.setAttr('title', tooltipText);
         
         return infoIcon;
+    }
+
+    /**
+     * Add custom model parameters section that appears when custom model is selected
+     */
+    private addCustomModelParametersSection(container: HTMLElement, provider: string, customField: any, modelDropdown: any): void {
+        // Create container for custom model parameters
+        const customParamsContainer = container.createEl('div', {
+            cls: 'tubesage-custom-model-params',
+            attr: { style: 'display: none; margin-top: 10px; padding: 10px; border: 1px solid var(--background-modifier-border); border-radius: 4px;' }
+        });
+        
+        // Add header
+        customParamsContainer.createEl('h5', { 
+            text: `Custom Model Parameters (${provider.toUpperCase()})`,
+            cls: 'tubesage-custom-params-header'
+        });
+        
+        // Get current custom limits for this provider:model combination
+        const getCurrentCustomLimits = () => {
+            const model = this.plugin.settings.selectedModels[provider];
+            const customKey = `${provider}:${model}`;
+            return this.plugin.settings.customModelLimits[customKey] || {
+                contextK: 128,
+                maxOutputK: 16,
+                inputMaxK: undefined,
+                reservePct: provider === 'ollama' ? 0.15 : 0.10
+            };
+        };
+        
+        // Context Window field
+        new Setting(customParamsContainer)
+            .setName('Context Window (K tokens)')
+            .setDesc('Total context window in thousands of tokens (e.g., 400 for 400K tokens)')
+            .addText(text => {
+                text.setValue(getCurrentCustomLimits().contextK.toString())
+                    .onChange(async (value: string) => {
+                        const numValue = parseInt(value) || 128;
+                        const model = this.plugin.settings.selectedModels[provider];
+                        const customKey = `${provider}:${model}`;
+                        
+                        if (!this.plugin.settings.customModelLimits[customKey]) {
+                            this.plugin.settings.customModelLimits[customKey] = getCurrentCustomLimits();
+                        }
+                        
+                        this.plugin.settings.customModelLimits[customKey].contextK = numValue;
+                        await this.plugin.saveSettings();
+                        
+                        // Update maxTokens setting based on new context window
+                        this.plugin.settings.maxTokens = this.plugin.getEffectiveMaxTokens();
+                        await this.plugin.saveSettings();
+                        
+                        // Refresh display to show updated values
+                        this.display();
+                    });
+            });
+        
+        // Max Output field
+        new Setting(customParamsContainer)
+            .setName('Max Output (K tokens)')
+            .setDesc('Maximum output tokens in thousands (e.g., 128 for 128K tokens)')
+            .addText(text => {
+                text.setValue(getCurrentCustomLimits().maxOutputK.toString())
+                    .onChange(async (value: string) => {
+                        const numValue = parseInt(value) || 16;
+                        const model = this.plugin.settings.selectedModels[provider];
+                        const customKey = `${provider}:${model}`;
+                        
+                        if (!this.plugin.settings.customModelLimits[customKey]) {
+                            this.plugin.settings.customModelLimits[customKey] = getCurrentCustomLimits();
+                        }
+                        
+                        this.plugin.settings.customModelLimits[customKey].maxOutputK = numValue;
+                        await this.plugin.saveSettings();
+                        
+                        // Update maxTokens setting
+                        this.plugin.settings.maxTokens = this.plugin.getEffectiveMaxTokens();
+                        await this.plugin.saveSettings();
+                        
+                        // Refresh display to show updated values
+                        this.display();
+                    });
+            });
+        
+        // Input Max field (optional)
+        new Setting(customParamsContainer)
+            .setName('Input Max (K tokens) - Optional')
+            .setDesc('Explicit input cap if vendor publishes one (leave empty to auto-calculate)')
+            .addText(text => {
+                const currentLimits = getCurrentCustomLimits();
+                text.setValue(currentLimits.inputMaxK ? currentLimits.inputMaxK.toString() : '')
+                    .onChange(async (value: string) => {
+                        const numValue = value.trim() ? parseInt(value) || undefined : undefined;
+                        const model = this.plugin.settings.selectedModels[provider];
+                        const customKey = `${provider}:${model}`;
+                        
+                        if (!this.plugin.settings.customModelLimits[customKey]) {
+                            this.plugin.settings.customModelLimits[customKey] = getCurrentCustomLimits();
+                        }
+                        
+                        this.plugin.settings.customModelLimits[customKey].inputMaxK = numValue;
+                        await this.plugin.saveSettings();
+                        
+                        // Update maxTokens setting based on new input max
+                        this.plugin.settings.maxTokens = this.plugin.getEffectiveMaxTokens();
+                        await this.plugin.saveSettings();
+                        
+                        // Refresh display to show updated values
+                        this.display();
+                    });
+            });
+        
+        // Reserve Percentage field
+        new Setting(customParamsContainer)
+            .setName('Reserve Percentage')
+            .setDesc(`Safety reserve for output tokens (0.10 = 10%, default: ${provider === 'ollama' ? '15%' : '10%'})`)
+            .addText(text => {
+                text.setValue(getCurrentCustomLimits().reservePct?.toString() || (provider === 'ollama' ? '0.15' : '0.10'))
+                    .onChange(async (value: string) => {
+                        const numValue = parseFloat(value) || (provider === 'ollama' ? 0.15 : 0.10);
+                        const model = this.plugin.settings.selectedModels[provider];
+                        const customKey = `${provider}:${model}`;
+                        
+                        if (!this.plugin.settings.customModelLimits[customKey]) {
+                            this.plugin.settings.customModelLimits[customKey] = getCurrentCustomLimits();
+                        }
+                        
+                        this.plugin.settings.customModelLimits[customKey].reservePct = Math.max(0, Math.min(1, numValue));
+                        await this.plugin.saveSettings();
+                        
+                        // Update maxTokens setting
+                        this.plugin.settings.maxTokens = this.plugin.getEffectiveMaxTokens();
+                        await this.plugin.saveSettings();
+                        
+                        // Refresh display to show updated values
+                        this.display();
+                    });
+            });
+        
+        // Function to show/hide custom parameters based on selection
+        const updateCustomParamsVisibility = () => {
+            const isCustomSelected = modelDropdown.getValue() === 'custom' && customField.getValue().trim() !== '';
+            customParamsContainer.style.display = isCustomSelected ? 'block' : 'none';
+        };
+        
+        // Set up periodic visibility check
+        const visibilityInterval = setInterval(updateCustomParamsVisibility, 500);
+        
+        // Clean up interval when settings are closed (basic cleanup)
+        setTimeout(() => clearInterval(visibilityInterval), 60000); // Clear after 1 minute
+        
+        // Initial visibility check
+        updateCustomParamsVisibility();
     }
 }
 
