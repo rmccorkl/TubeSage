@@ -983,8 +983,36 @@ input:checked + .toggle-slider:before {
     overflow-y: auto;
 }
 
+/* Custom model parameters container */
+.tubesage-custom-model-params {
+    margin-top: 10px;
+    padding: 15px;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 6px;
+    background-color: var(--background-secondary);
+}
+
+.tubesage-custom-params-header {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-accent);
+    border-bottom: 1px solid var(--background-modifier-border);
+    padding-bottom: 8px;
+}
+
 /* Mobile optimizations */
 @media (max-width: 768px) {
+    /* Mobile-specific styles for custom model parameters */
+    .tubesage-custom-model-params {
+        padding: 12px;
+        margin-top: 8px;
+    }
+    
+    .tubesage-custom-params-header {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
     /* Fix the modal container size on mobile - this is the real issue */
     .tubesage-processing-modal {
         width: fit-content !important;

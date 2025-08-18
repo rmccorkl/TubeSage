@@ -22,7 +22,6 @@ import {
     convertTimestampToSeconds,
     convertTimeIndexToWatchUrls
 } from './src/utils/timestamp-utils';
-import { getDynamicMaxTokens } from './src/utils/token-calculator';
 import type { Provider } from './src/utils/model-limits-registry';
 import { getEffectiveLimits, isModelSupported } from './src/utils/model-limits-registry';
 
@@ -2152,17 +2151,8 @@ ${contentToTranslate}
             // Apply 85% multiplier for timestamp linking (conservative approach)
             let tokensToUse = Math.floor(effectiveMaxTokens * 0.85);
             
-            // Additional mobile safety cap (maintain existing mobile behavior)
-            if (Platform.isMobile) {
-                tokensToUse = Math.min(tokensToUse, 2000);
-                
-                if (this.settings.debugLogging) {
-                    logger.debug(`[getMaxTokensForTimestampPass] Running on mobile, capping tokens at 2000`);
-                }
-            }
-            
             if (this.settings.debugLogging) {
-                logger.debug(`[getMaxTokensForTimestampPass] Using ${tokensToUse} tokens (85% of effective limit ${effectiveMaxTokens}, configured: ${configuredMaxTokens}, model: ${selectedProvider}:${selectedModel})`);
+                logger.debug(`[getMaxTokensForTimestampPass] Using ${tokensToUse} tokens (85% of effective limit ${effectiveMaxTokens}, configured: ${configuredMaxTokens}, model: ${selectedProvider}:${selectedModel}, platform: ${Platform.isMobile ? 'mobile' : 'desktop'})`);
             }
             
             return tokensToUse;
@@ -2185,10 +2175,6 @@ ${contentToTranslate}
             const providerHardLimit = LEGACY_LIMITS[selectedProvider] || LEGACY_LIMITS.default;
             let tokensToUse = Math.floor(configuredMaxTokens * 0.85);
             tokensToUse = Math.min(tokensToUse, providerHardLimit - 100);
-            
-            if (Platform.isMobile) {
-                tokensToUse = Math.min(tokensToUse, 2000);
-            }
             
             return tokensToUse;
         }
@@ -3892,9 +3878,6 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                             
                             // Show notice about the token limit change
                             new Notice(`Model changed to ${value}. Max tokens updated to ${effectiveMaxTokens}`);
-                            
-                            // Refresh display to show updated maxTokens
-                            this.display();
                         } else {
                             // Custom model selected - initialize custom model limits if they don't exist
                             const currentModel = this.plugin.settings.selectedModels[provider];
@@ -3962,16 +3945,10 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                                     modelDropdown.setValue(defaultModelValue);
                                     this.plugin.settings.selectedModels[provider] = defaultModelValue;
                                     await this.plugin.saveSettings();
-                                    
-                                    // Refresh display to show updated settings and clear stale state
-                                    this.display();
                                 } else if (fetchedModels.length > 0) {
                                     modelDropdown.setValue(fetchedModels[0]);
                                     this.plugin.settings.selectedModels[provider] = fetchedModels[0];
                                     await this.plugin.saveSettings();
-                                    
-                                    // Refresh display to show updated settings and clear stale state
-                                    this.display();
                                 } else {
                                     modelDropdown.setValue('custom');
                                     
@@ -4025,8 +4002,10 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         if (value && value.trim() !== '') {
                             // Update model with custom value
                             this.plugin.settings.selectedModels[provider] = value;
-                            // Set dropdown to custom
-                            modelDropdown.setValue('custom');
+                            // Set dropdown to custom (prevent double-triggering by checking current value)
+                            if (modelDropdown.getValue() !== 'custom') {
+                                modelDropdown.setValue('custom');
+                            }
                             
                             // Initialize custom model limits if they don't exist
                             const customKey = `${provider}:${value}`;
@@ -4043,17 +4022,11 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                             }
                             
                             await this.plugin.saveSettings();
-                            
-                            // Refresh display to show updated settings and clear stale state
-                            this.display();
                         } else if (modelDropdown.getValue() === 'custom') {
                             // If custom field is cleared and dropdown is on custom, reset to default
                             modelDropdown.setValue(defaultModelValue);
                             this.plugin.settings.selectedModels[provider] = defaultModelValue;
                             await this.plugin.saveSettings();
-                            
-                            // Refresh display to show updated settings and clear stale state
-                            this.display();
                         }
                     });
                 
@@ -4478,7 +4451,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Create container for custom model parameters
         const customParamsContainer = container.createEl('div', {
             cls: 'tubesage-custom-model-params',
-            attr: { style: 'display: none; margin-top: 10px; padding: 10px; border: 1px solid var(--background-modifier-border); border-radius: 4px;' }
+            attr: { style: 'display: none;' }
         });
         
         // Add header
@@ -4520,9 +4493,6 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         // Update maxTokens setting based on new context window
                         this.plugin.settings.maxTokens = this.plugin.getEffectiveMaxTokens();
                         await this.plugin.saveSettings();
-                        
-                        // Refresh display to show updated values
-                        this.display();
                     });
             });
         
@@ -4548,8 +4518,6 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         this.plugin.settings.maxTokens = this.plugin.getEffectiveMaxTokens();
                         await this.plugin.saveSettings();
                         
-                        // Refresh display to show updated values
-                        this.display();
                     });
             });
         
@@ -4576,8 +4544,6 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         this.plugin.settings.maxTokens = this.plugin.getEffectiveMaxTokens();
                         await this.plugin.saveSettings();
                         
-                        // Refresh display to show updated values
-                        this.display();
                     });
             });
         
@@ -4603,22 +4569,47 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         this.plugin.settings.maxTokens = this.plugin.getEffectiveMaxTokens();
                         await this.plugin.saveSettings();
                         
-                        // Refresh display to show updated values
-                        this.display();
                     });
             });
         
         // Function to show/hide custom parameters based on selection
         const updateCustomParamsVisibility = () => {
-            const isCustomSelected = modelDropdown.getValue() === 'custom' && customField.getValue().trim() !== '';
+            const dropdownValue = modelDropdown.getValue();
+            const customValue = customField.getValue()?.trim() || '';
+            
+            // Show custom parameters when dropdown is set to 'custom' (regardless of field content)
+            const isCustomSelected = dropdownValue === 'custom';
+            
+            // Simple, reliable display logic
             customParamsContainer.style.display = isCustomSelected ? 'block' : 'none';
+            
+            // Debug logging to help troubleshoot mobile issues
+            if (this.plugin.settings.debugLogging) {
+                console.log('TubeSage: Custom params visibility check', {
+                    dropdownValue,
+                    customValue,
+                    isCustomSelected,
+                    isMobile: Platform.isMobile
+                });
+            }
         };
         
-        // Set up periodic visibility check
+        // Use both polling AND event listeners for maximum reliability
         const visibilityInterval = setInterval(updateCustomParamsVisibility, 500);
         
-        // Clean up interval when settings are closed (basic cleanup)
-        setTimeout(() => clearInterval(visibilityInterval), 60000); // Clear after 1 minute
+        // Add direct event listeners to UI elements
+        modelDropdown.selectEl?.addEventListener('change', () => {
+            setTimeout(updateCustomParamsVisibility, 100);
+        });
+        
+        // Note: Removed 'input' event listener as visibility no longer depends on field content
+        // Only check on blur to avoid focus issues while typing
+        customField.inputEl?.addEventListener('blur', () => {
+            setTimeout(updateCustomParamsVisibility, 100);
+        });
+        
+        // Clean up interval when settings are closed
+        setTimeout(() => clearInterval(visibilityInterval), 60000);
         
         // Initial visibility check
         updateCustomParamsVisibility();
