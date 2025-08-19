@@ -97,7 +97,7 @@ export function getTimestampLinkConfig(
     const timestampTemperature = 0.2;
     
     // Use specific prompts for timestamp linking with safety checks
-    const systemPrompt = settings.timestampSystemPrompt || 'You are a highly precise assistant that adds TimeIndex markers to section headings in a note. You never include any reference material (like video IDs or transcripts) in your output.';
+    const systemPrompt = settings.timestampSystemPrompt || 'You are a highly analytical assistant that adds TimeIndex markers to section headings by deeply analyzing the content under each heading. Your expertise is in content analysis - reading the detailed content of each section and matching it to where that specific content is substantially discussed in the transcript. You focus on semantic content matching, not superficial title matching. You never include any reference material (like video IDs or transcripts) in your output.';
     const userPrompt = (settings.timestampUserPrompt || `TASK: Add TimeIndex markers to each section heading in this document.
 
 CRITICAL: You must output TimeIndex markers in format [TimeIndex:SECONDS] - NOT YouTube Watch URLs!
@@ -114,7 +114,20 @@ RULES:
 EXACTLY HOW TO DO THIS:
 1. Identify ALL section headings in the document that follow the format: # number. text
 2. Look at the transcript which has timestamps in format: [HH:MM:SS] [TimeIndex:X] where X is the exact seconds value
-3. For each section heading, add the appropriate TimeIndex marker based on the content
+3. For each section heading, THOROUGHLY READ AND ANALYZE THE ENTIRE CONTENT UNDER THAT HEADING:
+   - Read every paragraph, bullet point, and detail in that section
+   - Identify the key concepts, specific examples, and main arguments discussed
+   - Note specific terminology, names, numbers, or unique phrases used
+   - The heading title alone is NOT sufficient - you must understand what the section actually covers
+4. Then find where in the transcript this SPECIFIC CONTENT is BEST and MOST COMPREHENSIVELY DISCUSSED:
+   - Look for transcript segments that contain the same specific details, examples, and concepts
+   - Find where the speaker begins to substantively address the topics covered in that section
+   - The goal is to link to where the content actually starts being discussed, not just mentioned
+5. When matching section content to transcript timestamps:
+   - Match based on CONTENT SUBSTANCE, not just heading titles or keyword mentions
+   - A section about "Investment Strategies" should link to where investment strategies are actually explained, not just where the phrase appears
+   - Look for where the speaker begins the detailed discussion that led to the content in that section
+   - Add the appropriate TimeIndex marker based on this content analysis
 
 Video ID: VIDEO_ID`).replace(/VIDEO_ID/g, videoId);
     
