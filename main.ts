@@ -4459,8 +4459,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
     private addCustomModelParametersSection(container: HTMLElement, provider: string, customField: any, modelDropdown: any): void {
         // Create container for custom model parameters
         const customParamsContainer = container.createEl('div', {
-            cls: 'tubesage-custom-model-params',
-            attr: { style: 'display: none;' }
+            cls: 'tubesage-custom-model-params tubesage-display-none'
         });
         
         // Add header
@@ -4589,8 +4588,14 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             // Show custom parameters when dropdown is set to 'custom' (regardless of field content)
             const isCustomSelected = dropdownValue === 'custom';
             
-            // Simple, reliable display logic
-            customParamsContainer.style.display = isCustomSelected ? 'block' : 'none';
+            // Simple, reliable display logic using CSS classes
+            if (isCustomSelected) {
+                customParamsContainer.removeClass('tubesage-display-none');
+                customParamsContainer.addClass('tubesage-display-block');
+            } else {
+                customParamsContainer.removeClass('tubesage-display-block');
+                customParamsContainer.addClass('tubesage-display-none');
+            }
             
             // Debug logging to help troubleshoot mobile issues
             if (this.plugin.settings.debugLogging) {

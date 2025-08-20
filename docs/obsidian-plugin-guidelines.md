@@ -435,13 +435,21 @@ import { moment } from 'obsidian';
 ### Use CSS Classes, Not Inline Styles
 
 ```typescript
-// ❌ Bad - Inline styles
+// ❌ Bad - Inline styles via JavaScript
 const el = containerEl.createDiv();
 el.style.color = 'white';
 el.style.backgroundColor = 'red';
+el.style.display = 'none'; // Avoid this pattern
 
-// ✅ Good - CSS classes
-const el = containerEl.createDiv({cls: 'warning-container'});
+// ✅ Good - CSS classes for styling and visibility
+const el = containerEl.createDiv({cls: 'warning-container hidden'});
+
+// ✅ Good - Dynamic class toggling instead of style assignments
+if (shouldHide) {
+    el.addClass('hidden');
+} else {
+    el.removeClass('hidden');
+}
 ```
 
 ```css

@@ -105,6 +105,7 @@ The plugin uses a comprehensive settings system (`YouTubeTranscriptPluginSetting
 - **Cross-Platform**: Code must work on both Obsidian desktop and mobile
 - **Settings**: All configurable behavior should be driven by the settings system
 - **TypeScript**: Strict type checking is enabled - maintain type safety
+- **CSS Styling**: Avoid inline styles via JavaScript (`element.style.property`) - use CSS classes and `addClass()`/`removeClass()` instead for better theme compatibility
 
 ## Build System
 
@@ -115,7 +116,8 @@ The plugin uses a comprehensive settings system (`YouTubeTranscriptPluginSetting
 
 ## Development Guidelines Reference
 
-For comprehensive Obsidian plugin development best practices, see: [`docs/obsidian-plugin-guidelines.md`](docs/obsidian-plugin-guidelines.md)
+**CRITICAL: Before making ANY code changes, you MUST read the comprehensive guidelines file using the Read tool:**
+[`docs/obsidian-plugin-guidelines.md`](docs/obsidian-plugin-guidelines.md)
 
 This complete reference contains all official Obsidian development guidelines including:
 - Core development principles and security
