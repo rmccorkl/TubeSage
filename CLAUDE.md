@@ -116,7 +116,7 @@ The plugin uses a comprehensive settings system (`YouTubeTranscriptPluginSetting
 
 ## Development Guidelines Reference
 
-**CRITICAL: Before making ANY code changes, you MUST read the comprehensive guidelines file using the Read tool:**
+**CRITICAL: Before making ANY code changes, you MUST read the comprehensive guidelines file that follows using the Read tool:**
 [`docs/obsidian-plugin-guidelines.md`](docs/obsidian-plugin-guidelines.md)
 
 This complete reference contains all official Obsidian development guidelines including:
