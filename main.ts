@@ -1034,9 +1034,12 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             ctx.user.llmProvider = llmProvider;
             ctx.user.llmModel = llmModel;
             
-            // Add tags for LLM provider and model
-            const llmTags = `llm/${llmProvider} model/${llmModel.replace(/[:\.]/g, "-")}`;
-            ctx.user.llmTags = llmTags;
+            // Add tags for LLM provider and model in proper YAML array format
+            const baseTags = ["youtube", "transcript"];
+            const llmProviderTag = `llm/${llmProvider}`;
+            const llmModelTag = `model/${llmModel.replace(/[:\.]/g, "-")}`;
+            const allTags = [...baseTags, llmProviderTag, llmModelTag];
+            ctx.user.llmTags = `[${allTags.join(", ")}]`;
             
             // Add plugin version for frontmatter tracking
             ctx.user.version = this.getVersion();
