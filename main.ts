@@ -209,7 +209,7 @@ RULES:
 10. NEVER include any reference material marked by ----- REFERENCE MATERIAL ----- blocks in your response.
 
 EXACTLY HOW TO DO THIS:
-1. Identify ALL section headings in the document that follow the format: # number. text
+1. Identify ALL section headings in the document that follow the markedown format
 2. Look at the transcript which has timestamps in format: [HH:MM:SS] [TimeIndex:X] where X is the exact seconds value
 3. For each section heading, THOROUGHLY READ AND ANALYZE THE ENTIRE CONTENT UNDER THAT HEADING:
    - Read every paragraph, bullet point, and detail in that section
