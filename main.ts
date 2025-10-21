@@ -1056,8 +1056,23 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             // 5. Read and parse the template with our custom context
             const templateContent = await this.app.vault.read(templateFile as unknown);
             
+            // Debug logging to check template content and tags
+            if (this.settings.debugLogging) {
+                logger.debug(`Template content (first 500 chars): ${templateContent.substring(0, 500)}`);
+                logger.debug(`ctx.user.llmTags value: ${ctx.user.llmTags}`);
+            }
+            
             // @ts-ignore - Accessing internal Templater API
             const parsedContent = await templater.parser.parse_commands(templateContent, ctx);
+            
+            // Debug logging to check parsed content
+            if (this.settings.debugLogging) {
+                const frontmatterEnd = parsedContent.indexOf('---', 3);
+                if (frontmatterEnd !== -1) {
+                    const frontmatter = parsedContent.substring(0, frontmatterEnd + 3);
+                    logger.debug(`Parsed frontmatter: ${frontmatter}`);
+                }
+            }
             
             // 6. Create the new file with parsed content
             let finalContent = parsedContent;
@@ -2408,7 +2423,7 @@ class YouTubeTranscriptModal extends Modal {
     
     onOpen() {
         // Initialize
-        this.showNotice('YouTube Transcript Extractor ready', 10000);
+        this.showNotice('YouTube Transcript Extractor ready', 3000);
         
         // Clear content and create container
         const { contentEl } = this;
