@@ -1,5 +1,4 @@
 import { App, Plugin, PluginSettingTab, Setting, Notice, Modal, Platform } from 'obsidian';
-import stylesCSS from './styles.css';
 import { YouTubeTranscriptExtractor } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
@@ -317,12 +316,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         
         this.addSettingTab(new YouTubeTranscriptSettingTab(this.app, this));
         this.checkDependencies();
-
-        // Add CSS for the modal
-        const styleEl = document.createElement('style');
-        styleEl.id = 'youtube-transcript-styles';
-        styleEl.textContent = stylesCSS;
-        document.head.appendChild(styleEl);
 
         // Add ribbon icon
         this.addRibbonIcon('youtube', 'TubeSage: Youtube note creator', () => {

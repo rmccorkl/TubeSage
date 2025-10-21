@@ -32,4 +32,4 @@ jobs:
           gh release create "$tag" \
             --title="$tag" \
             --draft \
-            main.js manifest.json README.md MIT-license-tubesage.md templates/YouTubeTranscript.md 
+            main.js styles.css manifest.json README.md MIT-license-tubesage.md templates/YouTubeTranscript.md 

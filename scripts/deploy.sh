@@ -48,6 +48,7 @@ mkdir -p "$TEMP_DIR/$PLUGIN_ID"
 # Copy all necessary files to temp directory
 echo "Copying required files to temporary directory..."
 cp "$SOURCE_DIR/main.js" "$TEMP_DIR/$PLUGIN_ID/"
+cp "$SOURCE_DIR/styles.css" "$TEMP_DIR/$PLUGIN_ID/"
 cp "$SOURCE_DIR/manifest.json" "$TEMP_DIR/$PLUGIN_ID/"
 cp "$SOURCE_DIR/MIT-license-tubesage.md" "$TEMP_DIR/$PLUGIN_ID/"
 cp "$SOURCE_DIR/README.md" "$TEMP_DIR/$PLUGIN_ID/"
@@ -142,7 +143,7 @@ mkdir -p "$TARGET_DIR"
 echo -e "\n4. Copying plugin files to local Obsidian vault for testing..."
 
 # Copy main plugin files
-cp -r "$SOURCE_DIR/main.js" "$SOURCE_DIR/manifest.json" "$TARGET_DIR/"
+cp -r "$SOURCE_DIR/main.js" "$SOURCE_DIR/styles.css" "$SOURCE_DIR/manifest.json" "$TARGET_DIR/"
 cp -r "$SOURCE_DIR/MIT-license-tubesage.md" "$TARGET_DIR/"
 cp -r "$SOURCE_DIR/README.md" "$TARGET_DIR/"
 
