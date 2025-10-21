@@ -6,8 +6,11 @@ set -e  # Exit on any error
 
 # Configuration
 PLUGIN_ID="tubesage"
-SOURCE_DIR="/Users/rmccorkl/Code/TubeSage"
-TARGET_DIR="/Users/rmccorkl/Library/Mobile Documents/com~apple~CloudDocs/Obsidian/MainVault/.obsidian/plugins/$PLUGIN_ID"
+# Allow overriding via env; otherwise derive from script location
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SOURCE_DIR="${SOURCE_DIR_OVERRIDE:-$REPO_ROOT}"
+DEFAULT_TARGET_DIR="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Obsidian/MainVault/.obsidian/plugins/$PLUGIN_ID"
+TARGET_DIR="${TARGET_DIR_OVERRIDE:-$DEFAULT_TARGET_DIR}"
 
 # Get version from manifest.json
 VERSION=$(grep -o '"version": "[^"]*"' "$SOURCE_DIR/manifest.json" | cut -d'"' -f4)
@@ -162,7 +165,7 @@ if [ -f "$BACKUP_FILE" ]; then
     echo "Settings preserved from previous deployment"
 fi
 
-echo "Copied main.js, manifest.json, MIT-license-tubesage.md, README.md, and templates/"
+echo "Copied main.js, styles.css, manifest.json, MIT-license-tubesage.md, README.md, and templates/"
 
 # Step 5: Verify the deployment
 echo -e "\n5. Verifying local deployment..."
