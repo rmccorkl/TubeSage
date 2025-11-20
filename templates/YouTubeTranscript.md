@@ -11,6 +11,10 @@ transcript:  |
 # <% tp.user.title %>
 ![[Literaturenotes.png|banner+small p+ct]]
 
+> [!tip] Mobile Thumbnail (fallback)
+> [![YouTube Thumbnail|400x225](https://img.youtube.com/vi/<% tp.user.videoUrl.match(/(?:youtu\.be\/|v=)([^?&]+)/)[1] %>/hqdefault.jpg)](<% tp.user.videoUrl %>)
+
+
 > [!info] YouTube Video:
 > ![Url|400x200](<% tp.user.videoUrl %>)
 
