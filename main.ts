@@ -24,7 +24,7 @@ import {
 import type { Provider } from './src/utils/model-limits-registry';
 import { getEffectiveLimits, isModelSupported, upsertModel } from './src/utils/model-limits-registry';
 
-// Initialize logger
+// Initialize logger here
 const logger = getLogger('PLUGIN');
 const transcriptLogger = getLogger('TRANSCRIPT');
 const llmLogger = getLogger('LLM');
