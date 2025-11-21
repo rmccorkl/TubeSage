@@ -832,6 +832,11 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             
             // Sanitize the title for use as a filename
             const sanitizedTitle = sanitizeFilename(title);
+
+            // Normalize video URL data for templating (e.g., shorts/playlist URLs)
+            const videoId = YouTubeTranscriptExtractor.extractVideoId(videoUrl);
+            const watchUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : videoUrl;
+            const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
             
             // Format date according to settings
             let datePrefix = '';
@@ -1032,7 +1037,12 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             
             // Set up our data as functions in ctx.user
             ctx.user.title = sanitizedTitle;
-            ctx.user.videoUrl = videoUrl;
+            // Use a normalized watch URL so template parsing doesn't break on shorts/live URLs
+            ctx.user.videoUrl = watchUrl || videoUrl;
+            ctx.user.originalVideoUrl = videoUrl;
+            ctx.user.videoId = videoId || '';
+            ctx.user.watchUrl = watchUrl || videoUrl;
+            ctx.user.thumbnailUrl = thumbnailUrl;
             ctx.user.transcript = transcript;
             ctx.user.summary = summary;
             
