@@ -97,13 +97,18 @@ export class OpenAIWrapper {
     try {
       // Normalize deprecated max_tokens to max_completion_tokens
       const normalizedOptions: ChatCompletionOptions = { ...options };
+      const normalizeTokenValue = (value: number | null | undefined): number | undefined =>
+        typeof value === 'number' ? value : undefined;
+
       let completionTokens: number | undefined;
       if (normalizedOptions.max_completion_tokens === undefined && normalizedOptions.max_tokens !== undefined) {
-        completionTokens = normalizedOptions.max_tokens;
-        delete (normalizedOptions as { max_tokens?: number }).max_tokens;
-        normalizedOptions.max_completion_tokens = completionTokens;
+        completionTokens = normalizeTokenValue(normalizedOptions.max_tokens);
+        delete (normalizedOptions as { max_tokens?: number | null }).max_tokens;
+        if (completionTokens !== undefined) {
+          normalizedOptions.max_completion_tokens = completionTokens;
+        }
       } else {
-        completionTokens = normalizedOptions.max_completion_tokens ?? normalizedOptions.max_tokens;
+        completionTokens = normalizeTokenValue(normalizedOptions.max_completion_tokens ?? normalizedOptions.max_tokens);
       }
       
       logger.debug(`Creating chat completion with model: ${model}, messages: ${messages.length}, options: ${JSON.stringify({
@@ -118,10 +123,24 @@ export class OpenAIWrapper {
       const validMessages: ChatCompletionMessageParam[] = messages.map(msg => {
         if (!msg.role || !msg.content) {
           logger.warn('Invalid message format, fixing:', msg);
-          const fixedMessage: ChatCompletionMessageParam = {
-            role: msg.role ?? 'user',
-            content: typeof msg.content === 'string' ? msg.content : ''
-          };
+          const role = msg.role ?? 'user';
+          const content = typeof msg.content === 'string' ? msg.content : '';
+          let fixedMessage: ChatCompletionMessageParam;
+          if (role === 'function') {
+            fixedMessage = {
+              role,
+              content,
+              name: (msg as { name?: string }).name ?? 'function'
+            };
+          } else if (role === 'tool') {
+            fixedMessage = {
+              role,
+              content,
+              tool_call_id: (msg as { tool_call_id?: string }).tool_call_id ?? 'unknown'
+            };
+          } else {
+            fixedMessage = { role, content };
+          }
           return fixedMessage;
         }
         return msg;
