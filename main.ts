@@ -1,5 +1,5 @@
-import { App, Plugin, PluginSettingTab, Setting, Notice, Modal, Platform } from 'obsidian';
-import { YouTubeTranscriptExtractor } from './src/youtube-transcript';
+import { App, Plugin, PluginSettingTab, Setting, Notice, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile } from 'obsidian';
+import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
 import { handleApiError, getSafeErrorMessage } from './src/utils/error-utils';
@@ -35,15 +35,33 @@ function truncateForLogs(text: string, maxLength: number = 500): string {
     return text.substring(0, maxLength) + '...[truncated]';
 }
 
-// Define a minimal interface for file access that avoids TFile references
-interface ObsidianFile {
-    path: string;
-}
-
 // Define a minimal folder item interface
 interface FolderItem {
     path: string;
     name: string;
+}
+
+interface Closeable {
+    close: () => void;
+}
+
+type TranscriptInputSegment = TranscriptSegment & {
+    tStartMs?: string;
+    segs?: Array<{ utf8?: string }>;
+};
+
+interface YouTubePlaylistItem {
+    snippet?: {
+        title?: string;
+        resourceId?: {
+            videoId?: string;
+        };
+    };
+}
+
+interface PlaylistItemsResponse {
+    items?: YouTubePlaylistItem[];
+    nextPageToken?: string;
 }
 
 interface YouTubeTranscriptSettings {
@@ -276,7 +294,7 @@ interface GoogleModel {
 export default class YouTubeTranscriptPlugin extends Plugin {
     settings: YouTubeTranscriptSettings;
     private summarizer: TranscriptSummarizer;
-    private fileWatcher: any;
+    private fileWatcher: Closeable | null = null;
 
     // Replace the duplicated showNotice method with a wrapper that calls the shared utility
     showNotice(message: string, timeout: number = 5000): void {
@@ -527,7 +545,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     }
 
     // Helper method to format transcript segments for YAML frontmatter
-    private formatTranscriptForYaml(segments: any[]): string {
+    private formatTranscriptForYaml(segments: TranscriptInputSegment[]): string {
         // Process segments into formatted text with timestamps
         let formattedTranscript = '';
         
@@ -590,7 +608,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 if (segment.text) {
                     segmentText = segment.text.trim();
                 } else if (segment.segs && Array.isArray(segment.segs)) {
-                    segmentText = segment.segs.map((s: any) => s.utf8 || '').join('').trim();
+                    segmentText = segment.segs.map((s) => s.utf8 || '').join('').trim();
                 }
                 
                 // Skip empty segments
@@ -988,8 +1006,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             const normalizedTemplatePath = normalizePath(this.settings.templaterTemplateFile);
             
             // Get template file and verify it exists
-            const templateFile = this.app.vault.getAbstractFileByPath(normalizedTemplatePath) as ObsidianFile;
-            if (!templateFile) {
+            const templateFile = this.app.vault.getAbstractFileByPath(normalizedTemplatePath);
+            if (!(templateFile instanceof TFile)) {
                 throw new Error(`Template file not found: ${this.settings.templaterTemplateFile}`);
             }
             
@@ -1047,7 +1065,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             }
             
             // 5. Read and parse the template with our custom context
-            const templateContent = await this.app.vault.read(templateFile as unknown);
+            const templateContent = await this.app.vault.read(templateFile);
             
             // Debug logging to check template content and tags
             if (this.settings.debugLogging) {
@@ -1220,7 +1238,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                                 throw new Error(`Failed to fetch playlist videos: HTTP status ${videosResponse.status}`);
                             }
                             
-                            const videosData = await videosResponse.json();
+                            const videosData = await videosResponse.json() as PlaylistItemsResponse;
                             
                             if (!videosData.items || videosData.items.length === 0) {
                                 break;
@@ -1228,14 +1246,12 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                             
                             // Extract video information and add to results
                             const pageVideos = videosData.items
-                                .filter((item: any) => 
-                                    item.snippet && 
-                                    item.snippet.title && 
-                                    item.snippet.resourceId && 
-                                    item.snippet.resourceId.videoId)
-                                .map((item: any) => ({
-                                    title: item.snippet.title,
-                                    url: `https://www.youtube.com/watch?v=${item.snippet.resourceId.videoId}`
+                                .filter((item: YouTubePlaylistItem) => 
+                                    !!item.snippet?.title && 
+                                    !!item.snippet?.resourceId?.videoId)
+                                .map((item: YouTubePlaylistItem) => ({
+                                    title: item.snippet?.title ?? '',
+                                    url: `https://www.youtube.com/watch?v=${item.snippet?.resourceId?.videoId ?? ''}`
                                 }));
                                 
                             videoResults = videoResults.concat(pageVideos);
@@ -1311,7 +1327,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                         throw new Error(`Failed to fetch videos: HTTP status ${videosResponse.status}`);
                     }
                     
-                    const videosData = await videosResponse.json();
+                    const videosData = await videosResponse.json() as PlaylistItemsResponse;
                     
                     if (!videosData.items || videosData.items.length === 0) {
                         break;
@@ -1319,14 +1335,12 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     
                     // Extract video information and add to results
                     const pageVideos = videosData.items
-                        .filter((item: any) => 
-                            item.snippet && 
-                            item.snippet.title && 
-                            item.snippet.resourceId && 
-                            item.snippet.resourceId.videoId)
-                        .map((item: any) => ({
-                            title: item.snippet.title,
-                            url: `https://www.youtube.com/watch?v=${item.snippet.resourceId.videoId}`
+                        .filter((item: YouTubePlaylistItem) => 
+                            !!item.snippet?.title && 
+                            !!item.snippet?.resourceId?.videoId)
+                        .map((item: YouTubePlaylistItem) => ({
+                            title: item.snippet?.title ?? '',
+                            url: `https://www.youtube.com/watch?v=${item.snippet?.resourceId?.videoId ?? ''}`
                         }));
                         
                     videoResults = videoResults.concat(pageVideos);
@@ -1422,16 +1436,16 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             }
 
             // Read the note content
-            const file = this.app.vault.getAbstractFileByPath(filePath) as ObsidianFile;
-            if (!file) {
+            const file = this.app.vault.getAbstractFileByPath(filePath);
+            if (!(file instanceof TFile)) {
                 logger.error(`Could not find note file: ${filePath}`);
                 // Try to check if any similar files exist
                 const folder = filePath.substring(0, filePath.lastIndexOf('/'));
                 try {
                     // @ts-ignore - Using internal Obsidian API
-                    const folderContents = this.app.vault.getMarkdownFiles()
-                        .filter((f: any) => f.path.startsWith(folder))
-                        .map((f: any) => f.path);
+                    const folderContents = (this.app.vault.getMarkdownFiles() as Array<{ path: string }>)
+                        .filter((f) => f.path.startsWith(folder))
+                        .map((f) => f.path);
                     if (folderContents.length > 0) {
                         // Only show a limited number of files to avoid excessive logging
                         const MAX_FILES_TO_LOG = 3;
@@ -1454,7 +1468,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             logger.debug(`File found: ${filePath}`);
             
             // Read the content using our custom interface
-            const content = await this.app.vault.read(file as unknown);
+            const content = await this.app.vault.read(file);
             
             // Extract headings from the content
             const headings: string[] = [];
@@ -1764,9 +1778,9 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             // Validate the final enhanced note with Watch URLs
             if (validateEnhancedContent(enhancedNote, contentWithoutFrontmatter, headings, videoId)) {
                 // Update the note file with the LLM-enhanced content
-                const file = this.app.vault.getAbstractFileByPath(filePath) as ObsidianFile;
-                if (file) {
-                    await this.app.vault.modify(file as unknown, enhancedNote);
+                const file = this.app.vault.getAbstractFileByPath(filePath);
+                if (file instanceof TFile) {
+                    await this.app.vault.modify(file, enhancedNote);
                 } else {
                     logger.error(`[addTimestampLinksSinglePass] File not found: ${filePath}`);
                     this.showNotice(`Error: File not found: ${filePath}`, 5000);
@@ -1815,13 +1829,13 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             logger.debug("[translateContent] Starting translation process");
             
             // Extract document components using the utility
-            const noteFile = this.app.vault.getAbstractFileByPath(filePath) as ObsidianFile;
-            if (!noteFile) {
+            const noteFile = this.app.vault.getAbstractFileByPath(filePath);
+            if (!(noteFile instanceof TFile)) {
                 logger.error(`[translateContent] File not found: ${filePath}`);
                 this.showNotice(`Error: File not found: ${filePath}`, 5000);
                 return;
             }
-            const fileContent = await this.app.vault.read(noteFile as unknown);
+            const fileContent = await this.app.vault.read(noteFile);
             const { frontmatter } = extractDocumentComponents(fileContent);
             
             // Create a specialized summarizer for translation
@@ -1871,14 +1885,8 @@ ${contentToTranslate}
             const translatedNote = reconstructDocument(frontmatter, translatedContent);
             
             // Update the note file with the translated content
-            if (noteFile) {
-                await this.app.vault.modify(noteFile as unknown, translatedNote);
-                this.showNotice(`Successfully translated content to ${targetLang.toUpperCase()}-${targetCountry}`, 5000);
-            } else {
-                logger.error(`[translateContent] File not found: ${filePath}`);
-                this.showNotice(`Error: File not found: ${filePath}`, 5000);
-                return;
-            }
+            await this.app.vault.modify(noteFile, translatedNote);
+            this.showNotice(`Successfully translated content to ${targetLang.toUpperCase()}-${targetCountry}`, 5000);
             
         } catch (error) {
             logger.error("[translateContent] Error:", error);
@@ -2124,9 +2132,9 @@ ${contentToTranslate}
             
             if (linkCount > 0) {
                 // Update the note file with the combined content
-                const file = this.app.vault.getAbstractFileByPath(filePath) as ObsidianFile;
-                if (file) {
-                    await this.app.vault.modify(file as unknown, combinedNote);
+                const file = this.app.vault.getAbstractFileByPath(filePath);
+                if (file instanceof TFile) {
+                    await this.app.vault.modify(file, combinedNote);
                 } else {
                     logger.error(`[addTimestampLinksInChunks] File not found: ${filePath}`);
                     this.showNotice(`Error: File not found: ${filePath}`, 5000);
@@ -2986,10 +2994,10 @@ class YouTubeTranscriptModal extends Modal {
                                     }
                                     const notePathForLog = joinPaths(sourceSubfolder, `${datePrefix}${sanitizeFilename(video.title)}.md`);
                                     
-                                    const file = this.app.vault.getAbstractFileByPath(notePathForLog) as ObsidianFile;
-                                    if (file) {
-                                        const currentContent = await this.app.vault.read(file as unknown);
-                                        await this.app.vault.modify(file as unknown, currentContent + debugSection);
+                                    const file = this.app.vault.getAbstractFileByPath(notePathForLog);
+                                    if (file instanceof TFile) {
+                                        const currentContent = await this.app.vault.read(file);
+                                        await this.app.vault.modify(file, currentContent + debugSection);
                                         logger.debug("Appended debug logs to note:", notePathForLog);
                                     } else {
                                         logger.warn("Could not find file to append debug logs:", notePathForLog);
@@ -3265,10 +3273,10 @@ class YouTubeTranscriptModal extends Modal {
                     const debugSection = debugHeader + "\n" + finalLogs + debugFooter;
                     
                     try {
-                        const file = this.app.vault.getAbstractFileByPath(notePath) as ObsidianFile;
-                        if (file) {
-                            const currentContent = await this.app.vault.read(file as unknown);
-                            await this.app.vault.modify(file as unknown, currentContent + debugSection);
+                        const file = this.app.vault.getAbstractFileByPath(notePath);
+                        if (file instanceof TFile) {
+                            const currentContent = await this.app.vault.read(file);
+                            await this.app.vault.modify(file, currentContent + debugSection);
                             logger.debug("Appended debug logs to note:", notePath);
                         } else {
                             logger.warn("Could not find file to append debug logs:", notePath);
@@ -3875,7 +3883,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 });
             
             // Reference for dropdown to update later
-            let modelDropdown: any;
+            let modelDropdown: DropdownComponent | null = null;
             
             // Add dropdown for preset models
             setting.addDropdown(dropdown => {
@@ -3888,7 +3896,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                     .onChange(async (value: string) => {
                         if (value !== 'custom') {
                             this.plugin.settings.selectedModels[provider] = value;
-                            customField.setValue(''); // Clear custom if a preset is chosen
+                            customField?.setValue(''); // Clear custom if a preset is chosen
                             
                             // Update maxTokens for the new model
                             const effectiveMaxTokens = this.plugin.getEffectiveMaxTokens();
@@ -3933,6 +3941,12 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         .setIcon('refresh-cw') // Refresh icon
                         .setTooltip(`Refresh ${displayName} model list`)
                         .onClick(async () => {
+                            if (!modelDropdown) {
+                                this.plugin.showNotice(`Unable to refresh ${displayName} models: dropdown not initialized.`, 5000);
+                                return;
+                            }
+                            const dropdown = modelDropdown;
+                            
                             const apiKey = this.plugin.settings.apiKeys[provider];
                             if (!apiKey || apiKey.trim() === '') {
                                 this.plugin.showNotice(`${displayName} API key is required to refresh models.`, 5000);
@@ -3949,28 +3963,28 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                             if (fetchedModels.length > 0) {
                                 const currentSelectedModel = this.plugin.settings.selectedModels[provider];
                                 // @ts-ignore - selectEl is part of the dropdown
-                                const options = modelDropdown.selectEl.options;
+                                const options = dropdown.selectEl.options;
                                 for (let i = options.length - 1; i >= 0; i--) {
                                     if (options[i].value !== 'custom') {
-                                        modelDropdown.selectEl.remove(i);
+                                        dropdown.selectEl.remove(i);
                                     }
                                 }
-                                fetchedModels.forEach(modelId => modelDropdown.addOption(modelId, modelId));
+                                fetchedModels.forEach(modelId => dropdown.addOption(modelId, modelId));
                                 // @ts-ignore - selectEl is part of the dropdown
-                                modelDropdown.selectEl.appendChild(modelDropdown.selectEl.querySelector('option[value="custom"]'));
+                                dropdown.selectEl.appendChild(dropdown.selectEl.querySelector('option[value="custom"]'));
 
                                 if (fetchedModels.includes(currentSelectedModel)) {
-                                    modelDropdown.setValue(currentSelectedModel);
+                                    dropdown.setValue(currentSelectedModel);
                                 } else if (fetchedModels.includes(defaultModelValue)) {
-                                    modelDropdown.setValue(defaultModelValue);
+                                    dropdown.setValue(defaultModelValue);
                                     this.plugin.settings.selectedModels[provider] = defaultModelValue;
                                     await this.plugin.saveSettings();
                                 } else if (fetchedModels.length > 0) {
-                                    modelDropdown.setValue(fetchedModels[0]);
+                                    dropdown.setValue(fetchedModels[0]);
                                     this.plugin.settings.selectedModels[provider] = fetchedModels[0];
                                     await this.plugin.saveSettings();
                                 } else {
-                                    modelDropdown.setValue('custom');
+                                    dropdown.setValue('custom');
                                     
                                     // Initialize custom model limits if they don't exist and we have a custom model set
                                     const currentModel = this.plugin.settings.selectedModels[provider];
@@ -4003,7 +4017,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             }
             
             // Reference to store custom field
-            let customField: any;
+            let customField: TextComponent | null = null;
             
             // Add custom model field
             setting.addText(text => {
@@ -4022,9 +4036,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         if (value && value.trim() !== '') {
                             // Update model with custom value
                             this.plugin.settings.selectedModels[provider] = value;
-                            // Set dropdown to custom (prevent double-triggering by checking current value)
-                            if (modelDropdown.getValue() !== 'custom') {
-                                modelDropdown.setValue('custom');
+                                // Set dropdown to custom (prevent double-triggering by checking current value)
+                                if (modelDropdown && modelDropdown.getValue() !== 'custom') {
+                                    modelDropdown.setValue('custom');
                             }
                             
                             // Initialize custom model limits if they don't exist
@@ -4042,7 +4056,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                             }
                             
                             await this.plugin.saveSettings();
-                        } else if (modelDropdown.getValue() === 'custom') {
+                        } else if (modelDropdown && modelDropdown.getValue() === 'custom') {
                             // If custom field is cleared and dropdown is on custom, reset to default
                             modelDropdown.setValue(defaultModelValue);
                             this.plugin.settings.selectedModels[provider] = defaultModelValue;
@@ -4054,7 +4068,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             });
             
             // Add custom model parameters section (initially hidden)
-            settingTab.addCustomModelParametersSection(settingsContainer, provider, customField, modelDropdown);
+            if (customField && modelDropdown) {
+                settingTab.addCustomModelParametersSection(settingsContainer, provider, customField, modelDropdown);
+            }
             
             return setting;
         };
@@ -4193,7 +4209,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         new Setting(settingsContainer)
             .setName('Prepend date to note title')
             .setDesc('Automatically add date to the beginning of note filenames')
-            .addDropdown((dropdown: any) => dropdown
+            .addDropdown((dropdown) => dropdown
                 .addOption('true', 'Enabled')
                 .addOption('false', 'Disabled')
                 .setValue(this.plugin.settings.prependDate ? 'true' : 'false')
@@ -4205,7 +4221,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         new Setting(settingsContainer)
             .setName('Date format')
             .setDesc('Format for date prepended to note titles')
-            .addDropdown((dropdown: any) => dropdown
+            .addDropdown((dropdown) => dropdown
                 .addOption('YYYY-MM-DD', 'YYYY-MM-DD (2023-12-31)')
                 .addOption('MM-DD-YYYY', 'MM-DD-YYYY (12-31-2023)') 
                 .addOption('DD-MM-YYYY', 'DD-MM-YYYY (31-12-2023)')
@@ -4348,7 +4364,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         new Setting(settingsContainer)
             .setName('Default summary mode')
             .setDesc('Choose the default summary mode to use when the plugin starts. Fast Summary mode skips timestamp links for quicker processing.')
-            .addDropdown((dropdown: any) => dropdown
+            .addDropdown((dropdown) => dropdown
                 .addOption('false', 'Extensive Summary (Detailed)')
                 .addOption('true', 'Fast Summary (Brief)')
                 .setValue(this.plugin.settings.useFastSummary ? 'true' : 'false')
@@ -4407,7 +4423,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                     }
                     await this.plugin.saveSettings();
                 }))
-            .addExtraButton((button: any) => {
+            .addExtraButton((button: ExtraButtonComponent) => {
                 button
                     .setIcon('info')
                     .setTooltip('When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.');
@@ -4467,7 +4483,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
     /**
      * Add custom model parameters section that appears when custom model is selected
      */
-    private addCustomModelParametersSection(container: HTMLElement, provider: string, customField: any, modelDropdown: any): void {
+    private addCustomModelParametersSection(container: HTMLElement, provider: string, customField: TextComponent, modelDropdown: DropdownComponent): void {
         // Create container for custom model parameters
         const customParamsContainer = container.createEl('div', {
             cls: 'tubesage-custom-model-params tubesage-display-none'
@@ -4475,7 +4491,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Add header
         customParamsContainer.createEl('h5', { 
-            text: `Custom Model Parameters (${provider.toUpperCase()})`,
+            text: `Custom model parameters (${provider.toUpperCase()})`,
             cls: 'tubesage-custom-params-header'
         });
         
@@ -4491,10 +4507,10 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             };
         };
         
-        // Context Window field
+        // Context window field
         new Setting(customParamsContainer)
-            .setName('Context Window (K tokens)')
-            .setDesc('Total context window in thousands of tokens (e.g., 400 for 400K tokens)')
+            .setName('Context window (K tokens)')
+            .setDesc('Total context window in thousands of tokens (e.g., 400 for 400k tokens)')
             .addText(text => {
                 text.setValue(getCurrentCustomLimits().contextK.toString())
                     .onChange(async (value: string) => {
@@ -4515,10 +4531,10 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                     });
             });
         
-        // Max Output field
+        // Max output field
         new Setting(customParamsContainer)
-            .setName('Max Output (K tokens)')
-            .setDesc('Maximum output tokens in thousands (e.g., 128 for 128K tokens)')
+            .setName('Max output (K tokens)')
+            .setDesc('Maximum output tokens in thousands (e.g., 128 for 128k tokens)')
             .addText(text => {
                 text.setValue(getCurrentCustomLimits().maxOutputK.toString())
                     .onChange(async (value: string) => {
@@ -4540,10 +4556,10 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                     });
             });
         
-        // Input Max field (optional)
+        // Input max field (optional)
         new Setting(customParamsContainer)
-            .setName('Input Max (K tokens) - Optional')
-            .setDesc('Explicit input cap if vendor publishes one (leave empty to auto-calculate)')
+            .setName('Input max (K tokens) - optional')
+            .setDesc('Explicit input cap if vendor publishes one (leave empty to auto calculate)')
             .addText(text => {
                 const currentLimits = getCurrentCustomLimits();
                 text.setValue(currentLimits.inputMaxK ? currentLimits.inputMaxK.toString() : '')
@@ -4566,9 +4582,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                     });
             });
         
-        // Reserve Percentage field
+        // Reserve percentage field
         new Setting(customParamsContainer)
-            .setName('Reserve Percentage')
+            .setName('Reserve percentage')
             .setDesc(`Safety reserve for output tokens (0.10 = 10%, default: ${provider === 'ollama' ? '15%' : '10%'})`)
             .addText(text => {
                 text.setValue(getCurrentCustomLimits().reservePct?.toString() || (provider === 'ollama' ? '0.15' : '0.10'))
