@@ -117,7 +117,7 @@ export class GeminiClient {
         return '';
       }
       
-      const candidates = response.candidates as unknown;
+      const candidates = response.candidates;
       if (!Array.isArray(candidates) || !candidates[0]) {
         return '';
       }

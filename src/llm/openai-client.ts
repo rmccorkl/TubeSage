@@ -4,7 +4,9 @@ import { getLogger } from "../utils/logger";
 
 const logger = getLogger('OPENAI');
 type ChatCompletionMessageParam = OpenAI.Chat.Completions.ChatCompletionMessageParam;
-type ChatCompletionOptions = Partial<Omit<OpenAI.Chat.Completions.ChatCompletionCreateParams, 'model' | 'messages'>>;
+type ChatCompletionOptions = Partial<Omit<OpenAI.Chat.Completions.ChatCompletionCreateParams, 'model' | 'messages'>> & {
+  max_completion_tokens?: number;
+};
 
 /**
  * Creates an OpenAI client configured to work in Obsidian on any platform.
@@ -93,22 +95,34 @@ export class OpenAIWrapper {
     options: ChatCompletionOptions = {}
   ) {
     try {
+      // Normalize deprecated max_tokens to max_completion_tokens
+      const normalizedOptions: ChatCompletionOptions = { ...options };
+      let completionTokens: number | undefined;
+      if (normalizedOptions.max_completion_tokens === undefined && normalizedOptions.max_tokens !== undefined) {
+        completionTokens = normalizedOptions.max_tokens;
+        delete (normalizedOptions as { max_tokens?: number }).max_tokens;
+        normalizedOptions.max_completion_tokens = completionTokens;
+      } else {
+        completionTokens = normalizedOptions.max_completion_tokens ?? normalizedOptions.max_tokens;
+      }
+      
       logger.debug(`Creating chat completion with model: ${model}, messages: ${messages.length}, options: ${JSON.stringify({
-        temperature: options.temperature,
-        max_tokens: options.max_tokens
+        temperature: normalizedOptions.temperature,
+        max_completion_tokens: completionTokens
       })}`);
       
       // Create a safe copy of options to prevent mutations or reference issues
-      const safeOptions: ChatCompletionOptions = { ...options };
+      const safeOptions: ChatCompletionOptions = { ...normalizedOptions };
       
       // Validate messages format - each message must have role and content
       const validMessages: ChatCompletionMessageParam[] = messages.map(msg => {
         if (!msg.role || !msg.content) {
           logger.warn('Invalid message format, fixing:', msg);
-          return {
-            role: (msg.role ?? 'user') as ChatCompletionMessageParam['role'],
+          const fixedMessage: ChatCompletionMessageParam = {
+            role: msg.role ?? 'user',
             content: typeof msg.content === 'string' ? msg.content : ''
-          } as ChatCompletionMessageParam;
+          };
+          return fixedMessage;
         }
         return msg;
       });

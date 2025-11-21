@@ -104,14 +104,19 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
         options.body = init.body;
       } else if (init.body instanceof FormData) {
         // Handle FormData
-        const formData = init.body as FormData;
+        const formData = init.body;
         const boundary = `----FormBoundary${Math.random().toString(36).substring(2)}`;
         let formBody = '';
         
         formData.forEach((value, key) => {
           formBody += `--${boundary}\r\n`;
           formBody += `Content-Disposition: form-data; name="${key}"\r\n\r\n`;
-          formBody += `${value}\r\n`;
+          const valueString = typeof value === "string"
+            ? value
+            : value instanceof File
+              ? value.name ?? "[file]"
+              : "[binary]";
+          formBody += `${valueString}\r\n`;
         });
         
         formBody += `--${boundary}--\r\n`;

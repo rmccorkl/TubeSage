@@ -117,7 +117,7 @@ export class Logger {
         
         if (config.includePrefix) {
             const levelName = LogLevel[level];
-            formattedMessage = `[${this.category}] [${levelName}] ${message}`;
+            formattedMessage = `[${this.category}] [${levelName}] ${formattedMessage}`;
         }
         
         // Create a log entry

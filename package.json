@@ -42,6 +42,7 @@
         "kind-of": "^6.0.3",
         "langchain": "^0.3.30",
         "node-html-parser": "^7.0.1",
+        "openai": "^4.77.0",
         "parse-duration": "^2.1.4"
     }
 }

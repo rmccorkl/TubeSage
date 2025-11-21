@@ -122,9 +122,23 @@ export class LangChainClient {
               const getContent = (m: SystemMessage | HumanMessage | string | object | null): string => {
                 if (typeof m === 'string') return m;
                 if (m === null || typeof m !== 'object') return String(m);
-                if ('content' in m) return String(m.content);
-                if ('text' in m) return String(m.text); 
-                if ('value' in m) return String(m.value);
+                if ('content' in m) {
+                  const c = (m as { content?: unknown }).content;
+                  if (typeof c === 'string') return c;
+                  try {
+                    return JSON.stringify(c);
+                  } catch {
+                    return String(c);
+                  }
+                }
+                if ('text' in m) {
+                  const textVal = (m as { text?: unknown }).text;
+                  return typeof textVal === 'string' ? textVal : JSON.stringify(textVal);
+                }
+                if ('value' in m) {
+                  const valueVal = (m as { value?: unknown }).value;
+                  return typeof valueVal === 'string' ? valueVal : JSON.stringify(valueVal);
+                }
                 return JSON.stringify(m);
               };
               
@@ -251,7 +265,7 @@ export class LangChainClient {
       
       // Log all error properties
       if (error && typeof error === 'object') {
-        logger.error(`Error keys: ${Object.keys(error)}`);
+        logger.error(`Error keys: ${Object.keys(error).join(', ')}`);
         Object.keys(error).forEach(key => {
           logger.error(`Error.${key}:`, error[key]);
         });

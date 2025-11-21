@@ -374,7 +374,7 @@ export class YouTubeTranscriptExtractor {
                         transcriptLogger.debug(`Transcript response keys: ${Object.keys(transcriptData).join(', ')}`);
                         
                         // If we have actions, let's examine their structure
-                        const transcriptActions = transcriptData.actions as unknown;
+                        const transcriptActions = transcriptData.actions;
                         if (Array.isArray(transcriptActions)) {
                             transcriptLogger.debug(`Found ${transcriptActions.length} actions, examining structure...`);
                             transcriptActions.forEach((action, i: number) => {
