@@ -1,4 +1,4 @@
-import { App, Notice } from 'obsidian';
+import { Notice } from 'obsidian';
 
 /**
  * Form validation and UI utilities to reduce duplication across modal classes

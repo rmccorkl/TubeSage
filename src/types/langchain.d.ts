@@ -1,7 +1,7 @@
 declare module '@langchain/core/prompts' {
     export class ChatPromptTemplate {
-        static fromMessages(messages: any[]): ChatPromptTemplate;
-        formatMessages(values: Record<string, any>): any[];
+        static fromMessages(messages: unknown[]): ChatPromptTemplate;
+        formatMessages(values: Record<string, unknown>): unknown[];
     }
 
     export class MessagesPlaceholder {
@@ -11,8 +11,8 @@ declare module '@langchain/core/prompts' {
 
 declare module '@langchain/core/runnables' {
     export class RunnableSequence {
-        static from(runnables: any[]): RunnableSequence;
-        invoke(input: any): Promise<any>;
+        static from(runnables: unknown[]): RunnableSequence;
+        invoke(input: unknown): Promise<unknown>;
     }
 }
 
@@ -25,7 +25,7 @@ declare module '@langchain/openai' {
             maxTokens?: number;
             apiKey?: string;
         });
-        invoke(messages: BaseMessageLike[]): Promise<any>;
+        invoke(messages: BaseMessageLike[]): Promise<unknown>;
     }
 }
 
@@ -38,7 +38,7 @@ declare module '@langchain/anthropic' {
             maxTokens?: number;
             apiKey?: string;
         });
-        invoke(messages: BaseMessageLike[]): Promise<any>;
+        invoke(messages: BaseMessageLike[]): Promise<unknown>;
     }
 }
 
@@ -51,6 +51,6 @@ declare module '@langchain/google-genai' {
             maxTokens?: number;
             apiKey?: string;
         });
-        invoke(messages: BaseMessageLike[]): Promise<any>;
+        invoke(messages: BaseMessageLike[]): Promise<unknown>;
     }
-} 
+}

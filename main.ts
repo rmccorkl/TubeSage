@@ -3,7 +3,7 @@ import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-tra
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
 import { handleApiError, getSafeErrorMessage } from './src/utils/error-utils';
-import { getLogger, LogLevel, setGlobalLogLevel, clearLogs, getLogsAsString, getLogsForCallout } from './src/utils/logger';
+import { getLogger, LogLevel, setGlobalLogLevel, clearLogs, getLogsForCallout } from './src/utils/logger';
 import { normalizePath, ensureFolder, joinPaths, sanitizePathComponent } from './src/utils/path-utils';
 import { validateRequired, validateYouTubeUrl, ValidationResult, displayValidationResult } from './src/utils/form-utils';
 import { getPromptConfig, cleanTranscript, SummaryMode, getTimestampLinkConfig } from './src/utils/prompt-utils';
@@ -22,7 +22,7 @@ import {
     convertTimeIndexToWatchUrls
 } from './src/utils/timestamp-utils';
 import type { Provider } from './src/utils/model-limits-registry';
-import { getEffectiveLimits, isModelSupported } from './src/utils/model-limits-registry';
+import { getEffectiveLimits, isModelSupported, upsertModel } from './src/utils/model-limits-registry';
 
 // Initialize logger
 const logger = getLogger('PLUGIN');
@@ -336,7 +336,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         this.checkDependencies();
 
         // Add ribbon icon
-        this.addRibbonIcon('youtube', 'TubeSage: Youtube note creator', () => {
+        this.addRibbonIcon('youtube', 'TubeSage: create note from YouTube transcript', () => {
             // Check if license has been accepted
             if (!this.settings.licenseAccepted) {
                 // Show license required modal if not accepted
@@ -359,7 +359,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // Add command
         this.addCommand({
             id: 'extract-youtube-transcript',
-            name: 'Extract YouTube Transcript',
+            name: 'Extract YouTube transcript',
             callback: () => {
                 // Check if license has been accepted
                 if (!this.settings.licenseAccepted) {
@@ -385,7 +385,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
 
     }
 
-    async onunload() {
+    onunload() {
         logger.debug('Unloading YouTube Transcript Plugin');
         
         // Clean up file watcher if it exists
@@ -456,13 +456,13 @@ export default class YouTubeTranscriptPlugin extends Plugin {
 
     async loadSettings() {
         const loadedData = await this.loadData();
-        console.log('[SETTINGS DEBUG] Loaded data from storage:', loadedData);
-        console.log('[SETTINGS DEBUG] DEFAULT_SETTINGS.selectedLLM:', DEFAULT_SETTINGS.selectedLLM);
+        logger.debug('[SETTINGS DEBUG] Loaded data from storage:', loadedData);
+        logger.debug('[SETTINGS DEBUG] DEFAULT_SETTINGS.selectedLLM:', DEFAULT_SETTINGS.selectedLLM);
         
         this.settings = Object.assign({}, DEFAULT_SETTINGS, loadedData);
         
-        console.log('[SETTINGS DEBUG] Final settings.selectedLLM:', this.settings.selectedLLM);
-        console.log('[SETTINGS DEBUG] All settings keys:', Object.keys(this.settings));
+        logger.debug('[SETTINGS DEBUG] Final settings.selectedLLM:', this.settings.selectedLLM);
+        logger.debug('[SETTINGS DEBUG] All settings keys:', Object.keys(this.settings));
         // --- Fix legacy string booleans (mobile settings files might contain "true"/"false" strings) ---
         const coerceBool = (val: unknown, defaultVal: boolean): boolean => {
             if (typeof val === 'boolean') return val;
@@ -526,7 +526,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     });
                     
                 } catch (error) {
-                    console.log(`Plugin: Failed to extract transcript for video ${i + 1}/${videoUrls.length}:`, error.message);
                     transcriptLogger.error(`Failed to extract transcript for video ${i + 1}/${videoUrls.length}:`, error);
                     // Continue with other videos, but include error result
                     results.push({
@@ -538,9 +537,9 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             
             return results;
             
-        } catch (error) {
+        } catch {
             // Use the new error handling utility
-            throw handleApiError(error, 'YouTube API', 'Transcript Extraction');
+            throw handleApiError('Unknown error', 'YouTube API', 'Transcript extraction');
         }
     }
 
@@ -744,7 +743,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             
             llmLogger.debug(`[DEBUG] Checking apiKeys - exists: ${!!this.settings.apiKeys}`);
             llmLogger.debug(`[DEBUG] ApiKeys type: ${typeof this.settings.apiKeys}`);
-            llmLogger.debug(`[DEBUG] ApiKeys keys: ${this.settings.apiKeys ? Object.keys(this.settings.apiKeys) : 'none'}`);
+            const apiKeyKeys = this.settings.apiKeys ? Object.keys(this.settings.apiKeys) : [];
+            llmLogger.debug(`[DEBUG] ApiKeys keys: ${apiKeyKeys.length ? apiKeyKeys.join(', ') : 'none'}`);
             
             if (!this.settings.apiKeys) {
                 throw new Error('API keys are not configured in settings');
@@ -778,7 +778,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             sanitizedSummary = sanitizedSummary.replace(/^[\s\n\r]*/, '');
             
             // If the summary starts with list markers or headers, we need a line break
-            if (/^(#|\-|\*|\d+\.)/.test(sanitizedSummary)) {
+            if (/^(#|-|\*|\d+\.)/.test(sanitizedSummary)) {
                 // Summary starts with Markdown formatting, need to keep them separated
                 return supportMessage + "\n\n" + sanitizedSummary;
             } else {
@@ -853,9 +853,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                         datePrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} `;
                 }
             }
-            
-            // Add content type to file name prefix if provided
-            const contentTypePrefix = contentType ? `${contentType} - ` : '';
             
             // REDO THE TRANSCRIPT FORMATTING FOR YAML
             // We'll re-process the transcript no matter what format it's in
@@ -1048,7 +1045,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             // Add tags for LLM provider and model in proper YAML array format
             const baseTags = ["youtube", "transcript"];
             const llmProviderTag = `llm/${llmProvider}`;
-            const llmModelTag = `model/${llmModel.replace(/[:\.]/g, "-")}`;
+            const llmModelTag = `model/${llmModel.replace(/[:.]/g, "-")}`;
             const allTags = [...baseTags, llmProviderTag, llmModelTag];
             ctx.user.llmTags = `[${allTags.join(", ")}]`;
             
@@ -2243,7 +2240,7 @@ ${contentToTranslate}
                     return this.settings.maxTokens;
                 }
             }
-        } catch (error) {
+        } catch {
             // Fallback to current setting if anything goes wrong
             return this.settings.maxTokens;
         }
@@ -2259,8 +2256,6 @@ ${contentToTranslate}
         reservePct?: number;
     }): void {
         // Convert K values to actual tokens and register with the dynamic registry
-        const { upsertModel } = require('./src/utils/model-limits-registry');
-        
         upsertModel(provider, modelId, {
             context: limits.contextK * 1000,
             maxOutput: limits.maxOutputK * 1000,
@@ -2424,14 +2419,14 @@ class YouTubeTranscriptModal extends Modal {
     
     onOpen() {
         // Initialize
-        this.showNotice('YouTube Transcript Extractor ready', 3000);
+        this.showNotice('YouTube transcript extractor ready', 3000);
         
         // Clear content and create container
         const { contentEl } = this;
         contentEl.empty();
         
         // Add header
-        contentEl.createEl('h2', { text: 'TubeSage: Create note from YouTube transcript' });
+        contentEl.createEl('h2', { text: 'TubeSage: create note from YouTube transcript' });
         
         // Build the input stage UI
         this.buildInputStage();
@@ -2442,7 +2437,7 @@ class YouTubeTranscriptModal extends Modal {
         contentEl.empty();
         
         // Add header
-        contentEl.createEl('h2', { text: 'TubeSage: Create note from YouTube transcript' });
+        contentEl.createEl('h2', { text: 'TubeSage: create note from YouTube transcript' });
         
         // Check if we're on mobile
         const isMobile = Platform.isMobile;
@@ -2488,7 +2483,7 @@ class YouTubeTranscriptModal extends Modal {
         
         // Create label first
         allVideosContainer.createEl('label', {
-            text: 'All Videos',
+            text: 'All videos',
             cls: 'tubesage-modal-radio-label',
             attr: { for: 'all-videos-radio' }
         });
@@ -2517,13 +2512,13 @@ class YouTubeTranscriptModal extends Modal {
         
         // Create label first
         limitedVideosContainer.createEl('label', {
-            text: 'Limited Number:',
+            text: 'Limited number:',
             cls: 'tubesage-modal-radio-label',
             attr: { for: 'limited-videos-radio' }
         });
         
         // Then add the radio button
-        const limitedVideosRadio = limitedVideosContainer.createEl('input', {
+        limitedVideosContainer.createEl('input', {
             type: 'radio',
             attr: { 
                 id: 'limited-videos-radio',
@@ -2582,7 +2577,7 @@ class YouTubeTranscriptModal extends Modal {
         
         // Title input group - second input (for single video mode)
         const titleGroup = formEl.createEl('div', { cls: 'form-group' });
-        titleGroup.createEl('label', { text: 'Custom Note Title (Optional)', attr: { for: 'title' } });
+        titleGroup.createEl('label', { text: 'Custom note title (optional)', attr: { for: 'title' } });
         this.titleInputEl = titleGroup.createEl('input', { 
             type: 'text',
             attr: { id: 'title', placeholder: 'Leave empty to use YouTube title' } 
@@ -2593,7 +2588,7 @@ class YouTubeTranscriptModal extends Modal {
         
         // Label for the toggle
         const toggleLabel = toggleContainer.createEl('div', { cls: 'toggle-label' });
-        toggleLabel.createEl('div', { text: 'Fast Summary Mode' });
+        toggleLabel.createEl('div', { text: 'Fast summary mode' });
         toggleLabel.createEl('div', { 
             text: 'Enable for shorter, quicker summaries (skips timestamp links)', 
             cls: 'summary-info' 
@@ -2612,9 +2607,9 @@ class YouTubeTranscriptModal extends Modal {
         toggleSwitch.createEl('span', { cls: 'toggle-slider' });
         
         // Add change listener to save toggle state to settings
-        this.fastSummaryToggleEl.addEventListener('change', async () => {
+        this.fastSummaryToggleEl.addEventListener('change', () => {
             this.plugin.settings.useFastSummary = this.fastSummaryToggleEl.checked;
-            await this.plugin.saveSettings();
+            void this.plugin.saveSettings();
         });
         
         // Error message container
@@ -2698,12 +2693,11 @@ class YouTubeTranscriptModal extends Modal {
         this.urlInputEl.focus();
     }
     
-    private handleInputSubmit() {
+    private handleInputSubmit = () => {
         // Clear any previous errors
         this.hideError();
         
         // Get values from inputs
-        const title = this.titleInputEl.value.trim();
         const url = this.urlInputEl.value.trim();
         
         // Create validation rules
@@ -2764,21 +2758,16 @@ class YouTubeTranscriptModal extends Modal {
             return;
         }
         
-        // Create a proxy object that has the required settings property
-        const pluginProxy = {
-            settings: this.plugin.settings
-        };
-        
         // Show folder picker - we'll process videos after folder selection
         const folderSelectionModal = new FolderPickerModal(
             this.app,
             this.plugin, // Revert to this.plugin
             (folderPath) => {
                 this.selectedFolder = folderPath;
-                this.beginCollectionProcessing(sourceUrl, videoCount);
+                void this.beginCollectionProcessing(sourceUrl, videoCount);
             }
         );
-        folderSelectionModal.open();
+        void folderSelectionModal.open();
     }
     
     // Method to start the collection processing workflow
@@ -3067,13 +3056,13 @@ class YouTubeTranscriptModal extends Modal {
             this.plugin, // Use plugin instance
             (folderPath) => {
                 this.selectedFolder = folderPath;
-                this.processTranscript();
+                void this.processTranscript();
             }
         );
-        folderSelectionModal.open();
+        void folderSelectionModal.open();
     }
     
-    private async processTranscript() {
+    private processTranscript = async () => {
         if (this.isProcessing) return;
         
         // Get URL from the input
@@ -3385,13 +3374,13 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         supportHeading.settingEl.addClass('tubesage-heading');
         
         // Support message in appearance format
-        const supportDesc = supportContainer.createEl('div', {
+        supportContainer.createEl('div', {
             text: 'If you find this plugin useful, consider supporting its development:',
             cls: 'tubesage-settings-support-desc' // Apply new class
         });
 
         // Add italicized mission statement
-        const missionDesc = supportContainer.createEl('div', {
+        supportContainer.createEl('div', {
             text: '…and help seed a bigger vision: technology that serves people and planet..',
             cls: ['tubesage-settings-support-desc', 'tubesage-mission-italic'],
             // attr: { style: 'font-style: italic;' } // Removed inline style
@@ -3438,7 +3427,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // License text
         licenseButtonContainer.createEl('span', { 
-            text: 'License & Disclaimer', 
+            text: 'License & disclaimer', 
             cls: 'tubesage-settings-action-button-label' // Apply new class (reused)
         });
         
@@ -3520,7 +3509,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         });
         
         // Create the slider knob
-        const sliderKnob = toggleSlider.createEl('span', {
+        toggleSlider.createEl('span', {
             cls: 'tubesage-license-toggle-knob' // Apply new class
         });
         
@@ -3631,10 +3620,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         updateSettingsState();
         
         // Add change listener to toggle
-        toggleInput.addEventListener('change', async () => {
+        toggleInput.addEventListener('change', () => {
             this.plugin.settings.licenseAccepted = toggleInput.checked;
-            await this.plugin.saveSettings();
-            updateSettingsState();
+            void this.plugin.saveSettings().then(updateSettingsState);
         });
         
         // ALL SETTINGS SECTIONS GO IN settingsContainer FROM HERE ON
@@ -3666,11 +3654,11 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         const filePickerModal = new TemplateFilePickerModal(this.app, (selectedPath) => {
                             if (selectedPath) {
                                 this.plugin.settings.templaterTemplateFile = selectedPath;
-                                this.plugin.saveSettings();
+                                void this.plugin.saveSettings();
                                 this.display();
                             }
                         });
-                        filePickerModal.open();
+                        void filePickerModal.open();
                     });
             });
         
@@ -4626,7 +4614,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             
             // Debug logging to help troubleshoot mobile issues
             if (this.plugin.settings.debugLogging) {
-                console.log('TubeSage: Custom params visibility check', {
+                logger.debug('TubeSage: Custom params visibility check', {
                     dropdownValue,
                     customValue,
                     isCustomSelected,
@@ -5549,7 +5537,7 @@ class READMEModal extends Modal {
             }
             
             // Extract the link components: alt text, image URL, and target URL
-            const [fullMatch, altText, imageUrl, targetUrl] = match;
+            const [fullMatch, altText, , targetUrl] = match;
             
             // Add as a link (we'll ignore the image and just use the alt text)
             parts.push({
@@ -5921,13 +5909,3 @@ class TemplateViewModal extends Modal {
 }
 
 // Add this interface at the top of the file after the existing imports
-interface ObsidianAppWindow extends Window {
-    app?: {
-        isMobile?: boolean;
-        plugins?: Record<string, unknown>;
-        vault?: Record<string, unknown>;
-        workspace?: Record<string, unknown>;
-        setting?: Record<string, unknown>;
-    };
-    opera?: string;
-}

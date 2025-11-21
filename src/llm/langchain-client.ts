@@ -18,6 +18,13 @@ function truncateForDebug(content: string, maxLength: number = 200): string {
   return content.substring(0, maxLength) + '...';
 }
 
+const extractContent = (response: unknown): unknown => {
+  if (response && typeof response === 'object' && 'content' in response) {
+    return (response as { content?: unknown }).content;
+  }
+  return response;
+};
+
 
 /**
  * A unified client for multiple LLM providers using LangChain
@@ -97,7 +104,7 @@ export class LangChainClient {
           // Type cast to any[] is needed because LangChain's type definitions for invoke()
           // expect an array type that's not directly compatible with (SystemMessage | HumanMessage)[]
           const response = await model.invoke(messages);
-          return String(response.content);
+          return String(extractContent(response));
         }
           
         case 'anthropic': {
@@ -212,7 +219,7 @@ export class LangChainClient {
           
           // Type cast needed for compatibility with LangChain's invoke() method
           const response = await model.invoke(messages);
-          return String(response.content);
+          return String(extractContent(response));
         }
            
         case 'ollama': {
@@ -227,7 +234,7 @@ export class LangChainClient {
           
           // Type cast needed for compatibility with LangChain's invoke() method
           const response = await model.invoke(messages);
-          return String(response.content);
+          return String(extractContent(response));
         }
 
         default:

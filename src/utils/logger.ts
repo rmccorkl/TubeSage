@@ -36,7 +36,7 @@ interface LogEntry {
     level: LogLevel;
     category: string;
     message: string;
-    args: any[];
+    args: unknown[];
     formattedMessage: string;
 }
 
@@ -69,7 +69,7 @@ export class Logger {
      * @param message Message or object to log
      * @param args Additional arguments to log
      */
-    debug(message: any, ...args: any[]): void {
+    debug(message: unknown, ...args: unknown[]): void {
         this.log(LogLevel.DEBUG, message, ...args);
     }
     
@@ -78,7 +78,7 @@ export class Logger {
      * @param message Message or object to log
      * @param args Additional arguments to log
      */
-    info(message: any, ...args: any[]): void {
+    info(message: unknown, ...args: unknown[]): void {
         this.log(LogLevel.INFO, message, ...args);
     }
     
@@ -87,7 +87,7 @@ export class Logger {
      * @param message Message or object to log
      * @param args Additional arguments to log
      */
-    warn(message: any, ...args: any[]): void {
+    warn(message: unknown, ...args: unknown[]): void {
         this.log(LogLevel.WARN, message, ...args);
     }
     
@@ -96,7 +96,7 @@ export class Logger {
      * @param message Message or object to log
      * @param args Additional arguments to log
      */
-    error(message: any, ...args: any[]): void {
+    error(message: unknown, ...args: unknown[]): void {
         this.log(LogLevel.ERROR, message, ...args);
     }
     
@@ -106,14 +106,14 @@ export class Logger {
      * @param message Message to log
      * @param args Additional arguments to log
      */
-    private log(level: LogLevel, message: any, ...args: any[]): void {
+    private log(level: LogLevel, message: unknown, ...args: unknown[]): void {
         // Check if we should log this message based on level
         if (!this.shouldLog(level)) {
             return;
         }
         
         // Format message with timestamp and category if configured
-        let formattedMessage = message;
+        let formattedMessage = typeof message === 'string' ? message : String(message);
         
         if (config.includePrefix) {
             const levelName = LogLevel[level];
@@ -123,6 +123,7 @@ export class Logger {
         // Create a log entry
         const timestamp = new Date();
         let displayMessage = formattedMessage;
+        const messageText = typeof message === 'string' ? message : String(message);
         
         if (config.includeTimestamp) {
             displayMessage = `${timestamp.toISOString()} ${formattedMessage}`;
@@ -133,7 +134,7 @@ export class Logger {
             timestamp,
             level,
             category: this.category,
-            message: message.toString(),
+            message: messageText,
             args,
             formattedMessage: displayMessage
         });

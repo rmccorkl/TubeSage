@@ -3,6 +3,8 @@ import { obsidianFetch } from "../utils/fetch-shim";
 import { getLogger } from "../utils/logger";
 
 const logger = getLogger('OPENAI');
+type ChatCompletionMessageParam = OpenAI.Chat.Completions.ChatCompletionMessageParam;
+type ChatCompletionOptions = Partial<Omit<OpenAI.Chat.Completions.ChatCompletionCreateParams, 'model' | 'messages'>>;
 
 /**
  * Creates an OpenAI client configured to work in Obsidian on any platform.
@@ -38,7 +40,7 @@ export function createOpenAIClient(apiKey: string) {
       try {
         const parsedUrl = new URL(requestUrl);
         requestUrl = parsedUrl.toString();
-      } catch (e) {
+      } catch {
         logger.error('Invalid URL format:', requestUrl);
         throw new Error(`Invalid URL format: ${requestUrl}`);
       }
@@ -85,7 +87,11 @@ export class OpenAIWrapper {
    * @param options Additional options
    * @returns The completion response
    */
-  async createChatCompletion(model: string, messages: any[], options: any = {}) {
+  async createChatCompletion(
+    model: string,
+    messages: ChatCompletionMessageParam[],
+    options: ChatCompletionOptions = {}
+  ) {
     try {
       logger.debug(`Creating chat completion with model: ${model}, messages: ${messages.length}, options: ${JSON.stringify({
         temperature: options.temperature,
@@ -93,16 +99,16 @@ export class OpenAIWrapper {
       })}`);
       
       // Create a safe copy of options to prevent mutations or reference issues
-      const safeOptions = { ...options };
+      const safeOptions: ChatCompletionOptions = { ...options };
       
       // Validate messages format - each message must have role and content
-      const validMessages = messages.map(msg => {
+      const validMessages: ChatCompletionMessageParam[] = messages.map(msg => {
         if (!msg.role || !msg.content) {
           logger.warn('Invalid message format, fixing:', msg);
           return {
-            role: msg.role || 'user',
-            content: msg.content || ''
-          };
+            role: (msg.role ?? 'user') as ChatCompletionMessageParam['role'],
+            content: typeof msg.content === 'string' ? msg.content : ''
+          } as ChatCompletionMessageParam;
         }
         return msg;
       });

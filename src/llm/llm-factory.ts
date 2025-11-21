@@ -96,7 +96,7 @@ export class LLMFactory {
    * @param provider The provider ID
    * @returns The LLM client
    */
-  getClient(provider: string): any {
+  getClient(provider: string): OpenAIWrapper | AnthropicClient | GeminiClient | OllamaClient {
     switch (provider) {
       case 'openai':
         return this.getOpenAIClient();

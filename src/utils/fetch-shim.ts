@@ -8,10 +8,42 @@ const logger = getLogger('FETCH');
 interface RequestUrlResponse {
   status: number;
   text: string;
-  json?: any;
+  json?: unknown;
   headers: Record<string, string>;
   arrayBuffer?: ArrayBuffer;
 }
+
+interface RequestUrlOptions {
+  url: string;
+  method?: string;
+  headers: Record<string, string>;
+  body?: string;
+  throw?: boolean;
+  arrayBuffer?: ArrayBuffer | ArrayBufferLike;
+}
+
+const normalizeHeaders = (headers?: HeadersInit): Record<string, string> => {
+  if (!headers) {
+    return {};
+  }
+
+  if (headers instanceof Headers) {
+    const result: Record<string, string> = {};
+    headers.forEach((value, key) => {
+      result[key] = value;
+    });
+    return result;
+  }
+
+  if (Array.isArray(headers)) {
+    return Object.fromEntries(headers.map(([key, value]) => [key, String(value)]));
+  }
+
+  return Object.entries(headers).reduce<Record<string, string>>((acc, [key, value]) => {
+    acc[key] = String(value);
+    return acc;
+  }, {});
+};
 
 /**
  * A fetch API implementation that uses Obsidian's requestUrl method.
@@ -59,10 +91,10 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
     }
 
     // Convert fetch API options to requestUrl format
-    const options: any = {
+    const options: RequestUrlOptions = {
       url: url,
       method: init?.method ?? "GET",
-      headers: init?.headers as Record<string, string> || {},
+      headers: normalizeHeaders(init?.headers),
       throw: false, // Handle errors manually for better mapping to fetch API
     };
 

@@ -1,4 +1,4 @@
-import { App } from 'obsidian';
+import type { Vault } from 'obsidian';
 
 /**
  * Standardized path utilities for consistent folder and path management
@@ -40,7 +40,7 @@ export function normalizePath(path: string, removeLeadingSlash: boolean = true):
  * @param folderPath Path to ensure exists
  * @returns Promise resolving when complete
  */
-export async function ensureFolder(vault: any, folderPath: string): Promise<void> {
+export async function ensureFolder(vault: Vault, folderPath: string): Promise<void> {
     if (!folderPath || folderPath.trim() === '') return;
     
     // Normalize the path first
@@ -50,7 +50,7 @@ export async function ensureFolder(vault: any, folderPath: string): Promise<void
         await vault.createFolder(normalizedPath);
     } catch (error) {
         // Only ignore "already exists" errors
-        if (!error.message?.includes("already exists")) {
+        if (!(error instanceof Error) || !error.message.includes("already exists")) {
             throw error;
         }
         // Folder already exists, which is fine

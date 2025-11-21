@@ -85,9 +85,9 @@ export function createLangChainFetcher() {
 /**
  * Configuration object for LangChain models that includes our custom fetcher
  */
-export function getLangChainConfiguration(options: Record<string, any> = {}) {
+export function getLangChainConfiguration(options: Record<string, unknown> = {}) {
   return {
     ...options,
     fetch: createLangChainFetcher()
   };
-} 
+}

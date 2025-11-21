@@ -3,6 +3,12 @@ import { getLogger } from "../utils/logger";
 
 const logger = getLogger('ANTHROPIC');
 
+interface AnthropicCompletionOptions {
+  system?: string;
+  temperature?: number;
+  max_tokens?: number;
+}
+
 /**
  * Simple Anthropic API client that doesn't rely on their Node.js SDK.
  * This works on both desktop and mobile Obsidian.
@@ -74,7 +80,7 @@ export class AnthropicClient {
    * @param options Additional options
    * @returns The completion response
    */
-  async createCompletion(model: string, prompt: string, options: any = {}) {
+  async createCompletion(model: string, prompt: string, options: AnthropicCompletionOptions = {}) {
     const systemPrompt = options.system || '';
     const temperature = options.temperature !== undefined ? options.temperature : 0.7;
     const maxTokens = options.max_tokens || 1024;

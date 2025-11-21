@@ -1,4 +1,3 @@
-import { App } from 'obsidian';
 import { getLogger } from './logger';
 import * as TimeFormat from 'hh-mm-ss';
 

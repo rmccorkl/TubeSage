@@ -8,9 +8,12 @@
  * @param defaultMessage Default message if extraction fails
  * @returns A safe error message string
  */
-export function getSafeErrorMessage(error: any, defaultMessage = 'Unknown error occurred'): string {
+export function getSafeErrorMessage(error: unknown, defaultMessage = 'Unknown error occurred'): string {
+    if (error instanceof Error && error.message) {
+        return error.message;
+    }
     try {
-        return error?.message || String(error) || defaultMessage;
+        return String(error) || defaultMessage;
     } catch {
         return defaultMessage;
     }
@@ -35,7 +38,7 @@ export enum ErrorCategory {
  * @param error The error object
  * @returns The detected error category
  */
-export function detectErrorCategory(error: any): ErrorCategory {
+export function detectErrorCategory(error: unknown): ErrorCategory {
     const message = getSafeErrorMessage(error);
     
     // Network errors
@@ -98,7 +101,7 @@ export function detectErrorCategory(error: any): ErrorCategory {
  * @param apiName Name of the API to prefix error with
  * @returns Formatted error with appropriate message
  */
-export function createApiError(error: any, apiName: string): Error {
+export function createApiError(error: unknown, apiName: string): Error {
     const category = detectErrorCategory(error);
     const originalMessage = getSafeErrorMessage(error);
     
@@ -137,7 +140,7 @@ export function createApiError(error: any, apiName: string): Error {
  * @param context Additional context for debugging
  * @returns Formatted error with appropriate message
  */
-export function handleApiError(error: any, apiName: string, context?: string): Error {
+export function handleApiError(error: unknown, apiName: string, context?: string): Error {
     // Log detailed error for debugging
     console.error(`[${apiName}]${context ? ' [' + context + ']' : ''} Error:`, error);
     

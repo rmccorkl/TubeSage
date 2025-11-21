@@ -1,7 +1,7 @@
 // Type definitions for @electron/remote (optional dependency)
 declare module "@electron/remote" {
     export interface BrowserWindow {
-        new (options?: any): {
+        new (options?: Record<string, unknown>): {
             show(): void;
             loadURL(url: string): Promise<void>;
             destroy(): void;

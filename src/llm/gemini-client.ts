@@ -3,6 +3,18 @@ import { getLogger } from "../utils/logger";
 
 const logger = getLogger('GEMINI');
 
+interface GeminiGenerateOptions {
+  temperature?: number;
+  max_tokens?: number;
+  top_p?: number;
+  top_k?: number;
+  system?: string;
+}
+
+const isRecord = (value: unknown): value is Record<string, unknown> => {
+  return typeof value === 'object' && value !== null;
+};
+
 /**
  * Client for Google's Gemini API
  */
@@ -36,12 +48,20 @@ export class GeminiClient {
    * @param options Additional options
    * @returns The generation response
    */
-  async generateContent(model: string, prompt: string, options: any = {}) {
+  async generateContent(model: string, prompt: string, options: GeminiGenerateOptions = {}) {
     try {
       const url = `${this.baseUrl}/${this.apiVersion}/models/${model}:generateContent?key=${this.apiKey}`;
       
       // Initialize request body
-      const requestBody: any = {
+      const requestBody: {
+        contents: Array<{ role: string; parts: Array<{ text: string }> }>;
+        generationConfig: {
+          temperature: number;
+          maxOutputTokens: number;
+          topP: number;
+          topK: number;
+        };
+      } = {
         contents: [],
         generationConfig: {
           temperature: options.temperature !== undefined ? options.temperature : 0.7,
@@ -91,18 +111,22 @@ export class GeminiClient {
    * @param response The raw API response
    * @returns The generated text
    */
-  extractText(response: any): string {
+  extractText(response: unknown): string {
     try {
-      if (!response || !response.candidates || !response.candidates[0]) {
+      if (!isRecord(response)) {
         return '';
       }
       
-      const candidate = response.candidates[0];
-      if (!candidate.content || !candidate.content.parts || !candidate.content.parts[0]) {
+      const candidates = response.candidates as unknown;
+      if (!Array.isArray(candidates) || !candidates[0]) {
         return '';
       }
       
-      return candidate.content.parts[0].text || '';
+      const candidate = candidates[0] as {
+        content?: { parts?: Array<{ text?: string }> };
+      };
+      const text = candidate.content?.parts?.[0]?.text;
+      return typeof text === 'string' ? text : '';
     } catch (error) {
       logger.error('Error extracting text from Gemini response:', error);
       return '';

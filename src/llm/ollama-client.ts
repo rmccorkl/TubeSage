@@ -60,7 +60,16 @@ export class OllamaClient {
     const { system, temperature = 0.7, max_tokens } = options;
     
     try {
-      const requestBody: any = {
+      const requestBody: {
+        model: string;
+        prompt: string;
+        stream: boolean;
+        system?: string;
+        options: {
+          temperature: number;
+          num_predict?: number;
+        };
+      } = {
         model,
         prompt,
         stream: false,

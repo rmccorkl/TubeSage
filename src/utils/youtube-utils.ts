@@ -44,7 +44,7 @@ export function isYoutubeUrl(url: string): boolean {
         
         // If we got here, it's a YouTube domain but not a valid video, playlist, or channel URL
         return false;
-    } catch (e) {
+    } catch {
         // If URL parsing fails, it's not a valid URL
         return false;
     }
@@ -63,7 +63,7 @@ export function isYoutubeChannelOrPlaylistUrl(url: string): boolean {
     let urlObj;
     try {
         urlObj = new URL(url);
-    } catch (e) {
+    } catch {
         // Invalid URL
         return false;
     }
@@ -149,7 +149,7 @@ export function showNotice(message: string, timeout: number = 5000): void {
         // Try with timeout parameter (may work in newer Obsidian versions)
         // @ts-ignore - Ignoring TypeScript error for potentially unsupported parameter
         new Notice(message + debugInfo, timeout);
-    } catch (e) {
+    } catch {
         // Fallback to standard Notice if timeout parameter isn't supported
         new Notice(message);
     }

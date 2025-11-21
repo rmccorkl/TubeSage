@@ -5,14 +5,14 @@ declare module 'youtube-transcript-api' {
         start: number;
         duration: number;
         // Allow for additional properties that might come from the API
-        [key: string]: any;
+        [key: string]: unknown;
     }
 
     interface TranscriptOptions {
         lang?: string;
         country?: string;
         // Any other options the API might accept
-        [key: string]: any;
+        [key: string]: unknown;
     }
 
     // Using the class name we found in the actual code

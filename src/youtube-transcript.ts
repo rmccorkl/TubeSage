@@ -9,6 +9,14 @@ import { obsidianFetch } from "src/utils/fetch-shim";
 import { getLogger } from "src/utils/logger";
 const transcriptLogger = getLogger("TRANSCRIPT");
 
+type UnknownRecord = Record<string, unknown>;
+
+const isRecord = (value: unknown): value is UnknownRecord => {
+    return typeof value === 'object' && value !== null;
+};
+
+const isString = (value: unknown): value is string => typeof value === 'string';
+
 // Add the CaptionTrack type at file level, outside of any method
 /**
  * Interface for YouTube caption tracks
@@ -122,12 +130,46 @@ export class YouTubeTranscriptExtractor {
                 transcriptLogger.debug(`Step 1 completed: received ${JSON.stringify(nextData).length} characters of next API data`);
                 
                 // Extract metadata from nextData response to eliminate redundant first fetch
-                const extractMetadataFromNextData = (nextData: any): TranscriptMetadata => {
+                const extractMetadataFromNextData = (nextData: unknown): TranscriptMetadata => {
                     const metadata: TranscriptMetadata = {};
+                    if (!isRecord(nextData)) {
+                        return metadata;
+                    }
+                    
+                    const typedNextData = nextData as {
+                        playerOverlays?: {
+                            playerOverlayRenderer?: {
+                                videoDetails?: {
+                                    playerOverlayVideoDetailsRenderer?: {
+                                        title?: { simpleText?: string };
+                                        subtitle?: { runs?: Array<{ text?: string }> };
+                                    };
+                                };
+                            };
+                        };
+                        contents?: {
+                            twoColumnWatchNextResults?: {
+                                results?: {
+                                    results?: {
+                                        contents?: Array<{
+                                            videoPrimaryInfoRenderer?: { title?: { runs?: Array<{ text?: string }> } };
+                                            videoSecondaryInfoRenderer?: { owner?: { videoOwnerRenderer?: { title?: { runs?: Array<{ text?: string }> } } } };
+                                        }>;
+                                    };
+                                };
+                            };
+                        };
+                        microformat?: {
+                            playerMicroformatRenderer?: {
+                                title?: { simpleText?: string };
+                                ownerChannelName?: string;
+                            };
+                        };
+                    };
                     
                     try {
                         // Method 1: From playerOverlays (most reliable)
-                        const playerOverlayDetails = nextData?.playerOverlays?.playerOverlayRenderer?.videoDetails?.playerOverlayVideoDetailsRenderer;
+                        const playerOverlayDetails = typedNextData.playerOverlays?.playerOverlayRenderer?.videoDetails?.playerOverlayVideoDetailsRenderer;
                         if (playerOverlayDetails) {
                             metadata.title = playerOverlayDetails.title?.simpleText;
                             metadata.author = playerOverlayDetails.subtitle?.runs?.[0]?.text;
@@ -136,19 +178,19 @@ export class YouTubeTranscriptExtractor {
                         
                         // Method 2: From contents (fallback)
                         if (!metadata.title || !metadata.author) {
-                            const contents = nextData?.contents?.twoColumnWatchNextResults?.results?.results?.contents;
+                            const contents = typedNextData.contents?.twoColumnWatchNextResults?.results?.results?.contents;
                             if (Array.isArray(contents)) {
                                 // Look for title in videoPrimaryInfoRenderer
-                                const primaryInfo = contents.find((c: any) => c.videoPrimaryInfoRenderer);
+                                const primaryInfo = contents.find((c) => c.videoPrimaryInfoRenderer);
                                 if (primaryInfo && !metadata.title) {
-                                    metadata.title = primaryInfo.videoPrimaryInfoRenderer.title?.runs?.[0]?.text;
+                                    metadata.title = primaryInfo.videoPrimaryInfoRenderer?.title?.runs?.[0]?.text;
                                     transcriptLogger.debug(`Extracted title from videoPrimaryInfoRenderer: "${metadata.title}"`);
                                 }
                                 
                                 // Look for author in videoSecondaryInfoRenderer
-                                const secondaryInfo = contents.find((c: any) => c.videoSecondaryInfoRenderer);
+                                const secondaryInfo = contents.find((c) => c.videoSecondaryInfoRenderer);
                                 if (secondaryInfo && !metadata.author) {
-                                    metadata.author = secondaryInfo.videoSecondaryInfoRenderer.owner?.videoOwnerRenderer?.title?.runs?.[0]?.text;
+                                    metadata.author = secondaryInfo.videoSecondaryInfoRenderer?.owner?.videoOwnerRenderer?.title?.runs?.[0]?.text;
                                     transcriptLogger.debug(`Extracted author from videoSecondaryInfoRenderer: "${metadata.author}"`);
                                 }
                             }
@@ -156,7 +198,7 @@ export class YouTubeTranscriptExtractor {
                         
                         // Method 3: Search for videoDetails in microformat (additional fallback)
                         if (!metadata.title || !metadata.author) {
-                            const microformat = nextData?.microformat?.playerMicroformatRenderer;
+                            const microformat = typedNextData.microformat?.playerMicroformatRenderer;
                             if (microformat) {
                                 if (!metadata.title && microformat.title?.simpleText) {
                                     metadata.title = microformat.title.simpleText;
@@ -189,18 +231,22 @@ export class YouTubeTranscriptExtractor {
                 }
                 
                 // Extract transcript endpoint parameters
-                let transcriptParams = null;
+                let transcriptParams: string | null = null;
                 try {
                     // Look for getTranscriptEndpoint in the response
-                    const findTranscriptEndpoint = (obj: any): any => {
-                        if (obj && typeof obj === 'object') {
-                            if (obj.getTranscriptEndpoint?.params) {
-                                return obj.getTranscriptEndpoint.params;
-                            }
-                            for (const key in obj) {
-                                const result = findTranscriptEndpoint(obj[key]);
-                                if (result) return result;
-                            }
+                    const findTranscriptEndpoint = (obj: unknown): string | null => {
+                        if (!isRecord(obj)) {
+                            return null;
+                        }
+                        
+                        const endpoint = obj.getTranscriptEndpoint as { params?: unknown } | undefined;
+                        if (endpoint && isString(endpoint.params)) {
+                            return endpoint.params;
+                        }
+                        
+                        for (const value of Object.values(obj)) {
+                            const result = findTranscriptEndpoint(value);
+                            if (result) return result;
                         }
                         return null;
                     };
@@ -209,7 +255,9 @@ export class YouTubeTranscriptExtractor {
                     
                     if (!transcriptParams) {
                         transcriptLogger.error(`No getTranscriptEndpoint.params found in next API response`);
-                        transcriptLogger.debug(`Next API response keys: ${Object.keys(nextData).join(', ')}`);
+                        if (isRecord(nextData)) {
+                            transcriptLogger.debug(`Next API response keys: ${Object.keys(nextData).join(', ')}`);
+                        }
                         throw new Error(`No transcript parameters found in YouTube API response for video ${videoId}`);
                     }
                     
@@ -254,46 +302,64 @@ export class YouTubeTranscriptExtractor {
                     throw new Error(`Failed to fetch transcript: HTTP ${transcriptResponse.status}`);
                 }
                 
-                const transcriptData = await transcriptResponse.json();
+                const transcriptData = await transcriptResponse.json() as UnknownRecord;
                 transcriptLogger.debug(`Step 2 completed: received transcript data with ${JSON.stringify(transcriptData).length} characters`);
                 
                 // Parse the transcript data
                 try {
                     // Look for transcript text in the response with enhanced search
-                    const findTranscriptText = (obj: any, depth = 0, path = 'root'): any => {
+                    const findTranscriptText = (obj: unknown, depth = 0, path = 'root'): unknown => {
                         if (depth > 10) return null; // Prevent infinite recursion
                         
-                        if (obj && typeof obj === 'object') {
+                        if (isRecord(obj)) {
                             // Check for the main transcript structure
-                            if (obj.transcriptBody?.transcriptBodyRenderer?.cueGroups) {
+                            const transcriptBody = (obj['transcriptBody'] as { transcriptBodyRenderer?: { cueGroups?: unknown } } | undefined)?.transcriptBodyRenderer?.cueGroups;
+                            if (transcriptBody) {
                                 transcriptLogger.debug(`Found cueGroups at path: ${path}.transcriptBody.transcriptBodyRenderer.cueGroups`);
-                                return obj.transcriptBody.transcriptBodyRenderer.cueGroups;
+                                return transcriptBody;
                             }
                             
                             // Check for alternative transcript structures
-                            if (obj.cueGroups && Array.isArray(obj.cueGroups)) {
+                            const directCueGroups = obj['cueGroups'];
+                            if (directCueGroups && Array.isArray(directCueGroups)) {
                                 transcriptLogger.debug(`Found cueGroups directly at path: ${path}.cueGroups`);
-                                return obj.cueGroups;
+                                return directCueGroups;
                             }
                             
                             // Check for updateEngagementPanelAction structure
-                            if (obj.updateEngagementPanelAction?.content?.transcriptRenderer?.content?.transcriptSearchPanelRenderer?.body?.transcriptSegmentListRenderer?.initialSegments) {
+                            const initialSegments = (obj['updateEngagementPanelAction'] as {
+                                content?: {
+                                    transcriptRenderer?: {
+                                        content?: {
+                                            transcriptSearchPanelRenderer?: {
+                                                body?: {
+                                                    transcriptSegmentListRenderer?: {
+                                                        initialSegments?: unknown;
+                                                    };
+                                                };
+                                            };
+                                        };
+                                    };
+                                };
+                            } | undefined)?.content?.transcriptRenderer?.content?.transcriptSearchPanelRenderer?.body?.transcriptSegmentListRenderer?.initialSegments;
+                            if (initialSegments) {
                                 transcriptLogger.debug(`Found segments in updateEngagementPanelAction at path: ${path}`);
-                                return obj.updateEngagementPanelAction.content.transcriptRenderer.content.transcriptSearchPanelRenderer.body.transcriptSegmentListRenderer.initialSegments;
+                                return initialSegments;
                             }
                             
                             // Search through actions array
-                            if (obj.actions && Array.isArray(obj.actions)) {
-                                for (let i = 0; i < obj.actions.length; i++) {
-                                    const result = findTranscriptText(obj.actions[i], depth + 1, `${path}.actions[${i}]`);
+                            const actions = obj['actions'];
+                            if (actions && Array.isArray(actions)) {
+                                for (let i = 0; i < actions.length; i++) {
+                                    const result = findTranscriptText(actions[i], depth + 1, `${path}.actions[${i}]`);
                                     if (result) return result;
                                 }
                             }
                             
                             // Search through all object properties
-                            for (const key in obj) {
-                                if (typeof obj[key] === 'object') {
-                                    const result = findTranscriptText(obj[key], depth + 1, `${path}.${key}`);
+                            for (const [key, value] of Object.entries(obj)) {
+                                if (typeof value === 'object') {
+                                    const result = findTranscriptText(value, depth + 1, `${path}.${key}`);
                                     if (result) return result;
                                 }
                             }
@@ -308,10 +374,11 @@ export class YouTubeTranscriptExtractor {
                         transcriptLogger.debug(`Transcript response keys: ${Object.keys(transcriptData).join(', ')}`);
                         
                         // If we have actions, let's examine their structure
-                        if (transcriptData.actions && Array.isArray(transcriptData.actions)) {
-                            transcriptLogger.debug(`Found ${transcriptData.actions.length} actions, examining structure...`);
-                            transcriptData.actions.forEach((action: any, i: number) => {
-                                if (action && typeof action === 'object') {
+                        const transcriptActions = transcriptData.actions as unknown;
+                        if (Array.isArray(transcriptActions)) {
+                            transcriptLogger.debug(`Found ${transcriptActions.length} actions, examining structure...`);
+                            transcriptActions.forEach((action, i: number) => {
+                                if (isRecord(action)) {
                                     transcriptLogger.debug(`Action ${i} keys: ${Object.keys(action).join(', ')}`);
                                     if (action.updateEngagementPanelAction) {
                                         transcriptLogger.debug(`Action ${i} has updateEngagementPanelAction`);
@@ -326,9 +393,19 @@ export class YouTubeTranscriptExtractor {
                     transcriptLogger.debug(`Found ${cueGroups.length} cue groups in transcript`);
                     
                     // Convert cue groups to segments - handle multiple formats
-                    const segments = cueGroups.map((cueGroup: any, index: number) => {
+                    const segments = cueGroups.map<TranscriptSegment | null>((cueGroup: unknown, index: number) => {
                         // Traditional cueGroup format
-                        const cue = cueGroup.transcriptCueGroupRenderer?.cues?.[0]?.transcriptCueRenderer;
+                        const cue = (cueGroup as {
+                            transcriptCueGroupRenderer?: {
+                                cues?: Array<{
+                                    transcriptCueRenderer?: {
+                                        cue?: { simpleText?: string };
+                                        startOffsetMs?: string;
+                                        durationMs?: string;
+                                    };
+                                }>;
+                            };
+                        }).transcriptCueGroupRenderer?.cues?.[0]?.transcriptCueRenderer;
                         if (cue) {
                             const text = cue.cue?.simpleText || '';
                             const startMs = parseInt(cue.startOffsetMs || '0');
@@ -342,7 +419,13 @@ export class YouTubeTranscriptExtractor {
                         }
                         
                         // Alternative format: transcriptSegmentRenderer (from initialSegments)
-                        const segmentRenderer = cueGroup.transcriptSegmentRenderer;
+                        const segmentRenderer = (cueGroup as {
+                            transcriptSegmentRenderer?: {
+                                snippet?: { runs?: Array<{ text?: string }> };
+                                startMs?: string;
+                                endMs?: string;
+                            };
+                        }).transcriptSegmentRenderer;
                         if (segmentRenderer) {
                             const text = segmentRenderer.snippet?.runs?.[0]?.text || '';
                             const startMs = parseInt(segmentRenderer.startMs || '0');
@@ -358,11 +441,12 @@ export class YouTubeTranscriptExtractor {
                         
                         // If neither format works, log for debugging
                         if (index < 3) { // Only log first few for debugging
-                            transcriptLogger.debug(`Unknown cueGroup format at index ${index}: ${Object.keys(cueGroup).join(', ')}`);
+                            const cueGroupInfo = isRecord(cueGroup) ? Object.keys(cueGroup).join(', ') : 'non-object cue group';
+                            transcriptLogger.debug(`Unknown cueGroup format at index ${index}: ${cueGroupInfo}`);
                         }
                         
                         return null;
-                    }).filter((segment: any): segment is TranscriptSegment => segment !== null && segment.text);
+                    }).filter((segment): segment is TranscriptSegment => segment !== null && !!segment.text);
                     
                     transcriptLogger.debug(`Parsed ${segments.length} transcript segments`);
                     
@@ -668,27 +752,30 @@ export class YouTubeTranscriptExtractor {
         transcriptLogger.debug(`Parsing JSON captions for video ${videoId}`);
         
         try {
-            const transcriptJson = JSON.parse(jsonText);
-            const events = transcriptJson.events || [];
+            const transcriptJson = JSON.parse(jsonText) as { events?: unknown[] };
+            const events = Array.isArray(transcriptJson.events) ? transcriptJson.events : [];
             
             // Convert events to our TranscriptSegment format
             const segments: TranscriptSegment[] = [];
             
             events
-                .filter((e: any) => e.segs && Array.isArray(e.segs)) // Filter events with text segments
-                .forEach((e: any) => {
-                    const startMs = e.tStartMs ? parseInt(e.tStartMs) : 0;
-                    const durationMs = e.dDurationMs ? parseInt(e.dDurationMs) : 0;
+                .filter((event): event is { segs?: Array<{ utf8?: string }>; tStartMs?: string; dDurationMs?: string } => {
+                    return isRecord(event) && Array.isArray(event.segs);
+                })
+                .forEach((event) => {
+                    const startMs = event.tStartMs ? parseInt(event.tStartMs) : 0;
+                    const durationMs = event.dDurationMs ? parseInt(event.dDurationMs) : 0;
                     
                     // Combine all segments in this event
-                    const text = e.segs
-                        .map((seg: any) => seg.utf8 || '')
+                    const text = (event.segs ?? [])
+                        .map((seg) => seg.utf8 || '')
                         .join('')
                         .replace(/[\u200B-\u200D\uFEFF]/g, ''); // Remove special chars
                     
-                    if (text.trim()) {
+                    const trimmedText = text.trim();
+                    if (trimmedText) {
                         segments.push({
-                            text: text.trim(),
+                            text: trimmedText,
                             start: startMs / 1000, // Convert to seconds
                             duration: durationMs / 1000 // Convert to seconds
                         });
