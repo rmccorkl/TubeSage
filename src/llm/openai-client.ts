@@ -1,8 +1,12 @@
 import OpenAI from "openai";
 import { obsidianFetch } from "../utils/fetch-shim";
 import { getLogger } from "../utils/logger";
+import { getSafeErrorMessage } from "../utils/error-utils";
 
 const logger = getLogger('OPENAI');
+type UnknownRecord = Record<string, unknown>;
+const isRecord = (value: unknown): value is UnknownRecord =>
+  typeof value === 'object' && value !== null;
 type ChatCompletionMessageParam = OpenAI.Chat.Completions.ChatCompletionMessageParam;
 type ChatCompletionOptions = Partial<Omit<OpenAI.Chat.Completions.ChatCompletionCreateParams, 'model' | 'messages'>> & {
   max_completion_tokens?: number;
@@ -67,7 +71,8 @@ export function createOpenAIClient(apiKey: string) {
     });
   } catch (error) {
     logger.error('Failed to create OpenAI client:', error);
-    throw new Error(`Failed to initialize OpenAI client: ${error.message}`);
+    const errorMessage = getSafeErrorMessage(error);
+    throw new Error(`Failed to initialize OpenAI client: ${errorMessage}`);
   }
 }
 
@@ -99,17 +104,18 @@ export class OpenAIWrapper {
       const normalizedOptions: ChatCompletionOptions = { ...options };
       const normalizeTokenValue = (value: number | null | undefined): number | undefined =>
         typeof value === 'number' ? value : undefined;
+      const deprecatedMaxTokens = (options as UnknownRecord)['max_tokens'];
 
-      if (options.max_tokens !== undefined) {
+      if (typeof deprecatedMaxTokens === 'number') {
         logger.warn('Received deprecated max_tokens; mapping to max_completion_tokens for compatibility.');
       }
 
       const completionTokens = normalizeTokenValue(
-        normalizedOptions.max_completion_tokens ?? normalizedOptions.max_tokens
+        normalizedOptions.max_completion_tokens ?? (typeof deprecatedMaxTokens === 'number' ? deprecatedMaxTokens : undefined)
       );
 
       // Always remove deprecated field before sending to OpenAI
-      delete (normalizedOptions as { max_tokens?: number | null }).max_tokens;
+      delete (normalizedOptions as UnknownRecord)['max_tokens'];
 
       if (completionTokens !== undefined) {
         normalizedOptions.max_completion_tokens = completionTokens;
@@ -162,18 +168,24 @@ export class OpenAIWrapper {
       return response;
     } catch (error) {
       logger.error('Error in chat completion:', error);
-      
+
       // Enhanced error reporting
-      if (error.response) {
-        logger.error(`Status: ${error.response.status}, Data:`, error.response.data);
+      if (isRecord(error)) {
+        const response = error.response;
+        if (isRecord(response)) {
+          const status = response.status;
+          const statusText = typeof status === 'number' || typeof status === 'string' ? status : 'unknown';
+          logger.error(`Status: ${statusText}, Data:`, response.data);
+        }
       }
-      
+
       // Check for common errors and provide better messages
-      if (error.message && error.message.includes('ERR_INVALID_ARGUMENT')) {
+      const errorMessage = getSafeErrorMessage(error);
+      if (errorMessage.includes('ERR_INVALID_ARGUMENT')) {
         throw new Error('Invalid API request. Please check your API key and network connection.');
       }
-      
+
       throw error;
     }
   }
-} 
+}

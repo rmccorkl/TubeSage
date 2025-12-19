@@ -3,10 +3,16 @@ import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatOllama } from "@langchain/ollama";
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { getLogger } from "../utils/logger";
+import { getSafeErrorMessage } from "../utils/error-utils";
 import { getLangChainConfiguration } from "./langchain-fetcher";
 import { obsidianFetch } from "../utils/fetch-shim";
 
 const logger = getLogger('LANGCHAIN');
+
+type UnknownRecord = Record<string, unknown>;
+
+const isRecord = (value: unknown): value is UnknownRecord =>
+  typeof value === 'object' && value !== null;
 
 /**
  * Helper function to truncate content for debug logging
@@ -202,16 +208,18 @@ export class LangChainClient {
               throw new Error(`Anthropic API error: ${errorText}`);
             }
             
-            const responseData = await response.json();
+            const responseData = await response.json() as unknown;
             
             // Debug logging for response - truncated
-            logger.debug(`Anthropic API Response: ${responseData.usage ? `Usage: ${JSON.stringify(responseData.usage)}` : 'Success'}`);
+            const usage = isRecord(responseData) ? responseData.usage : undefined;
+            logger.debug(`Anthropic API Response: ${usage ? `Usage: ${JSON.stringify(usage)}` : 'Success'}`);
             
-            if (!responseData.content || !responseData.content[0] || !responseData.content[0].text) {
+            const content = isRecord(responseData) ? responseData.content : undefined;
+            if (!Array.isArray(content) || !content[0] || !isRecord(content[0]) || typeof content[0].text !== 'string') {
               throw new Error('Invalid response format from Anthropic API');
             }
             
-            const responseText = responseData.content[0].text;
+            const responseText = content[0].text;
             logger.debug(`Anthropic response text (${responseText.length} chars): ${truncateForDebug(responseText)}`);
             
             return responseText;
@@ -274,23 +282,30 @@ export class LangChainClient {
       
       // Log comprehensive error details
       logger.error(`Error type: ${typeof error}`);
-      logger.error(`Error constructor: ${error?.constructor?.name}`);
-      logger.error(`Error message: ${error?.message}`);
-      logger.error(`Error stack: ${error?.stack}`);
+      const errorMessage = getSafeErrorMessage(error);
+      logger.error(`Error message: ${errorMessage}`);
+      if (error instanceof Error && error.stack) {
+        logger.error(`Error stack: ${error.stack}`);
+      }
       
       // Log all error properties
-      if (error && typeof error === 'object') {
-        logger.error(`Error keys: ${Object.keys(error).join(', ')}`);
-        Object.keys(error).forEach(key => {
-          logger.error(`Error.${key}:`, error[key]);
-        });
+      if (isRecord(error)) {
+        const errorKeys = Object.keys(error);
+        if (errorKeys.length > 0) {
+          logger.error(`Error keys: ${errorKeys.join(', ')}`);
+          errorKeys.forEach((key) => {
+            logger.error(`Error.${key}:`, error[key]);
+          });
+        }
+        const response = error.response;
+        if (isRecord(response)) {
+          const status = response.status;
+          const data = response.data;
+          logger.error(`Status: ${typeof status === 'number' ? status : 'unknown'}, Data:`, data);
+        }
       }
       
-      if (error.response) {
-        logger.error(`Status: ${error.response.status}, Data:`, error.response.data);
-      }
-      
-      if (error.message && error.message.includes('ERR_INVALID_ARGUMENT')) {
+      if (errorMessage.includes('ERR_INVALID_ARGUMENT')) {
         throw new Error(`Invalid request to ${this.provider} API. Please check your API key and network connection.`);
       }
       

@@ -48,7 +48,7 @@ export class GeminiClient {
    * @param options Additional options
    * @returns The generation response
    */
-  async generateContent(model: string, prompt: string, options: GeminiGenerateOptions = {}) {
+  async generateContent(model: string, prompt: string, options: GeminiGenerateOptions = {}): Promise<unknown> {
     try {
       const url = `${this.baseUrl}/${this.apiVersion}/models/${model}:generateContent?key=${this.apiKey}`;
       
@@ -93,12 +93,21 @@ export class GeminiClient {
       });
       
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => null) as unknown;
         logger.error('Gemini API error:', errorData);
-        throw new Error(`Gemini API error: ${errorData.error?.message || JSON.stringify(errorData)}`);
+        let errorMessage = `HTTP ${response.status}`;
+        if (isRecord(errorData)) {
+          const nestedError = errorData.error;
+          if (isRecord(nestedError) && typeof nestedError.message === 'string') {
+            errorMessage = nestedError.message;
+          } else if (typeof errorData.message === 'string') {
+            errorMessage = errorData.message;
+          }
+        }
+        throw new Error(`Gemini API error: ${errorMessage}`);
       }
       
-      return response.json();
+      return await response.json() as unknown;
     } catch (error) {
       logger.error('Error in generateContent:', error);
       throw error;

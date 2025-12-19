@@ -3,6 +3,32 @@ import { getLogger } from "../utils/logger";
 
 const logger = getLogger('OLLAMA');
 
+interface OllamaGenerateResponse {
+  response?: string;
+  prompt_eval_count?: number;
+  eval_count?: number;
+}
+
+interface OllamaChatCompletion {
+  id: string;
+  object: string;
+  created: number;
+  model: string;
+  choices: Array<{
+    index: number;
+    message: {
+      role: string;
+      content: string;
+    };
+    finish_reason: string;
+  }>;
+  usage: {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+  };
+}
+
 /**
  * Simplified Ollama API client that works with local Ollama instances
  * Using the bare-bones HTTP API instead of SDKs for maximum compatibility
@@ -36,7 +62,7 @@ export class OllamaClient {
         return false;
       }
       
-      const data = await response.json();
+      const data = await response.json() as unknown;
       logger.debug('Ollama version check successful:', data);
       return true;
     } catch (error) {
@@ -56,7 +82,7 @@ export class OllamaClient {
       temperature?: number;
       max_tokens?: number;
     } = {}
-  ) {
+  ): Promise<OllamaGenerateResponse> {
     const { system, temperature = 0.7, max_tokens } = options;
     
     try {
@@ -101,7 +127,7 @@ export class OllamaClient {
         throw new Error(`Ollama API error: ${response.status} - ${errorText}`);
       }
       
-      const data = await response.json();
+      const data = await response.json() as OllamaGenerateResponse;
       return data;
     } catch (error) {
       logger.error('Error in Ollama generateCompletion:', error);
@@ -120,7 +146,7 @@ export class OllamaClient {
       max_tokens?: number;
       system?: string;
     } = {}
-  ) {
+  ): Promise<OllamaChatCompletion> {
     try {
       // Extract system message if present
       let systemPrompt = options.system || '';
@@ -160,15 +186,15 @@ export class OllamaClient {
             index: 0,
             message: {
               role: 'assistant',
-              content: result.response
+              content: result.response ?? ''
             },
             finish_reason: 'stop'
           }
         ],
         usage: {
-          prompt_tokens: result.prompt_eval_count || 0,
-          completion_tokens: result.eval_count || 0,
-          total_tokens: (result.prompt_eval_count || 0) + (result.eval_count || 0)
+          prompt_tokens: result.prompt_eval_count ?? 0,
+          completion_tokens: result.eval_count ?? 0,
+          total_tokens: (result.prompt_eval_count ?? 0) + (result.eval_count ?? 0)
         }
       };
     } catch (error) {

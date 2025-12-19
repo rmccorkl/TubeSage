@@ -1,8 +1,14 @@
 import { requestUrl } from "obsidian";
+import { getSafeErrorMessage } from "./error-utils";
 import { getLogger } from "./logger";
 
 // Get logger for fetch shim
 const logger = getLogger('FETCH');
+
+type UnknownRecord = Record<string, unknown>;
+
+const isRecord = (value: unknown): value is UnknownRecord =>
+  typeof value === 'object' && value !== null;
 
 // Define the response type based on what requestUrl actually returns
 interface RequestUrlResponse {
@@ -161,12 +167,16 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
       res = await requestUrl(options) as unknown as RequestUrlResponse;
       logger.debug(`requestUrl completed - Status: ${res?.status}, HasText: ${!!res?.text}`);
     } catch (requestError) {
+      const requestErrorMessage = getSafeErrorMessage(requestError);
+      const requestErrorRecord = isRecord(requestError) ? requestError : null;
       logger.error('requestUrl threw error:', requestError);
       logger.error('requestError type:', typeof requestError);
-      logger.error('requestError message:', requestError instanceof Error ? requestError.message : 'Unknown error');
-      logger.error('requestError status:', 'status' in (requestError as object) ? (requestError as { status?: number }).status : 'No status');
+      logger.error('requestError message:', requestErrorMessage);
+      logger.error('requestError status:', requestErrorRecord && typeof requestErrorRecord.status === 'number'
+        ? requestErrorRecord.status
+        : 'No status');
       logger.error('requestError instanceof Error:', requestError instanceof Error);
-      logger.error('requestError constructor:', requestError?.constructor?.name);
+      logger.error('requestError name:', requestError instanceof Error ? requestError.name : 'Unknown');
       throw requestError; // Re-throw to be handled by outer catch
     }
 
@@ -190,26 +200,33 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
     logger.error("Error is null/undefined:", error == null);
     
     if (error) {
-      logger.error("Error message:", error?.message || 'No message');
-      logger.error("Error stack:", error?.stack || 'No stack');
-      logger.error("Error toString:", error?.toString() || 'Cannot convert to string');
+      const errorMessage = getSafeErrorMessage(error);
+      logger.error("Error message:", errorMessage || 'No message');
+      logger.error("Error stack:", error instanceof Error && error.stack ? error.stack : 'No stack');
+      try {
+        logger.error("Error toString:", String(error) || 'Cannot convert to string');
+      } catch {
+        logger.error("Error toString:", 'Cannot convert to string');
+      }
     }
     
     // Check if this is an HTTP error response from requestUrl
-    if (error && typeof error === 'object' && 'status' in error) {
+    if (isRecord(error) && typeof error.status === 'number') {
       // This is an HTTP error response, preserve the actual status code
-      const httpError = error as RequestUrlResponse;
-      logger.error(`HTTP error response - Status: ${httpError.status}, Text: ${httpError.text?.substring(0, 200)}`);
+      const status = error.status;
+      const text = typeof error.text === 'string' ? error.text : '';
+      const headers = isRecord(error.headers) ? (error.headers as Record<string, string>) : {};
+      logger.error(`HTTP error response - Status: ${status}, Text: ${text.substring(0, 200)}`);
       
-      return new Response(httpError.text || JSON.stringify({ error: `HTTP ${httpError.status}` }), {
-        status: httpError.status,
-        statusText: httpError.status.toString(),
-        headers: new Headers(httpError.headers || {})
+      return new Response(text || JSON.stringify({ error: `HTTP ${status}` }), {
+        status,
+        statusText: status.toString(),
+        headers: new Headers(headers)
       });
     }
     
     // Enhanced logging for other error types
-    if (error && typeof error === 'object') {
+    if (isRecord(error)) {
       try {
         logger.error("Error properties:", Object.keys(error));
         logger.error("Full error object:", JSON.stringify(error, null, 2));

@@ -1,12 +1,13 @@
 {
     "name": "tubesage",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "description": "Create comprehensive notes from YouTube transcripts using LLMs.",
     "main": "main.js",
     "scripts": {
         "dev": "node esbuild.config.mjs",
         "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-        "deploy": "chmod +x scripts/deploy.sh && ./scripts/deploy.sh"
+        "deploy": "chmod +x scripts/deploy.sh && ./scripts/deploy.sh",
+        "lint": "eslint ."
     },
     "keywords": [
         "obsidian",
@@ -23,8 +24,9 @@
         "@typescript-eslint/eslint-plugin": "^8.39.1",
         "@typescript-eslint/parser": "^8.39.1",
         "adm-zip": "^0.5.16",
-        "builtin-modules": "^5.0.0",
         "esbuild": "^0.25.9",
+        "eslint": "^9.39.2",
+        "eslint-plugin-obsidianmd": "^0.1.9",
         "obsidian": "^1.8.7",
         "tslib": "^2.8.1",
         "typescript": "^5.9.2"
@@ -37,9 +39,7 @@
         "@langchain/google-genai": "^0.2.16",
         "@langchain/ollama": "^0.2.0",
         "@langchain/openai": "^0.6.7",
-        "axios": "^1.9.0",
         "hh-mm-ss": "^1.2.0",
-        "kind-of": "^6.0.3",
         "langchain": "^0.3.30",
         "node-html-parser": "^7.0.1",
         "openai": "^4.77.0",

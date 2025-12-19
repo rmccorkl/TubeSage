@@ -50,6 +50,89 @@ type TranscriptInputSegment = TranscriptSegment & {
     segs?: Array<{ utf8?: string }>;
 };
 
+type UnknownRecord = Record<string, unknown>;
+
+const isRecord = (value: unknown): value is UnknownRecord =>
+    typeof value === 'object' && value !== null;
+
+type AppWithPlugins = App & {
+    plugins?: {
+        plugins?: Record<string, unknown>;
+        manifest?: Record<string, { id?: string }>;
+    };
+};
+
+type TemplaterContext = {
+    user?: Record<string, unknown>;
+};
+
+type TemplaterApi = {
+    current_functions_object?: unknown;
+    create_running_config: (templateFile: TFile, targetFile: TFile, mode: number) => unknown;
+    functions_generator: {
+        generate_object: (config: unknown) => Promise<TemplaterContext>;
+    };
+    parser: {
+        parse_commands: (content: string, ctx: TemplaterContext) => Promise<string>;
+    };
+};
+
+type TemplaterSettings = {
+    templates_folder?: string;
+};
+
+type TemplaterPlugin = {
+    templater: TemplaterApi;
+    settings?: TemplaterSettings;
+};
+
+const getPluginRegistry = (app: App): Record<string, unknown> | null => {
+    const plugins = (app as AppWithPlugins).plugins?.plugins;
+    if (!plugins || typeof plugins !== 'object') {
+        return null;
+    }
+    return plugins;
+};
+
+const getTemplaterPlugin = (app: App): TemplaterPlugin | null => {
+    const registry = getPluginRegistry(app);
+    const candidate = registry?.['templater-obsidian'];
+    if (!isRecord(candidate)) {
+        return null;
+    }
+    const templater = candidate['templater'];
+    if (!isRecord(templater)) {
+        return null;
+    }
+    return candidate as TemplaterPlugin;
+};
+
+const getTemplaterSettings = (app: App): TemplaterSettings | null => {
+    const registry = getPluginRegistry(app);
+    const candidate = registry?.['templater-obsidian'];
+    if (!isRecord(candidate)) {
+        return null;
+    }
+    const settings = candidate['settings'];
+    if (!isRecord(settings)) {
+        return null;
+    }
+    return settings as TemplaterSettings;
+};
+
+const getPluginIdFromManifest = (app: App, fallback: string): string => {
+    const manifest = (app as AppWithPlugins).plugins?.manifest;
+    if (!manifest || typeof manifest !== 'object') {
+        return fallback;
+    }
+    const entry = manifest[fallback];
+    if (!isRecord(entry)) {
+        return fallback;
+    }
+    const id = entry['id'];
+    return typeof id === 'string' && id.trim() ? id : fallback;
+};
+
 interface YouTubePlaylistItem {
     snippet?: {
         title?: string;
@@ -62,6 +145,33 @@ interface YouTubePlaylistItem {
 interface PlaylistItemsResponse {
     items?: YouTubePlaylistItem[];
     nextPageToken?: string;
+}
+
+interface PlaylistResponse {
+    items?: Array<{
+        snippet?: {
+            title?: string;
+        };
+    }>;
+}
+
+interface ChannelResponse {
+    items?: Array<{
+        snippet?: {
+            title?: string;
+        };
+        contentDetails?: {
+            relatedPlaylists?: {
+                uploads?: string;
+            };
+        };
+    }>;
+}
+
+interface ChannelIdResponse {
+    items?: Array<{
+        id?: string;
+    }>;
 }
 
 interface YouTubeTranscriptSettings {
@@ -291,6 +401,21 @@ interface GoogleModel {
     // Add other relevant properties if needed
 }
 
+interface ApiErrorResponse {
+    error?: {
+        message?: string;
+    };
+    message?: string;
+}
+
+interface OpenAIModelsResponse {
+    data?: OpenAIModel[];
+}
+
+interface GoogleModelsResponse {
+    models?: GoogleModel[];
+}
+
 export default class YouTubeTranscriptPlugin extends Plugin {
     settings: YouTubeTranscriptSettings;
     private summarizer: TranscriptSummarizer;
@@ -336,7 +461,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         this.checkDependencies();
 
         // Add ribbon icon
-        this.addRibbonIcon('youtube', 'Tubesage: create note from youtube transcript', () => {
+        this.addRibbonIcon('youtube', 'Tubesage: create note from YouTube transcript', () => {
             // Check if license has been accepted
             if (!this.settings.licenseAccepted) {
                 // Show license required modal if not accepted
@@ -359,7 +484,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // Add command
         this.addCommand({
             id: 'extract-youtube-transcript',
-            name: 'Extract Youtube transcript',
+            name: 'Extract YouTube transcript',
             callback: () => {
                 // Check if license has been accepted
                 if (!this.settings.licenseAccepted) {
@@ -455,11 +580,15 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     }
 
     async loadSettings() {
-        const loadedData = await this.loadData();
+        const loadedData: unknown = await this.loadData();
         logger.debug('[SETTINGS DEBUG] Loaded data from storage:', loadedData);
         logger.debug('[SETTINGS DEBUG] DEFAULT_SETTINGS.selectedLLM:', DEFAULT_SETTINGS.selectedLLM);
-        
-        this.settings = Object.assign({}, DEFAULT_SETTINGS, loadedData);
+
+        const loadedSettings: Partial<YouTubeTranscriptSettings> = isRecord(loadedData)
+            ? (loadedData as Partial<YouTubeTranscriptSettings>)
+            : {};
+
+        this.settings = { ...DEFAULT_SETTINGS, ...loadedSettings };
         
         logger.debug('[SETTINGS DEBUG] Final settings.selectedLLM:', this.settings.selectedLLM);
         logger.debug('[SETTINGS DEBUG] All settings keys:', Object.keys(this.settings));
@@ -527,9 +656,10 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     
                 } catch (error) {
                     transcriptLogger.error(`Failed to extract transcript for video ${i + 1}/${videoUrls.length}:`, error);
+                    const errorMessage = getSafeErrorMessage(error);
                     // Continue with other videos, but include error result
                     results.push({
-                        transcript: `[TRANSCRIPT EXTRACTION FAILED: ${error.message}]`,
+                        transcript: `[TRANSCRIPT EXTRACTION FAILED: ${errorMessage}]`,
                         metadata: { title: `Error extracting from URL: ${videoUrl}`, author: 'Unknown' }
                     });
                 }
@@ -812,8 +942,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
 
     async applyTemplate(title: string, videoUrl: string, transcript: string, summary: string, folder?: string, contentType?: string): Promise<void> {
         // Check if Templater plugin is available
-        // @ts-ignore - Templater API isn't typed in Obsidian's types
-        const templaterPlugin = this.app.plugins?.plugins?.['templater-obsidian'];
+        const templaterPlugin = getTemplaterPlugin(this.app);
         
         if (!templaterPlugin) {
             this.showNotice('Error: Templater plugin is required but not installed or enabled', 5000);
@@ -822,7 +951,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         
         try {
             // Get the Templater instance
-            // @ts-ignore - Accessing internal Templater API
             const templater = templaterPlugin.templater;
             
             // If Templater has never run, do a dummy parse to initialize.
@@ -1019,7 +1147,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             }
             
             // 2. Create a running config for the actual template
-            // @ts-ignore - Accessing internal Templater API and working around TypeScript errors
             const config = templater.create_running_config(
                 templateFile,
                 templateFile, // Use the template file itself as target to avoid null path errors
@@ -1027,40 +1154,39 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             );
             
             // 3. Generate the Templater context (tp object)
-            // @ts-ignore - Accessing internal Templater API
             const ctx = await templater.functions_generator.generate_object(config);
             
             // 4. Inject our custom data into ctx.user as functions
-            if (!ctx.user) {
-                ctx.user = {};
-            }
+            const user = ctx.user ?? {};
+            ctx.user = user;
             
             // Set up our data as functions in ctx.user
-            ctx.user.title = sanitizedTitle;
+            user.title = sanitizedTitle;
             // Use a normalized watch URL so template parsing doesn't break on shorts/live URLs
-            ctx.user.videoUrl = watchUrl || videoUrl;
-            ctx.user.originalVideoUrl = videoUrl;
-            ctx.user.videoId = videoId || '';
-            ctx.user.watchUrl = watchUrl || videoUrl;
-            ctx.user.thumbnailUrl = thumbnailUrl;
-            ctx.user.transcript = transcript;
-            ctx.user.summary = summary;
+            user.videoUrl = watchUrl || videoUrl;
+            user.originalVideoUrl = videoUrl;
+            user.videoId = videoId || '';
+            user.watchUrl = watchUrl || videoUrl;
+            user.thumbnailUrl = thumbnailUrl;
+            user.transcript = transcript;
+            user.summary = summary;
             
             // Add LLM provider and model info
             const llmProvider = this.settings.selectedLLM;
             const llmModel = this.settings.selectedModels[llmProvider];
-            ctx.user.llmProvider = llmProvider;
-            ctx.user.llmModel = llmModel;
+            user.llmProvider = llmProvider;
+            user.llmModel = llmModel;
             
             // Add tags for LLM provider and model in proper YAML array format
             const baseTags = ["youtube", "transcript"];
             const llmProviderTag = `llm/${llmProvider}`;
             const llmModelTag = `model/${llmModel.replace(/[:.]/g, "-")}`;
             const allTags = [...baseTags, llmProviderTag, llmModelTag];
-            ctx.user.llmTags = `[${allTags.join(", ")}]`;
+            const llmTags = `[${allTags.join(", ")}]`;
+            user.llmTags = llmTags;
             
             // Add plugin version for frontmatter tracking
-            ctx.user.version = this.getVersion();
+            user.version = this.getVersion();
             
             // Debug info is only logged, not included in notes
             if (this.settings.debugLogging) {
@@ -1077,10 +1203,9 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             // Debug logging to check template content and tags
             if (this.settings.debugLogging) {
                 logger.debug(`Template content (first 500 chars): ${templateContent.substring(0, 500)}`);
-                logger.debug(`ctx.user.llmTags value: ${ctx.user.llmTags}`);
+                logger.debug(`ctx.user.llmTags value: ${llmTags}`);
             }
             
-            // @ts-ignore - Accessing internal Templater API
             const parsedContent = await templater.parser.parse_commands(templateContent, ctx);
             
             // Debug logging to check parsed content
@@ -1112,7 +1237,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             this.showNotice(`Created note: ${datePrefix}${sanitizedTitle}`, 5000);
         } catch (error) {
             logger.error("Error applying template:", error);
-            this.showNotice(`Error creating note: ${error.message}`, 5000);
+            const errorMessage = getSafeErrorMessage(error);
+            this.showNotice(`Error creating note: ${errorMessage}`, 5000);
             // Clear logs on error too
             clearLogs();
             throw error;
@@ -1146,8 +1272,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     // Check for required dependencies
     private checkDependencies(): void {
         // Check for Templater plugin
-        // @ts-ignore - Templater API isn't typed in Obsidian's types
-        const templater = this.app.plugins?.plugins?.['templater-obsidian'];
+        const templater = getTemplaterPlugin(this.app);
         
         if (!templater) {
             // Show a notice with instructions on how to install Templater
@@ -1215,14 +1340,14 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                             throw new Error(`Failed to fetch playlist data: HTTP status ${playlistResponse.status}`);
                         }
                         
-                        const playlistData = await playlistResponse.json();
+                        const playlistData = await playlistResponse.json() as PlaylistResponse;
                         
                         if (!playlistData.items || playlistData.items.length === 0) {
                             throw new Error('Playlist not found');
                         }
                         
                         // Get playlist name for display
-                        sourceTitle = playlistData.items[0].snippet.title;
+                        sourceTitle = playlistData.items[0].snippet?.title ?? '';
                         
                         // Fetch videos from playlist with pagination support
                         let nextPageToken: string | null = null;
@@ -1301,17 +1426,20 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     throw new Error(`Failed to fetch channel data: HTTP status ${channelResponse.status}`);
                 }
                 
-                const channelData = await channelResponse.json();
+                const channelData = await channelResponse.json() as ChannelResponse;
                 
                 if (!channelData.items || channelData.items.length === 0) {
                     throw new Error('Channel not found');
                 }
                 
                 // Get channel name for display
-                sourceTitle = channelData.items[0].snippet.title;
+                sourceTitle = channelData.items[0].snippet?.title ?? '';
                 
                 // Get the uploads playlist ID
-                const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
+                const uploadsPlaylistId = channelData.items[0].contentDetails?.relatedPlaylists?.uploads ?? '';
+                if (!uploadsPlaylistId) {
+                    throw new Error('Channel uploads playlist not found');
+                }
                 
                 // Get videos from the uploads playlist with pagination
                 let nextPageToken: string | null = null;
@@ -1380,7 +1508,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             return videoResults;
         } catch (error) {
             logger.error('Error fetching collection videos:', error);
-            throw new Error(`Failed to fetch videos: ${error.message || 'Unknown error'}`);
+            const errorMessage = getSafeErrorMessage(error);
+            throw new Error(`Failed to fetch videos: ${errorMessage || 'Unknown error'}`);
         }
     }
 
@@ -1423,13 +1552,17 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             throw new Error(`Failed to fetch channel ID: HTTP status ${response.status}`);
         }
         
-        const data = await response.json();
+        const data = await response.json() as ChannelIdResponse;
         
         if (!data.items || data.items.length === 0) {
             throw new Error(`No channel found for handle: ${handle}`);
         }
         
-        return data.items[0].id;
+        const channelId = data.items[0].id;
+        if (!channelId) {
+            throw new Error(`No channel ID found for handle: ${handle}`);
+        }
+        return channelId;
     }
 
     // Add timestamp links to section headings in an existing note using LLM
@@ -1466,7 +1599,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                         logger.debug(`No files found in folder: ${folder}`);
                     }
                 } catch (folderError) {
-                    logger.error(`Error checking folder contents: ${folderError.message}`);
+                    const errorMessage = getSafeErrorMessage(folderError);
+                    logger.error(`Error checking folder contents: ${errorMessage}`);
                 }
                 throw new Error('Could not find note file');
             }
@@ -1713,9 +1847,10 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 logger.debug("[addTimestampLinksSinglePass] Received LLM response, length:", enhancedContent ? enhancedContent.length : 0);
             } catch (e) {
                 logger.error("[addTimestampLinksSinglePass] Error during LLM call:", e);
+                const errorMessage = getSafeErrorMessage(e);
                 
                 // In case of token limit errors, reduce the maxTokens and try again
-                if (e.message && (e.message.includes("max_tokens") || e.message.includes("token limit"))) {
+                if (errorMessage.includes("max_tokens") || errorMessage.includes("token limit")) {
                     logger.debug("[addTimestampLinksSinglePass] Token limit error detected, retrying with reduced token limit");
                     this.showNotice("Retrying with reduced token limit...", 5000);
                     
@@ -1752,11 +1887,12 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                         logger.debug("[addTimestampLinksSinglePass] Second attempt successful with reduced tokens:", reducedTokens);
                     } catch (retryError) {
                         logger.error("[addTimestampLinksSinglePass] Error on second attempt:", retryError);
-                        this.showNotice(`Failed to add timestamp links: ${retryError.message}`, 5000);
+                        const retryMessage = getSafeErrorMessage(retryError);
+                        this.showNotice(`Failed to add timestamp links: ${retryMessage}`, 5000);
                         return null;
                     }
                 } else {
-                    this.showNotice(`Error adding timestamp links: ${e.message}`, 5000);
+                    this.showNotice(`Error adding timestamp links: ${errorMessage}`, 5000);
                     return null;
                 }
             }
@@ -1819,7 +1955,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             return null;
         } catch (error) {
             logger.error("[addTimestampLinksSinglePass] Error:", error);
-            this.showNotice(`Error adding timestamp links: ${error.message}`, 5000);
+            const errorMessage = getSafeErrorMessage(error);
+            this.showNotice(`Error adding timestamp links: ${errorMessage}`, 5000);
             return null;
         }
     }
@@ -1878,7 +2015,8 @@ ${contentToTranslate}
                 logger.debug("[translateContent] Received translated content, length:", translatedContent ? translatedContent.length : 0);
             } catch (e) {
                 logger.error("[translateContent] Error during translation:", e);
-                this.showNotice(`Translation error: ${e.message}`, 5000);
+                const errorMessage = getSafeErrorMessage(e);
+                this.showNotice(`Translation error: ${errorMessage}`, 5000);
                 return;
             }
             
@@ -1897,7 +2035,8 @@ ${contentToTranslate}
             
         } catch (error) {
             logger.error("[translateContent] Error:", error);
-            this.showNotice(`Error translating content: ${error.message}`, 5000);
+            const errorMessage = getSafeErrorMessage(error);
+            this.showNotice(`Error translating content: ${errorMessage}`, 5000);
         }
     }
 
@@ -2103,7 +2242,7 @@ ${contentToTranslate}
                     
                     if (this.settings.debugLogging) {
                         llmLogger.debug(`ERROR PROCESSING CHUNK ${i+1}:`);
-                        llmLogger.debug(e.message || "Unknown error");
+                        llmLogger.debug(getSafeErrorMessage(e));
                         llmLogger.debug(`Using original chunk content instead`);
                     }
                     
@@ -2159,7 +2298,8 @@ ${contentToTranslate}
             }
         } catch (error) {
             logger.error("[addTimestampLinksInChunks] Error:", error);
-            this.showNotice(`Error in chunked processing: ${error.message}`, 5000);
+            const errorMessage = getSafeErrorMessage(error);
+            this.showNotice(`Error in chunked processing: ${errorMessage}`, 5000);
             return null;
         }
     }
@@ -2292,14 +2432,14 @@ ${contentToTranslate}
             });
 
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({ message: response.statusText }));
+                const errorData = await response.json().catch(() => ({ message: response.statusText })) as ApiErrorResponse;
                 const errorMessage = errorData.error?.message || errorData.message || `HTTP error ${response.status}`;
                 logger.error(`[fetchOpenAIModels] Failed to fetch OpenAI models: ${errorMessage}`);
                 this.showNotice(`Failed to fetch OpenAI models: ${errorMessage}`, 5000);
                 return []; // Or a default list
             }
 
-            const data = await response.json();
+            const data = await response.json() as OpenAIModelsResponse;
             if (data && Array.isArray(data.data)) {
                 const modelIds = data.data
                     .map((model: OpenAIModel) => model.id)
@@ -2339,14 +2479,14 @@ ${contentToTranslate}
             const response = await obsidianFetch(url, { method: 'GET' });
 
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({ message: response.statusText }));
+                const errorData = await response.json().catch(() => ({ message: response.statusText })) as ApiErrorResponse;
                 const errorMessage = errorData.error?.message || errorData.message || `HTTP error ${response.status}`;
                 logger.error(`[fetchGoogleModels] Failed to fetch Google models: ${errorMessage}`);
                 this.showNotice(`Failed to fetch Google models: ${errorMessage}`, 5000);
                 return [];
             }
 
-            const data = await response.json();
+            const data = await response.json() as GoogleModelsResponse;
             if (data && Array.isArray(data.models)) {
                 const modelIds = data.models
                     .filter((model: GoogleModel) => 
@@ -2436,7 +2576,7 @@ class YouTubeTranscriptModal extends Modal {
         contentEl.empty();
         
         // Add header
-        contentEl.createEl('h2', { text: 'Tubesage: create note from youtube transcript' });
+        contentEl.createEl('h2', { text: 'Tubesage: create note from YouTube transcript' });
         
         // Build the input stage UI
         this.buildInputStage();
@@ -2447,7 +2587,7 @@ class YouTubeTranscriptModal extends Modal {
         contentEl.empty();
         
         // Add header
-        contentEl.createEl('h2', { text: 'Tubesage: create note from youtube transcript' });
+        contentEl.createEl('h2', { text: 'Tubesage: create note from YouTube transcript' });
         
         // Check if we're on mobile
         const isMobile = Platform.isMobile;
@@ -2457,7 +2597,7 @@ class YouTubeTranscriptModal extends Modal {
         
         // URL input group - first input
         const urlGroup = formEl.createEl('div', { cls: 'form-group' });
-        urlGroup.createEl('label', { text: 'Youtube url', attr: { for: 'url' } });
+        urlGroup.createEl('label', { text: 'YouTube URL', attr: { for: 'url' } });
         this.urlInputEl = urlGroup.createEl('input', { 
             type: 'text',
             attr: { id: 'url', placeholder: 'https://www.youtube.com/watch?v=...' } 
@@ -2590,7 +2730,7 @@ class YouTubeTranscriptModal extends Modal {
         titleGroup.createEl('label', { text: 'Custom note title (optional)', attr: { for: 'title' } });
         this.titleInputEl = titleGroup.createEl('input', { 
             type: 'text',
-            attr: { id: 'title', placeholder: 'Leave empty to use youtube title' } 
+            attr: { id: 'title', placeholder: 'Leave empty to use YouTube title' } 
         });
         
         // Add toggle switch for summary mode
@@ -2631,7 +2771,7 @@ class YouTubeTranscriptModal extends Modal {
             
             // First check if it's a valid URL
             if (url && !this.isYoutubeUrl(url)) {
-                urlValidationEl.setText('Not a valid youtube url. Only video, playlist, and channel urls are supported.');
+                urlValidationEl.setText('Not a valid YouTube URL. Only video, playlist, and channel urls are supported.');
                 urlValidationEl.removeClass('tubesage-validation-success', 'tubesage-validation-accent');
                 urlValidationEl.addClass('tubesage-validation-error', 'tubesage-validation-visible');
                 urlValidationEl.removeClass('tubesage-validation-hidden');
@@ -2640,7 +2780,7 @@ class YouTubeTranscriptModal extends Modal {
             
             // Check if it's a channel URL
             if (url && this.isYoutubeChannelOrPlaylistUrl(url)) {
-                urlValidationEl.setText('Youtube channel or playlist url detected');
+                urlValidationEl.setText('YouTube channel or playlist URL detected');
                 urlValidationEl.removeClass('tubesage-validation-error', 'tubesage-validation-success');
                 urlValidationEl.addClass('tubesage-validation-accent', 'tubesage-validation-visible');
                 urlValidationEl.removeClass('tubesage-validation-hidden');
@@ -2651,7 +2791,7 @@ class YouTubeTranscriptModal extends Modal {
                 titleGroup.addClass('tubesage-display-none');
                 titleGroup.removeClass('tubesage-display-block');
             } else if (url) {
-                urlValidationEl.setText('Youtube video url detected');
+                urlValidationEl.setText('YouTube video URL detected');
                 urlValidationEl.removeClass('tubesage-validation-error', 'tubesage-validation-accent');
                 urlValidationEl.addClass('tubesage-validation-success', 'tubesage-validation-visible');
                 urlValidationEl.removeClass('tubesage-validation-hidden');
@@ -2830,9 +2970,9 @@ class YouTubeTranscriptModal extends Modal {
                             );
                             
                             if (response.ok) {
-                                const data = await response.json();
+                                const data = await response.json() as PlaylistResponse;
                                 if (data.items && data.items.length > 0) {
-                                    sourceName = data.items[0].snippet.title;
+                                    sourceName = data.items[0].snippet?.title ?? '';
                                     this.showNotice(`Found playlist: ${sourceName}`, 5000);
                                 }
                             }
@@ -3009,14 +3149,16 @@ class YouTubeTranscriptModal extends Modal {
                         // === NEW LOGGING LOGIC END ===
                         
                     } catch (transcriptError) {
-                        this.showNotice(`⚠️ Skipping video "${video.title}" - ${transcriptError.message}`, 5000);
+                    const transcriptErrorMessage = getSafeErrorMessage(transcriptError);
+                    this.showNotice(`⚠️ Skipping video "${video.title}" - ${transcriptErrorMessage}`, 5000);
                         skippedCount++;
                         // Clear logs even on skip, so next video starts fresh
                         clearLogs(); 
                     }
                 } catch (videoError) {
                     logger.error('Error processing video:', video, videoError);
-                    this.showNotice(`❌ Error processing video "${video.title}": ${videoError.message}`, 5000);
+                    const videoErrorMessage = getSafeErrorMessage(videoError);
+                    this.showNotice(`❌ Error processing video "${video.title}": ${videoErrorMessage}`, 5000);
                     errorCount++;
                     // Clear logs on error, so next video starts fresh
                     clearLogs(); 
@@ -3253,8 +3395,9 @@ class YouTubeTranscriptModal extends Modal {
                     await this.plugin.addSectionLinksToNote(notePath, url);
                     this.showNotice('Timestamp links added successfully', 3000);
                 } catch (timestampError) {
-                    logger.error(`Error adding timestamp links: ${timestampError.message}`, timestampError);
-                    this.showNotice(`Note created but timestamps could not be added: ${timestampError.message}`, 5000);
+                    const timestampErrorMessage = getSafeErrorMessage(timestampError);
+                    logger.error(`Error adding timestamp links: ${timestampErrorMessage}`, timestampError);
+                    this.showNotice(`Note created but timestamps could not be added: ${timestampErrorMessage}`, 5000);
                 }
             } else if (transcriptFailed) {
                 this.showNotice('Timestamp links skipped - no transcript available', 3000);
@@ -3735,11 +3878,11 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Removed "Use YouTube Data API v3" setting and CORS issue notice
         
         new Setting(settingsContainer)
-            .setName('Youtube data api key')
-            .setDesc('Your google cloud console api key for accessing public youtube transcripts (not an oauth token). Required for downloading channels and playlists.')
+            .setName('YouTube data API key')
+            .setDesc('Your google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.')
             .addText(text => {
                 const textComponent = text
-                    .setPlaceholder('Enter API key (starts with AIza)')
+                    .setPlaceholder('Enter API key (starts with aiza)')
                     .setValue(this.plugin.settings.youtubeApiKey)
                     .onChange((value: string) => {
                         void (async () => {
@@ -3814,7 +3957,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             .setDesc('Choose which llm to use for summarization')
             .addDropdown(dropdown => {
                 // Add OpenAI option
-                dropdown.addOption('openai', 'OpenAI');
+                dropdown.addOption('openai', 'Openai');
                 
                 // Always add Anthropic, Google and Ollama options since they all work on any platform now
                 dropdown.addOption('anthropic', 'Anthropic');
@@ -3901,7 +4044,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             // Add dropdown for preset models
             setting.addDropdown(dropdown => {
                 modelDropdown = dropdown;
-                modelOptions.forEach(model => dropdown.addOption(model, model));
+                modelOptions.forEach((model) => {
+                    dropdown.addOption(model, model);
+                });
                 dropdown.addOption('custom', 'Use custom model');
                 const currentModel = this.plugin.settings.selectedModels[provider];
                 let validSelection = modelOptions.includes(currentModel) ? currentModel : 'custom';
@@ -3985,7 +4130,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                                         dropdown.selectEl.remove(i);
                                     }
                                 }
-                                fetchedModels.forEach(modelId => dropdown.addOption(modelId, modelId));
+                                fetchedModels.forEach((modelId) => {
+                                    dropdown.addOption(modelId, modelId);
+                                });
                                 // @ts-ignore - selectEl is part of the dropdown
                                 dropdown.selectEl.appendChild(dropdown.selectEl.querySelector('option[value="custom"]'));
 
@@ -4218,7 +4365,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 .addExtraButton(button => {
                     button
                         .setIcon('alert-triangle')
-                        .setTooltip('Max tokens should not be confused with the size of the context window. This setting reflects the maximum output returned by the model and is quite sensitive - exceeding this limit will cause the LLM to fail. For custom models, ensure this parameter is aligned with your models capabilities.');
+                        .setTooltip('Max tokens should not be confused with the size of the context window. This setting reflects the maximum output returned by the model and is quite sensitive - exceeding this limit will cause the llm to fail. For custom models, ensure this parameter is aligned with your models capabilities.');
                 });
         }
         // Note: Known models automatically calculate optimal max tokens using getEffectiveMaxTokens()
@@ -4247,9 +4394,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             .setName('Date format')
             .setDesc('Format for date prepended to note titles')
             .addDropdown((dropdown) => dropdown
-                .addOption('YYYY-MM-DD', 'YYYY-MM-DD')
-                .addOption('MM-DD-YYYY', 'MM-DD-YYYY')
-                .addOption('DD-MM-YYYY', 'DD-MM-YYYY')
+                .addOption('YYYY-MM-DD', 'Yyyy-mm-dd')
+                .addOption('MM-DD-YYYY', 'Mm-dd-yyyy')
+                .addOption('DD-MM-YYYY', 'Dd-mm-yyyy')
                 .setValue(this.plugin.settings.dateFormat)
                 .onChange((value: string) => {
                     void (async () => {
@@ -4309,7 +4456,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             .setDesc('Specific instructions for summarizing the transcript quickly and concisely')
             .addTextArea(text => {
                 const textComponent = text
-                .setPlaceholder('Please summarize the following youtube transcript...')
+                .setPlaceholder('Please summarize the following YouTube transcript...')
                     .setValue(this.plugin.settings.userPrompt)
                     .onChange((value: string) => {
                         void (async () => {
@@ -4425,8 +4572,8 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Add timestamp links setting
         new Setting(settingsContainer)
-            .setName('Add youtube timestamp links')
-            .setDesc('Add links to each numbered section heading that jump to the corresponding timestamp in the youtube video (note: disabled in fast summary mode)')
+            .setName('Add YouTube timestamp links')
+            .setDesc('Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)')
             .addDropdown(dropdown => dropdown
                 .addOption('true', 'Enabled')
                 .addOption('false', 'Disabled')
@@ -4732,13 +4879,9 @@ class TemplateFilePickerModal extends Modal {
         this.result = callback;
         
         // Try to get template folder from Templater plugin settings if available
-        // @ts-ignore - Templater API isn't typed
-        const templater = this.app.plugins?.plugins?.['templater-obsidian'];
-        if (templater && templater.settings && templater.settings.templates_folder) {
-            this.templatesFolder = templater.settings.templates_folder;
-            
-            // Normalize templatesFolder using path utility
-            this.templatesFolder = normalizePath(this.templatesFolder);
+        const templaterSettings = getTemplaterSettings(this.app);
+        if (templaterSettings?.templates_folder) {
+            this.templatesFolder = normalizePath(templaterSettings.templates_folder);
         }
         
         logger.debug("Template picker initialized with templates folder:", this.templatesFolder);
@@ -5137,14 +5280,13 @@ class LicenseModal extends Modal {
             modalEl.addClass('tubesage-license-modal-size');
         }
         
-        contentEl.createEl('h2', { text: 'Tubesage youtube transcript plugin license' });
+        contentEl.createEl('h2', { text: 'Tubesage YouTube transcript plugin license' });
 
         // Run async work without returning a promise to Modal
         void (async () => {
         try {
             // Get the plugin folder path
-            // @ts-ignore - As we're accessing internal API
-            const pluginId = this.app.plugins.manifest?.["tubesage"]?.id || "tubesage";
+            const pluginId = getPluginIdFromManifest(this.app, 'tubesage');
             
             // Try to read the license file - from multiple possible locations
             let licenseContent = '';
@@ -5360,8 +5502,8 @@ class LicenseRequiredModal extends Modal {
         // Add event listeners
         openSettingsButton.addEventListener('click', () => {
             this.close();
-            // @ts-ignore - App has this method but TypeScript definition doesn't include it
-            this.app.setting.open('tubesage');
+            const appWithSettings = this.app as App & { setting?: { open?: (id: string) => void } };
+            appWithSettings.setting?.open?.('tubesage');
         });
         
         closeButton.addEventListener('click', () => {
@@ -5390,14 +5532,13 @@ class READMEModal extends Modal {
             modalEl.addClass('tubesage-readme-modal-size');
         }
         
-        contentEl.createEl('h2', { text: 'Tubesage youtube transcript plugin documentation' });
+        contentEl.createEl('h2', { text: 'Tubesage YouTube transcript plugin documentation' });
 
         // Run async work without returning a promise to Modal
         void (async () => {
         try {
             // Get the plugin folder path
-            // @ts-ignore - As we're accessing internal API
-            const pluginId = this.app.plugins.manifest?.["tubesage"]?.id || "tubesage";
+            const pluginId = getPluginIdFromManifest(this.app, 'tubesage');
             
             // Try to read the README file from multiple possible locations
             let readmeContent = '';
@@ -5574,7 +5715,7 @@ class READMEModal extends Modal {
             // Handle error if README file can't be read
             logger.error('Error loading README file:', error);
             contentEl.createEl('p', { 
-                text: 'Could not load README file. Please check that README.md exists in your plugin directory.',
+                text: 'Could not load readme file. Please check that readme.md exists in your plugin directory.',
                 cls: 'tubesage-license-load-error' // Assumes this class is defined and appropriate
             });
         }
@@ -5788,8 +5929,7 @@ class TemplateViewModal extends Modal {
         void (async () => {
         try {
             // Get the plugin folder path
-            // @ts-ignore - As we're accessing internal API
-            const pluginId = this.app.plugins.manifest?.["tubesage"]?.id || "tubesage";
+            const pluginId = getPluginIdFromManifest(this.app, 'tubesage');
             
             // Try to read the template file from multiple possible locations
             let templateContent = '';
@@ -5932,7 +6072,7 @@ class TemplateViewModal extends Modal {
             
             // Add explanation
             contentEl.createEl('div', {
-                text: 'This is the example templater plugin template used for youtube transcript notes. You can customize this template for your own needs.',
+                text: 'This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.',
                 cls: 'tubesage-template-view-explanation'
             });
             

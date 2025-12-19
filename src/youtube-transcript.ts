@@ -7,6 +7,7 @@
 // to ensure consistent behavior across desktop and mobile platforms
 import { obsidianFetch } from "src/utils/fetch-shim";
 import { getLogger } from "src/utils/logger";
+import { getSafeErrorMessage } from "src/utils/error-utils";
 const transcriptLogger = getLogger("TRANSCRIPT");
 
 type UnknownRecord = Record<string, unknown>;
@@ -135,7 +136,7 @@ export class YouTubeTranscriptExtractor {
                     throw new Error(`Failed to fetch next API data: HTTP ${nextResponse.status}`);
                 }
                 
-                const nextData = await nextResponse.json();
+                const nextData = await nextResponse.json() as unknown;
                 transcriptLogger.debug(`Step 1 completed: received ${JSON.stringify(nextData).length} characters of next API data`);
                 
                 // Extract metadata from nextData response to eliminate redundant first fetch
@@ -221,7 +222,8 @@ export class YouTubeTranscriptExtractor {
                         }
                         
                     } catch (error) {
-                        transcriptLogger.debug(`Error extracting metadata from nextData: ${error.message}`);
+                        const errorMessage = getSafeErrorMessage(error);
+                        transcriptLogger.debug(`Error extracting metadata from nextData: ${errorMessage}`);
                     }
                     
                     return metadata;
@@ -272,7 +274,8 @@ export class YouTubeTranscriptExtractor {
                     
                     transcriptLogger.debug(`Found transcript parameters: ${transcriptParams.substring(0, 100)}...`);
                 } catch (parseError) {
-                    transcriptLogger.error(`Error parsing next API response: ${parseError.message}`);
+                    const errorMessage = getSafeErrorMessage(parseError);
+                    transcriptLogger.error(`Error parsing next API response: ${errorMessage}`);
                     throw new Error(`Failed to extract transcript parameters from YouTube API response`);
                 }
                 
@@ -467,12 +470,14 @@ export class YouTubeTranscriptExtractor {
                     return { segments, metadata };
                     
                 } catch (parseError) {
-                    transcriptLogger.error(`Error parsing transcript response: ${parseError.message}`);
+                    const errorMessage = getSafeErrorMessage(parseError);
+                    transcriptLogger.error(`Error parsing transcript response: ${errorMessage}`);
                     throw new Error(`Failed to parse transcript data from YouTube API response`);
                 }
                 
             } catch (error) {
-                transcriptLogger.error('Error fetching transcript:', error?.message || error);
+                const errorMessage = getSafeErrorMessage(error);
+                transcriptLogger.error('Error fetching transcript:', errorMessage);
                 
                 // If we successfully extracted metadata but caption fetching failed,
                 // we should still return the metadata with an error transcript
@@ -480,7 +485,7 @@ export class YouTubeTranscriptExtractor {
                     transcriptLogger.debug('Returning metadata despite caption failure');
                     return {
                         segments: [{
-                            text: `[TRANSCRIPT EXTRACTION FAILED: ${error?.message || error}]`,
+                            text: `[TRANSCRIPT EXTRACTION FAILED: ${errorMessage}]`,
                             start: 0,
                             duration: 0
                         }],
@@ -492,24 +497,23 @@ export class YouTubeTranscriptExtractor {
             }
             
         } catch (error) {
-            transcriptLogger.error('Error fetching transcript from YouTube:', error?.message || error);
+            const errorMessage = getSafeErrorMessage(error);
+            transcriptLogger.error('Error fetching transcript from YouTube:', errorMessage);
             
             // Detect if this is a CORS error
-            if (error.message && (
-                error.message.includes('CORS') || 
-                error.message.includes('Cross-Origin') || 
-                error.message.includes('Access-Control-Allow-Origin')
-            )) {
+            if (errorMessage.includes('CORS') || 
+                errorMessage.includes('Cross-Origin') || 
+                errorMessage.includes('Access-Control-Allow-Origin')
+            ) {
                 throw new Error('CORS policy blocked the request. Please try a different video or check your internet connection.');
             }
             
             // Check for network errors
-            if (error.message && (
-                error.message.includes('network') || 
-                error.message.includes('fetch') || 
-                error.message.includes('connect') ||
-                error.message.includes('timeout')
-            )) {
+            if (errorMessage.includes('network') || 
+                errorMessage.includes('fetch') || 
+                errorMessage.includes('connect') ||
+                errorMessage.includes('timeout')
+            ) {
                 throw new Error('Network error while fetching transcript. Please check your internet connection.');
             }
             
@@ -559,12 +563,16 @@ export class YouTubeTranscriptExtractor {
                 throw new Error("Unable to locate ytInitialPlayerResponse in watch page HTML.");
             }
             
-            const playerResponse = JSON.parse(match[1]);
+            const playerResponse = JSON.parse(match[1]) as unknown;
+            const videoDetails = isRecord(playerResponse) ? playerResponse.videoDetails : undefined;
+            const title = isRecord(videoDetails) && typeof videoDetails.title === 'string'
+                ? videoDetails.title
+                : undefined;
+            const author = isRecord(videoDetails) && typeof videoDetails.author === 'string'
+                ? videoDetails.author
+                : undefined;
             
-            return {
-                title: playerResponse?.videoDetails?.title,
-                author: playerResponse?.videoDetails?.author
-            };
+            return { title, author };
             
         } catch (error) {
             transcriptLogger.error('Error fetching video metadata:', error);
@@ -913,12 +921,13 @@ export class YouTubeTranscriptExtractor {
             return segments;
             
         } catch (e) {
-            transcriptLogger.error("Error parsing XML captions:", e);
+            const errorMessage = getSafeErrorMessage(e);
+            transcriptLogger.error("Error parsing XML captions:", errorMessage);
             
             // Return a basic error segment
             return [
                 {
-                    text: `Failed to parse YouTube captions for video ${videoId}. Error: ${e.message}`,
+                    text: `Failed to parse YouTube captions for video ${videoId}. Error: ${errorMessage}`,
                     start: 0,
                     duration: 0
                 }
@@ -973,12 +982,13 @@ export class YouTubeTranscriptExtractor {
             return segments;
             
         } catch (e) {
-            transcriptLogger.error("Error parsing JSON captions:", e);
+            const errorMessage = getSafeErrorMessage(e);
+            transcriptLogger.error("Error parsing JSON captions:", errorMessage);
             
             // Return a basic error segment
             return [
                 {
-                    text: `Failed to parse YouTube JSON captions for video ${videoId}. Error: ${e.message}`,
+                    text: `Failed to parse YouTube JSON captions for video ${videoId}. Error: ${errorMessage}`,
                     start: 0,
                     duration: 0
                 }

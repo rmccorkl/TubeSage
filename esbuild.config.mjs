@@ -1,9 +1,6 @@
 import esbuild from "esbuild";
 import process from "process";
-import builtins from "builtin-modules";
-import { createRequire } from "module";
-import path from "path";
-const require = createRequire(import.meta.url);
+import { builtinModules } from "module";
 
 const banner =
 `/*
@@ -34,7 +31,7 @@ const context = await esbuild.context({
         "@lezer/common",
         "@lezer/highlight",
         "@lezer/lr",
-        ...builtins,
+        ...builtinModules,
     ],
     format: "cjs",
     target: "es2018",

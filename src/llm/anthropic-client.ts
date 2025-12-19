@@ -3,6 +3,11 @@ import { getLogger } from "../utils/logger";
 
 const logger = getLogger('ANTHROPIC');
 
+type UnknownRecord = Record<string, unknown>;
+
+const isRecord = (value: unknown): value is UnknownRecord =>
+  typeof value === 'object' && value !== null;
+
 interface AnthropicCompletionOptions {
   system?: string;
   temperature?: number;
@@ -47,7 +52,7 @@ export class AnthropicClient {
     messages: {role: string, content: string}[],
     max_tokens?: number,
     temperature?: number
-  }) {
+  }): Promise<unknown> {
     try {
       const response = await obsidianFetch(`${this.baseUrl}/messages`, {
         method: "POST",
@@ -60,12 +65,21 @@ export class AnthropicClient {
       });
       
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => null) as unknown;
         logger.error('Anthropic API error:', errorData);
-        throw new Error(`Anthropic API error: ${errorData.error?.message || JSON.stringify(errorData)}`);
+        let errorMessage = `HTTP ${response.status}`;
+        if (isRecord(errorData)) {
+          const nestedError = errorData.error;
+          if (isRecord(nestedError) && typeof nestedError.message === 'string') {
+            errorMessage = nestedError.message;
+          } else if (typeof errorData.message === 'string') {
+            errorMessage = errorData.message;
+          }
+        }
+        throw new Error(`Anthropic API error: ${errorMessage}`);
       }
       
-      return response.json();
+      return await response.json() as unknown;
     } catch (error) {
       logger.error('Error in createMessage:', error);
       throw error;
@@ -80,7 +94,7 @@ export class AnthropicClient {
    * @param options Additional options
    * @returns The completion response
    */
-  async createCompletion(model: string, prompt: string, options: AnthropicCompletionOptions = {}) {
+  async createCompletion(model: string, prompt: string, options: AnthropicCompletionOptions = {}): Promise<unknown> {
     const systemPrompt = options.system || '';
     const temperature = options.temperature !== undefined ? options.temperature : 0.7;
     const maxTokens = options.max_tokens || 1024;
