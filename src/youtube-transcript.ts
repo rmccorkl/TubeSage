@@ -50,11 +50,22 @@ export interface TranscriptResult {
 }
 
 
+/**
+ * YouTube configuration extracted from watch page
+ */
+interface YouTubeConfig {
+    apiKey: string;
+    clientVersion: string;
+    visitorData: string | null;
+}
+
 export class YouTubeTranscriptExtractor {
     private static readonly USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
     private static cookieStore: string = '';
-    // Cache the Innertube API key after first extraction to avoid repeated HTML fetches
-    private static cachedApiKey: string | null = null;
+    // Cache YouTube config after first extraction to avoid repeated HTML fetches
+    private static cachedConfig: YouTubeConfig | null = null;
+    // Fallback client version if extraction fails (updated to current version)
+    private static readonly FALLBACK_CLIENT_VERSION = '2.20260128.05.00';
     
     
     /**
@@ -81,42 +92,57 @@ export class YouTubeTranscriptExtractor {
      * @returns Promise with transcript segments and metadata
      */
     static async fetchTranscript(videoId: string, options: TranscriptOptions = {}): Promise<TranscriptResult> {
-        // Prefer the modern player API flow first; fall back to legacy if it fails
-        try {
-            return await this.fetchViaPlayerApi(videoId, options);
-        } catch (playerError) {
-            transcriptLogger.warn(`Player API path failed for ${videoId}, falling back to legacy youtubei flow`, playerError);
-        }
-        
+        // Primary method: ANDROID client via Player API (most reliable)
+        // Fallback: WEB client with ScrapeCreators method (requires visitorData, often fails with HTTP 400)
+
         let metadata: TranscriptMetadata = {};
-        
+
         try {
             transcriptLogger.debug(`Fetching YouTube transcript for video: ${videoId}`);
-            
+
+            // Primary: Try ANDROID client first (most reliable)
+            try {
+                transcriptLogger.debug('Attempting primary method: ANDROID client via Player API');
+                const androidResult = await this.fetchViaPlayerApiAndroid(videoId, options);
+                transcriptLogger.debug(`ANDROID method succeeded with ${androidResult.segments.length} segments`);
+                return androidResult;
+            } catch (androidError) {
+                const androidErrorMessage = getSafeErrorMessage(androidError);
+                transcriptLogger.error('ANDROID client failed:', androidErrorMessage);
+                transcriptLogger.debug('Attempting fallback with WEB client');
+            }
+
+            // Fallback: WEB client with ScrapeCreators method
             const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
-            
+
             try {
                 // Using direct ScrapeCreators method - optimized to extract metadata from the same API call
-                
+                // Reference: https://scrapecreators.com/blog/how-to-scrape-youtube-transcripts-with-node-js-in-2025
+
+                // First, get YouTube config (API key, client version, visitor data) from watch page
+                const ytConfig = await this.getYouTubeConfig(videoId);
+                transcriptLogger.debug(`Using WEB fallback with clientVersion: ${ytConfig.clientVersion}`);
+
                 // Direct method: ScrapeCreators two-step approach
                 // Step 1: Get transcript parameters from YouTube's internal API
                 transcriptLogger.debug(`Using ScrapeCreators method: fetching transcript parameters via YouTubei API`);
-                
+
                 const nextApiUrl = `https://www.youtube.com/youtubei/v1/next?prettyPrint=false`;
-                
-                // Step 1: Request to get transcript parameters
+
+                // Step 1: Request to get transcript parameters (with dynamic client version and visitorData)
                 const nextRequestBody = {
                     context: {
                         client: {
                             clientName: "WEB",
-                            clientVersion: "2.20241205.01.00"
+                            clientVersion: ytConfig.clientVersion,
+                            ...(ytConfig.visitorData && { visitorData: ytConfig.visitorData })
                         }
                     },
                     videoId: videoId
                 };
-                
+
                 transcriptLogger.debug(`Step 1: Requesting transcript parameters from ${nextApiUrl}`);
-                
+
                 const nextResponse = await obsidianFetch(nextApiUrl, {
                     method: 'POST',
                     headers: {
@@ -126,6 +152,9 @@ export class YouTubeTranscriptExtractor {
                         'Content-Type': 'application/json',
                         'Referer': watchUrl,
                         'Origin': 'https://www.youtube.com',
+                        'x-youtube-client-name': '1',
+                        'x-youtube-client-version': ytConfig.clientVersion,
+                        ...(ytConfig.visitorData && { 'x-goog-visitor-id': ytConfig.visitorData }),
                         'DNT': '1',
                         ...(YouTubeTranscriptExtractor.cookieStore && { 'Cookie': YouTubeTranscriptExtractor.cookieStore })
                     },
@@ -240,30 +269,39 @@ export class YouTubeTranscriptExtractor {
                 if (metadata.author) {
                     transcriptLogger.debug(`Video author: ${metadata.author}`);
                 }
-                
-                // Extract transcript endpoint parameters
+
+                // Extract transcript endpoint parameters and call /get_transcript API
                 let transcriptParams: string | null = null;
                 try {
-                    // Look for getTranscriptEndpoint in the response
+                    // Look for getTranscriptEndpoint in the response (including in continuationItemRenderer)
                     const findTranscriptEndpoint = (obj: unknown): string | null => {
                         if (!isRecord(obj)) {
                             return null;
                         }
-                        
+
+                        // Check direct getTranscriptEndpoint
                         const endpoint = obj.getTranscriptEndpoint as { params?: unknown } | undefined;
                         if (endpoint && isString(endpoint.params)) {
                             return endpoint.params;
                         }
-                        
+
+                        // Check continuationEndpoint.getTranscriptEndpoint (new location)
+                        const contEndpoint = (obj.continuationEndpoint as {
+                            getTranscriptEndpoint?: { params?: unknown }
+                        } | undefined)?.getTranscriptEndpoint;
+                        if (contEndpoint && isString(contEndpoint.params)) {
+                            return contEndpoint.params;
+                        }
+
                         for (const value of Object.values(obj)) {
                             const result = findTranscriptEndpoint(value);
                             if (result) return result;
                         }
                         return null;
                     };
-                    
+
                     transcriptParams = findTranscriptEndpoint(nextData);
-                    
+
                     if (!transcriptParams) {
                         transcriptLogger.error(`No getTranscriptEndpoint.params found in next API response`);
                         if (isRecord(nextData)) {
@@ -271,7 +309,7 @@ export class YouTubeTranscriptExtractor {
                         }
                         throw new Error(`No transcript parameters found in YouTube API response for video ${videoId}`);
                     }
-                    
+
                     transcriptLogger.debug(`Found transcript parameters: ${transcriptParams.substring(0, 100)}...`);
                 } catch (parseError) {
                     const errorMessage = getSafeErrorMessage(parseError);
@@ -281,20 +319,21 @@ export class YouTubeTranscriptExtractor {
                 
                 // Step 2: Request the actual transcript using the parameters
                 const getTranscriptUrl = `https://www.youtube.com/youtubei/v1/get_transcript?prettyPrint=false`;
-                
+
                 const transcriptRequestBody = {
                     context: {
                         client: {
                             clientName: "WEB",
-                            clientVersion: "2.20241205.01.00"
+                            clientVersion: ytConfig.clientVersion,
+                            ...(ytConfig.visitorData && { visitorData: ytConfig.visitorData })
                         }
                     },
                     params: transcriptParams
                 };
-                
+
                 transcriptLogger.debug(`Step 2: Requesting transcript from ${getTranscriptUrl}`);
                 transcriptLogger.debug(`Step 2: Using params: ${transcriptParams.substring(0, 100)}...`);
-                
+
                 const transcriptResponse = await obsidianFetch(getTranscriptUrl, {
                     method: 'POST',
                     headers: {
@@ -304,13 +343,23 @@ export class YouTubeTranscriptExtractor {
                         'Content-Type': 'application/json',
                         'Referer': watchUrl,
                         'Origin': 'https://www.youtube.com',
+                        'x-youtube-client-name': '1',
+                        'x-youtube-client-version': ytConfig.clientVersion,
+                        ...(ytConfig.visitorData && { 'x-goog-visitor-id': ytConfig.visitorData }),
                         'DNT': '1',
                         ...(YouTubeTranscriptExtractor.cookieStore && { 'Cookie': YouTubeTranscriptExtractor.cookieStore })
                     },
                     body: JSON.stringify(transcriptRequestBody)
                 });
-                
+
                 if (!transcriptResponse.ok) {
+                    // Log the error response body for debugging
+                    try {
+                        const errorBody = await transcriptResponse.text();
+                        transcriptLogger.error(`get_transcript failed with HTTP ${transcriptResponse.status}: ${errorBody.substring(0, 500)}`);
+                    } catch {
+                        transcriptLogger.error(`get_transcript failed with HTTP ${transcriptResponse.status}`);
+                    }
                     throw new Error(`Failed to fetch transcript: HTTP ${transcriptResponse.status}`);
                 }
                 
@@ -477,25 +526,25 @@ export class YouTubeTranscriptExtractor {
                 
             } catch (error) {
                 const errorMessage = getSafeErrorMessage(error);
-                transcriptLogger.error('Error fetching transcript:', errorMessage);
-                
+                transcriptLogger.error('WEB fallback also failed:', errorMessage);
+
                 // If we successfully extracted metadata but caption fetching failed,
                 // we should still return the metadata with an error transcript
                 if (metadata && (metadata.title || metadata.author)) {
                     transcriptLogger.debug('Returning metadata despite caption failure');
                     return {
                         segments: [{
-                            text: `[TRANSCRIPT EXTRACTION FAILED: ${errorMessage}]`,
+                            text: `[TRANSCRIPT EXTRACTION FAILED: Both ANDROID and WEB methods failed. ${errorMessage}]`,
                             start: 0,
                             duration: 0
                         }],
                         metadata
                     };
                 }
-                
+
                 throw error;
             }
-            
+
         } catch (error) {
             const errorMessage = getSafeErrorMessage(error);
             transcriptLogger.error('Error fetching transcript from YouTube:', errorMessage);
@@ -700,13 +749,16 @@ export class YouTubeTranscriptExtractor {
     }
 
     /**
-     * Fetch the Innertube API key from the watch page HTML, with a cached value.
+     * Fetch YouTube configuration (API key, client version) from the watch page HTML.
+     * Results are cached to avoid repeated HTML fetches.
+     * Reference: https://scrapecreators.com/blog/how-to-scrape-youtube-transcripts-with-node-js-in-2025
      */
-    private static async getInnertubeApiKey(videoId: string): Promise<string> {
-        if (this.cachedApiKey) {
-            return this.cachedApiKey;
+    private static async getYouTubeConfig(videoId: string): Promise<YouTubeConfig> {
+        if (this.cachedConfig) {
+            transcriptLogger.debug(`Using cached YouTube config (clientVersion: ${this.cachedConfig.clientVersion})`);
+            return this.cachedConfig;
         }
-        
+
         const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
         try {
             const response = await obsidianFetch(watchUrl, {
@@ -719,24 +771,146 @@ export class YouTubeTranscriptExtractor {
                     ...(YouTubeTranscriptExtractor.cookieStore && { 'Cookie': YouTubeTranscriptExtractor.cookieStore })
                 }
             });
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}`);
             }
-            
+
             const html = await response.text();
+
+            // Extract INNERTUBE_API_KEY
             const keyMatch = html.match(/"INNERTUBE_API_KEY":"([^"]+)"/);
-            if (keyMatch && keyMatch[1]) {
-                this.cachedApiKey = keyMatch[1];
-                transcriptLogger.debug(`Extracted Innertube API key from watch page`);
-                return this.cachedApiKey;
+            if (!keyMatch || !keyMatch[1]) {
+                throw new Error('INNERTUBE_API_KEY not found in watch page');
             }
-            transcriptLogger.warn(`Innertube API key not found in watch page response`);
+            const apiKey = keyMatch[1];
+
+            // Extract INNERTUBE_CLIENT_VERSION (dynamically get current YouTube version)
+            const versionMatch = html.match(/"INNERTUBE_CLIENT_VERSION":"([^"]+)"/);
+            const clientVersion = versionMatch && versionMatch[1]
+                ? versionMatch[1]
+                : this.FALLBACK_CLIENT_VERSION;
+
+            // Extract VISITOR_DATA (required for session binding in API calls)
+            const visitorMatch = html.match(/"VISITOR_DATA":"([^"]+)"/);
+            const visitorData = visitorMatch && visitorMatch[1] ? visitorMatch[1] : null;
+
+            this.cachedConfig = {
+                apiKey,
+                clientVersion,
+                visitorData
+            };
+
+            transcriptLogger.debug(`Extracted YouTube config - clientVersion: ${clientVersion}, visitorData: ${visitorData ? 'present' : 'not found'}`);
+            return this.cachedConfig;
+
         } catch (err) {
-            transcriptLogger.warn(`Failed to extract Innertube API key dynamically`, err);
+            const errorMessage = getSafeErrorMessage(err);
+            transcriptLogger.warn(`Failed to extract YouTube config dynamically: ${errorMessage}`);
+
+            // Return fallback config without API key - caller should handle this
+            throw new Error(`Unable to extract YouTube configuration from watch page: ${errorMessage}`);
+        }
+    }
+
+    /**
+     * Get just the Innertube API key (convenience method, uses cached config)
+     */
+    private static async getInnertubeApiKey(videoId: string): Promise<string> {
+        const config = await this.getYouTubeConfig(videoId);
+        return config.apiKey;
+    }
+
+    /**
+     * Clear the cached YouTube config (useful for testing or after errors)
+     */
+    static clearConfigCache(): void {
+        this.cachedConfig = null;
+        transcriptLogger.debug('YouTube config cache cleared');
+    }
+
+    /**
+     * ANDROID client fallback: Uses ANDROID client which bypasses WEB restrictions.
+     * Reference: https://github.com/LuanRT/YouTube.js and ScrapeCreators research
+     */
+    private static async fetchViaPlayerApiAndroid(videoId: string, options: TranscriptOptions): Promise<TranscriptResult> {
+        const lang = options.lang || 'en';
+        const country = options.country || 'US';
+
+        // Get API key from config
+        const ytConfig = await this.getYouTubeConfig(videoId);
+        transcriptLogger.debug('Player API (ANDROID): attempting with ANDROID client');
+
+        // ANDROID client configuration - bypasses WEB restrictions
+        const playerUrl = `https://www.youtube.com/youtubei/v1/player?key=${ytConfig.apiKey}`;
+        const playerBody = {
+            context: {
+                client: {
+                    clientName: 'ANDROID',
+                    clientVersion: '19.09.37',  // Stable ANDROID version
+                    androidSdkVersion: 30,
+                    hl: lang,
+                    gl: country
+                }
+            },
+            videoId
+        };
+
+        transcriptLogger.debug(`Player API (ANDROID): requesting caption tracks for ${videoId}`);
+
+        const playerResponse = await obsidianFetch(playerUrl, {
+            method: 'POST',
+            headers: {
+                'User-Agent': 'com.google.android.youtube/19.09.37 (Linux; U; Android 11) gzip',
+                'Accept': 'application/json',
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Content-Type': 'application/json',
+                'Origin': 'https://www.youtube.com',
+                'X-Youtube-Client-Name': '3',  // 3 = ANDROID
+                'X-Youtube-Client-Version': '19.09.37',
+                ...(YouTubeTranscriptExtractor.cookieStore && { 'Cookie': YouTubeTranscriptExtractor.cookieStore })
+            },
+            body: JSON.stringify(playerBody)
+        });
+
+        if (!playerResponse.ok) {
+            throw new Error(`Player API (ANDROID) error: HTTP ${playerResponse.status}`);
         }
 
-        throw new Error('Unable to extract Innertube API key from watch page');
+        const playerData = await playerResponse.json() as UnknownRecord;
+
+        const videoDetails = (playerData as {
+            videoDetails?: { title?: string; author?: string };
+        }).videoDetails;
+
+        const metadata: TranscriptMetadata = {
+            title: videoDetails?.title,
+            author: videoDetails?.author
+        };
+
+        const captions = (playerData as {
+            captions?: {
+                playerCaptionsTracklistRenderer?: {
+                    captionTracks?: Array<{ baseUrl?: string; languageCode?: string }>;
+                };
+            };
+        }).captions?.playerCaptionsTracklistRenderer?.captionTracks;
+
+        if (!captions || !Array.isArray(captions) || captions.length === 0) {
+            throw new Error('No caption tracks available from Player API (ANDROID)');
+        }
+
+        transcriptLogger.debug(`Player API (ANDROID): found ${captions.length} caption tracks`);
+
+        // Prefer matching language, otherwise first track
+        const preferredTrack = captions.find(track => track.languageCode?.startsWith(lang)) || captions[0];
+        if (!preferredTrack?.baseUrl) {
+            throw new Error('Caption track missing baseUrl');
+        }
+
+        const segments = await this.fetchCaptionTrack(preferredTrack.baseUrl);
+        transcriptLogger.debug(`Player API (ANDROID): successfully extracted ${segments.length} segments`);
+        return { segments, metadata };
     }
 
     /**
@@ -745,23 +919,26 @@ export class YouTubeTranscriptExtractor {
     private static async fetchViaPlayerApi(videoId: string, options: TranscriptOptions): Promise<TranscriptResult> {
         const lang = options.lang || 'en';
         const country = options.country || 'US';
-        
-        const apiKey = await this.getInnertubeApiKey(videoId);
-        const playerUrl = `https://www.youtube.com/youtubei/v1/player?key=${apiKey}`;
+
+        // Get dynamic YouTube config
+        const ytConfig = await this.getYouTubeConfig(videoId);
+        transcriptLogger.debug(`Player API: using clientVersion ${ytConfig.clientVersion}`);
+
+        const playerUrl = `https://www.youtube.com/youtubei/v1/player?key=${ytConfig.apiKey}`;
         const playerBody = {
             context: {
                 client: {
                     clientName: 'WEB',
-                    clientVersion: '2.20241205.01.00',
+                    clientVersion: ytConfig.clientVersion,
                     hl: lang,
                     gl: country
                 }
             },
             videoId
         };
-        
+
         transcriptLogger.debug(`Player API: requesting caption tracks for ${videoId}`);
-        
+
         const playerResponse = await obsidianFetch(playerUrl, {
             method: 'POST',
             headers: {
@@ -771,6 +948,8 @@ export class YouTubeTranscriptExtractor {
                 'Content-Type': 'application/json',
                 'Origin': 'https://www.youtube.com',
                 'Referer': `https://www.youtube.com/watch?v=${videoId}`,
+                'X-Youtube-Client-Name': '1',
+                'X-Youtube-Client-Version': ytConfig.clientVersion,
                 'DNT': '1',
                 ...(YouTubeTranscriptExtractor.cookieStore && { 'Cookie': YouTubeTranscriptExtractor.cookieStore })
             },
@@ -818,8 +997,18 @@ export class YouTubeTranscriptExtractor {
      * Fetch and parse captions from a caption track baseUrl using json3 format
      */
     private static async fetchCaptionTrack(baseUrl: string): Promise<TranscriptSegment[]> {
-        const url = baseUrl.includes('fmt=json3') ? baseUrl : `${baseUrl}&fmt=json3`;
-        
+        // Remove any existing fmt= parameter and add fmt=json3
+        // YouTube URLs can have fmt=srv3 which returns XML - we need JSON
+        let url = baseUrl;
+        if (url.includes('fmt=')) {
+            // Replace existing fmt parameter with json3
+            url = url.replace(/fmt=[^&]+/g, 'fmt=json3');
+        } else {
+            url = `${url}&fmt=json3`;
+        }
+
+        transcriptLogger.debug(`Fetching caption track from: ${url.substring(0, 100)}...`);
+
         const response = await obsidianFetch(url, {
             method: 'GET',
             headers: {
@@ -830,47 +1019,68 @@ export class YouTubeTranscriptExtractor {
                 ...(YouTubeTranscriptExtractor.cookieStore && { 'Cookie': YouTubeTranscriptExtractor.cookieStore })
             }
         });
-        
+
         if (!response.ok) {
             throw new Error(`Failed to fetch caption track: HTTP ${response.status}`);
         }
-        
-        // Caption tracks in json3 format contain events with segs
-        const data = await response.json() as {
+
+        // Get response as text first to inspect it
+        const responseText = await response.text();
+        transcriptLogger.debug(`Caption track response length: ${responseText.length}, starts with: ${responseText.substring(0, 100)}`);
+
+        // Check if response is XML (starts with < or <?xml)
+        if (responseText.trim().startsWith('<')) {
+            transcriptLogger.debug('Response is XML format, parsing as XML');
+            return this.parseXmlCaptions(responseText, 'caption-track');
+        }
+
+        // Try to parse as JSON
+        let data: {
             events?: Array<{
                 tStartMs?: number;
                 dDurationMs?: number;
                 segs?: Array<{ utf8?: string }>;
             }>;
         };
-        
+
+        try {
+            data = JSON.parse(responseText);
+        } catch (parseError) {
+            transcriptLogger.error(`Failed to parse caption response as JSON: ${responseText.substring(0, 200)}`);
+            throw new Error(`Caption track response is not valid JSON`);
+        }
+
         if (!data.events || !Array.isArray(data.events)) {
+            transcriptLogger.error(`Caption track response missing events array. Keys: ${Object.keys(data).join(', ')}`);
             throw new Error('Caption track response missing events');
         }
-        
+
+        transcriptLogger.debug(`Parsing ${data.events.length} events from JSON caption track`);
+
         const segments: TranscriptSegment[] = [];
         for (const event of data.events) {
             const text = (event.segs || [])
                 .map(seg => seg.utf8 || '')
                 .join('')
                 .trim();
-            
+
             if (!text) continue;
-            
+
             const start = (event.tStartMs || 0) / 1000;
             const duration = (event.dDurationMs || 0) / 1000;
-            
+
             segments.push({
                 text,
                 start,
                 duration
             });
         }
-        
+
         if (segments.length === 0) {
             throw new Error('No transcript segments parsed from caption track');
         }
-        
+
+        transcriptLogger.debug(`Successfully parsed ${segments.length} segments from caption track`);
         return segments;
     }
 

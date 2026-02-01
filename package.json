@@ -1,6 +1,6 @@
 {
     "name": "tubesage",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "description": "Create comprehensive notes from YouTube transcripts using LLMs.",
     "main": "main.js",
     "scripts": {
@@ -24,7 +24,7 @@
         "@typescript-eslint/eslint-plugin": "^8.39.1",
         "@typescript-eslint/parser": "^8.39.1",
         "adm-zip": "^0.5.16",
-        "esbuild": "^0.25.9",
+        "esbuild": "^0.27.2",
         "eslint": "^9.39.2",
         "eslint-plugin-obsidianmd": "^0.1.9",
         "obsidian": "^1.8.7",

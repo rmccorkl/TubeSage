@@ -4836,15 +4836,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 customParamsContainer.addClass('tubesage-display-none');
             }
             
-            // Debug logging to help troubleshoot mobile issues
-            if (this.plugin.settings.debugLogging) {
-                logger.debug('Tubesage: custom params visibility check', {
-                    dropdownValue,
-                    customValue,
-                    isCustomSelected,
-                    isMobile: Platform.isMobile
-                });
-            }
+            // Debug logging removed - was too spammy due to 500ms polling interval
         };
         
         // Use both polling AND event listeners for maximum reliability
