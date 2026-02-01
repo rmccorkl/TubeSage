@@ -4822,8 +4822,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Function to show/hide custom parameters based on selection
         const updateCustomParamsVisibility = () => {
             const dropdownValue = modelDropdown.getValue();
-            const customValue = customField.getValue()?.trim() || '';
-            
+
             // Show custom parameters when dropdown is set to 'custom' (regardless of field content)
             const isCustomSelected = dropdownValue === 'custom';
             

@@ -1035,7 +1035,7 @@ export class YouTubeTranscriptExtractor {
         }
 
         // Try to parse as JSON
-        let data: {
+        type CaptionTrackData = {
             events?: Array<{
                 tStartMs?: number;
                 dDurationMs?: number;
@@ -1043,9 +1043,11 @@ export class YouTubeTranscriptExtractor {
             }>;
         };
 
+        let data: CaptionTrackData;
+
         try {
-            data = JSON.parse(responseText);
-        } catch (parseError) {
+            data = JSON.parse(responseText) as CaptionTrackData;
+        } catch {
             transcriptLogger.error(`Failed to parse caption response as JSON: ${responseText.substring(0, 200)}`);
             throw new Error(`Caption track response is not valid JSON`);
         }
