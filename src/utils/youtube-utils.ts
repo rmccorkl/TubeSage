@@ -133,24 +133,5 @@ export function extractChannelName(url: string): string {
  * @param timeout Display duration in milliseconds
  */
 export function showNotice(message: string, timeout: number = 5000): void {
-    try {
-        // Get stack trace to find caller info
-        const stack = new Error().stack || '';
-        const callerLine = stack.split('\n')[2]; // Skip Error and showNotice lines
-        const callerMatch = callerLine.match(/at\s+(?:.*\s+)?\(?([^:]+):(\d+):(\d+)\)?/);
-        
-        let debugInfo = '';
-        if (callerMatch) {
-            const [, file, line] = callerMatch;
-            const fileName = file.split('/').pop() || file;
-            debugInfo = ` [${fileName}:${line}]`;
-        }
-        
-        // Try with timeout parameter (may work in newer Obsidian versions)
-        // @ts-ignore - Ignoring TypeScript error for potentially unsupported parameter
-        new Notice(message + debugInfo, timeout);
-    } catch {
-        // Fallback to standard Notice if timeout parameter isn't supported
-        new Notice(message);
-    }
+    new Notice(message, timeout);
 }

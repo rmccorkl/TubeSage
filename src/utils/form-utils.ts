@@ -176,7 +176,7 @@ export function validateYouTubeUrl(
  * @param timeout Duration to show the notice (ms)
  */
 export function showNotice(message: string, timeout: number = 5000): void {
-    new Notice(message);
+    new Notice(message, timeout);
 }
 
 /**

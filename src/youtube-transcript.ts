@@ -37,6 +37,7 @@ export interface TranscriptSegment {
 export interface TranscriptOptions {
     lang?: string;
     country?: string;
+    supadataApiKey?: string;
 }
 
 export interface TranscriptMetadata {
@@ -61,6 +62,7 @@ interface YouTubeConfig {
 
 export class YouTubeTranscriptExtractor {
     private static readonly USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+    private static readonly ANDROID_CLIENT_VERSION = '19.29.37';
     private static cookieStore: string = '';
     // Cache YouTube config after first extraction to avoid repeated HTML fetches
     private static cachedConfig: YouTubeConfig | null = null;
@@ -109,6 +111,10 @@ export class YouTubeTranscriptExtractor {
             } catch (androidError) {
                 const androidErrorMessage = getSafeErrorMessage(androidError);
                 transcriptLogger.error('ANDROID client failed:', androidErrorMessage);
+                if (androidErrorMessage.includes('400')) {
+                    this.cachedConfig = null;
+                    transcriptLogger.debug('Cleared YouTube config cache due to HTTP 400');
+                }
                 transcriptLogger.debug('Attempting fallback with WEB client');
             }
 
@@ -525,16 +531,32 @@ export class YouTubeTranscriptExtractor {
                 }
                 
             } catch (error) {
-                const errorMessage = getSafeErrorMessage(error);
-                transcriptLogger.error('WEB fallback also failed:', errorMessage);
+                const webErrorMessage = getSafeErrorMessage(error);
+                transcriptLogger.error('WEB fallback also failed:', webErrorMessage);
 
-                // If we successfully extracted metadata but caption fetching failed,
-                // we should still return the metadata with an error transcript
+                // Try Supadata as third fallback if API key is configured
+                if (options.supadataApiKey) {
+                    try {
+                        transcriptLogger.debug('Attempting Supadata fallback');
+                        const supadataResult = await this.fetchViaSupadata(videoId, options);
+                        transcriptLogger.debug(`Supadata fallback succeeded with ${supadataResult.segments.length} segments`);
+                        // Merge any metadata we already extracted
+                        if (metadata && (metadata.title || metadata.author)) {
+                            supadataResult.metadata = { ...supadataResult.metadata, ...metadata };
+                        }
+                        return supadataResult;
+                    } catch (supadataError) {
+                        const supadataErrorMessage = getSafeErrorMessage(supadataError);
+                        transcriptLogger.error('Supadata fallback also failed:', supadataErrorMessage);
+                    }
+                }
+
+                // All methods failed
                 if (metadata && (metadata.title || metadata.author)) {
                     transcriptLogger.debug('Returning metadata despite caption failure');
                     return {
                         segments: [{
-                            text: `[TRANSCRIPT EXTRACTION FAILED: Both ANDROID and WEB methods failed. ${errorMessage}]`,
+                            text: `[TRANSCRIPT EXTRACTION FAILED: ANDROID, WEB, and Supadata methods all failed. ${webErrorMessage}]`,
                             start: 0,
                             duration: 0
                         }],
@@ -842,15 +864,21 @@ export class YouTubeTranscriptExtractor {
         transcriptLogger.debug('Player API (ANDROID): attempting with ANDROID client');
 
         // ANDROID client configuration - bypasses WEB restrictions
-        const playerUrl = `https://www.youtube.com/youtubei/v1/player?key=${ytConfig.apiKey}`;
+        const playerUrl = `https://www.youtube.com/youtubei/v1/player?key=${ytConfig.apiKey}&prettyPrint=false`;
         const playerBody = {
             context: {
                 client: {
                     clientName: 'ANDROID',
-                    clientVersion: '19.09.37',  // Stable ANDROID version
-                    androidSdkVersion: 30,
+                    clientVersion: YouTubeTranscriptExtractor.ANDROID_CLIENT_VERSION,
+                    androidSdkVersion: 33,
+                    osName: 'Android',
+                    osVersion: '13',
+                    platform: 'MOBILE',
+                    deviceMake: 'Google',
+                    deviceModel: 'Pixel 7',
                     hl: lang,
-                    gl: country
+                    gl: country,
+                    ...(ytConfig.visitorData && { visitorData: ytConfig.visitorData })
                 }
             },
             videoId
@@ -861,19 +889,23 @@ export class YouTubeTranscriptExtractor {
         const playerResponse = await obsidianFetch(playerUrl, {
             method: 'POST',
             headers: {
-                'User-Agent': 'com.google.android.youtube/19.09.37 (Linux; U; Android 11) gzip',
+                'User-Agent': `com.google.android.youtube/${YouTubeTranscriptExtractor.ANDROID_CLIENT_VERSION} (Linux; U; Android 13; en_US; Pixel 7 Build/TQ3A.230901.001) gzip`,
                 'Accept': 'application/json',
                 'Accept-Language': 'en-US,en;q=0.9',
                 'Content-Type': 'application/json',
                 'Origin': 'https://www.youtube.com',
                 'X-Youtube-Client-Name': '3',  // 3 = ANDROID
-                'X-Youtube-Client-Version': '19.09.37',
+                'X-Youtube-Client-Version': YouTubeTranscriptExtractor.ANDROID_CLIENT_VERSION,
+                ...(ytConfig.visitorData && { 'x-goog-visitor-id': ytConfig.visitorData }),
                 ...(YouTubeTranscriptExtractor.cookieStore && { 'Cookie': YouTubeTranscriptExtractor.cookieStore })
             },
             body: JSON.stringify(playerBody)
         });
 
         if (!playerResponse.ok) {
+            let errorDetail = '';
+            try { errorDetail = await playerResponse.text(); } catch { /* ignore */ }
+            transcriptLogger.error(`Player API (ANDROID) error: HTTP ${playerResponse.status}: ${errorDetail.substring(0, 500)}`);
             throw new Error(`Player API (ANDROID) error: HTTP ${playerResponse.status}`);
         }
 
@@ -911,6 +943,63 @@ export class YouTubeTranscriptExtractor {
         const segments = await this.fetchCaptionTrack(preferredTrack.baseUrl);
         transcriptLogger.debug(`Player API (ANDROID): successfully extracted ${segments.length} segments`);
         return { segments, metadata };
+    }
+
+    /**
+     * Supadata API fallback: Uses Supadata's transcript API as a third fallback.
+     * Requires an API key from supadata.ai.
+     */
+    private static async fetchViaSupadata(videoId: string, options: TranscriptOptions): Promise<TranscriptResult> {
+        const lang = options.lang || 'en';
+        const apiKey = options.supadataApiKey;
+
+        if (!apiKey) {
+            throw new Error('Supadata API key not configured');
+        }
+
+        const videoUrl = encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`);
+        const supadataUrl = `https://api.supadata.ai/v1/transcript?url=${videoUrl}&lang=${lang}&text=false&mode=auto`;
+
+        transcriptLogger.debug(`Supadata: fetching transcript for ${videoId}`);
+
+        const response = await obsidianFetch(supadataUrl, {
+            method: 'GET',
+            headers: {
+                'x-api-key': apiKey,
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            let errorDetail = '';
+            try { errorDetail = await response.text(); } catch { /* ignore */ }
+            transcriptLogger.error(`Supadata API error: HTTP ${response.status}: ${errorDetail.substring(0, 500)}`);
+            throw new Error(`Supadata API error: HTTP ${response.status}`);
+        }
+
+        const data = await response.json() as {
+            content?: Array<{
+                text: string;
+                offset: number;
+                duration: number;
+                lang?: string;
+            }>;
+            lang?: string;
+            availableLangs?: string[];
+        };
+
+        if (!data.content || !Array.isArray(data.content) || data.content.length === 0) {
+            throw new Error('Supadata returned no transcript content');
+        }
+
+        const segments: TranscriptSegment[] = data.content.map(item => ({
+            text: item.text.trim(),
+            start: item.offset / 1000,    // Convert ms to seconds
+            duration: item.duration / 1000  // Convert ms to seconds
+        })).filter(segment => !!segment.text);
+
+        transcriptLogger.debug(`Supadata: successfully extracted ${segments.length} segments`);
+        return { segments, metadata: {} };
     }
 
     /**

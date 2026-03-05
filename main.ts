@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, Notice, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile } from 'obsidian';
 import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
@@ -211,6 +211,7 @@ interface YouTubeTranscriptSettings {
     translateLanguage: string;
     translateCountry: string;
     youtubeApiKey: string;
+    supadataApiKey: string;
     
     // Folder settings
     transcriptRootFolder: string;
@@ -368,6 +369,7 @@ EXACTLY HOW TO DO THIS:
     translateLanguage: 'en',
     translateCountry: 'US',
     youtubeApiKey: '',
+    supadataApiKey: '',
     transcriptRootFolder: 'Inbox',  // Default to Inbox for backward compatibility
     dateFormat: 'YYYY-MM-DD',
     prependDate: true,
@@ -473,10 +475,10 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             const selectedLlm = this.settings.selectedLLM;
             if (!this.settings.apiKeys[selectedLlm] || this.settings.apiKeys[selectedLlm].trim() === '') {
                 // Show error notice
-                new Notice(`Youtube Transcript Plugin: No API key configured for ${selectedLlm}. Please add your API key in the plugin settings.`);
+                showNotice(`Youtube Transcript Plugin: No API key configured for ${selectedLlm}. Please add your API key in the plugin settings.`, 7000);
                 return;
             }
-            
+
             // If license is accepted and API key is set, proceed with the usual workflow
             new YouTubeTranscriptModal(this.app, this).open();
         });
@@ -492,12 +494,12 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     new LicenseRequiredModal(this.app).open();
                     return;
                 }
-                
+
                 // Check if API key is set for the selected LLM provider
                 const selectedLlm = this.settings.selectedLLM;
                 if (!this.settings.apiKeys[selectedLlm] || this.settings.apiKeys[selectedLlm].trim() === '') {
                     // Show error notice
-                    new Notice(`Youtube transcript plugin: No API key configured for ${selectedLlm}. Please add your API key in the plugin settings.`);
+                    showNotice(`Youtube transcript plugin: No API key configured for ${selectedLlm}. Please add your API key in the plugin settings.`, 7000);
                     return;
                 }
                 
@@ -644,7 +646,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     // Get transcript segments and metadata using direct ScrapeCreators method
                     const result = await YouTubeTranscriptExtractor.fetchTranscript(videoId, {
                         lang: this.settings.translateLanguage,
-                        country: this.settings.translateCountry
+                        country: this.settings.translateCountry,
+                        supadataApiKey: this.settings.supadataApiKey || undefined
                     });
                     
                     // Format transcript with timestamps
@@ -3910,7 +3913,35 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 
                 return textComponent;
             });
-        
+
+        new Setting(settingsContainer)
+            .setName('Supadata API key')
+            .setDesc('Optional key for supadata transcript service. Used as a third fallback when both Android and web extraction methods fail. Get a key at supadata.ai.')
+            .addText(text => {
+                const textComponent = text
+                    .setPlaceholder('Enter supadata key')
+                    .setValue(this.plugin.settings.supadataApiKey)
+                    .onChange((value: string) => {
+                        void (async () => {
+                            this.plugin.settings.supadataApiKey = value;
+                            await this.plugin.saveSettings();
+                        })();
+                    });
+
+                const inputEl = textComponent.inputEl;
+                if (inputEl) {
+                    inputEl.type = 'password';
+                    inputEl.addEventListener('focus', () => {
+                        inputEl.type = 'text';
+                    });
+                    inputEl.addEventListener('blur', () => {
+                        inputEl.type = 'password';
+                    });
+                }
+
+                return textComponent;
+            });
+
         new Setting(settingsContainer)
             .setName('Translate language')
             .setDesc('Target language code for translation (e.g., en, es, fr, de). Use "en" to keep content in english.')
@@ -3981,7 +4012,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         this.plugin.settings.maxTokens = effectiveMaxTokens;
                         
                         // Show notice with effective token limit
-                        new Notice(`Max tokens set to ${effectiveMaxTokens} for ${value} provider`);
+                        this.plugin.showNotice(`Max tokens set to ${effectiveMaxTokens} for ${value} provider`, 3000);
                         
                         // Update settings
                         await this.plugin.saveSettings();
@@ -4064,7 +4095,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                                 await this.plugin.saveSettings();
                                 
                                 // Show notice about the token limit change
-                                new Notice(`Model changed to ${value}. Max tokens updated to ${effectiveMaxTokens}`);
+                                this.plugin.showNotice(`Model changed to ${value}. Max tokens updated to ${effectiveMaxTokens}`, 3000);
                             } else {
                                 // Custom model selected - initialize custom model limits if they don't exist
                                 const currentModel = this.plugin.settings.selectedModels[provider];
