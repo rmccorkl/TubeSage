@@ -212,7 +212,8 @@ interface YouTubeTranscriptSettings {
     translateCountry: string;
     youtubeApiKey: string;
     supadataApiKey: string;
-    
+    scrapcreatorsApiKey: string;
+
     // Folder settings
     transcriptRootFolder: string;
     
@@ -370,6 +371,7 @@ EXACTLY HOW TO DO THIS:
     translateCountry: 'US',
     youtubeApiKey: '',
     supadataApiKey: '',
+    scrapcreatorsApiKey: '',
     transcriptRootFolder: 'Inbox',  // Default to Inbox for backward compatibility
     dateFormat: 'YYYY-MM-DD',
     prependDate: true,
@@ -647,7 +649,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     const result = await YouTubeTranscriptExtractor.fetchTranscript(videoId, {
                         lang: this.settings.translateLanguage,
                         country: this.settings.translateCountry,
-                        supadataApiKey: this.settings.supadataApiKey || undefined
+                        supadataApiKey: this.settings.supadataApiKey || undefined,
+                        scrapcreatorsApiKey: this.settings.scrapcreatorsApiKey || undefined
                     });
                     
                     // Format transcript with timestamps
@@ -3915,8 +3918,36 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             });
 
         new Setting(settingsContainer)
+            .setName('Scrapecreators API key')
+            .setDesc('Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free).')
+            .addText(text => {
+                const textComponent = text
+                    .setPlaceholder('Enter scrapecreators API key')
+                    .setValue(this.plugin.settings.scrapcreatorsApiKey)
+                    .onChange((value: string) => {
+                        void (async () => {
+                            this.plugin.settings.scrapcreatorsApiKey = value;
+                            await this.plugin.saveSettings();
+                        })();
+                    });
+
+                const inputEl = textComponent.inputEl;
+                if (inputEl) {
+                    inputEl.type = 'password';
+                    inputEl.addEventListener('focus', () => {
+                        inputEl.type = 'text';
+                    });
+                    inputEl.addEventListener('blur', () => {
+                        inputEl.type = 'password';
+                    });
+                }
+
+                return textComponent;
+            });
+
+        new Setting(settingsContainer)
             .setName('Supadata API key')
-            .setDesc('Optional key for supadata transcript service. Used as a third fallback when both Android and web extraction methods fail. Get a key at supadata.ai.')
+            .setDesc('Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.')
             .addText(text => {
                 const textComponent = text
                     .setPlaceholder('Enter supadata key')
