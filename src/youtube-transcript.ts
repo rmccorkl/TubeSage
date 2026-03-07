@@ -68,8 +68,9 @@ interface YouTubeConfig {
 export class YouTubeTranscriptExtractor {
     private static readonly USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
     private static cookieStore: string = '';
-    // Cache YouTube config after first extraction to avoid repeated HTML fetches
+    // Cache YouTube config after first extraction to avoid repeated HTML fetches within the same video request
     private static cachedConfig: YouTubeConfig | null = null;
+    private static cachedVideoId: string | null = null;
     // Fallback client version if extraction fails (updated to current version)
     private static readonly FALLBACK_CLIENT_VERSION = '2.20260128.05.00';
     
@@ -99,6 +100,13 @@ export class YouTubeTranscriptExtractor {
      */
     static async fetchTranscript(videoId: string, options: TranscriptOptions = {}): Promise<TranscriptResult> {
         transcriptLogger.debug(`Fetching YouTube transcript for video: ${videoId}`);
+
+        // Clear cached config when video changes to prevent stale title/metadata from a previous request
+        if (this.cachedVideoId !== videoId) {
+            this.cachedConfig = null;
+            this.cachedVideoId = videoId;
+            transcriptLogger.debug(`New video ID detected (${videoId}), cleared config cache`);
+        }
 
         try {
             // Always try local methods first, then fall back to paid APIs
@@ -612,6 +620,7 @@ export class YouTubeTranscriptExtractor {
      */
     static clearConfigCache(): void {
         this.cachedConfig = null;
+        this.cachedVideoId = null;
         transcriptLogger.debug('YouTube config cache cleared');
     }
 
@@ -1254,8 +1263,8 @@ export class YouTubeTranscriptExtractor {
         })).filter(segment => !!segment.text);
 
         transcriptLogger.debug(`Supadata: successfully extracted ${segments.length} segments`);
-        const metadata: TranscriptMetadata = this.cachedConfig?.metadata ?? {};
-        transcriptLogger.debug(`Supadata: using cached metadata — title="${metadata.title}", author="${metadata.author}"`);
+        const metadata: TranscriptMetadata = await this.getVideoMetadata(videoId);
+        transcriptLogger.debug(`Supadata: fetched metadata — title="${metadata.title}", author="${metadata.author}"`);
         return { segments, metadata };
     }
 
@@ -1310,8 +1319,8 @@ export class YouTubeTranscriptExtractor {
         })).filter(segment => !!segment.text);
 
         transcriptLogger.debug(`ScrapeCreators: successfully extracted ${segments.length} segments`);
-        const metadata: TranscriptMetadata = this.cachedConfig?.metadata ?? {};
-        transcriptLogger.debug(`ScrapeCreators: using cached metadata — title="${metadata.title}", author="${metadata.author}"`);
+        const metadata: TranscriptMetadata = await this.getVideoMetadata(videoId);
+        transcriptLogger.debug(`ScrapeCreators: fetched metadata — title="${metadata.title}", author="${metadata.author}"`);
         return { segments, metadata };
     }
 
