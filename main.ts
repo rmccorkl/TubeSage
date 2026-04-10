@@ -398,11 +398,18 @@ interface OpenAIModel {
 // Define a simple interface for the model object from Google Generative AI API
 interface GoogleModel {
     name: string; // e.g., "models/gemini-1.5-pro-latest"
-    displayName?: string; // e.g., "Gemini 1.5 Pro"
+    displayName?: string;
     version?: string;
     description?: string;
     supportedGenerationMethods?: string[];
-    // Add other relevant properties if needed
+    inputTokenLimit?: number;
+    outputTokenLimit?: number;
+}
+
+interface FetchedModelInfo {
+    id: string;
+    contextK?: number;   // context window in thousands
+    maxOutputK?: number; // max output in thousands
 }
 
 interface ApiErrorResponse {
@@ -2420,11 +2427,11 @@ ${contentToTranslate}
         });
     }
 
-    async fetchOpenAIModels(apiKey: string): Promise<string[]> {
+    async fetchOpenAIModels(apiKey: string): Promise<FetchedModelInfo[]> {
         if (!apiKey || apiKey.trim() === "") {
             this.showNotice("OpenAI API key is missing. Cannot fetch models.", 5000);
             logger.warn("[fetchOpenAIModels] OpenAI API key is missing.");
-            return []; // Return empty array or a default list
+            return [];
         }
 
         const url = "https://api.openai.com/v1/models";
@@ -2442,23 +2449,21 @@ ${contentToTranslate}
                 const errorMessage = errorData.error?.message || errorData.message || `HTTP error ${response.status}`;
                 logger.error(`[fetchOpenAIModels] Failed to fetch OpenAI models: ${errorMessage}`);
                 this.showNotice(`Failed to fetch OpenAI models: ${errorMessage}`, 5000);
-                return []; // Or a default list
+                return [];
             }
 
             const data = await response.json() as OpenAIModelsResponse;
             if (data && Array.isArray(data.data)) {
-                const modelIds = data.data
+                // OpenAI API does not return context/output limits — limits stay in the hardcoded registry
+                const models: FetchedModelInfo[] = data.data
                     .map((model: OpenAIModel) => model.id)
-                    .filter((id: string) => 
-                        id.includes('gpt') || 
-                        id.includes('text-davinci') // Include some older models if user wants
-                        // Add other filters if needed, e.g., based on capabilities
-                    )
-                    .sort(); // Sort them alphabetically
-                
-                logger.info(`[fetchOpenAIModels] Successfully fetched ${modelIds.length} OpenAI models.`);
+                    .filter((id: string) => id.includes('gpt') || id.includes('text-davinci'))
+                    .sort()
+                    .map(id => ({ id }));
+
+                logger.info(`[fetchOpenAIModels] Successfully fetched ${models.length} OpenAI models.`);
                 this.showNotice("OpenAI models updated!", 3000);
-                return modelIds;
+                return models;
             } else {
                 logger.warn("[fetchOpenAIModels] Unexpected response structure from OpenAI API.");
                 this.showNotice("Could not parse OpenAI models from API response.", 5000);
@@ -2472,7 +2477,7 @@ ${contentToTranslate}
         }
     }
 
-    async fetchGoogleModels(apiKey: string): Promise<string[]> {
+    async fetchGoogleModels(apiKey: string): Promise<FetchedModelInfo[]> {
         if (!apiKey || apiKey.trim() === "") {
             this.showNotice("Google API key is missing. Cannot fetch models.", 5000);
             logger.warn("[fetchGoogleModels] Google API key is missing.");
@@ -2494,18 +2499,41 @@ ${contentToTranslate}
 
             const data = await response.json() as GoogleModelsResponse;
             if (data && Array.isArray(data.models)) {
-                const modelIds = data.models
-                    .filter((model: GoogleModel) => 
-                        model.name && 
-                        !model.name.includes('embed') && 
+                const models: FetchedModelInfo[] = data.models
+                    .filter((model: GoogleModel) =>
+                        model.name &&
+                        !model.name.includes('embed') &&
                         model.supportedGenerationMethods?.includes('generateContent')
                     )
-                    .map((model: GoogleModel) => model.name.startsWith('models/') ? model.name.substring('models/'.length) : model.name) // Strip "models/" prefix
-                    .sort();
-                
-                logger.info(`[fetchGoogleModels] Successfully fetched ${modelIds.length} Google models (names stripped).`);
+                    .map((model: GoogleModel) => {
+                        const id = model.name.startsWith('models/') ? model.name.substring('models/'.length) : model.name;
+                        const contextK = model.inputTokenLimit ? Math.round(model.inputTokenLimit / 1000) : undefined;
+                        const maxOutputK = model.outputTokenLimit ? Math.round(model.outputTokenLimit / 1000) : undefined;
+                        return { id, contextK, maxOutputK };
+                    })
+                    .sort((a, b) => a.id.localeCompare(b.id));
+
+                // Upsert token limits into customModelLimits for any model that has them
+                let updatedCount = 0;
+                for (const m of models) {
+                    if (m.contextK && m.maxOutputK) {
+                        const key = `google:${m.id}`;
+                        this.settings.customModelLimits[key] = {
+                            contextK: m.contextK,
+                            maxOutputK: m.maxOutputK,
+                            reservePct: 0.10
+                        };
+                        updatedCount++;
+                    }
+                }
+                if (updatedCount > 0) {
+                    await this.saveSettings();
+                    logger.info(`[fetchGoogleModels] Stored token limits for ${updatedCount} Google models.`);
+                }
+
+                logger.info(`[fetchGoogleModels] Successfully fetched ${models.length} Google models.`);
                 this.showNotice("Google models updated!", 3000);
-                return modelIds;
+                return models;
             } else {
                 logger.warn("[fetchGoogleModels] Unexpected response structure from Google API.");
                 this.showNotice("Could not parse Google models from API response.", 5000);
@@ -2515,6 +2543,84 @@ ${contentToTranslate}
             const errorMessage = getSafeErrorMessage(error);
             logger.error("[fetchGoogleModels] Error fetching or parsing Google models:", errorMessage);
             this.showNotice(`Error fetching Google models: ${errorMessage}`, 5000);
+            return [];
+        }
+    }
+
+    async fetchAnthropicModels(apiKey: string): Promise<FetchedModelInfo[]> {
+        if (!apiKey || apiKey.trim() === "") {
+            this.showNotice("Anthropic API key is missing. Cannot fetch models.", 5000);
+            logger.warn("[fetchAnthropicModels] Anthropic API key is missing.");
+            return [];
+        }
+
+        const url = "https://api.anthropic.com/v1/models";
+        try {
+            this.showNotice("Fetching Anthropic models...", 3000);
+            const response = await obsidianFetch(url, {
+                method: 'GET',
+                headers: {
+                    'x-api-key': apiKey,
+                    'anthropic-version': '2023-06-01'
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ message: response.statusText })) as ApiErrorResponse;
+                const errorMessage = errorData.error?.message || errorData.message || `HTTP error ${response.status}`;
+                logger.error(`[fetchAnthropicModels] Failed to fetch Anthropic models: ${errorMessage}`);
+                this.showNotice(`Failed to fetch Anthropic models: ${errorMessage}`, 5000);
+                return [];
+            }
+
+            const data = await response.json() as {
+                data?: Array<{
+                    id: string;
+                    type?: string;
+                    max_input_tokens?: number;
+                    max_tokens?: number;
+                }>
+            };
+            if (data && Array.isArray(data.data)) {
+                const models: FetchedModelInfo[] = data.data
+                    .filter(model => model.type === 'model' || !model.type)
+                    .map(model => ({
+                        id: model.id,
+                        contextK: model.max_input_tokens ? Math.round(model.max_input_tokens / 1000) : undefined,
+                        maxOutputK: model.max_tokens ? Math.round(model.max_tokens / 1000) : undefined
+                    }))
+                    .sort((a, b) => b.id.localeCompare(a.id)); // Most recent first
+
+                // Upsert token limits into customModelLimits for any model that has them
+                let updatedCount = 0;
+                for (const m of models) {
+                    if (m.contextK && m.maxOutputK) {
+                        const key = `anthropic:${m.id}`;
+                        this.settings.customModelLimits[key] = {
+                            contextK: m.contextK,
+                            maxOutputK: m.maxOutputK,
+                            reservePct: 0.10
+                        };
+                        updatedCount++;
+                    }
+                }
+                if (updatedCount > 0) {
+                    await this.saveSettings();
+                    logger.info(`[fetchAnthropicModels] Stored token limits for ${updatedCount} Anthropic models.`);
+                }
+
+                logger.info(`[fetchAnthropicModels] Successfully fetched ${models.length} Anthropic models.`);
+                this.showNotice("Anthropic models updated!", 3000);
+                return models;
+            } else {
+                logger.warn("[fetchAnthropicModels] Unexpected response structure from Anthropic API.");
+                this.showNotice("Could not parse Anthropic models from API response.", 5000);
+                return [];
+            }
+        } catch (error) {
+            const errorMessage = getSafeErrorMessage(error);
+            logger.error("[fetchAnthropicModels] Error fetching or parsing Anthropic models:", errorMessage);
+            this.showNotice(`Error fetching Anthropic models: ${errorMessage}`, 5000);
             return [];
         }
     }
@@ -4064,10 +4170,15 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             modelOptions: string[],    // List of model options
             defaultModelValue: string  // Default model if selection is invalid
         ) => {
-            // Create the setting container
-            const setting = new Setting(settingsContainer)
+            // Header row: name and description only, no controls
+            new Setting(settingsContainer)
                 .setName(`${displayName} Settings`)
-                .setDesc('Your API key and model selection')
+                .setDesc('Enter your API key, select a model, or type a custom model name.')
+                .settingEl.addClass('tubesage-provider-header');
+
+            // Controls row: API key, dropdown, refresh, custom model — no name/desc
+            const setting = new Setting(settingsContainer)
+                .setClass('tubesage-provider-controls')
                 .addText(text => {
                     // Get the input element
                     const textComponent = text
@@ -4156,8 +4267,8 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 return dropdown;
             });
 
-            // Add refresh button ONLY for OpenAI OR Google provider
-            if (provider === 'openai' || provider === 'google') {
+            // Add refresh button for OpenAI, Google, and Anthropic providers
+            if (provider === 'openai' || provider === 'google' || provider === 'anthropic') {
                 setting.addExtraButton(button => {
                     button
                         .setIcon('refresh-cw') // Refresh icon
@@ -4176,14 +4287,18 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                                 return;
                             }
 
-                            let fetchedModels: string[] = [];
+                            let fetchedModels: FetchedModelInfo[] = [];
                             if (provider === 'openai') {
                                 fetchedModels = await this.plugin.fetchOpenAIModels(apiKey);
                             } else if (provider === 'google') {
                                 fetchedModels = await this.plugin.fetchGoogleModels(apiKey);
+                            } else if (provider === 'anthropic') {
+                                fetchedModels = await this.plugin.fetchAnthropicModels(apiKey);
                             }
 
-                            if (fetchedModels.length > 0) {
+                            const fetchedIds = fetchedModels.map(m => m.id);
+
+                            if (fetchedIds.length > 0) {
                                 const currentSelectedModel = this.plugin.settings.selectedModels[provider];
                                 // @ts-ignore - selectEl is part of the dropdown
                                 const options = dropdown.selectEl.options;
@@ -4192,21 +4307,21 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                                         dropdown.selectEl.remove(i);
                                     }
                                 }
-                                fetchedModels.forEach((modelId) => {
+                                fetchedIds.forEach((modelId) => {
                                     dropdown.addOption(modelId, modelId);
                                 });
                                 // @ts-ignore - selectEl is part of the dropdown
                                 dropdown.selectEl.appendChild(dropdown.selectEl.querySelector('option[value="custom"]'));
 
-                                if (fetchedModels.includes(currentSelectedModel)) {
+                                if (fetchedIds.includes(currentSelectedModel)) {
                                     dropdown.setValue(currentSelectedModel);
-                                } else if (fetchedModels.includes(defaultModelValue)) {
+                                } else if (fetchedIds.includes(defaultModelValue)) {
                                     dropdown.setValue(defaultModelValue);
                                     this.plugin.settings.selectedModels[provider] = defaultModelValue;
                                     await this.plugin.saveSettings();
-                                } else if (fetchedModels.length > 0) {
-                                    dropdown.setValue(fetchedModels[0]);
-                                    this.plugin.settings.selectedModels[provider] = fetchedModels[0];
+                                } else if (fetchedIds.length > 0) {
+                                    dropdown.setValue(fetchedIds[0]);
+                                    this.plugin.settings.selectedModels[provider] = fetchedIds[0];
                                     await this.plugin.saveSettings();
                                 } else {
                                     dropdown.setValue('custom');
@@ -4233,7 +4348,12 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                                     // Refresh display to show custom model settings
                                     this.display();
                                 }
-                                this.plugin.showNotice(`${displayName} model list refreshed.`, 3000);
+                                // Update maxTokens for currently selected model now that limits may be populated
+                                this.plugin.settings.maxTokens = this.plugin.getEffectiveMaxTokens();
+                                await this.plugin.saveSettings();
+                                const limitedCount = fetchedModels.filter(m => m.contextK).length;
+                                const limitMsg = limitedCount > 0 ? ` Token limits auto-populated for ${limitedCount} models.` : '';
+                                this.plugin.showNotice(`${displayName} model list refreshed.${limitMsg}`, 4000);
                             } else {
                                 this.plugin.showNotice(`Could not refresh ${displayName} models. Using existing list.`, 4000);
                             }

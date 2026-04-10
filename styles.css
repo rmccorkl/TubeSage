@@ -939,6 +939,58 @@ input:checked + .toggle-slider:before {
     justify-content: flex-start !important;
 }
 
+/* Provider header row — name + description only, no controls */
+.tubesage-provider-header {
+    padding-bottom: 4px !important;
+    border-bottom: none !important;
+    margin-bottom: 0 !important;
+}
+
+.tubesage-provider-header .setting-item-control {
+    display: none !important;
+}
+
+/* Provider controls row — API key, dropdown, refresh, custom model */
+.tubesage-provider-controls {
+    border-top: none !important;
+    padding-top: 4px !important;
+}
+
+.tubesage-provider-controls .setting-item-info {
+    display: none !important;
+}
+
+/* Make the control row a single flex line filling full width */
+.tubesage-provider-controls .setting-item-control {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: 100% !important;
+}
+
+/* API key input and custom model input share space equally */
+.tubesage-provider-controls .setting-item-control input[type="text"],
+.tubesage-provider-controls .setting-item-control input[type="password"] {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    width: auto !important;
+}
+
+/* Model dropdown shares space equally */
+.tubesage-provider-controls .setting-item-control select {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    width: auto !important;
+}
+
+/* Refresh button stays fixed size */
+.tubesage-provider-controls .setting-item-control button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+}
+
 .tubesage-folder-picker-status-error {
     font-size: 12px;
     color: var(--text-error);

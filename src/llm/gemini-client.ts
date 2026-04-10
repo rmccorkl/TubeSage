@@ -21,7 +21,7 @@ const isRecord = (value: unknown): value is Record<string, unknown> => {
 export class GeminiClient {
   private apiKey: string;
   private baseUrl = "https://generativelanguage.googleapis.com";
-  private apiVersion = "v1";
+  private apiVersion = "v1beta"; // v1beta required for Gemini 2.x models
   
   constructor(apiKey: string) {
     if (!apiKey || apiKey.trim() === '') {
@@ -54,6 +54,7 @@ export class GeminiClient {
       
       // Initialize request body
       const requestBody: {
+        system_instruction?: { parts: Array<{ text: string }> };
         contents: Array<{ role: string; parts: Array<{ text: string }> }>;
         generationConfig: {
           temperature: number;
@@ -70,20 +71,16 @@ export class GeminiClient {
           topK: options.top_k || 40
         }
       };
-      
-      // Handle system prompt - Gemini doesn't support system role directly
-      // So we need to prepend it to the user message or use a different approach
-      let fullPrompt = prompt;
+
+      // Use system_instruction field (supported since mid-2024 in v1beta)
       if (options.system) {
-        // Prepend system prompt to user prompt
-        fullPrompt = `${options.system}\n\n${prompt}`;
-        logger.debug('Added system prompt to user message for Gemini');
+        requestBody.system_instruction = { parts: [{ text: options.system }] };
+        logger.debug('Added system_instruction to Gemini request');
       }
-      
-      // Add the message as a user message (Gemini only supports user and model roles)
+
       requestBody.contents.push({
         role: "user",
-        parts: [{ text: fullPrompt }]
+        parts: [{ text: prompt }]
       });
       
       const response = await obsidianFetch(url, {

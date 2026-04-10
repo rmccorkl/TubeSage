@@ -78,11 +78,11 @@ export class TranscriptSummarizer {
                 throw new Error('Transcript is required for summarization');
             }
             
-            llmLogger.info("Starting summarization with provider:", provider);
-            llmLogger.info("Transcript length:", transcript.length);
-            llmLogger.info("Model:", this.config.model);
-            llmLogger.info("Temperature:", this.config.temperature);
-            llmLogger.info("Max tokens:", this.config.maxTokens);
+            llmLogger.info(`Starting summarization with provider: ${provider}`);
+            llmLogger.info(`Transcript length: ${transcript.length}`);
+            llmLogger.info(`Model: ${this.config.model}`);
+            llmLogger.info(`Temperature: ${this.config.temperature}`);
+            llmLogger.info(`Max tokens: ${this.config.maxTokens}`);
             
             // Check if the API key exists before proceeding
             if (!this.apiKeys[provider] || this.apiKeys[provider].trim() === '') {

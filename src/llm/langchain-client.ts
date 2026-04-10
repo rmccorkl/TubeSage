@@ -1,6 +1,6 @@
 import { ChatOpenAI } from "@langchain/openai";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatOllama } from "@langchain/ollama";
+import { GeminiClient } from "./gemini-client";
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { getLogger } from "../utils/logger";
 import { getSafeErrorMessage } from "../utils/error-utils";
@@ -230,33 +230,27 @@ export class LangChainClient {
         }
           
         case 'google': {
-          logger.debug(`[GOOGLE] Using Google Gemini with model: '${this.model}'`);
-          logger.debug(`[GOOGLE] Model name type: ${typeof this.model}, value: '${this.model}'`);
+          logger.debug(`[GOOGLE] Using GeminiClient (direct obsidianFetch) for model: '${this.model}'`);
           logger.debug(`[GOOGLE] Temperature: ${this.temperature}, MaxTokens: ${this.maxTokens}`);
           logger.debug(`[GOOGLE] API Key present: ${!!this.apiKey}, length: ${this.apiKey?.length || 0}`);
-          logger.debug(`[GOOGLE] Config object:`, JSON.stringify(config, null, 2));
-          
-          // Pre-validate model before passing to ChatGoogleGenerativeAI
+
           if (!this.model || typeof this.model !== 'string' || this.model.trim() === '') {
-            logger.error(`[GOOGLE] CRITICAL: Invalid model name: '${this.model}' (type: ${typeof this.model})`);
+            logger.error(`[GOOGLE] CRITICAL: Invalid model name: '${this.model}'`);
             throw new Error(`Invalid Google model name: '${this.model}'. Expected a valid Gemini model ID.`);
           }
-          
-          const modelConfig = {
-            ...config,
-            model: this.model,                 // Correct parameter name for ChatGoogleGenerativeAI
+
+          // Use GeminiClient directly with obsidianFetch — ChatGoogleGenerativeAI ignores the
+          // custom fetch override so it breaks on mobile. Direct calls mirror the Anthropic pattern.
+          const geminiClient = new GeminiClient(this.apiKey);
+          const systemContent = String(extractContent(messages[0]) ?? '');
+          const userContent = String(extractContent(messages[1]) ?? '');
+
+          const geminiResponse = await geminiClient.generateContent(this.model, userContent, {
             temperature: this.temperature,
-            maxTokens: this.maxTokens
-          };
-          
-          logger.debug(`[GOOGLE] About to create ChatGoogleGenerativeAI with config:`, JSON.stringify(modelConfig, null, 2));
-          
-          // Google Gemini - use maxTokens as defined in the type definition
-          const model = new ChatGoogleGenerativeAI(modelConfig);
-          
-          // Type cast needed for compatibility with LangChain's invoke() method
-          const response = await model.invoke(messages);
-          return String(extractContent(response));
+            max_tokens: this.maxTokens,
+            system: systemContent
+          });
+          return geminiClient.extractText(geminiResponse);
         }
            
         case 'ollama': {
