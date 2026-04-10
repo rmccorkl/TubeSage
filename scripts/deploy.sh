@@ -27,6 +27,14 @@ echo "Method: ScrapeCreators (HTTP-only, no browser dependencies)"
 echo -e "\n1. Building plugin with simplified proxy (ScrapeCreators HTTP-only)..."
 cd "$SOURCE_DIR"
 
+# Ensure dependencies are installed from lockfile (no surprises, no auto-upgrades)
+echo "Installing dependencies from lockfile..."
+if [ -x "/opt/homebrew/bin/npm" ]; then
+    PATH="/opt/homebrew/bin:$PATH" npm ci --ignore-scripts
+elif [ -x "$(command -v npm)" ]; then
+    npm ci --ignore-scripts
+fi
+
 # Check if we have a working npm via homebrew
 if [ -x "/opt/homebrew/bin/npm" ]; then
     echo "Using Homebrew npm for simplified build..."
