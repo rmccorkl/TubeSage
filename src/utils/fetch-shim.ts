@@ -28,6 +28,41 @@ interface RequestUrlOptions {
   arrayBuffer?: ArrayBuffer | ArrayBufferLike;
 }
 
+const SENSITIVE_HEADER_KEYS = new Set([
+  'authorization',
+  'x-api-key',
+  'x-goog-api-key',
+  'api-key',
+  'x-anthropic-api-key',
+  'cookie'
+]);
+
+const SENSITIVE_QUERY_KEYS = new Set(['key', 'api_key', 'access_token', 'token']);
+
+const redactUrlForLog = (rawUrl: string): string => {
+  try {
+    const parsed = new URL(rawUrl);
+    let mutated = false;
+    for (const name of Array.from(parsed.searchParams.keys())) {
+      if (SENSITIVE_QUERY_KEYS.has(name.toLowerCase())) {
+        parsed.searchParams.set(name, '[REDACTED]');
+        mutated = true;
+      }
+    }
+    return mutated ? parsed.toString() : rawUrl;
+  } catch {
+    return rawUrl;
+  }
+};
+
+const redactHeadersForLog = (headers: Record<string, string>): Record<string, string> => {
+  const redacted: Record<string, string> = {};
+  for (const [key, value] of Object.entries(headers)) {
+    redacted[key] = SENSITIVE_HEADER_KEYS.has(key.toLowerCase()) ? '[REDACTED]' : value;
+  }
+  return redacted;
+};
+
 const normalizeHeaders = (headers?: HeadersInit): Record<string, string> => {
   if (!headers) {
     return {};
@@ -76,8 +111,8 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
       url = String(input);
     }
 
-    // Log the URL for debugging
-    logger.debug(`Fetching URL: ${url}`);
+    // Log the URL for debugging (redact credentials in query string)
+    logger.debug(`Fetching URL: ${redactUrlForLog(url)}`);
 
     // Sanitize and validate the URL
     try {
@@ -152,18 +187,18 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
       }
     }
 
-    // Execute the request
+    // Execute the request (redact credentials before logging)
     logger.debug(`Sending request with options: ${JSON.stringify({
-      url: options.url,
+      url: redactUrlForLog(options.url),
       method: options.method,
-      headers: options.headers
+      headers: redactHeadersForLog(options.headers)
     })}`);
     
     let res: RequestUrlResponse;
     try {
       logger.debug('About to call requestUrl...');
       logger.debug(`URL length: ${options.url.length} characters`);
-      logger.debug(`URL starts with: ${options.url.substring(0, 100)}...`);
+      logger.debug(`URL starts with: ${redactUrlForLog(options.url).substring(0, 100)}...`);
       res = await requestUrl(options) as unknown as RequestUrlResponse;
       logger.debug(`requestUrl completed - Status: ${res?.status}, HasText: ${!!res?.text}`);
     } catch (requestError) {
@@ -225,15 +260,10 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
       });
     }
     
-    // Enhanced logging for other error types
+    // Enhanced logging for other error types (skip full-object dump — may contain
+    // credentials echoed in request headers by some runtimes)
     if (isRecord(error)) {
-      try {
-        logger.error("Error properties:", Object.keys(error));
-        logger.error("Full error object:", JSON.stringify(error, null, 2));
-      } catch (e) {
-        logger.error("Could not stringify error object:", e);
-        logger.error("Error has circular references or other issues");
-      }
+      logger.error("Error properties:", Object.keys(error));
     }
     
     // For real network/connection errors, throw the original error

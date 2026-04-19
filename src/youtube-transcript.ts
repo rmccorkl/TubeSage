@@ -121,7 +121,7 @@ export class YouTubeTranscriptExtractor {
                     return result;
                 } catch (err) {
                     const msg = getSafeErrorMessage(err);
-                    transcriptLogger.error('ScrapeCreators API failed, falling back to local methods:', msg);
+                    transcriptLogger.debug('ScrapeCreators API failed, falling back to local methods:', msg);
                     attempts.push({ method: 'ScrapeCreators API', error: msg });
                 }
             }
@@ -134,7 +134,7 @@ export class YouTubeTranscriptExtractor {
                 return result;
             } catch (err) {
                 const msg = getSafeErrorMessage(err);
-                transcriptLogger.error('Watch-page method failed:', msg);
+                transcriptLogger.debug('Watch-page method failed:', msg);
                 attempts.push({ method: 'Watch-page', error: msg });
                 if (this.cachedConfig?.metadata) {
                     metadata = { ...this.cachedConfig.metadata };
@@ -149,7 +149,7 @@ export class YouTubeTranscriptExtractor {
                 return result;
             } catch (err) {
                 const msg = getSafeErrorMessage(err);
-                transcriptLogger.error('ANDROID client failed:', msg);
+                transcriptLogger.debug('ANDROID client failed:', msg);
                 attempts.push({ method: 'ANDROID', error: msg });
                 if (msg.includes('400')) {
                     this.cachedConfig = null;
@@ -165,7 +165,7 @@ export class YouTubeTranscriptExtractor {
                 return result;
             } catch (err) {
                 const msg = getSafeErrorMessage(err);
-                transcriptLogger.error('MWEB client failed:', msg);
+                transcriptLogger.debug('MWEB client failed:', msg);
                 attempts.push({ method: 'MWEB', error: msg });
             }
 
@@ -177,7 +177,7 @@ export class YouTubeTranscriptExtractor {
                 return result;
             } catch (err) {
                 const msg = getSafeErrorMessage(err);
-                transcriptLogger.error('WEB ScrapeCreators failed:', msg);
+                transcriptLogger.debug('WEB ScrapeCreators failed:', msg);
                 attempts.push({ method: 'WEB ScrapeCreators', error: msg });
                 if (this.cachedConfig?.metadata && !metadata.title) {
                     metadata = { ...this.cachedConfig.metadata };
@@ -193,7 +193,7 @@ export class YouTubeTranscriptExtractor {
                     return result;
                 } catch (err) {
                     const msg = getSafeErrorMessage(err);
-                    transcriptLogger.error('Supadata API failed:', msg);
+                    transcriptLogger.debug('Supadata API failed:', msg);
                     attempts.push({ method: 'Supadata API', error: msg });
                 }
             }
@@ -1044,7 +1044,6 @@ export class YouTubeTranscriptExtractor {
     /**
      * MWEB client fallback: Uses YouTube's mobile-web client, which appears to have less strict
      * POT (Proof-of-Origin Token) enforcement than the WEB client for caption fetches.
-     * yt-dlp uses this as a subtitle fallback behind TVHTML5.
      * clientName=MWEB, clientId=2
      */
     private static async fetchViaPlayerApiMWEB(videoId: string, options: TranscriptOptions): Promise<TranscriptResult> {
@@ -1213,88 +1212,6 @@ export class YouTubeTranscriptExtractor {
         const androidUA = 'com.google.android.youtube/20.10.38 (Linux; U; Android 11) gzip';
         const segments = await this.fetchCaptionTrack(preferredTrack.baseUrl, undefined, androidUA);
         transcriptLogger.debug(`Player API (ANDROID): successfully extracted ${segments.length} segments`);
-        return { segments, metadata };
-    }
-
-    /**
-     * TVHTML5 client fallback: Uses TVHTML5 (smart-TV) client which may bypass WEB restrictions.
-     */
-    private static async fetchViaPlayerApiTV(videoId: string, options: TranscriptOptions): Promise<TranscriptResult> {
-        const lang = options.lang || 'en';
-        const country = options.country || 'US';
-
-        // Get API key from config
-        const ytConfig = await this.getYouTubeConfig(videoId);
-        transcriptLogger.debug('Player API (TV): attempting with TVHTML5 client');
-
-        // TVHTML5 client configuration — smart-TV / Cobalt-based YouTube app
-        const playerUrl = `https://www.youtube.com/youtubei/v1/player?key=${ytConfig.apiKey}`;
-        const playerBody = {
-            context: {
-                client: {
-                    clientName: 'TVHTML5',
-                    clientVersion: '7.20250312.16.00',
-                    hl: lang,
-                    gl: country
-                }
-            },
-            videoId
-        };
-
-        transcriptLogger.debug(`Player API (TV): requesting caption tracks for ${videoId}`);
-
-        const playerResponse = await obsidianFetch(playerUrl, {
-            method: 'POST',
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (ChromiumStylePlatform) Cobalt/Version',
-                'Accept': 'application/json',
-                'Accept-Language': 'en-US,en;q=0.9',
-                'Content-Type': 'application/json',
-                'Origin': 'https://www.youtube.com',
-                'X-Youtube-Client-Name': '7',  // 7 = TVHTML5
-                'X-Youtube-Client-Version': '7.20250312.16.00',
-                ...(YouTubeTranscriptExtractor.cookieStore && { 'Cookie': YouTubeTranscriptExtractor.cookieStore })
-            },
-            body: JSON.stringify(playerBody)
-        });
-
-        if (!playerResponse.ok) {
-            throw new Error(`Player API (TV) error: HTTP ${playerResponse.status}`);
-        }
-
-        const playerData = await playerResponse.json() as UnknownRecord;
-
-        const videoDetails = (playerData as {
-            videoDetails?: { title?: string; author?: string };
-        }).videoDetails;
-
-        const metadata: TranscriptMetadata = {
-            title: videoDetails?.title,
-            author: videoDetails?.author
-        };
-
-        const captions = (playerData as {
-            captions?: {
-                playerCaptionsTracklistRenderer?: {
-                    captionTracks?: Array<{ baseUrl?: string; languageCode?: string }>;
-                };
-            };
-        }).captions?.playerCaptionsTracklistRenderer?.captionTracks;
-
-        if (!captions || !Array.isArray(captions) || captions.length === 0) {
-            throw new Error('No caption tracks available from Player API (TV)');
-        }
-
-        transcriptLogger.debug(`Player API (TV): found ${captions.length} caption tracks`);
-
-        // Prefer matching language, otherwise first track
-        const preferredTrack = captions.find(track => track.languageCode?.startsWith(lang)) || captions[0];
-        if (!preferredTrack?.baseUrl) {
-            throw new Error('Caption track missing baseUrl');
-        }
-
-        const segments = await this.fetchCaptionTrack(preferredTrack.baseUrl);
-        transcriptLogger.debug(`Player API (TV): successfully extracted ${segments.length} segments`);
         return { segments, metadata };
     }
 

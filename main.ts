@@ -7,7 +7,7 @@ import { getLogger, LogLevel, setGlobalLogLevel, clearLogs, getLogsForCallout } 
 import { normalizePath, ensureFolder, joinPaths, sanitizePathComponent } from './src/utils/path-utils';
 import { validateRequired, validateYouTubeUrl, ValidationResult, displayValidationResult } from './src/utils/form-utils';
 import { getPromptConfig, cleanTranscript, SummaryMode, getTimestampLinkConfig } from './src/utils/prompt-utils';
-import { showNotice, isYoutubeUrl, isYoutubeChannelOrPlaylistUrl, extractChannelName } from './src/utils/youtube-utils';
+import { showNotice, isYoutubeUrl, isYoutubeChannelOrPlaylistUrl, extractChannelName, YOUTUBE_URL_PLACEHOLDER } from './src/utils/youtube-utils';
 import { obsidianFetch } from './src/utils/fetch-shim';
 import { 
     extractDocumentComponents, 
@@ -680,9 +680,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             
             return results;
             
-        } catch {
-            // Use the new error handling utility
-            throw handleApiError('Unknown error', 'Youtube API', 'Transcript extraction');
+        } catch (error) {
+            throw handleApiError(error, 'Youtube API', 'Transcript extraction');
         }
     }
 
@@ -1289,15 +1288,15 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         
         if (!templater) {
             // Show a notice with instructions on how to install Templater
-            setTimeout(() => {
+            activeWindow.setTimeout(() => {
         this.showNotice('Youtube transcript plugin requires the Templater plugin. Please install and enable it.', 5000);
             }, 3000); // Delay to ensure it's seen after initial plugin load
         }
-        
+
         // Check for LLM API key
         const selectedLlm = this.settings.selectedLLM;
         if (!this.settings.apiKeys[selectedLlm] || this.settings.apiKeys[selectedLlm].trim() === '') {
-            setTimeout(() => {
+            activeWindow.setTimeout(() => {
                 this.showNotice(`Youtube transcript plugin: no API key configured for ${selectedLlm}. Please add your API key in settings.`, 5000);
             }, 4500);
         }
@@ -1918,7 +1917,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             
             // First validate that we received TimeIndex markers from the LLM
             if (!enhancedContent.includes('[TimeIndex:')) {
-                logger.error("[addTimestampLinksSinglePass] No TimeIndex markers found in LLM response");
+                logger.warn("[addTimestampLinksSinglePass] No TimeIndex markers found in LLM response");
                 this.showNotice("LLM did not add TimeIndex markers to headings", 5000);
                 return null;
             }
@@ -2634,7 +2633,7 @@ class YouTubeTranscriptModal extends Modal {
     private isProcessing: boolean = false;
     private selectedFolder: string = '';
     private fastSummaryToggleEl: HTMLInputElement;
-    
+
     constructor(app: App, plugin: YouTubeTranscriptPlugin) {
         super(app);
         this.plugin = plugin;
@@ -2710,10 +2709,11 @@ class YouTubeTranscriptModal extends Modal {
         // URL input group - first input
         const urlGroup = formEl.createEl('div', { cls: 'form-group' });
         urlGroup.createEl('label', { text: 'YouTube URL', attr: { for: 'url' } });
-        this.urlInputEl = urlGroup.createEl('input', { 
+        this.urlInputEl = urlGroup.createEl('input', {
             type: 'text',
-            attr: { id: 'url', placeholder: 'https://www.youtube.com/watch?v=...' } 
+            attr: { id: 'url' }
         });
+        this.urlInputEl.placeholder = YOUTUBE_URL_PLACEHOLDER;
         
         // Create a URL validation message element
         const urlValidationEl = urlGroup.createEl('div', { 
@@ -3045,7 +3045,7 @@ class YouTubeTranscriptModal extends Modal {
             
             // Adjust modal size to fit the animation using a CSS class
             const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
-            if (modalEl && modalEl instanceof HTMLElement) {
+            if (modalEl && modalEl.instanceOf(HTMLElement)) {
                 modalEl.addClass('tubesage-processing-modal');
             }
             
@@ -3199,7 +3199,7 @@ class YouTubeTranscriptModal extends Modal {
                             this.showNotice(`Adding timestamp links to ${isPlaylist ? 'playlist' : 'channel'} video: ${video.title}`, 3000);
                             try {
                                 // Simple, small delay to allow file creation to complete
-                                await new Promise(resolve => setTimeout(resolve, 300));
+                                await new Promise(resolve => activeWindow.setTimeout(resolve, 300));
                                 logger.debug(`Adding timestamps to file: ${notePath}`);
                                 
                                 await this.plugin.addSectionLinksToNote(notePath, video.url);
@@ -3369,7 +3369,7 @@ class YouTubeTranscriptModal extends Modal {
             
             // Adjust modal size to fit the animation using a CSS class
             const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
-            if (modalEl && modalEl instanceof HTMLElement) {
+            if (modalEl && modalEl.instanceOf(HTMLElement)) {
                 modalEl.addClass('tubesage-processing-modal');
             }
             
@@ -3501,7 +3501,7 @@ class YouTubeTranscriptModal extends Modal {
                 this.showNotice('Adding section timestamp links...', 3000);
                 try {
                     // Simple, small delay to allow file creation to complete
-                    await new Promise(resolve => setTimeout(resolve, 300));
+                    await new Promise(resolve => activeWindow.setTimeout(resolve, 300));
                     logger.debug(`Adding timestamps to file: ${notePath}`);
                     
                     await this.plugin.addSectionLinksToNote(notePath, url);
@@ -3617,7 +3617,7 @@ class YouTubeTranscriptModal extends Modal {
 
 class YouTubeTranscriptSettingTab extends PluginSettingTab {
     plugin: YouTubeTranscriptPlugin;
-    
+
     constructor(app: App, plugin: YouTubeTranscriptPlugin) {
         super(app, plugin);
         this.plugin = plugin;
@@ -3703,7 +3703,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Create an SVG for the eye icon
         const svgNamespace = "http://www.w3.org/2000/svg";
-        const eyeSvg = document.createElementNS(svgNamespace, "svg");
+        const eyeSvg = activeDocument.createElementNS(svgNamespace, "svg");
         eyeSvg.setAttrs({
             viewBox: "0 0 24 24",
             width: "16",
@@ -3714,13 +3714,13 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             'stroke-linecap': "round",
             'stroke-linejoin': "round"
         });
-        
+
         // Create the eye icon paths
-        const eyeCircle = document.createElementNS(svgNamespace, "circle");
+        const eyeCircle = activeDocument.createElementNS(svgNamespace, "circle");
         eyeCircle.setAttrs({ cx: "12", cy: "12", r: "3" });
         eyeSvg.appendChild(eyeCircle);
-        
-        const eyePath = document.createElementNS(svgNamespace, "path");
+
+        const eyePath = activeDocument.createElementNS(svgNamespace, "path");
         eyePath.setAttr("d", "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z");
         eyeSvg.appendChild(eyePath);
         
@@ -3827,7 +3827,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Create an SVG for the eye icon
         const readmeSvgNamespace = "http://www.w3.org/2000/svg";
-        const readmeEyeSvg = document.createElementNS(readmeSvgNamespace, "svg");
+        const readmeEyeSvg = activeDocument.createElementNS(readmeSvgNamespace, "svg");
         readmeEyeSvg.setAttrs({
             viewBox: "0 0 24 24",
             width: "16",
@@ -3838,13 +3838,13 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             'stroke-linecap': "round",
             'stroke-linejoin': "round"
         });
-        
+
         // Create the eye icon paths
-        const readmeEyeCircle = document.createElementNS(readmeSvgNamespace, "circle");
+        const readmeEyeCircle = activeDocument.createElementNS(readmeSvgNamespace, "circle");
         readmeEyeCircle.setAttrs({ cx: "12", cy: "12", r: "3" });
         readmeEyeSvg.appendChild(readmeEyeCircle);
-        
-        const readmeEyePath = document.createElementNS(readmeSvgNamespace, "path");
+
+        const readmeEyePath = activeDocument.createElementNS(readmeSvgNamespace, "path");
         readmeEyePath.setAttr("d", "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z");
         readmeEyeSvg.appendChild(readmeEyePath);
         
@@ -3939,7 +3939,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Get the control element using DOM query after setting is created
         // The setting-item-control is the right side where buttons go
-        setTimeout(() => {
+        activeWindow.setTimeout(() => {
             const controlEl = exampleContainer.querySelector('.setting-item-control');
             if (controlEl) {
                 // Add the text right before the button
@@ -3966,7 +3966,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Add info icon directly to the heading name element (adjacent to text)
         const transcriptHeadingNameEl = transcriptHeading.settingEl.querySelector('.setting-item-name');
-        if (transcriptHeadingNameEl instanceof HTMLElement) {
+        if (transcriptHeadingNameEl && transcriptHeadingNameEl.instanceOf(HTMLElement)) {
             this.createInfoIcon(
                 transcriptHeadingNameEl,
                 'Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.'
@@ -3991,7 +3991,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         new Setting(settingsContainer)
             .setName('YouTube data API key')
-            .setDesc('Your google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.')
+            .setDesc('Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.')
             .addText(text => {
                 const textComponent = text
                     .setPlaceholder('Enter API key (starts with aiza)')
@@ -4094,7 +4094,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         new Setting(settingsContainer)
             .setName('Translate country')
-            .setDesc('Target country/region code for translation (e.g., US, GB, CA). Used for region-specific language variants.')
+            .setDesc('Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.')
             .addText(text => text
                 .setPlaceholder('US')
                 .setValue(this.plugin.settings.translateCountry)
@@ -4113,7 +4113,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Add info icon directly to the heading name element (adjacent to text)
         const llmHeadingNameEl = llmHeading.settingEl.querySelector('.setting-item-name');
-        if (llmHeadingNameEl instanceof HTMLElement) {
+        if (llmHeadingNameEl && llmHeadingNameEl.instanceOf(HTMLElement)) {
                 this.createInfoIcon(
                     llmHeadingNameEl,
                     'LLM settings let you choose an AI provider, enter its api key, and pick a model. Temperature controls creativity; max tokens caps output length. The authors suggestion for most users: google provider with the gemini-2.5-flash model—fast, inexpensive, and high-quality.'
@@ -4121,11 +4121,11 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             }
         
         new Setting(settingsContainer)
-            .setName('Select llm')
-            .setDesc('Choose which llm to use for summarization')
+            .setName('Select LLM')
+            .setDesc('Choose which LLM to use for summarization')
             .addDropdown(dropdown => {
                 // Add OpenAI option
-                dropdown.addOption('openai', 'Openai');
+                dropdown.addOption('openai', 'OpenAI');
                 
                 // Always add Anthropic, Google and Ollama options since they all work on any platform now
                 dropdown.addOption('anthropic', 'Anthropic');
@@ -4547,7 +4547,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 .addExtraButton(button => {
                     button
                         .setIcon('alert-triangle')
-                        .setTooltip('Max tokens should not be confused with the size of the context window. This setting reflects the maximum output returned by the model and is quite sensitive - exceeding this limit will cause the llm to fail. For custom models, ensure this parameter is aligned with your models capabilities.');
+                        .setTooltip('Max tokens should not be confused with the size of the context window. This setting reflects the maximum output returned by the model and is quite sensitive - exceeding this limit will cause the LLM to fail. For custom models, ensure this parameter is aligned with your models capabilities.');
                 });
         }
         // Note: Known models automatically calculate optimal max tokens using getEffectiveMaxTokens()
@@ -4780,7 +4780,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Add info icon directly to the heading name element (adjacent to text)
         const advancedHeadingNameEl = advancedHeading.settingEl.querySelector('.setting-item-name');
-        if (advancedHeadingNameEl instanceof HTMLElement) {
+        if (advancedHeadingNameEl && advancedHeadingNameEl.instanceOf(HTMLElement)) {
             this.createInfoIcon(
                 advancedHeadingNameEl,
                 'Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.'
@@ -4826,7 +4826,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Create SVG icon for info
         const infoSvgNamespace = "http://www.w3.org/2000/svg";
-        const infoSvg = document.createElementNS(infoSvgNamespace, "svg");
+        const infoSvg = activeDocument.createElementNS(infoSvgNamespace, "svg");
         infoSvg.setAttrs({
             viewBox: "0 0 24 24",
             width: "16",
@@ -4837,19 +4837,19 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             'stroke-linecap': "round",
             'stroke-linejoin': "round"
         });
-        
+
         // Create circle for info icon
-        const circle = document.createElementNS(infoSvgNamespace, "circle");
+        const circle = activeDocument.createElementNS(infoSvgNamespace, "circle");
         circle.setAttrs({ cx: "12", cy: "12", r: "10" });
         infoSvg.appendChild(circle);
-        
+
         // Create the i vertical line
-        const line = document.createElementNS(infoSvgNamespace, "line");
+        const line = activeDocument.createElementNS(infoSvgNamespace, "line");
         line.setAttrs({ x1: "12", y1: "16", x2: "12", y2: "12" });
         infoSvg.appendChild(line);
-        
+
         // Create the i dot
-        const dot = document.createElementNS(infoSvgNamespace, "line");
+        const dot = activeDocument.createElementNS(infoSvgNamespace, "line");
         dot.setAttrs({ x1: "12", y1: "8", x2: "12.01", y2: "8" });
         infoSvg.appendChild(dot);
         
@@ -5021,21 +5021,21 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         };
         
         // Use both polling AND event listeners for maximum reliability
-        const visibilityInterval = setInterval(updateCustomParamsVisibility, 500);
-        
+        const visibilityInterval = activeWindow.setInterval(updateCustomParamsVisibility, 500);
+
         // Add direct event listeners to UI elements
         modelDropdown.selectEl?.addEventListener('change', () => {
-            setTimeout(updateCustomParamsVisibility, 100);
+            activeWindow.setTimeout(updateCustomParamsVisibility, 100);
         });
-        
+
         // Note: Removed 'input' event listener as visibility no longer depends on field content
         // Only check on blur to avoid focus issues while typing
         customField.inputEl?.addEventListener('blur', () => {
-            setTimeout(updateCustomParamsVisibility, 100);
+            activeWindow.setTimeout(updateCustomParamsVisibility, 100);
         });
-        
+
         // Clean up interval when settings are closed
-        setTimeout(() => clearInterval(visibilityInterval), 60000);
+        activeWindow.setTimeout(() => activeWindow.clearInterval(visibilityInterval), 60000);
         
         // Initial visibility check
         updateCustomParamsVisibility();
@@ -5121,7 +5121,7 @@ class TemplateFilePickerModal extends Modal {
     }
 
     updateTemplateList(query: string, listEl?: HTMLElement) {
-        const templateListEl = listEl || document.querySelector('.template-list') as HTMLElement;
+        const templateListEl = listEl || activeDocument.querySelector('.template-list') as HTMLElement;
         if (!templateListEl) return;
         
         templateListEl.empty();
@@ -5449,7 +5449,7 @@ class LicenseModal extends Modal {
         
         // Add CSS class for proper styling
         const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
-        if (modalEl && modalEl instanceof HTMLElement) {
+        if (modalEl && modalEl.instanceOf(HTMLElement)) {
             modalEl.addClass('tubesage-license-modal-size');
         }
         
@@ -5591,7 +5591,7 @@ class LicenseRequiredModal extends Modal {
         
         // Add CSS class for proper styling
         const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
-        if (modalEl && modalEl instanceof HTMLElement) {
+        if (modalEl && modalEl.instanceOf(HTMLElement)) {
             modalEl.addClass('tubesage-license-required-modal-size');
         }
         
@@ -5701,7 +5701,7 @@ class READMEModal extends Modal {
         
         // Add CSS class for proper styling
         const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
-        if (modalEl && modalEl instanceof HTMLElement) {
+        if (modalEl && modalEl.instanceOf(HTMLElement)) {
             modalEl.addClass('tubesage-readme-modal-size');
         }
         
@@ -5802,7 +5802,7 @@ class READMEModal extends Modal {
                     if (codeContainer) {
                         const code = codeContainer.querySelector('code');
                         if (code) {
-                            const textNode = document.createTextNode(line + '\n');
+                            const textNode = activeDocument.createTextNode(line + '\n');
                             code.appendChild(textNode);
                         }
                     }
@@ -6089,7 +6089,7 @@ class TemplateViewModal extends Modal {
         
         // Add CSS class for proper styling
         const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
-        if (modalEl && modalEl instanceof HTMLElement) {
+        if (modalEl && modalEl.instanceOf(HTMLElement)) {
             modalEl.addClass('tubesage-template-view-modal-size');
         }
         
@@ -6170,7 +6170,7 @@ class TemplateViewModal extends Modal {
             
             // Create an SVG for the copy icon
             const svgNamespace = "http://www.w3.org/2000/svg";
-            const copySvg = document.createElementNS(svgNamespace, "svg");
+            const copySvg = activeDocument.createElementNS(svgNamespace, "svg");
             copySvg.setAttrs({
                 viewBox: "0 0 24 24",
                 width: "16",
@@ -6181,13 +6181,13 @@ class TemplateViewModal extends Modal {
                 'stroke-linecap': "round",
                 'stroke-linejoin': "round"
             });
-            
+
             // Create the copy icon paths
-            const copyRect = document.createElementNS(svgNamespace, "rect");
+            const copyRect = activeDocument.createElementNS(svgNamespace, "rect");
             copyRect.setAttrs({ x: "9", y: "9", width: "13", height: "13", rx: "2", ry: "2" });
             copySvg.appendChild(copyRect);
-            
-            const copyPath = document.createElementNS(svgNamespace, "path");
+
+            const copyPath = activeDocument.createElementNS(svgNamespace, "path");
             copyPath.setAttr("d", "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1");
             copySvg.appendChild(copyPath);
             
@@ -6214,7 +6214,7 @@ class TemplateViewModal extends Modal {
                         if (copyTextElement) {
                             const originalText = copyTextElement.textContent;
                             copyTextElement.textContent = 'Copied';
-                            setTimeout(() => {
+                            activeWindow.setTimeout(() => {
                                 copyTextElement.textContent = originalText;
                             }, 2000);
                         }
@@ -6224,7 +6224,7 @@ class TemplateViewModal extends Modal {
                         // Show error state
                         if (copyTextElement) {
                             copyTextElement.textContent = 'Failed to copy';
-                            setTimeout(() => {
+                            activeWindow.setTimeout(() => {
                                 copyTextElement.textContent = 'Copy template';
                             }, 2000);
                         }

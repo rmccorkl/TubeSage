@@ -47,7 +47,7 @@ export async function ensureFolder(vault: Vault, folderPath: string): Promise<vo
     const normalizedPath = normalizePath(folderPath);
     
     try {
-        await vault.createFolder(normalizedPath);
+        await vault.adapter.mkdir(normalizedPath);
     } catch (error) {
         // Only ignore "already exists" errors
         if (!(error instanceof Error) || !error.message.includes("already exists")) {

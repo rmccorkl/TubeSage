@@ -1,5 +1,7 @@
 import { Notice } from 'obsidian';
 
+export const YOUTUBE_URL_PLACEHOLDER = 'https://www.youtube.com/watch?v=...';
+
 /**
  * Helper method to validate YouTube URLs
  * @param url URL to check

@@ -24,11 +24,16 @@ function truncateForDebug(content: string, maxLength: number = 200): string {
   return content.substring(0, maxLength) + '...';
 }
 
-const extractContent = (response: unknown): unknown => {
+const extractContent = (response: unknown): string => {
   if (response && typeof response === 'object' && 'content' in response) {
-    return (response as { content?: unknown }).content;
+    const content = (response as { content?: unknown }).content;
+    if (typeof content === 'string') return content;
+    if (content === null || content === undefined) return '';
+    return JSON.stringify(content);
   }
-  return response;
+  if (typeof response === 'string') return response;
+  if (response === null || response === undefined) return '';
+  return JSON.stringify(response);
 };
 
 // Detect OpenAI reasoning (o-series) models which require max_completion_tokens
@@ -242,8 +247,8 @@ export class LangChainClient {
           // Use GeminiClient directly with obsidianFetch — ChatGoogleGenerativeAI ignores the
           // custom fetch override so it breaks on mobile. Direct calls mirror the Anthropic pattern.
           const geminiClient = new GeminiClient(this.apiKey);
-          const systemContent = String(extractContent(messages[0]) ?? '');
-          const userContent = String(extractContent(messages[1]) ?? '');
+          const systemContent = extractContent(messages[0]);
+          const userContent = extractContent(messages[1]);
 
           const geminiResponse = await geminiClient.generateContent(this.model, userContent, {
             temperature: this.temperature,
