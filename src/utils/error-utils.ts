@@ -22,7 +22,7 @@ export function getSafeErrorMessage(error: unknown, defaultMessage = 'Unknown er
 /**
  * Categories of common errors
  */
-export enum ErrorCategory {
+enum ErrorCategory {
     Network = 'network',
     ApiKey = 'api_key',
     RateLimit = 'rate_limit',
@@ -38,7 +38,7 @@ export enum ErrorCategory {
  * @param error The error object
  * @returns The detected error category
  */
-export function detectErrorCategory(error: unknown): ErrorCategory {
+function detectErrorCategory(error: unknown): ErrorCategory {
     const message = getSafeErrorMessage(error);
     
     // Network errors
@@ -101,7 +101,7 @@ export function detectErrorCategory(error: unknown): ErrorCategory {
  * @param apiName Name of the API to prefix error with
  * @returns Formatted error with appropriate message
  */
-export function createApiError(error: unknown, apiName: string): Error {
+function createApiError(error: unknown, apiName: string): Error {
     const category = detectErrorCategory(error);
     const originalMessage = getSafeErrorMessage(error);
     

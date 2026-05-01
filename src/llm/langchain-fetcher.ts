@@ -7,7 +7,7 @@ const logger = getLogger('LANGCHAIN_FETCHER');
  * Custom fetcher for LangChain that uses our Obsidian fetch shim
  * This makes LangChain models work on both desktop and mobile Obsidian
  */
-export function createLangChainFetcher() {
+function createLangChainFetcher() {
   return async (url: string | URL | Request, init?: RequestInit): Promise<Response> => {
     try {
       // Ensure the URL is properly formatted

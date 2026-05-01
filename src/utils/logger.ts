@@ -57,7 +57,7 @@ const logBuffer: LogEntry[] = [];
 /**
  * Logger class for a specific category
  */
-export class Logger {
+class Logger {
     /**
      * Creates a new logger for a specific category
      * @param category The logging category (e.g., 'PROXY', 'LLM', 'UI')
@@ -162,7 +162,7 @@ export class Logger {
  * Updates logger configuration
  * @param newConfig Configuration to apply
  */
-export function configureLogger(newConfig: Partial<LoggerConfig>): void {
+function configureLogger(newConfig: Partial<LoggerConfig>): void {
     config = { ...config, ...newConfig };
 }
 
@@ -179,7 +179,7 @@ export function setGlobalLogLevel(level: LogLevel): void {
  * @param category Category name
  * @param level Minimum log level to display for this category
  */
-export function setCategoryLogLevel(category: string, level: LogLevel): void {
+function setCategoryLogLevel(category: string, level: LogLevel): void {
     config.categoryLevels[category] = level;
 }
 
@@ -196,7 +196,7 @@ export function getLogger(category: string): Logger {
  * Retrieves all log entries as formatted strings
  * @returns Array of formatted log messages
  */
-export function getLogEntries(): string[] {
+function getLogEntries(): string[] {
     return logBuffer.map(entry => entry.formattedMessage);
 }
 
@@ -205,7 +205,7 @@ export function getLogEntries(): string[] {
  * @param separator Line separator (default: newline)
  * @returns Concatenated log messages
  */
-export function getLogsAsString(separator: string = '\n'): string {
+function getLogsAsString(separator: string = '\n'): string {
     return logBuffer.map(entry => entry.formattedMessage).join(separator);
 }
 
@@ -264,8 +264,8 @@ export function clearLogs(): void {
 }
 
 // For backward compatibility, also export some common loggers directly
-export const pluginLogger = getLogger('PLUGIN');
-export const llmLogger = getLogger('LLM');
-export const proxyLogger = getLogger('PROXY');
-export const transcriptLogger = getLogger('TRANSCRIPT');
-export const uiLogger = getLogger('UI'); 
+const pluginLogger = getLogger('PLUGIN');
+const llmLogger = getLogger('LLM');
+const proxyLogger = getLogger('PROXY');
+const transcriptLogger = getLogger('TRANSCRIPT');
+const uiLogger = getLogger('UI'); 
