@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "fallow": {
+      "type": "stdio",
+      "command": "fallow-mcp",
+      "args": [],
+      "env": {}
+    }
+  }
+}

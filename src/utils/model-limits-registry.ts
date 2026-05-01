@@ -18,7 +18,7 @@ type Registry = Record<Provider, Record<string, ModelLimits>>;
 // ---------------------------
 // Enhanced model registry with massive context windows
 // ---------------------------
-export const BASE_MODELS: Registry = {
+const BASE_MODELS: Registry = {
   openai: {
     // GPT-5 series - massive context windows
     "gpt-5": { 
@@ -178,7 +178,7 @@ export function upsertModel(
 }
 
 // Read raw limits (throws if missing)
-export function getRawLimits(provider: Provider, modelId: string): ModelLimits {
+function getRawLimits(provider: Provider, modelId: string): ModelLimits {
   const prov = registry[provider];
   if (!prov || !prov[modelId]) {
     throw new Error(`No limits registered for ${provider}:${modelId}`);
@@ -202,7 +202,7 @@ export function getEffectiveLimits(provider: Provider, modelId: string): Effecti
 }
 
 // Get provider from model string (helper for dynamic detection)
-export function getProviderFromModel(modelId: string): Provider | null {
+function getProviderFromModel(modelId: string): Provider | null {
   for (const [provider, models] of Object.entries(registry)) {
     if (models[modelId]) {
       return provider as Provider;
@@ -217,12 +217,12 @@ export function isModelSupported(provider: Provider, modelId: string): boolean {
 }
 
 // Get all models for a provider
-export function getModelsForProvider(provider: Provider): string[] {
+function getModelsForProvider(provider: Provider): string[] {
   return Object.keys(registry[provider] || {});
 }
 
 // Legacy compatibility - get old-style max tokens limit for backwards compatibility
-export function getLegacyMaxTokens(provider: Provider, modelId: string): number {
+function getLegacyMaxTokens(provider: Provider, modelId: string): number {
   try {
     const limits = getEffectiveLimits(provider, modelId);
     return limits.maxOutputEff;

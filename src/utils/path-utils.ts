@@ -98,7 +98,7 @@ export function sanitizePathComponent(text: string): string {
  * @param path The path to get the parent of
  * @returns The parent path
  */
-export function getParentFolder(path: string): string {
+function getParentFolder(path: string): string {
     const normalized = normalizePath(path);
     const lastSlashIndex = normalized.lastIndexOf('/');
     

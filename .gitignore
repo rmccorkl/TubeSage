@@ -47,3 +47,5 @@ chromium-user-data/
 
 # Personal deploy script — references local vault paths; not for distribution
 scripts/deploy.sh
+.fallow/
+graphify-out/

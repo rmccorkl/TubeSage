@@ -121,7 +121,7 @@ export function validateEnhancedContent(
  * @param content The document content
  * @returns Array of headings with their text and positions
  */
-export function findContentHeadings(content: string): { text: string; position: number }[] {
+function findContentHeadings(content: string): { text: string; position: number }[] {
     const headings: { text: string; position: number }[] = [];
     
     // Find all headings in the content that match our expected format

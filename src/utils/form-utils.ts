@@ -47,7 +47,7 @@ export function validateRequired(value: string, fieldName: string = 'field'): Va
  * @param errorMessage Message to show if validation fails
  * @returns Validation result
  */
-export function validateCustom(
+function validateCustom(
     value: string, 
     validationFn: (value: string) => boolean, 
     errorMessage: string
@@ -119,7 +119,7 @@ export function displayValidationResult(
  * @param validationFn The validation function
  * @returns Whether validation passed
  */
-export function validateInputField(
+function validateInputField(
     value: string,
     errorEl: HTMLElement,
     validations: ValidationResult[]
@@ -175,7 +175,7 @@ export function validateYouTubeUrl(
  * @param message The message to display
  * @param timeout Duration to show the notice (ms)
  */
-export function showNotice(message: string, timeout: number = 5000): void {
+function showNotice(message: string, timeout: number = 5000): void {
     new Notice(message, timeout);
 }
 
@@ -187,7 +187,7 @@ export function showNotice(message: string, timeout: number = 5000): void {
  * @param getSearchableText Function to extract searchable text from an item
  * @returns Filtered list of items
  */
-export function filterItems<T>(
+function filterItems<T>(
     items: T[],
     searchTerm: string,
     getSearchableText: (item: T) => string
@@ -212,7 +212,7 @@ export function filterItems<T>(
  * @param onEnter Function to handle Enter key press
  * @returns KeyboardEvent handler function
  */
-export function createListKeyHandler(
+function createListKeyHandler(
     getItems: () => HTMLElement[],
     selectItem: (item: HTMLElement) => void,
     onEnter: () => void,

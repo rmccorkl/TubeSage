@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+  "entry": [
+    "main.ts",
+    "esbuild.config.mjs",
+    "eslint.config.mjs",
+    "eslint-rules/**/*.mjs"
+  ],
+  "ignorePatterns": [
+    "dist/**",
+    "build/**",
+    "node_modules/**",
+    "coverage/**",
+    "**/*.generated.ts",
+    "**/*.d.ts",
+    "src/vendor/**",
+    "graphify-out/**",
+    "main.js",
+    "docs/**/*.html"
+  ],
+  "ignoreDependencies": [
+    "globals",
+    "tslib"
+  ]
+}
