@@ -85,9 +85,9 @@ export function reconstructDocument(frontmatter: string, enhancedContent: string
  * @returns Whether the content is valid
  */
 export function validateEnhancedContent(
-    enhancedContent: string, 
-    originalContent: string, 
-    headings: string[],
+    enhancedContent: string,
+    originalContent: string,
+    _headings: string[],
     videoId: string
 ): boolean {
     // Check if response has proper Markdown formatting

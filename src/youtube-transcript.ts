@@ -704,7 +704,7 @@ export class YouTubeTranscriptExtractor {
      * WEB ScrapeCreators method: Two-step approach using /next + /get_transcript internal APIs.
      * Reference: https://scrapecreators.com/blog/how-to-scrape-youtube-transcripts-with-node-js-in-2025
      */
-    private static async fetchViaWebScrapeCreators(videoId: string, options: TranscriptOptions): Promise<TranscriptResult> {
+    private static async fetchViaWebScrapeCreators(videoId: string, _options: TranscriptOptions): Promise<TranscriptResult> {
         const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
         const ytConfig = await this.getYouTubeConfig(videoId);
         transcriptLogger.debug(`WEB ScrapeCreators: using clientVersion ${ytConfig.clientVersion}`);
