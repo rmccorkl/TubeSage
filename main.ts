@@ -4069,8 +4069,8 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Removed "Use YouTube Data API v3" setting and CORS issue notice
         
         new Setting(settingsContainer)
-            .setName('YouTube data API key')
-            .setDesc('Your google cloud console API key for accessing public YouTube transcripts (not an oauth token). Required for downloading channels and playlists.')
+            .setName('YouTube data api key')
+            .setDesc('Your google cloud console api key for accessing public YouTube transcripts (not an oauth token). Required for downloading channels and playlists.')
             .addText(text => {
                 const textComponent = text
                     .setPlaceholder('Enter API key (starts with aiza)')
@@ -4103,7 +4103,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             });
 
         new Setting(settingsContainer)
-            .setName('Scrapecreators API key')
+            .setName('Scrapecreators api key')
             .setDesc('Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free).')
             .addText(text => {
                 const textComponent = text
@@ -4131,7 +4131,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             });
 
         new Setting(settingsContainer)
-            .setName('Supadata API key')
+            .setName('Supadata api key')
             .setDesc('Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.')
             .addText(text => {
                 const textComponent = text
@@ -4269,7 +4269,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             placeholder: string,
         ): void => {
             new Setting(settingsContainer)
-                .setName(`${displayName} API key`)
+                .setName(`${displayName} api key`)
                 .setDesc('Stored in plugin data; available to all summarisation flows.')
                 .addText(text => {
                     const textComponent = text
