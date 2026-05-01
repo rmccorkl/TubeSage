@@ -4070,7 +4070,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         new Setting(settingsContainer)
             .setName('YouTube data API key')
-            .setDesc('Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.')
+            .setDesc('Your google cloud console API key for accessing public YouTube transcripts (not an oauth token). Required for downloading channels and playlists.')
             .addText(text => {
                 const textComponent = text
                     .setPlaceholder('Enter API key (starts with aiza)')
@@ -4201,22 +4201,22 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         };
 
         const llmHeading = new Setting(settingsContainer)
-            .setName('LLM')
+            .setName('Language model')
             .setHeading();
         llmHeading.settingEl.addClass('tubesage-heading');
-        
+
         // Add info icon directly to the heading name element (adjacent to text)
         const llmHeadingNameEl = llmHeading.settingEl.querySelector('.setting-item-name');
         if (llmHeadingNameEl && llmHeadingNameEl.instanceOf(HTMLElement)) {
                 this.createInfoIcon(
                     llmHeadingNameEl,
-                    'LLM settings let you choose an AI provider, enter its api key, and pick a model. Temperature controls creativity; max tokens caps output length. The authors suggestion for most users: google provider with the gemini-2.5-flash model—fast, inexpensive, and high-quality.'
+                    'Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality.'
                 );
             }
-        
+
         new Setting(settingsContainer)
-            .setName('Select LLM')
-            .setDesc('Choose which LLM to use for summarization')
+            .setName('Provider')
+            .setDesc('Provider used for summarisation.')
             .addDropdown(dropdown => {
                 // Add OpenAI option
                 dropdown.addOption('openai', 'OpenAI');
@@ -4706,7 +4706,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 .addExtraButton(button => {
                     button
                         .setIcon('alert-triangle')
-                        .setTooltip('Max tokens should not be confused with the size of the context window. This setting reflects the maximum output returned by the model and is quite sensitive - exceeding this limit will cause the LLM to fail. For custom models, ensure this parameter is aligned with your models capabilities.');
+                        .setTooltip('Max tokens should not be confused with the context window size. This setting caps the maximum output returned by the model and is sensitive — exceeding this limit will cause the model to fail. For custom models, ensure this parameter is aligned with the model\'s capabilities.');
                 });
         }
         // Note: Known models automatically calculate optimal max tokens using getEffectiveMaxTokens()
