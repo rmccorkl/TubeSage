@@ -92,19 +92,3 @@ export function sanitizePathComponent(text: string): string {
         .trim();                        // Remove leading/trailing whitespace
 }
 
-/**
- * Gets the parent folder path of a given path
- * 
- * @param path The path to get the parent of
- * @returns The parent path
- */
-function getParentFolder(path: string): string {
-    const normalized = normalizePath(path);
-    const lastSlashIndex = normalized.lastIndexOf('/');
-    
-    if (lastSlashIndex === -1) {
-        return ''; // No parent folder
-    }
-    
-    return normalized.substring(0, lastSlashIndex);
-} 

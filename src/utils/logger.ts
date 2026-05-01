@@ -159,28 +159,11 @@ class Logger {
 }
 
 /**
- * Updates logger configuration
- * @param newConfig Configuration to apply
- */
-function configureLogger(newConfig: Partial<LoggerConfig>): void {
-    config = { ...config, ...newConfig };
-}
-
-/**
  * Sets the global minimum log level
  * @param level Minimum log level to display
  */
 export function setGlobalLogLevel(level: LogLevel): void {
     config.globalLogLevel = level;
-}
-
-/**
- * Sets a category-specific log level
- * @param category Category name
- * @param level Minimum log level to display for this category
- */
-function setCategoryLogLevel(category: string, level: LogLevel): void {
-    config.categoryLevels[category] = level;
 }
 
 /**
@@ -190,23 +173,6 @@ function setCategoryLogLevel(category: string, level: LogLevel): void {
  */
 export function getLogger(category: string): Logger {
     return new Logger(category);
-}
-
-/**
- * Retrieves all log entries as formatted strings
- * @returns Array of formatted log messages
- */
-function getLogEntries(): string[] {
-    return logBuffer.map(entry => entry.formattedMessage);
-}
-
-/**
- * Gets all log entries as a single string
- * @param separator Line separator (default: newline)
- * @returns Concatenated log messages
- */
-function getLogsAsString(separator: string = '\n'): string {
-    return logBuffer.map(entry => entry.formattedMessage).join(separator);
 }
 
 /**
@@ -263,9 +229,3 @@ export function clearLogs(): void {
     logBuffer.length = 0;
 }
 
-// For backward compatibility, also export some common loggers directly
-const pluginLogger = getLogger('PLUGIN');
-const llmLogger = getLogger('LLM');
-const proxyLogger = getLogger('PROXY');
-const transcriptLogger = getLogger('TRANSCRIPT');
-const uiLogger = getLogger('UI'); 

@@ -201,40 +201,7 @@ export function getEffectiveLimits(provider: Provider, modelId: string): Effecti
   return { ...raw, maxOutputEff, inputMaxEff };
 }
 
-// Get provider from model string (helper for dynamic detection)
-function getProviderFromModel(modelId: string): Provider | null {
-  for (const [provider, models] of Object.entries(registry)) {
-    if (models[modelId]) {
-      return provider as Provider;
-    }
-  }
-  return null;
-}
-
 // Check if model is supported
 export function isModelSupported(provider: Provider, modelId: string): boolean {
   return !!(registry[provider]?.[modelId]);
-}
-
-// Get all models for a provider
-function getModelsForProvider(provider: Provider): string[] {
-  return Object.keys(registry[provider] || {});
-}
-
-// Legacy compatibility - get old-style max tokens limit for backwards compatibility
-function getLegacyMaxTokens(provider: Provider, modelId: string): number {
-  try {
-    const limits = getEffectiveLimits(provider, modelId);
-    return limits.maxOutputEff;
-  } catch {
-    // Fallback to legacy hardcoded limits if model not in registry
-    const LEGACY_LIMITS: Record<string, number> = {
-      'openai': 4096,
-      'anthropic': 4096,
-      'google': 8192,
-      'ollama': 4096,
-      'default': 4096
-    };
-    return LEGACY_LIMITS[provider] || LEGACY_LIMITS['default'];
-  }
 }

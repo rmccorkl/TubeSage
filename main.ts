@@ -780,7 +780,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             });
             
             // Process and group segments into chunks based on actual timestamps
-            sortedSegments.forEach((segment, index) => {
+            sortedSegments.forEach((segment, _index) => {
                 // Get segment start time in seconds
                 let segmentTimeSeconds = 0;
                 if (typeof segment.start === 'number') {
@@ -1000,7 +1000,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         }
     }
 
-    async applyTemplate(title: string, videoUrl: string, transcript: string, summary: string, folder?: string, contentType?: string): Promise<void> {
+    async applyTemplate(title: string, videoUrl: string, transcript: string, summary: string, folder?: string, _contentType?: string): Promise<void> {
         // Check if Templater plugin is available
         const templaterPlugin = getTemplaterPlugin(this.app);
         
@@ -2108,11 +2108,11 @@ ${contentToTranslate}
 
     // Process document in chunks based on section headings
     private async addTimestampLinksInChunks(
-        filePath: string, 
-        videoId: string, 
-        originalContent: string, 
+        filePath: string,
+        videoId: string,
+        originalContent: string,
         headings: string[],
-        headingPositions: number[]
+        _headingPositions: number[]
     ): Promise<string | null> {
         try {
             logger.debug("[addTimestampLinksInChunks] Processing document in chunks");
@@ -4069,8 +4069,8 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Removed "Use YouTube Data API v3" setting and CORS issue notice
         
         new Setting(settingsContainer)
-            .setName('YouTube data api key')
-            .setDesc('Your google cloud console api key for accessing public YouTube transcripts (not an oauth token). Required for downloading channels and playlists.')
+            .setName('YouTube data API key')
+            .setDesc('Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.')
             .addText(text => {
                 const textComponent = text
                     .setPlaceholder('Enter API key (starts with aiza)')
@@ -4103,7 +4103,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             });
 
         new Setting(settingsContainer)
-            .setName('Scrapecreators api key')
+            .setName('Scrapecreators API key')
             .setDesc('Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free).')
             .addText(text => {
                 const textComponent = text
@@ -4131,7 +4131,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             });
 
         new Setting(settingsContainer)
-            .setName('Supadata api key')
+            .setName('Supadata API key')
             .setDesc('Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.')
             .addText(text => {
                 const textComponent = text
