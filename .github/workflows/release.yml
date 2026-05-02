@@ -29,7 +29,12 @@ jobs:
         run: |
           tag="${GITHUB_REF#refs/tags/}"
 
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release $tag already exists, skipping draft creation"
+            exit 0
+          fi
+
           gh release create "$tag" \
             --title="$tag" \
             --draft \
-            main.js styles.css manifest.json README.md MIT-license-tubesage.md templates/YouTubeTranscript.md 
+            main.js styles.css manifest.json README.md MIT-license-tubesage.md templates/YouTubeTranscript.md
