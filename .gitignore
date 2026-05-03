@@ -49,3 +49,9 @@ chromium-user-data/
 scripts/deploy.sh
 .fallow/
 graphify-out/
+src/graphify-out/graph.json
+src/graphify-out/GRAPH_REPORT.md
+src/graphify-out/cache/
+src/graphify-out/graph.html
+src/graphify-out/.graphify_root
+src/graphify-out/.graphify_python
