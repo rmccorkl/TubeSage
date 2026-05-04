@@ -7,7 +7,10 @@
     "dev": "node esbuild.config.mjs",
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "deploy": "chmod +x scripts/deploy.sh && ./scripts/deploy.sh",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "postbuild": "npm run audit:fallow",
+    "audit:fallow": "fallow audit --base main",
+    "graph:update": "graphify update ."
   },
   "keywords": [
     "obsidian",
