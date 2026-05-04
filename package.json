@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "postbuild": "npm run audit:fallow",
     "audit:fallow": "fallow audit --base main",
-    "graph:update": "graphify update ."
+    "graph:update": "graphify . --update"
   },
   "keywords": [
     "obsidian",
