@@ -3520,8 +3520,10 @@ class YouTubeTranscriptModal extends Modal {
             
             // Summarize transcript (skip if extraction failed)
             let summary: string;
+            let summaryFailed = false;
             if (transcriptFailed) {
                 summary = '[SUMMARY SKIPPED: Transcript extraction failed - see debug information below]';
+                summaryFailed = true;
                 this.showNotice('Skipping AI summarization due to transcript failure...', 3000);
             } else {
                 this.showNotice('Summarizing transcript with AI...', 5000);
@@ -3529,12 +3531,14 @@ class YouTubeTranscriptModal extends Modal {
                     summary = await this.plugin.summarizeTranscript(transcript);
                     if (!summary) {
                         summary = '[SUMMARY FAILED: Empty result returned from AI]';
+                        summaryFailed = true;
                         this.showNotice('AI summarization failed (empty result), continuing with note creation...', 5000);
                     } else {
                         this.showNotice('Summary generated successfully', 5000);
                     }
                 } catch (summaryError) {
                     summary = `[SUMMARY FAILED: ${getSafeErrorMessage(summaryError)}]`;
+                    summaryFailed = true;
                     this.showNotice('AI summarization failed, continuing with note creation...', 5000);
                     logger.error('Summary generation failed:', summaryError);
                 }
@@ -3575,14 +3579,17 @@ class YouTubeTranscriptModal extends Modal {
                 ? joinPaths(this.selectedFolder, `${datePrefix}${sanitizeFilename(title)}.md`)
                 : `${datePrefix}${sanitizeFilename(title)}.md`;
             
-            // Add section links in a second pass if enabled and not in fast summary mode and transcript extraction succeeded
-            if (this.plugin.settings.addTimestampLinks && !this.plugin.settings.useFastSummary && !transcriptFailed) {
+            // Add section links in a second pass if enabled and not in fast summary mode
+            // and BOTH transcript extraction AND summary succeeded. The timestamp pass uses
+            // the same LLM as the summary, so if summary failed, timestamp linking will
+            // almost certainly fail the same way — skip it to avoid wasted tokens / latency.
+            if (this.plugin.settings.addTimestampLinks && !this.plugin.settings.useFastSummary && !transcriptFailed && !summaryFailed) {
                 this.showNotice('Adding section timestamp links...', 3000);
                 try {
                     // Simple, small delay to allow file creation to complete
                     await new Promise(resolve => activeWindow.setTimeout(resolve, 300));
                     logger.debug(`Adding timestamps to file: ${notePath}`);
-                    
+
                     await this.plugin.addSectionLinksToNote(notePath, url);
                     this.showNotice('Timestamp links added successfully', 3000);
                 } catch (timestampError) {
@@ -3592,6 +3599,9 @@ class YouTubeTranscriptModal extends Modal {
                 }
             } else if (transcriptFailed) {
                 this.showNotice('Timestamp links skipped - no transcript available', 3000);
+            } else if (summaryFailed) {
+                this.showNotice('Timestamp links skipped - summary failed (same LLM would fail again)', 5000);
+                logger.info('[pipeline] Skipping timestamp pass because summary failed; the same LLM is used for both.');
             }
 
             // === NEW LOGGING LOGIC START ===
