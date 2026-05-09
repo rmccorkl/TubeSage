@@ -39,7 +39,8 @@
     "axios": ">=1.15.0",
     "langsmith": "^0.5.18",
     "fast-xml-parser": ">=5.7.0",
-    "uuid": ">=14.0.0"
+    "uuid": ">=14.0.0",
+    "fast-uri": ">=3.1.2"
   },
   "dependencies": {
     "@langchain/ollama": "^0.2.0",
