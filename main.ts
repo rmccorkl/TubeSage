@@ -3600,7 +3600,7 @@ class YouTubeTranscriptModal extends Modal {
             } else if (transcriptFailed) {
                 this.showNotice('Timestamp links skipped - no transcript available', 3000);
             } else if (summaryFailed) {
-                this.showNotice('Timestamp links skipped - summary failed (same LLM would fail again)', 5000);
+                this.showNotice('Timestamp links skipped - summary failed', 5000);
                 logger.info('[pipeline] Skipping timestamp pass because summary failed; the same LLM is used for both.');
             }
 
