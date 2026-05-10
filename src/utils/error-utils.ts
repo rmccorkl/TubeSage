@@ -74,15 +74,17 @@ function detectErrorCategory(error: unknown): ErrorCategory {
     }
     
     // Token limit errors
-    if (message.includes('context length') || 
-        message.includes('token limit') || 
+    if (message.includes('context length') ||
+        message.includes('token limit') ||
         message.includes('max_tokens')) {
         return ErrorCategory.TokenLimit;
     }
-    
-    // Timeout errors
-    if (message.includes('timeout') || 
-        message.includes('timed out')) {
+
+    // Timeout errors — distinguish server-side deadline (transcript too large) from transient timeouts
+    if (message.includes('timeout') ||
+        message.includes('timed out') ||
+        message.includes('DEADLINE_EXCEEDED') ||
+        message.includes('deadline exceeded')) {
         return ErrorCategory.Timeout;
     }
     
@@ -122,7 +124,7 @@ function createApiError(error: unknown, apiName: string): Error {
             return new Error(`[${apiName}] Input too long for model's context window.`);
             
         case ErrorCategory.Timeout:
-            return new Error(`[${apiName}] Request timed out. Please try again.`);
+            return new Error(`[${apiName}] The request timed out — the transcript is likely too large for the model to process in one pass. Try a shorter video, reduce max tokens, or switch to a model with a longer generation timeout.`);
             
         case ErrorCategory.NotFound:
             return new Error(`[${apiName}] Resource not found. Please check the request parameters.`);
