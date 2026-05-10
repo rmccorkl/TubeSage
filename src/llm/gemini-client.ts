@@ -91,15 +91,23 @@ export class GeminiClient {
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => null) as unknown;
-        logger.error('Gemini API error:', errorData);
+        logger.error('Gemini API error status:', response.status, 'body:', JSON.stringify(errorData));
         let errorMessage = `HTTP ${response.status}`;
         if (isRecord(errorData)) {
           const nestedError = errorData.error;
           if (isRecord(nestedError) && typeof nestedError.message === 'string') {
             errorMessage = nestedError.message;
+            // Surface gRPC status for cleaner upstream categorisation
+            if (isRecord(nestedError) && typeof nestedError.status === 'string') {
+              errorMessage = `${nestedError.status}: ${errorMessage}`;
+            }
           } else if (typeof errorData.message === 'string') {
             errorMessage = errorData.message;
           }
+        }
+        // 504 from Gemini is always a server-side generation deadline
+        if (response.status === 504 || errorMessage.toUpperCase().includes('DEADLINE_EXCEEDED')) {
+          throw new Error(`DEADLINE_EXCEEDED: ${errorMessage}`);
         }
         throw new Error(`Gemini API error: ${errorMessage}`);
       }
