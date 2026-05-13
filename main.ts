@@ -251,13 +251,15 @@ const DEFAULT_SETTINGS: YouTubeTranscriptSettings = {
         openai: '',
         anthropic: '',
         google: '',
-        ollama: 'http://localhost:11434'
+        ollama: 'http://localhost:11434',
+        openrouter: ''
     },
     selectedModels: {
         openai: 'gpt-4-turbo',
         anthropic: 'claude-3-sonnet-20240229',
         google: 'gemini-1.5-pro',
-        ollama: 'llama3.1'
+        ollama: 'llama3.1',
+        openrouter: 'openai/gpt-4o'
     },
     temperature: 0.7,
     maxTokens: 1000,
@@ -271,6 +273,7 @@ const DEFAULT_SETTINGS: YouTubeTranscriptSettings = {
         anthropic: [],
         google: [],
         ollama: [],
+        openrouter: [],
     },
 
 
@@ -601,6 +604,9 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 return 'gemini-1.5-pro';
             case 'ollama':
                 return 'llama3.1';
+            case 'openrouter':
+                logger.debug(`[getModelForProvider] Using OpenRouter fallback: 'openai/gpt-4o'`);
+                return 'openai/gpt-4o';
             default:
                 throw new Error(`Unsupported LLM provider: ${provider}`);
         }
@@ -4231,10 +4237,11 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 // Add OpenAI option
                 dropdown.addOption('openai', 'Openai');
                 
-                // Always add Anthropic, Google and Ollama options since they all work on any platform now
+                // Always add Anthropic, Google, Ollama, and OpenRouter options since they all work on any platform now
                 dropdown.addOption('anthropic', 'Anthropic');
                 dropdown.addOption('google', 'Google');
                 dropdown.addOption('ollama', 'Ollama');
+                dropdown.addOption('openrouter', 'OpenRouter');
                 
                 // Set the current value
                 let currentValue = this.plugin.settings.selectedLLM;
@@ -4623,6 +4630,21 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                     'solar',
                 ],
                 defaultModelValue: 'llama3.1',
+            },
+            {
+                provider: 'openrouter',
+                displayName: 'OpenRouter',
+                placeholder: 'sk-or-v1-...',
+                modelOptions: [
+                    'openai/gpt-4o',
+                    'openai/gpt-4o-mini',
+                    'anthropic/claude-3.5-sonnet',
+                    'anthropic/claude-3.5-haiku',
+                    'google/gemini-2.5-flash',
+                    'meta-llama/llama-3.1-70b-instruct',
+                    'mistralai/mistral-large',
+                ],
+                defaultModelValue: 'openai/gpt-4o',
             },
         ];
 

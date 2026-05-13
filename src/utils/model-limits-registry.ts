@@ -1,5 +1,5 @@
 // model-limits-registry.ts
-export type Provider = "openai" | "anthropic" | "google" | "ollama";
+export type Provider = "openai" | "anthropic" | "google" | "ollama" | "openrouter";
 
 export type ModelLimits = {
   context: number;            // total context window (input+output)
@@ -154,10 +154,50 @@ const BASE_MODELS: Registry = {
       maxOutput: 8_192, 
       reserveOutputPct: 0.15 
     },
-    "mistral": { 
-      context: 32_768, 
-      maxOutput: 4_096, 
-      reserveOutputPct: 0.15 
+    "mistral": {
+      context: 32_768,
+      maxOutput: 4_096,
+      reserveOutputPct: 0.15
+    }
+  },
+
+  openrouter: {
+    // OpenRouter is a gateway; model IDs are namespaced "<vendor>/<model>".
+    // Limits reflect the upstream model's published context window.
+    "openai/gpt-4o": {
+      context: 128_000,
+      maxOutput: 16_384,
+      reserveOutputPct: 0.10
+    },
+    "openai/gpt-4o-mini": {
+      context: 128_000,
+      maxOutput: 16_384,
+      reserveOutputPct: 0.10
+    },
+    "anthropic/claude-3.5-sonnet": {
+      context: 200_000,
+      maxOutput: 8_192,
+      reserveOutputPct: 0.10
+    },
+    "anthropic/claude-3.5-haiku": {
+      context: 200_000,
+      maxOutput: 8_192,
+      reserveOutputPct: 0.10
+    },
+    "google/gemini-2.5-flash": {
+      context: 1_000_000,
+      maxOutput: 8_192,
+      reserveOutputPct: 0.10
+    },
+    "meta-llama/llama-3.1-70b-instruct": {
+      context: 131_072,
+      maxOutput: 8_192,
+      reserveOutputPct: 0.10
+    },
+    "mistralai/mistral-large": {
+      context: 128_000,
+      maxOutput: 8_192,
+      reserveOutputPct: 0.10
     }
   }
 };
