@@ -37,7 +37,7 @@
   },
   "overrides": {
     "axios": ">=1.15.0",
-    "langsmith": "^0.5.18",
+    "langsmith": ">=0.6.0",
     "fast-xml-parser": ">=5.7.0",
     "uuid": ">=14.0.0",
     "fast-uri": ">=3.1.2"
