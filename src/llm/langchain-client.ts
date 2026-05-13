@@ -267,8 +267,38 @@ export class LangChainClient {
             model: this.model,
             temperature: this.temperature,
           });
-          
+
           // Type cast needed for compatibility with LangChain's invoke() method
+          const response = await model.invoke(messages);
+          return String(extractContent(response));
+        }
+
+        case 'openrouter': {
+          logger.debug(`Using OpenRouter with model ${this.model}`);
+          // OpenRouter exposes an OpenAI-compatible API. Reuse ChatOpenAI with a
+          // baseURL override so the obsidianFetch shim (injected by
+          // getLangChainConfiguration) continues to handle cross-platform HTTP.
+          // OpenRouter recommends HTTP-Referer and X-Title headers for attribution.
+          // Route the OpenAI SDK at OpenRouter's base URL. We add `configuration`
+          // via getLangChainConfiguration's loosely-typed options bag so it spreads
+          // alongside `apiKey` and `fetch` (the obsidianFetch shim).
+          const routerConfig = getLangChainConfiguration({
+            apiKey: this.apiKey,
+            configuration: {
+              baseURL: 'https://openrouter.ai/api/v1',
+              defaultHeaders: {
+                'HTTP-Referer': 'https://github.com/rmccorkl/TubeSage',
+                'X-Title': 'TubeSage'
+              }
+            }
+          });
+          const model = new ChatOpenAI({
+            ...routerConfig,
+            modelName: this.model,
+            maxTokens: this.maxTokens,
+            temperature: this.temperature
+          });
+
           const response = await model.invoke(messages);
           return String(extractContent(response));
         }
