@@ -1,0 +1,192 @@
+name: archon-graph-superpowers-feature
+description: |
+  Use when: You have a feature idea or requirement and want end-to-end development
+  inside a local git worktree, with codebase context pulled from graphify-out/ up
+  front, the graph refreshed after delivery, and the worktree's branch merged
+  back to base locally — no remote push, no GitHub PR.
+  Triggers: "graph feature", "graphify feature", "feature with graph context",
+            "build feature with graphify".
+  Input: Feature description in natural language, or path to a PRD file.
+  Output: Base branch (typically `main`) advanced locally with the implementation +
+          graph commits; archon worktree left in place for `archon complete <branch>` cleanup.
+
+  Differences from archon-idea-to-pr:
+  - Pre-step: graphify check-update + graphify query → $ARTIFACTS_DIR/codebase-context.md
+  - Post-implementation: graphify . --update; commit graph delta if it changed
+  - Superpowers skills attached to plan / implement / validate / finish nodes
+  - No PR creation, no remote push, no PR-based review pipeline
+  - Final node fast-forwards (or non-ff merges) the worktree's branch into base
+    at the primary worktree path
+
+provider: claude
+model: sonnet
+
+nodes:
+  # ═══════════════════════════════════════════════════════════════════
+  # PHASE -1: GRAPH CONTEXT ACQUISITION
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: graph-health-check
+    bash: |
+      set -e
+      if [ ! -f graphify-out/graph.json ]; then
+        echo "WARN: graphify-out/graph.json missing — skipping context acquisition" >&2
+        echo "missing" > "$ARTIFACTS_DIR/.graph-state"
+        exit 0
+      fi
+      graphify check-update graphify-out 2>&1 || true
+      echo "ok" > "$ARTIFACTS_DIR/.graph-state"
+    timeout: 15000
+
+  - id: graph-context
+    bash: |
+      set -e
+      STATE=$(cat "$ARTIFACTS_DIR/.graph-state" 2>/dev/null || echo missing)
+      if [ "$STATE" = "missing" ]; then
+        echo "No graph available — writing empty context"
+        echo "_(graphify-out/graph.json missing — context unavailable)_" > "$ARTIFACTS_DIR/codebase-context.md"
+        exit 0
+      fi
+      {
+        echo "# Codebase context (graphify query)"
+        echo
+        echo "**Question**: $ARGUMENTS"
+        echo
+        echo '```'
+        graphify query "$ARGUMENTS" --budget 4000 --graph graphify-out/graph.json
+        echo '```'
+      } > "$ARTIFACTS_DIR/codebase-context.md"
+    depends_on: [graph-health-check]
+    timeout: 60000
+
+  # ═══════════════════════════════════════════════════════════════════
+  # PHASE 0: CREATE PLAN
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: create-plan
+    command: archon-create-plan
+    depends_on: [graph-context]
+    context: fresh
+    skills:
+      - superpowers:brainstorming
+
+  # ═══════════════════════════════════════════════════════════════════
+  # PHASE 1: SETUP
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: plan-setup
+    command: archon-plan-setup
+    depends_on: [create-plan]
+    context: fresh
+
+  # ═══════════════════════════════════════════════════════════════════
+  # PHASE 2: CONFIRM PLAN
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: confirm-plan
+    command: archon-confirm-plan
+    depends_on: [plan-setup]
+    context: fresh
+
+  # ═══════════════════════════════════════════════════════════════════
+  # PHASE 3: IMPLEMENT
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: implement-tasks
+    command: archon-implement-tasks
+    depends_on: [confirm-plan]
+    context: fresh
+    provider: claude
+    model: opus[1m]
+    skills:
+      - superpowers:test-driven-development
+      - superpowers:systematic-debugging
+
+  # ═══════════════════════════════════════════════════════════════════
+  # PHASE 4: VALIDATE
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: validate
+    command: archon-validate
+    depends_on: [implement-tasks]
+    context: fresh
+    skills:
+      - superpowers:verification-before-completion
+
+  # ═══════════════════════════════════════════════════════════════════
+  # PHASE 4.5: REFRESH GRAPH + COMMIT
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: graph-update
+    bash: |
+      set -e
+      if ! command -v graphify >/dev/null 2>&1; then
+        echo "graphify CLI not on PATH — skipping refresh" >&2
+        exit 0
+      fi
+      graphify . --update
+      if ! git diff --quiet graphify-out/graph.json 2>/dev/null; then
+        git add graphify-out/graph.json
+        git commit -m "chore: refresh graphify graph after delivery"
+        echo "graph refreshed and committed"
+      else
+        echo "graph unchanged — no commit"
+      fi
+    depends_on: [validate]
+    timeout: 120000
+    retry:
+      max_attempts: 2
+      on_error: all
+
+  # ═══════════════════════════════════════════════════════════════════
+  # PHASE 5: FINALIZE PR
+  # ═══════════════════════════════════════════════════════════════════
+
+  # ═══════════════════════════════════════════════════════════════════
+  # PHASE 6: MERGE BACK TO BASE (local — no PR, no remote push)
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: merge-back
+    bash: |
+      set -e
+      PRIMARY=$(git worktree list | head -1 | awk '{print $1}')
+      FEATURE_BRANCH=$(git branch --show-current)
+      BASE="${BASE_BRANCH:-main}"
+
+      if [ "$FEATURE_BRANCH" = "$BASE" ]; then
+        echo "Already on $BASE — nothing to merge"
+        exit 0
+      fi
+
+      # Refuse if primary worktree has uncommitted work — better to surface than to clobber
+      if [ -n "$(git -C "$PRIMARY" status --porcelain)" ]; then
+        echo "ERROR: Primary worktree at $PRIMARY has uncommitted changes — aborting merge-back" >&2
+        echo "Resolve them first, then merge manually:" >&2
+        echo "  git -C \"$PRIMARY\" merge --no-ff $FEATURE_BRANCH" >&2
+        exit 1
+      fi
+
+      git -C "$PRIMARY" checkout "$BASE"
+      if git -C "$PRIMARY" merge --ff-only "$FEATURE_BRANCH" 2>/dev/null; then
+        echo "Fast-forwarded $BASE to $FEATURE_BRANCH at $PRIMARY"
+      else
+        git -C "$PRIMARY" merge --no-ff "$FEATURE_BRANCH" -m "merge: $FEATURE_BRANCH (via archon worktree)"
+        echo "Merged $FEATURE_BRANCH into $BASE (non-ff) at $PRIMARY"
+      fi
+
+      echo
+      echo "To remove this worktree afterwards, run from $PRIMARY:"
+      echo "  archon complete $FEATURE_BRANCH"
+    depends_on: [graph-update]
+    timeout: 60000
+
+  # ═══════════════════════════════════════════════════════════════════
+  # PHASE 7: SUMMARY
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: workflow-summary
+    command: archon-workflow-summary
+    depends_on: [merge-back]
+    context: fresh
+    skills:
+      - superpowers:finishing-a-development-branch
