@@ -1,0 +1,261 @@
+name: archon-graph-superpowers-fix-issue
+description: |
+  Use when: User wants to fix a GitHub issue inside a local git worktree, with
+  codebase context from graphify-out/ pulled up front, Superpowers skills on
+  debug/plan/implement/validate/report nodes, the graph refreshed after delivery,
+  and the worktree's branch merged back to base locally — no remote push, no PR.
+  Triggers: "graph fix issue", "graphify fix", "fix issue with graph", "graph-aware fix".
+  NOT for: Comprehensive multi-agent reviews (use archon-issue-review-full),
+           PR-based workflows, questions about issues, CI failures, general exploration.
+
+  Differences from archon-fix-github-issue:
+  - Pre-step: graphify check-update + graphify query → $ARTIFACTS_DIR/codebase-context.md
+  - Post-implementation: graphify . --update; commit graph delta if it changed
+  - Superpowers skills attached to investigate / plan / implement / validate / report nodes
+  - No PR creation, no remote push, no PR-based review pipeline
+  - Final node fast-forwards (or non-ff merges) the worktree's branch into base
+    at the primary worktree path
+
+provider: claude
+model: sonnet
+
+nodes:
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 1: FETCH & CLASSIFY
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: extract-issue-number
+    prompt: |
+      Find the GitHub issue number for this request.
+
+      Request: $ARGUMENTS
+
+      Rules:
+      - If the message contains an explicit issue number (e.g., "#709", "issue 709", "709"), extract that number.
+      - If the message is ambiguous (e.g., "fix the SQLite timestamp bug"), use `gh issue list` to search for matching issues and pick the best match.
+
+      CRITICAL: Your final output must be ONLY the bare number with no quotes, no markdown, no explanation. Example correct output: 709
+
+  - id: fetch-issue
+    bash: |
+      # Strip quotes, whitespace, markdown backticks from AI output
+      ISSUE_NUM=$(echo "$extract-issue-number.output" | tr -d "'\"\`\n " | grep -oE '[0-9]+' | head -1)
+      if [ -z "$ISSUE_NUM" ]; then
+        echo "Failed to extract issue number from: $extract-issue-number.output" >&2
+        exit 1
+      fi
+      gh issue view "$ISSUE_NUM" --json title,body,labels,comments,state,url,author
+    depends_on: [extract-issue-number]
+
+  - id: classify
+    prompt: |
+      You are an issue classifier. Analyze the GitHub issue below and determine its type.
+
+      ## Issue Content
+
+      $fetch-issue.output
+
+      ## Classification Rules
+
+      | Type | Indicators |
+      |------|------------|
+      | bug | "broken", "error", "crash", "doesn't work", stack traces, regression |
+      | feature | "add", "new", "support", "would be nice", net-new capability |
+      | enhancement | "improve", "better", "update existing", "extend", incremental improvement |
+      | refactor | "clean up", "simplify", "reorganize", "restructure" |
+      | chore | "update deps", "upgrade", "maintenance", "CI/CD" |
+      | documentation | "docs", "readme", "clarify", "examples" |
+
+      Provide reasoning for your classification.
+    depends_on: [fetch-issue]
+    model: haiku
+    allowed_tools: []
+    output_format:
+      type: object
+      properties:
+        issue_type:
+          type: string
+          enum: ["bug", "feature", "enhancement", "refactor", "chore", "documentation"]
+        title:
+          type: string
+        reasoning:
+          type: string
+      required: [issue_type, title, reasoning]
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 1.5: GRAPH CONTEXT ACQUISITION
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: graph-health-check
+    bash: |
+      set -e
+      if [ ! -f graphify-out/graph.json ]; then
+        echo "WARN: graphify-out/graph.json missing — skipping context acquisition" >&2
+        echo "missing" > "$ARTIFACTS_DIR/.graph-state"
+        exit 0
+      fi
+      graphify check-update graphify-out 2>&1 || true
+      echo "ok" > "$ARTIFACTS_DIR/.graph-state"
+    depends_on: [classify]
+    timeout: 15000
+
+  - id: graph-context
+    bash: |
+      set -e
+      STATE=$(cat "$ARTIFACTS_DIR/.graph-state" 2>/dev/null || echo missing)
+      if [ "$STATE" = "missing" ]; then
+        echo "No graph available — writing empty context"
+        echo "_(graphify-out/graph.json missing — context unavailable)_" > "$ARTIFACTS_DIR/codebase-context.md"
+        exit 0
+      fi
+      {
+        echo "# Codebase context (graphify query)"
+        echo
+        echo "**Question**: $ARGUMENTS"
+        echo
+        echo '```'
+        graphify query "$ARGUMENTS" --budget 4000 --graph graphify-out/graph.json
+        echo '```'
+      } > "$ARTIFACTS_DIR/codebase-context.md"
+    depends_on: [graph-health-check]
+    timeout: 60000
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 2: RESEARCH (parallel with PR template fetch)
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: web-research
+    command: archon-web-research
+    depends_on: [graph-context]
+    context: fresh
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 3: INVESTIGATE (bugs) / PLAN (features)
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: investigate
+    command: archon-investigate-issue
+    depends_on: [classify, web-research]
+    when: "$classify.output.issue_type == 'bug'"
+    context: fresh
+    skills:
+      - superpowers:systematic-debugging
+
+  - id: plan
+    command: archon-create-plan
+    depends_on: [classify, web-research]
+    when: "$classify.output.issue_type != 'bug'"
+    context: fresh
+    skills:
+      - superpowers:brainstorming
+
+  # Bridge: ensure investigation.md exists for the implement step
+  - id: bridge-artifacts
+    bash: |
+      if [ -f "$ARTIFACTS_DIR/plan.md" ] && [ ! -f "$ARTIFACTS_DIR/investigation.md" ]; then
+        cp "$ARTIFACTS_DIR/plan.md" "$ARTIFACTS_DIR/investigation.md"
+        echo "Bridged plan.md to investigation.md for implement step"
+      elif [ -f "$ARTIFACTS_DIR/investigation.md" ]; then
+        echo "investigation.md exists from investigate step"
+      else
+        echo "WARNING: No investigation.md or plan.md found — implement may fail"
+      fi
+    depends_on: [investigate, plan]
+    trigger_rule: one_success
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 4: IMPLEMENT
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: implement
+    command: archon-fix-issue
+    depends_on: [bridge-artifacts]
+    context: fresh
+    model: opus[1m]
+    skills:
+      - superpowers:test-driven-development
+      - superpowers:systematic-debugging
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 5: VALIDATE
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: validate
+    command: archon-validate
+    depends_on: [implement]
+    context: fresh
+    skills:
+      - superpowers:verification-before-completion
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 5.5: REFRESH GRAPH + COMMIT
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: graph-update
+    bash: |
+      set -e
+      if ! command -v graphify >/dev/null 2>&1; then
+        echo "graphify CLI not on PATH — skipping refresh" >&2
+        exit 0
+      fi
+      graphify . --update
+      if ! git diff --quiet graphify-out/graph.json 2>/dev/null; then
+        git add graphify-out/graph.json
+        git commit -m "chore: refresh graphify graph after delivery"
+        echo "graph refreshed and committed"
+      else
+        echo "graph unchanged — no commit"
+      fi
+    depends_on: [validate]
+    timeout: 120000
+    retry:
+      max_attempts: 2
+      on_error: all
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 6: MERGE BACK TO BASE (local — no PR, no remote push)
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: merge-back
+    bash: |
+      set -e
+      PRIMARY=$(git worktree list | head -1 | awk '{print $1}')
+      FEATURE_BRANCH=$(git branch --show-current)
+      BASE="${BASE_BRANCH:-main}"
+
+      if [ "$FEATURE_BRANCH" = "$BASE" ]; then
+        echo "Already on $BASE — nothing to merge"
+        exit 0
+      fi
+
+      if [ -n "$(git -C "$PRIMARY" status --porcelain)" ]; then
+        echo "ERROR: Primary worktree at $PRIMARY has uncommitted changes — aborting merge-back" >&2
+        echo "Resolve them first, then merge manually:" >&2
+        echo "  git -C \"$PRIMARY\" merge --no-ff $FEATURE_BRANCH" >&2
+        exit 1
+      fi
+
+      git -C "$PRIMARY" checkout "$BASE"
+      if git -C "$PRIMARY" merge --ff-only "$FEATURE_BRANCH" 2>/dev/null; then
+        echo "Fast-forwarded $BASE to $FEATURE_BRANCH at $PRIMARY"
+      else
+        git -C "$PRIMARY" merge --no-ff "$FEATURE_BRANCH" -m "merge: $FEATURE_BRANCH (via archon worktree)"
+        echo "Merged $FEATURE_BRANCH into $BASE (non-ff) at $PRIMARY"
+      fi
+
+      echo
+      echo "To remove this worktree afterwards, run from $PRIMARY:"
+      echo "  archon complete $FEATURE_BRANCH"
+    depends_on: [graph-update]
+    timeout: 60000
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 7: REPORT
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: report
+    command: archon-issue-completion-report
+    depends_on: [merge-back]
+    context: fresh
+    skills:
+      - superpowers:finishing-a-development-branch
