@@ -169,9 +169,9 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
         };
       } else if (init.body instanceof ArrayBuffer || ArrayBuffer.isView(init.body)) {
         // Handle binary data
-        options.arrayBuffer = init.body instanceof ArrayBuffer 
-          ? init.body 
-          : (init.body as ArrayBufferView).buffer;
+        options.arrayBuffer = init.body instanceof ArrayBuffer
+          ? init.body
+          : init.body.buffer;
       } else {
         // For objects, try to stringify to JSON
         try {

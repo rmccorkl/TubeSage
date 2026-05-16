@@ -377,7 +377,8 @@ input:checked + .toggle-slider:before {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s, visibility 0.2s;
-    white-space: nowrap;
+    white-space: normal;
+    width: max-content;
     word-wrap: break-word;
     line-height: 1.4;
 }
@@ -385,13 +386,6 @@ input:checked + .toggle-slider:before {
 .tubesage-settings-info-icon-with-tooltip:hover::after {
     opacity: 1;
     visibility: visible;
-}
-
-/* Handle long tooltips by allowing wrapping */
-.tubesage-settings-info-icon-with-tooltip::after {
-    white-space: normal;
-    width: max-content;
-    max-width: 300px;
 }
 
 .tubesage-license-toggle-wrapper {
@@ -1013,14 +1007,6 @@ input:checked + .toggle-slider:before {
     overflow-y: hidden;
 }
 
-.tubesage-license-container {
-    font-family: var(--font-monospace);
-}
-
-.tubesage-readme-container {
-    font-family: var(--font-interface);
-}
-
 .tubesage-license-required-modal-size.modal {
     width: 500px;
     max-width: 80vw;
@@ -1045,7 +1031,7 @@ input:checked + .toggle-slider:before {
 }
 
 .tubesage-custom-params-header {
-    margin: 0 0 15px 0;
+    margin: 0 0 15px;
     font-size: 16px;
     font-weight: 600;
     color: var(--text-accent);
