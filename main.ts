@@ -4807,7 +4807,10 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 
                 // Access the DOM element and set its appearance
                 // @ts-ignore - inputEl exists but TypeScript doesn't know about it
-                textComponent.inputEl.addClass('tubesage-prompt-textarea');
+                const inputEl = textComponent.inputEl;
+                inputEl.addClass('tubesage-prompt-textarea');
+                // Tag the parent setting-item so CSS can target it without :has()
+                inputEl.closest('.setting-item')?.classList.add('tubesage-prompt-setting');
                 
                 return textComponent;
             })
@@ -4840,7 +4843,10 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 
                 // Access the DOM element and set its appearance
                 // @ts-ignore - inputEl exists but TypeScript doesn't know about it
-                textComponent.inputEl.addClass('tubesage-prompt-textarea');
+                const inputEl = textComponent.inputEl;
+                inputEl.addClass('tubesage-prompt-textarea');
+                // Tag the parent setting-item so CSS can target it without :has()
+                inputEl.closest('.setting-item')?.classList.add('tubesage-prompt-setting');
                 
                 return textComponent;
             })
@@ -4878,7 +4884,10 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 
                 // Access the DOM element and set its appearance
                 // @ts-ignore - inputEl exists but TypeScript doesn't know about it
-                textComponent.inputEl.addClass('tubesage-prompt-textarea');
+                const inputEl = textComponent.inputEl;
+                inputEl.addClass('tubesage-prompt-textarea');
+                // Tag the parent setting-item so CSS can target it without :has()
+                inputEl.closest('.setting-item')?.classList.add('tubesage-prompt-setting');
                 
                 return textComponent;
             })
@@ -4911,7 +4920,10 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 
                 // Access the DOM element and set its appearance
                 // @ts-ignore - inputEl exists but TypeScript doesn't know about it
-                textComponent.inputEl.addClass('tubesage-prompt-textarea');
+                const inputEl = textComponent.inputEl;
+                inputEl.addClass('tubesage-prompt-textarea');
+                // Tag the parent setting-item so CSS can target it without :has()
+                inputEl.closest('.setting-item')?.classList.add('tubesage-prompt-setting');
                 
                 return textComponent;
             })

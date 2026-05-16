@@ -441,13 +441,13 @@ input:checked + .toggle-slider:before {
     min-height: 100px;
 }
 
-.setting-item:has(.tubesage-prompt-textarea) {
+.setting-item.tubesage-prompt-setting {
     display: flex !important;
     flex-wrap: nowrap !important;
     align-items: flex-start !important;
 }
 
-.setting-item:has(.tubesage-prompt-textarea) .setting-item-info {
+.setting-item.tubesage-prompt-setting .setting-item-info {
     width: 50% !important;
     flex: 0 0 50% !important;
     padding-right: 15px !important;
@@ -455,7 +455,7 @@ input:checked + .toggle-slider:before {
     overflow-wrap: break-word !important;
 }
 
-.setting-item:has(.tubesage-prompt-textarea) .setting-item-control {
+.setting-item.tubesage-prompt-setting .setting-item-control {
     width: 50% !important;
     flex: 0 0 50% !important;
 }
@@ -1093,14 +1093,14 @@ input:checked + .toggle-slider:before {
         margin-top: 10px;
     }
     
-    .setting-item:has(.tubesage-prompt-textarea) {
+    .setting-item.tubesage-prompt-setting {
         display: flex !important;
         flex-direction: column !important;
         flex-wrap: wrap !important;
         align-items: stretch !important;
     }
     
-    .setting-item:has(.tubesage-prompt-textarea) .setting-item-info {
+    .setting-item.tubesage-prompt-setting .setting-item-info {
         width: 100% !important;
         flex: 1 !important;
         padding-right: 0 !important;
@@ -1109,7 +1109,7 @@ input:checked + .toggle-slider:before {
         overflow-wrap: break-word !important;
     }
     
-    .setting-item:has(.tubesage-prompt-textarea) .setting-item-control {
+    .setting-item.tubesage-prompt-setting .setting-item-control {
         width: 100% !important;
         flex: 1 !important;
     }
