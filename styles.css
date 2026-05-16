@@ -433,31 +433,31 @@ input:checked + .toggle-slider:before {
     transform: translateX(20px);
 }
 
-.tubesage-prompt-textarea {
-    width: 50% !important;
-    flex: 0 0 50% !important;
+.tubesage-prompt-textarea.tubesage-prompt-textarea {
+    width: 50%;
+    flex: 0 0 50%;
     min-width: 300px;
     max-width: none;
     min-height: 100px;
 }
 
-.setting-item:has(.tubesage-prompt-textarea) {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    align-items: flex-start !important;
+.setting-item.tubesage-prompt-setting {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
 }
 
-.setting-item:has(.tubesage-prompt-textarea) .setting-item-info {
-    width: 50% !important;
-    flex: 0 0 50% !important;
-    padding-right: 15px !important;
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
+.setting-item.tubesage-prompt-setting .setting-item-info {
+    width: 50%;
+    flex: 0 0 50%;
+    padding-right: 15px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
-.setting-item:has(.tubesage-prompt-textarea) .setting-item-control {
-    width: 50% !important;
-    flex: 0 0 50% !important;
+.setting-item.tubesage-prompt-setting .setting-item-control {
+    width: 50%;
+    flex: 0 0 50%;
 }
 
 .tubesage-settings-prompt-subheader {
@@ -638,9 +638,9 @@ input:checked + .toggle-slider:before {
 }
 
 .tubesage-readme-modal-size.modal {
-    width: 800px !important;
-    max-width: 85vw !important;
-    max-height: 90vh !important;
+    width: 800px;
+    max-width: 85vw;
+    max-height: 90vh;
     overflow-y: auto;
 }
 
@@ -800,8 +800,8 @@ input:checked + .toggle-slider:before {
 }
 
 .tubesage-template-view-modal-size.modal {
-    width: 700px !important;
-    max-width: 80vw !important;
+    width: 700px;
+    max-width: 80vw;
 }
 
 .tubesage-template-view-title {
@@ -912,77 +912,77 @@ input:checked + .toggle-slider:before {
 }
 
 .setting-item-heading.tubesage-heading .setting-item-name {
-    font-size: 1.4em !important;
-    font-weight: 600 !important;
-    color: #007acc !important;
-    margin-bottom: 5px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    gap: 12px !important;
+    font-size: 1.4em;
+    font-weight: 600;
+    color: #007acc;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
 }
 
 .setting-item-heading.tubesage-heading {
-    margin-top: 10px !important;
-    margin-bottom: 5px !important;
-    padding-bottom: 2px !important;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding-bottom: 2px;
 }
 
 .setting-item-heading.tubesage-heading .setting-item-info {
-    text-align: left !important;
-    justify-content: flex-start !important;
+    text-align: left;
+    justify-content: flex-start;
 }
 
 /* Provider header row — name + description only, no controls */
-.tubesage-provider-header {
-    padding-bottom: 4px !important;
-    border-bottom: none !important;
-    margin-bottom: 0 !important;
+.tubesage-provider-header.tubesage-provider-header {
+    padding-bottom: 4px;
+    border-bottom: none;
+    margin-bottom: 0;
 }
 
 .tubesage-provider-header .setting-item-control {
-    display: none !important;
+    display: none;
 }
 
 /* Provider controls row — API key, dropdown, refresh, custom model */
-.tubesage-provider-controls {
-    border-top: none !important;
-    padding-top: 4px !important;
+.tubesage-provider-controls.tubesage-provider-controls {
+    border-top: none;
+    padding-top: 4px;
 }
 
 .tubesage-provider-controls .setting-item-info {
-    display: none !important;
+    display: none;
 }
 
 /* Make the control row a single flex line filling full width */
 .tubesage-provider-controls .setting-item-control {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    align-items: center !important;
-    gap: 6px !important;
-    width: 100% !important;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
 }
 
 /* API key input and custom model input share space equally */
 .tubesage-provider-controls .setting-item-control input[type="text"],
 .tubesage-provider-controls .setting-item-control input[type="password"] {
-    flex: 1 1 0 !important;
-    min-width: 0 !important;
-    width: auto !important;
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
 }
 
 /* Model dropdown shares space equally */
 .tubesage-provider-controls .setting-item-control select {
-    flex: 1 1 0 !important;
-    min-width: 0 !important;
-    width: auto !important;
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
 }
 
 /* Refresh button stays fixed size */
 .tubesage-provider-controls .setting-item-control button {
-    flex: 0 0 auto !important;
-    width: auto !important;
+    flex: 0 0 auto;
+    width: auto;
 }
 
 .tubesage-folder-picker-status-error {
@@ -1052,24 +1052,24 @@ input:checked + .toggle-slider:before {
         margin-bottom: 12px;
     }
     /* Fix the modal container size on mobile - this is the real issue */
-    .tubesage-processing-modal {
-        width: fit-content !important;
-        min-width: auto !important;
-        max-width: fit-content !important;
-        padding: 10px !important;
-        margin: 0 auto !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        text-align: center !important;
+    .tubesage-processing-modal.tubesage-processing-modal {
+        width: fit-content;
+        min-width: auto;
+        max-width: fit-content;
+        padding: 10px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
-    
+
     /* Keep the pulse animation normal size */
     .pulse-container {
         width: fit-content;
         height: 40px;
-        margin: 0 auto !important;
+        margin: 0 auto;
     }
     
     .pulse-bar {
@@ -1084,52 +1084,52 @@ input:checked + .toggle-slider:before {
     }
     
     /* Mobile-responsive prompt textareas */
-    .tubesage-prompt-textarea {
-        width: 100% !important;
-        flex: 1 !important;
-        min-width: 0 !important;
-        max-width: 100% !important;
+    .tubesage-prompt-textarea.tubesage-prompt-textarea {
+        width: 100%;
+        flex: 1;
+        min-width: 0;
+        max-width: 100%;
         min-height: 120px;
         margin-top: 10px;
     }
-    
-    .setting-item:has(.tubesage-prompt-textarea) {
-        display: flex !important;
-        flex-direction: column !important;
-        flex-wrap: wrap !important;
-        align-items: stretch !important;
+
+    .setting-item.tubesage-prompt-setting {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: stretch;
     }
-    
-    .setting-item:has(.tubesage-prompt-textarea) .setting-item-info {
-        width: 100% !important;
-        flex: 1 !important;
-        padding-right: 0 !important;
-        margin-bottom: 8px !important;
-        word-wrap: break-word !important;
-        overflow-wrap: break-word !important;
+
+    .setting-item.tubesage-prompt-setting .setting-item-info {
+        width: 100%;
+        flex: 1;
+        padding-right: 0;
+        margin-bottom: 8px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
-    
-    .setting-item:has(.tubesage-prompt-textarea) .setting-item-control {
-        width: 100% !important;
-        flex: 1 !important;
+
+    .setting-item.tubesage-prompt-setting .setting-item-control {
+        width: 100%;
+        flex: 1;
     }
-    
+
     /* Better spacing for mobile settings */
-    .setting-item {
-        padding: 18px 0 !important;
+    .setting-item.setting-item {
+        padding: 18px 0;
     }
-    
+
     /* Smaller modals on mobile */
     .tubesage-license-modal-size.modal,
     .tubesage-readme-modal-size.modal {
-        width: 95vw !important;
-        max-width: 95vw !important;
-        max-height: 85vh !important;
+        width: 95vw;
+        max-width: 95vw;
+        max-height: 85vh;
     }
-    
+
     .tubesage-license-required-modal-size.modal {
-        width: 90vw !important;
-        max-width: 90vw !important;
-        max-height: 85vh !important;
+        width: 90vw;
+        max-width: 90vw;
+        max-height: 85vh;
     }
 }
