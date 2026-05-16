@@ -403,7 +403,21 @@ EXACTLY HOW TO DO THIS:
     
     // Cookie management - undefined means no cookies stored yet
     youtubeCookies: undefined,
-    
+
+};
+
+// Cloud LLM providers whose API keys are secrets stored in Obsidian's
+// secret storage. 'ollama' is intentionally excluded — its apiKeys entry
+// is a server URL, not a secret, and stays in data.json.
+const CLOUD_PROVIDERS = ['openai', 'anthropic', 'google', 'openrouter'] as const;
+
+// Secret-storage IDs, one per cloud provider. IDs must be lowercase
+// alphanumeric with optional dashes (required by SecretStorage.setSecret).
+const SECRET_IDS: Record<string, string> = {
+    openai: 'tubesage-openai-key',
+    anthropic: 'tubesage-anthropic-key',
+    google: 'tubesage-google-key',
+    openrouter: 'tubesage-openrouter-key',
 };
 
 // Define a simple interface for the model object from OpenAI API
@@ -670,12 +684,51 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             for (const key of polluted) {
                 delete this.settings.customModelLimits[key];
             }
-            await this.saveData(this.settings);
+            await this.persist();
         }
+
+        // --- API key secret-storage migration ---------------------------------
+        // Cloud-provider keys live in Obsidian secret storage, not data.json.
+        // 1. Migrate any key still present in data.json into secret storage.
+        // 2. Populate the runtime settings.apiKeys cloud entries from storage.
+        // 3. If data.json held any cloud key, persist once to scrub it out.
+        const dataApiKeys: Record<string, string> =
+            isRecord(loadedSettings.apiKeys) ? (loadedSettings.apiKeys as Record<string, string>) : {};
+        let hadCloudKeysInData = false;
+        for (const provider of CLOUD_PROVIDERS) {
+            const fromData = dataApiKeys[provider];
+            if (typeof fromData === 'string' && fromData.trim() !== '') {
+                hadCloudKeysInData = true;
+                if (!this.app.secretStorage.getSecret(SECRET_IDS[provider])) {
+                    this.app.secretStorage.setSecret(SECRET_IDS[provider], fromData);
+                }
+            }
+        }
+        for (const provider of CLOUD_PROVIDERS) {
+            this.settings.apiKeys[provider] =
+                this.app.secretStorage.getSecret(SECRET_IDS[provider]) ?? '';
+        }
+        if (hadCloudKeysInData) {
+            logger.info('[migration] Moved cloud API keys to secret storage; scrubbing data.json');
+            await this.persist();
+        }
+        // ----------------------------------------------------------------------
+    }
+
+    /**
+     * Persist settings to data.json with cloud-provider API keys stripped out.
+     * Cloud keys live in Obsidian secret storage, never in data.json.
+     */
+    private async persist(): Promise<void> {
+        const sanitizedApiKeys: Record<string, string> = {
+            ollama: this.settings.apiKeys.ollama ?? DEFAULT_SETTINGS.apiKeys.ollama,
+        };
+        const toSave = { ...this.settings, apiKeys: sanitizedApiKeys };
+        await this.saveData(toSave);
     }
 
     async saveSettings() {
-        await this.saveData(this.settings);
+        await this.persist();
         this.initializeSummarizer();
     }
 
@@ -4280,7 +4333,11 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         ): void => {
             new Setting(settingsContainer)
                 .setName(`${displayName} api key`)
-                .setDesc('Stored in plugin data; available to all summarisation flows.')
+                .setDesc(
+                    provider === 'ollama'
+                        ? 'Server URL, stored in plugin data.'
+                        : 'Stored in Obsidian secret storage, not in plugin data.'
+                )
                 .addText(text => {
                     const textComponent = text
                         .setPlaceholder(placeholder)
@@ -4288,6 +4345,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         .onChange((value: string) => {
                             void (async () => {
                                 this.plugin.settings.apiKeys[provider] = value;
+                                if (CLOUD_PROVIDERS.includes(provider as typeof CLOUD_PROVIDERS[number])) {
+                                    this.plugin.app.secretStorage.setSecret(SECRET_IDS[provider], value);
+                                }
                                 await this.plugin.saveSettings();
                             })();
                         });
