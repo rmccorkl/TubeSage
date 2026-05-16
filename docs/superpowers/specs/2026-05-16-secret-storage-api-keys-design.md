@@ -59,49 +59,55 @@ A single source-of-truth map (e.g. `SECRET_IDS: Record<CloudProvider, string>`)
 defines these. No secret IDs are stored in `data.json` — they are derived from the
 provider name.
 
-### 2. Settings model change
+### 2. Settings model — `apiKeys` becomes a runtime field
 
-- `settings.apiKeys: Record<string, string>` is **removed**.
-- The Ollama URL becomes its own field: `settings.ollamaUrl: string`
-  (default `'http://localhost:11434'`). This is clearer than an "apiKey" that is
-  really a URL.
-- `DEFAULT_SETTINGS` updated accordingly.
+`settings.apiKeys: Record<string, string>` is **kept**, but its persistence role changes:
 
-### 3. Access layer
+- The 4 cloud-provider entries (`openai`, `anthropic`, `google`, `openrouter`) become
+  **runtime-only**: populated from `secretStorage` on load, never written to `data.json`.
+- The `ollama` entry (the server URL) continues to persist in `data.json` normally —
+  it is not a secret. No rename, no new fields.
 
-Add two methods on the plugin class:
+Rationale: keeping `settings.apiKeys` as a live runtime object means the ~25 existing
+sites that read `this.settings.apiKeys[provider]` (including several debug-logging
+blocks that iterate the whole object) keep working unchanged. The blast radius drops
+from ~25 sites to ~3.
 
-- `getApiKey(provider: string): string`
-  - cloud provider → `this.app.secretStorage.getSecret(SECRET_IDS[provider]) ?? ''`
-  - `ollama` → `this.settings.ollamaUrl`
-- `setApiKey(provider: string, value: string): void`
-  - cloud provider → `this.app.secretStorage.setSecret(SECRET_IDS[provider], value)`
-  - `ollama` → assign `this.settings.ollamaUrl` and `saveSettings()`
+### 3. Load / save behavior
 
-Because the secret-storage API is synchronous, every existing site that reads
-`this.settings.apiKeys[provider]` (~25 in `main.ts`, plus `transcript-summarizer.ts`
-and `llm-factory.ts`) becomes `this.getApiKey(provider)` with **no async refactor**.
+- **`loadSettings()`**: after the existing `{...DEFAULT_SETTINGS, ...loadedSettings}`
+  merge, run the one-time migration (section 6), then overwrite
+  `settings.apiKeys[provider]` for each cloud provider with
+  `app.secretStorage.getSecret(SECRET_IDS[provider]) ?? ''`.
+- **`saveSettings()` / `saveData()`**: persist a sanitized clone of `settings` whose
+  `apiKeys` contains only the `ollama` entry — the 4 cloud keys are stripped before the
+  write, so `data.json` never holds them.
+- The secret-storage API is synchronous, so no async refactor is needed anywhere.
 
-### 4. Keeping the change localized
+### 4. Blast radius
 
-`transcript-summarizer.ts` and `llm-factory.ts` currently receive an
-`apiKeys: Record<string, string>` object built in `main.ts`. They continue to do so —
-`main.ts` builds that object by calling `getApiKey()` for each provider before
-constructing the summarizer/factory. Those two files never call `secretStorage`
-directly, so the change is concentrated in `main.ts`.
+Because `settings.apiKeys` still exists at runtime and resolves cloud keys (from secret
+storage) exactly as before, the ~25 existing read sites are **unchanged**. Only three
+areas change: `loadSettings()`, `saveSettings()`, and the API-key settings UI.
+`transcript-summarizer.ts` and `llm-factory.ts` are untouched — they keep receiving the
+`apiKeys` object built in `main.ts`, which now resolves cloud keys from secret storage.
 
 ### 5. Settings UI
 
 The 4 cloud-provider key fields keep their current plain text-input UX (the existing
-`.addText()` controls). They are NOT converted to Obsidian's `SecretComponent` — that
-component is designed for selecting/sharing named secrets across plugins, which is
-heavier than TubeSage needs.
+`.addText()` controls in `createProviderApiKeyRow`). They are NOT converted to
+Obsidian's `SecretComponent` — that component is designed for selecting/sharing named
+secrets across plugins, which is heavier than TubeSage needs.
 
-- On render: `setValue(getApiKey(provider))`
-- On change: `setApiKey(provider, value)` (writes straight to secret storage)
-- No key value is ever written to `settings`/`data.json`.
+- On render: `setValue(this.plugin.settings.apiKeys[provider])` (unchanged — the
+  in-memory value was populated from secret storage at load).
+- On change (cloud provider): write `app.secretStorage.setSecret(SECRET_IDS[provider],
+  value)` AND update the in-memory `settings.apiKeys[provider]`. Do NOT rely on
+  `saveSettings()` to persist the key (it strips cloud keys).
+- On change (`ollama`): write `settings.apiKeys['ollama']` and `saveSettings()` as today.
 
-The Ollama field continues to read/write `settings.ollamaUrl` as a normal setting.
+The field's existing description text ("Stored in plugin data; ...") is updated to
+reflect that cloud keys are stored in Obsidian's secret storage.
 
 ### 6. Migration
 
@@ -116,9 +122,9 @@ persist settings (saveSettings) so data.json no longer contains the keys
 ```
 
 This copies any pre-existing keys into secret storage and scrubs them from the
-plaintext `data.json`. It is idempotent — on later loads there is nothing to migrate.
-The Ollama value is migrated from `apiKeys['ollama']` into `settings.ollamaUrl` in the
-same pass.
+plaintext `data.json` (the scrub happens because `saveSettings()` now strips cloud
+keys). It is idempotent — on later loads there is nothing to migrate. The Ollama
+entry is untouched — it stays in `apiKeys['ollama']` and continues to persist.
 
 ### 7. Version bumps
 
@@ -154,6 +160,8 @@ No automated test harness exists in the project. Verification is build + manual:
 ## Out of scope / non-goals
 
 - No hybrid/fallback for Obsidian < 1.11.4.
-- No change to the Ollama URL handling beyond the field rename.
+- No change to Ollama handling — its URL stays in `apiKeys['ollama']`.
 - No `SecretComponent` UI.
 - No change to the YouTube Data API key.
+- No `getApiKey()`/`setApiKey()` accessor — keeping `settings.apiKeys` as a runtime
+  field makes one unnecessary.
