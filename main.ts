@@ -9,6 +9,7 @@ import { validateRequired, validateYouTubeUrl, ValidationResult, displayValidati
 import { getPromptConfig, cleanTranscript, SummaryMode, getTimestampLinkConfig } from './src/utils/prompt-utils';
 import { showNotice, isYoutubeUrl, isYoutubeChannelOrPlaylistUrl, extractChannelName, YOUTUBE_URL_PLACEHOLDER } from './src/utils/youtube-utils';
 import { obsidianFetch } from './src/utils/fetch-shim';
+import { ProcessingSpinner } from './src/utils/processing-spinner';
 import { 
     extractDocumentComponents, 
     reconstructDocument, 
@@ -3120,7 +3121,8 @@ class YouTubeTranscriptModal extends Modal {
     // Method to start the collection processing workflow
     private async beginCollectionProcessing(sourceUrl: string, videoCount: number) {
         if (this.isProcessing) return;
-        
+
+        let spinner: ProcessingSpinner | undefined;
         try {
             this.isProcessing = true;
             
@@ -3134,16 +3136,10 @@ class YouTubeTranscriptModal extends Modal {
                 modalEl.addClass('tubesage-processing-modal');
             }
             
-            // Create a minimal container just for centering the pulse bars
-            const pulseContainerEl = contentEl.createDiv({ 
-                cls: 'pulse-container'
-            });
-            
-            // Just create the pulse bars
-            for (let i = 0; i < 5; i++) {
-                pulseContainerEl.createDiv({ cls: 'pulse-bar' });
-            }
-            
+            // Braille-dots processing spinner (status bar on desktop, in-modal on mobile)
+            spinner = new ProcessingSpinner(this.plugin, 'Processing collection', contentEl);
+            spinner.start();
+
             // Determine if this is a playlist or channel
             const isPlaylist = sourceUrl.includes('/playlist') || sourceUrl.includes('list=');
             const contentType = isPlaylist ? 'Playlist' : 'Channel';
@@ -3380,6 +3376,7 @@ class YouTubeTranscriptModal extends Modal {
             // Close the modal on error
             this.close();
         } finally {
+            spinner?.stop();
             // Only stop the proxy server if currently using Anthropic
             if (this.plugin.settings.selectedLLM === 'anthropic') {
                 try {
@@ -3391,7 +3388,7 @@ class YouTubeTranscriptModal extends Modal {
             this.isProcessing = false;
         }
     }
-    
+
     // Helper method to sanitize file/folder names
     private sanitizePathComponent(text: string): string {
         // Use the utility function instead of duplicating code
@@ -3444,7 +3441,8 @@ class YouTubeTranscriptModal extends Modal {
             this.handleInputSubmit();
             return;
         }
-        
+
+        let spinner: ProcessingSpinner | undefined;
         try {
             this.isProcessing = true;
             
@@ -3458,16 +3456,10 @@ class YouTubeTranscriptModal extends Modal {
                 modalEl.addClass('tubesage-processing-modal');
             }
             
-            // Create a minimal container just for centering the pulse bars
-            const pulseContainerEl = contentEl.createDiv({ 
-                cls: 'pulse-container'
-            });
-            
-            // Just create the pulse bars
-            for (let i = 0; i < 5; i++) {
-                pulseContainerEl.createDiv({ cls: 'pulse-bar' });
-            }
-            
+            // Braille-dots processing spinner (status bar on desktop, in-modal on mobile)
+            spinner = new ProcessingSpinner(this.plugin, 'Processing video', contentEl);
+            spinner.start();
+
             // Get custom title if provided
             let title = this.titleInputEl.value.trim();
             
@@ -3691,6 +3683,7 @@ class YouTubeTranscriptModal extends Modal {
             // Close the modal on error
             this.close();
         } finally {
+            spinner?.stop();
             // Only stop the proxy server if it was started (only for Anthropic provider)
             if (this.plugin.settings.selectedLLM === 'anthropic') {
                 try {
@@ -3702,7 +3695,7 @@ class YouTubeTranscriptModal extends Modal {
             this.isProcessing = false;
         }
     }
-    
+
     onClose() {
         const { contentEl } = this;
         contentEl.empty();
