@@ -4,10 +4,11 @@ import globals from "globals";
 import json from "@eslint/json";
 import preferActiveDocFixed from "./eslint-rules/prefer-active-doc-fixed.mjs";
 
-// Upstream eslint-plugin-obsidianmd v0.2.3 `prefer-active-doc` has a prototype-
-// lookup bug (REPLACEMENTS[node.name] walks the prototype chain, so every class
-// `constructor` is falsely flagged). Swap the rule implementation in-place on
-// the plugin object before it gets registered.
+// Swap obsidianmd's `prefer-active-doc` for a local implementation. Upstream's
+// rule (as of v0.3.0) only flags `document`; this project also wants
+// `window` -> `activeWindow` for popout compatibility. The local rule carves out
+// `window.<timer>` calls so it does not contradict `prefer-window-timers`.
+// Patched in-place on the plugin object before it gets registered.
 if (obsidianmd.rules) {
   obsidianmd.rules["prefer-active-doc"] = preferActiveDocFixed;
 }
