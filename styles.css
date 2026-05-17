@@ -708,22 +708,6 @@
     max-height: 250px;
 }
 
-.tubesage-template-view-copy-container {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    margin-left: auto;
-    text-align: right;
-    margin-top: var(--size-4-2);
-    margin-bottom: var(--size-4-2);
-}
-
-.tubesage-template-view-copy-text {
-    font-size: 14px;
-    margin-right: var(--size-4-2);
-    cursor: pointer;
-}
-
 
 .tubesage-template-view-explanation {
     margin-top: var(--size-4-4);

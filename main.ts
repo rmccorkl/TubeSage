@@ -4,7 +4,7 @@ import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
 import { handleApiError, getSafeErrorMessage } from './src/utils/error-utils';
 import { getLogger, LogLevel, setGlobalLogLevel, clearLogs, getLogsForCallout } from './src/utils/logger';
-import { normalizePath, ensureFolder, joinPaths, sanitizePathComponent } from './src/utils/path-utils';
+import { normalizePath, ensureFolder, joinPaths, sanitizePathComponent, collectUnder } from './src/utils/path-utils';
 import { validateRequired, validateYouTubeUrl, ValidationResult, displayValidationResult } from './src/utils/form-utils';
 import { getPromptConfig, cleanTranscript, SummaryMode, getTimestampLinkConfig } from './src/utils/prompt-utils';
 import { showNotice, isYoutubeUrl, isYoutubeChannelOrPlaylistUrl, extractChannelName, YOUTUBE_URL_PLACEHOLDER } from './src/utils/youtube-utils';
@@ -1699,29 +1699,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             const file = this.app.vault.getAbstractFileByPath(filePath);
             if (!(file instanceof TFile)) {
                 logger.error(`Could not find note file: ${filePath}`);
-                // Try to check if any similar files exist
-                const folder = filePath.substring(0, filePath.lastIndexOf('/'));
-                try {
-                    // @ts-ignore - Using internal Obsidian API
-                    const folderContents = (this.app.vault.getMarkdownFiles() as Array<{ path: string }>)
-                        .filter((f) => f.path.startsWith(folder))
-                        .map((f) => f.path);
-                    if (folderContents.length > 0) {
-                        // Only show a limited number of files to avoid excessive logging
-                        const MAX_FILES_TO_LOG = 3;
-                        if (folderContents.length <= MAX_FILES_TO_LOG) {
-                            logger.debug(`Files in the same folder: ${folderContents.join(', ')}`);
-                        } else {
-                            const shownFiles = folderContents.slice(0, MAX_FILES_TO_LOG);
-                            logger.debug(`Files in the same folder (${folderContents.length} total): ${shownFiles.join(', ')}... and ${folderContents.length - MAX_FILES_TO_LOG} more`);
-                        }
-                    } else {
-                        logger.debug(`No files found in folder: ${folder}`);
-                    }
-                } catch (folderError) {
-                    const errorMessage = getSafeErrorMessage(folderError);
-                    logger.error(`Error checking folder contents: ${errorMessage}`);
-                }
                 throw new Error('Could not find note file');
             }
 
@@ -5315,34 +5292,11 @@ class TemplateFilePickerModal extends Modal {
         
         contentEl.createEl('h2', { text: 'Select template file' });
         
-        // Get all markdown files in the vault
-        // @ts-ignore - Using Obsidian API types
-        const allFiles = this.app.vault.getMarkdownFiles();
-        logger.debug("Total markdown files in vault:", allFiles.length);
-        
-        // Filter to only include files from the templates folder
-        this.templates = allFiles
-            // @ts-ignore - Using Obsidian API types
-            .filter(file => {
-                // Check if the file path starts with the templates folder
-                // or if it's in a subfolder of the templates folder
-                const path = file.path.toLowerCase();
-                const templatesFolder = this.templatesFolder.toLowerCase();
-                
-                const isTemplate = path.startsWith(templatesFolder + '/') || 
-                       path === templatesFolder ||
-                       path.includes('/' + templatesFolder + '/');
-                       
-                if (isTemplate) {
-                    logger.debug("Found template file:", file.path);
-                }
-                
-                return isTemplate;
-            })
-            // @ts-ignore - Using Obsidian API types
+        // Collect template files by walking only the configured templates
+        // folder subtree — no whole-vault enumeration.
+        this.templates = collectUnder(this.app.vault, this.templatesFolder, 'markdown')
             .map(file => ({ path: file.path }));
-        
-        logger.debug(`Found ${this.templates.length} template files`);
+        logger.debug(`Found ${this.templates.length} template files in "${this.templatesFolder}"`);
         
         // Display a message if no template files were found
         if (this.templates.length === 0) {
@@ -5452,43 +5406,34 @@ class FolderPickerModal extends Modal {
                 logger.error('Error ensuring root folder exists:', e);
             }
             
-            // Cross-platform implementation: get all files using Obsidian API
-            // This works on both desktop and mobile
-            const files = this.app.vault.getAllLoadedFiles();
-            
-            // Add root folder first
-            this.folders.push({ 
-                path: normalizedRootFolder, 
+            // Add root folder first — explicit, so the picker always has it
+            // even if the subtree walk below returns nothing.
+            this.folders.push({
+                path: normalizedRootFolder,
                 name: rootFolder
             });
             uniquePaths.add(normalizedRootFolder);
-            
+
             // Collection of folders for summarized logging
             const foundFolders: string[] = [];
-            
-            // Process all folders from the vault
-            for (const file of files) {
-                // Check if it's a folder by testing its instance type
-                // This approach works on both desktop and mobile
-                if (file && 'children' in file) {
-                    const path = file.path || '';
-                    
-                    // Add all folders that are inside the root folder
-                    if (path !== rootFolder && (
-                        path.startsWith(rootFolder + '/') || 
-                        path.startsWith(normalizedRootFolder + '/'))) {
-                        
-                        const normalizedPath = normalizePath(path, false); // Keep leading slash for display
-                        if (!uniquePaths.has(normalizedPath)) {
-                            this.folders.push({
-                                path: normalizedPath,
-                                name: path
-                            });
-                            uniquePaths.add(normalizedPath);
-                            // Add to our collection for logging
-                            foundFolders.push(path);
-                        }
-                    }
+
+            // Walk only the configured root-folder subtree — no whole-vault
+            // enumeration. transcriptRootFolder is a free-text setting, so
+            // resolve it to the canonical (no leading/trailing slash) form that
+            // getAbstractFileByPath expects. collectUnder includes the root
+            // folder itself, which is skipped here since it was already added.
+            const canonicalRoot = normalizePath(rootFolder);
+            for (const folder of collectUnder(this.app.vault, canonicalRoot, 'folder')) {
+                const path = folder.path;
+                if (path === canonicalRoot) continue;
+                const normalizedPath = normalizePath(path, false); // Keep leading slash for display
+                if (!uniquePaths.has(normalizedPath)) {
+                    this.folders.push({
+                        path: normalizedPath,
+                        name: path
+                    });
+                    uniquePaths.add(normalizedPath);
+                    foundFolders.push(path);
                 }
             }
             
@@ -6394,91 +6339,6 @@ class TemplateViewModal extends Modal {
             contentEl.createDiv({
                 cls: 'tubesage-divider'
             });
-            
-            // Create a container for the copy button
-            const copyContainer = contentEl.createDiv({
-                cls: ['tubesage-template-view-copy-container', 'tubesage-row-end']
-            });
-            
-            // Add copy text
-            copyContainer.createSpan({ 
-                text: 'Copy template',
-                cls: 'tubesage-template-view-copy-text'
-            });
-            
-            // Copy icon button
-            const copyButton = copyContainer.createEl('button', {
-                cls: 'tubesage-icon-button' // Reuse existing class
-            });
-            
-            // Create an SVG for the copy icon
-            const svgNamespace = "http://www.w3.org/2000/svg";
-            const copySvg = activeDocument.createElementNS(svgNamespace, "svg");
-            copySvg.setAttrs({
-                viewBox: "0 0 24 24",
-                width: "16",
-                height: "16",
-                stroke: "currentColor",
-                fill: "none",
-                'stroke-width': "2",
-                'stroke-linecap': "round",
-                'stroke-linejoin': "round"
-            });
-
-            // Create the copy icon paths
-            const copyRect = activeDocument.createElementNS(svgNamespace, "rect");
-            copyRect.setAttrs({ x: "9", y: "9", width: "13", height: "13", rx: "2", ry: "2" });
-            copySvg.appendChild(copyRect);
-
-            const copyPath = activeDocument.createElementNS(svgNamespace, "path");
-            copyPath.setAttr("d", "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1");
-            copySvg.appendChild(copyPath);
-            
-            // Add the SVG to the button
-            copyButton.appendChild(copySvg);
-            
-            // Add hover effect
-            copyButton.addEventListener('mouseenter', () => {
-                copyButton.addClass('tubesage-icon-button-hover'); // Reuse hover class logic
-            });
-            
-            copyButton.addEventListener('mouseleave', () => {
-                copyButton.removeClass('tubesage-icon-button-hover'); // Reuse hover class logic
-            });
-            
-            // Make the text also clickable
-            const copyTextElement = copyContainer.querySelector('span');
-            
-            // Function to handle copy
-            const handleCopy = () => {
-                navigator.clipboard.writeText(templateContent)
-                    .then(() => {
-                        // Show success state
-                        if (copyTextElement) {
-                            const originalText = copyTextElement.textContent;
-                            copyTextElement.textContent = 'Copied';
-                            window.setTimeout(() => {
-                                copyTextElement.textContent = originalText;
-                            }, 2000);
-                        }
-                    })
-                    .catch(err => {
-                        logger.error('Failed to copy template:', err);
-                        // Show error state
-                        if (copyTextElement) {
-                            copyTextElement.textContent = 'Failed to copy';
-                            window.setTimeout(() => {
-                                copyTextElement.textContent = 'Copy template';
-                            }, 2000);
-                        }
-                    });
-            };
-            
-            // Add click handlers to both text and button
-            copyButton.addEventListener('click', handleCopy);
-            if (copyTextElement) {
-                copyTextElement.addEventListener('click', handleCopy);
-            }
             
             // Display the content with syntax highlighting
             templateContainer.createEl('pre', {
