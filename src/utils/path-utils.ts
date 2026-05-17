@@ -1,4 +1,5 @@
 import type { Vault } from 'obsidian';
+import { TFolder, TFile } from 'obsidian';
 
 /**
  * Standardized path utilities for consistent folder and path management
@@ -84,11 +85,47 @@ export function joinPaths(...segments: string[]): string {
  */
 export function sanitizePathComponent(text: string): string {
     if (!text) return '';
-    
+
     return text
         .replace(/[\\/:*?"<>|]/g, '-') // Replace problematic chars with dash
         .replace(/\s+/g, '-')          // Replace spaces with dash
         .replace(/-+/g, '-')           // Replace multiple dashes with single dash
         .trim();                        // Remove leading/trailing whitespace
+}
+
+/**
+ * Collect descendants of a single folder by walking `TFolder.children`,
+ * without enumerating the whole vault.
+ *
+ * - `kind: "folder"` returns the start folder plus all descendant folders.
+ * - `kind: "markdown"` returns all descendant Markdown (`.md`) files.
+ *
+ * Returns an empty array when `folderPath` does not resolve to a folder.
+ */
+export function collectUnder(vault: Vault, folderPath: string, kind: "folder"): TFolder[];
+export function collectUnder(vault: Vault, folderPath: string, kind: "markdown"): TFile[];
+export function collectUnder(
+    vault: Vault,
+    folderPath: string,
+    kind: "folder" | "markdown",
+): Array<TFolder | TFile> {
+    const start = vault.getAbstractFileByPath(folderPath);
+    if (!(start instanceof TFolder)) return [];
+
+    const out: Array<TFolder | TFile> = [];
+    const stack: TFolder[] = [start];
+    while (stack.length > 0) {
+        const folder = stack.pop();
+        if (!folder) break;
+        if (kind === "folder") out.push(folder);
+        for (const child of folder.children) {
+            if (child instanceof TFolder) {
+                stack.push(child);
+            } else if (kind === "markdown" && child instanceof TFile && child.extension === "md") {
+                out.push(child);
+            }
+        }
+    }
+    return out;
 }
 
