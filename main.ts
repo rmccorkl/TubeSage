@@ -3770,7 +3770,6 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         supportContainer.createDiv({
             text: '…and help seed a bigger vision: technology that serves people and planet..',
             cls: ['tubesage-settings-support-desc', 'tubesage-mission-italic'],
-            // attr: { style: 'font-style: italic;' } // Removed inline style
         });
         
         // Buy Me a Coffee button in a container
@@ -5749,11 +5748,9 @@ class LicenseModal extends Modal {
                 throw new Error('Could not find license file in any of the expected locations.');
             }
             
-            // Create a div for the license content with scrollable style (original inline style)
+            // Create a div for the license content with scrollable style
             const licenseContainer = contentEl.createDiv({
-                attr: {
-                    style: 'max-height: 500px; overflow-y: auto; padding: 20px; border: 1px solid var(--background-modifier-border); border-radius: 4px; margin-top: 10px; white-space: pre-wrap; font-family: var(--font-monospace); line-height: 1.5;'
-                }
+                cls: 'tubesage-license-container'
             });
             
             // Process the license markdown content
@@ -5999,11 +5996,9 @@ class READMEModal extends Modal {
                 throw new Error('Could not find readme file in any of the expected locations.');
             }
             
-            // Create a div for the README content with scrollable style (original inline style)
+            // Create a div for the README content with scrollable style
             const readmeContainer = contentEl.createDiv({
-                attr: {
-                    style: 'max-height: 550px; overflow-y: auto; padding: 20px; border: 1px solid var(--background-modifier-border); border-radius: 4px; margin-top: 10px; white-space: pre-wrap; font-family: var(--font-interface); line-height: 1.6;'
-                }
+                cls: 'tubesage-readme-container'
             });
             
             // Process the README markdown content
@@ -6390,22 +6385,19 @@ class TemplateViewModal extends Modal {
                 throw new Error('Could not find template file in any of the expected locations.');
             }
             
-            // Create a div for the template content with scrollable style (original inline style)
+            // Create a div for the template content with scrollable style
             const templateContainer = contentEl.createDiv({
-                attr: {
-                    style: 'max-height: 250px; overflow-y: auto; padding: 20px; border: 1px solid var(--background-modifier-border); border-radius: 4px; margin-top: 10px; white-space: pre-wrap; font-family: var(--font-monospace); line-height: 1.5;'
-                }
+                cls: ['tubesage-template-view-container', 'tubesage-template-view-container-short']
             });
             
             // Add a subtle separator line for spacing
             contentEl.createDiv({
-                attr: { style: 'height:1px; background: var(--background-modifier-border); margin: 12px 0;' }
+                cls: 'tubesage-divider'
             });
             
             // Create a container for the copy button
             const copyContainer = contentEl.createDiv({
-                cls: 'tubesage-template-view-copy-container',
-                attr: { style: 'display:flex; justify-content:flex-end; width:100%; margin-left:auto;' }
+                cls: ['tubesage-template-view-copy-container', 'tubesage-row-end']
             });
             
             // Add copy text
@@ -6534,8 +6526,7 @@ class TemplateViewModal extends Modal {
         
         // Add close button
         const footerEl = contentEl.createDiv({
-            cls: 'tubesage-license-footer', // Reuse existing class
-            attr: { style: 'display:flex; justify-content:flex-end; width:100%;' }
+            cls: ['tubesage-license-footer', 'tubesage-row-end']
         });
         
         const closeButton = footerEl.createEl('button', {
