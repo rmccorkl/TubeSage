@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile, ToggleComponent } from 'obsidian';
 import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
@@ -2771,8 +2771,6 @@ class YouTubeTranscriptModal extends Modal {
     private errorEl: HTMLElement;
     private isProcessing: boolean = false;
     private selectedFolder: string = '';
-    private fastSummaryToggleEl: HTMLInputElement;
-
     constructor(app: App, plugin: YouTubeTranscriptPlugin) {
         super(app);
         this.plugin = plugin;
@@ -2873,13 +2871,11 @@ class YouTubeTranscriptModal extends Modal {
         // Create a container for controls with different layout based on device
         const controlsContainer = channelOptionsContainer.createDiv({
             cls: ['tubesage-modal-controls-container', isMobile ? 'tubesage-modal-controls-container-mobile' : 'tubesage-modal-controls-container-desktop'],
-            attr: { style: 'display:flex; flex-direction:row; align-items:center; gap:15px; flex-wrap:nowrap; width:100%;' }
         });
         
         // Radio button for "All Videos"
         const allVideosContainer = controlsContainer.createDiv({
             cls: ['tubesage-modal-radio-option', isMobile ? 'tubesage-modal-radio-option-mobile' : '' ],
-            attr: { style: isMobile ? 'display:flex; align-items:center; white-space:nowrap; justify-content:flex-start;' : 'display:flex; align-items:center; white-space:nowrap;' }
         });
         
         // Create label first
@@ -2902,13 +2898,11 @@ class YouTubeTranscriptModal extends Modal {
         // Create container for limited videos option (radio + dropdown together)
         const limitedOptionContainer = controlsContainer.createDiv({
             cls: ['tubesage-modal-limited-option-container', isMobile ? 'tubesage-modal-limited-option-container-mobile' : ''],
-            attr: { style: isMobile ? 'display:flex; align-items:center; gap:10px; justify-content:flex-start; width:100%;' : 'display:flex; align-items:center; gap:10px;' }
         });
         
         // Radio button for "Limited Number"
         const limitedVideosContainer = limitedOptionContainer.createDiv({
             cls: 'tubesage-modal-radio-option',
-            attr: { style: 'display:flex; align-items:center; white-space:nowrap;' }
         });
         
         // Create label first
@@ -2949,14 +2943,11 @@ class YouTubeTranscriptModal extends Modal {
         // Process button in its own container for mobile layout
         const processBtnContainer = controlsContainer.createDiv({
             cls: ['tubesage-modal-process-btn-container', isMobile ? 'tubesage-modal-process-btn-container-mobile' : ''],
-            attr: { style: isMobile ? 'width:100%; display:flex; justify-content:flex-start; margin-top:5px;' : 'margin-left:auto;' }
         });
         
         const processBtn = processBtnContainer.createEl('button', {
             text: 'Process',
-            cls: 'tubesage-process-btn', // Keep class for other appearance like padding, border-radius etc.
-            // Inline appearance removed, background-color is in .tubesage-process-btn
-            // Conditional width is handled by adding/not adding tubesage-process-btn-mobile
+            cls: 'mod-cta',
         });
         if (isMobile) {
             processBtn.addClass('tubesage-process-btn-mobile');
@@ -2995,21 +2986,11 @@ class YouTubeTranscriptModal extends Modal {
             cls: 'summary-info' 
         });
         
-        // Create the toggle switch
-        const toggleSwitch = toggleContainer.createEl('label', { cls: 'toggle-switch' });
-        this.fastSummaryToggleEl = toggleSwitch.createEl('input', { 
-            type: 'checkbox',
-            attr: { id: 'fast-summary-toggle' }
-        });
-        // Set initial state from settings
-        this.fastSummaryToggleEl.checked = this.plugin.settings.useFastSummary;
-        
-        // Add the toggle slider
-        toggleSwitch.createSpan({ cls: 'toggle-slider' });
-        
-        // Add change listener to save toggle state to settings
-        this.fastSummaryToggleEl.addEventListener('change', () => {
-            this.plugin.settings.useFastSummary = this.fastSummaryToggleEl.checked;
+        // Create the native Obsidian toggle
+        const fastToggle = new ToggleComponent(toggleContainer);
+        fastToggle.setValue(this.plugin.settings.useFastSummary);
+        fastToggle.onChange(value => {
+            this.plugin.settings.useFastSummary = value;
             void this.plugin.saveSettings();
         });
         
