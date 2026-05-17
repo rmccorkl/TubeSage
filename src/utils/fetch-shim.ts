@@ -199,7 +199,7 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
       logger.debug('About to call requestUrl...');
       logger.debug(`URL length: ${options.url.length} characters`);
       logger.debug(`URL starts with: ${redactUrlForLog(options.url).substring(0, 100)}...`);
-      res = await requestUrl(options) as unknown as RequestUrlResponse;
+      res = await requestUrl(options);
       logger.debug(`requestUrl completed - Status: ${res?.status}, HasText: ${!!res?.text}`);
     } catch (requestError) {
       const requestErrorMessage = getSafeErrorMessage(requestError);
