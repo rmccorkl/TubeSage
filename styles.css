@@ -12,10 +12,10 @@
 
 .tubesage-transcript-form .error {
     color: var(--text-error);
-    margin-bottom: 15px;
-    padding: 8px;
+    margin-bottom: var(--size-4-4);
+    padding: var(--size-4-2);
     background: var(--background-modifier-error);
-    border-radius: 4px;
+    border-radius: var(--radius-s);
 }
 
 
@@ -29,11 +29,11 @@
 
 .tubesage-error {
     color: var(--text-normal);
-    margin-top: 10px;
-    margin-bottom: 15px;
-    padding: 10px;
+    margin-top: var(--size-4-2);
+    margin-bottom: var(--size-4-4);
+    padding: var(--size-4-2);
     background: var(--background-modifier-error);
-    border-radius: 4px;
+    border-radius: var(--radius-s);
     border: 1px solid var(--background-modifier-error-hover);
 }
 
@@ -70,35 +70,35 @@
 .tubesage-transcript-modal-container,
 .tubesage-transcript-form {
     width: 100%;
-    padding: 20px;
+    padding: var(--size-4-5);
 }
 
 .tubesage-transcript-form .form-group {
-    margin-bottom: 15px;
+    margin-bottom: var(--size-4-4);
 }
 
 .tubesage-transcript-form label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: var(--size-4-1);
     font-weight: 500;
 }
 
 .tubesage-transcript-form input {
     display: block;
     width: 100%;
-    padding: 8px;
+    padding: var(--size-4-2);
     border: 1px solid var(--background-modifier-border);
-    border-radius: 4px;
+    border-radius: var(--radius-s);
     background: var(--background-primary);
     color: var(--text-normal);
 }
 
 .folder-search-input {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
+    padding: var(--size-4-2);
+    margin-bottom: var(--size-4-4);
     border: 1px solid var(--background-modifier-border);
-    border-radius: 4px;
+    border-radius: var(--radius-s);
     background-color: var(--background-secondary);
     color: var(--text-normal);
     font-size: 14px;
@@ -109,15 +109,15 @@
     max-height: 300px;
     overflow-y: auto;
     border: 1px solid var(--background-modifier-border);
-    border-radius: 4px;
-    margin-bottom: 15px;
+    border-radius: var(--radius-s);
+    margin-bottom: var(--size-4-4);
     background-color: var(--background-primary);
 }
 
 .folder-item {
     display: flex;
     align-items: center;
-    padding: 5px 10px;
+    padding: var(--size-4-1) var(--size-4-2);
     cursor: pointer;
     border-bottom: 1px solid var(--background-modifier-border);
     font-family: var(--font-interface);
@@ -134,7 +134,7 @@
 }
 
 .folder-icon {
-    margin-right: 8px;
+    margin-right: var(--size-4-2);
     font-size: 16px;
     color: var(--text-accent);
     opacity: 0.8;
@@ -149,7 +149,7 @@
 }
 
 .empty-state {
-    padding: 20px;
+    padding: var(--size-4-5);
     text-align: center;
     color: var(--text-muted);
 }
@@ -157,11 +157,11 @@
 
 .status-container {
     text-align: center;
-    padding: 20px;
+    padding: var(--size-4-5);
 }
 
 .status-text {
-    margin-bottom: 20px;
+    margin-bottom: var(--size-4-5);
     color: var(--text-normal);
 }
 
@@ -169,12 +169,12 @@
 .back-button {
     display: block;
     width: 100%;
-    padding: 8px;
-    margin-top: 15px;
+    padding: var(--size-4-2);
+    margin-top: var(--size-4-4);
     background-color: var(--interactive-accent);
     color: var(--text-on-accent);
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-s);
     cursor: pointer;
 }
 
@@ -185,32 +185,32 @@
 
 .error-message {
     color: var(--text-error);
-    margin: 15px 0;
-    padding: 8px;
+    margin: var(--size-4-4) 0;
+    padding: var(--size-4-2);
     background: var(--background-modifier-error);
-    border-radius: 4px;
+    border-radius: var(--radius-s);
 }
 
 .toggle-container {
     display: flex;
     align-items: center;
-    margin: 15px 0;
-    padding: 10px;
+    margin: var(--size-4-4) 0;
+    padding: var(--size-4-2);
     background: var(--background-secondary);
-    border-radius: 5px;
+    border-radius: var(--radius-s);
 }
 
 .toggle-label {
     flex: 1;
     font-size: 14px;
-    margin-right: 10px;
+    margin-right: var(--size-4-2);
 }
 
 
 .summary-info {
     font-size: 12px;
     color: var(--text-muted);
-    margin-top: 5px;
+    margin-top: var(--size-4-1);
     font-style: italic;
 }
 
@@ -227,14 +227,14 @@
 }
 
 .channel-options {
-    margin-top: 15px;
+    margin-top: var(--size-4-4);
     background: var(--background-secondary);
-    padding: 15px;
-    border-radius: 5px;
+    padding: var(--size-4-4);
+    border-radius: var(--radius-s);
 }
 
 .channel-options .channel-message {
-    margin-bottom: 10px;
+    margin-bottom: var(--size-4-2);
     font-style: italic;
     font-size: 12px;
     color: var(--text-muted);
@@ -246,13 +246,13 @@
 }
 
 .video-count-dropdown {
-    padding: 5px;
-    border-radius: 4px;
+    padding: var(--size-4-1);
+    border-radius: var(--radius-s);
     width: 60px;
 }
 
 .validation-message {
-    margin-top: 5px;
+    margin-top: var(--size-4-1);
     font-size: 12px;
 }
 
@@ -261,7 +261,7 @@
     border: none;
     cursor: pointer;
     padding: 4px;
-    border-radius: 4px;
+    border-radius: var(--radius-s);
     color: var(--text-normal);
     display: flex;
     align-items: center;
@@ -289,15 +289,15 @@
     top: 100%;
     left: 0%;
     transform: translateX(-10%);
-    margin-top: 8px;
+    margin-top: var(--size-4-2);
     z-index: 1000;
     background-color: var(--background-secondary);
     color: var(--text-normal);
-    padding: 8px 12px;
-    border-radius: 4px;
+    padding: var(--size-4-2) var(--size-4-3);
+    border-radius: var(--radius-s);
     font-size: 14px;
     max-width: 300px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-s);
     pointer-events: none;
     opacity: 0;
     visibility: hidden;
@@ -330,7 +330,7 @@
 .setting-item.tubesage-prompt-setting .setting-item-info {
     width: 50%;
     flex: 0 0 50%;
-    padding-right: 15px;
+    padding-right: var(--size-4-4);
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
@@ -341,11 +341,11 @@
 }
 
 .tubesage-settings-prompt-subheader {
-    margin-bottom: 10px;
+    margin-bottom: var(--size-4-2);
 }
 
 .tubesage-settings-prompt-subheader-extensive {
-    margin-top: 20px;
+    margin-top: var(--size-4-5);
 }
 
 .tubesage-settings-info-icon {
@@ -360,11 +360,11 @@
 .template-list {
     max-height: 300px;
     overflow-y: auto;
-    margin-top: 10px;
+    margin-top: var(--size-4-2);
 }
 
 .template-item {
-    padding: 5px;
+    padding: var(--size-4-1);
     cursor: pointer;
     border-bottom: 1px solid var(--background-modifier-border);
     font-family: var(--font-interface);
@@ -376,28 +376,27 @@
 }
 
 .tubesage-license-container {
-    height: 600px;
-    max-height: 600px;
-    overflow-y: scroll;
+    max-height: 500px;
+    overflow-y: auto;
     border: 1px solid var(--background-modifier-border);
-    border-radius: 4px;
-    margin-top: 10px;
-    padding: 20px;
+    border-radius: var(--radius-s);
+    margin-top: var(--size-4-2);
+    padding: var(--size-4-5);
     white-space: pre-wrap;
     line-height: 1.5;
     font-family: var(--font-monospace);
 }
 
 .tubesage-license-h3 {
-    margin-top: 16px;
-    margin-bottom: 12px;
+    margin-top: var(--size-4-4);
+    margin-bottom: var(--size-4-3);
     font-weight: 600;
     border-bottom: 1px solid var(--background-modifier-border);
-    padding-bottom: 8px;
+    padding-bottom: var(--size-4-2);
 }
 
 .tubesage-license-list-item {
-    margin-bottom: 8px;
+    margin-bottom: var(--size-4-2);
 }
 
 .tubesage-license-list-item-title-segment {
@@ -405,12 +404,12 @@
 }
 
 .tubesage-license-sub-item {
-    margin-left: 20px;
+    margin-left: var(--size-4-5);
     margin-bottom: 4px;
 }
 
 .tubesage-license-paragraph {
-    margin-bottom: 8px;
+    margin-bottom: var(--size-4-2);
     max-width: 100%;
     word-break: normal;
     overflow-wrap: normal;
@@ -422,11 +421,11 @@
 }
 
 .tubesage-license-close-button {
-    padding: 8px 16px;
+    padding: var(--size-4-2) var(--size-4-4);
     background-color: var(--interactive-accent);
     color: var(--text-on-accent);
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-s);
     cursor: pointer;
 }
 
@@ -435,7 +434,7 @@
 }
 
 .tubesage-license-footer {
-    margin-top: 20px;
+    margin-top: var(--size-4-5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -449,7 +448,7 @@
 
 .tubesage-license-required-icon-container {
     text-align: center;
-    margin: 20px 0;
+    margin: var(--size-4-5) 0;
 }
 
 .tubesage-license-required-icon {
@@ -458,63 +457,63 @@
 }
 
 .tubesage-license-required-message-container {
-    margin-bottom: 20px;
+    margin-bottom: var(--size-4-5);
     text-align: center;
     line-height: 1.5;
 }
 
 .tubesage-license-required-message-bold {
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: var(--size-4-2);
 }
 
 .tubesage-license-required-steps-container {
     background-color: var(--background-secondary);
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+    padding: var(--size-4-4);
+    border-radius: var(--radius-m);
+    margin-bottom: var(--size-4-5);
 }
 
 .tubesage-license-required-steps-title {
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: var(--size-4-2);
 }
 
 .tubesage-license-required-steps-list {
-    margin-left: 15px;
+    margin-left: var(--size-4-4);
     margin-top: 0;
 }
 
 .tubesage-license-required-step-item {
-    margin-bottom: 5px;
+    margin-bottom: var(--size-4-1);
 }
 
 .tubesage-license-required-button-container {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-top: var(--size-4-5);
 }
 
 .tubesage-license-required-button-primary {
-    padding: 8px 12px;
+    padding: var(--size-4-2) var(--size-4-3);
     background-color: var(--interactive-accent);
     color: var(--text-on-accent);
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-s);
     cursor: pointer;
     flex: 1;
-    margin-right: 10px;
+    margin-right: var(--size-4-2);
 }
 
 .tubesage-license-required-button-secondary {
-    padding: 8px 12px;
+    padding: var(--size-4-2) var(--size-4-3);
     background-color: var(--background-modifier-border);
     color: var(--text-normal);
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-s);
     cursor: pointer;
     flex: 1;
-    margin-left: 10px;
+    margin-left: var(--size-4-2);
 }
 
 .tubesage-readme-modal-size.modal {
@@ -525,23 +524,22 @@
 }
 
 .tubesage-readme-container {
-    height: 600px;
-    max-height: 600px;
-    overflow-y: scroll;
+    max-height: 550px;
+    overflow-y: auto;
     border: 1px solid var(--background-modifier-border);
-    border-radius: 4px;
-    margin-top: 10px;
-    padding: 20px;
+    border-radius: var(--radius-s);
+    margin-top: var(--size-4-2);
+    padding: var(--size-4-5);
     white-space: pre-wrap;
-    line-height: 1.5;
+    line-height: 1.6;
     font-family: var(--font-interface);
 }
 
 .code-block-container {
     background: var(--background-secondary);
-    border-radius: 4px;
-    padding: 8px;
-    margin: 10px 0;
+    border-radius: var(--radius-s);
+    padding: var(--size-4-2);
+    margin: var(--size-4-2) 0;
     overflow-x: auto;
 }
 
@@ -563,37 +561,37 @@
 }
 
 .tubesage-readme-h1 {
-    margin-top: 16px;
-    margin-bottom: 12px;
+    margin-top: var(--size-4-4);
+    margin-bottom: var(--size-4-3);
     font-weight: 700;
     border-bottom: 1px solid var(--background-modifier-border);
-    padding-bottom: 8px;
+    padding-bottom: var(--size-4-2);
     font-size: 1.8em;
 }
 
 .tubesage-readme-h2 {
-    margin-top: 16px;
-    margin-bottom: 10px;
+    margin-top: var(--size-4-4);
+    margin-bottom: var(--size-4-2);
     font-weight: 600;
     font-size: 1.5em;
 }
 
 .tubesage-readme-h3 {
     margin-top: 14px;
-    margin-bottom: 8px;
+    margin-bottom: var(--size-4-2);
     font-weight: 600;
     font-size: 1.2em;
 }
 
 .tubesage-readme-h4 {
-    margin-top: 12px;
+    margin-top: var(--size-4-3);
     margin-bottom: 6px;
     font-weight: 600;
     font-size: 1.1em;
 }
 
 .tubesage-readme-list-item {
-    margin: 4px 0 4px 20px;
+    margin: 4px 0 4px var(--size-4-5);
     display: flex;
 }
 
@@ -607,7 +605,7 @@
 }
 
 .tubesage-readme-paragraph {
-    margin-bottom: 12px;
+    margin-bottom: var(--size-4-3);
     max-width: 100%;
     line-height: 1.6;
 }
@@ -618,19 +616,19 @@
 
 .tubesage-modal-controls-container {
     display: flex;
-    margin-bottom: 15px;
+    margin-bottom: var(--size-4-4);
     width: 100%;
 }
 
 .tubesage-modal-controls-container-mobile {
     flex-direction: column;
-    gap: 12px;
+    gap: var(--size-4-3);
 }
 
 .tubesage-modal-controls-container-desktop {
     align-items: center;
     flex-wrap: nowrap;
-    gap: 15px;
+    gap: var(--size-4-4);
     flex-direction: row;
     white-space: nowrap;
 }
@@ -648,7 +646,7 @@
 .tubesage-modal-limited-option-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--size-4-2);
     flex: 0 0 auto;
 }
 
@@ -669,7 +667,7 @@
 
 .tubesage-modal-radio-label {
     cursor: pointer;
-    margin-right: 5px;
+    margin-right: var(--size-4-1);
 }
 
 .tubesage-modal-process-btn-container {
@@ -680,7 +678,7 @@
     width: 100%;
     display: flex;
     justify-content: flex-start;
-    margin-top: 5px;
+    margin-top: var(--size-4-1);
     margin-left: 0;
 }
 
@@ -697,13 +695,17 @@
 .tubesage-template-view-container {
     max-height: 500px;
     overflow-y: auto;
-    padding: 20px;
+    padding: var(--size-4-5);
     border: 1px solid var(--background-modifier-border);
-    border-radius: 4px;
-    margin-top: 10px;
+    border-radius: var(--radius-s);
+    margin-top: var(--size-4-2);
     white-space: pre-wrap;
     font-family: var(--font-monospace);
     line-height: 1.5;
+}
+
+.tubesage-template-view-container-short {
+    max-height: 250px;
 }
 
 .tubesage-template-view-copy-container {
@@ -712,28 +714,28 @@
     width: 100%;
     margin-left: auto;
     text-align: right;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    margin-top: var(--size-4-2);
+    margin-bottom: var(--size-4-2);
 }
 
 .tubesage-template-view-copy-text {
     font-size: 14px;
-    margin-right: 8px;
+    margin-right: var(--size-4-2);
     cursor: pointer;
 }
 
 
 .tubesage-template-view-explanation {
-    margin-top: 15px;
+    margin-top: var(--size-4-4);
     font-style: italic;
     color: var(--text-muted);
 }
 
 .tubesage-template-view-variables-container {
-    margin-top: 15px;
+    margin-top: var(--size-4-4);
     border: 1px solid var(--background-modifier-border);
-    padding: 15px;
-    border-radius: 4px;
+    padding: var(--size-4-4);
+    border-radius: var(--radius-s);
 }
 
 
@@ -743,16 +745,16 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin-top: 10px;
-    margin-bottom: 30px;
+    margin-top: var(--size-4-2);
+    margin-bottom: var(--size-4-8);
 }
 
 .tubesage-settings-support-heading {
-    margin-bottom: 8px;
+    margin-bottom: var(--size-4-2);
 }
 
 .tubesage-settings-support-desc {
-    margin-bottom: 12px;
+    margin-bottom: var(--size-4-3);
     color: var(--text-muted);
     font-size: 13px;
 }
@@ -773,9 +775,9 @@
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: var(--size-4-5);
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: var(--size-4-4);
 }
 
 .tubesage-settings-action-button-item-container {
@@ -787,29 +789,29 @@
 
 .tubesage-settings-action-button-label {
     font-size: 14px;
-    margin-right: 8px;
+    margin-right: var(--size-4-2);
 }
 
 .tubesage-settings-heading-container {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--size-4-2);
 }
 
 .setting-item-heading.tubesage-heading .setting-item-name {
     font-size: 1.4em;
     font-weight: 600;
-    color: #007acc;
-    margin-bottom: 5px;
+    color: var(--text-accent);
+    margin-bottom: var(--size-4-1);
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 12px;
+    gap: var(--size-4-3);
 }
 
 .setting-item-heading.tubesage-heading {
-    margin-top: 10px;
-    margin-bottom: 5px;
+    margin-top: var(--size-4-2);
+    margin-bottom: var(--size-4-1);
     padding-bottom: 2px;
 }
 
@@ -874,14 +876,14 @@
     font-size: 12px;
     color: var(--text-error);
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: var(--size-4-2);
 }
 
 .tubesage-folder-picker-status-info {
     font-size: 12px;
     color: var(--text-muted);
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: var(--size-4-2);
 }
 
 .tubesage-license-modal-size.modal,
@@ -900,48 +902,43 @@
 }
 
 
-.tubesage-license-container,
-.tubesage-readme-container {
-    max-height: 600px;
-    overflow-y: auto;
-}
 
 /* Custom model parameters container */
 .tubesage-custom-model-params {
-    margin-top: 10px;
-    padding: 15px;
+    margin-top: var(--size-4-2);
+    padding: var(--size-4-4);
     border: 1px solid var(--background-modifier-border);
-    border-radius: 6px;
+    border-radius: var(--radius-m);
     background-color: var(--background-secondary);
 }
 
 .tubesage-custom-params-header {
-    margin: 0 0 15px;
+    margin: 0 0 var(--size-4-4);
     font-size: 16px;
     font-weight: 600;
     color: var(--text-accent);
     border-bottom: 1px solid var(--background-modifier-border);
-    padding-bottom: 8px;
+    padding-bottom: var(--size-4-2);
 }
 
 /* Mobile optimizations */
 @media (max-width: 768px) {
     /* Mobile-specific styles for custom model parameters */
     .tubesage-custom-model-params {
-        padding: 12px;
-        margin-top: 8px;
+        padding: var(--size-4-3);
+        margin-top: var(--size-4-2);
     }
     
     .tubesage-custom-params-header {
         font-size: 15px;
-        margin-bottom: 12px;
+        margin-bottom: var(--size-4-3);
     }
     /* Fix the modal container size on mobile - this is the real issue */
     .tubesage-processing-modal.tubesage-processing-modal {
         width: fit-content;
         min-width: auto;
         max-width: fit-content;
-        padding: 10px;
+        padding: var(--size-4-2);
         margin: 0 auto;
         display: flex;
         flex-direction: column;
@@ -957,7 +954,7 @@
         min-width: 0;
         max-width: 100%;
         min-height: 120px;
-        margin-top: 10px;
+        margin-top: var(--size-4-2);
     }
 
     .setting-item.tubesage-prompt-setting {
@@ -971,7 +968,7 @@
         width: 100%;
         flex: 1;
         padding-right: 0;
-        margin-bottom: 8px;
+        margin-bottom: var(--size-4-2);
         word-wrap: break-word;
         overflow-wrap: break-word;
     }
@@ -999,4 +996,17 @@
         max-width: 90vw;
         max-height: 85vh;
     }
+}
+
+.tubesage-divider {
+    height: 1px;
+    background-color: var(--background-modifier-border);
+    margin: var(--size-4-3) 0;
+}
+
+.tubesage-row-end {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-left: auto;
 }
