@@ -1699,29 +1699,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             const file = this.app.vault.getAbstractFileByPath(filePath);
             if (!(file instanceof TFile)) {
                 logger.error(`Could not find note file: ${filePath}`);
-                // Try to check if any similar files exist
-                const folder = filePath.substring(0, filePath.lastIndexOf('/'));
-                try {
-                    // @ts-ignore - Using internal Obsidian API
-                    const folderContents = (this.app.vault.getMarkdownFiles() as Array<{ path: string }>)
-                        .filter((f) => f.path.startsWith(folder))
-                        .map((f) => f.path);
-                    if (folderContents.length > 0) {
-                        // Only show a limited number of files to avoid excessive logging
-                        const MAX_FILES_TO_LOG = 3;
-                        if (folderContents.length <= MAX_FILES_TO_LOG) {
-                            logger.debug(`Files in the same folder: ${folderContents.join(', ')}`);
-                        } else {
-                            const shownFiles = folderContents.slice(0, MAX_FILES_TO_LOG);
-                            logger.debug(`Files in the same folder (${folderContents.length} total): ${shownFiles.join(', ')}... and ${folderContents.length - MAX_FILES_TO_LOG} more`);
-                        }
-                    } else {
-                        logger.debug(`No files found in folder: ${folder}`);
-                    }
-                } catch (folderError) {
-                    const errorMessage = getSafeErrorMessage(folderError);
-                    logger.error(`Error checking folder contents: ${errorMessage}`);
-                }
                 throw new Error('Could not find note file');
             }
 
