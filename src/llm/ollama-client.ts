@@ -42,16 +42,6 @@ export class OllamaClient {
   }
 
   /**
-   * Check if Ollama can be used on the current platform
-   */
-  isAvailable(): boolean {
-    // Ollama should work on all platforms with the unified fetch shim
-    // However, users need to ensure their Ollama server is accessible
-    // from their device (typically via localhost on same network)
-    return true;
-  }
-  
-  /**
    * Validate that the Ollama server is accessible
    */
   async validateConnection(): Promise<boolean> {

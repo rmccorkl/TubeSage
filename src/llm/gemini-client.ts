@@ -33,14 +33,6 @@ export class GeminiClient {
   }
 
   /**
-   * Check if the client can be used on the current platform
-   */
-  isAvailable(): boolean {
-    // Gemini should work on all platforms through our fetch shim
-    return true;
-  }
-  
-  /**
    * Generate content using a Gemini model
    * 
    * @param model The model to use (e.g., "gemini-1.5-pro")

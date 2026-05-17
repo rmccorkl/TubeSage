@@ -22,7 +22,7 @@ const isString = (value: unknown): value is string => typeof value === 'string';
 /**
  * Interface for YouTube caption tracks
  */
-export interface CaptionTrack {
+interface CaptionTrack {
     languageCode: string;
     kind?: string;           // "asr" for auto-generated
     baseUrl?: string;
@@ -241,18 +241,6 @@ export class YouTubeTranscriptExtractor {
     }
     
     /**
-     * Extracts only transcript segments from a YouTube video (backward compatibility)
-     * @param videoId YouTube video ID
-     * @param options Optional language and country settings
-     * @returns Promise with transcript segments only
-     */
-    static async fetchTranscriptSegments(videoId: string, options: TranscriptOptions = {}): Promise<TranscriptSegment[]> {
-        const result = await this.fetchTranscript(videoId, options);
-        return result.segments;
-    }
-
-
-    /**
      * Get video metadata from the player response
      * @param videoId YouTube video ID
      * @returns Promise with metadata
@@ -292,15 +280,6 @@ export class YouTubeTranscriptExtractor {
         }
     }
     
-    /**
-     * Combines transcript segments into a single text
-     * @param segments Array of transcript segments
-     * @returns Combined transcript text
-     */
-    static combineTranscript(segments: TranscriptSegment[]): string {
-        return segments.map(segment => segment.text).join(' ');
-    }
-
     /**
      * Extracts video ID from a YouTube URL
      * @param url YouTube video URL
@@ -612,15 +591,6 @@ export class YouTubeTranscriptExtractor {
         }
 
         return response.text();
-    }
-
-    /**
-     * Clear the cached YouTube config (useful for testing or after errors)
-     */
-    static clearConfigCache(): void {
-        this.cachedConfig = null;
-        this.cachedVideoId = null;
-        transcriptLogger.debug('YouTube config cache cleared');
     }
 
     /**
@@ -1538,67 +1508,6 @@ export class YouTubeTranscriptExtractor {
             return [
                 {
                     text: `Failed to parse YouTube captions for video ${videoId}. Error: ${errorMessage}`,
-                    start: 0,
-                    duration: 0
-                }
-            ];
-        }
-    }
-
-    /**
-     * Parses YouTube captions in JSON format
-     * @param jsonText The JSON content of captions
-     * @param videoId Video ID for reference
-     * @returns Parsed transcript segments
-     */
-    static parseJsonCaptions(jsonText: string, videoId: string): TranscriptSegment[] {
-        transcriptLogger.debug(`Parsing JSON captions for video ${videoId}`);
-        
-        try {
-            const transcriptJson = JSON.parse(jsonText) as { events?: unknown[] };
-            const events = Array.isArray(transcriptJson.events) ? transcriptJson.events : [];
-            
-            // Convert events to our TranscriptSegment format
-            const segments: TranscriptSegment[] = [];
-            
-            events
-                .filter((event): event is { segs?: Array<{ utf8?: string }>; tStartMs?: string; dDurationMs?: string } => {
-                    return isRecord(event) && Array.isArray(event.segs);
-                })
-                .forEach((event) => {
-                    const startMs = event.tStartMs ? parseInt(event.tStartMs) : 0;
-                    const durationMs = event.dDurationMs ? parseInt(event.dDurationMs) : 0;
-                    
-                    // Combine all segments in this event
-                    const text = (event.segs ?? [])
-                        .map((seg) => seg.utf8 || '')
-                        .join('')
-                        .replace(/[\u200B-\u200D\uFEFF]/g, ''); // Remove special chars
-                    
-                    const trimmedText = text.trim();
-                    if (trimmedText) {
-                        segments.push({
-                            text: trimmedText,
-                            start: startMs / 1000, // Convert to seconds
-                            duration: durationMs / 1000 // Convert to seconds
-                        });
-                    }
-                });
-            
-            if (segments.length === 0) {
-                throw new Error(`No transcript segments found in JSON data. Video ID: ${videoId}`);
-            }
-            
-            return segments;
-            
-        } catch (e) {
-            const errorMessage = getSafeErrorMessage(e);
-            transcriptLogger.error("Error parsing JSON captions:", errorMessage);
-            
-            // Return a basic error segment
-            return [
-                {
-                    text: `Failed to parse YouTube JSON captions for video ${videoId}. Error: ${errorMessage}`,
                     start: 0,
                     duration: 0
                 }
