@@ -13,14 +13,12 @@ const SPINNER_INTERVAL_MS = 100;
  * Mobile: Obsidian has no status bar, so it renders a text element inside
  * the supplied modal content element instead. Same Braille frames either way.
  *
- * Lifecycle: `start()` mounts and animates; `setLabel(text)` updates the
- * per-step label and bumps the call counter; `stop()` removes the spinner
+ * Lifecycle: `start()` mounts and animates; `stop()` removes the spinner
  * and clears the interval. Safe to call `stop()` more than once.
  */
 export class ProcessingSpinner {
   private statusBarItem: HTMLElement | null = null;
   private modalSpinnerEl: HTMLElement | null = null;
-  private callCount = 0;
   private currentLabel: string;
   private spinnerFrame = 0;
   private spinnerHandle: number | null = null;
@@ -48,13 +46,6 @@ export class ProcessingSpinner {
     }, SPINNER_INTERVAL_MS);
   }
 
-  /** Update the per-step label and bump the call counter. */
-  setLabel(label: string): void {
-    if (label) this.currentLabel = label;
-    this.callCount += 1;
-    this.render();
-  }
-
   /** Removes the spinner and stops the animation. Safe to call more than once. */
   stop(): void {
     if (this.spinnerHandle !== null) {
@@ -73,7 +64,7 @@ export class ProcessingSpinner {
 
   private render(): void {
     const spinner = SPINNER_FRAMES[this.spinnerFrame];
-    const text = `${spinner} ${this.prefix} · ${this.currentLabel} · #${this.callCount}`;
+    const text = `${spinner} ${this.prefix} · ${this.currentLabel}`;
     if (this.statusBarItem) this.statusBarItem.setText(text);
     if (this.modalSpinnerEl) this.modalSpinnerEl.setText(text);
   }
