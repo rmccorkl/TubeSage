@@ -5429,43 +5429,34 @@ class FolderPickerModal extends Modal {
                 logger.error('Error ensuring root folder exists:', e);
             }
             
-            // Cross-platform implementation: get all files using Obsidian API
-            // This works on both desktop and mobile
-            const files = this.app.vault.getAllLoadedFiles();
-            
-            // Add root folder first
-            this.folders.push({ 
-                path: normalizedRootFolder, 
+            // Add root folder first — explicit, so the picker always has it
+            // even if the subtree walk below returns nothing.
+            this.folders.push({
+                path: normalizedRootFolder,
                 name: rootFolder
             });
             uniquePaths.add(normalizedRootFolder);
-            
+
             // Collection of folders for summarized logging
             const foundFolders: string[] = [];
-            
-            // Process all folders from the vault
-            for (const file of files) {
-                // Check if it's a folder by testing its instance type
-                // This approach works on both desktop and mobile
-                if (file && 'children' in file) {
-                    const path = file.path || '';
-                    
-                    // Add all folders that are inside the root folder
-                    if (path !== rootFolder && (
-                        path.startsWith(rootFolder + '/') || 
-                        path.startsWith(normalizedRootFolder + '/'))) {
-                        
-                        const normalizedPath = normalizePath(path, false); // Keep leading slash for display
-                        if (!uniquePaths.has(normalizedPath)) {
-                            this.folders.push({
-                                path: normalizedPath,
-                                name: path
-                            });
-                            uniquePaths.add(normalizedPath);
-                            // Add to our collection for logging
-                            foundFolders.push(path);
-                        }
-                    }
+
+            // Walk only the configured root-folder subtree — no whole-vault
+            // enumeration. transcriptRootFolder is a free-text setting, so
+            // resolve it to the canonical (no leading/trailing slash) form that
+            // getAbstractFileByPath expects. collectUnder includes the root
+            // folder itself, which is skipped here since it was already added.
+            const canonicalRoot = normalizePath(rootFolder);
+            for (const folder of collectUnder(this.app.vault, canonicalRoot, 'folder')) {
+                const path = folder.path;
+                if (path === canonicalRoot) continue;
+                const normalizedPath = normalizePath(path, false); // Keep leading slash for display
+                if (!uniquePaths.has(normalizedPath)) {
+                    this.folders.push({
+                        path: normalizedPath,
+                        name: path
+                    });
+                    uniquePaths.add(normalizedPath);
+                    foundFolders.push(path);
                 }
             }
             
