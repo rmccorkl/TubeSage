@@ -11,6 +11,26 @@ if you want to view the source, please visit the github repository of this plugi
 
 const prod = process.argv[2] === "production";
 
+// Replace @langchain/core's tiktoken helper with a network-free stub.
+// The upstream module lazy-fetches tokenizer data from
+// https://tiktoken.pages.dev at runtime. TubeSage never counts tokens, so
+// that code path is unreachable; stubbing it keeps the URL (and the implied
+// external request) out of the bundle entirely.
+const stubLangchainTiktoken = {
+    name: "stub-langchain-tiktoken",
+    setup(build) {
+        build.onLoad(
+            { filter: /[\\/]@langchain[\\/]core[\\/]dist[\\/]utils[\\/]tiktoken\.[cm]?js$/ },
+            () => ({
+                contents:
+                    'export async function getEncoding(){throw new Error("tiktoken token-counting is not bundled in TubeSage");}\n' +
+                    'export async function encodingForModel(){throw new Error("tiktoken token-counting is not bundled in TubeSage");}\n',
+                loader: "js",
+            }),
+        );
+    },
+};
+
 const context = await esbuild.context({
     banner: {
         js: banner,
@@ -43,7 +63,7 @@ const context = await esbuild.context({
         '.css': 'text',
         '.wasm': 'file'
     },
-    plugins: [],
+    plugins: [stubLangchainTiktoken],
 });
 
 if (prod) {

@@ -105,7 +105,8 @@ All requests use HTTPS. TubeSage contacts:
 
 - **YouTube**, to fetch video metadata and transcripts.
 - **Your configured LLM provider** (OpenAI, Anthropic, Google, or OpenRouter), to generate summaries. If you use Ollama, requests go only to your local Ollama server and nothing leaves your machine.
-- **`tiktoken.pages.dev`**, which may be contacted to download a small tokenizer data file used for token counting. This comes from `js-tiktoken`, a transitive dependency of LangChain; TubeSage does not call it directly.
+
+That is the complete list. LangChain's bundled tiktoken helper, which would otherwise fetch tokenizer data from a third-party CDN, is replaced with a network-free stub at build time, so TubeSage contacts no other hosts.
 
 No user data is stored on servers operated by the plugin author.
 
