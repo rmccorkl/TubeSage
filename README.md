@@ -20,7 +20,7 @@ TubeSage is an Obsidian plugin that converts YouTube videos into structured note
 8. (For YouTube notes) Install the [Templater plugin](https://github.com/SilentVoid13/Templater) for template-driven formatting.
 
 ### Requirements
-- [Obsidian](https://obsidian.md/) v1.2.0+
+- [Obsidian](https://obsidian.md/) v1.11.4+ (TubeSage stores cloud API keys using Obsidian's secret storage, which was introduced in 1.11.4)
 - [Templater plugin](https://github.com/SilentVoid13/Templater) (required for template functionality)
 - An API key for at least one LLM provider:
   - OpenAI
@@ -53,6 +53,8 @@ Choose and configure a provider in settings:
 - **Google Gemini** — Gemini Pro models.
 - **OpenRouter** — gateway access to models from multiple vendors.
 - **Ollama** — local open-source models; runs offline, requires Ollama installed and running.
+
+**Where API keys are stored:** cloud-provider keys (OpenAI, Anthropic, Google, OpenRouter) are saved in Obsidian's native secret storage, not in the plugin's `data.json`. Type a key into its provider field and it is written to the secret store automatically — there is no separate setting to enable this, and it is not optional. The Ollama field holds a server URL rather than a secret, so it remains in plugin data.
 
 ### 3. Other settings
 - **Summary modes**: Fast (brief) or Extensive (detailed).
@@ -95,6 +97,7 @@ Architecture diagrams are in the `docs/` directory:
 
 ## Privacy & Security
 
+- Cloud-provider API keys (OpenAI, Anthropic, Google, OpenRouter) are stored in Obsidian's native secret storage, never written to the plugin's `data.json`. Keys saved by versions older than 1.3.0 are migrated into secret storage automatically the first time you open the plugin after upgrading.
 - API calls to LLM providers and YouTube use HTTPS.
 - No user data is stored on servers operated by the plugin author.
 - Ollama can be used for fully local, offline processing.
