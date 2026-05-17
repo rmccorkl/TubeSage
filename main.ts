@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile, ToggleComponent } from 'obsidian';
 import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
@@ -2771,8 +2771,6 @@ class YouTubeTranscriptModal extends Modal {
     private errorEl: HTMLElement;
     private isProcessing: boolean = false;
     private selectedFolder: string = '';
-    private fastSummaryToggleEl: HTMLInputElement;
-
     constructor(app: App, plugin: YouTubeTranscriptPlugin) {
         super(app);
         this.plugin = plugin;
@@ -2873,13 +2871,11 @@ class YouTubeTranscriptModal extends Modal {
         // Create a container for controls with different layout based on device
         const controlsContainer = channelOptionsContainer.createDiv({
             cls: ['tubesage-modal-controls-container', isMobile ? 'tubesage-modal-controls-container-mobile' : 'tubesage-modal-controls-container-desktop'],
-            attr: { style: 'display:flex; flex-direction:row; align-items:center; gap:15px; flex-wrap:nowrap; width:100%;' }
         });
         
         // Radio button for "All Videos"
         const allVideosContainer = controlsContainer.createDiv({
             cls: ['tubesage-modal-radio-option', isMobile ? 'tubesage-modal-radio-option-mobile' : '' ],
-            attr: { style: isMobile ? 'display:flex; align-items:center; white-space:nowrap; justify-content:flex-start;' : 'display:flex; align-items:center; white-space:nowrap;' }
         });
         
         // Create label first
@@ -2902,13 +2898,11 @@ class YouTubeTranscriptModal extends Modal {
         // Create container for limited videos option (radio + dropdown together)
         const limitedOptionContainer = controlsContainer.createDiv({
             cls: ['tubesage-modal-limited-option-container', isMobile ? 'tubesage-modal-limited-option-container-mobile' : ''],
-            attr: { style: isMobile ? 'display:flex; align-items:center; gap:10px; justify-content:flex-start; width:100%;' : 'display:flex; align-items:center; gap:10px;' }
         });
         
         // Radio button for "Limited Number"
         const limitedVideosContainer = limitedOptionContainer.createDiv({
             cls: 'tubesage-modal-radio-option',
-            attr: { style: 'display:flex; align-items:center; white-space:nowrap;' }
         });
         
         // Create label first
@@ -2949,14 +2943,11 @@ class YouTubeTranscriptModal extends Modal {
         // Process button in its own container for mobile layout
         const processBtnContainer = controlsContainer.createDiv({
             cls: ['tubesage-modal-process-btn-container', isMobile ? 'tubesage-modal-process-btn-container-mobile' : ''],
-            attr: { style: isMobile ? 'width:100%; display:flex; justify-content:flex-start; margin-top:5px;' : 'margin-left:auto;' }
         });
         
         const processBtn = processBtnContainer.createEl('button', {
             text: 'Process',
-            cls: 'tubesage-process-btn', // Keep class for other appearance like padding, border-radius etc.
-            // Inline appearance removed, background-color is in .tubesage-process-btn
-            // Conditional width is handled by adding/not adding tubesage-process-btn-mobile
+            cls: 'mod-cta',
         });
         if (isMobile) {
             processBtn.addClass('tubesage-process-btn-mobile');
@@ -2995,21 +2986,11 @@ class YouTubeTranscriptModal extends Modal {
             cls: 'summary-info' 
         });
         
-        // Create the toggle switch
-        const toggleSwitch = toggleContainer.createEl('label', { cls: 'toggle-switch' });
-        this.fastSummaryToggleEl = toggleSwitch.createEl('input', { 
-            type: 'checkbox',
-            attr: { id: 'fast-summary-toggle' }
-        });
-        // Set initial state from settings
-        this.fastSummaryToggleEl.checked = this.plugin.settings.useFastSummary;
-        
-        // Add the toggle slider
-        toggleSwitch.createSpan({ cls: 'toggle-slider' });
-        
-        // Add change listener to save toggle state to settings
-        this.fastSummaryToggleEl.addEventListener('change', () => {
-            this.plugin.settings.useFastSummary = this.fastSummaryToggleEl.checked;
+        // Create the native Obsidian toggle
+        const fastToggle = new ToggleComponent(toggleContainer);
+        fastToggle.setValue(this.plugin.settings.useFastSummary);
+        fastToggle.onChange(value => {
+            this.plugin.settings.useFastSummary = value;
             void this.plugin.saveSettings();
         });
         
@@ -3789,19 +3770,12 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         supportContainer.createDiv({
             text: '…and help seed a bigger vision: technology that serves people and planet..',
             cls: ['tubesage-settings-support-desc', 'tubesage-mission-italic'],
-            // attr: { style: 'font-style: italic;' } // Removed inline style
         });
-        
-        // Spacer before Buy-Me-a-Coffee button
-        supportContainer.createDiv({ attr: { style: 'height:10px;' } });
         
         // Buy Me a Coffee button in a container
         const bmcContainer = supportContainer.createDiv({
             cls: 'tubesage-settings-bmc-container' // Apply new class
         });
-        
-        // Spacer after Buy-Me-a-Coffee button
-        supportContainer.createDiv({ attr: { style: 'height:10px;' } });
         
         // Create the link
         const bmcLink = bmcContainer.createEl('a', {
@@ -3892,63 +3866,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             cls: 'tubesage-settings-action-button-label' // Reuse class
         });
         
-        // Create the toggle switch
-        const toggleWrapper = toggleContainer.createDiv({
-            cls: 'tubesage-license-toggle-wrapper' // Apply new class
-        });
-        
-        // Toggle input
-        const toggleInput = toggleWrapper.createEl('input', {
-            cls: 'tubesage-license-toggle-input', // Apply new class
-            attr: {
-                type: 'checkbox',
-                id: 'license-toggle'
-            }
-        });
-        
-        // Set initial state
-        toggleInput.checked = this.plugin.settings.licenseAccepted;
-        
-        // Create the toggle slider - using CSS that actually works in Obsidian
-        const toggleSlider = toggleWrapper.createSpan({
-            cls: 'tubesage-license-toggle-slider' // Apply new class
-        });
-        
-        // Create the slider knob
-        toggleSlider.createSpan({
-            cls: 'tubesage-license-toggle-knob' // Apply new class
-        });
-        
-        // Initial toggle styling is now handled by CSS via :checked pseudo-selector
-        
-        // Make the toggle slider respond to clicks directly
-        toggleSlider.addEventListener('click', (e) => {
-            // Prevent the default action
-            e.preventDefault();
-            
-            // Toggle the checkbox state
-            toggleInput.checked = !toggleInput.checked;
-            
-            // Dispatch change event to trigger the existing handler
-            const changeEvent = new Event('change');
-            toggleInput.dispatchEvent(changeEvent);
-        });
-        
-        // Also make the "Accept License" text respond to clicks
-        const licenseTextElement = toggleContainer.querySelector('span');
-        if (licenseTextElement) {
-            licenseTextElement.addEventListener('click', (e) => {
-                // Prevent the default action
-                e.preventDefault();
-                
-                // Toggle the checkbox state
-                toggleInput.checked = !toggleInput.checked;
-                
-                // Dispatch change event to trigger the existing handler
-                const changeEvent = new Event('change');
-                toggleInput.dispatchEvent(changeEvent);
-            });
-        }
+        // Create native Obsidian toggle
+        const licenseToggle = new ToggleComponent(toggleContainer);
+        licenseToggle.setValue(this.plugin.settings.licenseAccepted);
         
         // README button - after the license toggle
         const readmeButtonContainer = buttonsContainer.createDiv({
@@ -4015,19 +3935,17 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         const updateSettingsState = () => {
             if (this.plugin.settings.licenseAccepted) {
                 settingsContainer.removeClass('tubesage-settings-container-disabled');
-                // Visual state of toggle now handled by CSS :checked
             } else {
                 settingsContainer.addClass('tubesage-settings-container-disabled');
-                // Visual state of toggle now handled by CSS
             }
         };
         
         // Initial state
         updateSettingsState();
         
-        // Add change listener to toggle
-        toggleInput.addEventListener('change', () => {
-            this.plugin.settings.licenseAccepted = toggleInput.checked;
+        // Add change listener to native toggle
+        licenseToggle.onChange((value) => {
+            this.plugin.settings.licenseAccepted = value;
             void this.plugin.saveSettings().then(updateSettingsState);
         });
         
@@ -5830,11 +5748,9 @@ class LicenseModal extends Modal {
                 throw new Error('Could not find license file in any of the expected locations.');
             }
             
-            // Create a div for the license content with scrollable style (original inline style)
+            // Create a div for the license content with scrollable style
             const licenseContainer = contentEl.createDiv({
-                attr: {
-                    style: 'max-height: 500px; overflow-y: auto; padding: 20px; border: 1px solid var(--background-modifier-border); border-radius: 4px; margin-top: 10px; white-space: pre-wrap; font-family: var(--font-monospace); line-height: 1.5;'
-                }
+                cls: 'tubesage-license-container'
             });
             
             // Process the license markdown content
@@ -6080,11 +5996,9 @@ class READMEModal extends Modal {
                 throw new Error('Could not find readme file in any of the expected locations.');
             }
             
-            // Create a div for the README content with scrollable style (original inline style)
+            // Create a div for the README content with scrollable style
             const readmeContainer = contentEl.createDiv({
-                attr: {
-                    style: 'max-height: 550px; overflow-y: auto; padding: 20px; border: 1px solid var(--background-modifier-border); border-radius: 4px; margin-top: 10px; white-space: pre-wrap; font-family: var(--font-interface); line-height: 1.6;'
-                }
+                cls: 'tubesage-readme-container'
             });
             
             // Process the README markdown content
@@ -6471,22 +6385,19 @@ class TemplateViewModal extends Modal {
                 throw new Error('Could not find template file in any of the expected locations.');
             }
             
-            // Create a div for the template content with scrollable style (original inline style)
+            // Create a div for the template content with scrollable style
             const templateContainer = contentEl.createDiv({
-                attr: {
-                    style: 'max-height: 250px; overflow-y: auto; padding: 20px; border: 1px solid var(--background-modifier-border); border-radius: 4px; margin-top: 10px; white-space: pre-wrap; font-family: var(--font-monospace); line-height: 1.5;'
-                }
+                cls: ['tubesage-template-view-container', 'tubesage-template-view-container-short']
             });
             
             // Add a subtle separator line for spacing
             contentEl.createDiv({
-                attr: { style: 'height:1px; background: var(--background-modifier-border); margin: 12px 0;' }
+                cls: 'tubesage-divider'
             });
             
             // Create a container for the copy button
             const copyContainer = contentEl.createDiv({
-                cls: 'tubesage-template-view-copy-container',
-                attr: { style: 'display:flex; justify-content:flex-end; width:100%; margin-left:auto;' }
+                cls: ['tubesage-template-view-copy-container', 'tubesage-row-end']
             });
             
             // Add copy text
@@ -6615,8 +6526,7 @@ class TemplateViewModal extends Modal {
         
         // Add close button
         const footerEl = contentEl.createDiv({
-            cls: 'tubesage-license-footer', // Reuse existing class
-            attr: { style: 'display:flex; justify-content:flex-end; width:100%;' }
+            cls: ['tubesage-license-footer', 'tubesage-row-end']
         });
         
         const closeButton = footerEl.createEl('button', {
