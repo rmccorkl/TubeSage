@@ -3773,16 +3773,10 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             // attr: { style: 'font-style: italic;' } // Removed inline style
         });
         
-        // Spacer before Buy-Me-a-Coffee button
-        supportContainer.createDiv({ attr: { style: 'height:10px;' } });
-        
         // Buy Me a Coffee button in a container
         const bmcContainer = supportContainer.createDiv({
             cls: 'tubesage-settings-bmc-container' // Apply new class
         });
-        
-        // Spacer after Buy-Me-a-Coffee button
-        supportContainer.createDiv({ attr: { style: 'height:10px;' } });
         
         // Create the link
         const bmcLink = bmcContainer.createEl('a', {
@@ -3873,63 +3867,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             cls: 'tubesage-settings-action-button-label' // Reuse class
         });
         
-        // Create the toggle switch
-        const toggleWrapper = toggleContainer.createDiv({
-            cls: 'tubesage-license-toggle-wrapper' // Apply new class
-        });
-        
-        // Toggle input
-        const toggleInput = toggleWrapper.createEl('input', {
-            cls: 'tubesage-license-toggle-input', // Apply new class
-            attr: {
-                type: 'checkbox',
-                id: 'license-toggle'
-            }
-        });
-        
-        // Set initial state
-        toggleInput.checked = this.plugin.settings.licenseAccepted;
-        
-        // Create the toggle slider - using CSS that actually works in Obsidian
-        const toggleSlider = toggleWrapper.createSpan({
-            cls: 'tubesage-license-toggle-slider' // Apply new class
-        });
-        
-        // Create the slider knob
-        toggleSlider.createSpan({
-            cls: 'tubesage-license-toggle-knob' // Apply new class
-        });
-        
-        // Initial toggle styling is now handled by CSS via :checked pseudo-selector
-        
-        // Make the toggle slider respond to clicks directly
-        toggleSlider.addEventListener('click', (e) => {
-            // Prevent the default action
-            e.preventDefault();
-            
-            // Toggle the checkbox state
-            toggleInput.checked = !toggleInput.checked;
-            
-            // Dispatch change event to trigger the existing handler
-            const changeEvent = new Event('change');
-            toggleInput.dispatchEvent(changeEvent);
-        });
-        
-        // Also make the "Accept License" text respond to clicks
-        const licenseTextElement = toggleContainer.querySelector('span');
-        if (licenseTextElement) {
-            licenseTextElement.addEventListener('click', (e) => {
-                // Prevent the default action
-                e.preventDefault();
-                
-                // Toggle the checkbox state
-                toggleInput.checked = !toggleInput.checked;
-                
-                // Dispatch change event to trigger the existing handler
-                const changeEvent = new Event('change');
-                toggleInput.dispatchEvent(changeEvent);
-            });
-        }
+        // Create native Obsidian toggle
+        const licenseToggle = new ToggleComponent(toggleContainer);
+        licenseToggle.setValue(this.plugin.settings.licenseAccepted);
         
         // README button - after the license toggle
         const readmeButtonContainer = buttonsContainer.createDiv({
@@ -3996,19 +3936,17 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         const updateSettingsState = () => {
             if (this.plugin.settings.licenseAccepted) {
                 settingsContainer.removeClass('tubesage-settings-container-disabled');
-                // Visual state of toggle now handled by CSS :checked
             } else {
                 settingsContainer.addClass('tubesage-settings-container-disabled');
-                // Visual state of toggle now handled by CSS
             }
         };
         
         // Initial state
         updateSettingsState();
         
-        // Add change listener to toggle
-        toggleInput.addEventListener('change', () => {
-            this.plugin.settings.licenseAccepted = toggleInput.checked;
+        // Add change listener to native toggle
+        licenseToggle.onChange((value) => {
+            this.plugin.settings.licenseAccepted = value;
             void this.plugin.saveSettings().then(updateSettingsState);
         });
         
