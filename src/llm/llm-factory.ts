@@ -25,21 +25,11 @@ export class LLMFactory {
     logger.debug('Created LLM Factory');
   }
 
-  getBestProvider(): string {
-    return this.settings.selectedLLM;
-  }
-
   getOllamaClient(): OllamaClient {
     if (!this.ollamaClient) {
       const baseUrl = this.settings.apiKeys['ollama'] || 'http://localhost:11434';
       this.ollamaClient = new OllamaClient(baseUrl);
     }
     return this.ollamaClient;
-  }
-
-  updateSettings(settings: LLMSettings): void {
-    this.settings = settings;
-    this.ollamaClient = null;
-    logger.debug('LLM Factory settings updated');
   }
 }
