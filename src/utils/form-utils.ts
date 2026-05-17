@@ -71,7 +71,7 @@ export function displayValidationResult(
         
         // Auto-hide after timeout if provided
         if (timeout) {
-            activeWindow.setTimeout(() => {
+            window.setTimeout(() => {
                 element.addClass('tubesage-error-hidden');
                 element.removeClass('tubesage-error-visible');
             }, timeout);
