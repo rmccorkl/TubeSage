@@ -118,7 +118,7 @@ const getTemplaterSettings = (app: App): TemplaterSettings | null => {
     if (!isRecord(settings)) {
         return null;
     }
-    return settings as TemplaterSettings;
+    return settings;
 };
 
 const getPluginIdFromManifest = (app: App, fallback: string): string => {
@@ -633,7 +633,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         logger.debug('[SETTINGS DEBUG] DEFAULT_SETTINGS.selectedLLM:', DEFAULT_SETTINGS.selectedLLM);
 
         const loadedSettings: Partial<YouTubeTranscriptSettings> = isRecord(loadedData)
-            ? (loadedData as Partial<YouTubeTranscriptSettings>)
+            ? loadedData
             : {};
 
         this.settings = { ...DEFAULT_SETTINGS, ...loadedSettings };
@@ -693,7 +693,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // 2. Populate the runtime settings.apiKeys cloud entries from storage.
         // 3. If data.json held any cloud key, persist once to scrub it out.
         const dataApiKeys: Record<string, string> =
-            isRecord(loadedSettings.apiKeys) ? (loadedSettings.apiKeys as Record<string, string>) : {};
+            isRecord(loadedSettings.apiKeys) ? loadedSettings.apiKeys : {};
         let hadCloudKeysInData = false;
         for (const provider of CLOUD_PROVIDERS) {
             const fromData = dataApiKeys[provider];
@@ -1396,7 +1396,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         
         if (!templater) {
             // Show a notice with instructions on how to install Templater
-            activeWindow.setTimeout(() => {
+            window.setTimeout(() => {
         this.showNotice('Youtube transcript plugin requires the Templater plugin. Please install and enable it.', 5000);
             }, 3000); // Delay to ensure it's seen after initial plugin load
         }
@@ -1404,7 +1404,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // Check for LLM API key
         const selectedLlm = this.settings.selectedLLM;
         if (!this.settings.apiKeys[selectedLlm] || this.settings.apiKeys[selectedLlm].trim() === '') {
-            activeWindow.setTimeout(() => {
+            window.setTimeout(() => {
                 this.showNotice(`Youtube transcript plugin: no API key configured for ${selectedLlm}. Please add your API key in settings.`, 5000);
             }, 4500);
         }
@@ -3314,7 +3314,7 @@ class YouTubeTranscriptModal extends Modal {
                             this.showNotice(`Adding timestamp links to ${isPlaylist ? 'playlist' : 'channel'} video: ${video.title}`, 3000);
                             try {
                                 // Simple, small delay to allow file creation to complete
-                                await new Promise(resolve => activeWindow.setTimeout(resolve, 300));
+                                await new Promise(resolve => window.setTimeout(resolve, 300));
                                 logger.debug(`Adding timestamps to file: ${notePath}`);
                                 
                                 await this.plugin.addSectionLinksToNote(notePath, video.url);
@@ -3619,7 +3619,7 @@ class YouTubeTranscriptModal extends Modal {
                 this.showNotice('Adding section timestamp links...', 3000);
                 try {
                     // Simple, small delay to allow file creation to complete
-                    await new Promise(resolve => activeWindow.setTimeout(resolve, 300));
+                    await new Promise(resolve => window.setTimeout(resolve, 300));
                     logger.debug(`Adding timestamps to file: ${notePath}`);
 
                     await this.plugin.addSectionLinksToNote(notePath, url);
@@ -3998,7 +3998,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         
         // Get the control element using DOM query after setting is created
         // The setting-item-control is the right side where buttons go
-        activeWindow.setTimeout(() => {
+        window.setTimeout(() => {
             const controlEl = exampleContainer.querySelector('.setting-item-control');
             if (controlEl) {
                 // Add the text right before the button
@@ -5282,7 +5282,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Custom-name field blur is a secondary path: typing into the
         // custom field can switch the dropdown to 'custom' implicitly.
         customField.inputEl?.addEventListener('blur', () => {
-            activeWindow.setTimeout(refreshAll, 100);
+            window.setTimeout(refreshAll, 100);
         });
 
         // Initial label + field check.
@@ -6457,7 +6457,7 @@ class TemplateViewModal extends Modal {
                         if (copyTextElement) {
                             const originalText = copyTextElement.textContent;
                             copyTextElement.textContent = 'Copied';
-                            activeWindow.setTimeout(() => {
+                            window.setTimeout(() => {
                                 copyTextElement.textContent = originalText;
                             }, 2000);
                         }
@@ -6467,7 +6467,7 @@ class TemplateViewModal extends Modal {
                         // Show error state
                         if (copyTextElement) {
                             copyTextElement.textContent = 'Failed to copy';
-                            activeWindow.setTimeout(() => {
+                            window.setTimeout(() => {
                                 copyTextElement.textContent = 'Copy template';
                             }, 2000);
                         }

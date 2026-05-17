@@ -42,7 +42,7 @@ export class ProcessingSpinner {
       this.statusBarItem = this.plugin.addStatusBarItem();
     }
     this.render();
-    this.spinnerHandle = activeWindow.setInterval(() => {
+    this.spinnerHandle = window.setInterval(() => {
       this.spinnerFrame = (this.spinnerFrame + 1) % SPINNER_FRAMES.length;
       this.render();
     }, SPINNER_INTERVAL_MS);
@@ -58,7 +58,7 @@ export class ProcessingSpinner {
   /** Removes the spinner and stops the animation. Safe to call more than once. */
   stop(): void {
     if (this.spinnerHandle !== null) {
-      activeWindow.clearInterval(this.spinnerHandle);
+      window.clearInterval(this.spinnerHandle);
       this.spinnerHandle = null;
     }
     if (this.statusBarItem) {
