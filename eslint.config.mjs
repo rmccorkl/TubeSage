@@ -48,7 +48,15 @@ export default tseslint.config(
     rules: {
       "obsidianmd/ui/sentence-case": [
         "error",
-        { enforceCamelCaseLower: true, allowAutoFix: true },
+        {
+          enforceCamelCaseLower: true,
+          allowAutoFix: true,
+          // "OpenRouter" is a brand name with intentional internal capitals.
+          // It is not in the rule's built-in brand list, and `ignoreWords` is
+          // bypassed for single-word strings, so the exact label is whitelisted
+          // by regex to preserve official casing.
+          ignoreRegex: ["^OpenRouter$"],
+        },
       ],
     },
   },
