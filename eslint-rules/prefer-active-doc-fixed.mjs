@@ -9,6 +9,29 @@ const REPLACEMENTS = Object.freeze({
 });
 const BANNED_GLOBALS = new Set(["global", "globalThis"]);
 
+// Timer functions are the one case where `window` is correct, not `activeWindow`:
+// obsidianmd's `prefer-window-timers` rule requires `window.setTimeout()` etc.
+// Skip `window.<timerMethod>` so this rule does not contradict that one. Mirrors
+// the same carve-out in upstream eslint-plugin-obsidianmd's prefer-active-doc.
+const WINDOW_TIMER_METHODS = new Set([
+  "clearInterval",
+  "clearTimeout",
+  "requestAnimationFrame",
+  "setInterval",
+  "setTimeout",
+]);
+
+function isWindowTimerCall(node) {
+  const p = node.parent;
+  return (
+    node.name === "window" &&
+    p?.type === "MemberExpression" &&
+    p.object === node &&
+    p.property.type === "Identifier" &&
+    WINDOW_TIMER_METHODS.has(p.property.name)
+  );
+}
+
 function findVariable(scope, name) {
   let current = scope;
   while (current) {
@@ -62,6 +85,7 @@ export default {
 
         if (!Object.hasOwn(REPLACEMENTS, node.name)) return;
         if (isSkippableParent(node)) return;
+        if (isWindowTimerCall(node)) return;
 
         const scope = context.sourceCode.getScope(node);
         if (findVariable(scope, node.name)?.defs.length) return;
