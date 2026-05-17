@@ -4049,8 +4049,8 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Removed "Use YouTube Data API v3" setting and CORS issue notice
         
         new Setting(settingsContainer)
-            .setName('Youtube data API key')
-            .setDesc('Your Google cloud console API key for accessing public Youtube transcripts (not an oauth token). Required for downloading channels and playlists.')
+            .setName('YouTube data API key')
+            .setDesc('Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.')
             .addText(text => {
                 const textComponent = text
                     .setPlaceholder('Enter API key (starts with aiza)')
@@ -4199,7 +4199,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             .setDesc('Provider used for summarisation.')
             .addDropdown(dropdown => {
                 // Add OpenAI option
-                dropdown.addOption('openai', 'Openai');
+                dropdown.addOption('openai', 'OpenAI');
                 
                 // Always add Anthropic, Google, Ollama, and OpenRouter options since they all work on any platform now
                 dropdown.addOption('anthropic', 'Anthropic');
