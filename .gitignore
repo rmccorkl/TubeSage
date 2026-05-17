@@ -34,8 +34,11 @@ coverage/
 
 # Temporary files
 *.tmp
-*.temp 
+*.temp
 node_modules
+
+# Git worktrees
+.worktrees/
 
 # Main file as this compiled
 main.js
