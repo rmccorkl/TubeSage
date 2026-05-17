@@ -4,7 +4,7 @@ import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
 import { handleApiError, getSafeErrorMessage } from './src/utils/error-utils';
 import { getLogger, LogLevel, setGlobalLogLevel, clearLogs, getLogsForCallout } from './src/utils/logger';
-import { normalizePath, ensureFolder, joinPaths, sanitizePathComponent } from './src/utils/path-utils';
+import { normalizePath, ensureFolder, joinPaths, sanitizePathComponent, collectUnder } from './src/utils/path-utils';
 import { validateRequired, validateYouTubeUrl, ValidationResult, displayValidationResult } from './src/utils/form-utils';
 import { getPromptConfig, cleanTranscript, SummaryMode, getTimestampLinkConfig } from './src/utils/prompt-utils';
 import { showNotice, isYoutubeUrl, isYoutubeChannelOrPlaylistUrl, extractChannelName, YOUTUBE_URL_PLACEHOLDER } from './src/utils/youtube-utils';
@@ -5315,34 +5315,11 @@ class TemplateFilePickerModal extends Modal {
         
         contentEl.createEl('h2', { text: 'Select template file' });
         
-        // Get all markdown files in the vault
-        // @ts-ignore - Using Obsidian API types
-        const allFiles = this.app.vault.getMarkdownFiles();
-        logger.debug("Total markdown files in vault:", allFiles.length);
-        
-        // Filter to only include files from the templates folder
-        this.templates = allFiles
-            // @ts-ignore - Using Obsidian API types
-            .filter(file => {
-                // Check if the file path starts with the templates folder
-                // or if it's in a subfolder of the templates folder
-                const path = file.path.toLowerCase();
-                const templatesFolder = this.templatesFolder.toLowerCase();
-                
-                const isTemplate = path.startsWith(templatesFolder + '/') || 
-                       path === templatesFolder ||
-                       path.includes('/' + templatesFolder + '/');
-                       
-                if (isTemplate) {
-                    logger.debug("Found template file:", file.path);
-                }
-                
-                return isTemplate;
-            })
-            // @ts-ignore - Using Obsidian API types
+        // Collect template files by walking only the configured templates
+        // folder subtree — no whole-vault enumeration.
+        this.templates = collectUnder(this.app.vault, this.templatesFolder, 'markdown')
             .map(file => ({ path: file.path }));
-        
-        logger.debug(`Found ${this.templates.length} template files`);
+        logger.debug(`Found ${this.templates.length} template files in "${this.templatesFolder}"`);
         
         // Display a message if no template files were found
         if (this.templates.length === 0) {
