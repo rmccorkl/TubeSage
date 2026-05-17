@@ -97,11 +97,23 @@ Architecture diagrams are in the `docs/` directory:
 
 ## Privacy & Security
 
-- Cloud-provider API keys (OpenAI, Anthropic, Google, OpenRouter) are stored in Obsidian's native secret storage, never written to the plugin's `data.json`. Keys saved by versions older than 1.3.0 are migrated into secret storage automatically the first time you open the plugin after upgrading.
-- API calls to LLM providers and YouTube use HTTPS.
-- No user data is stored on servers operated by the plugin author.
-- Ollama can be used for fully local, offline processing.
-- The plugin bundles `langsmith` as a transitive dependency of `@langchain/core`. `langsmith` is LangChain's optional tracing library and contains a background cache-refresh timer. TubeSage never enables LangSmith tracing and never sets a LangSmith API key, so this code stays dormant and performs no background network transmission. The only network requests TubeSage makes are to the LLM provider you configure and to YouTube.
+### API keys
+Cloud-provider API keys (OpenAI, Anthropic, Google, OpenRouter) are stored in Obsidian's native secret storage, never written to the plugin's `data.json`. Keys saved by versions older than 1.3.0 are migrated into secret storage automatically the first time you open the plugin after upgrading.
+
+### Network requests
+All requests use HTTPS. TubeSage contacts:
+
+- **YouTube**, to fetch video metadata and transcripts.
+- **Your configured LLM provider** (OpenAI, Anthropic, Google, or OpenRouter), to generate summaries. If you use Ollama, requests go only to your local Ollama server and nothing leaves your machine.
+- **`tiktoken.pages.dev`**, which may be contacted to download a small tokenizer data file used for token counting. This comes from `js-tiktoken`, a transitive dependency of LangChain; TubeSage does not call it directly.
+
+No user data is stored on servers operated by the plugin author.
+
+The plugin also bundles `langsmith` as a transitive dependency of `@langchain/core`. `langsmith` is LangChain's optional tracing library and contains a background cache-refresh timer. TubeSage never enables LangSmith tracing and never sets a LangSmith API key, so this code stays dormant and performs no background network transmission.
+
+### Vault and system access
+- **Vault files**: TubeSage lists the folders and Markdown files in your vault so you can choose where notes are saved and pick template files. It reads and writes only the note and template files involved in processing.
+- **Clipboard**: the "Copy template" button in the template viewer writes template text to your system clipboard. TubeSage never reads the clipboard.
 
 ## Troubleshooting
 
