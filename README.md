@@ -2,6 +2,8 @@
 
 TubeSage is an Obsidian plugin that converts YouTube videos into structured notes using large language models. It extracts transcripts, generates summaries, and can add timestamped links back to specific moments in the video.
 
+**Demo:** [Watch the walkthrough video](https://github.com/rmccorkl/TubeSage/blob/main/docs/TubeSage.mp4) (MP4, hosted on GitHub).
+
 ## Quick Start
 
 ### Installation
@@ -92,8 +94,8 @@ When enabled, each section heading includes a link that opens the YouTube video 
 - **Error utilities** (`src/utils/error-utils.ts`): error categorization and retry logic.
 
 Architecture diagrams are in the `docs/` directory:
-- [Workflow Diagram](docs/workflow-diagram.md)
-- [Data Flow Diagram](docs/data-flow-diagram.md)
+- [Workflow Diagram](https://github.com/rmccorkl/TubeSage/blob/main/docs/workflow-diagram.md)
+- [Data Flow Diagram](https://github.com/rmccorkl/TubeSage/blob/main/docs/data-flow-diagram.md)
 
 ## Privacy & Security
 
@@ -125,7 +127,7 @@ The plugin also bundles `langsmith` as a transitive dependency of `@langchain/co
 
 ## License
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file. A YouTube content-usage disclaimer is included in [MIT-license-tubesage.md](MIT-license-tubesage.md).
+This project is licensed under the MIT License — see the [LICENSE](https://github.com/rmccorkl/TubeSage/blob/main/LICENSE) file. A YouTube content-usage disclaimer is included in [MIT-license-tubesage.md](https://github.com/rmccorkl/TubeSage/blob/main/MIT-license-tubesage.md).
 
 ## Support & Contribution
 
