@@ -952,6 +952,20 @@
         max-width: 90vw;
         max-height: 85vh;
     }
+
+    /* Template viewer: give the modal a mobile size and the content a
+       definite height so a usable portion of the template shows and scrolls
+       (max-height alone lets the box collapse to a blank line on mobile). */
+    .tubesage-template-view-modal-size.modal {
+        width: 95vw;
+        max-width: 95vw;
+        max-height: 85vh;
+    }
+
+    .tubesage-template-view-container {
+        height: 50vh;
+        max-height: 50vh;
+    }
 }
 
 .tubesage-divider {
