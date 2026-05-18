@@ -1,7 +1,7 @@
 {
     "id": "tubesage",
     "name": "TubeSage",
-    "version": "1.4.3",
+    "version": "1.4.4",
     "minAppVersion": "1.11.4",
     "description": "Create comprehensive notes from YouTube transcripts using LLMs.",
     "author": "Richard McCorkle",
