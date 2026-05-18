@@ -4148,21 +4148,6 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 }));
         
         // LLM section with info icon
-        // Reference + refresh helper for the conditionally-rendered "Max tokens"
-        // field that appears further down (only for unknown / custom models).
-        // Held at this scope so the model-dropdown's change listener inside
-        // createProviderConfigBlock can re-apply the value when the user picks
-        // a different model — without rebuilding the whole settings panel.
-        let maxTokensField: TextComponent | null = null;
-        const refreshMaxTokensField = (): void => {
-            // Field only exists in the DOM when the current model is unknown.
-            // If it isn't rendered, this is a no-op.
-            if (!maxTokensField) return;
-            const effective = this.plugin.getEffectiveMaxTokens();
-            this.plugin.settings.maxTokens = effective;
-            maxTokensField.setValue(String(effective));
-        };
-
         const llmHeading = new Setting(settingsContainer)
             .setName('Language model')
             .setHeading();
@@ -4513,7 +4498,6 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 const paramsHandle = this.addCustomModelParametersSection(settingsContainer, provider, fieldRef, dropdownRef);
                 dropdownRef.selectEl?.addEventListener('change', () => {
                     paramsHandle.refresh();
-                    refreshMaxTokensField();
                 });
             }
 
@@ -4660,63 +4644,6 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         await this.plugin.saveSettings();
                     })();
                 }));
-        
-        // Only show Max Tokens setting for custom models - known models use dynamic calculation
-        const provider = this.plugin.settings.selectedLLM as Provider;
-        const model = this.plugin.settings.selectedModels[provider];
-        const isCustomModel = !isModelSupported(provider, model);
-        
-        if (isCustomModel) {
-            new Setting(settingsContainer)
-                .setName('Max tokens')
-                .setDesc('Maximum length of summary output for custom model')
-                .addText(text => {
-                    // Capture so refreshMaxTokensField (called from the model
-                    // dropdown's change listener) can repopulate this field
-                    // when the user picks a different unknown model — without
-                    // rebuilding the whole settings panel.
-                    maxTokensField = text;
-                    text.setPlaceholder('1000')
-                        .setValue(String(this.plugin.settings.maxTokens));
-
-                    // Commit on blur, not per keystroke. Avoids the
-                    // type-1-then-12-then-123 thrash that the override fields
-                    // had, and lets the user blank the field as a "reset"
-                    // gesture: blanking + blurring re-applies the
-                    // model-derived value (registry / override / fallback).
-                    text.inputEl?.addEventListener('blur', () => {
-                        void (async () => {
-                            const value = text.getValue().trim();
-                            if (value === '') {
-                                // Reset gesture: re-derive from the current
-                                // model's effective max tokens.
-                                const effective = this.plugin.getEffectiveMaxTokens();
-                                this.plugin.settings.maxTokens = effective;
-                                text.setValue(String(effective));
-                                await this.plugin.saveSettings();
-                                return;
-                            }
-                            const numValue = parseInt(value, 10);
-                            if (!isNaN(numValue) && numValue > 0) {
-                                this.plugin.settings.maxTokens = numValue;
-                                await this.plugin.saveSettings();
-                            } else {
-                                // Bad input: silently revert to the persisted
-                                // value so the field doesn't show garbage.
-                                text.setValue(String(this.plugin.settings.maxTokens));
-                            }
-                        })();
-                    });
-
-                    return text;
-                })
-                .addExtraButton(button => {
-                    button
-                        .setIcon('alert-triangle')
-                        .setTooltip('Max tokens should not be confused with the context window size. This setting caps the maximum output returned by the model and is sensitive — exceeding this limit will cause the model to fail. For custom models, ensure this parameter is aligned with the model\'s capabilities.');
-                });
-        }
-        // Note: Known models automatically calculate optimal max tokens using getEffectiveMaxTokens()
         
         // Note format section
         const noteFormatHeading = new Setting(settingsContainer)
