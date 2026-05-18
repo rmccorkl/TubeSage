@@ -5152,7 +5152,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             subDescEl.setText(
                 isCustomSelected
                     ? `Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.`
-                    : `Optional: registry defaults apply when these are blank. Set values here to override the registry for this provider+model.`,
+                    : `These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.`,
             );
         };
 
