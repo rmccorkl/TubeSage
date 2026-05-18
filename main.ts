@@ -4201,7 +4201,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         // Update settings
                         await this.plugin.saveSettings();
                         
-                        // Refresh the display to update the max tokens field
+                        // Re-render the settings panel to show the selected provider's model block.
                         this.display();
                     })();
                 });
