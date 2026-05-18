@@ -48,6 +48,9 @@ Style2CSS.txt
 # Chromium user data (contains browsing session data)
 chromium-user-data/
 
+# Superpowers workflow docs (specs/plans) — internal scaffolding, not for distribution
+docs/superpowers/
+
 # Personal deploy script — references local vault paths; not for distribution
 scripts/deploy.sh
 .fallow/
