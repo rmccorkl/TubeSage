@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile, ToggleComponent, setTooltip } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, ButtonComponent, TFile, ToggleComponent, setTooltip, setIcon } from 'obsidian';
 import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
@@ -2823,11 +2823,10 @@ class YouTubeTranscriptModal extends Modal {
         // URL input group - first input
         const urlGroup = formEl.createDiv({ cls: 'form-group' });
         urlGroup.createEl('label', { text: 'YouTube URL', attr: { for: 'url' } });
-        this.urlInputEl = urlGroup.createEl('input', {
-            type: 'text',
-            attr: { id: 'url' }
-        });
-        this.urlInputEl.placeholder = YOUTUBE_URL_PLACEHOLDER;
+        const urlText = new TextComponent(urlGroup);
+        urlText.setPlaceholder(YOUTUBE_URL_PLACEHOLDER);
+        urlText.inputEl.id = 'url';
+        this.urlInputEl = urlText.inputEl;
         
         // Create a URL validation message element
         const urlValidationEl = urlGroup.createDiv({ 
@@ -2899,47 +2898,35 @@ class YouTubeTranscriptModal extends Modal {
         });
         
         // Dropdown for selecting number of videos - add to the limitedOptionContainer
-        const videoCountDropdown = limitedOptionContainer.createEl('select', {
-            cls: 'video-count-dropdown',
-            attr: {
-                id: 'video-count-dropdown'
-            }
-        });
-        
-        // Add options 1-50
+        const videoCountDropdown = new DropdownComponent(limitedOptionContainer);
         for (let i = 1; i <= 50; i++) {
-            videoCountDropdown.createEl('option', {
-                text: i.toString(),
-                attr: { value: i.toString() }
-            });
+            videoCountDropdown.addOption(String(i), String(i));
         }
-        
-        // Set default to 1
-        videoCountDropdown.value = '1';
+        videoCountDropdown.setValue('1');
+        videoCountDropdown.selectEl.addClass('video-count-dropdown');
         
         // Process button in its own container for mobile layout
         const processBtnContainer = controlsContainer.createDiv({
             cls: ['tubesage-modal-process-btn-container', isMobile ? 'tubesage-modal-process-btn-container-mobile' : ''],
         });
         
-        const processBtn = processBtnContainer.createEl('button', {
-            text: 'Process',
-            cls: 'mod-cta',
-        });
+        const processBtn = new ButtonComponent(processBtnContainer);
+        processBtn.setButtonText('Process');
+        processBtn.setCta();
         if (isMobile) {
-            processBtn.addClass('tubesage-process-btn-mobile');
+            processBtn.buttonEl.addClass('tubesage-process-btn-mobile');
         }
-        
+
         // Add event listener for process button
-        processBtn.addEventListener('click', () => {
+        processBtn.onClick(() => {
             const url = this.urlInputEl.value.trim();
-            
+
             if (allVideosRadio.checked) {
                 // Process all videos
                 this.processCollectionVideos(url, 0);
             } else {
                 // Process limited number of videos
-                const count = parseInt(videoCountDropdown.value) || 10;
+                const count = parseInt(videoCountDropdown.getValue()) || 10;
                 this.processCollectionVideos(url, count);
             }
         });
@@ -2947,10 +2934,10 @@ class YouTubeTranscriptModal extends Modal {
         // Title input group - second input (for single video mode)
         const titleGroup = formEl.createDiv({ cls: 'form-group' });
         titleGroup.createEl('label', { text: 'Custom note title (optional)', attr: { for: 'title' } });
-        this.titleInputEl = titleGroup.createEl('input', { 
-            type: 'text',
-            attr: { id: 'title', placeholder: 'Leave empty to use YouTube title' } 
-        });
+        const titleText = new TextComponent(titleGroup);
+        titleText.setPlaceholder('Leave empty to use YouTube title');
+        titleText.inputEl.id = 'title';
+        this.titleInputEl = titleText.inputEl;
         
         // Add toggle switch for summary mode
         const toggleContainer = formEl.createDiv({ cls: 'toggle-container' });
@@ -3789,49 +3776,12 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         });
         
         // Eye icon button for viewing license
-        const licenseIconButton = licenseButtonContainer.createEl('button', {
-            cls: 'tubesage-icon-button' // Apply base class
-        });
-        
-        // Create an SVG for the eye icon
-        const svgNamespace = "http://www.w3.org/2000/svg";
-        const eyeSvg = activeDocument.createElementNS(svgNamespace, "svg");
-        eyeSvg.setAttrs({
-            viewBox: "0 0 24 24",
-            width: "16",
-            height: "16",
-            stroke: "currentColor",
-            fill: "none",
-            'stroke-width': "2",
-            'stroke-linecap': "round",
-            'stroke-linejoin': "round"
-        });
-
-        // Create the eye icon paths
-        const eyeCircle = activeDocument.createElementNS(svgNamespace, "circle");
-        eyeCircle.setAttrs({ cx: "12", cy: "12", r: "3" });
-        eyeSvg.appendChild(eyeCircle);
-
-        const eyePath = activeDocument.createElementNS(svgNamespace, "path");
-        eyePath.setAttr("d", "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z");
-        eyeSvg.appendChild(eyePath);
-        
-        // Add the SVG to the button
-        licenseIconButton.appendChild(eyeSvg);
-        
-        // Add hover effect
-        licenseIconButton.addEventListener('mouseenter', () => {
-            licenseIconButton.addClass('tubesage-icon-button-hover');
-        });
-        
-        licenseIconButton.addEventListener('mouseleave', () => {
-            licenseIconButton.removeClass('tubesage-icon-button-hover');
-        });
-        
-        // Add click event to open license modal
-        licenseIconButton.addEventListener('click', () => {
-            new LicenseModal(this.app).open();
-        });
+        new ExtraButtonComponent(licenseButtonContainer)
+            .setIcon('eye')
+            .setTooltip('View license & disclaimer')
+            .onClick(() => {
+                new LicenseModal(this.app).open();
+            });
         
         // License acceptance toggle - on the right
         const toggleContainer = buttonsContainer.createDiv({
@@ -3859,49 +3809,12 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         });
         
         // Eye icon button for viewing README
-        const readmeButton = readmeButtonContainer.createEl('button', {
-            cls: 'tubesage-icon-button' // Apply base class
-        });
-        
-        // Create an SVG for the eye icon
-        const readmeSvgNamespace = "http://www.w3.org/2000/svg";
-        const readmeEyeSvg = activeDocument.createElementNS(readmeSvgNamespace, "svg");
-        readmeEyeSvg.setAttrs({
-            viewBox: "0 0 24 24",
-            width: "16",
-            height: "16",
-            stroke: "currentColor",
-            fill: "none",
-            'stroke-width': "2",
-            'stroke-linecap': "round",
-            'stroke-linejoin': "round"
-        });
-
-        // Create the eye icon paths
-        const readmeEyeCircle = activeDocument.createElementNS(readmeSvgNamespace, "circle");
-        readmeEyeCircle.setAttrs({ cx: "12", cy: "12", r: "3" });
-        readmeEyeSvg.appendChild(readmeEyeCircle);
-
-        const readmeEyePath = activeDocument.createElementNS(readmeSvgNamespace, "path");
-        readmeEyePath.setAttr("d", "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z");
-        readmeEyeSvg.appendChild(readmeEyePath);
-        
-        // Add the SVG to the button
-        readmeButton.appendChild(readmeEyeSvg);
-        
-        // Add hover effect
-        readmeButton.addEventListener('mouseenter', () => {
-            readmeButton.addClass('tubesage-icon-button-hover');
-        });
-        
-        readmeButton.addEventListener('mouseleave', () => {
-            readmeButton.removeClass('tubesage-icon-button-hover');
-        });
-        
-        // Add click event to open README modal
-        readmeButton.addEventListener('click', () => {
-            new READMEModal(this.app).open();
-        });
+        new ExtraButtonComponent(readmeButtonContainer)
+            .setIcon('eye')
+            .setTooltip('View readme')
+            .onClick(() => {
+                new READMEModal(this.app).open();
+            });
         
         // Create remaining settings container that will be disabled if license not accepted
         const settingsContainer = containerEl.createDiv({
@@ -4975,37 +4888,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             attr: { 'aria-label': 'Information' } // Keep aria-label
         });
         
-        // Create SVG icon for info
-        const infoSvgNamespace = "http://www.w3.org/2000/svg";
-        const infoSvg = activeDocument.createElementNS(infoSvgNamespace, "svg");
-        infoSvg.setAttrs({
-            viewBox: "0 0 24 24",
-            width: "16",
-            height: "16",
-            stroke: "currentColor",
-            fill: "none",
-            'stroke-width': "2",
-            'stroke-linecap': "round",
-            'stroke-linejoin': "round"
-        });
-
-        // Create circle for info icon
-        const circle = activeDocument.createElementNS(infoSvgNamespace, "circle");
-        circle.setAttrs({ cx: "12", cy: "12", r: "10" });
-        infoSvg.appendChild(circle);
-
-        // Create the i vertical line
-        const line = activeDocument.createElementNS(infoSvgNamespace, "line");
-        line.setAttrs({ x1: "12", y1: "16", x2: "12", y2: "12" });
-        infoSvg.appendChild(line);
-
-        // Create the i dot
-        const dot = activeDocument.createElementNS(infoSvgNamespace, "line");
-        dot.setAttrs({ x1: "12", y1: "8", x2: "12.01", y2: "8" });
-        infoSvg.appendChild(dot);
-        
-        // Add the SVG to the icon container
-        infoIcon.appendChild(infoSvg);
+        setIcon(infoIcon, 'info');
         
         // Native Obsidian tooltip — renders reliably, positioned correctly,
         // and works on mobile (unlike the prior hover-only CSS tooltip).
@@ -5753,12 +5636,10 @@ class LicenseModal extends Modal {
             cls: 'tubesage-license-footer' // Apply new class
         });
         
-        const closeButton = footerEl.createEl('button', {
-            text: 'Close',
-            cls: 'tubesage-license-close-button' // Apply new class
-        });
-        
-        closeButton.addEventListener('click', () => {
+        const closeButton = new ButtonComponent(footerEl);
+        closeButton.setButtonText('Close');
+        closeButton.buttonEl.addClass('tubesage-license-close-button');
+        closeButton.onClick(() => {
             this.close();
         });
         })();
@@ -5851,25 +5732,20 @@ class LicenseRequiredModal extends Modal {
         });
         
         // Open settings button
-        const openSettingsButton = buttonContainer.createEl('button', {
-            text: 'Open plugin settings',
-            cls: 'tubesage-license-required-button-primary' // Apply new class
-        });
-        
-        // Close button
-        const closeButton = buttonContainer.createEl('button', {
-            text: 'Close',
-            cls: 'tubesage-license-required-button-secondary' // Apply new class
-        });
-        
-        // Add event listeners
-        openSettingsButton.addEventListener('click', () => {
+        const openSettingsButton = new ButtonComponent(buttonContainer);
+        openSettingsButton.setButtonText('Open plugin settings');
+        openSettingsButton.buttonEl.addClass('tubesage-license-required-button-primary');
+        openSettingsButton.onClick(() => {
             this.close();
             const appWithSettings = this.app as App & { setting?: { open?: (id: string) => void } };
             appWithSettings.setting?.open?.('tubesage');
         });
-        
-        closeButton.addEventListener('click', () => {
+
+        // Close button
+        const closeButton = new ButtonComponent(buttonContainer);
+        closeButton.setButtonText('Close');
+        closeButton.buttonEl.addClass('tubesage-license-required-button-secondary');
+        closeButton.onClick(() => {
             this.close();
         });
     }
@@ -6086,17 +5962,15 @@ class READMEModal extends Modal {
             cls: 'tubesage-license-footer' // Reuse existing class
         });
         
-        const closeButton = footerEl.createEl('button', {
-            text: 'Close',
-            cls: 'tubesage-readme-close-button' // Apply new class for README modal specifically
-        });
-        
-        closeButton.addEventListener('click', () => {
+        const closeButton = new ButtonComponent(footerEl);
+        closeButton.setButtonText('Close');
+        closeButton.buttonEl.addClass('tubesage-readme-close-button');
+        closeButton.onClick(() => {
             this.close();
         });
         })();
     }
-    
+
     // Helper to handle markdown links
     private splitMarkdownLink(text: string): Array<{text: string, url?: string, isLink: boolean}> {
         const parts: Array<{text: string, url?: string, isLink: boolean}> = [];
@@ -6348,49 +6222,9 @@ class TemplateViewModal extends Modal {
                 cls: 'tubesage-template-view-copy-text'
             });
             
-            // Copy icon button
-            const copyButton = copyContainer.createEl('button', {
-                cls: 'tubesage-icon-button' // Reuse existing class
-            });
-            
-            // Create an SVG for the copy icon
-            const svgNamespace = "http://www.w3.org/2000/svg";
-            const copySvg = activeDocument.createElementNS(svgNamespace, "svg");
-            copySvg.setAttrs({
-                viewBox: "0 0 24 24",
-                width: "16",
-                height: "16",
-                stroke: "currentColor",
-                fill: "none",
-                'stroke-width': "2",
-                'stroke-linecap': "round",
-                'stroke-linejoin': "round"
-            });
-
-            // Create the copy icon paths
-            const copyRect = activeDocument.createElementNS(svgNamespace, "rect");
-            copyRect.setAttrs({ x: "9", y: "9", width: "13", height: "13", rx: "2", ry: "2" });
-            copySvg.appendChild(copyRect);
-
-            const copyPath = activeDocument.createElementNS(svgNamespace, "path");
-            copyPath.setAttr("d", "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1");
-            copySvg.appendChild(copyPath);
-            
-            // Add the SVG to the button
-            copyButton.appendChild(copySvg);
-            
-            // Add hover effect
-            copyButton.addEventListener('mouseenter', () => {
-                copyButton.addClass('tubesage-icon-button-hover'); // Reuse hover class logic
-            });
-            
-            copyButton.addEventListener('mouseleave', () => {
-                copyButton.removeClass('tubesage-icon-button-hover'); // Reuse hover class logic
-            });
-            
             // Make the text also clickable
             const copyTextElement = copyContainer.querySelector('span');
-            
+
             // Function to handle copy
             const handleCopy = () => {
                 navigator.clipboard.writeText(templateContent)
@@ -6415,9 +6249,13 @@ class TemplateViewModal extends Modal {
                         }
                     });
             };
-            
-            // Add click handlers to both text and button
-            copyButton.addEventListener('click', handleCopy);
+
+            // Copy icon button
+            new ExtraButtonComponent(copyContainer)
+                .setIcon('copy')
+                .setTooltip('Copy template')
+                .onClick(handleCopy);
+
             if (copyTextElement) {
                 copyTextElement.addEventListener('click', handleCopy);
             }
@@ -6471,12 +6309,10 @@ class TemplateViewModal extends Modal {
             cls: ['tubesage-license-footer', 'tubesage-row-end']
         });
         
-        const closeButton = footerEl.createEl('button', {
-            text: 'Close',
-            cls: 'tubesage-license-close-button' // Reuse existing class
-        });
-        
-        closeButton.addEventListener('click', () => {
+        const closeButton = new ButtonComponent(footerEl);
+        closeButton.setButtonText('Close');
+        closeButton.buttonEl.addClass('tubesage-license-close-button');
+        closeButton.onClick(() => {
             this.close();
         });
         })();
