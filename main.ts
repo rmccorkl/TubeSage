@@ -2739,6 +2739,76 @@ ${contentToTranslate}
             return [];
         }
     }
+
+    async fetchOpenRouterModels(): Promise<FetchedModelInfo[]> {
+        const url = 'https://openrouter.ai/api/v1/models';
+        try {
+            this.showNotice("Fetching OpenRouter models...", 3000);
+            const response = await obsidianFetch(url, { method: 'GET' });
+
+            if (!response.ok) {
+                const errorMessage = `HTTP error ${response.status}`;
+                logger.error(`[fetchOpenRouterModels] Failed to fetch OpenRouter models: ${errorMessage}`);
+                this.showNotice(`Failed to fetch OpenRouter models: ${errorMessage}`, 5000);
+                return [];
+            }
+
+            const data = await response.json() as {
+                data?: Array<{
+                    id?: string;
+                    context_length?: number;
+                    top_provider?: { max_completion_tokens?: number | null };
+                }>;
+            };
+
+            if (data && Array.isArray(data.data)) {
+                const models: FetchedModelInfo[] = data.data
+                    .filter((m) => typeof m.id === 'string' && m.id.length > 0)
+                    .map((m) => {
+                        const id = m.id as string;
+                        const contextK = m.context_length ? Math.round(m.context_length / 1000) : undefined;
+                        const maxOut = m.top_provider?.max_completion_tokens;
+                        const maxOutputK = maxOut ? Math.round(maxOut / 1000) : undefined;
+                        return { id, contextK, maxOutputK };
+                    })
+                    .sort((a, b) => a.id.localeCompare(b.id));
+
+                let updatedCount = 0;
+                for (const m of models) {
+                    if (m.contextK && m.maxOutputK) {
+                        this.settings.customModelLimits[`openrouter:${m.id}`] = {
+                            contextK: m.contextK,
+                            maxOutputK: m.maxOutputK,
+                            reservePct: 0.10
+                        };
+                        updatedCount++;
+                    }
+                }
+                if (updatedCount > 0) {
+                    logger.info(`[fetchOpenRouterModels] Stored token limits for ${updatedCount} OpenRouter models.`);
+                }
+
+                this.settings.fetchedModels = {
+                    ...this.settings.fetchedModels,
+                    openrouter: models.map((m) => m.id),
+                };
+                await this.saveSettings();
+
+                logger.info(`[fetchOpenRouterModels] Successfully fetched ${models.length} OpenRouter models.`);
+                this.showNotice("OpenRouter models updated!", 3000);
+                return models;
+            } else {
+                logger.warn("[fetchOpenRouterModels] Unexpected response structure from OpenRouter API.");
+                this.showNotice("Could not parse OpenRouter models from API response.", 5000);
+                return [];
+            }
+        } catch (error) {
+            const errorMessage = getSafeErrorMessage(error);
+            logger.error("[fetchOpenRouterModels] Error fetching or parsing OpenRouter models:", errorMessage);
+            this.showNotice(`Error fetching OpenRouter models: ${errorMessage}`, 5000);
+            return [];
+        }
+    }
 }
 
 class YouTubeTranscriptModal extends Modal {
@@ -4220,9 +4290,22 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             // Add dropdown for preset + fetched models
             setting.addDropdown(dropdown => {
                 modelDropdown = dropdown;
-                mergedOptions.forEach((model) => {
-                    dropdown.addOption(model, model);
-                });
+                if (provider === 'openrouter') {
+                    let currentVendor = '';
+                    let group: HTMLElement | null = null;
+                    for (const model of mergedOptions) {
+                        const vendor = model.includes('/') ? model.slice(0, model.indexOf('/')) : 'other';
+                        if (vendor !== currentVendor) {
+                            currentVendor = vendor;
+                            group = dropdown.selectEl.createEl('optgroup', { attr: { label: vendor } });
+                        }
+                        (group ?? dropdown.selectEl).createEl('option', { value: model, text: model });
+                    }
+                } else {
+                    mergedOptions.forEach((model) => {
+                        dropdown.addOption(model, model);
+                    });
+                }
                 dropdown.addOption('custom', 'Use custom model');
                 const currentModel = this.plugin.settings.selectedModels[provider];
                 let validSelection = mergedOptions.includes(currentModel) ? currentModel : 'custom';
@@ -4275,8 +4358,8 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 return dropdown;
             });
 
-            // Add refresh button for OpenAI, Google, and Anthropic providers
-            if (provider === 'openai' || provider === 'google' || provider === 'anthropic') {
+            // Add refresh button for OpenAI, Google, Anthropic, and OpenRouter providers
+            if (provider === 'openai' || provider === 'google' || provider === 'anthropic' || provider === 'openrouter') {
                 setting.addExtraButton(button => {
                     button
                         .setIcon('refresh-cw') // Refresh icon
@@ -4284,7 +4367,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         .onClick(() => {
                             void (async () => {
                             const apiKey = this.plugin.settings.apiKeys[provider];
-                            if (!apiKey || apiKey.trim() === '') {
+                            if (provider !== 'openrouter' && (!apiKey || apiKey.trim() === '')) {
                                 this.plugin.showNotice(`${displayName} API key is required to refresh models.`, 5000);
                                 return;
                             }
@@ -4296,6 +4379,8 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                                 fetchedModels = await this.plugin.fetchGoogleModels(apiKey);
                             } else if (provider === 'anthropic') {
                                 fetchedModels = await this.plugin.fetchAnthropicModels(apiKey);
+                            } else if (provider === 'openrouter') {
+                                fetchedModels = await this.plugin.fetchOpenRouterModels();
                             }
 
                             const fetchedIds = fetchedModels.map(m => m.id);
