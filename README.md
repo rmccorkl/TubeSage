@@ -115,6 +115,8 @@ No user data is stored on servers operated by the plugin author.
 
 The plugin also bundles `langsmith` as a transitive dependency of `@langchain/core`. `langsmith` is LangChain's optional tracing library and contains a background cache-refresh timer. TubeSage never enables LangSmith tracing and never sets a LangSmith API key, so this code stays dormant and performs no background network transmission.
 
+Static analysis of the bundled `main.js` shows a few `atob()`/`btoa()` (base64) calls. These all originate in bundled libraries, not in TubeSage's own code, and are all routine: decoding embedding vectors and image data URLs, reading a JWT header, and encoding Mermaid diagram syntax for rendering. None of them obscure code, API keys, or URLs.
+
 ### Vault and system access
 - **Vault files**: TubeSage lists the folders and Markdown files in your vault so you can choose where notes are saved and pick template files. It reads and writes only the note and template files involved in processing.
 - **Clipboard**: the "Copy template" button in the template viewer writes template text to your system clipboard. TubeSage never reads the clipboard.
