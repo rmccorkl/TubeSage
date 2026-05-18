@@ -2775,10 +2775,17 @@ ${contentToTranslate}
 
                 let updatedCount = 0;
                 for (const m of models) {
-                    if (m.contextK && m.maxOutputK) {
+                    if (m.contextK) {
+                        // OpenRouter's API leaves top_provider.max_completion_tokens
+                        // null for many models. When it's absent, derive a sensible
+                        // default (8k, capped to the context window) so the model
+                        // still gets real limits instead of resolving to the generic
+                        // 128/16 fallback — which made flipping between such models
+                        // look like the override panel never updated.
+                        const maxOutputK = m.maxOutputK ?? Math.min(8, m.contextK);
                         this.settings.customModelLimits[`openrouter:${m.id}`] = {
                             contextK: m.contextK,
-                            maxOutputK: m.maxOutputK,
+                            maxOutputK,
                             reservePct: 0.10
                         };
                         updatedCount++;
