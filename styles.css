@@ -256,22 +256,6 @@
     font-size: 12px;
 }
 
-.tubesage-icon-button {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: var(--radius-s);
-    color: var(--text-normal);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.tubesage-icon-button-hover {
-    background: var(--background-modifier-hover);
-}
-
 .tubesage-settings-container-disabled {
     opacity: 0.5;
     pointer-events: none;
@@ -686,6 +670,7 @@
     text-align: right;
     margin-top: var(--size-4-2);
     margin-bottom: var(--size-4-2);
+    --icon-size: 16px;
 }
 
 .tubesage-template-view-copy-text {
@@ -755,6 +740,7 @@
     justify-content: center;
     align-items: center;
     flex: 0 0 auto;
+    --icon-size: 16px;
 }
 
 .tubesage-settings-action-button-label {
