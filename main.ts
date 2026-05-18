@@ -3194,17 +3194,21 @@ class YouTubeTranscriptModal extends Modal {
         try {
             this.isProcessing = true;
             
-            // Show processing UI
+            // Processing UI. On mobile the modal stays open and hosts the
+            // spinner; on desktop the status bar is the spinner surface, so the
+            // modal is closed — no blank popup. ProcessingSpinner routes itself
+            // (status bar on desktop, in-modal on mobile).
             const { contentEl } = this;
-            contentEl.empty();
-            
-            // Adjust modal size to fit the animation using a CSS class
-            const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
-            if (modalEl && modalEl.instanceOf(HTMLElement)) {
-                modalEl.addClass('tubesage-processing-modal');
+            if (Platform.isMobile) {
+                contentEl.empty();
+                const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
+                if (modalEl && modalEl.instanceOf(HTMLElement)) {
+                    modalEl.addClass('tubesage-processing-modal');
+                }
+            } else {
+                this.close();
             }
-            
-            // Braille-dots processing spinner (status bar on desktop, in-modal on mobile)
+
             spinner = new ProcessingSpinner(this.plugin, 'Processing collection', contentEl);
             spinner.start();
 
@@ -3514,17 +3518,21 @@ class YouTubeTranscriptModal extends Modal {
         try {
             this.isProcessing = true;
             
-            // Show processing UI
+            // Processing UI. On mobile the modal stays open and hosts the
+            // spinner; on desktop the status bar is the spinner surface, so the
+            // modal is closed — no blank popup. ProcessingSpinner routes itself
+            // (status bar on desktop, in-modal on mobile).
             const { contentEl } = this;
-            contentEl.empty();
-            
-            // Adjust modal size to fit the animation using a CSS class
-            const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
-            if (modalEl && modalEl.instanceOf(HTMLElement)) {
-                modalEl.addClass('tubesage-processing-modal');
+            if (Platform.isMobile) {
+                contentEl.empty();
+                const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
+                if (modalEl && modalEl.instanceOf(HTMLElement)) {
+                    modalEl.addClass('tubesage-processing-modal');
+                }
+            } else {
+                this.close();
             }
-            
-            // Braille-dots processing spinner (status bar on desktop, in-modal on mobile)
+
             spinner = new ProcessingSpinner(this.plugin, 'Processing video', contentEl);
             spinner.start();
 
