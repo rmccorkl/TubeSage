@@ -113,11 +113,11 @@ export class YouTubeTranscriptExtractor {
     static async fetchTranscript(videoId: string, options: TranscriptOptions = {}): Promise<TranscriptResult> {
         transcriptLogger.debug(`Fetching YouTube transcript for video: ${videoId}`);
 
-        // Clear cached config when video changes to prevent stale title/metadata from a previous request
-        if (this.cachedVideoId !== videoId) {
-            this.cachedConfig = null;
-            this.cachedVideoId = videoId;
-            transcriptLogger.debug(`New video ID detected (${videoId}), cleared config cache`);
+        // Clear cached player data when the video changes to prevent stale metadata
+        if (this.cachedPlayerVideoId !== videoId) {
+            this.cachedPlayerData = null;
+            this.cachedPlayerVideoId = videoId;
+            transcriptLogger.debug(`New video ID detected (${videoId}), cleared player cache`);
         }
 
         try {
@@ -133,73 +133,36 @@ export class YouTubeTranscriptExtractor {
                     return result;
                 } catch (err) {
                     const msg = getSafeErrorMessage(err);
-                    transcriptLogger.debug('ScrapeCreators API failed, falling back to local methods:', msg);
+                    transcriptLogger.debug('ScrapeCreators API failed, falling back to local method:', msg);
                     attempts.push({ method: 'ScrapeCreators API', error: msg });
                 }
             }
 
-            // [2] Watch-page captions (0 extra HTTP requests, reuses cached HTML)
+            // [2] iOS InnerTube player API — the working local method
             try {
-                transcriptLogger.debug('Attempting local method: Watch-page captions');
-                const result = await this.fetchViaWatchPage(videoId, options);
-                transcriptLogger.debug(`Watch-page method succeeded with ${result.segments.length} segments`);
+                transcriptLogger.debug('Attempting local method: iOS InnerTube player API');
+                const result = await this.fetchViaIosPlayer(videoId, options);
+                transcriptLogger.debug(`iOS player method succeeded with ${result.segments.length} segments`);
                 return result;
             } catch (err) {
                 const msg = getSafeErrorMessage(err);
-                transcriptLogger.debug('Watch-page method failed:', msg);
-                attempts.push({ method: 'Watch-page', error: msg });
-                if (this.cachedConfig?.metadata) {
-                    metadata = { ...this.cachedConfig.metadata };
+                transcriptLogger.debug('iOS player method failed:', msg);
+                attempts.push({ method: 'iOS player', error: msg });
+                // If the player call itself succeeded but captions were absent, the
+                // response (with videoDetails) is cached — recover metadata from it.
+                const cached = this.cachedPlayerData;
+                if (isRecord(cached) && isRecord(cached.videoDetails)) {
+                    metadata = {
+                        title: isString(cached.videoDetails.title) ? cached.videoDetails.title : undefined,
+                        author: isString(cached.videoDetails.author) ? cached.videoDetails.author : undefined
+                    };
                 }
             }
 
-            // [3] ANDROID Player API fallback
-            try {
-                transcriptLogger.debug('Attempting fallback: ANDROID client via Player API');
-                const result = await this.fetchViaPlayerApiAndroid(videoId, options);
-                transcriptLogger.debug(`ANDROID method succeeded with ${result.segments.length} segments`);
-                return result;
-            } catch (err) {
-                const msg = getSafeErrorMessage(err);
-                transcriptLogger.debug('ANDROID client failed:', msg);
-                attempts.push({ method: 'ANDROID', error: msg });
-                if (msg.includes('400')) {
-                    this.cachedConfig = null;
-                    transcriptLogger.debug('Cleared YouTube config cache due to HTTP 400');
-                }
-            }
-
-            // [4] MWEB client fallback — mobile-web client has less strict POT enforcement than WEB
-            try {
-                transcriptLogger.debug('Attempting fallback: MWEB client via Player API');
-                const result = await this.fetchViaPlayerApiMWEB(videoId, options);
-                transcriptLogger.debug(`MWEB method succeeded with ${result.segments.length} segments`);
-                return result;
-            } catch (err) {
-                const msg = getSafeErrorMessage(err);
-                transcriptLogger.debug('MWEB client failed:', msg);
-                attempts.push({ method: 'MWEB', error: msg });
-            }
-
-            // [5] WEB ScrapeCreators fallback (local innertube, not the paid API)
-            try {
-                transcriptLogger.debug('Attempting fallback: WEB ScrapeCreators');
-                const result = await this.fetchViaWebScrapeCreators(videoId, options);
-                transcriptLogger.debug(`WEB ScrapeCreators method succeeded with ${result.segments.length} segments`);
-                return result;
-            } catch (err) {
-                const msg = getSafeErrorMessage(err);
-                transcriptLogger.debug('WEB ScrapeCreators failed:', msg);
-                attempts.push({ method: 'WEB ScrapeCreators', error: msg });
-                if (this.cachedConfig?.metadata && !metadata.title) {
-                    metadata = { ...this.cachedConfig.metadata };
-                }
-            }
-
-            // [6] Supadata paid API fallback (only if key is configured)
+            // [3] Supadata paid API fallback (only if key is configured)
             if (options.supadataApiKey) {
                 try {
-                    transcriptLogger.debug('All local methods failed — attempting Supadata paid API');
+                    transcriptLogger.debug('Local method failed — attempting Supadata paid API');
                     const result = await this.fetchViaSupadata(videoId, options);
                     transcriptLogger.debug(`Supadata API succeeded with ${result.segments.length} segments`);
                     return result;
@@ -253,39 +216,18 @@ export class YouTubeTranscriptExtractor {
     }
     
     /**
-     * Get video metadata from the player response
-     * @param videoId YouTube video ID
-     * @returns Promise with metadata
+     * Get video metadata (title, author) from the iOS player response.
+     * Used by the ScrapeCreators and Supadata paths, which return transcript text only.
+     * The iOS player response is cached per videoId, so this reuses a warm cache when present.
      */
-
     static async getVideoMetadata(videoId: string): Promise<TranscriptMetadata> {
-        // Check cached config first to avoid a redundant watch page fetch
-        if (this.cachedConfig?.metadata && (this.cachedConfig.metadata.title || this.cachedConfig.metadata.author)) {
-            transcriptLogger.debug('Returning cached metadata from config');
-            return this.cachedConfig.metadata;
-        }
-
         try {
-            // getYouTubeConfig fetches the watch page and extracts metadata as a side-effect
-            const config = await this.getYouTubeConfig(videoId);
-            if (config.metadata.title || config.metadata.author) {
-                return config.metadata;
-            }
-
-            // Fallback: if config extraction didn't get metadata, try parsing HTML directly
-            const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
-            const body = await this.fetchWatchPageHtml(watchUrl);
-            const playerResponse = this.extractJsonFromHtml(body, 'ytInitialPlayerResponse');
-            const videoDetails = isRecord(playerResponse) ? playerResponse.videoDetails : undefined;
-            const title = isRecord(videoDetails) && typeof videoDetails.title === 'string'
-                ? videoDetails.title
-                : undefined;
-            const author = isRecord(videoDetails) && typeof videoDetails.author === 'string'
-                ? videoDetails.author
-                : undefined;
-
-            return { title, author };
-
+            const data = await this.fetchIosPlayerData(videoId, {});
+            const videoDetails = isRecord(data.videoDetails) ? data.videoDetails : undefined;
+            return {
+                title: videoDetails && isString(videoDetails.title) ? videoDetails.title : undefined,
+                author: videoDetails && isString(videoDetails.author) ? videoDetails.author : undefined
+            };
         } catch (error) {
             transcriptLogger.error('Error fetching video metadata:', error);
             return {};
