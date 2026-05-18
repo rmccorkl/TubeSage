@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile, ToggleComponent, setTooltip, setIcon } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, ButtonComponent, TFile, ToggleComponent, setTooltip, setIcon } from 'obsidian';
 import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
@@ -2922,18 +2922,17 @@ class YouTubeTranscriptModal extends Modal {
             cls: ['tubesage-modal-process-btn-container', isMobile ? 'tubesage-modal-process-btn-container-mobile' : ''],
         });
         
-        const processBtn = processBtnContainer.createEl('button', {
-            text: 'Process',
-            cls: 'mod-cta',
-        });
+        const processBtn = new ButtonComponent(processBtnContainer);
+        processBtn.setButtonText('Process');
+        processBtn.setCta();
         if (isMobile) {
-            processBtn.addClass('tubesage-process-btn-mobile');
+            processBtn.buttonEl.addClass('tubesage-process-btn-mobile');
         }
-        
+
         // Add event listener for process button
-        processBtn.addEventListener('click', () => {
+        processBtn.onClick(() => {
             const url = this.urlInputEl.value.trim();
-            
+
             if (allVideosRadio.checked) {
                 // Process all videos
                 this.processCollectionVideos(url, 0);
@@ -5649,12 +5648,10 @@ class LicenseModal extends Modal {
             cls: 'tubesage-license-footer' // Apply new class
         });
         
-        const closeButton = footerEl.createEl('button', {
-            text: 'Close',
-            cls: 'tubesage-license-close-button' // Apply new class
-        });
-        
-        closeButton.addEventListener('click', () => {
+        const closeButton = new ButtonComponent(footerEl);
+        closeButton.setButtonText('Close');
+        closeButton.buttonEl.addClass('tubesage-license-close-button');
+        closeButton.onClick(() => {
             this.close();
         });
         })();
@@ -5747,25 +5744,20 @@ class LicenseRequiredModal extends Modal {
         });
         
         // Open settings button
-        const openSettingsButton = buttonContainer.createEl('button', {
-            text: 'Open plugin settings',
-            cls: 'tubesage-license-required-button-primary' // Apply new class
-        });
-        
-        // Close button
-        const closeButton = buttonContainer.createEl('button', {
-            text: 'Close',
-            cls: 'tubesage-license-required-button-secondary' // Apply new class
-        });
-        
-        // Add event listeners
-        openSettingsButton.addEventListener('click', () => {
+        const openSettingsButton = new ButtonComponent(buttonContainer);
+        openSettingsButton.setButtonText('Open plugin settings');
+        openSettingsButton.buttonEl.addClass('tubesage-license-required-button-primary');
+        openSettingsButton.onClick(() => {
             this.close();
             const appWithSettings = this.app as App & { setting?: { open?: (id: string) => void } };
             appWithSettings.setting?.open?.('tubesage');
         });
-        
-        closeButton.addEventListener('click', () => {
+
+        // Close button
+        const closeButton = new ButtonComponent(buttonContainer);
+        closeButton.setButtonText('Close');
+        closeButton.buttonEl.addClass('tubesage-license-required-button-secondary');
+        closeButton.onClick(() => {
             this.close();
         });
     }
@@ -5982,17 +5974,15 @@ class READMEModal extends Modal {
             cls: 'tubesage-license-footer' // Reuse existing class
         });
         
-        const closeButton = footerEl.createEl('button', {
-            text: 'Close',
-            cls: 'tubesage-readme-close-button' // Apply new class for README modal specifically
-        });
-        
-        closeButton.addEventListener('click', () => {
+        const closeButton = new ButtonComponent(footerEl);
+        closeButton.setButtonText('Close');
+        closeButton.buttonEl.addClass('tubesage-readme-close-button');
+        closeButton.onClick(() => {
             this.close();
         });
         })();
     }
-    
+
     // Helper to handle markdown links
     private splitMarkdownLink(text: string): Array<{text: string, url?: string, isLink: boolean}> {
         const parts: Array<{text: string, url?: string, isLink: boolean}> = [];
@@ -6331,12 +6321,10 @@ class TemplateViewModal extends Modal {
             cls: ['tubesage-license-footer', 'tubesage-row-end']
         });
         
-        const closeButton = footerEl.createEl('button', {
-            text: 'Close',
-            cls: 'tubesage-license-close-button' // Reuse existing class
-        });
-        
-        closeButton.addEventListener('click', () => {
+        const closeButton = new ButtonComponent(footerEl);
+        closeButton.setButtonText('Close');
+        closeButton.buttonEl.addClass('tubesage-license-close-button');
+        closeButton.onClick(() => {
             this.close();
         });
         })();
