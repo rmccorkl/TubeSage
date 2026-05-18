@@ -119,7 +119,7 @@ Static analysis of the bundled `main.js` shows a few `atob()`/`btoa()` (base64) 
 
 ### Vault and system access
 - **Vault files**: TubeSage lists the folders and Markdown files in your vault so you can choose where notes are saved and pick template files. It reads and writes only the note and template files involved in processing.
-- **Clipboard**: the "Copy template" button in the template viewer writes template text to your system clipboard. TubeSage never reads the clipboard.
+- **Clipboard**: write-only. The "Copy template" button in the template viewer writes template text from within Obsidian to your system clipboard. TubeSage never reads the clipboard, so it cannot access or expose anything copied from outside Obsidian.
 
 ## Troubleshooting
 
