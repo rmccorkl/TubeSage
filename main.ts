@@ -3789,49 +3789,12 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         });
         
         // Eye icon button for viewing license
-        const licenseIconButton = licenseButtonContainer.createEl('button', {
-            cls: 'tubesage-icon-button' // Apply base class
-        });
-        
-        // Create an SVG for the eye icon
-        const svgNamespace = "http://www.w3.org/2000/svg";
-        const eyeSvg = activeDocument.createElementNS(svgNamespace, "svg");
-        eyeSvg.setAttrs({
-            viewBox: "0 0 24 24",
-            width: "16",
-            height: "16",
-            stroke: "currentColor",
-            fill: "none",
-            'stroke-width': "2",
-            'stroke-linecap': "round",
-            'stroke-linejoin': "round"
-        });
-
-        // Create the eye icon paths
-        const eyeCircle = activeDocument.createElementNS(svgNamespace, "circle");
-        eyeCircle.setAttrs({ cx: "12", cy: "12", r: "3" });
-        eyeSvg.appendChild(eyeCircle);
-
-        const eyePath = activeDocument.createElementNS(svgNamespace, "path");
-        eyePath.setAttr("d", "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z");
-        eyeSvg.appendChild(eyePath);
-        
-        // Add the SVG to the button
-        licenseIconButton.appendChild(eyeSvg);
-        
-        // Add hover effect
-        licenseIconButton.addEventListener('mouseenter', () => {
-            licenseIconButton.addClass('tubesage-icon-button-hover');
-        });
-        
-        licenseIconButton.addEventListener('mouseleave', () => {
-            licenseIconButton.removeClass('tubesage-icon-button-hover');
-        });
-        
-        // Add click event to open license modal
-        licenseIconButton.addEventListener('click', () => {
-            new LicenseModal(this.app).open();
-        });
+        new ExtraButtonComponent(licenseButtonContainer)
+            .setIcon('eye')
+            .setTooltip('View license & disclaimer')
+            .onClick(() => {
+                new LicenseModal(this.app).open();
+            });
         
         // License acceptance toggle - on the right
         const toggleContainer = buttonsContainer.createDiv({
@@ -3859,49 +3822,12 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         });
         
         // Eye icon button for viewing README
-        const readmeButton = readmeButtonContainer.createEl('button', {
-            cls: 'tubesage-icon-button' // Apply base class
-        });
-        
-        // Create an SVG for the eye icon
-        const readmeSvgNamespace = "http://www.w3.org/2000/svg";
-        const readmeEyeSvg = activeDocument.createElementNS(readmeSvgNamespace, "svg");
-        readmeEyeSvg.setAttrs({
-            viewBox: "0 0 24 24",
-            width: "16",
-            height: "16",
-            stroke: "currentColor",
-            fill: "none",
-            'stroke-width': "2",
-            'stroke-linecap': "round",
-            'stroke-linejoin': "round"
-        });
-
-        // Create the eye icon paths
-        const readmeEyeCircle = activeDocument.createElementNS(readmeSvgNamespace, "circle");
-        readmeEyeCircle.setAttrs({ cx: "12", cy: "12", r: "3" });
-        readmeEyeSvg.appendChild(readmeEyeCircle);
-
-        const readmeEyePath = activeDocument.createElementNS(readmeSvgNamespace, "path");
-        readmeEyePath.setAttr("d", "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z");
-        readmeEyeSvg.appendChild(readmeEyePath);
-        
-        // Add the SVG to the button
-        readmeButton.appendChild(readmeEyeSvg);
-        
-        // Add hover effect
-        readmeButton.addEventListener('mouseenter', () => {
-            readmeButton.addClass('tubesage-icon-button-hover');
-        });
-        
-        readmeButton.addEventListener('mouseleave', () => {
-            readmeButton.removeClass('tubesage-icon-button-hover');
-        });
-        
-        // Add click event to open README modal
-        readmeButton.addEventListener('click', () => {
-            new READMEModal(this.app).open();
-        });
+        new ExtraButtonComponent(readmeButtonContainer)
+            .setIcon('eye')
+            .setTooltip('View readme')
+            .onClick(() => {
+                new READMEModal(this.app).open();
+            });
         
         // Create remaining settings container that will be disabled if license not accepted
         const settingsContainer = containerEl.createDiv({
@@ -6318,49 +6244,9 @@ class TemplateViewModal extends Modal {
                 cls: 'tubesage-template-view-copy-text'
             });
             
-            // Copy icon button
-            const copyButton = copyContainer.createEl('button', {
-                cls: 'tubesage-icon-button' // Reuse existing class
-            });
-            
-            // Create an SVG for the copy icon
-            const svgNamespace = "http://www.w3.org/2000/svg";
-            const copySvg = activeDocument.createElementNS(svgNamespace, "svg");
-            copySvg.setAttrs({
-                viewBox: "0 0 24 24",
-                width: "16",
-                height: "16",
-                stroke: "currentColor",
-                fill: "none",
-                'stroke-width': "2",
-                'stroke-linecap': "round",
-                'stroke-linejoin': "round"
-            });
-
-            // Create the copy icon paths
-            const copyRect = activeDocument.createElementNS(svgNamespace, "rect");
-            copyRect.setAttrs({ x: "9", y: "9", width: "13", height: "13", rx: "2", ry: "2" });
-            copySvg.appendChild(copyRect);
-
-            const copyPath = activeDocument.createElementNS(svgNamespace, "path");
-            copyPath.setAttr("d", "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1");
-            copySvg.appendChild(copyPath);
-            
-            // Add the SVG to the button
-            copyButton.appendChild(copySvg);
-            
-            // Add hover effect
-            copyButton.addEventListener('mouseenter', () => {
-                copyButton.addClass('tubesage-icon-button-hover'); // Reuse hover class logic
-            });
-            
-            copyButton.addEventListener('mouseleave', () => {
-                copyButton.removeClass('tubesage-icon-button-hover'); // Reuse hover class logic
-            });
-            
             // Make the text also clickable
             const copyTextElement = copyContainer.querySelector('span');
-            
+
             // Function to handle copy
             const handleCopy = () => {
                 navigator.clipboard.writeText(templateContent)
@@ -6385,9 +6271,13 @@ class TemplateViewModal extends Modal {
                         }
                     });
             };
-            
-            // Add click handlers to both text and button
-            copyButton.addEventListener('click', handleCopy);
+
+            // Copy icon button
+            new ExtraButtonComponent(copyContainer)
+                .setIcon('copy')
+                .setTooltip('Copy template')
+                .onClick(handleCopy);
+
             if (copyTextElement) {
                 copyTextElement.addEventListener('click', handleCopy);
             }
