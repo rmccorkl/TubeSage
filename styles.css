@@ -953,9 +953,11 @@
         max-height: 85vh;
     }
 
-    /* Template viewer: give the modal a mobile size and the content a
-       definite height so a usable portion of the template shows and scrolls
-       (max-height alone lets the box collapse to a blank line on mobile). */
+    /* Template viewer: give the modal a mobile size and the content box a
+       definite height so a usable portion of the template shows and scrolls.
+       flex-shrink:0 is essential — the mobile modal content is a flex column,
+       and without it the flex algorithm squeezes this box down to ~2 lines to
+       make room for the sibling elements (title, copy row, variables list). */
     .tubesage-template-view-modal-size.modal {
         width: 95vw;
         max-width: 95vw;
@@ -963,6 +965,7 @@
     }
 
     .tubesage-template-view-container {
+        flex-shrink: 0;
         height: 50vh;
         max-height: 50vh;
     }
