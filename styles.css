@@ -303,9 +303,13 @@
     --icon-size: 16px;
     cursor: help;
     color: var(--text-muted);
-    display: flex;
+    /* inline-flex (not flex) so the icon sits inline immediately after the
+       setting title instead of dropping to its own centred line below it. */
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    margin-left: var(--size-4-1);
+    vertical-align: middle;
 }
 
 .template-list {
