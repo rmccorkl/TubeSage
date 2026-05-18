@@ -18,6 +18,15 @@ const isRecord = (value: unknown): value is UnknownRecord => {
 
 const isString = (value: unknown): value is string => typeof value === 'string';
 
+// YouTube InnerTube iOS player endpoint.
+// See docs/superpowers/specs/2026-05-18-transcript-fallback-ios-player-design.md
+// The iOS client still returns working caption track URLs without PO tokens,
+// while the Android/MWEB/WEB clients stopped doing so in early 2026.
+const INNERTUBE_API_KEY = 'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
+const INNERTUBE_PLAYER_URL = `https://www.youtube.com/youtubei/v1/player?key=${INNERTUBE_API_KEY}`;
+const IOS_USER_AGENT = 'com.google.ios.youtube/20.10.38 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X)';
+const IOS_CLIENT_VERSION = '20.10.38';
+
 // Add the CaptionTrack type at file level, outside of any method
 /**
  * Interface for YouTube caption tracks
@@ -71,6 +80,9 @@ export class YouTubeTranscriptExtractor {
     // Cache YouTube config after first extraction to avoid repeated HTML fetches within the same video request
     private static cachedConfig: YouTubeConfig | null = null;
     private static cachedVideoId: string | null = null;
+    // Cache the iOS player API response per video to avoid a redundant POST within one request
+    private static cachedPlayerData: UnknownRecord | null = null;
+    private static cachedPlayerVideoId: string | null = null;
     // Fallback client version if extraction fails (updated to current version)
     private static readonly FALLBACK_CLIENT_VERSION = '2.20260128.05.00';
     
@@ -1297,6 +1309,130 @@ export class YouTubeTranscriptExtractor {
         transcriptLogger.debug(`ScrapeCreators: successfully extracted ${segments.length} segments`);
         const metadata: TranscriptMetadata = await this.getVideoMetadata(videoId);
         transcriptLogger.debug(`ScrapeCreators: fetched metadata — title="${metadata.title}", author="${metadata.author}"`);
+        return { segments, metadata };
+    }
+
+    /**
+     * Perform the YouTube InnerTube iOS player API call and return the parsed JSON.
+     * The iOS client currently still exposes working caption track URLs and videoDetails.
+     * The response is cached per videoId to avoid a redundant POST within one request.
+     */
+    private static async fetchIosPlayerData(videoId: string, options: TranscriptOptions): Promise<UnknownRecord> {
+        if (this.cachedPlayerData && this.cachedPlayerVideoId === videoId) {
+            transcriptLogger.debug('Using cached iOS player data');
+            return this.cachedPlayerData;
+        }
+
+        const lang = options.lang || 'en';
+        const country = options.country || 'US';
+
+        const body = JSON.stringify({
+            context: {
+                client: {
+                    clientName: 'IOS',
+                    clientVersion: IOS_CLIENT_VERSION,
+                    hl: lang,
+                    gl: country
+                }
+            },
+            videoId
+        });
+
+        transcriptLogger.debug(`iOS Player API: requesting player data for ${videoId}`);
+
+        const response = await obsidianFetch(INNERTUBE_PLAYER_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'User-Agent': IOS_USER_AGENT
+            },
+            body
+        });
+
+        if (!response.ok) {
+            throw new Error(`iOS Player API error: HTTP ${response.status}`);
+        }
+
+        const data = await response.json() as UnknownRecord;
+
+        const playabilityStatus = data.playabilityStatus;
+        if (isRecord(playabilityStatus)) {
+            const status = playabilityStatus.status;
+            const reason = isString(playabilityStatus.reason) ? playabilityStatus.reason : undefined;
+            if (status === 'ERROR') {
+                throw new Error(reason || 'Video unavailable');
+            }
+            if (status === 'LOGIN_REQUIRED') {
+                throw new Error('This video requires login to view');
+            }
+            if (status === 'UNPLAYABLE') {
+                throw new Error(reason || 'Video is unplayable');
+            }
+        }
+
+        this.cachedPlayerData = data;
+        this.cachedPlayerVideoId = videoId;
+        return data;
+    }
+
+    /**
+     * iOS InnerTube player method: the working local transcript fallback.
+     * Fetches the iOS player response, picks a caption track, downloads and parses it.
+     */
+    private static async fetchViaIosPlayer(videoId: string, options: TranscriptOptions): Promise<TranscriptResult> {
+        const lang = options.lang || 'en';
+
+        const data = await this.fetchIosPlayerData(videoId, options);
+
+        // Metadata from videoDetails
+        const videoDetails = isRecord(data.videoDetails) ? data.videoDetails : undefined;
+        const metadata: TranscriptMetadata = {
+            title: videoDetails && isString(videoDetails.title) ? videoDetails.title : undefined,
+            author: videoDetails && isString(videoDetails.author) ? videoDetails.author : undefined
+        };
+
+        // Caption tracks
+        const captions = (data as {
+            captions?: {
+                playerCaptionsTracklistRenderer?: {
+                    captionTracks?: Array<{
+                        baseUrl?: string;
+                        languageCode?: string;
+                        kind?: string;
+                        vssId?: string;
+                        isTranslatable?: boolean;
+                    }>;
+                };
+            };
+        }).captions?.playerCaptionsTracklistRenderer?.captionTracks;
+
+        if (!captions || !Array.isArray(captions) || captions.length === 0) {
+            throw new Error('No captions available for this video');
+        }
+
+        transcriptLogger.debug(`iOS Player API: found ${captions.length} caption tracks`);
+
+        const tracks: CaptionTrack[] = captions.map(track => ({
+            languageCode: track.languageCode || '',
+            kind: track.kind,
+            baseUrl: track.baseUrl,
+            vssId: track.vssId,
+            isTranslatable: track.isTranslatable
+        }));
+
+        const selection = this.pickBestTrack(tracks, lang);
+        if (!selection || !selection.track.baseUrl) {
+            throw new Error('No suitable caption track with baseUrl found');
+        }
+
+        const { track, useTlang } = selection;
+        const trackBaseUrl = track.baseUrl as string; // Guaranteed non-null by the check above
+        transcriptLogger.debug(`iOS Player API: selected track lang=${track.languageCode}, kind=${track.kind || 'manual'}, useTlang=${useTlang}`);
+
+        const tlang = useTlang ? lang : undefined;
+        const segments = await this.fetchCaptionTrack(trackBaseUrl, tlang, IOS_USER_AGENT);
+
+        transcriptLogger.debug(`iOS Player API: successfully extracted ${segments.length} segments`);
         return { segments, metadata };
     }
 
