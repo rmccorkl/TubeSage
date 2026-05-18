@@ -107,6 +107,7 @@ All requests use HTTPS. TubeSage contacts:
 
 - **YouTube**, to fetch video metadata and transcripts.
 - **Your configured LLM provider** (OpenAI, Anthropic, Google, or OpenRouter), to generate summaries. If you use Ollama, requests go only to your local Ollama server and nothing leaves your machine.
+- **ScrapeCreators** (`api.scrapecreators.com`) and **Supadata** (`api.supadata.ai`) — contacted only if you choose to configure an API key for one of them. These are optional paid transcript services used as alternatives or fallbacks to direct YouTube extraction; with no key set, neither is contacted.
 
 That is the complete list. LangChain's bundled tiktoken helper, which would otherwise fetch tokenizer data from a third-party CDN, is replaced with a network-free stub at build time, so TubeSage contacts no other hosts.
 
