@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile, ToggleComponent, setTooltip } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile, ToggleComponent, setTooltip, setIcon } from 'obsidian';
 import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
@@ -4975,37 +4975,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             attr: { 'aria-label': 'Information' } // Keep aria-label
         });
         
-        // Create SVG icon for info
-        const infoSvgNamespace = "http://www.w3.org/2000/svg";
-        const infoSvg = activeDocument.createElementNS(infoSvgNamespace, "svg");
-        infoSvg.setAttrs({
-            viewBox: "0 0 24 24",
-            width: "16",
-            height: "16",
-            stroke: "currentColor",
-            fill: "none",
-            'stroke-width': "2",
-            'stroke-linecap': "round",
-            'stroke-linejoin': "round"
-        });
-
-        // Create circle for info icon
-        const circle = activeDocument.createElementNS(infoSvgNamespace, "circle");
-        circle.setAttrs({ cx: "12", cy: "12", r: "10" });
-        infoSvg.appendChild(circle);
-
-        // Create the i vertical line
-        const line = activeDocument.createElementNS(infoSvgNamespace, "line");
-        line.setAttrs({ x1: "12", y1: "16", x2: "12", y2: "12" });
-        infoSvg.appendChild(line);
-
-        // Create the i dot
-        const dot = activeDocument.createElementNS(infoSvgNamespace, "line");
-        dot.setAttrs({ x1: "12", y1: "8", x2: "12.01", y2: "8" });
-        infoSvg.appendChild(dot);
-        
-        // Add the SVG to the icon container
-        infoIcon.appendChild(infoSvg);
+        setIcon(infoIcon, 'info');
         
         // Native Obsidian tooltip — renders reliably, positioned correctly,
         // and works on mobile (unlike the prior hover-only CSS tooltip).
