@@ -2,7 +2,9 @@
 
 TubeSage is an Obsidian plugin that converts YouTube videos into structured notes using large language models. It extracts transcripts, generates summaries, and can add timestamped links back to specific moments in the video.
 
-**Demo:** [Watch the walkthrough video](https://github.com/rmccorkl/TubeSage/blob/main/docs/TubeSage.mp4) (MP4, hosted on GitHub).
+**Demo** — click the image to watch the walkthrough video (MP4, hosted on GitHub):
+
+[![Watch the TubeSage walkthrough](https://raw.githubusercontent.com/rmccorkl/TubeSage/main/docs/TubeSage-poster.png)](https://github.com/rmccorkl/TubeSage/blob/main/docs/TubeSage.mp4)
 
 ## Quick Start
 
