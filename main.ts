@@ -2823,11 +2823,10 @@ class YouTubeTranscriptModal extends Modal {
         // URL input group - first input
         const urlGroup = formEl.createDiv({ cls: 'form-group' });
         urlGroup.createEl('label', { text: 'YouTube URL', attr: { for: 'url' } });
-        this.urlInputEl = urlGroup.createEl('input', {
-            type: 'text',
-            attr: { id: 'url' }
-        });
-        this.urlInputEl.placeholder = YOUTUBE_URL_PLACEHOLDER;
+        const urlText = new TextComponent(urlGroup);
+        urlText.setPlaceholder(YOUTUBE_URL_PLACEHOLDER);
+        urlText.inputEl.id = 'url';
+        this.urlInputEl = urlText.inputEl;
         
         // Create a URL validation message element
         const urlValidationEl = urlGroup.createDiv({ 
@@ -2899,23 +2898,12 @@ class YouTubeTranscriptModal extends Modal {
         });
         
         // Dropdown for selecting number of videos - add to the limitedOptionContainer
-        const videoCountDropdown = limitedOptionContainer.createEl('select', {
-            cls: 'video-count-dropdown',
-            attr: {
-                id: 'video-count-dropdown'
-            }
-        });
-        
-        // Add options 1-50
+        const videoCountDropdown = new DropdownComponent(limitedOptionContainer);
         for (let i = 1; i <= 50; i++) {
-            videoCountDropdown.createEl('option', {
-                text: i.toString(),
-                attr: { value: i.toString() }
-            });
+            videoCountDropdown.addOption(String(i), String(i));
         }
-        
-        // Set default to 1
-        videoCountDropdown.value = '1';
+        videoCountDropdown.setValue('1');
+        videoCountDropdown.selectEl.addClass('video-count-dropdown');
         
         // Process button in its own container for mobile layout
         const processBtnContainer = controlsContainer.createDiv({
@@ -2938,7 +2926,7 @@ class YouTubeTranscriptModal extends Modal {
                 this.processCollectionVideos(url, 0);
             } else {
                 // Process limited number of videos
-                const count = parseInt(videoCountDropdown.value) || 10;
+                const count = parseInt(videoCountDropdown.getValue()) || 10;
                 this.processCollectionVideos(url, count);
             }
         });
@@ -2946,10 +2934,10 @@ class YouTubeTranscriptModal extends Modal {
         // Title input group - second input (for single video mode)
         const titleGroup = formEl.createDiv({ cls: 'form-group' });
         titleGroup.createEl('label', { text: 'Custom note title (optional)', attr: { for: 'title' } });
-        this.titleInputEl = titleGroup.createEl('input', { 
-            type: 'text',
-            attr: { id: 'title', placeholder: 'Leave empty to use YouTube title' } 
-        });
+        const titleText = new TextComponent(titleGroup);
+        titleText.setPlaceholder('Leave empty to use YouTube title');
+        titleText.inputEl.id = 'title';
+        this.titleInputEl = titleText.inputEl;
         
         // Add toggle switch for summary mode
         const toggleContainer = formEl.createDiv({ cls: 'toggle-container' });
