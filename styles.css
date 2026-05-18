@@ -378,6 +378,7 @@
 .tubesage-license-container {
     max-height: 500px;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     border: 1px solid var(--background-modifier-border);
     border-radius: var(--radius-s);
     margin-top: var(--size-4-2);
@@ -526,6 +527,7 @@
 .tubesage-readme-container {
     max-height: 550px;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     border: 1px solid var(--background-modifier-border);
     border-radius: var(--radius-s);
     margin-top: var(--size-4-2);
@@ -695,6 +697,7 @@
 .tubesage-template-view-container {
     max-height: 500px;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     padding: var(--size-4-5);
     border: 1px solid var(--background-modifier-border);
     border-radius: var(--radius-s);
@@ -706,6 +709,22 @@
 
 .tubesage-template-view-container-short {
     max-height: 250px;
+}
+
+.tubesage-template-view-copy-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-left: auto;
+    text-align: right;
+    margin-top: var(--size-4-2);
+    margin-bottom: var(--size-4-2);
+}
+
+.tubesage-template-view-copy-text {
+    font-size: 14px;
+    margin-right: var(--size-4-2);
+    cursor: pointer;
 }
 
 
