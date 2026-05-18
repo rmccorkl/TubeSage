@@ -2614,14 +2614,18 @@ ${contentToTranslate}
                     })
                     .sort((a, b) => a.id.localeCompare(b.id));
 
-                // Upsert token limits into customModelLimits for any model that has them
+                // Store token limits in customModelLimits for any model with a
+                // context window. Google's API usually returns both, but when
+                // max output is absent, derive it (8k, capped to context) — the
+                // same approach fetchOpenRouterModels uses — so the model still
+                // gets real limits instead of the generic 128/16 fallback.
                 let updatedCount = 0;
                 for (const m of models) {
-                    if (m.contextK && m.maxOutputK) {
+                    if (m.contextK) {
                         const key = `google:${m.id}`;
                         this.settings.customModelLimits[key] = {
                             contextK: m.contextK,
-                            maxOutputK: m.maxOutputK,
+                            maxOutputK: m.maxOutputK ?? Math.min(8, m.contextK),
                             reservePct: 0.10
                         };
                         updatedCount++;
