@@ -279,40 +279,6 @@
     filter: grayscale(30%);
 }
 
-.tubesage-settings-info-icon-with-tooltip {
-    position: relative;
-}
-
-.tubesage-settings-info-icon-with-tooltip::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    top: 100%;
-    left: 0%;
-    transform: translateX(-10%);
-    margin-top: var(--size-4-2);
-    z-index: 1000;
-    background-color: var(--background-secondary);
-    color: var(--text-normal);
-    padding: var(--size-4-2) var(--size-4-3);
-    border-radius: var(--radius-s);
-    font-size: 14px;
-    max-width: 300px;
-    box-shadow: var(--shadow-s);
-    pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s, visibility 0.2s;
-    white-space: normal;
-    width: max-content;
-    word-wrap: break-word;
-    line-height: 1.4;
-}
-
-.tubesage-settings-info-icon-with-tooltip:hover::after {
-    opacity: 1;
-    visibility: visible;
-}
-
 .tubesage-prompt-textarea.tubesage-prompt-textarea {
     width: 50%;
     flex: 0 0 50%;

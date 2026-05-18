@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile, ToggleComponent } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile, ToggleComponent, setTooltip } from 'obsidian';
 import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
@@ -4167,7 +4167,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         if (llmHeadingNameEl && llmHeadingNameEl.instanceOf(HTMLElement)) {
                 this.createInfoIcon(
                     llmHeadingNameEl,
-                    'Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality.'
+                    'Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.'
                 );
             }
 
@@ -5007,12 +5007,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Add the SVG to the icon container
         infoIcon.appendChild(infoSvg);
         
-        // Add tooltip using pure CSS approach
-        infoIcon.setAttribute('data-tooltip', tooltipText);
-        infoIcon.addClass('tubesage-settings-info-icon-with-tooltip');
-        
-        // Provide native tooltip fallback
-        infoIcon.setAttr('title', tooltipText);
+        // Native Obsidian tooltip — renders reliably, positioned correctly,
+        // and works on mobile (unlike the prior hover-only CSS tooltip).
+        setTooltip(infoIcon, tooltipText, { placement: 'bottom' });
         
         return infoIcon;
     }
