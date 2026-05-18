@@ -2489,7 +2489,7 @@ ${contentToTranslate}
 
             // No override and not in registry — compute from the same
             // conservative defaults the panel uses (16k maxOutput * 0.90 reserve).
-            // This makes the "Max tokens updated to N" notice consistent with
+            // This keeps the model-change "Output budget" notice consistent with
             // the panel's displayed values, instead of returning whatever was
             // last saved in settings.maxTokens (which is the *previous*
             // model's effective value and confuses the user).
@@ -4196,7 +4196,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         this.plugin.settings.maxTokens = effectiveMaxTokens;
                         
                         // Show notice with effective token limit
-                        this.plugin.showNotice(`Max tokens set to ${effectiveMaxTokens} for ${value} provider`, 3000);
+                        this.plugin.showNotice(`Provider set to ${value}. Output budget: ${effectiveMaxTokens} tokens (max output minus reserve).`, 3000);
                         
                         // Update settings
                         await this.plugin.saveSettings();
@@ -4332,7 +4332,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                         void (async () => {
                             if (value !== 'custom') {
                                 await this.plugin.saveSettings();
-                                this.plugin.showNotice(`Model changed to ${value}. Max tokens updated to ${this.plugin.settings.maxTokens}`, 3000);
+                                this.plugin.showNotice(`Model changed to ${value}. Output budget: ${this.plugin.settings.maxTokens} tokens (max output minus reserve).`, 3000);
                             } else {
                                 // Custom model selected - initialize custom model limits if they don't exist
                                 const currentModel = this.plugin.settings.selectedModels[provider];
