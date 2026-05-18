@@ -3972,7 +3972,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 return textComponent;
             });
 
-        new Setting(settingsContainer)
+        const scSetting = new Setting(settingsContainer)
             .setName('Scrape creators API key')
             .setDesc('Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free).')
             .addText(text => {
@@ -3999,8 +3999,12 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
 
                 return textComponent;
             });
+        const scNameEl = scSetting.settingEl.querySelector('.setting-item-name');
+        if (scNameEl && scNameEl.instanceOf(HTMLElement)) {
+            this.createInfoIcon(scNameEl, 'https://scrapecreators.com/');
+        }
 
-        new Setting(settingsContainer)
+        const sdSetting = new Setting(settingsContainer)
             .setName('Supa data API key')
             .setDesc('Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.')
             .addText(text => {
@@ -4027,6 +4031,10 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
 
                 return textComponent;
             });
+        const sdNameEl = sdSetting.settingEl.querySelector('.setting-item-name');
+        if (sdNameEl && sdNameEl.instanceOf(HTMLElement)) {
+            this.createInfoIcon(sdNameEl, 'https://supadata.ai/');
+        }
 
         new Setting(settingsContainer)
             .setName('Translate language')
@@ -4139,7 +4147,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             displayName: string,
             placeholder: string,
         ): void => {
-            new Setting(settingsContainer)
+            const apiKeySetting = new Setting(settingsContainer)
                 .setName(`${displayName} api key`)
                 .setDesc(
                     provider === 'ollama'
@@ -4167,6 +4175,12 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                     }
                     return textComponent;
                 });
+            if (provider === 'openrouter') {
+                const nameEl = apiKeySetting.settingEl.querySelector('.setting-item-name');
+                if (nameEl && nameEl.instanceOf(HTMLElement)) {
+                    this.createInfoIcon(nameEl, 'https://openrouter.ai/');
+                }
+            }
         };
 
         // Full provider config block — only rendered for the selected provider.
