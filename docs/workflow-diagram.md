@@ -27,101 +27,74 @@ flowchart TD
     Start([User Starts]) --> Setup{Plugin Setup Complete?}
     Setup -->|No| Config[Configure Settings]
     Config --> LicenseCheck[Accept License]
-    LicenseCheck --> APISetup[Setup API Keys]
+    LicenseCheck --> APISetup[Store Cloud API Keys in Secret Storage]
     APISetup --> Setup
     Setup -->|Yes| UserAction{User Action}
-    
+
     %% User Actions
-    UserAction -->|Ribbon Click| RibbonModal[Open Main Modal]
-    UserAction -->|Command Palette| CommandModal[Extract YouTube Transcript]
-    UserAction -->|Direct URL| ProcessURL[Process URL Directly]
-    
+    UserAction -->|Ribbon Icon| RibbonModal[Open YouTube Transcript Modal]
+    UserAction -->|Command Palette| CommandModal[Open YouTube Transcript Modal]
+
     %% Modal Flow
     RibbonModal --> URLInput[Enter YouTube URL]
     CommandModal --> URLInput
     URLInput --> URLValidation{Valid YouTube URL?}
     URLValidation -->|No| ErrorMsg[Show Error Message]
     URLValidation -->|Yes| URLType{URL Type Detection}
-    
+    ErrorMsg --> URLInput
+
     %% URL Type Processing
     URLType -->|Single Video| VideoFlow[Single Video Processing]
     URLType -->|Channel/Playlist| BatchFlow[Batch Processing]
-    
+
     %% Single Video Flow
-    VideoFlow --> PlatformDetect{Platform Detection}
-    PlatformDetect -->|Desktop| DesktopExtract[Desktop Transcript Extraction]
-    PlatformDetect -->|Mobile| MobileExtract[Mobile Optimized Extraction]
-    
-    %% Transcript Extraction
-    DesktopExtract --> TranscriptCheck{Transcript Available?}
-    MobileExtract --> TranscriptCheck
-    TranscriptCheck -->|No| FallbackMethod[Try Alternative Methods]
-    FallbackMethod --> SmartRecovery[Smart Recovery System]
-    SmartRecovery --> TranscriptCheck
-    TranscriptCheck -->|Yes| MetadataExtract[Extract Video Metadata]
-    
+    VideoFlow --> TranscriptExtract[Extract Transcript via YouTube Internal API]
+    TranscriptExtract --> TranscriptCheck{Transcript Available?}
+    TranscriptCheck -->|No| FallbackMethod[Layered fallbacks: ScrapeCreators API / watch-page / ANDROID / MWEB / WEB innertube / Supadata]
+    FallbackMethod --> FallbackCheck{Fallback Succeeded?}
+    FallbackCheck -->|No| FinalError[Show Error to User]
+    FallbackCheck -->|Yes| MetadataExtract[Extract Video Metadata]
+    TranscriptCheck -->|Yes| MetadataExtract
+
     %% LLM Processing
     MetadataExtract --> LLMChoice{Use LLM Summarization?}
-    LLMChoice -->|No| DirectNote[Create Note Directly]
-    LLMChoice -->|Yes| ModelSelection[Smart Model Selection]
-    ModelSelection --> ProviderSelect{LLM Provider}
-    
+    LLMChoice -->|No| DirectNote[Create Note Directly from Transcript]
+    LLMChoice -->|Yes| ProviderSelect{LLM Provider}
+
     %% LLM Provider Paths
-    ProviderSelect -->|OpenAI| OpenAIClient[OpenAI via LangChain]
-    ProviderSelect -->|Anthropic| AnthropicClient[Anthropic via LangChain]
-    ProviderSelect -->|Google| GeminiClient[Gemini via LangChain]
-    ProviderSelect -->|Ollama| OllamaClient[Direct Ollama API]
-    
+    ProviderSelect -->|OpenAI| CloudClient[LangChainClient]
+    ProviderSelect -->|Anthropic| CloudClient
+    ProviderSelect -->|Google| CloudClient
+    ProviderSelect -->|OpenRouter| CloudClient
+    ProviderSelect -->|Ollama| OllamaClient[Ollama Client - Direct API]
+
     %% LLM Response Processing
-    OpenAIClient --> LLMResponse[Process LLM Response]
-    AnthropicClient --> LLMResponse
-    GeminiClient --> LLMResponse
+    CloudClient --> LLMResponse[LLM Summary Response]
     OllamaClient --> LLMResponse
-    
+
     %% Timestamp Processing
-    LLMResponse --> TimestampCheck{Add Timestamps?}
-    TimestampCheck -->|No| TemplateApply[Apply Template]
+    LLMResponse --> TimestampCheck{Add Timestamp Links?}
+    TimestampCheck -->|No| TemplateApply[Apply Templater Template]
     TimestampCheck -->|Yes| ChunkContent[Create Optimized Chunks]
-    ChunkContent --> ProcessChunks[Process Each Chunk]
-    ProcessChunks --> AddTimestamps[Add Timestamp Links]
-    AddTimestamps --> ValidateLinks[Validate Generated Links]
-    ValidateLinks --> ReconstructDoc[Reconstruct Document]
+    ChunkContent --> AddTimestamps[LLM Adds TimeIndex Markers to Headings]
+    AddTimestamps --> ReconstructDoc[Reconstruct Document with Watch URL Links]
     ReconstructDoc --> TemplateApply
-    
+
     %% Final Note Creation
     DirectNote --> TemplateApply
-    TemplateApply --> CreateNote[Create Obsidian Note]
-    CreateNote --> PerformanceLog[Log Performance Metrics]
-    PerformanceLog --> Success[Success - Note Created]
-    
+    TemplateApply --> CreateNote[Create Note in Obsidian Vault]
+    CreateNote --> Success[Success - Note Created]
+    Success --> End([End])
+    FinalError --> End
+
     %% Batch Processing Flow
-    BatchFlow --> APIKeyCheck{YouTube API Key Set?}
+    BatchFlow --> APIKeyCheck{YouTube Data API Key Set?}
     APIKeyCheck -->|No| APIKeyError[Show API Key Required Error]
-    APIKeyCheck -->|Yes| FetchVideos[Fetch Channel/Playlist Videos]
-    FetchVideos --> BatchConfig[Configure Batch Settings]
-    BatchConfig --> ProcessingMode{Processing Mode}
-    ProcessingMode -->|Sequential| SequentialBatch[Process Videos in Sequence]
-    ProcessingMode -->|Parallel| ParallelBatch[Process Videos in Parallel]
-    SequentialBatch --> VideoLoop[For Each Video]
-    ParallelBatch --> VideoLoop
+    APIKeyCheck -->|Yes| FetchVideos[Fetch Channel/Playlist Videos via YouTube Data API v3]
+    FetchVideos --> VideoLoop[For Each Video in Collection]
     VideoLoop --> VideoFlow
-    
-    %% Error Handling
-    ErrorMsg --> UserAction
     APIKeyError --> Config
-    SmartRecovery --> ErrorAnalysis[Analyze Error Type]
-    ErrorAnalysis --> RetryStrategy[Determine Retry Strategy]
-    RetryStrategy --> MaxRetries{Max Retries Reached?}
-    MaxRetries -->|No| FallbackMethod
-    MaxRetries -->|Yes| FinalError[Show Final Error]
-    FinalError --> End([End])
-    
-    %% Performance Monitoring
-    PerformanceLog --> BottleneckCheck[Check for Bottlenecks]
-    BottleneckCheck --> OptimizationSugg[Generate Optimization Suggestions]
-    OptimizationSugg --> End
-    Success --> End
-    
+
     %% Styling
     style Start fill:#73daca,stroke:#73daca,color:#1a1b26
     style End fill:#73daca,stroke:#73daca,color:#1a1b26
@@ -131,136 +104,86 @@ flowchart TD
     style FinalError fill:#f7768e,stroke:#f7768e,color:white
     style LLMResponse fill:#bb9af7,stroke:#bb9af7,color:white
     style CreateNote fill:#ff9e64,stroke:#ff9e64,color:white
-    style SmartRecovery fill:#e0af68,stroke:#e0af68,color:white
+    style CloudClient fill:#bb9af7,stroke:#bb9af7,color:white
+    style OllamaClient fill:#e0af68,stroke:#e0af68,color:#1a1b26
 ```
 
 ## Workflow Overview
 
-The TubeSage workflow is designed for maximum flexibility and reliability across different platforms and use cases. The system intelligently adapts to user needs while providing robust error recovery and performance optimization.
+The TubeSage workflow processes YouTube content into structured Obsidian notes through a pipeline of transcript extraction, optional LLM summarization, and template application. The plugin requires Obsidian 1.11.4 or later and runs on both desktop and mobile.
 
 ### Key Workflow Features
 
-#### 🚀 **Setup and Configuration**
+#### **Setup and Configuration**
 - **License Validation**: Ensures user acceptance of MIT license before operation
-- **API Key Management**: Secure configuration of multiple LLM provider credentials
-- **Platform Detection**: Automatic detection and optimization for desktop vs mobile environments
-- **Settings Persistence**: All configurations are saved and restored between sessions
+- **API Key Management**: Cloud provider keys (OpenAI, Anthropic, Google, OpenRouter) are stored in Obsidian's native secret storage and never written to `data.json`. The Ollama server URL is the only LLM-related value stored in plugin data.
+- **Settings Persistence**: All non-secret configuration is saved to `data.json` and restored between sessions
 
-#### 🎯 **User Interaction Modes**
-- **Ribbon Interface**: Quick access via the YouTube icon in Obsidian's ribbon
+#### **User Interaction Modes**
+- **Ribbon Interface**: Quick access via the YouTube icon in Obsidian's left ribbon
 - **Command Palette**: Integration with Obsidian's command system for keyboard-driven workflows
-- **Direct URL Processing**: Seamless handling when users paste YouTube URLs directly
 
-#### 🔍 **Intelligent URL Processing**
-- **URL Validation**: Comprehensive validation ensuring only valid YouTube URLs are processed
+#### **Intelligent URL Processing**
+- **URL Validation**: Ensures only valid YouTube URLs are processed before any network request
 - **Type Detection**: Automatic identification of single videos vs channels/playlists
-- **Error Guidance**: Helpful error messages with specific solutions for common issues
+- **Error Guidance**: Error messages are shown inline in the modal
 
-#### 📱 **Cross-Platform Extraction**
-- **Desktop Optimization**: Full-featured extraction using standard web APIs
-- **Mobile Adaptation**: Specialized extraction methods optimized for iOS/Android limitations
-- **Fallback Systems**: Multiple extraction methods ensure high success rates
-- **Smart Recovery**: Intelligent retry mechanisms with parameter optimization
+#### **Cross-Platform Extraction**
+- **Unified Extractor**: `YouTubeTranscriptExtractor` handles both desktop and mobile — cross-platform HTTP is handled by the `obsidianFetch` shim wrapping Obsidian's `requestUrl`
+- **Fallback Systems**: Six extraction methods are tried in order — paid APIs (ScrapeCreators, Supadata) run only when their keys are configured; free methods (watch-page, ANDROID Player API, MWEB Player API, WEB innertube) are always attempted in sequence between them
 
-#### 🤖 **Advanced LLM Integration**
-- **Smart Model Selection**: AI-driven recommendations based on content complexity and length
-- **Unified Provider Interface**: Consistent experience across OpenAI, Anthropic, Google, and Ollama
-- **LangChain Integration**: Standardized API interface for cloud providers
-- **Local Processing**: Direct Ollama integration for privacy-focused users
+#### **LLM Integration**
+- **Cloud Providers**: OpenAI, Anthropic, Google, and OpenRouter are all dispatched through `LangChainClient`. Anthropic and Google use direct `obsidianFetch` calls internally to avoid SDK browser-detection issues; from the workflow's perspective they share the same dispatch path.
+- **Local Processing**: Ollama is handled separately via `OllamaClient` with a direct API call to the configured server URL
+- **Folder and Template Selection**: Output folder and Templater template are chosen from scoped subtree lists built by the `collectUnder` helper — no whole-vault enumeration
 
-#### ⏱️ **Intelligent Timestamp Processing**
-- **Optimized Chunking**: Smart content division to respect LLM token limits
-- **Heading Detection**: Automatic identification of section headings for timestamp placement
-- **Link Generation**: Creation of clickable YouTube timestamp links
-- **Validation System**: Comprehensive validation of generated links with retry mechanisms
-
-#### 📊 **Performance Monitoring**
-- **Real-time Metrics**: Continuous tracking of processing times across all components
-- **Bottleneck Detection**: Automatic identification of performance issues
-- **Optimization Suggestions**: AI-driven recommendations for performance improvements
-- **Component-level Tracking**: Separate metrics for extraction, LLM processing, and timestamp generation
+#### **Timestamp Processing**
+- **Optimized Chunking**: Content is split into chunks that respect LLM context limits
+- **TimeIndex Markers**: A second LLM pass adds `[TimeIndex:SECONDS]` markers to section headings
+- **Watch URL Conversion**: Markers are converted to clickable YouTube timestamp links during document reconstruction
 
 ### Workflow Phases
 
 #### **Phase 1: Initialization**
-1. Plugin loads and checks for proper configuration
-2. License acceptance validation
-3. API key verification for selected providers
-4. Platform detection and adaptation
-5. Performance monitoring initialization
+1. Plugin loads and migrates any cloud API keys from `data.json` into Obsidian secret storage
+2. Settings are loaded; cloud API keys are read back from secret storage into runtime memory
+3. License acceptance is verified
 
 #### **Phase 2: User Input**
-1. User selects input method (ribbon, command palette, or direct URL)
-2. URL input and validation
-3. URL type detection (single video vs batch processing)
-4. Configuration selection (summary mode, folder, etc.)
+1. User opens the modal via the ribbon icon or command palette
+2. URL is entered and validated
+3. URL type detection (single video vs channel/playlist)
 
 #### **Phase 3: Content Extraction**
-1. Platform-specific transcript extraction
-2. Multiple fallback methods for reliability
-3. Smart recovery system for failed extractions
-4. Video metadata extraction (title, description, duration)
+1. Transcript extracted from YouTube's internal caption API via `obsidianFetch`
+2. Up to six extraction methods tried in sequence — ScrapeCreators API (if key set), watch-page, ANDROID Player API, MWEB Player API, WEB innertube, Supadata API (if key set)
+3. Video metadata (title, description, duration) is extracted alongside the transcript
 
-#### **Phase 4: AI Processing**
-1. Smart model selection based on content analysis
-2. LLM provider initialization via factory pattern
-3. Content summarization with optimized prompts
-4. Response validation and quality checks
+#### **Phase 4: AI Processing** *(optional)*
+1. Selected LLM provider and model are read from settings
+2. API key is retrieved from runtime memory (loaded from secret storage at startup)
+3. `TranscriptSummarizer` dispatches to `LangChainClient` (cloud) or `OllamaClient` (local)
+4. LLM summary is returned as plain Markdown
 
-#### **Phase 5: Enhancement**
-1. Document component extraction (frontmatter, content)
-2. Optimized content chunking for timestamp processing
-3. Timestamp link generation and validation
-4. Document reconstruction with enhanced content
+#### **Phase 5: Timestamp Enhancement** *(optional)*
+1. Summary is split into optimized chunks using `createOptimizedChunks`
+2. Second LLM pass adds `TimeIndex` markers to section headings
+3. `convertTimeIndexToWatchUrls` replaces markers with YouTube watch URL links
+4. Document is reconstructed with `reconstructDocument`
 
 #### **Phase 6: Finalization**
-1. Template application via Templater integration
-2. Note creation in specified Obsidian folder
-3. Performance metrics logging
-4. Optimization suggestions generation
+1. Templater template is applied if configured
+2. Note is created in the selected output folder within the Obsidian vault
 
 ### Batch Processing Workflow
 
 #### **Collection Processing**
-1. YouTube API integration for channel/playlist data
-2. Video list extraction with quota management
-3. Processing mode selection (sequential vs parallel)
-4. Progress tracking and user feedback
+1. YouTube Data API v3 is called with the configured YouTube API key (stored in plugin settings, not secret storage)
+2. Channel or playlist videos are fetched with pagination support and a configurable safety limit
+3. Each video URL is fed sequentially through the single-video processing pipeline
 
-#### **Parallel Processing Features**
-- Configurable concurrency limits
-- Rate limiting to respect API quotas
-- Progress monitoring for multiple videos
-- Error isolation (single video failures don't stop batch)
+### Error Handling
 
-### Error Handling Strategy
-
-#### **Smart Recovery System**
-- **Error Classification**: Automatic categorization by type and severity
-- **Retry Logic**: Intelligent retry strategies with exponential backoff
-- **Parameter Adjustment**: Dynamic optimization between retry attempts
-- **Fallback Methods**: Alternative approaches when primary methods fail
-- **User Feedback**: Clear error messages with actionable solutions
-
-#### **Common Error Scenarios**
-- Network connectivity issues on mobile devices
-- API rate limiting and quota exhaustion
-- Invalid or unavailable YouTube content
-- LLM API failures and timeout handling
-- Template processing errors
-
-### Performance Optimization
-
-#### **Adaptive Processing**
-- Content complexity analysis for model selection
-- Platform-specific optimizations (mobile vs desktop)
-- Dynamic chunk size adjustment based on content length
-- Memory usage optimization for large transcripts
-
-#### **Monitoring and Analytics**
-- Real-time performance tracking
-- Historical performance data
-- Bottleneck identification and resolution
-- Optimization suggestions based on usage patterns
-
-This comprehensive workflow ensures that TubeSage provides a reliable, efficient, and user-friendly experience while maintaining high-quality output across all supported platforms and use cases.
+- Network and API errors surface as notices or inline error messages in the modal
+- Transcript extraction failures are retried through up to five additional methods (watch-page, ANDROID, MWEB, WEB innertube, Supadata) before surfacing an error to the user
+- LLM API errors are caught and displayed with provider-specific messaging

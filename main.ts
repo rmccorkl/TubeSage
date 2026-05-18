@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile, ToggleComponent } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, TFile, ToggleComponent, setTooltip } from 'obsidian';
 import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
@@ -4167,7 +4167,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         if (llmHeadingNameEl && llmHeadingNameEl.instanceOf(HTMLElement)) {
                 this.createInfoIcon(
                     llmHeadingNameEl,
-                    'Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality.'
+                    'Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.'
                 );
             }
 
@@ -5007,12 +5007,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
         // Add the SVG to the icon container
         infoIcon.appendChild(infoSvg);
         
-        // Add tooltip using pure CSS approach
-        infoIcon.setAttribute('data-tooltip', tooltipText);
-        infoIcon.addClass('tubesage-settings-info-icon-with-tooltip');
-        
-        // Provide native tooltip fallback
-        infoIcon.setAttr('title', tooltipText);
+        // Native Obsidian tooltip — renders reliably, positioned correctly,
+        // and works on mobile (unlike the prior hover-only CSS tooltip).
+        setTooltip(infoIcon, tooltipText, { placement: 'bottom' });
         
         return infoIcon;
     }
@@ -6339,6 +6336,91 @@ class TemplateViewModal extends Modal {
             contentEl.createDiv({
                 cls: 'tubesage-divider'
             });
+            
+            // Create a container for the copy button
+            const copyContainer = contentEl.createDiv({
+                cls: ['tubesage-template-view-copy-container', 'tubesage-row-end']
+            });
+            
+            // Add copy text
+            copyContainer.createSpan({ 
+                text: 'Copy template',
+                cls: 'tubesage-template-view-copy-text'
+            });
+            
+            // Copy icon button
+            const copyButton = copyContainer.createEl('button', {
+                cls: 'tubesage-icon-button' // Reuse existing class
+            });
+            
+            // Create an SVG for the copy icon
+            const svgNamespace = "http://www.w3.org/2000/svg";
+            const copySvg = activeDocument.createElementNS(svgNamespace, "svg");
+            copySvg.setAttrs({
+                viewBox: "0 0 24 24",
+                width: "16",
+                height: "16",
+                stroke: "currentColor",
+                fill: "none",
+                'stroke-width': "2",
+                'stroke-linecap': "round",
+                'stroke-linejoin': "round"
+            });
+
+            // Create the copy icon paths
+            const copyRect = activeDocument.createElementNS(svgNamespace, "rect");
+            copyRect.setAttrs({ x: "9", y: "9", width: "13", height: "13", rx: "2", ry: "2" });
+            copySvg.appendChild(copyRect);
+
+            const copyPath = activeDocument.createElementNS(svgNamespace, "path");
+            copyPath.setAttr("d", "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1");
+            copySvg.appendChild(copyPath);
+            
+            // Add the SVG to the button
+            copyButton.appendChild(copySvg);
+            
+            // Add hover effect
+            copyButton.addEventListener('mouseenter', () => {
+                copyButton.addClass('tubesage-icon-button-hover'); // Reuse hover class logic
+            });
+            
+            copyButton.addEventListener('mouseleave', () => {
+                copyButton.removeClass('tubesage-icon-button-hover'); // Reuse hover class logic
+            });
+            
+            // Make the text also clickable
+            const copyTextElement = copyContainer.querySelector('span');
+            
+            // Function to handle copy
+            const handleCopy = () => {
+                navigator.clipboard.writeText(templateContent)
+                    .then(() => {
+                        // Show success state
+                        if (copyTextElement) {
+                            const originalText = copyTextElement.textContent;
+                            copyTextElement.textContent = 'Copied';
+                            window.setTimeout(() => {
+                                copyTextElement.textContent = originalText;
+                            }, 2000);
+                        }
+                    })
+                    .catch(err => {
+                        logger.error('Failed to copy template:', err);
+                        // Show error state
+                        if (copyTextElement) {
+                            copyTextElement.textContent = 'Failed to copy';
+                            window.setTimeout(() => {
+                                copyTextElement.textContent = 'Copy template';
+                            }, 2000);
+                        }
+                    });
+            };
+            
+            // Add click handlers to both text and button
+            copyButton.addEventListener('click', handleCopy);
+            if (copyTextElement) {
+                copyTextElement.addEventListener('click', handleCopy);
+            }
             
             // Display the content with syntax highlighting
             templateContainer.createEl('pre', {

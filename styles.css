@@ -279,40 +279,6 @@
     filter: grayscale(30%);
 }
 
-.tubesage-settings-info-icon-with-tooltip {
-    position: relative;
-}
-
-.tubesage-settings-info-icon-with-tooltip::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    top: 100%;
-    left: 0%;
-    transform: translateX(-10%);
-    margin-top: var(--size-4-2);
-    z-index: 1000;
-    background-color: var(--background-secondary);
-    color: var(--text-normal);
-    padding: var(--size-4-2) var(--size-4-3);
-    border-radius: var(--radius-s);
-    font-size: 14px;
-    max-width: 300px;
-    box-shadow: var(--shadow-s);
-    pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s, visibility 0.2s;
-    white-space: normal;
-    width: max-content;
-    word-wrap: break-word;
-    line-height: 1.4;
-}
-
-.tubesage-settings-info-icon-with-tooltip:hover::after {
-    opacity: 1;
-    visibility: visible;
-}
-
 .tubesage-prompt-textarea.tubesage-prompt-textarea {
     width: 50%;
     flex: 0 0 50%;
@@ -378,6 +344,7 @@
 .tubesage-license-container {
     max-height: 500px;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     border: 1px solid var(--background-modifier-border);
     border-radius: var(--radius-s);
     margin-top: var(--size-4-2);
@@ -526,6 +493,7 @@
 .tubesage-readme-container {
     max-height: 550px;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     border: 1px solid var(--background-modifier-border);
     border-radius: var(--radius-s);
     margin-top: var(--size-4-2);
@@ -695,6 +663,7 @@
 .tubesage-template-view-container {
     max-height: 500px;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     padding: var(--size-4-5);
     border: 1px solid var(--background-modifier-border);
     border-radius: var(--radius-s);
@@ -706,6 +675,22 @@
 
 .tubesage-template-view-container-short {
     max-height: 250px;
+}
+
+.tubesage-template-view-copy-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-left: auto;
+    text-align: right;
+    margin-top: var(--size-4-2);
+    margin-bottom: var(--size-4-2);
+}
+
+.tubesage-template-view-copy-text {
+    font-size: 14px;
+    margin-right: var(--size-4-2);
+    cursor: pointer;
 }
 
 
