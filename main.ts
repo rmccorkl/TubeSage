@@ -1333,7 +1333,11 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 const frontmatterEnd = parsedContent.indexOf('---', 3);
                 if (frontmatterEnd !== -1) {
                     const frontmatter = parsedContent.substring(0, frontmatterEnd + 3);
-                    logger.debug(`Parsed frontmatter: ${frontmatter}`);
+                    // Truncate: the frontmatter embeds the full `transcript: |` field
+                    // (tens of thousands of chars). The debug value is confirming that
+                    // Templater substituted the fields — the first ~500 chars show that;
+                    // the transcript body is noise that historically flooded the log.
+                    logger.debug(`Parsed frontmatter: ${truncateForLogs(frontmatter, 500)}`);
                 }
             }
             
