@@ -26,7 +26,7 @@
     "@eslint/json": "0.14.0",
     "@types/express": "^5.0.3",
     "@types/node": "^24.3.0",
-    "esbuild": "^0.27.2",
+    "esbuild": "^0.28.1",
     "eslint": "^9.39.2",
     "eslint-plugin-no-unsanitized": "4.1.5",
     "eslint-plugin-obsidianmd": "0.3.0",
@@ -40,7 +40,7 @@
     "langsmith": ">=0.6.0",
     "fast-xml-parser": ">=5.7.0",
     "uuid": ">=14.0.0",
-    "fast-uri": ">=3.1.2"
+    "fast-uri": ">=3.1.4 <4"
   },
   "dependencies": {
     "@langchain/core": "^0.3.17",
