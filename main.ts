@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, ButtonComponent, TFile, ToggleComponent, setTooltip, setIcon } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, ButtonComponent, TFile, ToggleComponent, addIcon, removeIcon, setTooltip, setIcon } from 'obsidian';
 import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
@@ -29,6 +29,13 @@ import { getEffectiveLimits, isModelSupported, upsertModel } from './src/utils/m
 const logger = getLogger('PLUGIN');
 const transcriptLogger = getLogger('TRANSCRIPT');
 const llmLogger = getLogger('LLM');
+
+const TUBESAGE_RIBBON_ICON_ID = 'tubesage-video-sage';
+const TUBESAGE_RIBBON_ICON_SVG = `
+    <rect x="7" y="18" width="86" height="64" rx="15" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M35 35 C49 37 63 44 72 50 C63 59 49 66 35 68 C39 57 39 46 35 35 Z" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M39 52 H67" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+`;
 
 function truncateForLogs(text: string, maxLength: number = 500): string {
     if (!text) return '';
@@ -505,8 +512,12 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         this.addSettingTab(new YouTubeTranscriptSettingTab(this.app, this));
         this.checkDependencies();
 
+        // Register a plugin-owned SVG so the ribbon does not depend on Obsidian's built-in icon set.
+        addIcon(TUBESAGE_RIBBON_ICON_ID, TUBESAGE_RIBBON_ICON_SVG);
+        this.register(() => removeIcon(TUBESAGE_RIBBON_ICON_ID));
+
         // Add ribbon icon
-        this.addRibbonIcon('youtube', 'Tubesage: create note from YouTube transcript', () => {
+        this.addRibbonIcon(TUBESAGE_RIBBON_ICON_ID, 'Tubesage: create note from YouTube transcript', () => {
             // Check if license has been accepted
             if (!this.settings.licenseAccepted) {
                 // Show license required modal if not accepted
