@@ -21,6 +21,28 @@ import { existsSync, readFileSync, appendFileSync } from 'node:fs';
 const token = process.env.GH_TOKEN;
 const repo = process.env.GITHUB_REPOSITORY;
 const dryRun = process.env.DRY_RUN === 'true';
+// Whether a dedicated PAT is configured. The built-in GITHUB_TOKEN cannot reach the
+// Dependabot alerts API, so without a PAT this job SKIPS rather than fails - a failing
+// scheduled job emails the owner every week, which is the noise this workflow exists
+// to remove. With a PAT present, a 403 is a real misconfiguration and does fail.
+const hasPat = process.env.HAS_PAT === 'true';
+
+function exitOn403(what) {
+    if (!hasPat) {
+        console.log(
+            `Skipping: the built-in GITHUB_TOKEN cannot ${what} Dependabot alerts (HTTP 403).\n` +
+            'Add a fine-grained PAT with "Dependabot alerts: read and write" as the\n' +
+            'DEPENDABOT_TRIAGE_TOKEN repository secret to enable triage.'
+        );
+        process.exit(0);
+    }
+    console.error(
+        `HTTP 403 trying to ${what} Dependabot alerts, with DEPENDABOT_TRIAGE_TOKEN set.\n` +
+        'Check the token has repository permission "Dependabot alerts: read and write",\n' +
+        'covers this repository, and has not expired.'
+    );
+    process.exit(1);
+}
 
 if (!token || !repo) {
     console.error('GH_TOKEN and GITHUB_REPOSITORY must both be set.');
@@ -69,14 +91,7 @@ async function openAlerts() {
     let url = `https://api.github.com/repos/${repo}/dependabot/alerts?state=open&per_page=100`;
     while (url) {
         const res = await request(url);
-        if (res.status === 403) {
-            console.error(
-                'HTTP 403 reading Dependabot alerts.\n' +
-                'The token cannot access security alerts. Add a fine-grained PAT with\n' +
-                '"Dependabot alerts: read and write" as the DEPENDABOT_TRIAGE_TOKEN secret.'
-            );
-            process.exit(1);
-        }
+        if (res.status === 403) exitOn403('read');
         if (!res.ok) throw new Error(`GET alerts failed: ${res.status} ${await res.text()}`);
         alerts.push(...(await res.json()));
         url = /<([^>]+)>;\s*rel="next"/.exec(res.headers.get('link') ?? '')?.[1] ?? null;
@@ -110,15 +125,7 @@ for (const { number, name } of dismiss) {
                 'Dismissed automatically by .github/workflows/dependabot-triage.yml.',
         }),
     });
-    if (res.status === 403) {
-        console.error(
-            `HTTP 403 dismissing alert #${number}.\n` +
-            'The token lacks write access to Dependabot alerts. The built-in GITHUB_TOKEN may\n' +
-            'not be sufficient; add a fine-grained PAT with "Dependabot alerts: read and write"\n' +
-            'as the DEPENDABOT_TRIAGE_TOKEN repository secret.'
-        );
-        process.exit(1);
-    }
+    if (res.status === 403) exitOn403('dismiss');
     if (res.ok) dismissed++;
     else {
         failed++;

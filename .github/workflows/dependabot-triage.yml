@@ -45,4 +45,7 @@ jobs:
           # add a fine-grained PAT with "Dependabot alerts: read and write".
           GH_TOKEN: ${{ secrets.DEPENDABOT_TRIAGE_TOKEN || secrets.GITHUB_TOKEN }}
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          # Without this secret the job skips instead of failing, so a pending
+          # token does not produce a failure email every Monday.
+          HAS_PAT: ${{ secrets.DEPENDABOT_TRIAGE_TOKEN != '' }}
         run: node scripts/triage-dependabot.mjs
