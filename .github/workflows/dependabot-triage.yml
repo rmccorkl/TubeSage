@@ -1,0 +1,48 @@
+name: Dependabot alert triage
+
+# Dismisses Dependabot alerts for packages that cannot reach users, so a real
+# alert is not lost among them. See scripts/triage-dependabot.mjs for the rule.
+
+on:
+  schedule:
+    # Mondays, 06:17 UTC. Off the hour to avoid GitHub's scheduling pile-up.
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Report only, dismiss nothing"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  security-events: write
+
+concurrency:
+  group: dependabot-triage
+  cancel-in-progress: false
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+
+      # --ignore-scripts: the tree is only needed for `npm ls`, and postbuild
+      # shells out to fallow, which is not a devDependency.
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Triage alerts
+        env:
+          # Falls back to GITHUB_TOKEN. If that cannot write Dependabot alerts,
+          # add a fine-grained PAT with "Dependabot alerts: read and write".
+          GH_TOKEN: ${{ secrets.DEPENDABOT_TRIAGE_TOKEN || secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: node scripts/triage-dependabot.mjs
