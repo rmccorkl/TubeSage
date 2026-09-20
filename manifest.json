@@ -4,7 +4,7 @@
     "version": "1.4.8",
     "minAppVersion": "1.11.4",
     "description": "Create comprehensive notes from YouTube transcripts using LLMs.",
-    "author": "Richard McCorkle",
+    "author": "RM <whoami@neveryoumind.com>",
     "authorUrl": "https://github.com/rmccorkl",
     "isDesktopOnly": false
 } 

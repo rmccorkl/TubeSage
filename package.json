@@ -19,7 +19,7 @@
     "llm",
     "templater"
   ],
-  "author": "Richard McCorkle",
+  "author": "RM <whoami@neveryoumind.com>",
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "9.39.4",
