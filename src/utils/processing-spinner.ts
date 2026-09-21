@@ -46,6 +46,12 @@ export class ProcessingSpinner {
     }, SPINNER_INTERVAL_MS);
   }
 
+  /** Replaces the label after the prefix (e.g. from a job runner `progress` event) and redraws at once. */
+  setLabel(label: string): void {
+    this.currentLabel = label;
+    this.render();
+  }
+
   /** Removes the spinner and stops the animation. Safe to call more than once. */
   stop(): void {
     if (this.spinnerHandle !== null) {

@@ -8,6 +8,8 @@
 import { obsidianFetch } from "src/utils/fetch-shim";
 import { getLogger } from "src/utils/logger";
 import { getSafeErrorMessage } from "src/utils/error-utils";
+import { NoCaptionsError } from "src/utils/transcript-errors";
+export { NoCaptionsError };
 const transcriptLogger = getLogger("TRANSCRIPT");
 
 type UnknownRecord = Record<string, unknown>;
@@ -17,6 +19,20 @@ const isRecord = (value: unknown): value is UnknownRecord => {
 };
 
 const isString = (value: unknown): value is string => typeof value === 'string';
+
+// The extractor's own "this video has no usable captions" messages (fetchViaIosPlayer /
+// fetchCaptionTrack / the parsers). Everything else that ends the fallback chain — a
+// network failure during the caption fetch above all — is NOT a no-captions outcome.
+const NO_CAPTIONS_MESSAGES = [
+    'No captions available for this video',
+    'No suitable caption track with baseUrl found',
+    'Caption track returned empty response for all format attempts',
+    'No transcript segments parsed from caption track',
+    'Failed to parse XML captions: No text segments found'
+];
+
+const isNoCaptionsMessage = (message: string): boolean =>
+    NO_CAPTIONS_MESSAGES.some(known => message.includes(known));
 
 // YouTube InnerTube iOS player endpoint.
 // See docs/superpowers/specs/2026-05-18-transcript-fallback-ios-player-design.md
@@ -50,6 +66,15 @@ export interface TranscriptOptions {
     country?: string;
     supadataApiKey?: string;
     scrapcreatorsApiKey?: string;
+    /**
+     * Strict mode (the job runner's single-video path, #3 final review I2): when every method failed,
+     * NEVER return the `[TRANSCRIPT EXTRACTION FAILED: …]` marker segment. A genuine no-captions outcome
+     * rejects with NoCaptionsError (permanent for this video); anything else — a network failure during
+     * the caption fetch included — rejects with a plain Error that keeps the attempted-methods context,
+     * so the caller can treat it as transient. Without it, behaviour is unchanged (the legacy paths
+     * read the marker out of the transcript text).
+     */
+    strict?: boolean;
 }
 
 export interface TranscriptMetadata {
@@ -161,6 +186,13 @@ export class YouTubeTranscriptExtractor {
             const lastError = attempts[attempts.length - 1]?.error || 'Unknown error';
             transcriptLogger.error(`All transcript methods failed: ${attemptedMethods}`);
 
+            if (options.strict) {
+                if (isNoCaptionsMessage(lastError)) {
+                    throw new NoCaptionsError(`${lastError} (${attemptedMethods})`);
+                }
+                throw new Error(`All transcript extraction methods failed (${attemptedMethods}). Last error: ${lastError}`);
+            }
+
             if (metadata.title || metadata.author) {
                 transcriptLogger.debug('Returning metadata despite caption failure');
                 return {
@@ -179,11 +211,19 @@ export class YouTubeTranscriptExtractor {
             const errorMessage = getSafeErrorMessage(error);
             transcriptLogger.error('Error fetching transcript from YouTube:', errorMessage);
 
+            if (error instanceof NoCaptionsError) {
+                throw error; // strict mode's permanent outcome: never reworded into a network error
+            }
+
+            // Strict callers classify the rejection themselves and show it in a
+            // recovery UI, so the friendly text keeps the underlying detail.
+            const detail = options.strict ? ` (${errorMessage})` : '';
+
             if (errorMessage.includes('CORS') ||
                 errorMessage.includes('Cross-Origin') ||
                 errorMessage.includes('Access-Control-Allow-Origin')
             ) {
-                throw new Error('CORS policy blocked the request. Please try a different video or check your internet connection.');
+                throw new Error('CORS policy blocked the request. Please try a different video or check your internet connection.' + detail);
             }
 
             if (errorMessage.includes('network') ||
@@ -191,7 +231,7 @@ export class YouTubeTranscriptExtractor {
                 errorMessage.includes('connect') ||
                 errorMessage.includes('timeout')
             ) {
-                throw new Error('Network error while fetching transcript. Please check your internet connection.');
+                throw new Error('Network error while fetching transcript. Please check your internet connection.' + detail);
             }
 
             throw error;

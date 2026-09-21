@@ -24,6 +24,7 @@ declare module '@langchain/openai' {
             temperature?: number;
             maxTokens?: number;
             apiKey?: string;
+            maxRetries?: number;
         });
         invoke(messages: BaseMessageLike[]): Promise<unknown>;
     }

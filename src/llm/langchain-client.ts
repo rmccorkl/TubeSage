@@ -123,7 +123,11 @@ export class LangChainClient {
             ...(useMaxCompletionTokens
               ? { maxCompletionTokens: this.maxTokens }
               : { maxTokens: this.maxTokens }),
-            temperature: effectiveTemperature
+            temperature: effectiveTemperature,
+            // LangChain's AsyncCaller otherwise retries up to 6x on any non-4xx error, silently
+            // re-billing a completion the provider may already have served; the job runner owns
+            // retries explicitly.
+            maxRetries: 0
           });
           
           // TODO: Revisit this type casting when LangChain's type definitions are more stable
@@ -296,7 +300,11 @@ export class LangChainClient {
             ...routerConfig,
             modelName: this.model,
             maxTokens: this.maxTokens,
-            temperature: this.temperature
+            temperature: this.temperature,
+            // LangChain's AsyncCaller otherwise retries up to 6x on any non-4xx error, silently
+            // re-billing a completion the provider may already have served; the job runner owns
+            // retries explicitly.
+            maxRetries: 0
           });
 
           const response = await model.invoke(messages);

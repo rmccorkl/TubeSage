@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, ButtonComponent, TFile, ToggleComponent, addIcon, removeIcon, setTooltip, setIcon } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, Modal, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, ButtonComponent, TFile, ToggleComponent, addIcon, removeIcon, setTooltip, setIcon, normalizePath as obsidianNormalizePath } from 'obsidian';
 import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
@@ -24,11 +24,39 @@ import {
 } from './src/utils/timestamp-utils';
 import type { Provider } from './src/utils/model-limits-registry';
 import { getEffectiveLimits, isModelSupported, upsertModel } from './src/utils/model-limits-registry';
+import { effectiveTitle, formatDatePrefix } from './src/jobs/job-record';
+import type { NotePathSettings } from './src/jobs/job-record';
+import { JobStore, hydrate } from './src/jobs/job-store';
+import { JobRunner, NoteChangedError, isTerminal } from './src/jobs/job-runner';
+import type { JobEvent, SubmitInput, SubmitResult } from './src/jobs/job-runner';
+import { writeIfUnchanged } from './src/runtime/guarded-write';
+import { createRunnerDeps, generateOpaqueId } from './src/runtime/job-adapters';
+import type { RenderedNote, VaultLike } from './src/runtime/job-adapters';
+import { settingsForPersist } from './src/runtime/settings-persist';
+import { timestampPassFailure } from './src/runtime/timestamp-pass-policy';
+import type { TimestampPassOptions } from './src/runtime/timestamp-pass-policy';
+import { buildRecoveryRow, coldStartNoticeText, doneNoticeText, formatJobAge, recoveryNoticeText, shouldOpenRecoveryModal } from './src/runtime/recovery-ui-model';
+import type { RecoveryAction, RecoveryRowModel, RecoveryTrigger } from './src/runtime/recovery-ui-model';
 
 // Initialize logger here
 const logger = getLogger('PLUGIN');
 const transcriptLogger = getLogger('TRANSCRIPT');
 const llmLogger = getLogger('LLM');
+
+// Per-vault localStorage key for this installation's id (spec I3). Vault-scoped
+// and device-local by construction (App.loadLocalStorage/saveLocalStorage,
+// public since 1.8.7): the device's own id is never a data.json setting, so a
+// synced data.json cannot make two devices share one id. Job records carry the
+// id of the installation that created (or took over) them, which is how a cold
+// start tells its own dead runs from another device's possibly-live ones.
+const INSTALLATION_ID_STORAGE_KEY = 'tubesage-installation-id';
+
+// Messages carried by NoteChangedError from the guarded note writes (F5). The
+// legacy catch (timestampError) handlers show them verbatim (the translation
+// pass runs AFTER the timestamps were written, so a fixed "timestamps could
+// not be added" prefix would be wrong there).
+const NOTE_EDITED_DURING_TIMESTAMPS = 'The note was edited while timestamps were being added, so the timestamps were not applied';
+const NOTE_EDITED_DURING_TRANSLATION = 'The note was edited while it was being translated, so the translation was not applied';
 
 const TUBESAGE_RIBBON_ICON_ID = 'tubesage-video-sage';
 const TUBESAGE_RIBBON_ICON_SVG = `
@@ -48,6 +76,20 @@ interface FolderItem {
     path: string;
     name: string;
 }
+
+// Recovery entry points (spec §6). The visibility edge is best effort and
+// debounced so a burst of app-switch events runs one pass, not several.
+const VISIBILITY_RECOVERY_DEBOUNCE_MS = 2000;
+// How many finished jobs the recovery modal keeps listing for status visibility.
+const RECENT_TERMINAL_JOBS_SHOWN = 5;
+
+/** One row of the recovery modal: the pure UI model plus the epoch its age is computed from. */
+interface RecoveryRowEntry {
+    row: RecoveryRowModel;
+    updatedAt: number;
+}
+
+type JobEventListener = (event: JobEvent) => void;
 
 interface Closeable {
     close: () => void;
@@ -472,6 +514,31 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     settings: YouTubeTranscriptSettings;
     private summarizer: TranscriptSummarizer;
     private fileWatcher: Closeable | null = null;
+    // Owns every data.json write (settings AND job records) through one
+    // serialized writer; constructed in loadSettings() before any persist().
+    private jobStore: JobStore;
+    // The single-video modal submits to it; the recovery modal, the
+    // `show-active-jobs` command and the three recovery entry points
+    // (cold start, visibility edge, manual) act on it.
+    jobRunner: JobRunner;
+    // Jobs submitted by THIS process: only these may auto-open their note on
+    // `done` (spec §5 F5 — recovered jobs never do).
+    private readonly sessionJobIds = new Set<string>();
+    // Fan-out of runner events to UI subscribers (modals, spinners).
+    private readonly jobEventListeners = new Set<JobEventListener>();
+    // Desktop status-bar spinners keyed by job id (the plugin owns them: the
+    // modal is closed as soon as the job starts). Mobile spinners live in the
+    // modal and are stopped there.
+    private readonly jobSpinners = new Map<string, ProcessingSpinner>();
+    // Cold start (onLayoutReady) must be the FIRST recovery pass; until it
+    // has run, visibility edges are ignored.
+    private layoutReady = false;
+    private visibilityRecoveryTimer: number | null = null;
+    private recoveryModal: JobRecoveryModal | null = null;
+    // Every mobile processing modal left open over a running job (spinner
+    // interval + event subscription): all closed on unload like recoveryModal.
+    // A Set, not a slot — several videos can be processing at once (M5).
+    private readonly processingModals = new Set<YouTubeTranscriptModal>();
 
     // Replace the duplicated showNotice method with a wrapper that calls the shared utility
     showNotice(message: string, timeout: number = 5000): void {
@@ -484,7 +551,42 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     }
 
     async onload() {
+        // loadSettings() must run first: it hydrates the job records out of
+        // data.json and builds the serialized store that every later
+        // persist() — including the legacy maxTokens migration write just
+        // below — goes through. Writing before that would drop `_jobs`.
         await this.loadSettings();
+
+        this.jobRunner = new JobRunner(
+            createRunnerDeps(this, this.jobStore, (event) => this.onJobEvent(event), {
+                vault: this.runnerVault(),
+                // Obsidian's normalizePath (NFC, NBSP, slashes): the ONE normalizer
+                // every stored or compared note path goes through, the same one
+                // renderNoteContent applies to the rendered path.
+                normalizePath: (path) => obsidianNormalizePath(path),
+                installationId: () => this.installationId(),
+            })
+        );
+
+        // Recovery entry points (spec §6). Cold start FIRST: onLayoutReady runs
+        // the pass that closes every job the previous process left unfinished
+        // (a job dies with its instance); `layoutReady` gates the visibility
+        // edge until then.
+        this.app.workspace.onLayoutReady(() => {
+            void this.recoverJobs('startup');
+        });
+        this.registerDomEvent(activeDocument, 'visibilitychange', () => {
+            if (activeDocument.visibilityState === 'visible') {
+                this.scheduleVisibilityRecovery();
+            }
+        });
+        this.addCommand({
+            id: 'show-active-jobs',
+            name: 'Show active jobs',
+            callback: () => {
+                void this.recoverJobs('manual');
+            }
+        });
         
         // Set appropriate max tokens based on current provider and model using registry
         const effectiveMaxTokens = this.getEffectiveMaxTokens();
@@ -569,6 +671,29 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     onunload() {
         logger.debug('Unloading youtube transcript plugin');
         
+        // Stop every runner timer and fence in-process runs; persisted
+        // status is untouched, the next cold start closes them (app-closed).
+        // (Optional chaining: onload may have failed before the runner existed.)
+        this.jobRunner?.stopAll();
+        if (this.visibilityRecoveryTimer !== null) {
+            window.clearTimeout(this.visibilityRecoveryTimer);
+            this.visibilityRecoveryTimer = null;
+        }
+        for (const spinner of this.jobSpinners.values()) {
+            spinner.stop();
+        }
+        this.jobSpinners.clear();
+        // A stale recovery modal could still reach resume/cancel/discard
+        // (their store writes precede the runner's fence): close it.
+        this.recoveryModal?.close();
+        this.recoveryModal = null;
+        // Snapshot first: each close() untracks itself from the set.
+        for (const modal of Array.from(this.processingModals)) {
+            modal.close();
+        }
+        this.processingModals.clear();
+        this.jobEventListeners.clear();
+
         // Clean up file watcher if it exists
         if (this.fileWatcher) {
             try {
@@ -643,11 +768,24 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         logger.debug('[SETTINGS DEBUG] Loaded data from storage:', loadedData);
         logger.debug('[SETTINGS DEBUG] DEFAULT_SETTINGS.selectedLLM:', DEFAULT_SETTINGS.selectedLLM);
 
-        const loadedSettings: Partial<YouTubeTranscriptSettings> = isRecord(loadedData)
-            ? loadedData
-            : {};
+        // hydrate() splits the reserved `_jobs` key out of data.json; what is
+        // left is the settings payload (never carrying `_jobs`).
+        const { settings: hydratedSettings, jobs, dropped } = hydrate(loadedData);
+        const loadedSettings: Partial<YouTubeTranscriptSettings> = hydratedSettings;
 
         this.settings = { ...DEFAULT_SETTINGS, ...loadedSettings };
+
+        // The store must exist before the first persist() below (the two
+        // migrations in this method write, and so does onload's maxTokens
+        // migration): every settings write is a store flush from here on.
+        this.jobStore = new JobStore(
+            { loadData: () => this.loadData(), saveData: (data) => this.saveData(data) },
+            () => this.settingsForPersist()
+        );
+        this.jobStore.load(jobs);
+        if (dropped > 0) {
+            logger.warn(`[jobs] Dropped ${dropped} invalid job record(s) from data.json`);
+        }
         
         logger.debug('[SETTINGS DEBUG] Final settings.selectedLLM:', this.settings.selectedLLM);
         logger.debug('[SETTINGS DEBUG] All settings keys:', Object.keys(this.settings));
@@ -727,15 +865,317 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     }
 
     /**
-     * Persist settings to data.json with cloud-provider API keys stripped out.
-     * Cloud keys live in Obsidian secret storage, never in data.json.
+     * The settings payload for data.json with cloud-provider API keys stripped out.
+     * Cloud keys live in Obsidian secret storage, never in data.json. The job
+     * store calls this at flush time and adds the `_jobs` key itself. The
+     * stripping is the pure, tested `settingsForPersist` (src/runtime).
      */
+    private settingsForPersist(): Record<string, unknown> {
+        return settingsForPersist(this.settings, DEFAULT_SETTINGS.apiKeys.ollama);
+    }
+
+    /** Persist settings (and job records) to data.json through the store's serialized writer. */
     private async persist(): Promise<void> {
-        const sanitizedApiKeys: Record<string, string> = {
-            ollama: this.settings.apiKeys.ollama ?? DEFAULT_SETTINGS.apiKeys.ollama,
+        await this.jobStore.flush();
+    }
+
+    // The three Vault calls the runner may make, with the TFile check kept
+    // here so src/runtime never imports `obsidian`.
+    private runnerVault(): VaultLike<TFile> {
+        return {
+            getFile: (path) => {
+                const file = this.app.vault.getAbstractFileByPath(path);
+                return file instanceof TFile ? file : null;
+            },
+            read: (file) => this.app.vault.read(file),
+            create: (path, content) => this.app.vault.create(path, content),
         };
-        const toSave = { ...this.settings, apiKeys: sanitizedApiKeys };
-        await this.saveData(toSave);
+    }
+
+    // The stable id of this device + vault, created once and kept in the
+    // vault's localStorage (never in data.json). Only this installation's
+    // jobs are listed, recovered or closed here; a synced record from another
+    // installation is ignored (it is that device's job).
+    private cachedInstallationId: string | null = null;
+
+    private installationId(): string {
+        if (this.cachedInstallationId !== null) {
+            return this.cachedInstallationId;
+        }
+        const stored: unknown = this.app.loadLocalStorage(INSTALLATION_ID_STORAGE_KEY);
+        if (typeof stored === 'string' && stored !== '') {
+            this.cachedInstallationId = stored;
+            return stored;
+        }
+        const generated = generateOpaqueId();
+        this.app.saveLocalStorage(INSTALLATION_ID_STORAGE_KEY, generated);
+        this.cachedInstallationId = generated;
+        return generated;
+    }
+
+    /** Is the note template renderable right now: Templater loaded and the configured template file present. */
+    canRenderNote(): boolean {
+        if (getTemplaterPlugin(this.app) === null) {
+            return false;
+        }
+        const templateFile = this.app.vault.getAbstractFileByPath(normalizePath(this.settings.templaterTemplateFile));
+        return templateFile instanceof TFile;
+    }
+
+    // ---- jobs: submit, events, recovery ------------------------------------
+
+    /**
+     * Submits a single-video job and remembers it as this session's, which is what allows its note to
+     * auto-open on `done`. Rejects only when the store failed to flush the new record: the run has
+     * already started by then (runner contract), so callers must not assume nothing is running.
+     */
+    async submitJob(input: SubmitInput): Promise<SubmitResult> {
+        const result = await this.jobRunner.submit(input);
+        if (result.kind === 'started') {
+            this.sessionJobIds.add(result.id);
+        }
+        return result;
+    }
+
+    /** Mobile: remembers a processing modal left open over a job so onunload can close every one of them. */
+    trackProcessingModal(modal: YouTubeTranscriptModal): void {
+        this.processingModals.add(modal);
+    }
+
+    untrackProcessingModal(modal: YouTubeTranscriptModal): void {
+        this.processingModals.delete(modal);
+    }
+
+    /** Subscribes to runner events; returns the unsubscribe function. */
+    subscribeToJobEvents(listener: JobEventListener): () => void {
+        this.jobEventListeners.add(listener);
+        return () => {
+            this.jobEventListeners.delete(listener);
+        };
+    }
+
+    /**
+     * Desktop: the modal closes as soon as the job starts, so the plugin owns the status-bar spinner
+     * and stops it on the job's terminal event. (Mobile spinners live in the modal.)
+     */
+    trackJobInStatusBar(id: string): void {
+        if (this.jobSpinners.has(id)) {
+            return;
+        }
+        const spinner = new ProcessingSpinner(this, 'Processing video', createDiv());
+        spinner.start();
+        this.jobSpinners.set(id, spinner);
+    }
+
+    private stopJobSpinner(id: string): void {
+        const spinner = this.jobSpinners.get(id);
+        if (spinner !== undefined) {
+            spinner.stop();
+            this.jobSpinners.delete(id);
+        }
+    }
+
+    // Runner events: the plugin's own policy first (notices, note opening,
+    // spinners, the debug note), then the UI subscribers.
+    private onJobEvent(event: JobEvent): void {
+        switch (event.type) {
+            case 'progress':
+                logger.debug(`[jobs] ${event.id} ${event.stage}: ${event.message}`);
+                this.jobSpinners.get(event.id)?.setLabel(event.message);
+                break;
+            case 'done':
+                logger.info(`[jobs] ${event.id} done: ${event.notePath}`);
+                this.stopJobSpinner(event.id);
+                this.showNotice(doneNoticeText(event), 5000);
+                // Auto-open ONLY for a job submitted in this session while the
+                // app is visible; a recovered job never opens its note (F5).
+                if (this.sessionJobIds.has(event.id) && activeDocument.visibilityState === 'visible') {
+                    void this.openNote(event.notePath);
+                }
+                this.sessionJobIds.delete(event.id);
+                break;
+            case 'failed':
+                logger.error(`[jobs] ${event.id} failed: ${event.error}`);
+                this.stopJobSpinner(event.id);
+                this.sessionJobIds.delete(event.id);
+                this.showNotice(`Error: ${event.error}`, 5000);
+                if (this.settings.debugLogging) {
+                    const record = this.jobStore.get(event.id);
+                    if (record !== undefined) {
+                        void this.writeErrorDebugNote(
+                            effectiveTitle(record) ?? 'Failed Youtube transcript',
+                            record.url,
+                            record.folder,
+                            event.error
+                        );
+                    }
+                }
+                break;
+            case 'cancelled':
+                logger.info(`[jobs] ${event.id} cancelled`);
+                this.stopJobSpinner(event.id);
+                this.sessionJobIds.delete(event.id);
+                this.showNotice('Processing cancelled', 3000);
+                break;
+            case 'interrupted':
+                logger.warn(`[jobs] ${event.id} interrupted`, event.prompt);
+                this.stopJobSpinner(event.id);
+                // From here on the job is a recovered one even if it was
+                // submitted in this session: a later resume must not auto-open.
+                this.sessionJobIds.delete(event.id);
+                this.showNotice('Processing was interrupted; resume it from "Show active jobs"', 6000);
+                break;
+        }
+        for (const listener of Array.from(this.jobEventListeners)) {
+            try {
+                listener(event);
+            } catch (error) {
+                logger.error('[jobs] event listener failed:', error);
+            }
+        }
+    }
+
+    async openNote(notePath: string): Promise<void> {
+        try {
+            const file = this.app.vault.getAbstractFileByPath(notePath);
+            if (!(file instanceof TFile)) {
+                logger.warn(`[jobs] Note not found for opening: ${notePath}`);
+                return;
+            }
+            await this.app.workspace.getLeaf(true).openFile(file);
+        } catch (error) {
+            logger.error('[jobs] Could not open the note:', error);
+        }
+    }
+
+    /**
+     * Legacy debug-on-failure behaviour (extracted from the old modal's catch): when debug logging is
+     * on, a failed run leaves an error note carrying the captured logs so the failure can be diagnosed.
+     */
+    private async writeErrorDebugNote(title: string, url: string, folder: string, message: string): Promise<void> {
+        try {
+            const finalLogs = getLogsForCallout();
+            let errorContent = `# ${title}\n\n`;
+            errorContent += `**Error occurred during processing:**\n\n`;
+            errorContent += `> [!error] Processing Failed\n`;
+            errorContent += `> ${message}\n\n`;
+            errorContent += `**URL:** ${url}\n\n`;
+            if (finalLogs && finalLogs.trim() !== "") {
+                // Use the exact same format as successful notes
+                const debugHeader = "\n\n> [!info]- Debug Information (hidden)\n> ```";
+                const debugFooter = "\n> ```";
+                errorContent += debugHeader + "\n" + finalLogs + debugFooter;
+            }
+            const fileName = sanitizeFilename(title) + '.md';
+            const notePath = normalizePath(joinPaths(folder, fileName));
+            await this.app.vault.create(notePath, errorContent);
+            this.showNotice(`Error note created with debug information: ${fileName}`, 8000);
+        } catch (noteError) {
+            logger.error('Failed to create error note:', noteError);
+            this.showNotice(`Error: ${message} (Also failed to create debug note)`, 5000);
+        }
+    }
+
+    // Visibility edge (best effort, spec §6): debounced, and ignored until the
+    // cold-start pass has run so it can never be the first pass.
+    private scheduleVisibilityRecovery(): void {
+        if (!this.layoutReady) {
+            return;
+        }
+        if (this.visibilityRecoveryTimer !== null) {
+            window.clearTimeout(this.visibilityRecoveryTimer);
+        }
+        this.visibilityRecoveryTimer = window.setTimeout(() => {
+            this.visibilityRecoveryTimer = null;
+            void this.recoverJobs('visible');
+        }, VISIBILITY_RECOVERY_DEBOUNCE_MS);
+    }
+
+    /**
+     * One recovery pass. `startup` is the cold-start pass: the jobs the previous process left
+     * unfinished are closed (a job dies with its instance) and reported in ONE Notice, never a modal;
+     * the other triggers classify only. The Notice/modal policy is the pure `shouldOpenRecoveryModal`:
+     * a visibility edge never pops a modal over whatever the user was doing.
+     */
+    private async recoverJobs(trigger: RecoveryTrigger): Promise<void> {
+        let promptCount: number;
+        try {
+            const prompts = await this.jobRunner.recoverAll(trigger === 'startup' ? { coldStart: true } : {});
+            promptCount = prompts.length;
+        } catch (error) {
+            logger.error(`[jobs] Recovery pass (${trigger}) failed:`, error);
+            this.showNotice(`Could not check for interrupted jobs: ${getSafeErrorMessage(error)}`, 6000);
+            return;
+        } finally {
+            // In `finally`, not after the try/catch: a pass that throws partway through still closes
+            // some records before it fails (closeOwnRuns persists each closure as it happens), and
+            // those closures deserve their Notice regardless (#3 batch G item 5).
+            if (trigger === 'startup') {
+                this.layoutReady = true;
+                const closedNotice = coldStartNoticeText(this.jobRunner.drainClosedOnColdStart());
+                if (closedNotice !== undefined) {
+                    this.showNotice(closedNotice, 8000);
+                }
+            }
+        }
+        const notice = recoveryNoticeText(promptCount);
+        if (notice !== undefined) {
+            this.showNotice(notice, 8000);
+        }
+        if (shouldOpenRecoveryModal(trigger, promptCount)) {
+            this.openRecoveryModal();
+        }
+    }
+
+    /**
+     * Opens the recovery modal, or refreshes the one already open (startup + command must not stack
+     * two). `highlightId` marks and scrolls to one job's row (a submit that hit an existing job).
+     */
+    openRecoveryModal(highlightId?: string): void {
+        if (this.recoveryModal !== null) {
+            this.recoveryModal.highlight(highlightId);
+            void this.recoveryModal.refresh();
+            return;
+        }
+        const modal = new JobRecoveryModal(this.app, this, () => {
+            if (this.recoveryModal === modal) {
+                this.recoveryModal = null;
+            }
+        });
+        modal.highlight(highlightId);
+        this.recoveryModal = modal;
+        modal.open();
+    }
+
+    /**
+     * Rows for the recovery modal: every non-terminal record plus the most recent finished ones, each
+     * rendered from the pure UI model and the runner's read-only prompt. Wording and button sets are
+     * never derived here.
+     */
+    async recoveryRows(): Promise<RecoveryRowEntry[]> {
+        const records = this.jobStore.list();
+        const active = records.filter((record) => !isTerminal(record));
+        const recent = records
+            .filter((record) => isTerminal(record))
+            .sort((a, b) => b.updatedAt - a.updatedAt)
+            .slice(0, RECENT_TERMINAL_JOBS_SHOWN);
+        const entries: RecoveryRowEntry[] = [];
+        for (const record of [...active, ...recent]) {
+            const prompt = await this.jobRunner.promptFor(record.id);
+            if (prompt === undefined) {
+                continue; // discarded while we were probing
+            }
+            const noteExists =
+                record.notePath !== undefined && this.app.vault.getAbstractFileByPath(record.notePath) instanceof TFile;
+            // Wording only (#3 batch G item 7), never proof: a note-creating-window job never learned
+            // whether its claimed path landed, so this never gates Open note (noteExists does that).
+            const noteMayExist =
+                record.notePath === undefined &&
+                record.claimedNotePath !== undefined &&
+                this.app.vault.getAbstractFileByPath(record.claimedNotePath) instanceof TFile;
+            entries.push({ row: buildRecoveryRow(record, prompt, noteExists, noteMayExist), updatedAt: record.updatedAt });
+        }
+        return entries;
     }
 
     async saveSettings() {
@@ -752,6 +1192,29 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         return await this.extractTranscriptsWithMetadata([videoUrl]).then(results => results[0]);
     }
     
+    /**
+     * Strict single-URL extraction for the job runner: the same fetch + YAML formatting as the batch
+     * path, but NOTHING is swallowed — a network error, a timeout or an invalid URL rejects as-is so
+     * the runner can classify it (transient → interrupted, resumable) instead of reading a folded
+     * `[TRANSCRIPT EXTRACTION FAILED: …]` marker as a permanent no-captions outcome.
+     */
+    async extractTranscriptStrict(videoUrl: string): Promise<{transcript: string, metadata: {title?: string, author?: string}}> {
+        const videoId = YouTubeTranscriptExtractor.extractVideoId(videoUrl);
+        if (!videoId) {
+            throw new Error(`Invalid youtube URL: '${videoUrl}'. Please ensure the URL is properly formatted without extra characters like quotes.`);
+        }
+        const result = await YouTubeTranscriptExtractor.fetchTranscript(videoId, {
+            lang: this.settings.translateLanguage,
+            country: this.settings.translateCountry,
+            supadataApiKey: this.settings.supadataApiKey || undefined,
+            scrapcreatorsApiKey: this.settings.scrapcreatorsApiKey || undefined,
+            // Never the folded marker: no captions → NoCaptionsError, a
+            // caption-fetch network failure → a plain Error (I2).
+            strict: true
+        });
+        return { transcript: this.formatTranscriptForYaml(result.segments), metadata: result.metadata };
+    }
+
     async extractTranscriptsWithMetadata(videoUrls: string[]): Promise<Array<{transcript: string, metadata: {title?: string, author?: string}}>> {
         try {
             transcriptLogger.debug(`Starting transcript extraction for ${videoUrls.length} URLs`);
@@ -955,13 +1418,17 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         ].join(':');
     }
 
-    async summarizeTranscript(transcript: string): Promise<string> {
+    /**
+     * `useFastSummary` is the job record's frozen flag when called by the runner; legacy callers
+     * (collections) omit it and get the live setting.
+     */
+    async summarizeTranscript(transcript: string, useFastSummary: boolean = this.settings.useFastSummary): Promise<string> {
         try {
             // Clean the transcript using our utility function
             const cleanedTranscript = cleanTranscript(transcript);
             
-            // Determine which prompt to use based on settings
-            const summaryMode = this.settings.useFastSummary ? SummaryMode.FAST : SummaryMode.EXTENSIVE;
+            // Determine which prompt to use: the caller's mode (record-scoped for jobs)
+            const summaryMode = useFastSummary ? SummaryMode.FAST : SummaryMode.EXTENSIVE;
             
             // Get the prompt configuration with dynamic max tokens
             const promptConfig = getPromptConfig(this.settings, summaryMode, this.getEffectiveMaxTokens());
@@ -1065,311 +1532,302 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             // If using Anthropic provider and fast summary mode or not adding timestamp links,
             // log information about completion
             if (this.settings.selectedLLM === 'anthropic' && 
-                (this.settings.useFastSummary || !this.settings.addTimestampLinks)) {
+                (useFastSummary || !this.settings.addTimestampLinks)) {
                 llmLogger.info('[summarizeTranscript] Completed Anthropic processing (fast summary or no timestamp links)');
             }
         }
     }
 
-    async applyTemplate(title: string, videoUrl: string, transcript: string, summary: string, folder?: string, _contentType?: string): Promise<void> {
-        // Check if Templater plugin is available
+    /**
+     * Renders the note (Templater lookup through parsed content) and derives its path, creating the
+     * folder if needed — but writes nothing. `createdAt` is the SOLE source of the date prefix
+     * (`formatDatePrefix`), so callers that later need the path again must pass the same epoch.
+     * Throws when Templater is unavailable or the template file is missing.
+     */
+    async renderNoteContent(title: string, videoUrl: string, transcript: string, summary: string, folder: string, createdAt: number, notePathSettings?: NotePathSettings): Promise<RenderedNote> {
         const templaterPlugin = getTemplaterPlugin(this.app);
-        
         if (!templaterPlugin) {
+            throw new Error('Templater plugin is required but not installed or enabled.');
+        }
+
+        // Get the Templater instance
+        const templater = templaterPlugin.templater;
+
+        // Sanitize the title for use as a filename
+        const sanitizedTitle = sanitizeFilename(title);
+
+        // Normalize video URL data for templating (e.g., shorts/playlist URLs)
+        const videoId = YouTubeTranscriptExtractor.extractVideoId(videoUrl);
+        const watchUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : videoUrl;
+        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
+
+        // Date prefix from the captured epoch, never from the clock here, and
+        // from the job's FROZEN settings when the runner passes them (F1/F4):
+        // a toggle flipped mid-job must not move the note. Legacy callers
+        // (collections) omit them and get the live settings.
+        const datePrefix = formatDatePrefix(createdAt, notePathSettings ?? this.settings);
+        // REDO THE TRANSCRIPT FORMATTING FOR YAML
+        // We'll re-process the transcript no matter what format it's in
+        logger.debug("Processing transcript for YAML format");
+        
+        // Format the transcript with original timestamps preserved
+        let formattedTranscript = "";
+        
+        // Check if the transcript already has timestamps in format [HH:MM:SS]
+        if (transcript.includes('[00:') || transcript.includes('[01:') || transcript.match(/\[\d{2}:\d{2}:\d{2}\]/)) {
+            logger.debug("Transcript contains timestamps, organizing into ≥60 second blocks");
+            
+            // Split the transcript into lines
+            const originalLines = transcript.split('\n').filter(line => line.trim().length > 0);
+            
+            // Parse each line with its timestamp
+            const parsedLines: {timestamp: string, seconds: number, text: string}[] = [];
+            
+            originalLines.forEach(line => {
+                // Look for timestamp pattern [HH:MM:SS]
+                const timestampMatch = line.match(/^\s*\[(\d{2}:\d{2}:\d{2})\]\s*(.*)/);
+                
+                if (timestampMatch) {
+                    const timestamp = timestampMatch[1];
+                    let text = timestampMatch[2].trim();
+                    
+                    // Remove any escaped backslashes from TimeIndex markers
+                    text = text.replace(/\[TimeIndex\\?:(\d+)\]/g, '[TimeIndex:$1]');
+                    
+                    // Convert timestamp to seconds for comparison
+                    const parts = timestamp.split(':').map(Number);
+                    const seconds = (parts[0] * 3600) + (parts[1] * 60) + parts[2];
+                    
+                    parsedLines.push({
+                        timestamp,
+                        seconds,
+                        text
+                    });
+                } else if (line.trim().length > 0) {
+                    // Handle lines without timestamps - append to the last segment if it exists
+                    if (parsedLines.length > 0) {
+                        // Add this content to the last parsed line
+                        parsedLines[parsedLines.length - 1].text += ' ' + line.trim();
+                    } else {
+                        // If no timestamps yet, create a placeholder entry for time 0
+                        parsedLines.push({
+                            timestamp: '00:00:00',
+                            seconds: 0,
+                            text: line.trim()
+                        });
+                    }
+                }
+            });
+            
+            // Group lines into blocks of ≥60 seconds
+            const segments: {timestamp: string, text: string}[] = [];
+            
+            // Process lines into segments
+            if (parsedLines.length > 0) {
+                // Sort parsed lines by seconds to ensure chronological order
+                parsedLines.sort((a, b) => a.seconds - b.seconds);
+                
+                // Initialize with the first line
+                let segmentTimestamp = parsedLines[0].timestamp;
+                let segmentStartSeconds = parsedLines[0].seconds;
+                let segmentLines: string[] = [parsedLines[0].text];
+                
+                // Process remaining lines
+                for (let i = 1; i < parsedLines.length; i++) {
+                    const line = parsedLines[i];
+                    
+                    // If this line is at least 60 seconds from the start of current segment,
+                    // finalize the current segment and start a new one
+                    if (line.seconds - segmentStartSeconds >= 60) {
+                        // Add completed segment
+                        segments.push({
+                            timestamp: segmentTimestamp,
+                            text: segmentLines.join(' ')
+                        });
+                        
+                        // Start a new segment - ALWAYS use the actual timestamp from the current line
+                        segmentTimestamp = line.timestamp;
+                        segmentStartSeconds = line.seconds;
+                        segmentLines = [line.text];
+                    } else {
+                        // Add to current segment
+                        segmentLines.push(line.text);
+                    }
+                }
+                
+                // Add the final segment if it has any content
+                if (segmentLines.length > 0) {
+                    segments.push({
+                        timestamp: segmentTimestamp,
+                        text: segmentLines.join(' ')
+                    });
+                }
+            }
+            
+            logger.debug(`Organized ${originalLines.length} lines into ${segments.length} ≥60-second blocks`);
+            
+            // Format segments for YAML frontmatter
+            segments.forEach(segment => {
+                // Convert timestamp to seconds using our custom function
+                const timeIndex = convertTimestampToSeconds(segment.timestamp);
+                
+                // Create the TimeIndex marker with unescaped colon
+                const timeIndexMarker = `[TimeIndex:${timeIndex}]`;
+                
+                // Handle text content 
+                let textContent = segment.text;
+                
+                // Remove any existing TimeIndex markers from the text
+                const timeIndexRegex = /\[TimeIndex:(\d+)\]/g;
+                textContent = textContent.replace(timeIndexRegex, '');
+                
+                // Only escape colons in the text content
+                const escapedText = textContent.replace(/:/g, "\\:");
+                
+                // Position the TimeIndex marker right after the timestamp
+                formattedTranscript += `    [${segment.timestamp}] ${timeIndexMarker} ${escapedText}\n`;
+            });
+        } else {
+            logger.debug("Transcript does not contain timestamps");
+            
+            // Provide a warning message in the transcript text
+        formattedTranscript = "    [ERROR] No timestamps found in transcript. Please ensure the Youtube transcript contains timestamps.";
+            
+            // Show an error notice
+            this.showNotice("Warning: No timestamps found in transcript. Timestamps are required for proper processing.", 5000);
+        }
+        
+        // Now use this properly formatted transcript
+        transcript = formattedTranscript;
+        
+        // Final cleanup - ensure all TimeIndex markers are unescaped
+        transcript = transcript.replace(/\[TimeIndex\\:(\d+)\]/g, '[TimeIndex:$1]');
+        
+        // Normalize the folder path
+        const normalizedFolder = normalizePath(folder || '');
+        
+        // Create folder if needed
+        if (normalizedFolder) {
+            await ensureFolder(this.app.vault, normalizedFolder);
+        }
+        
+        // Normalize the template path
+        const normalizedTemplatePath = normalizePath(this.settings.templaterTemplateFile);
+        
+        // Get template file and verify it exists
+        const templateFile = this.app.vault.getAbstractFileByPath(normalizedTemplatePath);
+        if (!(templateFile instanceof TFile)) {
+            throw new Error(`Template file not found: ${this.settings.templaterTemplateFile}`);
+        }
+        
+        // 1. Initialize Templater if needed (force a one-time run)
+        if (!templater.current_functions_object) {
+            // We'll initialize with the actual template processing below
+        }
+        
+        // 2. Create a running config for the actual template
+        const config = templater.create_running_config(
+            templateFile,
+            templateFile, // Use the template file itself as target to avoid null path errors
+            0    // Numeric value for "CreateNewFromTemplate"
+        );
+        
+        // 3. Generate the Templater context (tp object)
+        const ctx = await templater.functions_generator.generate_object(config);
+        
+        // 4. Inject our custom data into ctx.user as functions
+        const user = ctx.user ?? {};
+        ctx.user = user;
+        
+        // Set up our data as functions in ctx.user
+        user.title = sanitizedTitle;
+        // Use a normalized watch URL so template parsing doesn't break on shorts/live URLs
+        user.videoUrl = watchUrl || videoUrl;
+        user.originalVideoUrl = videoUrl;
+        user.videoId = videoId || '';
+        user.watchUrl = watchUrl || videoUrl;
+        user.thumbnailUrl = thumbnailUrl;
+        user.transcript = transcript;
+        user.summary = summary;
+        
+        // Add LLM provider and model info
+        const llmProvider = this.settings.selectedLLM;
+        const llmModel = this.settings.selectedModels[llmProvider];
+        user.llmProvider = llmProvider;
+        user.llmModel = llmModel;
+        
+        // Add tags for LLM provider and model in proper YAML array format
+        const baseTags = ["youtube", "transcript"];
+        const llmProviderTag = `llm/${llmProvider}`;
+        const llmModelTag = `model/${llmModel.replace(/[:.]/g, "-")}`;
+        const allTags = [...baseTags, llmProviderTag, llmModelTag];
+        const llmTags = `[${allTags.join(", ")}]`;
+        user.llmTags = llmTags;
+        
+        // Add plugin version for frontmatter tracking
+        user.version = this.getVersion();
+        
+        // Debug info is only logged, not included in notes
+        if (this.settings.debugLogging) {
+            logger.debug(`Transcript info: 
+            - Length: ${transcript ? transcript.length : 'unknown'} characters
+            - Contains timestamps: ${transcript ? transcript.includes('[00:') : 'unknown'}
+            - LLM Provider: ${llmProvider}
+            - LLM Model: ${llmModel}`);
+        }
+        
+        // 5. Read and parse the template with our custom context
+        const templateContent = await this.app.vault.read(templateFile);
+        
+        // Debug logging to check template content and tags
+        if (this.settings.debugLogging) {
+            logger.debug(`Template content (first 500 chars): ${templateContent.substring(0, 500)}`);
+            logger.debug(`ctx.user.llmTags value: ${llmTags}`);
+        }
+        
+        const parsedContent = await templater.parser.parse_commands(templateContent, ctx);
+        
+        // Debug logging to check parsed content
+        if (this.settings.debugLogging) {
+            const frontmatterEnd = parsedContent.indexOf('---', 3);
+            if (frontmatterEnd !== -1) {
+                const frontmatter = parsedContent.substring(0, frontmatterEnd + 3);
+                // Truncate: the frontmatter embeds the full `transcript: |` field
+                // (tens of thousands of chars). The debug value is confirming that
+                // Templater substituted the fields — the first ~500 chars show that;
+                // the transcript body is noise that historically flooded the log.
+                logger.debug(`Parsed frontmatter: ${truncateForLogs(frontmatter, 500)}`);
+            }
+        }
+        
+        // 6. The final content and the path the note will live at
+        // (the support message is added to the summary in summarizeTranscript)
+        // Through Obsidian's normalizePath (NFC): sanitizeFilename leaves some
+        // scripts (Hangul) in NFD, while Vault.create writes and indexes the
+        // NFC form — this is the path the runner freezes, claims and looks
+        // up, so it must be the path the vault will actually know.
+        const fileName = `${datePrefix}${sanitizedTitle}.md`;
+        const filePath = obsidianNormalizePath(normalizedFolder ? joinPaths(normalizedFolder, fileName) : fileName);
+        return { filePath, content: parsedContent, folder: normalizedFolder };
+    }
+
+    async applyTemplate(title: string, videoUrl: string, transcript: string, summary: string, folder?: string, _contentType?: string, createdAt: number = Date.now()): Promise<void> {
+        // Check if Templater plugin is available
+        if (!getTemplaterPlugin(this.app)) {
             this.showNotice('Error: Templater plugin is required but not installed or enabled', 5000);
             throw new Error('Templater plugin is required but not installed or enabled.');
         }
         
         try {
-            // Get the Templater instance
-            const templater = templaterPlugin.templater;
+            const { filePath, content } = await this.renderNoteContent(title, videoUrl, transcript, summary, folder || '', createdAt);
             
-            // If Templater has never run, do a dummy parse to initialize.
-            if (!templater.current_functions_object) {
-                // We'll initialize with the actual template processing below
-            }
+            const newFile = await this.app.vault.create(filePath, content);
             
-            // Sanitize the title for use as a filename
-            const sanitizedTitle = sanitizeFilename(title);
-
-            // Normalize video URL data for templating (e.g., shorts/playlist URLs)
-            const videoId = YouTubeTranscriptExtractor.extractVideoId(videoUrl);
-            const watchUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : videoUrl;
-            const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
-            
-            // Format date according to settings
-            let datePrefix = '';
-            if (this.settings.prependDate) {
-                const now = new Date();
-                
-                // Format date based on the selected format
-                switch (this.settings.dateFormat) {
-                    case 'YYYY-MM-DD':
-                        datePrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} `;
-                        break;
-                    case 'MM-DD-YYYY':
-                        datePrefix = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}-${now.getFullYear()} `;
-                        break;
-                    case 'DD-MM-YYYY':
-                        datePrefix = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()} `;
-                        break;
-                    default:
-                        datePrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} `;
-                }
-            }
-            
-            // REDO THE TRANSCRIPT FORMATTING FOR YAML
-            // We'll re-process the transcript no matter what format it's in
-            logger.debug("Processing transcript for YAML format");
-            
-            // Format the transcript with original timestamps preserved
-            let formattedTranscript = "";
-            
-            // Check if the transcript already has timestamps in format [HH:MM:SS]
-            if (transcript.includes('[00:') || transcript.includes('[01:') || transcript.match(/\[\d{2}:\d{2}:\d{2}\]/)) {
-                logger.debug("Transcript contains timestamps, organizing into ≥60 second blocks");
-                
-                // Split the transcript into lines
-                const originalLines = transcript.split('\n').filter(line => line.trim().length > 0);
-                
-                // Parse each line with its timestamp
-                const parsedLines: {timestamp: string, seconds: number, text: string}[] = [];
-                
-                originalLines.forEach(line => {
-                    // Look for timestamp pattern [HH:MM:SS]
-                    const timestampMatch = line.match(/^\s*\[(\d{2}:\d{2}:\d{2})\]\s*(.*)/);
-                    
-                    if (timestampMatch) {
-                        const timestamp = timestampMatch[1];
-                        let text = timestampMatch[2].trim();
-                        
-                        // Remove any escaped backslashes from TimeIndex markers
-                        text = text.replace(/\[TimeIndex\\?:(\d+)\]/g, '[TimeIndex:$1]');
-                        
-                        // Convert timestamp to seconds for comparison
-                        const parts = timestamp.split(':').map(Number);
-                        const seconds = (parts[0] * 3600) + (parts[1] * 60) + parts[2];
-                        
-                        parsedLines.push({
-                            timestamp,
-                            seconds,
-                            text
-                        });
-                    } else if (line.trim().length > 0) {
-                        // Handle lines without timestamps - append to the last segment if it exists
-                        if (parsedLines.length > 0) {
-                            // Add this content to the last parsed line
-                            parsedLines[parsedLines.length - 1].text += ' ' + line.trim();
-                        } else {
-                            // If no timestamps yet, create a placeholder entry for time 0
-                            parsedLines.push({
-                                timestamp: '00:00:00',
-                                seconds: 0,
-                                text: line.trim()
-                            });
-                        }
-                    }
-                });
-                
-                // Group lines into blocks of ≥60 seconds
-                const segments: {timestamp: string, text: string}[] = [];
-                
-                // Process lines into segments
-                if (parsedLines.length > 0) {
-                    // Sort parsed lines by seconds to ensure chronological order
-                    parsedLines.sort((a, b) => a.seconds - b.seconds);
-                    
-                    // Initialize with the first line
-                    let segmentTimestamp = parsedLines[0].timestamp;
-                    let segmentStartSeconds = parsedLines[0].seconds;
-                    let segmentLines: string[] = [parsedLines[0].text];
-                    
-                    // Process remaining lines
-                    for (let i = 1; i < parsedLines.length; i++) {
-                        const line = parsedLines[i];
-                        
-                        // If this line is at least 60 seconds from the start of current segment,
-                        // finalize the current segment and start a new one
-                        if (line.seconds - segmentStartSeconds >= 60) {
-                            // Add completed segment
-                            segments.push({
-                                timestamp: segmentTimestamp,
-                                text: segmentLines.join(' ')
-                            });
-                            
-                            // Start a new segment - ALWAYS use the actual timestamp from the current line
-                            segmentTimestamp = line.timestamp;
-                            segmentStartSeconds = line.seconds;
-                            segmentLines = [line.text];
-                        } else {
-                            // Add to current segment
-                            segmentLines.push(line.text);
-                        }
-                    }
-                    
-                    // Add the final segment if it has any content
-                    if (segmentLines.length > 0) {
-                        segments.push({
-                            timestamp: segmentTimestamp,
-                            text: segmentLines.join(' ')
-                        });
-                    }
-                }
-                
-                logger.debug(`Organized ${originalLines.length} lines into ${segments.length} ≥60-second blocks`);
-                
-                // Format segments for YAML frontmatter
-                segments.forEach(segment => {
-                    // Convert timestamp to seconds using our custom function
-                    const timeIndex = convertTimestampToSeconds(segment.timestamp);
-                    
-                    // Create the TimeIndex marker with unescaped colon
-                    const timeIndexMarker = `[TimeIndex:${timeIndex}]`;
-                    
-                    // Handle text content 
-                    let textContent = segment.text;
-                    
-                    // Remove any existing TimeIndex markers from the text
-                    const timeIndexRegex = /\[TimeIndex:(\d+)\]/g;
-                    textContent = textContent.replace(timeIndexRegex, '');
-                    
-                    // Only escape colons in the text content
-                    const escapedText = textContent.replace(/:/g, "\\:");
-                    
-                    // Position the TimeIndex marker right after the timestamp
-                    formattedTranscript += `    [${segment.timestamp}] ${timeIndexMarker} ${escapedText}\n`;
-                });
-            } else {
-                logger.debug("Transcript does not contain timestamps");
-                
-                // Provide a warning message in the transcript text
-            formattedTranscript = "    [ERROR] No timestamps found in transcript. Please ensure the Youtube transcript contains timestamps.";
-                
-                // Show an error notice
-                this.showNotice("Warning: No timestamps found in transcript. Timestamps are required for proper processing.", 5000);
-            }
-            
-            // Now use this properly formatted transcript
-            transcript = formattedTranscript;
-            
-            // Final cleanup - ensure all TimeIndex markers are unescaped
-            transcript = transcript.replace(/\[TimeIndex\\:(\d+)\]/g, '[TimeIndex:$1]');
-            
-            // Normalize the folder path
-            const normalizedFolder = normalizePath(folder || '');
-            
-            // Create folder if needed
-            if (normalizedFolder) {
-                await ensureFolder(this.app.vault, normalizedFolder);
-            }
-            
-            // Normalize the template path
-            const normalizedTemplatePath = normalizePath(this.settings.templaterTemplateFile);
-            
-            // Get template file and verify it exists
-            const templateFile = this.app.vault.getAbstractFileByPath(normalizedTemplatePath);
-            if (!(templateFile instanceof TFile)) {
-                throw new Error(`Template file not found: ${this.settings.templaterTemplateFile}`);
-            }
-            
-            // 1. Initialize Templater if needed (force a one-time run)
-            if (!templater.current_functions_object) {
-                // We'll initialize with the actual template processing below
-            }
-            
-            // 2. Create a running config for the actual template
-            const config = templater.create_running_config(
-                templateFile,
-                templateFile, // Use the template file itself as target to avoid null path errors
-                0    // Numeric value for "CreateNewFromTemplate"
-            );
-            
-            // 3. Generate the Templater context (tp object)
-            const ctx = await templater.functions_generator.generate_object(config);
-            
-            // 4. Inject our custom data into ctx.user as functions
-            const user = ctx.user ?? {};
-            ctx.user = user;
-            
-            // Set up our data as functions in ctx.user
-            user.title = sanitizedTitle;
-            // Use a normalized watch URL so template parsing doesn't break on shorts/live URLs
-            user.videoUrl = watchUrl || videoUrl;
-            user.originalVideoUrl = videoUrl;
-            user.videoId = videoId || '';
-            user.watchUrl = watchUrl || videoUrl;
-            user.thumbnailUrl = thumbnailUrl;
-            user.transcript = transcript;
-            user.summary = summary;
-            
-            // Add LLM provider and model info
-            const llmProvider = this.settings.selectedLLM;
-            const llmModel = this.settings.selectedModels[llmProvider];
-            user.llmProvider = llmProvider;
-            user.llmModel = llmModel;
-            
-            // Add tags for LLM provider and model in proper YAML array format
-            const baseTags = ["youtube", "transcript"];
-            const llmProviderTag = `llm/${llmProvider}`;
-            const llmModelTag = `model/${llmModel.replace(/[:.]/g, "-")}`;
-            const allTags = [...baseTags, llmProviderTag, llmModelTag];
-            const llmTags = `[${allTags.join(", ")}]`;
-            user.llmTags = llmTags;
-            
-            // Add plugin version for frontmatter tracking
-            user.version = this.getVersion();
-            
-            // Debug info is only logged, not included in notes
-            if (this.settings.debugLogging) {
-                logger.debug(`Transcript info: 
-                - Length: ${transcript ? transcript.length : 'unknown'} characters
-                - Contains timestamps: ${transcript ? transcript.includes('[00:') : 'unknown'}
-                - LLM Provider: ${llmProvider}
-                - LLM Model: ${llmModel}`);
-            }
-            
-            // 5. Read and parse the template with our custom context
-            const templateContent = await this.app.vault.read(templateFile);
-            
-            // Debug logging to check template content and tags
-            if (this.settings.debugLogging) {
-                logger.debug(`Template content (first 500 chars): ${templateContent.substring(0, 500)}`);
-                logger.debug(`ctx.user.llmTags value: ${llmTags}`);
-            }
-            
-            const parsedContent = await templater.parser.parse_commands(templateContent, ctx);
-            
-            // Debug logging to check parsed content
-            if (this.settings.debugLogging) {
-                const frontmatterEnd = parsedContent.indexOf('---', 3);
-                if (frontmatterEnd !== -1) {
-                    const frontmatter = parsedContent.substring(0, frontmatterEnd + 3);
-                    // Truncate: the frontmatter embeds the full `transcript: |` field
-                    // (tens of thousands of chars). The debug value is confirming that
-                    // Templater substituted the fields — the first ~500 chars show that;
-                    // the transcript body is noise that historically flooded the log.
-                    logger.debug(`Parsed frontmatter: ${truncateForLogs(frontmatter, 500)}`);
-                }
-            }
-            
-            // 6. Create the new file with parsed content
-            let finalContent = parsedContent;
-            
-            // The support message is now added directly to the summary in summarizeTranscript method
-            // So we don't need to insert it here anymore
-            
-            const fileName = `${datePrefix}${sanitizedTitle}.md`;
-            const filePath = normalizedFolder ? joinPaths(normalizedFolder, fileName) : fileName;
-            
-            // @ts-ignore - Using Obsidian API
-            const newFile = await this.app.vault.create(filePath, finalContent);
-            
-            // 7. Open the new file
-            // @ts-ignore - Using Obsidian API
+            // Open the new file
             const leaf = this.app.workspace.getLeaf(true);
             await leaf.openFile(newFile);
             
-            this.showNotice(`Created note: ${datePrefix}${sanitizedTitle}`, 5000);
+            this.showNotice(`Created note: ${formatDatePrefix(createdAt, this.settings)}${sanitizeFilename(title)}`, 5000);
         } catch (error) {
             logger.error("Error applying template:", error);
             const errorMessage = getSafeErrorMessage(error);
@@ -1380,8 +1838,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         }
     }
 
-    // Simplified method to ensure a folder exists - wrapper for the utility
-    private async ensureFolderExists(folderPath: string): Promise<void> {
+    // Simplified method to ensure a folder exists - wrapper for the utility (also the runner's createNote precondition)
+    async ensureFolder(folderPath: string): Promise<void> {
         await ensureFolder(this.app.vault, folderPath);
     }
 
@@ -1700,8 +2158,15 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         return channelId;
     }
 
-    // Add timestamp links to section headings in an existing note using LLM
-    async addSectionLinksToNote(filePath: string, videoUrl: string): Promise<void> {
+    // Add timestamp links to section headings in an existing note using LLM.
+    // `options.strict` (the job runner's path, #3 final review I1): every
+    // failure inside the passes throws instead of being shown as a Notice
+    // and swallowed, so the runner never finishes a job as "done" without
+    // its timestamps. The strict pass also never translates: translation is
+    // the runner's own checkpointed stage (translateNoteStrict). Legacy
+    // callers (the collection path) pass nothing and keep the swallowing
+    // behaviour, translation included, unchanged.
+    async addSectionLinksToNote(filePath: string, videoUrl: string, options?: TimestampPassOptions): Promise<void> {
         try {
             // Extract video ID from URL
             const videoId = YouTubeTranscriptExtractor.extractVideoId(videoUrl);
@@ -1753,19 +2218,22 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     videoId,
                     content,
                     headings,
-                    headingPositions
+                    headingPositions,
+                    options
                 );
             } else {
                 contentWithLinks = await this.addTimestampLinksSinglePass(
                     filePath,
                     videoId,
                     content,
-                    headings
+                    headings,
+                    options
                 );
             }
             
             // If translation is needed and we have content with links
-            if (needsTranslation && contentWithLinks) {
+            // (legacy path only: the runner translates in its own stage)
+            if (!options?.strict && needsTranslation && contentWithLinks) {
                 // Do a second pass for translation
                 await this.translateContent(
                     filePath, 
@@ -1790,7 +2258,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         filePath: string, 
         videoId: string, 
         originalContent: string,
-        headings: string[]
+        headings: string[],
+        options?: TimestampPassOptions
     ): Promise<string | null> {
         try {
             // Extract document components using the utility
@@ -1961,8 +2430,11 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 logger.error("[addTimestampLinksSinglePass] Error during LLM call:", e);
                 const errorMessage = getSafeErrorMessage(e);
                 
-                // In case of token limit errors, reduce the maxTokens and try again
-                if (errorMessage.includes("max_tokens") || errorMessage.includes("token limit")) {
+                // In case of token limit errors, reduce the maxTokens and try again.
+                // Not on the strict (runner) path: the retry would be a second
+                // billed call inside one counted attempt (spec F6); there the
+                // runner's own visible attempt budget is the retry.
+                if (!options?.strict && (errorMessage.includes("max_tokens") || errorMessage.includes("token limit"))) {
                     logger.debug("[addTimestampLinksSinglePass] Token limit error detected, retrying with reduced token limit");
                     this.showNotice("Retrying with reduced token limit...", 5000);
                     
@@ -2004,21 +2476,33 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                         return null;
                     }
                 } else {
-                    this.showNotice(`Error adding timestamp links: ${errorMessage}`, 5000);
+                    const failure = timestampPassFailure(options, `Error adding timestamp links: ${errorMessage}`, e);
+                    if (failure.kind === "throw") {
+                        throw failure.error;
+                    }
+                    this.showNotice(failure.notice, 5000);
                     return null;
                 }
             }
             
             if (!enhancedContent) {
                 logger.error("[addTimestampLinksSinglePass] Failed to add timestamp links (empty response from LLM)");
-                this.showNotice("Failed to add timestamp links (empty response from LLM)", 5000);
+                const failure = timestampPassFailure(options, "Failed to add timestamp links (empty response from LLM)");
+                if (failure.kind === "throw") {
+                    throw failure.error;
+                }
+                this.showNotice(failure.notice, 5000);
                 return null;
             }
             
             // First validate that we received TimeIndex markers from the LLM
             if (!enhancedContent.includes('[TimeIndex:')) {
                 logger.warn("[addTimestampLinksSinglePass] No TimeIndex markers found in LLM response");
-                this.showNotice("LLM did not add TimeIndex markers to headings", 5000);
+                const failure = timestampPassFailure(options, "LLM did not add TimeIndex markers to headings");
+                if (failure.kind === "throw") {
+                    throw failure.error;
+                }
+                this.showNotice(failure.notice, 5000);
                 return null;
             }
             
@@ -2032,13 +2516,20 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             
             // Validate the final enhanced note with Watch URLs
             if (validateEnhancedContent(enhancedNote, contentWithoutFrontmatter, headings, videoId)) {
-                // Update the note file with the LLM-enhanced content
+                // Update the note file with the LLM-enhanced content — only if
+                // it still reads exactly as it did before the LLM call (F5).
                 const file = this.app.vault.getAbstractFileByPath(filePath);
                 if (file instanceof TFile) {
-                    await this.app.vault.modify(file, enhancedNote);
+                    if (!(await writeIfUnchanged(this.app.vault, file, originalContent, enhancedNote))) {
+                        throw new NoteChangedError(NOTE_EDITED_DURING_TIMESTAMPS);
+                    }
                 } else {
                     logger.error(`[addTimestampLinksSinglePass] File not found: ${filePath}`);
-                    this.showNotice(`Error: File not found: ${filePath}`, 5000);
+                    const failure = timestampPassFailure(options, `Error: File not found: ${filePath}`);
+                    if (failure.kind === "throw") {
+                        throw failure.error;
+                    }
+                    this.showNotice(failure.notice, 5000);
                     return null;
                 }
                 
@@ -2064,11 +2555,21 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 llmLogger.debug("========================================");
             }
             
+            if (options?.strict) {
+                throw new Error("Timestamp links could not be validated against the note");
+            }
             return null;
         } catch (error) {
+            if (error instanceof NoteChangedError) {
+                throw error; // the caller decides; never swallowed into a null return
+            }
             logger.error("[addTimestampLinksSinglePass] Error:", error);
             const errorMessage = getSafeErrorMessage(error);
-            this.showNotice(`Error adding timestamp links: ${errorMessage}`, 5000);
+            const failure = timestampPassFailure(options, `Error adding timestamp links: ${errorMessage}`, error);
+            if (failure.kind === "throw") {
+                throw failure.error;
+            }
+            this.showNotice(failure.notice, 5000);
             return null;
         }
     }
@@ -2141,14 +2642,76 @@ ${contentToTranslate}
             // Reconstruct the document with original frontmatter and translated content
             const translatedNote = reconstructDocument(frontmatter, translatedContent);
             
-            // Update the note file with the translated content
-            await this.app.vault.modify(noteFile, translatedNote);
+            // Update the note file with the translated content — only if it
+            // still reads exactly as it did before the LLM call (F5).
+            if (!(await writeIfUnchanged(this.app.vault, noteFile, fileContent, translatedNote))) {
+                throw new NoteChangedError(NOTE_EDITED_DURING_TRANSLATION);
+            }
             this.showNotice(`Successfully translated content to ${targetLang.toUpperCase()}-${targetCountry}`, 5000);
             
         } catch (error) {
+            if (error instanceof NoteChangedError) {
+                throw error;
+            }
             logger.error("[translateContent] Error:", error);
             const errorMessage = getSafeErrorMessage(error);
             this.showNotice(`Error translating content: ${errorMessage}`, 5000);
+        }
+    }
+
+    /**
+     * Strict translation pass for the job runner's `translation` stage (#3 final review residual). The
+     * target pair is the RECORD's frozen one (the adapter passes it), never the live settings. Reads the
+     * note, translates its body, and writes back only if the note still reads exactly as it did before
+     * the LLM call (F5) — otherwise NoteChangedError. Every other failure is RETHROWN: no Notice, nothing
+     * swallowed, so the runner interrupts the job as resumable (or the user finishes without translation)
+     * instead of reporting an untranslated note as a success. The prompt and summarizer configuration are
+     * those of translateContent (the legacy pass, kept byte-for-byte for the collection path).
+     */
+    async translateNoteStrict(notePath: string, language: string, country: string): Promise<void> {
+        const noteFile = this.app.vault.getAbstractFileByPath(notePath);
+        if (!(noteFile instanceof TFile)) {
+            logger.error(`[translateNoteStrict] File not found: ${notePath}`);
+            throw new Error('Could not find note file');
+        }
+        const fileContent = await this.app.vault.read(noteFile);
+        const { frontmatter, contentWithoutFrontmatter } = extractDocumentComponents(fileContent);
+
+        const translationSummarizer = new TranscriptSummarizer({
+            model: this.getModelForProvider(this.settings.selectedLLM),
+            temperature: 0.3, // Lower temperature for more accurate translations
+            maxTokens: this.getMaxTokensForTimestampPass(),
+            systemPrompt: "You are a highly accurate translator who preserves all formatting, links, and structure when translating content.",
+            userPrompt: "Translate the following content while preserving all Markdown formatting, links, and structure:"
+        }, this.settings.apiKeys);
+
+        const translationPrompt = `
+TRANSLATION TASK: Translate the following content into ${language.toUpperCase()}-${country}.
+
+RULES:
+1. Preserve all Markdown formatting, especially section headings with # syntax
+2. Keep all links intact, especially YouTube timestamp [Watch] links
+3. Maintain the same overall structure and organization
+4. Translate everything else, including headings, paragraphs, and lists
+5. Keep technical terms, proper names, and specific terminology in their original form when appropriate
+6. Ensure the translation sounds natural in the target language
+
+CONTENT TO TRANSLATE:
+
+${contentWithoutFrontmatter}
+`;
+
+        // Rethrows: the runner classifies the failure (transient → interrupted, resumable).
+        const translatedContent = await translationSummarizer.summarize(translationPrompt, this.settings.selectedLLM);
+        logger.debug("[translateNoteStrict] Received translated content, length:", translatedContent ? translatedContent.length : 0);
+        if (!translatedContent) {
+            throw new Error('Failed to translate content (empty response from LLM)');
+        }
+
+        const translatedNote = reconstructDocument(frontmatter, translatedContent);
+        // Guarded against exactly the content read above (F5).
+        if (!(await writeIfUnchanged(this.app.vault, noteFile, fileContent, translatedNote))) {
+            throw new NoteChangedError(NOTE_EDITED_DURING_TRANSLATION);
         }
     }
 
@@ -2164,7 +2727,8 @@ ${contentToTranslate}
         videoId: string,
         originalContent: string,
         headings: string[],
-        _headingPositions: number[]
+        _headingPositions: number[],
+        options?: TimestampPassOptions
     ): Promise<string | null> {
         try {
             logger.debug("[addTimestampLinksInChunks] Processing document in chunks");
@@ -2352,6 +2916,12 @@ ${contentToTranslate}
                 } catch (e) {
                     logger.error(`[addTimestampLinksInChunks] Error processing chunk ${i+1}:`, e);
                     
+                    // Strict: a failed chunk fails the pass (no partial write).
+                    const failure = timestampPassFailure(options, `Error processing chunk ${i+1}: ${getSafeErrorMessage(e)}`, e);
+                    if (failure.kind === "throw") {
+                        throw failure.error;
+                    }
+                    
                     if (this.settings.debugLogging) {
                         llmLogger.debug(`ERROR PROCESSING CHUNK ${i+1}:`);
                         llmLogger.debug(getSafeErrorMessage(e));
@@ -2389,13 +2959,20 @@ ${contentToTranslate}
             }
             
             if (linkCount > 0) {
-                // Update the note file with the combined content
+                // Update the note file with the combined content — only if it
+                // still reads exactly as it did before the LLM calls (F5).
                 const file = this.app.vault.getAbstractFileByPath(filePath);
                 if (file instanceof TFile) {
-                    await this.app.vault.modify(file, combinedNote);
+                    if (!(await writeIfUnchanged(this.app.vault, file, originalContent, combinedNote))) {
+                        throw new NoteChangedError(NOTE_EDITED_DURING_TIMESTAMPS);
+                    }
                 } else {
                     logger.error(`[addTimestampLinksInChunks] File not found: ${filePath}`);
-                    this.showNotice(`Error: File not found: ${filePath}`, 5000);
+                    const failure = timestampPassFailure(options, `Error: File not found: ${filePath}`);
+                    if (failure.kind === "throw") {
+                        throw failure.error;
+                    }
+                    this.showNotice(failure.notice, 5000);
                     return null;
                 }
                 
@@ -2405,13 +2982,24 @@ ${contentToTranslate}
                 return combinedContent;
             } else {
                 logger.error("[addTimestampLinksInChunks] No timestamp links were added in any chunk");
-                this.showNotice("Failed to add any timestamp links", 5000);
+                const failure = timestampPassFailure(options, "Failed to add any timestamp links");
+                if (failure.kind === "throw") {
+                    throw failure.error;
+                }
+                this.showNotice(failure.notice, 5000);
                 return null;
             }
         } catch (error) {
+            if (error instanceof NoteChangedError) {
+                throw error;
+            }
             logger.error("[addTimestampLinksInChunks] Error:", error);
             const errorMessage = getSafeErrorMessage(error);
-            this.showNotice(`Error in chunked processing: ${errorMessage}`, 5000);
+            const failure = timestampPassFailure(options, `Error in chunked processing: ${errorMessage}`, error);
+            if (failure.kind === "throw") {
+                throw failure.error;
+            }
+            this.showNotice(failure.notice, 5000);
             return null;
         }
     }
@@ -2844,6 +3432,10 @@ class YouTubeTranscriptModal extends Modal {
     private errorEl: HTMLElement;
     private isProcessing: boolean = false;
     private selectedFolder: string = '';
+    // Mobile-only: the in-modal spinner and the runner subscription that
+    // drives it; both are released in onClose (the job keeps running).
+    private mobileSpinner: ProcessingSpinner | null = null;
+    private unsubscribeJobEvents: (() => void) | null = null;
     constructor(app: App, plugin: YouTubeTranscriptPlugin) {
         super(app);
         this.plugin = plugin;
@@ -3323,6 +3915,11 @@ class YouTubeTranscriptModal extends Modal {
             for (const video of videosToProcess) {
                 try {
                     clearLogs(); // Clear logs for each video processed in the collection
+
+                    // Captured ONCE per video: the sole source of this note's
+                    // date prefix (creation, timestamps and debug append agree
+                    // even when the run crosses midnight).
+                    const createdAt = Date.now();
                     
                     // Update processing message
                     this.showNotice(`Processing video ${processedCount + skippedCount + errorCount + 1}/${videosToProcess.length}: ${video.title}`, 5000);
@@ -3346,34 +3943,19 @@ class YouTubeTranscriptModal extends Modal {
                             transcript, 
                             summary, 
                             sourceSubfolder,
-                            contentType  // Pass the content type (Channel or Playlist)
+                            contentType,  // Pass the content type (Channel or Playlist)
+                            createdAt
+                        );
+
+                        // The path of the created note: same epoch as applyTemplate,
+                        // the one date-prefix implementation
+                        const notePath = joinPaths(
+                            sourceSubfolder,
+                            `${formatDatePrefix(createdAt, this.plugin.settings)}${sanitizeFilename(video.title)}.md`
                         );
                         
                         // Add timestamp links if enabled and not in fast summary mode
                         if (this.plugin.settings.addTimestampLinks && !this.plugin.settings.useFastSummary) {
-                            // Calculate datePrefix for filename (should match logic in applyTemplate)
-                            let datePrefix = '';
-                            if (this.plugin.settings.prependDate) {
-                                const now = new Date();
-                                // Format date based on selected format
-                                switch (this.plugin.settings.dateFormat) {
-                                    case 'YYYY-MM-DD':
-                                        datePrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} `;
-                                        break;
-                                    case 'MM-DD-YYYY':
-                                        datePrefix = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}-${now.getFullYear()} `;
-                                        break;
-                                    case 'DD-MM-YYYY':
-                                        datePrefix = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()} `;
-                                        break;
-                                    default:
-                                        datePrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} `;
-                                }
-                            }
-                            
-                            // Calculate the path of the created note
-                            const notePath = joinPaths(sourceSubfolder, `${datePrefix}${sanitizeFilename(video.title)}.md`);
-                            
                             // Add timestamp links to the note - with specific notification for channel vs playlist
                             this.showNotice(`Adding timestamp links to ${isPlaylist ? 'playlist' : 'channel'} video: ${video.title}`, 3000);
                             try {
@@ -3385,7 +3967,11 @@ class YouTubeTranscriptModal extends Modal {
                                 this.showNotice(`✓ Timestamp links added to ${video.title}`, 2000);
                             } catch (timestampError) {
                                 logger.error(`Error adding timestamp links to ${isPlaylist ? 'playlist' : 'channel'} video (${video.title}):`, timestampError);
-                                this.showNotice(`Note created but timestamps could not be added to "${video.title}"`, 3000);
+                                if (timestampError instanceof NoteChangedError) {
+                                    this.showNotice(`${timestampError.message} ("${video.title}")`, 5000);
+                                } else {
+                                    this.showNotice(`Note created but timestamps could not be added to "${video.title}"`, 3000);
+                                }
                             }
                         }
                         
@@ -3403,34 +3989,13 @@ class YouTubeTranscriptModal extends Modal {
                                 const debugSection = debugHeader + "\n" + finalLogs + debugFooter;
                                 
                                 try {
-                                    // Recalculate notePath here as it's needed for appending
-                                    let datePrefix = '';
-                                    if (this.plugin.settings.prependDate) {
-                                        const now = new Date();
-                                        // Format date based on selected format
-                                        switch (this.plugin.settings.dateFormat) {
-                                            case 'YYYY-MM-DD':
-                                                datePrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} `;
-                                                break;
-                                            case 'MM-DD-YYYY':
-                                                datePrefix = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}-${now.getFullYear()} `;
-                                                break;
-                                            case 'DD-MM-YYYY':
-                                                datePrefix = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()} `;
-                                                break;
-                                            default:
-                                                datePrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} `;
-                                        }
-                                    }
-                                    const notePathForLog = joinPaths(sourceSubfolder, `${datePrefix}${sanitizeFilename(video.title)}.md`);
-                                    
-                                    const file = this.app.vault.getAbstractFileByPath(notePathForLog);
+                                    const file = this.app.vault.getAbstractFileByPath(notePath);
                                     if (file instanceof TFile) {
-                                        const currentContent = await this.app.vault.read(file);
-                                        await this.app.vault.modify(file, currentContent + debugSection);
-                                        logger.debug("Appended debug logs to note:", notePathForLog);
+                                        // An append is safe under the atomic process callback
+                                        await this.app.vault.process(file, (data) => data + debugSection);
+                                        logger.debug("Appended debug logs to note:", notePath);
                                     } else {
-                                        logger.warn("Could not find file to append debug logs:", notePathForLog);
+                                        logger.warn("Could not find file to append debug logs:", notePath);
                                     }
                                 } catch (logAppendError) {
                                     logger.error("Error appending debug logs to note:", logAppendError);
@@ -3540,269 +4105,274 @@ class YouTubeTranscriptModal extends Modal {
             return;
         }
 
-        let spinner: ProcessingSpinner | undefined;
-        try {
-            this.isProcessing = true;
-            
-            // Processing UI. On mobile the modal stays open and hosts the
-            // spinner; on desktop the status bar is the spinner surface, so the
-            // modal is closed — no blank popup. ProcessingSpinner routes itself
-            // (status bar on desktop, in-modal on mobile).
-            const { contentEl } = this;
-            if (Platform.isMobile) {
-                contentEl.empty();
-                const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
-                if (modalEl && modalEl.instanceOf(HTMLElement)) {
-                    modalEl.addClass('tubesage-processing-modal');
-                }
-            } else {
-                this.close();
-            }
-
-            spinner = new ProcessingSpinner(this.plugin, 'Processing video', contentEl);
-            spinner.start();
-
-            // Get custom title if provided
-            let title = this.titleInputEl.value.trim();
-            
-            // Show starting notice
-            this.showNotice('Starting transcript extraction workflow...', 5000);
-            
-            // Extract video ID
-            const videoId = YouTubeTranscriptExtractor.extractVideoId(url);
-            if (!videoId) {
-            throw new Error(`Invalid Youtube URL: '${url}'. Please ensure the URL is properly formatted without extra characters like quotes.`);
-            }
-            
-            // Extract transcript and metadata in one request
-            this.showNotice('Extracting transcript from Youtube...', 5000);
-            let transcript: string;
-            let transcriptFailed = false;
-            let extractedMetadata: {title?: string, author?: string} = {};
-            
-            try {
-                const result = await this.plugin.extractTranscriptWithMetadata(url);
-                transcript = result.transcript;
-                extractedMetadata = result.metadata;
-                
-                // If no custom title was provided, use the extracted title
-                if (!title && extractedMetadata.title) {
-                    title = sanitizeFilename(extractedMetadata.title);
-                    this.showNotice(`Using YouTube title: ${title}`, 3000);
-                } else if (!title) {
-                    title = `YouTube Video ${videoId}`;
-                    this.showNotice('Could not retrieve Youtube title, using fallback', 3000);
-                }
-                
-                if (!transcript) {
-                    transcriptFailed = true;
-                    transcript = '[TRANSCRIPT EXTRACTION FAILED: Empty result returned]';
-                    this.showNotice('Transcript extraction failed (empty result), continuing with debug note creation...', 5000);
-                } else if (transcript.includes('[TRANSCRIPT EXTRACTION FAILED')) {
-                    // Check if transcript contains failure message from error handling
-                    transcriptFailed = true;
-                    this.showNotice('Transcript extraction failed, continuing with debug note creation...', 5000);
-                } else {
-                    this.showNotice('Transcript extracted successfully', 5000);
-                }
-            } catch (transcriptError) {
-                transcriptFailed = true;
-                transcript = `[TRANSCRIPT EXTRACTION FAILED: ${getSafeErrorMessage(transcriptError)}]`;
-                this.showNotice('Transcript extraction failed, continuing with debug note creation...', 5000);
-                logger.error('Transcript extraction failed:', transcriptError);
-                
-                // Still set fallback title if not provided
-                if (!title) {
-                    title = `YouTube Video ${videoId}`;
-                    this.showNotice('Using fallback title due to extraction failure', 3000);
-                }
-            }
-            
-            // Summarize transcript (skip if extraction failed)
-            let summary: string;
-            let summaryFailed = false;
-            if (transcriptFailed) {
-                summary = '[SUMMARY SKIPPED: Transcript extraction failed - see debug information below]';
-                summaryFailed = true;
-                this.showNotice('Skipping AI summarization due to transcript failure...', 3000);
-            } else {
-                this.showNotice('Summarizing transcript with AI...', 5000);
-                try {
-                    summary = await this.plugin.summarizeTranscript(transcript);
-                    if (!summary) {
-                        summary = '[SUMMARY FAILED: Empty result returned from AI]';
-                        summaryFailed = true;
-                        this.showNotice('AI summarization failed (empty result), continuing with note creation...', 5000);
-                    } else {
-                        this.showNotice('Summary generated successfully', 5000);
-                    }
-                } catch (summaryError) {
-                    summary = `[SUMMARY FAILED: ${getSafeErrorMessage(summaryError)}]`;
-                    summaryFailed = true;
-                    this.showNotice('AI summarization failed, continuing with note creation...', 5000);
-                    logger.error('Summary generation failed:', summaryError);
-                }
-            }
-            
-            // Create note
-            this.showNotice('Creating note with template...', 5000);
-            await this.plugin.applyTemplate(
-                title, 
-                url, 
-                transcript, 
-                summary, 
-                this.selectedFolder
-            );
-            
-            // Calculate datePrefix for filename
-            let datePrefix = '';
-            if (this.plugin.settings.prependDate) {
-                const now = new Date();
-                // Format date based on selected format
-                switch (this.plugin.settings.dateFormat) {
-                    case 'YYYY-MM-DD':
-                        datePrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} `;
-                        break;
-                    case 'MM-DD-YYYY':
-                        datePrefix = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}-${now.getFullYear()} `;
-                        break;
-                    case 'DD-MM-YYYY':
-                        datePrefix = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()} `;
-                        break;
-                    default:
-                        datePrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} `;
-                }
-            }
-            
-            // Get the path of the created note
-            const notePath = this.selectedFolder 
-                ? joinPaths(this.selectedFolder, `${datePrefix}${sanitizeFilename(title)}.md`)
-                : `${datePrefix}${sanitizeFilename(title)}.md`;
-            
-            // Add section links in a second pass if enabled and not in fast summary mode
-            // and BOTH transcript extraction AND summary succeeded. The timestamp pass uses
-            // the same LLM as the summary, so if summary failed, timestamp linking will
-            // almost certainly fail the same way — skip it to avoid wasted tokens / latency.
-            if (this.plugin.settings.addTimestampLinks && !this.plugin.settings.useFastSummary && !transcriptFailed && !summaryFailed) {
-                this.showNotice('Adding section timestamp links...', 3000);
-                try {
-                    // Simple, small delay to allow file creation to complete
-                    await new Promise(resolve => window.setTimeout(resolve, 300));
-                    logger.debug(`Adding timestamps to file: ${notePath}`);
-
-                    await this.plugin.addSectionLinksToNote(notePath, url);
-                    this.showNotice('Timestamp links added successfully', 3000);
-                } catch (timestampError) {
-                    const timestampErrorMessage = getSafeErrorMessage(timestampError);
-                    logger.error(`Error adding timestamp links: ${timestampErrorMessage}`, timestampError);
-                    this.showNotice(`Note created but timestamps could not be added: ${timestampErrorMessage}`, 5000);
-                }
-            } else if (transcriptFailed) {
-                this.showNotice('Timestamp links skipped - no transcript available', 3000);
-            } else if (summaryFailed) {
-                this.showNotice('Timestamp links skipped - summary failed', 5000);
-                logger.info('[pipeline] Skipping timestamp pass because summary failed; the same LLM is used for both.');
-            }
-
-            // === NEW LOGGING LOGIC START ===
-            // Append debug logs if enabled, AFTER all processing is done
-            if (this.plugin.settings.debugLogging) {
-                const finalLogs = getLogsForCallout();
-                if (finalLogs && finalLogs.trim() !== "") { // Only append if there are non-empty logs
-                    // Simplest approach to create debug section 
-                    const debugHeader = "\n\n> [!info]- Debug Information (hidden)\n> ```";
-                    const debugFooter = "\n> ```";
-                    
-                    const debugSection = debugHeader + "\n" + finalLogs + debugFooter;
-                    
-                    try {
-                        const file = this.app.vault.getAbstractFileByPath(notePath);
-                        if (file instanceof TFile) {
-                            const currentContent = await this.app.vault.read(file);
-                            await this.app.vault.modify(file, currentContent + debugSection);
-                            logger.debug("Appended debug logs to note:", notePath);
-                        } else {
-                            logger.warn("Could not find file to append debug logs:", notePath);
-                        }
-                    } catch (logAppendError) {
-                        logger.error("Error appending debug logs to note:", logAppendError);
-                    }
-                }
-            }
-            // === NEW LOGGING LOGIC END ===
-
-            // Final success notice
-            this.showNotice('Transcript note created successfully!', 5000);
-            
-            // Success - just close the modal
-            this.close();
-            
-        } catch (err) {
-            logger.error('Error in transcript workflow:', err);
-            
-            // Use the getSafeErrorMessage utility instead of duplicating error handling logic
-            const errorMessage = getSafeErrorMessage(err);
-            
-            // Create an error note with debug information if debug logging is enabled
-            if (this.plugin.settings.debugLogging) {
-                try {
-                    const url = this.urlInputEl.value.trim();
-                    const noteTitle = this.titleInputEl?.value.trim() || 'Failed Youtube transcript';
-                    
-                    // Create error content with debug logs
-                    const finalLogs = getLogsForCallout();
-                    let errorContent = `# ${noteTitle}\n\n`;
-                    errorContent += `**Error occurred during processing:**\n\n`;
-                    errorContent += `> [!error] Processing Failed\n`;
-                    errorContent += `> ${errorMessage}\n\n`;
-                    errorContent += `**URL:** ${url}\n\n`;
-                    
-                    if (finalLogs && finalLogs.trim() !== "") {
-                        // Use the exact same format as successful notes
-                        const debugHeader = "\n\n> [!info]- Debug Information (hidden)\n> ```";
-                        const debugFooter = "\n> ```";
-                        
-                        const debugSection = debugHeader + "\n" + finalLogs + debugFooter;
-                        errorContent += debugSection;
-                    }
-                    
-                    // Create the error note
-                    const fileName = sanitizeFilename(noteTitle) + '.md';
-                    const notePath = normalizePath(joinPaths(this.selectedFolder, fileName));
-                    
-                    await this.app.vault.create(notePath, errorContent);
-                    this.showNotice(`Error note created with debug information: ${fileName}`, 8000);
-                    
-                } catch (noteError) {
-                    logger.error('Failed to create error note:', noteError);
-                    this.showNotice(`Error: ${errorMessage} (Also failed to create debug note)`, 5000);
-                }
-            } else {
-                // Show error notice
-                this.showNotice(`Error: ${errorMessage}`, 5000);
-            }
-            
-            // Close the modal on error
-            this.close();
-        } finally {
-            spinner?.stop();
-            // Only stop the proxy server if it was started (only for Anthropic provider)
-            if (this.plugin.settings.selectedLLM === 'anthropic') {
-                try {
-                    logger.info('[processTranscript] Completed Anthropic processing');
-                } catch (error) {
-                    logger.error('Error during Anthropic processing:', error);
-                }
-            }
-            this.isProcessing = false;
+        const videoId = YouTubeTranscriptExtractor.extractVideoId(url);
+        if (!videoId) {
+            this.showError(`Invalid Youtube URL: '${url}'. Please ensure the URL is properly formatted without extra characters like quotes.`);
+            return;
         }
+
+        // The job runner owns the whole pipeline from here (transcript ->
+        // summary -> note -> timestamps) and survives this modal: dismissing it
+        // only stops the in-modal spinner, never the job. The folder goes in
+        // normalized because the runner derives the note path from
+        // `record.folder` verbatim ("Notes/" would drift from "Notes").
+        this.isProcessing = true;
+        let result: SubmitResult;
+        try {
+            result = await this.plugin.submitJob({
+                url,
+                videoId,
+                folder: normalizePath(this.selectedFolder),
+                customTitle: this.titleInputEl.value.trim(),
+                useFastSummary: this.plugin.settings.useFastSummary,
+                // Frozen on the record like useFastSummary: false skips the
+                // paid timestamps stage (legacy modal parity).
+                addTimestampLinks: this.plugin.settings.addTimestampLinks,
+            });
+        } catch (error) {
+            // A rejection means the store failed to flush the new record; the
+            // run itself has already started (runner contract), so do not
+            // claim nothing is running.
+            logger.error('[processTranscript] submit failed to persist the job:', error);
+            this.showNotice(
+                `Could not save the job: ${getSafeErrorMessage(error)}. The video may still be processing; check "Show active jobs"`,
+                8000
+            );
+            this.isProcessing = false;
+            this.close();
+            return;
+        }
+
+        switch (result.kind) {
+            case 'already-running':
+                this.isProcessing = false;
+                this.showNotice('This video is already being processed', 5000);
+                return;
+            case 'recovery':
+                // An interrupted job for this video already exists: it needs a
+                // decision, not a second job. Open the list on that record.
+                this.close();
+                this.plugin.openRecoveryModal(result.record.id);
+                return;
+            case 'started':
+                break;
+        }
+
+        const jobId = result.id;
+        if (!Platform.isMobile) {
+            // Desktop: the status bar is the progress surface; the plugin owns
+            // that spinner because this modal closes now.
+            this.plugin.trackJobInStatusBar(jobId);
+            this.close();
+            return;
+        }
+
+        // Mobile: no status bar, so the modal stays open with the spinner
+        // driven by `progress` events and a Cancel button.
+        const { contentEl } = this;
+        contentEl.empty();
+        const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
+        if (modalEl && modalEl.instanceOf(HTMLElement)) {
+            modalEl.addClass('tubesage-processing-modal');
+        }
+        const spinner = new ProcessingSpinner(this.plugin, 'Processing video', contentEl);
+        spinner.start();
+        this.mobileSpinner = spinner;
+        // The plugin closes this modal on unload so the spinner interval and
+        // the subscription below are released even if the user never does.
+        this.plugin.trackProcessingModal(this);
+        const actions = contentEl.createDiv({ cls: 'tubesage-jobs-actions' });
+        new ButtonComponent(actions)
+            .setButtonText('Cancel')
+            .onClick(() => {
+                void this.plugin.jobRunner.cancel(jobId);
+            });
+        this.unsubscribeJobEvents = this.plugin.subscribeToJobEvents((event) => {
+            if (event.id !== jobId) {
+                return;
+            }
+            if (event.type === 'progress') {
+                spinner.setLabel(event.message);
+                return;
+            }
+            // done / failed / cancelled / interrupted: the plugin has already
+            // shown the Notice (and opened the note when allowed).
+            this.close();
+        });
     }
 
+    // Dismissing the modal only detaches its UI from the job (spinner,
+    // subscription); the job keeps running in the runner.
     onClose() {
+        this.unsubscribeJobEvents?.();
+        this.unsubscribeJobEvents = null;
+        this.mobileSpinner?.stop();
+        this.mobileSpinner = null;
+        this.plugin.untrackProcessingModal(this);
+        this.isProcessing = false;
         const { contentEl } = this;
         contentEl.empty();
     }
 
+}
+
+/**
+ * Recovery surface (spec §6): lists every non-terminal job plus the most recent finished ones, each
+ * row rendered VERBATIM from the pure UI model (`buildRecoveryRow`) — no wording or button set is
+ * derived here. Buttons drive the runner's resume/cancel/discard (or open the note of a job that died
+ * with a previous instance) and the list re-renders after each action and after every runner event.
+ * Discard removes only the record; it never deletes notes.
+ */
+class JobRecoveryModal extends Modal {
+    private unsubscribeJobEvents: (() => void) | null = null;
+    private renderSeq = 0;
+    private isOpen = false;
+    private highlightId: string | undefined;
+    private hasRendered = false;
+
+    constructor(app: App, private readonly plugin: YouTubeTranscriptPlugin, private readonly onClosed: () => void) {
+        super(app);
+    }
+
+    onOpen() {
+        this.isOpen = true;
+        this.setTitle('Active jobs');
+        this.unsubscribeJobEvents = this.plugin.subscribeToJobEvents(() => {
+            void this.refresh();
+        });
+        void this.refresh();
+    }
+
+    onClose() {
+        this.isOpen = false;
+        this.unsubscribeJobEvents?.();
+        this.unsubscribeJobEvents = null;
+        this.contentEl.empty();
+        this.onClosed();
+    }
+
+    /** The row to mark and scroll into view on the next render (undefined clears it). */
+    highlight(id: string | undefined): void {
+        this.highlightId = id;
+    }
+
+    /**
+     * Re-reads the store and re-renders. Overlapping calls resolve to the latest snapshot only. If the
+     * rows cannot be built, the previous render is kept (or the modal stays empty) and an error line
+     * is shown instead of a misleading "No active jobs".
+     */
+    async refresh(): Promise<void> {
+        const seq = ++this.renderSeq;
+        let entries: RecoveryRowEntry[];
+        try {
+            entries = await this.plugin.recoveryRows();
+        } catch (error) {
+            logger.error('[jobs] Could not build the recovery rows:', error);
+            if (seq === this.renderSeq && this.isOpen) {
+                this.renderError(getSafeErrorMessage(error));
+            }
+            return;
+        }
+        if (seq !== this.renderSeq || !this.isOpen) {
+            return; // superseded by a later refresh, or closed meanwhile
+        }
+        this.render(entries);
+    }
+
+    private renderError(message: string): void {
+        const { contentEl } = this;
+        if (!this.hasRendered) {
+            contentEl.empty();
+        }
+        contentEl.querySelector('.tubesage-jobs-error')?.remove();
+        contentEl.createDiv({ cls: ['tubesage-jobs-status', 'tubesage-jobs-error'], text: `Could not read the job list: ${message}` });
+    }
+
+    private render(entries: RecoveryRowEntry[]): void {
+        const { contentEl } = this;
+        contentEl.empty();
+        this.hasRendered = true;
+        if (entries.length === 0) {
+            contentEl.createDiv({ cls: 'tubesage-jobs-empty', text: 'No active jobs' });
+            return;
+        }
+        const now = Date.now();
+        const list = contentEl.createDiv({ cls: 'tubesage-jobs-list' });
+        let highlighted: HTMLElement | null = null;
+        for (const { row, updatedAt } of entries) {
+            const rowEl = list.createDiv({ cls: 'tubesage-jobs-row' });
+            if (row.id === this.highlightId) {
+                rowEl.addClass('tubesage-jobs-row-highlight');
+                highlighted = rowEl;
+            }
+            rowEl.createDiv({ cls: 'tubesage-jobs-title', text: row.title });
+            rowEl.createDiv({ cls: 'tubesage-jobs-meta', text: `${row.stageLabel} · ${formatJobAge(updatedAt, now)}` });
+            rowEl.createDiv({ cls: 'tubesage-jobs-status', text: row.statusLine });
+            if (row.notePath !== undefined) {
+                rowEl.createDiv({ cls: 'tubesage-jobs-path', text: row.notePath });
+            }
+            const actionsEl = rowEl.createDiv({ cls: 'tubesage-jobs-actions' });
+            for (const action of row.actions) {
+                const button = new ButtonComponent(actionsEl)
+                    .setButtonText(action.label)
+                    .onClick(() => {
+                        void this.act(row, action);
+                    });
+                if (action.cta) {
+                    button.setCta();
+                }
+                if (action.warnsAboutBilling) {
+                    button.setWarning();
+                }
+            }
+        }
+        contentEl.createDiv({
+            cls: 'tubesage-jobs-meta',
+            text: 'Discard removes a job from this list; it never deletes notes.',
+        });
+        if (highlighted !== null) {
+            highlighted.scrollIntoView({ block: 'nearest' });
+        }
+    }
+
+    private async act(row: RecoveryRowModel, action: RecoveryAction): Promise<void> {
+        const runner = this.plugin.jobRunner;
+        const id = row.id;
+        try {
+            switch (action.id) {
+                case 'resume': {
+                    const result = await runner.resume(id, { confirmed: true });
+                    if (result.kind === 'prompt') {
+                        this.plugin.showNotice('This job cannot be resumed as it is; see its status', 5000);
+                    }
+                    break;
+                }
+                case 'finish-without-timestamps': {
+                    const result = await runner.resume(id, { confirmed: true, finishWithoutTimestamps: true });
+                    if (result.kind === 'prompt') {
+                        this.plugin.showNotice('This job cannot be finished as it is; see its status', 5000);
+                    }
+                    break;
+                }
+                case 'cancel':
+                    await runner.cancel(id);
+                    break;
+                case 'discard':
+                    await runner.discard(id);
+                    break;
+                case 'open-note':
+                    // Offered only when the model saw record.notePath and the file exists.
+                    if (row.notePath !== undefined) {
+                        await this.plugin.openNote(row.notePath);
+                    }
+                    break;
+            }
+        } catch (error) {
+            logger.error(`[jobs] ${action.id} failed for ${id}:`, error);
+            this.plugin.showNotice(`Error: ${getSafeErrorMessage(error)}`, 5000);
+        }
+        await this.refresh();
+    }
 }
 
 class YouTubeTranscriptSettingTab extends PluginSettingTab {
