@@ -7,6 +7,8 @@ import { defineConfig } from "vitest/config";
 const srcDir = fileURLToPath(new URL("./src/", import.meta.url));
 
 export default defineConfig({
+  // Git worktrees live under .worktrees/; never collect their test copies.
+  test: { exclude: ["**/node_modules/**", "**/.worktrees/**"] },
   resolve: {
     alias: [{ find: /^src\//, replacement: srcDir }],
   },
