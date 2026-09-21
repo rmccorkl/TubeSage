@@ -20,7 +20,7 @@
     "llm",
     "templater"
   ],
-  "author": "RM <whoami@neveryoumind.com>",
+  "author": "RM",
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "9.39.4",
