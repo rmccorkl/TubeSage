@@ -43,6 +43,7 @@ TubeSage is an Obsidian plugin that converts YouTube videos into structured note
 - Batch processing of YouTube channels and playlists
 - Multi-provider support: OpenAI, Anthropic, Google Gemini, OpenRouter, and Ollama
 - A cross-platform fetch shim so all providers work on mobile without Node.js dependencies
+- Recoverable jobs on mobile — interrupted processing can be resumed with the Show active jobs command
 
 ## Configuration
 
@@ -83,6 +84,59 @@ Choose and configure a provider in settings:
 
 ### Timestamp navigation
 When enabled, each section heading includes a link that opens the YouTube video at the corresponding moment.
+
+## Mobile: switching apps and job recovery
+
+TubeSage keeps processing while Obsidian is in the foreground. If you switch to another app, the OS may suspend or terminate Obsidian, and there is no supported way for a plugin to keep JavaScript or network requests running through that — the host controls it, and its behavior is not documented for plugins. TubeSage does not promise execution through suspension.
+
+A job lives and dies with the Obsidian instance that started it. If Obsidian closes or is killed while a job is running, that job is over: an AI summary that was in flight is lost (and may still have been billed), and you submit the video again. When Obsidian next starts you are told which jobs were interrupted; each one stays listed under **Show active jobs**, where you can open the note if one was created, or discard the record.
+
+### How recovery works
+Before each network or AI call, TubeSage records a small job entry: the video URL, target folder, title, current stage, timestamps, and attempt counts — never the transcript, the summary, or any API key. When Obsidian returns from the background (the same instance, still running), TubeSage checks these records and either continues automatically (only when that cannot re-bill you) or asks what to do.
+
+Recovery is triggered two ways:
+- automatically when the app becomes visible again (best effort — not guaranteed by the platform);
+- manually, via the command **Show active jobs**.
+
+Starting Obsidian does not resume anything: it closes the jobs the previous instance left unfinished and reports them.
+
+### What you may be asked
+If an AI request was in flight when the interruption happened, TubeSage cannot know whether the provider already charged for it, so **Resume** is labeled "may re-bill" and is never triggered automatically.
+
+A job that is still running offers one action:
+- **Cancel**
+
+An interrupted job (same instance) offers:
+- **Resume** (may re-bill)
+- **Finish without timestamps** (when the note already exists)
+- **Discard**
+
+A job that died with a previous instance offers:
+- **Open note** (when a note was created)
+- **Discard**
+
+Each stage is attempted at most 3 times.
+
+If you have configured a transcript service key (ScrapeCreators or Supadata), re-fetching a transcript on resume may incur another charge — TubeSage asks before doing that too.
+
+### Several devices
+Jobs are tagged with the installation that started them: a per-device id kept in that device's local storage, not in the plugin's data file. Each device only lists, recovers and closes its own jobs. A job started on another device is ignored here — never listed, resumed, closed or discarded — it belongs to the device that started it. A record left by a version of TubeSage before this tagging cannot be matched to any device, so it is removed once on the next start instead.
+
+### Behaviour changes on desktop
+Single-video notes go through the same job pipeline on desktop, which changes two things from earlier versions:
+- A successful note no longer has the "Debug Information" callout appended to it.
+- A failed transcript no longer creates a placeholder note. The failed job is listed under **Show active jobs**; with debug logging on, an error note carrying the captured logs is written instead.
+
+### Guarantees
+- Recovery never overwrites a note you have edited: timestamp and translation writes are atomic and are skipped if the note changed.
+- Recovery never creates a duplicate of a note it already created.
+- Recovery never deletes notes — Discard only forgets the job record.
+
+### Batch jobs
+Playlists and channels (batch processing) are not yet covered by job recovery; they run as before.
+
+### Known limitation
+Automated tests and build checks pass for this feature. Interactive Obsidian desktop sessions and physical iOS/Android scenarios have not been exercised and remain unverified until someone actually runs them. If you hit an issue, please report device behavior (OS and version, Obsidian version, provider, and the stage at which it failed) on [GitHub issue #3](https://github.com/rmccorkl/TubeSage/issues/3).
 
 ## Technical Architecture
 

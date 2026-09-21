@@ -987,3 +987,52 @@
     width: 100%;
     margin-left: auto;
 }
+
+/* Recovery modal (#3 T6a): pure list/row layout for buildRecoveryRow output. */
+.tubesage-jobs-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-4-2);
+}
+.tubesage-jobs-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-4-1);
+    padding: var(--size-4-2);
+    border: 1px solid var(--background-modifier-border);
+    border-radius: var(--radius-m);
+}
+.tubesage-jobs-title {
+    font-weight: var(--font-semibold);
+}
+.tubesage-jobs-meta {
+    color: var(--text-muted);
+}
+.tubesage-jobs-status {
+    font-size: var(--font-ui-small);
+}
+.tubesage-jobs-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--size-4-2);
+}
+.tubesage-jobs-empty {
+    color: var(--text-muted);
+    text-align: center;
+    padding: var(--size-4-4);
+}
+.tubesage-jobs-path {
+    font-family: var(--font-monospace);
+    word-break: break-all;
+}
+.is-mobile .tubesage-jobs-actions {
+    flex-direction: column;
+}
+/* The row a submit was routed to (an existing job for the same video). */
+.tubesage-jobs-row-highlight {
+    border-color: var(--interactive-accent);
+    background-color: var(--background-modifier-hover);
+}
+.tubesage-jobs-error {
+    color: var(--text-error);
+}
