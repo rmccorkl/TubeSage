@@ -50,6 +50,9 @@ TubeSage is an Obsidian plugin that converts YouTube videos into structured note
 ### 1. License acceptance
 Accept the MIT license terms in the settings panel before using the plugin. Use the "View License" button to read the full text.
 
+### Recommended setup
+For the most reliable results, use **OpenRouter** as the LLM provider together with **ScrapeCreators** for transcript retrieval. Direct YouTube transcript extraction breaks whenever YouTube changes or restricts how captions are served, so a paid transcript service is the dependable path. Gemini's lower-cost tiers are rate-limited and can be throttled or unavailable under load, whereas OpenRouter lets you pick a model with the capacity you need. Other providers still work; this is the combination the maintainer has found most dependable.
+
 ### 2. LLM provider setup
 Choose and configure a provider in settings:
 
