@@ -19,8 +19,12 @@ import { NoCaptionsError } from "../utils/transcript-errors";
 //  - Vault.getAbstractFileByPath(path): `fileMap.hasOwnProperty(path)` — an
 //    exact lookup, no normalization; the index itself is NFC.
 //
-// sanitizeFilename leaves Hangul in NFD (conjoining Jamo survive its diacritic
-// strip), so a note path derived without normalization is never found again.
+// Before issue #6's fix, sanitizeFilename left Hangul in NFD (conjoining Jamo
+// survived its diacritic strip, and nothing recomposed them), so a note path
+// derived without normalization was never found again. sanitizeFilename now
+// recomposes to NFC itself (#6), so its output already matches the NFC vault
+// index; the normalizer injected below stays in place as a defense for paths
+// built or persisted before that fix (see the frozen NFD fixture below).
 
 const INSTALLATION = "install-e2e";
 
@@ -270,7 +274,7 @@ describe("end-to-end: runner + adapters + store against Obsidian-like doubles (#
     await settle();
     const record = h.store.list()[0];
     const expected = `Inbox/${HARNESS_DATE_PREFIX}${sanitizeFilename(HANGUL_TITLE)}.md`.normalize("NFC");
-    expect(expected).not.toBe(`Inbox/${HARNESS_DATE_PREFIX}${sanitizeFilename(HANGUL_TITLE)}.md`); // the derivation really is NFD
+    expect(expected).toBe(`Inbox/${HARNESS_DATE_PREFIX}${sanitizeFilename(HANGUL_TITLE)}.md`); // sanitizeFilename now returns NFC itself (#6)
     expect(record.status).toBe("done");
     expect(record.lastError).toBeUndefined();
     expect(h.host.summarizeCalls).toBe(1);
@@ -348,7 +352,10 @@ describe("end-to-end: runner + adapters + store against Obsidian-like doubles (#
   });
 
   it("a hand-built interrupted/network fixture with an NFD notePath resumes at note-created (visibility pass) against an NFC index: no note-missing, no drift, paths persisted NFC", async () => {
-    const nfdPath = `Inbox/${HARNESS_DATE_PREFIX}${sanitizeFilename(HANGUL_TITLE)}.md`;
+    // sanitizeFilename now returns NFC itself (#6), so this legacy-record
+    // fixture builds its NFD path explicitly rather than relying on the
+    // (now-fixed) sanitizer to have produced it.
+    const nfdPath = `Inbox/${HARNESS_DATE_PREFIX}${sanitizeFilename(HANGUL_TITLE)}.md`.normalize("NFD");
     const nfcPath = nfdPath.normalize("NFC");
     expect(nfdPath).not.toBe(nfcPath);
     const base = createJobRecord({

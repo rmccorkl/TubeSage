@@ -1,10 +1,13 @@
 /**
  * Sanitizes a string to be used as a filename by:
- * 1. Removing all non-alphanumeric characters (including emojis and special characters)
+ * 1. Removing all non-alphanumeric, non-mark characters (including emojis and special characters),
+ *    while keeping Latin diacritics stripped (café -> cafe) and non-Latin combining marks
+ *    (e.g. Japanese voiced sound marks, Thai vowel signs) intact
  * 2. Replacing spaces with hyphens
  * 3. Removing leading/trailing spaces and dots
  * 4. Ensuring the filename isn't too long
  * 5. Handling special cases for Obsidian
+ * 6. Recomposing to NFC so the result is already normalized like Obsidian's vault index
  */
 export function sanitizeFilename(title: string): string {
     if (!title || title.trim() === '') {
@@ -14,8 +17,8 @@ export function sanitizeFilename(title: string): string {
     // First, normalize Unicode characters and remove anything non-alphanumeric
     let sanitized = title
         .normalize('NFD')                   // Decompose Unicode characters
-        .replace(/[\u0300-\u036f]/g, '')    // Remove diacritics
-        .replace(/[^\p{L}\p{N}\s-]/gu, '')  // Only allow letters, numbers, spaces and hyphens
+        .replace(/[\u0300-\u036f]/g, '')    // Remove Latin diacritics (while decomposed)
+        .replace(/[^\p{L}\p{N}\p{M}\s-]/gu, '')  // Only allow letters, numbers, marks, spaces and hyphens
         .replace(/\s+/g, '-')               // Replace spaces with hyphens
         .trim()                             // Remove leading/trailing spaces
         .replace(/^\.+|-+\.+$/g, '')        // Remove leading/trailing dots and hyphens
@@ -44,5 +47,8 @@ export function sanitizeFilename(title: string): string {
     // Final check for trailing separators that might have been added in other steps
     sanitized = sanitized.replace(/[-_.]+$/g, '');
 
-    return sanitized;
+    // Recompose combining marks kept above (e.g. Japanese voiced sound marks,
+    // Hangul jamo) back into their precomposed form, so the sanitizer's own
+    // output is already NFC — matching Obsidian's NFC-normalized vault index.
+    return sanitized.normalize('NFC');
 } 
