@@ -480,7 +480,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
             },
             {
                 name: 'Scrape creators API key',
-                desc: 'Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free).',
+                desc: 'Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.',
                 render: gated((setting) => {
                     setting.addText(text => {
                         const textComponent = text
@@ -536,7 +536,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
 
     llmItems.push({
         name: 'Provider',
-        desc: 'Provider used for summarisation.',
+        desc: 'Provider used for summarisation. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.',
         render: gated((setting) => {
             setting.addDropdown(dropdown => {
                 // Add OpenAI option
