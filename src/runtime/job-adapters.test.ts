@@ -260,7 +260,9 @@ describe("createJobStages — summary, render, create, timestamps", () => {
     expect(rec.targetNotePath).toBe(`Notes/${sanitizeFilename(title)}.md`.normalize("NFC"));
     await expect(stages.renderNote(rec, { transcript: "t", summary: "s", title })).resolves.toBe("rendered");
     // A host that renders the un-normalized (NFD) form is still the same note.
-    host.renderPathOverride = `Notes/${sanitizeFilename(title)}.md`;
+    // sanitizeFilename itself now returns NFC (#6), so the NFD variant has to
+    // be constructed explicitly here rather than relying on the sanitizer.
+    host.renderPathOverride = `Notes/${sanitizeFilename(title)}.md`.normalize("NFD");
     expect(host.renderPathOverride).not.toBe(rec.targetNotePath);
     await expect(stages.renderNote(rec, { transcript: "t", summary: "s", title })).resolves.toBe("rendered");
   });

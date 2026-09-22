@@ -472,11 +472,11 @@ describe("deriveNotePath — injected normalizer (#3 final review C1)", () => {
   const settings = { prependDate: false, dateFormat: "YYYY-MM-DD" };
   const nfc = (path: string): string => path.normalize("NFC");
 
-  it("applies the injected normalizer to the whole derived path (a Hangul title is NFD after sanitizeFilename)", () => {
+  it("applies the injected normalizer to the whole derived path (a Hangul title is already NFC after sanitizeFilename (#6), so both normalizers agree)", () => {
     const title = "안녕하세요 튜토리얼";
     const record = createJobRecord(baseInput({ folder: "Inbox", customTitle: title }));
     const raw = `Inbox/${sanitizeFilename(title)}.md`;
-    expect(raw.normalize("NFC")).not.toBe(raw);
+    expect(raw).toBe(raw.normalize("NFC"));
     expect(deriveNotePath(record, settings, identity)).toBe(raw);
     expect(deriveNotePath(record, settings, nfc)).toBe(raw.normalize("NFC"));
   });
