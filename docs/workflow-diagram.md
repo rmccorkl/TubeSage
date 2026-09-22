@@ -110,7 +110,7 @@ flowchart TD
 
 ## Workflow Overview
 
-The TubeSage workflow processes YouTube content into structured Obsidian notes through a pipeline of transcript extraction, optional LLM summarization, and template application. The plugin requires Obsidian 1.11.4 or later and runs on both desktop and mobile.
+The TubeSage workflow processes YouTube content into structured Obsidian notes through a pipeline of transcript extraction, optional LLM summarization, and template application. The plugin requires Obsidian 1.13.0 or later and runs on both desktop and mobile.
 
 ### Key Workflow Features
 

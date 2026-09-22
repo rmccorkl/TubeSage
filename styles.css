@@ -256,7 +256,8 @@
     font-size: 12px;
 }
 
-.tubesage-settings-container-disabled {
+/* Rows locked behind the license toggle (declarative settings tab). */
+.setting-item.tubesage-settings-locked {
     opacity: 0.5;
     pointer-events: none;
     user-select: none;
@@ -699,6 +700,13 @@
 
 
 
+/* The support block is one heading row; its control cell holds the block.
+   Stack the heading above the block instead of beside it. */
+.setting-item.tubesage-settings-support-row {
+    flex-direction: column;
+    align-items: center;
+}
+
 .tubesage-settings-support-container {
     display: flex;
     flex-direction: column;
@@ -758,7 +766,12 @@
     gap: var(--size-4-2);
 }
 
-.setting-item-heading.tubesage-heading .setting-item-name {
+/* Section headings. The declarative settings tab (Obsidian 1.13) renders a
+   group heading as `.setting-group > .setting-item.setting-item-heading`;
+   the group carries the `tubesage-heading` class. The support block is a
+   single heading row that carries the class itself. */
+.setting-item-heading.tubesage-heading .setting-item-name,
+.setting-group.tubesage-heading > .setting-item-heading .setting-item-name {
     font-size: 1.4em;
     font-weight: 600;
     color: var(--text-accent);
@@ -769,7 +782,8 @@
     gap: var(--size-4-3);
 }
 
-.setting-item-heading.tubesage-heading {
+.setting-item-heading.tubesage-heading,
+.setting-group.tubesage-heading > .setting-item-heading {
     margin-top: var(--size-4-2);
     margin-bottom: var(--size-4-1);
     padding-bottom: 2px;

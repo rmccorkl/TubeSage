@@ -24,7 +24,7 @@ TubeSage is an Obsidian plugin that converts YouTube videos into structured note
 8. (For YouTube notes) Install the [Templater plugin](https://github.com/SilentVoid13/Templater) for template-driven formatting.
 
 ### Requirements
-- [Obsidian](https://obsidian.md/) v1.11.4+ (TubeSage stores cloud API keys using Obsidian's secret storage, which was introduced in 1.11.4)
+- [Obsidian](https://obsidian.md/) v1.13.0+ (TubeSage uses the declarative settings API introduced in 1.13.0; it also stores cloud API keys using Obsidian's secret storage, available since 1.11.4)
 - [Templater plugin](https://github.com/SilentVoid13/Templater) (required for template functionality)
 - An API key for at least one LLM provider:
   - OpenAI
