@@ -22,6 +22,7 @@ import type {
     TextComponent,
     ToggleComponent,
 } from 'obsidian';
+import { t } from '../i18n';
 import { getLogger, LogLevel, setGlobalLogLevel } from '../utils/logger';
 import { getEffectiveLimits, isModelSupported } from '../utils/model-limits-registry';
 import type { YouTubeTranscriptSettings } from './settings-defaults';
@@ -273,7 +274,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
         type: 'group',
         items: [
             {
-                name: 'Support development',
+                name: t('settings.support.name'),
                 searchable: false,
                 render: (setting) => {
                     setting.setHeading();
@@ -284,13 +285,13 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
 
                     // Support message in appearance format
                     supportContainer.createDiv({
-                        text: 'If you find this plugin useful, consider supporting its development:',
+                        text: t('settings.support.blurb'),
                         cls: 'tubesage-settings-support-desc',
                     });
 
                     // Add italicized mission statement
                     supportContainer.createDiv({
-                        text: '…and help seed a bigger vision: technology that serves people and planet..',
+                        text: t('settings.support.mission'),
                         cls: ['tubesage-settings-support-desc', 'tubesage-mission-italic'],
                     });
 
@@ -329,14 +330,14 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
 
                     // License text
                     licenseButtonContainer.createSpan({
-                        text: 'License & disclaimer',
+                        text: t('settings.support.license.label'),
                         cls: 'tubesage-settings-action-button-label',
                     });
 
                     // Eye icon button for viewing license
                     host.createExtraButton(licenseButtonContainer)
                         .setIcon('eye')
-                        .setTooltip('View license & disclaimer')
+                        .setTooltip(t('settings.support.license.viewTooltip'))
                         .onClick(() => {
                             host.openLicenseModal();
                         });
@@ -347,7 +348,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                     });
 
                     toggleContainer.createSpan({
-                        text: 'Accept license & disclaimer',
+                        text: t('settings.support.license.acceptLabel'),
                         cls: 'tubesage-settings-action-button-label',
                     });
 
@@ -369,7 +370,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                     // Eye icon button for viewing README
                     host.createExtraButton(readmeButtonContainer)
                         .setIcon('eye')
-                        .setTooltip('View readme')
+                        .setTooltip(t('settings.support.readme.viewTooltip'))
                         .onClick(() => {
                             host.openReadmeModal();
                         });
@@ -388,12 +389,12 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
     // ---- Templates ------------------------------------------------------------
     items.push({
         type: 'group',
-        heading: 'Templates',
+        heading: t('settings.templates.heading'),
         cls: 'tubesage-heading',
         items: [
             {
-                name: 'Templater plugin template file',
-                desc: 'Path to the templater plugin template file to use',
+                name: t('settings.templates.templaterFile.name'),
+                desc: t('settings.templates.templaterFile.desc'),
                 render: gated((setting) => {
                     setting.addText(text => text
                         .setPlaceholder('templates/YouTubeTranscript.md')
@@ -409,7 +410,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                     setting.addExtraButton(button => {
                         button
                             .setIcon('folder')
-                            .setTooltip('Browse for template file')
+                            .setTooltip(t('settings.templates.templaterFile.browseTooltip'))
                             .onClick(() => {
                                 // Show a file picker modal
                                 host.pickTemplateFile((selectedPath) => {
@@ -431,11 +432,11 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                 name: '',
                 searchable: false,
                 render: gated((setting) => {
-                    setting.controlEl.createSpan({ text: 'Example ' });
+                    setting.controlEl.createSpan({ text: t('settings.templates.example.label') });
                     setting.addExtraButton(button => {
                         button
                             .setIcon('eye')
-                            .setTooltip('View example template')
+                            .setTooltip(t('settings.templates.example.viewTooltip'))
                             .onClick(() => {
                                 host.openTemplateViewModal();
                             });
@@ -448,24 +449,24 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
     // ---- Transcripts ----------------------------------------------------------
     items.push({
         type: 'group',
-        heading: 'Transcripts',
+        heading: t('settings.transcripts.heading'),
         cls: 'tubesage-heading',
         extraButtons: headingInfo(
-            'Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.'
+            t('settings.transcripts.info')
         ),
         items: [
             {
-                name: 'Transcript root folder',
-                desc: 'The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)',
+                name: t('settings.transcripts.rootFolder.name'),
+                desc: t('settings.transcripts.rootFolder.desc'),
                 control: { type: 'text', key: 'transcriptRootFolder', placeholder: 'Inbox', disabled: locked },
             },
             {
-                name: 'YouTube data API key',
-                desc: 'Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.',
+                name: t('settings.transcripts.youtubeApiKey.name'),
+                desc: t('settings.transcripts.youtubeApiKey.desc'),
                 render: gated((setting) => {
                     setting.addText(text => {
                         const textComponent = text
-                            .setPlaceholder('Enter API key (starts with aiza)')
+                            .setPlaceholder(t('settings.transcripts.youtubeApiKey.placeholder'))
                             .setValue(host.settings.youtubeApiKey)
                             .onChange((value: string) => {
                                 void (async () => {
@@ -479,12 +480,12 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                 }),
             },
             {
-                name: 'Scrape creators API key',
-                desc: 'Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.',
+                name: t('settings.transcripts.scrapeCreatorsApiKey.name'),
+                desc: t('settings.transcripts.scrapeCreatorsApiKey.desc'),
                 render: gated((setting) => {
                     setting.addText(text => {
                         const textComponent = text
-                            .setPlaceholder('Enter scrapecreators API key')
+                            .setPlaceholder(t('settings.transcripts.scrapeCreatorsApiKey.placeholder'))
                             .setValue(host.settings.scrapcreatorsApiKey)
                             .onChange((value: string) => {
                                 void (async () => {
@@ -499,12 +500,12 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                 }),
             },
             {
-                name: 'Supa data API key',
-                desc: 'Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.',
+                name: t('settings.transcripts.supadataApiKey.name'),
+                desc: t('settings.transcripts.supadataApiKey.desc'),
                 render: gated((setting) => {
                     setting.addText(text => {
                         const textComponent = text
-                            .setPlaceholder('Enter supadata key')
+                            .setPlaceholder(t('settings.transcripts.supadataApiKey.placeholder'))
                             .setValue(host.settings.supadataApiKey)
                             .onChange((value: string) => {
                                 void (async () => {
@@ -519,13 +520,13 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                 }),
             },
             {
-                name: 'Translate language',
-                desc: 'Target language code for translation (e.g., en, es, fr, de). Use "en" to keep content in english.',
-                control: { type: 'text', key: 'translateLanguage', placeholder: 'Enter language code', disabled: locked },
+                name: t('settings.transcripts.translateLanguage.name'),
+                desc: t('settings.transcripts.translateLanguage.desc'),
+                control: { type: 'text', key: 'translateLanguage', placeholder: t('settings.transcripts.translateLanguage.placeholder'), disabled: locked },
             },
             {
-                name: 'Translate country',
-                desc: 'Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.',
+                name: t('settings.transcripts.translateCountry.name'),
+                desc: t('settings.transcripts.translateCountry.desc'),
                 control: { type: 'text', key: 'translateCountry', placeholder: 'US', disabled: locked },
             },
         ],
@@ -535,8 +536,8 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
     const llmItems: SettingGroupItem[] = [];
 
     llmItems.push({
-        name: 'Provider',
-        desc: 'Provider used for summarisation. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.',
+        name: t('settings.llm.provider.name'),
+        desc: t('settings.llm.provider.desc'),
         render: gated((setting) => {
             setting.addDropdown(dropdown => {
                 // Add OpenAI option
@@ -588,10 +589,10 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
     // all four providers' full settings at once).
     for (const { provider, displayName, placeholder } of providerCatalog) {
         llmItems.push({
-            name: `${displayName} api key`,
+            name: t('settings.llm.apiKey.name', { provider: displayName }),
             desc: provider === 'ollama'
-                ? 'Server URL, stored in plugin data.'
-                : 'Stored in Obsidian secret storage, not in plugin data.',
+                ? t('settings.llm.apiKey.desc.ollama')
+                : t('settings.llm.apiKey.desc.cloud'),
             render: gated((setting) => {
                 setting.addText(text => {
                     const textComponent = text
@@ -626,10 +627,10 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
 
     items.push({
         type: 'group',
-        heading: 'Language model',
+        heading: t('settings.llm.heading'),
         cls: 'tubesage-heading',
         extraButtons: headingInfo(
-            'Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.'
+            t('settings.llm.info')
         ),
         items: llmItems,
     });
@@ -650,8 +651,8 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
         type: 'group',
         items: [
             {
-                name: 'Temperature',
-                desc: `Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: ${host.settings.temperature}`,
+                name: t('settings.llm.temperature.name'),
+                desc: t('settings.llm.temperature.desc', { value: host.settings.temperature }),
                 render: gated((setting) => {
                     setting.addSlider(slider => slider
                         .setLimits(0, 1, 0.1)
@@ -672,16 +673,16 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
     // ---- Note format ----------------------------------------------------------
     items.push({
         type: 'group',
-        heading: 'Note format',
+        heading: t('settings.noteFormat.heading'),
         cls: 'tubesage-heading',
         items: [
             {
-                name: 'Prepend date to note title',
-                desc: 'Automatically add date to the beginning of note filenames',
+                name: t('settings.noteFormat.prependDate.name'),
+                desc: t('settings.noteFormat.prependDate.desc'),
                 render: gated((setting) => {
                     setting.addDropdown((dropdown) => dropdown
-                        .addOption('true', 'Enabled')
-                        .addOption('false', 'Disabled')
+                        .addOption('true', t('common.enabled'))
+                        .addOption('false', t('common.disabled'))
                         .setValue(host.settings.prependDate ? 'true' : 'false')
                         .onChange((value: string) => {
                             void (async () => {
@@ -692,8 +693,8 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                 }),
             },
             {
-                name: 'Date format',
-                desc: 'Format for date prepended to note titles',
+                name: t('settings.noteFormat.dateFormat.name'),
+                desc: t('settings.noteFormat.dateFormat.desc'),
                 control: {
                     type: 'dropdown',
                     key: 'dateFormat',
@@ -739,7 +740,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
             setting.addExtraButton(button => {
                 button
                     .setIcon('reset')
-                    .setTooltip('Reset to default')
+                    .setTooltip(t('settings.prompts.resetTooltip'))
                     .onClick(() => {
                         void (async () => {
                             host.settings[key] = host.defaults[key];
@@ -753,12 +754,12 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
 
     items.push({
         type: 'group',
-        heading: 'Prompts',
+        heading: t('settings.prompts.heading'),
         cls: 'tubesage-heading',
         items: [
             {
                 // Sub-heading for Fast Summary prompts (groups cannot nest).
-                name: 'Fast summary prompts',
+                name: t('settings.prompts.fast.heading'),
                 searchable: false,
                 render: (setting) => {
                     setting.setHeading();
@@ -766,20 +767,20 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                 },
             },
             promptRow(
-                'System prompt (fast summary)',
-                'Instructions for the llms behavior when generating fast summaries',
-                'You are a helpful assistant...',
+                t('settings.prompts.systemFast.name'),
+                t('settings.prompts.systemFast.desc'),
+                t('settings.prompts.systemFast.placeholder'),
                 'systemPrompt',
             ),
             promptRow(
-                'User prompt (fast summary)',
-                'Specific instructions for summarizing the transcript quickly and concisely',
-                'Please summarize the following YouTube transcript...',
+                t('settings.prompts.userFast.name'),
+                t('settings.prompts.userFast.desc'),
+                t('settings.prompts.userFast.placeholder'),
                 'userPrompt',
             ),
             {
                 // Sub-heading for Extensive Summary prompts
-                name: 'Extensive summary prompts',
+                name: t('settings.prompts.extensive.heading'),
                 searchable: false,
                 render: (setting) => {
                     setting.setHeading();
@@ -788,25 +789,25 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                 },
             },
             promptRow(
-                'System prompt (extensive summary)',
-                'Instructions for the llms behavior when generating detailed, comprehensive summaries',
-                'You are an analytical assistant...',
+                t('settings.prompts.systemExtensive.name'),
+                t('settings.prompts.systemExtensive.desc'),
+                t('settings.prompts.systemExtensive.placeholder'),
                 'extensiveSystemPrompt',
             ),
             promptRow(
-                'User prompt (extensive summary)',
-                'Specific instructions for creating detailed and structured notes from the transcript',
-                'From the transcript below, create detailed and structured notes...',
+                t('settings.prompts.userExtensive.name'),
+                t('settings.prompts.userExtensive.desc'),
+                t('settings.prompts.userExtensive.placeholder'),
                 'extensiveUserPrompt',
             ),
             {
                 // Default Summary Mode Setting
-                name: 'Default summary mode',
-                desc: 'Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.',
+                name: t('settings.prompts.defaultMode.name'),
+                desc: t('settings.prompts.defaultMode.desc'),
                 render: gated((setting) => {
                     setting.addDropdown((dropdown) => dropdown
-                        .addOption('false', 'Extensive summary (detailed)')
-                        .addOption('true', 'Fast summary (brief)')
+                        .addOption('false', t('settings.prompts.defaultMode.option.extensive'))
+                        .addOption('true', t('settings.prompts.defaultMode.option.fast'))
                         .setValue(host.settings.useFastSummary ? 'true' : 'false')
                         .onChange((value: string) => {
                             void (async () => {
@@ -818,12 +819,12 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
             },
             {
                 // Add timestamp links setting
-                name: 'Add YouTube timestamp links',
-                desc: 'Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)',
+                name: t('settings.prompts.timestampLinks.name'),
+                desc: t('settings.prompts.timestampLinks.desc'),
                 render: gated((setting) => {
                     setting.addDropdown(dropdown => dropdown
-                        .addOption('true', 'Enabled')
-                        .addOption('false', 'Disabled')
+                        .addOption('true', t('common.enabled'))
+                        .addOption('false', t('common.disabled'))
                         .setValue(host.settings.addTimestampLinks ? 'true' : 'false')
                         .onChange((value: string) => {
                             void (async () => {
@@ -834,7 +835,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                     .addExtraButton(button => {
                         button
                             .setIcon('info')
-                            .setTooltip('When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.');
+                            .setTooltip(t('settings.prompts.timestampLinks.infoTooltip'));
                     });
                 }),
             },
@@ -844,20 +845,20 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
     // ---- Advanced -------------------------------------------------------------
     items.push({
         type: 'group',
-        heading: 'Advanced',
+        heading: t('settings.advanced.heading'),
         cls: 'tubesage-heading',
         extraButtons: headingInfo(
-            'Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.'
+            t('settings.advanced.info')
         ),
         items: [
             {
                 // Debug logging toggle
-                name: 'Enable debug logging',
-                desc: 'Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.',
+                name: t('settings.advanced.debugLogging.name'),
+                desc: t('settings.advanced.debugLogging.desc'),
                 render: gated((setting) => {
                     setting.addDropdown(dropdown => dropdown
-                        .addOption('true', 'Enabled')
-                        .addOption('false', 'Disabled')
+                        .addOption('true', t('common.enabled'))
+                        .addOption('false', t('common.disabled'))
                         .setValue(host.settings.debugLogging ? 'true' : 'false')
                         .onChange((value: string) => {
                             void (async () => {
@@ -876,7 +877,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                     .addExtraButton((button: ExtraButtonComponent) => {
                         button
                             .setIcon('info')
-                            .setTooltip('When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.');
+                            .setTooltip(t('settings.advanced.debugLogging.infoTooltip'));
                     });
                 }),
             },
@@ -1005,13 +1006,13 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
         const isCustomSelected = state.modelDropdown?.getValue() === 'custom';
         state.headingSetting?.nameEl.setText(
             isCustomSelected
-                ? `Custom model parameters (${provider.toUpperCase()})`
-                : `Model parameters (${provider.toUpperCase()}) — override`,
+                ? t('settings.llm.modelParams.headingCustom', { provider: provider.toUpperCase() })
+                : t('settings.llm.modelParams.headingOverride', { provider: provider.toUpperCase() }),
         );
         state.headingSetting?.descEl.setText(
             isCustomSelected
-                ? `Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.`
-                : `These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.`,
+                ? t('settings.llm.modelParams.descCustom')
+                : t('settings.llm.modelParams.descOverride'),
         );
     };
 
@@ -1060,8 +1061,8 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
     const llmItems: SettingDefinitionRender[] = [
         {
             // Header row
-            name: `${displayName} model`,
-            desc: 'Select a preset model or type a custom model name below.',
+            name: t('settings.llm.model.name', { provider: displayName }),
+            desc: t('settings.llm.model.desc'),
             render: gated((setting) => {
                 setting.settingEl.addClass('tubesage-provider-header');
             }),
@@ -1092,7 +1093,7 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
                             dropdown.addOption(model, model);
                         });
                     }
-                    dropdown.addOption('custom', 'Use custom model');
+                    dropdown.addOption('custom', t('settings.llm.model.customOption'));
                     const currentModel = host.settings.selectedModels[provider];
                     const validSelection = mergedOptions.includes(currentModel) ? currentModel : 'custom';
                     dropdown.setValue(validSelection)
@@ -1148,7 +1149,7 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
                     setting.addExtraButton(button => {
                         button
                             .setIcon('refresh-cw') // Refresh icon
-                            .setTooltip(`Refresh ${displayName} model list`)
+                            .setTooltip(t('settings.llm.model.refreshTooltip', { provider: displayName }))
                             .onClick(() => {
                                 void (async () => {
                                 const apiKey = host.settings.apiKeys[provider];
@@ -1214,7 +1215,7 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
                 // becomes a real custom model entry.
                 setting.addText(text => {
                     state.customField = text;
-                    text.setPlaceholder('Custom model name')
+                    text.setPlaceholder(t('settings.llm.model.customPlaceholder'))
                         .setValue(
                             // Show current model in custom field only when it's not
                             // in the merged dropdown options (preset + previously-
@@ -1284,7 +1285,7 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
     const paramItems: SettingDefinitionRender[] = [
         {
             // Header (text and sub-description updated by updateCustomParamsLabel).
-            name: `Model parameters (${provider.toUpperCase()})`,
+            name: t('settings.llm.modelParams.heading', { provider: provider.toUpperCase() }),
             searchable: false,
             render: (setting) => {
                 setting.setHeading();
@@ -1295,8 +1296,8 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
         },
         {
             // Context window field
-            name: 'Context window (k tokens)',
-            desc: 'Total context window in thousands of tokens (e.g., 400 for 400k tokens)',
+            name: t('settings.llm.contextWindow.name'),
+            desc: t('settings.llm.contextWindow.desc'),
             render: gated((setting) => {
                 setting.addText(text => {
                     state.contextKField = text;
@@ -1310,8 +1311,8 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
         },
         {
             // Max output field
-            name: 'Max output (k tokens)',
-            desc: 'Maximum output tokens in thousands (e.g., 128 for 128k tokens)',
+            name: t('settings.llm.maxOutput.name'),
+            desc: t('settings.llm.maxOutput.desc'),
             render: gated((setting) => {
                 setting.addText(text => {
                     state.maxOutputKField = text;
@@ -1325,8 +1326,8 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
         },
         {
             // Input max field (optional)
-            name: 'Input max (k tokens) - optional',
-            desc: 'Explicit input cap if vendor publishes one (leave empty to auto calculate)',
+            name: t('settings.llm.inputMax.name'),
+            desc: t('settings.llm.inputMax.desc'),
             render: gated((setting) => {
                 setting.addText(text => {
                     state.inputMaxKField = text;
@@ -1341,8 +1342,8 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
         },
         {
             // Reserve percentage field
-            name: 'Reserve percentage',
-            desc: `Safety reserve for output tokens (0.10 = 10%, default: ${provider === 'ollama' ? '15%' : '10%'})`,
+            name: t('settings.llm.reservePct.name'),
+            desc: t('settings.llm.reservePct.desc', { default: provider === 'ollama' ? '15%' : '10%' }),
             render: gated((setting) => {
                 setting.addText(text => {
                     state.reservePctField = text;
