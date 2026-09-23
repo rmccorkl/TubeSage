@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Ingeschakeld"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Uitgeschakeld"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Sluiten"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Ontwikkeling steunen"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Als deze plug-in nuttig voor je is, overweeg dan de ontwikkeling ervan te steunen:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…en help een grotere visie zaaien: techniek die mens en planeet dient."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Licentie en disclaimer"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Licentie en disclaimer bekijken"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Licentie en disclaimer accepteren"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Readme bekijken"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Sjablonen"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Sjabloonbestand van de Templater-plug-in"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Pad naar het te gebruiken sjabloonbestand van de templater-plug-in"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Bladeren naar een sjabloonbestand"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Voorbeeld "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Voorbeeldsjabloon bekijken"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Transcripties"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "De transcriptie-instellingen bepalen hoe en waar je geëxtraheerde notities worden opgeslagen, welke YouTube Data API-sleutel wordt gebruikt (vereist voor kanalen en afspeellijsten) en welke optionele vertaalparameters gelden."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Hoofdmap voor transcripties"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "De hoofdmap waarin submappen voor transcripties worden geordend (bijv. inbox, notes, enz.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "YouTube Data API-sleutel"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "Je API-sleutel uit de Google Cloud Console voor toegang tot openbare YouTube-transcripties (geen OAUTH-token). Vereist om kanalen en afspeellijsten te downloaden."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Voer de API-sleutel in (begint met aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Scrape creators API-sleutel"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Optionele sleutel voor de transcriptiedienst scrapecreators. Als die is ingesteld, wordt hij de primaire transcriptiemethode. Haal een gratis sleutel op app.scrapecreators.com (100 verzoeken gratis). Aanbevolen voor betrouwbare transcripties; directe extractie uit YouTube breekt zodra YouTube de levering van ondertitels wijzigt."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Voer de scrapecreators API-sleutel in"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Supa data API-sleutel"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Optionele sleutel voor de transcriptiedienst supadata. Als die is ingesteld, wordt hij de primaire methode (als er geen scrapecreators-sleutel is). Haal een sleutel op supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Voer de supadata-sleutel in"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Vertaaltaal"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Taalcode van de doeltaal voor de vertaling (bijv. en, es, fr, de). Gebruik \"en\" om de inhoud in het Engels te houden."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Voer de taalcode in"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Vertaalland"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Land- of regiocode van de vertaling (bijv. us, gb, ca). Wordt gebruikt voor regionale taalvarianten."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Taalmodel"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Kies een AI-aanbieder, voer de API-sleutel in en selecteer een model. De temperatuur regelt de creativiteit; het maximum aantal tokens begrenst de lengte van het antwoord. Aanbevolen voor de meeste gebruikers: de aanbieder Google met het model gemini-2.5-flash — snel, goedkoop en van goede kwaliteit. Bij snelheidslimieten of storingen is OpenRouter een degelijk alternatief."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Aanbieder"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Aanbieder die de samenvatting maakt. OpenRouter wordt aanbevolen vanwege de betrouwbaarheid; goedkopere Gemini-niveaus kunnen worden afgeknepen."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "{provider} API-sleutel"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Opgeslagen in de geheime opslag van Obsidian, niet in de plug-ingegevens."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "Server-URL, opgeslagen in de plug-ingegevens."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "{provider}-model"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Selecteer een vooraf ingesteld model of typ hieronder een eigen modelnaam."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Eigen model gebruiken"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "Modellijst van {provider} vernieuwen"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Eigen modelnaam"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Modelparameters ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Parameters van eigen model ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Modelparameters ({provider}) — overschrijven"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Verplicht: dit model staat niet in het register — stel contextvenster, maximale uitvoer en reserve in % in, zodat de tokenberekening verzoeken veilig kan dimensioneren."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Dit zijn de tokenlimieten van dit model, vooraf ingevuld uit bekende gegevens. Bewerk een veld om het voor deze aanbieder en dit model te overschrijven."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Contextvenster (k tokens)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Totaal contextvenster in duizenden tokens (bijv. 400 voor 400k tokens)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Maximale uitvoer (k tokens)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Maximale uitvoertokens in duizenden (bijv. 128 voor 128k tokens)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Maximale invoer (k tokens) - optioneel"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Expliciete invoerlimiet als de aanbieder er een publiceert (laat leeg om automatisch te berekenen)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Reservepercentage"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Veiligheidsreserve voor uitvoertokens (0.10 = 10%, standaard: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Temperatuur"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Regelt de willekeur van de uitvoer (0-1). Lager is gerichter, hoger is creatiever. Huidige waarde: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Notitieopmaak"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Datum vóór de notitietitel plaatsen"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "De datum automatisch aan het begin van notitiebestandsnamen zetten"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Datumnotatie"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Notatie van de datum die vóór notitietitels komt"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Prompts"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Prompts voor de snelle samenvatting"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Prompts voor de uitgebreide samenvatting"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Standaardwaarde herstellen"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Systeemprompt (snelle samenvatting)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Instructies voor het gedrag van het model bij het maken van snelle samenvattingen"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Je bent een behulpzame assistent..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Gebruikersprompt (snelle samenvatting)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Concrete instructies om de transcriptie snel en bondig samen te vatten"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Vat de volgende YouTube-transcriptie samen..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Systeemprompt (uitgebreide samenvatting)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Instructies voor het gedrag van het model bij het maken van gedetailleerde, uitgebreide samenvattingen"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Je bent een analytische assistent..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Gebruikersprompt (uitgebreide samenvatting)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Concrete instructies om gedetailleerde en gestructureerde notities uit de transcriptie te maken"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "Maak op basis van de onderstaande transcriptie gedetailleerde en gestructureerde notities..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Standaard samenvattingsmodus"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Kies de samenvattingsmodus waarmee de plug-in start. De snelle modus slaat tijdstempellinks over en verwerkt daardoor sneller."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Uitgebreide samenvatting (gedetailleerd)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Snelle samenvatting (beknopt)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "YouTube-tijdstempellinks toevoegen"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Aan elke genummerde sectiekop een link toevoegen die naar het bijbehorende tijdstempel in de YouTube-video springt (uitgeschakeld in de snelle modus)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Indien ingeschakeld, vermindert dit de tokens van de eerste ronde met 12% om ruimte te maken voor links. In de snelle modus automatisch uitgeschakeld."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Geavanceerd"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Geavanceerde instellingen voor foutopsporing en probleemoplossing. Schakel debuglogboeken in om aan elke notitie gedetailleerde informatie voor technische ondersteuning toe te voegen."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Debuglogboek inschakelen"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Gedetailleerde debuglogboeken inschakelen. Debuginformatie wordt dan als verborgen callout aan elke notitie toegevoegd, voor probleemoplossing."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Indien ingeschakeld wordt debuginformatie verzameld en als verborgen callout aan notities toegevoegd in plaats van naar de console geschreven."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Licentie van de Tubesage YouTube-transcriptieplug-in"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "Het licentiebestand kon niet worden geladen. Controleer of er een licentiebestand in de plug-inmap staat."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Licentie moet worden geaccepteerd"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Je moet de licentie van de plug-in accepteren voordat je deze functie gebruikt."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Ga naar de instellingen van de plug-in en accepteer de licentievoorwaarden om door te gaan."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Zo accepteer je de licentie:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Open de instellingen van Obsidian"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Scrol in de zijbalk omlaag naar het gedeelte met communityplug-ins"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Zoek \"Tubesage\" in de lijst met communityplug-ins"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Open de instellingen van de plug-in \"Tubesage\""
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Zet \"Licentie en disclaimer accepteren\" aan om de plug-in in te schakelen"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Plug-ininstellingen openen"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — annuleren via \"Show active jobs\""
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Transcriptie ophalen"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Transcriptie samenvatten"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Notitie maken"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Tijdstempels toevoegen"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Notitie vertalen"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Video verwerken"
+    }
+}

@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "啟用"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "停用"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "關閉"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "支持開發"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "如果這個外掛對你有幫助，歡迎支持它的開發："
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "……並一起播下更大的願景：服務人與地球的科技。"
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "授權與免責聲明"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "檢視授權與免責聲明"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "接受授權與免責聲明"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "檢視 README"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "範本"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Templater 外掛範本檔案"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "要使用的 Templater 外掛範本檔案路徑"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "瀏覽範本檔案"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "範例 "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "檢視範例範本"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "逐字稿"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "逐字稿設定決定擷取的筆記如何、存放到哪裡，要使用哪一組 YouTube 資料 API 金鑰（處理頻道與播放清單時必要），以及選用的翻譯參數。"
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "逐字稿根資料夾"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "用來整理逐字稿子資料夾的根資料夾（例如 inbox、notes 等）"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "YouTube 資料 API 金鑰"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "用於存取公開 YouTube 逐字稿的 Google Cloud Console API 金鑰（不是 OAUTH 權杖）。下載頻道與播放清單時必要。"
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "輸入 API 金鑰（以 aiza 開頭）"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Scrape creators API 金鑰"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "逐字稿服務 scrapecreators 的選用金鑰。設定後會作為主要的逐字稿來源。可於 app.scrapecreators.com 取得免費金鑰（100 次請求免費）。建議設定以取得穩定的逐字稿；YouTube 一旦更動字幕的提供方式，直接擷取就會失效。"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "輸入 scrapecreators API 金鑰"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Supa data API 金鑰"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "逐字稿服務 supadata 的選用金鑰。設定後（在沒有 scrapecreators 金鑰時）會作為主要的逐字稿來源。可於 supadata.ai 取得金鑰。"
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "輸入 supadata 金鑰"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "翻譯語言"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "翻譯目標語言代碼（例如 en、es、fr、de）。使用「en」可讓內容維持英文。"
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "輸入語言代碼"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "翻譯國家/地區"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "翻譯目標國家/地區代碼（例如 us、gb、ca）。用於區分地區性的語言變體。"
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "語言模型"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "選擇 AI 供應商、輸入其 API 金鑰，再挑選模型。temperature 控制創造性，max tokens 限制輸出長度。多數使用者建議：Google 供應商搭配 gemini-2.5-flash 模型 — 快速、便宜又有品質。若遇到速率限制或穩定性問題，OpenRouter 是可靠的備案。"
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "供應商"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "用來產生摘要的供應商。穩定性上建議 OpenRouter；低價的 Gemini 方案可能被限流。"
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "{provider} API 金鑰"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "存放在 Obsidian 的密鑰儲存區，而不是外掛資料裡。"
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "伺服器網址，存放在外掛資料中。"
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "{provider} 模型"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "選擇預設模型，或在下方輸入自訂模型名稱。"
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "使用自訂模型"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "重新整理 {provider} 模型清單"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "自訂模型名稱"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "模型參數（{provider}）"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "自訂模型參數（{provider}）"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "模型參數（{provider}） — 覆寫"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "必填：此模型不在登錄表中 — 請設定脈絡視窗、最大輸出與保留百分比，詞元預算才能安全估算請求大小。"
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "這些是此模型的詞元上限，已依已知資料預先填入。編輯任一欄位即可針對此供應商與模型覆寫。"
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "脈絡視窗（k 詞元）"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "脈絡視窗總量，以千詞元為單位（例如 400 代表 400k 詞元）"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "最大輸出（k 詞元）"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "最大輸出詞元數，以千為單位（例如 128 代表 128k 詞元）"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "最大輸入（k 詞元）- 選填"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "廠商公布的明確輸入上限（留空則自動計算）"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "保留百分比"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "輸出詞元的安全保留（0.10 = 10%，預設：{default}）"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "溫度"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "控制輸出的隨機程度（0-1）。數值越低越聚焦，越高越有創意。目前值：{value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "筆記格式"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "在筆記標題前加上日期"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "自動在筆記檔名開頭加上日期"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "日期格式"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "加在筆記標題前的日期格式"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "提示詞"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "快速摘要提示詞"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "詳盡摘要提示詞"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "還原為預設值"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "系統提示詞（快速摘要）"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "產生快速摘要時，給語言模型的行為指示"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "你是一位樂於幫忙的助理……"
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "使用者提示詞（快速摘要）"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "快速、精簡地摘要逐字稿的具體指示"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "請摘要以下這份 YouTube 逐字稿……"
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "系統提示詞（詳盡摘要）"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "產生詳細、完整摘要時，給語言模型的行為指示"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "你是一位擅長分析的助理……"
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "使用者提示詞（詳盡摘要）"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "從逐字稿製作詳細、有結構的筆記的具體指示"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "請依據下方的逐字稿，製作詳細且有結構的筆記……"
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "預設摘要模式"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "選擇外掛啟動時採用的預設摘要模式。快速摘要模式會略過時間戳記連結，以加快處理。"
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "詳盡摘要（詳細）"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "快速摘要（簡短）"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "加入 YouTube 時間戳記連結"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "在每個編號小標題加上連結，跳到 YouTube 影片中對應的時間點（快速摘要模式下停用）"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "啟用後會將第一輪的詞元減少 12%，替連結挪出空間。快速摘要模式下會自動停用。"
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "進階"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "用於偵錯與排除問題的進階設定。啟用偵錯記錄後，每則筆記都會附上供技術支援參考的詳細資訊。"
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "啟用偵錯記錄"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "啟用詳細的偵錯記錄。啟用後，偵錯資訊會以摺疊的標註區塊附加到每則筆記，方便排除問題。"
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "啟用後，偵錯資訊會以摺疊的標註區塊加入筆記，而不是輸出到主控台。"
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Tubesage YouTube 逐字稿外掛授權條款"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "無法載入授權檔案。請確認外掛目錄中是否有授權檔案。"
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "必須接受授權條款"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "使用這項功能前，必須先接受外掛的授權條款。"
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "請前往外掛設定並接受授權條款以繼續。"
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "如何接受授權條款："
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "開啟 Obsidian 設定"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "在側邊欄往下捲動到社群外掛區塊"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "在社群外掛清單中找到「Tubesage」"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "點選「Tubesage」外掛的設定"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "開啟「接受授權與免責聲明」以啟用這個外掛"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "開啟外掛設定"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage}（可在「Show active jobs」中取消）"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "正在取得逐字稿"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "正在摘要逐字稿"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "正在建立筆記"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "正在加入時間戳記"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "正在翻譯筆記"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "正在處理影片"
+    }
+}

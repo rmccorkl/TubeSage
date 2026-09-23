@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Ieslēgts"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Izslēgts"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Aizvērt"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Atbalstīt izstrādi"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Ja šis spraudnis ir noderīgs, apsveriet tā izstrādes atbalstīšanu:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…un palīdziet iesēt lielāku vīziju: tehnoloģiju, kas kalpo cilvēkiem un planētai."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Licence un atruna"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Skatīt licenci un atrunu"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Pieņemu licenci un atrunu"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Skatīt readme"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Veidnes"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Templater spraudņa veidnes fails"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Ceļš uz izmantojamo Templater spraudņa veidnes failu"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Izvēlēties veidnes failu"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Piemērs "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Skatīt veidnes paraugu"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Transkripti"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "Transkriptu iestatījumi nosaka, kā un kur tiek saglabātas izveidotās piezīmes, kuru YouTube data API atslēgu lietot (nepieciešama kanāliem un atskaņošanas sarakstiem) un neobligātos tulkošanas parametrus."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Transkriptu saknes mape"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "Saknes mape, kurā tiek veidotas transkriptu apakšmapes (piem., inbox, notes u. c.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "YouTube data API atslēga"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "Jūsu Google cloud console API atslēga publiskiem YouTube transkriptiem (nav OAUTH marķieris). Nepieciešama kanālu un atskaņošanas sarakstu lejupielādei."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Ievadiet API atslēgu (sākas ar aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Scrape creators API atslēga"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Neobligāta atslēga transkriptu pakalpojumam scrapecreators. Ja norādīta, to lieto kā galveno transkriptu iegūšanas veidu. Bezmaksas atslēga: app.scrapecreators.com (100 pieprasījumi bez maksas). Ieteicama uzticamībai: tiešā iegūšana no YouTube pārstāj darboties, kad YouTube maina subtitru piegādi."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Ievadiet scrapecreators API atslēgu"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Supa data API atslēga"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Neobligāta atslēga transkriptu pakalpojumam supadata. Ja norādīta, to lieto kā galveno transkriptu iegūšanas veidu (ja nav scrapecreators atslēgas). Atslēga: supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Ievadiet supadata atslēgu"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Tulkojuma valoda"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Mērķa valodas kods tulkojumam (piem., en, es, fr, de). Ievadiet „en“, lai saturs paliktu angliski."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Ievadiet valodas kodu"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Tulkojuma valsts"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Mērķa valsts vai reģiona kods tulkojumam (piem., us, gb, ca). Lieto valodas reģionālajiem variantiem."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Valodas modelis"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Izvēlieties MI pakalpojumu sniedzēju, ievadiet tā API atslēgu un izvēlieties modeli. Temperatūra nosaka radošumu, maksimālais marķieru skaits ierobežo atbildes garumu. Vairumam lietotāju: sniedzējs Google ar modeli gemini-2.5-flash — ātrs, lēts un kvalitatīvs. Ja rodas pieprasījumu ierobežojumi vai uzticamības problēmas, laba alternatīva ir OpenRouter."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Pakalpojumu sniedzējs"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Sniedzējs, kas veido kopsavilkumu. Uzticamībai ieteicams OpenRouter; lētākie Gemini līmeņi var tikt ierobežoti."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "{provider} API atslēga"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Glabājas Obsidian drošajā krātuvē, nevis spraudņa datos."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "Servera URL, glabājas spraudņa datos."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "{provider} modelis"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Izvēlieties sagatavotu modeli vai zemāk ievadiet savu modeļa nosaukumu."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Lietot savu modeli"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "Atsvaidzināt {provider} modeļu sarakstu"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Sava modeļa nosaukums"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Modeļa parametri ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Sava modeļa parametri ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Modeļa parametri ({provider}) — aizstāšana"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Obligāti: šī modeļa nav reģistrā — norādiet konteksta logu, maksimālo izvadi un rezervi %, lai marķieru budžetu varētu aprēķināt droši."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Šie ir šā modeļa marķieru ierobežojumi, aizpildīti no zināmiem datiem. Mainiet lauku, lai to aizstātu šim sniedzējam un modelim."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Konteksta logs (tūkst. marķieru)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Kopējais konteksta logs tūkstošos marķieru (piem., 400 nozīmē 400 tūkst.)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Maksimālā izvade (tūkst. marķieru)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Maksimālais izvades marķieru skaits tūkstošos (piem., 128 nozīmē 128 tūkst.)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Maksimālā ievade (tūkst. marķieru) — neobligāti"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Skaidri norādīts ievades ierobežojums, ja piegādātājs to publicē (tukšs — aprēķina automātiski)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Rezerves procents"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Drošības rezerve izvades marķieriem (0.10 = 10 %, noklusējums: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Temperatūra"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Nosaka atbildes nejaušību (0–1). Zemāk — precīzāk, augstāk — radošāk. Pašreizējā vērtība: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Piezīmes formāts"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Datums pirms piezīmes nosaukuma"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Automātiski pievienot datumu piezīmju failu nosaukumu sākumā"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Datuma formāts"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Piezīmju nosaukumiem pievienotā datuma formāts"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Uzvednes"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Ātrā kopsavilkuma uzvednes"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Plašā kopsavilkuma uzvednes"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Atjaunot noklusējumu"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Sistēmas uzvedne (ātrais kopsavilkums)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Norādījumi par modeļa uzvedību, veidojot ātros kopsavilkumus"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Tu esi izpalīdzīgs asistents..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Lietotāja uzvedne (ātrais kopsavilkums)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Konkrēti norādījumi, kā transkriptu apkopot ātri un kodolīgi"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Apkopo šo YouTube transkriptu..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Sistēmas uzvedne (plašais kopsavilkums)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Norādījumi par modeļa uzvedību, veidojot detalizētus, izsmeļošus kopsavilkumus"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Tu esi analītisks asistents..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Lietotāja uzvedne (plašais kopsavilkums)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Konkrēti norādījumi detalizētu un strukturētu piezīmju veidošanai no transkripta"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "No zemāk esošā transkripta izveido detalizētas un strukturētas piezīmes..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Noklusējuma kopsavilkuma režīms"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Izvēlieties kopsavilkuma režīmu, ko lietot pēc spraudņa palaišanas. Ātrais režīms izlaiž laika atzīmju saites un tāpēc ir ātrāks."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Plašais kopsavilkums (detalizēts)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Ātrais kopsavilkums (īss)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "Pievienot YouTube laika atzīmju saites"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Katram numurētajam virsrakstam pievienot saiti uz atbilstošo brīdi YouTube video (ātrajā režīmā izslēgts)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Kad ieslēgts, pirmā piegājiena marķieru skaits samazinās par 12 %, atbrīvojot vietu saitēm. Ātrajā režīmā izslēdzas automātiski."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Paplašināti"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Paplašināti iestatījumi atkļūdošanai un problēmu novēršanai. Ieslēdziet atkļūdošanas žurnālu, lai katrai piezīmei tiktu pievienota detalizēta informācija tehniskajam atbalstam."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Ieslēgt atkļūdošanas žurnālu"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Ieslēgt detalizētus atkļūdošanas žurnālus. Informācija tiks pievienota katrai piezīmei kā slēpts callout problēmu novēršanai."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Kad ieslēgts, atkļūdošanas informācija tiek savākta un pievienota piezīmēm kā slēpts callout, nevis izvadīta konsolē."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Tubesage YouTube transkriptu spraudņa licence"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "Neizdevās ielādēt licences failu. Pārbaudiet, vai tas ir spraudņa mapē."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Nepieciešama licences pieņemšana"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Pirms šīs funkcijas lietošanas ir jāpieņem spraudņa licence."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Atveriet spraudņa iestatījumus un pieņemiet licences noteikumus, lai turpinātu."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Kā pieņemt licenci:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Atveriet Obsidian iestatījumus"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Sānjoslā ritiniet līdz kopienas spraudņu sadaļai"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Kopienas spraudņu sarakstā atrodiet „Tubesage“"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Atveriet spraudņa „Tubesage“ iestatījumus"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Ieslēdziet „Pieņemu licenci un atrunu“, lai iespējotu spraudni"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Atvērt spraudņa iestatījumus"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — atcelt no „Show active jobs“"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Transkripta iegūšana"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Transkripta apkopošana"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Piezīmes izveide"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Laika atzīmju pievienošana"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Piezīmes tulkošana"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Video apstrāde"
+    }
+}

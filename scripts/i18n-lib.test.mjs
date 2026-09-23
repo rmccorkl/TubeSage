@@ -194,6 +194,53 @@ describe("checkLocales — the i18n:check gate", () => {
 
 // --- the flat bundle artifact: a second drift surface the gate must guard --
 
+describe("checkLocales — placeholder parity with the English source", () => {
+  // The hole this closes: `i18n:check` compared a locale's ORIGINAL against
+  // en.json and its flat file against its paired file, but never compared the
+  // TRANSLATION's placeholders against the English's. Dropping `{provider}`
+  // from the paired and flat files together was therefore invisible — both
+  // artifacts agreed with each other, and neither was checked against the
+  // source. A dropped placeholder is silent at runtime too: `t()` leaves an
+  // unsupplied placeholder standing rather than throwing, so the label simply
+  // renders without the provider name.
+  const EN_P = { "settings.llm.apiKey.name": "{provider} api key for {service}" };
+  const paired = (translation) => ({
+    de: { "settings.llm.apiKey.name": { original: EN_P["settings.llm.apiKey.name"], translation } },
+  });
+  const run = (translation) =>
+    checkLocales({ en: EN_P, locales: paired(translation), keysUsedInCode: new Set(Object.keys(EN_P)) });
+
+  it("passes when the translation carries exactly the English placeholder set", () => {
+    expect(run("{provider}-API-Schlüssel für {service}")).toEqual([]);
+  });
+
+  it("passes when a language reorders the placeholders, because word order differs", () => {
+    // Not a defect: the rule compares the SET, never the sequence.
+    expect(run("{service}: API-Schlüssel von {provider}")).toEqual([]);
+  });
+
+  it("fails when a placeholder is dropped", () => {
+    const problems = run("API-Schlüssel für {service}");
+    expect(problems.map((p) => p.code)).toContain("placeholder-mismatch");
+    expect(problems.find((p) => p.code === "placeholder-mismatch")).toMatchObject({
+      locale: "de",
+      key: "settings.llm.apiKey.name",
+    });
+  });
+
+  it("fails when a placeholder is invented that the English does not have", () => {
+    const problems = run("{provider}-API-Schlüssel für {service} ({model})");
+    expect(problems.map((p) => p.code)).toContain("placeholder-mismatch");
+  });
+
+  it("fails when a placeholder is repeated more often than the English repeats it", () => {
+    // Count, not just membership: `{provider} … {provider}` is a different
+    // string from `{provider} …`, and a duplicated substitution is a defect.
+    const problems = run("{provider}-API-Schlüssel für {service} von {provider}");
+    expect(problems.map((p) => p.code)).toContain("placeholder-mismatch");
+  });
+});
+
 describe("checkLocales — the flat translation-only artifact", () => {
   it("passes when the flat file exactly matches the paired translations", () => {
     expect(check({ flat: { de: DE_FLAT } })).toEqual([]);

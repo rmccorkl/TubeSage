@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "இயக்கப்பட்டது"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "முடக்கப்பட்டது"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "மூடு"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "உருவாக்கத்தை ஆதரிக்கவும்"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "இந்தச் செருகுநிரல் பயனுள்ளதாக இருந்தால், அதன் உருவாக்கத்தை ஆதரிக்கக் கருதுங்கள்:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…மேலும் ஒரு பெரிய கனவை விதைக்க உதவுங்கள்: மக்களுக்கும் புவிக்கும் சேவை செய்யும் தொழில்நுட்பம்."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "உரிமம் மற்றும் மறுப்புரை"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "உரிமத்தையும் மறுப்புரையையும் காண்க"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "உரிமத்தையும் மறுப்புரையையும் ஏற்கவும்"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "README ஐக் காண்க"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "வார்ப்புருக்கள்"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Templater செருகுநிரலின் வார்ப்புருக் கோப்பு"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "பயன்படுத்த வேண்டிய Templater செருகுநிரல் வார்ப்புருக் கோப்பின் பாதை"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "வார்ப்புருக் கோப்பைத் தேடு"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "உதாரணம் "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "உதாரண வார்ப்புருவைக் காண்க"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "எழுத்துப்படிகள்"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "எழுத்துப்படி அமைப்புகள், பிரித்தெடுத்த குறிப்புகள் எப்படி எங்கே சேமிக்கப்படும், எந்த YouTube data API விசை பயன்படும் (சேனல்/இயக்குப்பட்டியல் செயலாக்கத்துக்குத் தேவை), மேலும் விருப்பத் தேர்வான மொழிபெயர்ப்பு அளவுருக்களைத் தீர்மானிக்கின்றன."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "எழுத்துப்படியின் மூலக் கோப்புறை"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "எழுத்துப்படி உட்கோப்புறைகள் ஒழுங்கமைக்கப்படும் மூலக் கோப்புறை (எ.கா. inbox, notes போன்றவை)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "YouTube data API விசை"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "பொது YouTube எழுத்துப்படிகளை அணுக உதவும் Google Cloud Console API விசை (OAUTH டோக்கன் அல்ல). சேனல்களையும் இயக்குப்பட்டியல்களையும் பதிவிறக்கத் தேவை."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "API விசையை உள்ளிடவும் (aiza என்று தொடங்கும்)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Scrape creators API விசை"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "scrapecreators எழுத்துப்படிச் சேவைக்கான விருப்ப விசை. அமைத்தால் அதுவே முதன்மை எழுத்துப்படி முறையாகப் பயன்படும். app.scrapecreators.com இல் இலவச விசை பெறலாம் (100 கோரிக்கைகள் இலவசம்). நம்பகமான எழுத்துப்படிக்கு பரிந்துரைக்கப்படுகிறது; YouTube வசனங்களை வழங்கும் முறையை மாற்றும்போது நேரடிப் பிரித்தெடுப்பு செயலிழக்கும்."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "scrapecreators API விசையை உள்ளிடவும்"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Supa data API விசை"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "supadata எழுத்துப்படிச் சேவைக்கான விருப்ப விசை. அமைத்தால் (scrapecreators விசை இல்லாதபோது) அதுவே முதன்மை எழுத்துப்படி முறையாகப் பயன்படும். supadata.ai இல் விசை பெறலாம்."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "supadata விசையை உள்ளிடவும்"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "மொழிபெயர்ப்பு மொழி"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "மொழிபெயர்ப்புக்கான இலக்கு மொழிக் குறியீடு (எ.கா. en, es, fr, de). உள்ளடக்கத்தை ஆங்கிலத்திலேயே வைக்க “en” பயன்படுத்தவும்."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "மொழிக் குறியீட்டை உள்ளிடவும்"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "மொழிபெயர்ப்பு நாடு"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "மொழிபெயர்ப்புக்கான இலக்கு நாடு/பகுதிக் குறியீடு (எ.கா. us, gb, ca). பகுதிவாரி மொழி வேறுபாடுகளுக்குப் பயன்படும்."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "மொழி மாடல்"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "ஒரு AI வழங்குநரைத் தேர்ந்தெடுத்து, அதன் API விசையை உள்ளிட்டு, ஒரு மாடலைத் தேர்வு செய்யவும். temperature படைப்பாற்றலைக் கட்டுப்படுத்துகிறது; max tokens வெளியீட்டு நீளத்தை வரம்பிடுகிறது. பெரும்பாலான பயனர்களுக்குப் பரிந்துரை: Google வழங்குநருடன் gemini-2.5-flash மாடல் — வேகமானது, மலிவானது, தரமானது. விகித வரம்புகளோ நம்பகத்தன்மைச் சிக்கல்களோ வந்தால் OpenRouter உறுதியான மாற்று."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "வழங்குநர்"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "சுருக்கத்துக்குப் பயன்படும் வழங்குநர். நம்பகத்தன்மைக்கு OpenRouter பரிந்துரைக்கப்படுகிறது; குறைவிலை Gemini நிலைகள் விகிதக் கட்டுப்பாட்டுக்கு உள்ளாகலாம்."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "{provider} API விசை"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "செருகுநிரல் தரவில் அல்ல, Obsidian இன் ரகசியச் சேமிப்பில் வைக்கப்படுகிறது."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "சேவையக URL, செருகுநிரல் தரவில் சேமிக்கப்படுகிறது."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "{provider} மாடல்"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "முன்னமைவு மாடலைத் தேர்ந்தெடுக்கவும், அல்லது கீழே தனிப்பயன் மாடல் பெயரைத் தட்டச்சு செய்யவும்."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "தனிப்பயன் மாடலைப் பயன்படுத்து"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "{provider} மாடல் பட்டியலைப் புதுப்பி"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "தனிப்பயன் மாடல் பெயர்"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "மாடல் அளவுருக்கள் ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "தனிப்பயன் மாடல் அளவுருக்கள் ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "மாடல் அளவுருக்கள் ({provider}) — மேலெழுதல்"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "தேவை: இந்த மாடல் பதிவேட்டில் இல்லை — டோக்கன் ஒதுக்கீடு கோரிக்கை அளவைப் பாதுகாப்பாகக் கணிக்க, சூழல் சாளரம், அதிகபட்ச வெளியீடு, ஒதுக்கீட்டு சதவீதம் ஆகியவற்றை அமைக்கவும்."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "இவை இந்த மாடலின் டோக்கன் வரம்புகள், அறியப்பட்ட தரவிலிருந்து முன்பே நிரப்பப்பட்டவை. ஒரு புலத்தைத் திருத்தினால் இந்த வழங்குநருக்கும் மாடலுக்கும் அது மேலெழுதப்படும்."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "சூழல் சாளரம் (ஆயிரம் டோக்கன்)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "மொத்தச் சூழல் சாளரம், ஆயிரம் டோக்கன் அலகில் (எ.கா. 400k டோக்கனுக்கு 400)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "அதிகபட்ச வெளியீடு (ஆயிரம் டோக்கன்)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "அதிகபட்ச வெளியீட்டு டோக்கன்கள், ஆயிரம் அலகில் (எ.கா. 128k டோக்கனுக்கு 128)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "அதிகபட்ச உள்ளீடு (ஆயிரம் டோக்கன்) - விருப்பம்"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "விற்பனையாளர் அறிவித்திருந்தால் வெளிப்படையான உள்ளீட்டு வரம்பு (தானாகக் கணிக்க வெறுமையாக விடவும்)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "ஒதுக்கீட்டு சதவீதம்"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "வெளியீட்டு டோக்கன்களுக்கான பாதுகாப்பு ஒதுக்கீடு (0.10 = 10%, இயல்புநிலை: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "வெப்பநிலை"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "வெளியீட்டின் சீரற்ற தன்மையைக் கட்டுப்படுத்துகிறது (0-1). குறைவானது கூர்மையானது, அதிகமானது படைப்பாற்றல் மிக்கது. தற்போதைய மதிப்பு: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "குறிப்பு வடிவம்"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "குறிப்புத் தலைப்புக்கு முன் தேதியைச் சேர்"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "குறிப்புக் கோப்புப் பெயரின் தொடக்கத்தில் தேதியைத் தானாகச் சேர்க்கும்"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "தேதி வடிவம்"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "குறிப்புத் தலைப்புக்கு முன் சேர்க்கப்படும் தேதியின் வடிவம்"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "தூண்டுரைகள்"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "விரைவுச் சுருக்கத் தூண்டுரைகள்"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "விரிவான சுருக்கத் தூண்டுரைகள்"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "இயல்புநிலைக்கு மீட்டமை"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "அமைப்புத் தூண்டுரை (விரைவுச் சுருக்கம்)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "விரைவுச் சுருக்கங்களை உருவாக்கும்போது மொழி மாடலின் நடத்தைக்கான வழிமுறைகள்"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "நீங்கள் உதவிகரமான உதவியாளர்…"
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "பயனர் தூண்டுரை (விரைவுச் சுருக்கம்)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "எழுத்துப்படியை விரைவாகவும் சுருக்கமாகவும் சுருக்குவதற்கான குறிப்பிட்ட வழிமுறைகள்"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "கீழ்க்கண்ட YouTube எழுத்துப்படியைச் சுருக்கவும்…"
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "அமைப்புத் தூண்டுரை (விரிவான சுருக்கம்)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "விரிவான, முழுமையான சுருக்கங்களை உருவாக்கும்போது மொழி மாடலின் நடத்தைக்கான வழிமுறைகள்"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "நீங்கள் பகுப்பாய்வு செய்யும் உதவியாளர்…"
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "பயனர் தூண்டுரை (விரிவான சுருக்கம்)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "எழுத்துப்படியிலிருந்து விரிவான, கட்டமைக்கப்பட்ட குறிப்புகளை உருவாக்குவதற்கான குறிப்பிட்ட வழிமுறைகள்"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "கீழுள்ள எழுத்துப்படியிலிருந்து விரிவான, கட்டமைக்கப்பட்ட குறிப்புகளை உருவாக்கவும்…"
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "இயல்புநிலைச் சுருக்க முறை"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "செருகுநிரல் தொடங்கும்போது பயன்படுத்த வேண்டிய இயல்புநிலைச் சுருக்க முறையைத் தேர்ந்தெடுக்கவும். விரைவுச் சுருக்க முறை வேகமான செயலாக்கத்துக்காக நேர முத்திரை இணைப்புகளைத் தவிர்க்கும்."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "விரிவான சுருக்கம் (நுணுக்கமானது)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "விரைவுச் சுருக்கம் (குறுகியது)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "YouTube நேர முத்திரை இணைப்புகளைச் சேர்"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "எண்ணிடப்பட்ட ஒவ்வொரு பிரிவுத் தலைப்பிலும், YouTube காணொளியில் அதற்குரிய நேரத்துக்குத் தாவும் இணைப்பைச் சேர்க்கும் (குறிப்பு: விரைவுச் சுருக்க முறையில் முடக்கப்படும்)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "இயக்கினால், இணைப்புகளுக்கு இடம் விட முதல் சுற்றின் டோக்கன்கள் 12% குறைக்கப்படும். விரைவுச் சுருக்க முறையில் தானாக முடக்கப்படும்."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "மேம்பட்டவை"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "பிழைத்திருத்தத்துக்கும் சிக்கல் தீர்ப்புக்குமான மேம்பட்ட அமைப்புகள். தொழில்நுட்ப உதவிக்காக ஒவ்வொரு குறிப்பிலும் விரிவான தகவலைச் சேர்க்க பிழைத்திருத்தப் பதிவை இயக்கவும்."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "பிழைத்திருத்தப் பதிவை இயக்கு"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "விரிவான பிழைத்திருத்தப் பதிவுகளை இயக்கும். இயக்கினால், சிக்கல் தீர்ப்புக்காக பிழைத்திருத்தத் தகவல் ஒவ்வொரு குறிப்பிலும் மறைந்த கால்அவுட்டாகச் சேர்க்கப்படும்."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "இயக்கினால், பிழைத்திருத்தத் தகவல் கன்சோலில் பதியப்படுவதற்குப் பதிலாக, மறைந்த கால்அவுட்டாகக் குறிப்புகளில் சேர்க்கப்படும்."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Tubesage YouTube எழுத்துப்படிச் செருகுநிரல் உரிமம்"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "உரிமக் கோப்பை ஏற்ற முடியவில்லை. உங்கள் செருகுநிரல் கோப்பகத்தில் உரிமக் கோப்பு உள்ளதா எனச் சரிபார்க்கவும்."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "உரிமத்தை ஏற்க வேண்டும்"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "இந்த அம்சத்தைப் பயன்படுத்தும் முன் செருகுநிரல் உரிமத்தை ஏற்க வேண்டும்."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "தொடர, செருகுநிரல் அமைப்புகளுக்குச் சென்று உரிம விதிமுறைகளை ஏற்கவும்."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "உரிமத்தை ஏற்கும் முறை:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Obsidian அமைப்புகளைத் திறக்கவும்"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "பக்கப்பட்டியில் சமூகச் செருகுநிரல் பகுதிவரை கீழே உருட்டவும்"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "சமூகச் செருகுநிரல் பட்டியலில் “Tubesage” ஐக் கண்டறியவும்"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "“Tubesage” செருகுநிரலின் அமைப்புகளைச் சொடுக்கவும்"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "செருகுநிரலை இயக்க “உரிமத்தையும் மறுப்புரையையும் ஏற்கவும்” நிலைமாற்றியை இயக்கவும்"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "செருகுநிரல் அமைப்புகளைத் திற"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — “Show active jobs” இல் ரத்துசெய்யவும்"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "எழுத்துப்படியைப் பெறுகிறது"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "எழுத்துப்படியைச் சுருக்குகிறது"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "குறிப்பை உருவாக்குகிறது"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "நேர முத்திரைகளைச் சேர்க்கிறது"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "குறிப்பை மொழிபெயர்க்கிறது"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "காணொளியைச் செயலாக்குகிறது"
+    }
+}

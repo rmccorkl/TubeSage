@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Activat"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Desactivat"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Tanca"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Dona suport al desenvolupament"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Si aquest plugin et resulta útil, considera donar suport al seu desenvolupament:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…i ajuda a sembrar una visió més àmplia: tecnologia al servei de les persones i del planeta."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Llicència i avís legal"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Mostra la llicència i l'avís legal"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Accepta la llicència i l'avís legal"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Mostra el readme"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Plantilles"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Fitxer de plantilla del plugin Templater"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Camí del fitxer de plantilla del plugin templater que s'ha d'utilitzar"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Cerca un fitxer de plantilla"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Exemple "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Mostra la plantilla d'exemple"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Transcripcions"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "La configuració de transcripcions determina com i on es desen les notes extretes, quina clau de l'API de YouTube Data s'utilitza (necessària per a canals i llistes de reproducció) i els paràmetres opcionals de traducció."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Carpeta arrel de les transcripcions"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "La carpeta arrel on s'organitzaran les subcarpetes de transcripcions (p. ex. inbox, notes, etc.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "Clau de l'API de YouTube Data"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "La teva clau de l'API de la Google Cloud Console per accedir a transcripcions públiques de YouTube (no és un testimoni OAUTH). Necessària per baixar canals i llistes de reproducció."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Introdueix la clau de l'API (comença per aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Clau de l'API Scrape creators"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Clau opcional per al servei de transcripció scrapecreators. Si es defineix, s'utilitza com a mètode de transcripció principal. Aconsegueix una clau gratuïta a app.scrapecreators.com (100 sol·licituds gratuïtes). Recomanada per obtenir transcripcions fiables; l'extracció directa de YouTube falla quan YouTube canvia la manera de servir els subtítols."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Introdueix la clau de l'API scrapecreators"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Clau de l'API Supa data"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Clau opcional per al servei de transcripció supadata. Si es defineix, s'utilitza com a mètode principal (si no hi ha clau de scrapecreators). Aconsegueix una clau a supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Introdueix la clau de supadata"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Idioma de traducció"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Codi de l'idioma de destinació de la traducció (p. ex. en, es, fr, de). Utilitza «en» per mantenir el contingut en anglès."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Introdueix el codi d'idioma"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "País de traducció"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Codi del país o regió de destinació de la traducció (p. ex. us, gb, ca). S'utilitza per a variants regionals de l'idioma."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Model de llenguatge"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Tria un proveïdor d'IA, introdueix-ne la clau de l'API i selecciona un model. La temperatura regula la creativitat; el màxim de tokens limita la llargada de la resposta. Recomanat per a la majoria: el proveïdor Google amb el model gemini-2.5-flash — ràpid, econòmic i de bona qualitat. Si topes amb límits d'ús o problemes de fiabilitat, OpenRouter és una alternativa sòlida."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Proveïdor"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Proveïdor utilitzat per al resum. Es recomana OpenRouter per la fiabilitat; els nivells més barats de Gemini es poden limitar."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "Clau de l'API {provider}"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Es desa a l'emmagatzematge secret d'Obsidian, no a les dades del plugin."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "URL del servidor, desat a les dades del plugin."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "Model {provider}"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Selecciona un model predefinit o escriu a sota un nom de model personalitzat."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Utilitza un model personalitzat"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "Actualitza la llista de models {provider}"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Nom del model personalitzat"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Paràmetres del model ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Paràmetres del model personalitzat ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Paràmetres del model ({provider}) — substitució"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Obligatori: aquest model no és al registre — defineix la finestra de context, la sortida màxima i la reserva en % perquè el càlcul de tokens dimensioni les peticions amb seguretat."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Aquests són els límits de tokens d'aquest model, emplenats a partir de dades conegudes. Edita un camp per substituir-lo per a aquest proveïdor i model."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Finestra de context (k tokens)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Finestra de context total en milers de tokens (p. ex. 400 per a 400k tokens)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Sortida màxima (k tokens)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Tokens de sortida màxims en milers (p. ex. 128 per a 128k tokens)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Entrada màxima (k tokens) - opcional"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Límit d'entrada explícit si el proveïdor en publica un (deixa-ho buit per calcular-ho automàticament)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Percentatge de reserva"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Reserva de seguretat per als tokens de sortida (0.10 = 10%, per defecte: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Temperatura"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Controla l'aleatorietat de la sortida (0-1). Més baix és més centrat, més alt és més creatiu. Valor actual: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Format de la nota"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Posa la data davant del títol de la nota"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Afegeix automàticament la data al començament dels noms de fitxer de les notes"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Format de la data"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Format de la data posada davant dels títols de les notes"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Prompts"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Prompts del resum ràpid"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Prompts del resum extens"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Restableix el valor per defecte"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Prompt de sistema (resum ràpid)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Instruccions sobre el comportament del model en generar resums ràpids"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Ets un assistent útil..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Prompt d'usuari (resum ràpid)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Instruccions concretes per resumir la transcripció de manera ràpida i concisa"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Resumeix la transcripció de YouTube següent..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Prompt de sistema (resum extens)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Instruccions sobre el comportament del model en generar resums detallats i complets"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Ets un assistent analític..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Prompt d'usuari (resum extens)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Instruccions concretes per crear notes detallades i estructurades a partir de la transcripció"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "A partir de la transcripció següent, crea notes detallades i estructurades..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Mode de resum per defecte"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Tria el mode de resum que s'utilitza quan s'inicia el plugin. El mode ràpid omet els enllaços amb marca de temps per processar més de pressa."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Resum extens (detallat)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Resum ràpid (breu)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "Afegeix enllaços amb marca de temps de YouTube"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Afegeix a cada títol de secció numerat un enllaç que salta a la marca de temps corresponent del vídeo de YouTube (desactivat en el mode de resum ràpid)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Quan s'activa, redueix un 12% els tokens de la primera passada per deixar espai als enllaços. Es desactiva automàticament en el mode de resum ràpid."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Avançat"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Configuració avançada per a depuració i diagnòstic. Activa el registre de depuració per afegir a cada nota informació detallada per al servei tècnic."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Activa el registre de depuració"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Activa registres de depuració detallats. La informació de depuració s'afegirà a cada nota com a callout ocult, per al diagnòstic."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Quan s'activa, la informació de depuració es recull i s'afegeix a les notes com a callout ocult en lloc d'escriure's a la consola."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Llicència del plugin de transcripció de YouTube Tubesage"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "No s'ha pogut carregar el fitxer de llicència. Comprova que hi hagi un fitxer de llicència a la carpeta del plugin."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Cal acceptar la llicència"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Has d'acceptar la llicència del plugin abans d'utilitzar aquesta funció."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Obre la configuració del plugin i accepta els termes de la llicència per continuar."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Com acceptar la llicència:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Obre la configuració d'Obsidian"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Baixa per la barra lateral fins a la secció dels plugins de la comunitat"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Cerca «Tubesage» a la llista de plugins de la comunitat"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Obre la configuració del plugin «Tubesage»"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Activa «Accepta la llicència i l'avís legal» per habilitar el plugin"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Obre la configuració del plugin"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — cancel·la des de «Show active jobs»"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Obtenint la transcripció"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Resumint la transcripció"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Creant la nota"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Afegint les marques de temps"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Traduint la nota"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Processant el vídeo"
+    }
+}

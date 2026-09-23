@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Bekapcsolva"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Kikapcsolva"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Bezárás"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Fejlesztés támogatása"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Ha hasznosnak találod ezt a bővítményt, fontold meg a fejlesztés támogatását:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…és segíts elvetni egy nagyobb víziót: technológiát, amely az embereket és a bolygót szolgálja."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Licenc és jogi nyilatkozat"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Licenc és jogi nyilatkozat megtekintése"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Elfogadom a licencet és a jogi nyilatkozatot"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Readme megtekintése"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Sablonok"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "A Templater bővítmény sablonfájlja"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "A használandó Templater sablonfájl elérési útja"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Sablonfájl tallózása"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Példa "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Példasablon megtekintése"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Átiratok"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "Az átiratok beállításai szabályozzák, hogyan és hová kerülnek a létrehozott jegyzetek, melyik YouTube data API-kulcs legyen használva (csatornákhoz és lejátszási listákhoz szükséges), valamint a fordítás választható paramétereit."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Átiratok gyökérmappája"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "A gyökérmappa, amelyben az átiratok almappái létrejönnek (pl. inbox, notes stb.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "YouTube data API-kulcs"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "A Google cloud console API-kulcsod a nyilvános YouTube-átiratokhoz (nem OAUTH-token). Csatornák és lejátszási listák letöltéséhez szükséges."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Add meg az API-kulcsot (aiza kezdetű)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Scrape creators API-kulcs"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Választható kulcs a scrapecreators átiratszolgáltatáshoz. Ha meg van adva, ez lesz az átiratok elsődleges forrása. Ingyenes kulcs: app.scrapecreators.com (100 kérés ingyen). Megbízhatóság miatt ajánlott: a közvetlen YouTube-letöltés elromlik, amikor a YouTube megváltoztatja a feliratok kiszolgálását."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Add meg a scrapecreators API-kulcsot"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Supa data API-kulcs"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Választható kulcs a supadata átiratszolgáltatáshoz. Ha meg van adva, ez lesz az átiratok elsődleges forrása (scrapecreators kulcs hiányában). Kulcs: supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Add meg a supadata kulcsot"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Fordítás nyelve"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "A fordítás célnyelvének kódja (pl. en, es, fr, de). Az „en” megtartja a tartalmat angolul."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Add meg a nyelvkódot"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Fordítás országa"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "A fordítás célországának vagy régiójának kódja (pl. us, gb, ca). A nyelv regionális változataihoz."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Nyelvi modell"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Válassz MI-szolgáltatót, add meg az API-kulcsát, és válassz modellt. A hőmérséklet a kreativitást szabályozza, a maximális tokenszám a válasz hosszát korlátozza. A legtöbb felhasználónak: Google szolgáltató a gemini-2.5-flash modellel — gyors, olcsó és jó minőségű. Kéréskorlát vagy megbízhatósági gond esetén az OpenRouter jó tartalék."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Szolgáltató"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Az összefoglalót készítő szolgáltató. Megbízhatóság miatt az OpenRouter ajánlott; az olcsóbb Gemini csomagok korlátozhatók."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "{provider} API-kulcs"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Az Obsidian biztonságos tárolójában marad, nem a bővítmény adataiban."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "Kiszolgáló URL-je, a bővítmény adataiban tárolva."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "{provider} modell"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Válassz kész modellt, vagy írj be lent saját modellnevet."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Saját modell használata"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "{provider} modellek listájának frissítése"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Saját modell neve"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Modellparaméterek ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Saját modell paraméterei ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Modellparaméterek ({provider}) — felülírás"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Kötelező: ez a modell nincs a nyilvántartásban — add meg a kontextusablakot, a maximális kimenetet és a tartalék %-ot, hogy a tokenkeret biztonságosan számolható legyen."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Ezek a modell tokenkorlátai, ismert adatokból kitöltve. Módosíts egy mezőt, hogy ehhez a szolgáltatóhoz és modellhez felülírd."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Kontextusablak (ezer token)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Teljes kontextusablak ezer tokenben (pl. 400 = 400 ezer token)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Maximális kimenet (ezer token)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Maximális kimeneti tokenszám ezerben (pl. 128 = 128 ezer token)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Maximális bemenet (ezer token) — választható"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Kifejezett bemeneti korlát, ha a szolgáltató közli (üresen automatikusan számolódik)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Tartalék százaléka"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Biztonsági tartalék a kimeneti tokenekre (0.10 = 10%, alapértelmezett: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Hőmérséklet"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "A válasz véletlenszerűségét szabályozza (0–1). Alacsonyabban fókuszáltabb, magasabban kreatívabb. Jelenlegi érték: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Jegyzet formátuma"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Dátum a jegyzet címe elé"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Automatikusan dátum a jegyzetfájlok nevének elejére"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Dátumformátum"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "A jegyzetcímek elé írt dátum formátuma"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Promptok"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Gyors összefoglaló promptjai"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Részletes összefoglaló promptjai"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Visszaállítás alapértelmezettre"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Rendszerprompt (gyors összefoglaló)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Utasítások a modell viselkedéséhez gyors összefoglalók készítésekor"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Segítőkész asszisztens vagy..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Felhasználói prompt (gyors összefoglaló)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Konkrét utasítások az átirat gyors és tömör összefoglalásához"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Foglald össze az alábbi YouTube-átiratot..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Rendszerprompt (részletes összefoglaló)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Utasítások a modell viselkedéséhez részletes, átfogó összefoglalók készítésekor"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Elemző asszisztens vagy..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Felhasználói prompt (részletes összefoglaló)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Konkrét utasítások részletes és strukturált jegyzetek készítéséhez az átiratból"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "Az alábbi átiratból készíts részletes és strukturált jegyzeteket..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Alapértelmezett összefoglaló mód"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Válaszd ki a bővítmény indulásakor használt összefoglaló módot. A gyors mód kihagyja az időbélyeg-hivatkozásokat, így gyorsabb."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Részletes összefoglaló (kidolgozott)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Gyors összefoglaló (rövid)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "YouTube időbélyeg-hivatkozások hozzáadása"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Minden számozott címhez hivatkozás a YouTube-videó megfelelő pillanatára (gyors módban kikapcsolva)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Bekapcsolva 12%-kal csökkenti az első menet tokenszámát, hogy legyen hely a hivatkozásoknak. Gyors módban automatikusan kikapcsol."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Haladó"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Haladó beállítások hibakereséshez és hibaelhárításhoz. Kapcsold be a hibakeresési naplózást, hogy minden jegyzethez részletes információ kerüljön a technikai támogatás számára."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Hibakeresési naplózás bekapcsolása"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Részletes hibakeresési naplók bekapcsolása. Az információ rejtett callout blokként kerül minden jegyzet végére a hibaelhárításhoz."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Bekapcsolva a hibakeresési információ a jegyzetekbe kerül rejtett callout blokként, nem a konzolba."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "A Tubesage YouTube-átirat bővítmény licence"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "A licencfájl nem tölthető be. Ellenőrizd, hogy a bővítmény mappájában van-e licencfájl."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Licencelfogadás szükséges"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "A funkció használata előtt el kell fogadnod a bővítmény licencét."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Nyisd meg a bővítmény beállításait, és fogadd el a licencfeltételeket a folytatáshoz."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "A licenc elfogadása:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Nyisd meg az Obsidian beállításait"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Görgess az oldalsávon a közösségi bővítmények szakaszához"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Keresd meg a „Tubesage” bővítményt a közösségi bővítmények listájában"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Kattints a „Tubesage” bővítmény beállításaira"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Kapcsold be az „Elfogadom a licencet és a jogi nyilatkozatot” lehetőséget a bővítmény engedélyezéséhez"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Bővítmény beállításainak megnyitása"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — megszakítás a „Show active jobs” paranccsal"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Átirat letöltése"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Átirat összefoglalása"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Jegyzet létrehozása"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Időbélyegek hozzáadása"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Jegyzet fordítása"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Videó feldolgozása"
+    }
+}

@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "מופעל"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "מושבת"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "סגירה"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "תמיכה בפיתוח"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "אם התוסף הזה מועיל לך, שקול לתמוך בפיתוחו:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…ולעזור לזרוע חזון גדול יותר: טכנולוגיה שמשרתת אנשים וכדור הארץ.."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "רישיון וכתב ויתור"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "הצגת רישיון וכתב ויתור"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "אישור רישיון וכתב ויתור"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "הצגת README"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "תבניות"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "קובץ תבנית של התוסף Templater"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "נתיב לקובץ תבנית התוסף Templater שייעשה בו שימוש"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "עיון אחר קובץ תבנית"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "דוגמה "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "הצגת תבנית לדוגמה"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "תמלילים"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "הגדרות התמלילים קובעות כיצד והיכן נשמרות ההערות שחולצו, באיזה מפתח YouTube data API להשתמש (נדרש לעיבוד ערוצים ורשימות השמעה), ואילו פרמטרי תרגום אופציונליים לחול."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "תיקיית שורש לתמלילים"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "תיקיית השורש שבה יאורגנו תתי-התיקיות של התמלילים (למשל inbox, notes וכו')"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "מפתח YouTube data API"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "מפתח ה-API שלך מ-Google cloud console לגישה לתמלילי YouTube ציבוריים (לא אסימון OAUTH). נדרש להורדת ערוצים ורשימות השמעה."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "הזן מפתח API (מתחיל ב-aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "מפתח Scrape creators API"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "מפתח אופציונלי לשירות התמלול scrapecreators. כשהוא מוגדר, הוא משמש כשיטת התמלול הראשית. קבל מפתח חינם ב-app.scrapecreators.com (100 בקשות חינם). מומלץ לקבלת תמלילים אמינה; חילוץ ישיר מ-YouTube נשבר כאשר YouTube משנה את אופן הגשת הכתוביות."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "הזן מפתח scrapecreators API"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "מפתח Supa data API"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "מפתח אופציונלי לשירות התמלול supadata. כשהוא מוגדר, הוא משמש כשיטת התמלול הראשית (אם אין מפתח scrapecreators). קבל מפתח ב-supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "הזן מפתח supadata"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "שפת תרגום"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "קוד שפת היעד לתרגום (למשל en, es, fr, de). השתמש ב-\"en\" כדי להשאיר את התוכן באנגלית."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "הזן קוד שפה"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "מדינת תרגום"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "קוד מדינה/אזור היעד לתרגום (למשל us, gb, ca). משמש לגרסאות שפה ייחודיות לאזור."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "מודל שפה"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "בחר ספק בינה מלאכותית, הזן את מפתח ה-API שלו ובחר מודל. temperature שולט ביצירתיות; max tokens מגביל את אורך הפלט. מומלץ לרוב המשתמשים: הספק Google עם המודל gemini-2.5-flash — מהיר, זול ואיכותי. אם נתקלת במגבלות קצב או בבעיות אמינות, OpenRouter הוא גיבוי איתן."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "ספק"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "הספק המשמש לסיכום. OpenRouter מומלץ לאמינות; רמות Gemini הזולות יותר עלולות להיחנק."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "מפתח API של {provider}"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "נשמר באחסון הסודות של Obsidian, לא בנתוני התוסף."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "כתובת URL של השרת, נשמרת בנתוני התוסף."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "מודל {provider}"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "בחר מודל מוכן או הקלד שם מודל מותאם אישית למטה."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "שימוש במודל מותאם אישית"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "רענון רשימת המודלים של {provider}"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "שם מודל מותאם אישית"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "פרמטרי המודל ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "פרמטרים של מודל מותאם אישית ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "פרמטרי המודל ({provider}) — דריסה"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "נדרש: המודל הזה אינו ברישום — הגדר חלון הקשר, פלט מרבי ואחוז שמירה % כדי שתקצוב האסימונים יוכל לקבוע גודל בקשות בבטחה."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "אלה מגבלות האסימונים של המודל הזה, ממולאות מראש מנתונים ידועים. ערוך שדה כדי לדרוס אותו עבור הספק והמודל האלה."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "חלון הקשר (אלפי אסימונים)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "סך חלון ההקשר באלפי אסימונים (למשל 400 עבור 400k אסימונים)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "פלט מרבי (אלפי אסימונים)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "אסימוני פלט מרביים באלפים (למשל 128 עבור 128k אסימונים)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "קלט מרבי (אלפי אסימונים) - אופציונלי"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "תקרת קלט מפורשת אם הספק מפרסם אחת (השאר ריק לחישוב אוטומטי)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "אחוז שמירה"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "שמירת ביטחון לאסימוני פלט (0.10 = 10%, ברירת מחדל: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "טמפרטורה"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "שולט באקראיות הפלט (0-1). נמוך יותר ממוקד יותר, גבוה יותר יצירתי יותר. הערך הנוכחי: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "תבנית הערה"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "הוספת תאריך לפני כותרת ההערה"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "הוספה אוטומטית של תאריך בתחילת שמות קובצי ההערות"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "תבנית תאריך"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "התבנית של התאריך שמוסף לפני כותרות ההערות"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "הנחיות"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "הנחיות לסיכום מהיר"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "הנחיות לסיכום מורחב"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "איפוס לברירת המחדל"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "הנחיית מערכת (סיכום מהיר)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "הוראות להתנהגות מודלי השפה בעת יצירת סיכומים מהירים"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "אתה עוזר מועיל..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "הנחיית משתמש (סיכום מהיר)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "הוראות ספציפיות לסיכום התמליל במהירות ובתמציתיות"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "אנא סכם את תמליל YouTube הבא..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "הנחיית מערכת (סיכום מורחב)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "הוראות להתנהגות מודלי השפה בעת יצירת סיכומים מפורטים ומקיפים"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "אתה עוזר אנליטי..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "הנחיית משתמש (סיכום מורחב)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "הוראות ספציפיות ליצירת הערות מפורטות ומובנות מתוך התמליל"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "מתוך התמליל שלהלן, צור הערות מפורטות ומובנות..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "מצב סיכום ברירת מחדל"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "בחר את מצב הסיכום שישמש כברירת מחדל עם הפעלת התוסף. מצב סיכום מהיר מדלג על קישורי חותמות זמן לעיבוד מהיר יותר."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "סיכום מורחב (מפורט)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "סיכום מהיר (תמציתי)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "הוספת קישורי חותמות זמן של YouTube"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "הוספת קישורים לכל כותרת סעיף ממוספרת, שקופצים לחותמת הזמן המתאימה בסרטון YouTube (הערה: מושבת במצב סיכום מהיר)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "כשמופעל, מצמצם את אסימוני המעבר הראשון ב-12% כדי לפנות מקום לקישורים. מושבת אוטומטית במצב סיכום מהיר."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "מתקדם"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "הגדרות מתקדמות לניפוי שגיאות ולפתרון בעיות. הפעל רישום ניפוי כדי לקבל מידע מפורט שמתווסף לכל הערה לצורך תמיכה טכנית."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "הפעלת רישום ניפוי שגיאות"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "הפעלת יומני ניפוי מפורטים. כשמופעל, מידע הניפוי יתווסף לכל הערה כקטע קריאה מוסתר לצורך פתרון בעיות."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "כשמופעל, מידע הניפוי ייאסף ויתווסף להערות כקטע קריאה מוסתר במקום להירשם במסוף."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "רישיון התוסף Tubesage לתמלילי YouTube"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "לא ניתן לטעון את קובץ הרישיון. בדוק שקיים קובץ רישיון בתיקיית התוסף."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "נדרש אישור רישיון"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "עליך לאשר את רישיון התוסף לפני השימוש בתכונה הזו."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "עבור להגדרות התוסף ואשר את תנאי הרישיון כדי להמשיך."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "כיצד לאשר את הרישיון:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "פתח את הגדרות Obsidian"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "גלול מטה אל מקטע תוספי הקהילה בסרגל הצד"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "מצא את \"Tubesage\" ברשימת תוספי הקהילה"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "לחץ על הגדרות התוסף \"Tubesage\""
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "הפעל את \"אישור רישיון וכתב ויתור\" כדי להפעיל את התוסף"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "פתיחת הגדרות התוסף"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — ביטול מתוך \"Show active jobs\""
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "מאחזר תמליל"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "מסכם תמליל"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "יוצר הערה"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "מוסיף חותמות זמן"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "מתרגם הערה"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "מעבד סרטון"
+    }
+}

@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Aktivizuar"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Çaktivizuar"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Mbyll"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Mbështet zhvillimin"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Nëse kjo shtojcë ju duket e dobishme, mendoni ta mbështetni zhvillimin e saj:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…dhe ndihmoni të mbillet një vizion më i gjerë: teknologji që u shërben njerëzve dhe planetit."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Licenca & shfajësimi"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Shfaq licencën & shfajësimin"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Prano licencën & shfajësimin"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Shfaq readme"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Shabllone"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Skedari i shabllonit të shtojcës Templater"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Shtegu drejt skedarit të shabllonit të shtojcës Templater"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Shfleto për skedar shablloni"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Shembull "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Shfaq shabllonin shembull"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Transkriptet"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "Cilësimet e transkriptit përcaktojnë si dhe ku ruhen shënimet e nxjerra, cili çelës API i të dhënave YouTube përdoret (i domosdoshëm për kanale dhe lista luajtjeje) dhe parametrat opsionalë të përkthimit."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Dosja rrënjë e transkripteve"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "Dosja rrënjë ku do të organizohen nëndosjet e transkripteve (p.sh. inbox, notes etj.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "Çelësi API i të dhënave YouTube"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "Çelësi juaj API i Google cloud console për qasje te transkriptet publike të YouTube (jo një token OAUTH). I domosdoshëm për shkarkimin e kanaleve dhe listave të luajtjes."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Jepni çelësin API (fillon me aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Çelësi API i Scrape creators"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Çelës opsional për shërbimin e transkripteve scrapecreators. Kur vendoset, përdoret si metoda kryesore. Merrni një çelës falas te app.scrapecreators.com (100 kërkesa falas). Rekomandohet për transkripte të besueshme; nxjerrja e drejtpërdrejtë nga YouTube prishet kur YouTube ndryshon mënyrën e shërbimit të titrave."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Jepni çelësin API scrapecreators"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Çelësi API i Supa data"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Çelës opsional për shërbimin e transkripteve supadata. Kur vendoset, përdoret si metoda kryesore (nëse s'ka çelës scrapecreators). Merrni një çelës te supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Jepni çelësin supadata"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Gjuha e përkthimit"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Kodi i gjuhës së synuar për përkthim (p.sh. en, es, fr, de). Përdorni «en» që përmbajtja të mbetet në anglisht."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Jepni kodin e gjuhës"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Shteti i përkthimit"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Kodi i shtetit/rajonit të synuar për përkthim (p.sh. us, gb, ca). Përdoret për variante gjuhësore sipas rajonit."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Modeli gjuhësor"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Zgjidhni një ofrues AI, jepni çelësin e tij API dhe zgjidhni një model. Temperatura kontrollon kreativitetin; maksimumi i tokenave kufizon gjatësinë e daljes. E rekomanduar për shumicën: ofruesi Google me modelin gemini-2.5-flash — i shpejtë, i lirë dhe cilësor. Nëse hasni kufij shpejtësie ose probleme besueshmërie, OpenRouter është zgjidhje e mirë."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Ofruesi"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Ofruesi i përdorur për përmbledhje. OpenRouter rekomandohet për besueshmëri; nivelet më të lira të Gemini mund të kufizohen."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "Çelësi API i {provider}"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Ruhet në depon e fshehtë të Obsidian, jo në të dhënat e shtojcës."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "URL-ja e serverit, ruhet në të dhënat e shtojcës."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "Modeli i {provider}"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Zgjidhni një model të gatshëm ose shkruani më poshtë një emër modeli të personalizuar."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Përdor model të personalizuar"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "Rifresko listën e modeleve të {provider}"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Emri i modelit të personalizuar"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Parametrat e modelit ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Parametrat e modelit të personalizuar ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Parametrat e modelit ({provider}) — mbivendosje"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "E domosdoshme: ky model nuk është në regjistër — vendosni dritaren e kontekstit, daljen maksimale dhe përqindjen e rezervës që buxhetimi i tokenave të jetë i sigurt."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Këto janë kufijtë e tokenave të këtij modeli, të parambushur nga të dhëna të njohura. Përpunoni një fushë për ta mbivendosur për këtë ofrues dhe model."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Dritarja e kontekstit (k tokena)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Dritarja e plotë e kontekstit në mijëra tokena (p.sh. 400 për 400k tokena)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Dalja maksimale (k tokena)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Tokenat maksimalë të daljes në mijëra (p.sh. 128 për 128k tokena)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Hyrja maksimale (k tokena) - opsionale"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Kufi i qartë hyrjeje nëse ofruesi e publikon (lëreni bosh për llogaritje automatike)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Përqindja e rezervës"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Rezervë sigurie për tokenat e daljes (0.10 = 10%, parazgjedhje: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Temperatura"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Kontrollon rastësinë e daljes (0-1). Më e ulët është më e përqendruar, më e lartë më krijuese. Vlera aktuale: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Formati i shënimit"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Vendos datën para titullit të shënimit"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Shto automatikisht datën në fillim të emrave të skedarëve"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Formati i datës"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Formati i datës që vendoset para titujve të shënimeve"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Kërkesat"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Kërkesat e përmbledhjes së shpejtë"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Kërkesat e përmbledhjes së zgjeruar"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Rikthe te parazgjedhja"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Kërkesa e sistemit (përmbledhje e shpejtë)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Udhëzime për sjelljen e llms kur gjenerohen përmbledhje të shpejta"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Ju jeni një asistent i dobishëm..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Kërkesa e përdoruesit (përmbledhje e shpejtë)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Udhëzime specifike për ta përmbledhur transkriptin shpejt dhe shkurt"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Ju lutem përmblidhni transkriptin e mëposhtëm të YouTube..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Kërkesa e sistemit (përmbledhje e zgjeruar)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Udhëzime për sjelljen e llms kur gjenerohen përmbledhje të hollësishme dhe gjithëpërfshirëse"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Ju jeni një asistent analitik..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Kërkesa e përdoruesit (përmbledhje e zgjeruar)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Udhëzime specifike për të krijuar shënime të hollësishme dhe të strukturuara nga transkripti"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "Nga transkripti më poshtë, krijoni shënime të hollësishme dhe të strukturuara..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Mënyra e parazgjedhur e përmbledhjes"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Zgjidhni mënyrën e parazgjedhur të përmbledhjes kur niset shtojca. Mënyra e shpejtë i anashkalon lidhjet me vula kohore për përpunim më të shpejtë."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Përmbledhje e zgjeruar (e hollësishme)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Përmbledhje e shpejtë (e shkurtër)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "Shto lidhje me vula kohore YouTube"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Shto në çdo titull seksioni të numëruar një lidhje që kalon te vula kohore përkatëse në videon e YouTube (shënim: e çaktivizuar në mënyrën e shpejtë)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Kur aktivizohet, i zvogëlon tokenat e kalimit të parë me 12% për t'u lënë vend lidhjeve. Çaktivizohet automatikisht në mënyrën e shpejtë."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "E përparuar"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Cilësime të përparuara për diagnostikim dhe zgjidhje problemesh. Aktivizoni regjistrimin e diagnostikimit që në çdo shënim të shtohen të dhëna të hollësishme për mbështetje teknike."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Aktivizo regjistrimin e diagnostikimit"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Aktivizoni regjistra të hollësishëm diagnostikimi. Kur aktivizohet, të dhënat e diagnostikimit i shtohen çdo shënimi si kuti e fshehur për zgjidhje problemesh."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Kur aktivizohet, të dhënat e diagnostikimit mblidhen dhe u shtohen shënimeve si kuti e fshehur, në vend që të shkruhen në konsolë."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Licenca e shtojcës Tubesage për transkriptet e YouTube"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "Skedari i licencës s'u ngarkua dot. Kontrolloni që në dosjen e shtojcës të ndodhet një skedar licence."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Kërkohet pranimi i licencës"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Duhet të pranoni licencën e shtojcës përpara se ta përdorni këtë veçori."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Shkoni te cilësimet e shtojcës dhe pranoni kushtet e licencës për të vazhduar."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Si të pranohet licenca:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Hapni Cilësimet e Obsidian"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Rrëshqitni te seksioni i shtojcave të komunitetit në shiritin anësor"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Gjeni «Tubesage» në listën e shtojcave të komunitetit"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Klikoni cilësimet e shtojcës «Tubesage»"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Aktivizoni «Prano licencën & shfajësimin» që shtojca të funksionojë"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Hap cilësimet e shtojcës"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — anulojeni nga «Show active jobs»"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Po merret transkripti"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Po përmblidhet transkripti"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Po krijohet shënimi"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Po shtohen vulat kohore"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Po përkthehet shënimi"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Po përpunohet videoja"
+    }
+}

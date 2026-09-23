@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Включено"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Изключено"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Затваряне"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Подкрепете разработката"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Ако тази приставка ви е полезна, подкрепете разработката ѝ:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…и помогнете да покълне по-голяма визия: технология в услуга на хората и планетата."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Лиценз и отказ от отговорност"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Преглед на лиценза и отказа от отговорност"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Приемам лиценза и отказа от отговорност"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Преглед на readme"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Шаблони"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Файл с шаблон на приставката Templater"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Път до файла с шаблон на приставката Templater"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Избор на файл с шаблон"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Пример "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Преглед на примерен шаблон"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Транскрипции"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "Настройките за транскрипции определят как и къде се записват създадените бележки, кой ключ за YouTube data API да се използва (нужен за канали и плейлисти) и незадължителните параметри за превод."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Коренова папка за транскрипции"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "Кореновата папка, в която се създават подпапките с транскрипции (напр. inbox, notes и др.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "Ключ за YouTube data API"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "Вашият ключ за API от Google cloud console за публични транскрипции от YouTube (не е токен OAUTH). Нужен е за сваляне на канали и плейлисти."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Въведете ключ за API (започва с aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Ключ за API на Scrape creators"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Незадължителен ключ за услугата за транскрипции scrapecreators. Ако е зададен, се използва като основен начин за вземане на транскрипция. Безплатен ключ: app.scrapecreators.com (100 заявки безплатно). Препоръчва се за надеждност: прякото извличане от YouTube спира, когато YouTube промени начина на предоставяне на субтитрите."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Въведете ключ за API на scrapecreators"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Ключ за API на Supa data"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Незадължителен ключ за услугата за транскрипции supadata. Ако е зададен, се използва като основен начин за вземане на транскрипция (ако няма ключ за scrapecreators). Ключ: supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Въведете ключ за supadata"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Език на превода"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Код на целевия език за превод (напр. en, es, fr, de). Въведете „en“, за да остане съдържанието на английски."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Въведете код на езика"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Държава на превода"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Код на целевата държава или регион за превод (напр. us, gb, ca). Използва се за регионални варианти на езика."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Езиков модел"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Изберете доставчик на ИИ, въведете ключа му за API и изберете модел. Температурата управлява креативността, а максималният брой токени ограничава дължината на отговора. За повечето потребители: доставчик Google с модел gemini-2.5-flash — бърз, евтин и качествен. При ограничения на заявките или проблеми с надеждността добра замяна е OpenRouter."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Доставчик"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Доставчик, който прави резюмето. За надеждност се препоръчва OpenRouter; по-евтините нива на Gemini може да бъдат ограничавани."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "Ключ за API на {provider}"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Съхранява се в защитеното хранилище на Obsidian, а не в данните на приставката."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "URL адрес на сървъра, съхранява се в данните на приставката."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "Модел на {provider}"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Изберете готов модел или въведете по-долу собствено име на модел."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Собствен модел"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "Опресняване на списъка с модели на {provider}"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Име на собствения модел"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Параметри на модела ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Параметри на собствения модел ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Параметри на модела ({provider}) — замяна"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Задължително: този модел го няма в регистъра — задайте контекстен прозорец, максимален изход и резерв в %, за да се планира безопасно бюджетът от токени."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Това са лимитите за токени на този модел, попълнени по известни данни. Променете поле, за да го замените за този доставчик и модел."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Контекстен прозорец (хил. токени)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Общ контекстен прозорец в хиляди токени (напр. 400 за 400 хил.)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Максимален изход (хил. токени)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Максимален брой изходни токени в хиляди (напр. 128 за 128 хил.)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Максимален вход (хил. токени) — незадължително"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Изричен лимит на входа, ако доставчикът го обявява (празно — изчислява се автоматично)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Процент резерв"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Предпазен резерв за изходните токени (0.10 = 10 %, по подразбиране: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Температура"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Управлява случайността на отговора (0–1). По-ниско — по-точно, по-високо — по-креативно. Текуща стойност: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Формат на бележката"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Дата преди заглавието на бележката"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Автоматично добавяне на дата в началото на имената на файловете с бележки"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Формат на датата"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Формат на датата пред заглавието на бележката"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Промптове"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Промптове за бързо резюме"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Промптове за подробно резюме"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Връщане към стойността по подразбиране"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Системен промпт (бързо резюме)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Указания за поведението на модела при бързи резюмета"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Ти си полезен асистент..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Потребителски промпт (бързо резюме)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Конкретни указания как транскрипцията да се резюмира бързо и сбито"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Резюмирай следната транскрипция от YouTube..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Системен промпт (подробно резюме)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Указания за поведението на модела при подробни и изчерпателни резюмета"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Ти си аналитичен асистент..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Потребителски промпт (подробно резюме)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Конкретни указания за създаване на подробни и структурирани бележки от транскрипцията"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "От транскрипцията по-долу създай подробни и структурирани бележки..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Режим на резюме по подразбиране"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Изберете режима на резюме при стартиране на приставката. Бързият режим пропуска връзките към времеви отметки и работи по-бързо."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Подробно резюме (детайлно)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Бързо резюме (кратко)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "Добавяне на връзки към времеви отметки в YouTube"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Към всяко номерирано заглавие се добавя връзка към съответния момент от видеото в YouTube (в бърз режим е изключено)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Когато е включено, намалява токените от първото преминаване с 12 %, за да остане място за връзките. В бърз режим се изключва автоматично."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Разширени"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Разширени настройки за отстраняване на грешки и проблеми. Включете дневника за отстраняване на грешки, за да се добавят подробни данни към всяка бележка за техническата поддръжка."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Включване на дневника за отстраняване на грешки"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Включване на подробни дневници за отстраняване на грешки. Данните се добавят към всяка бележка като скрит callout."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Когато е включено, данните за отстраняване на грешки се събират и добавят към бележките като скрит callout вместо в конзолата."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Лиценз на приставката Tubesage за транскрипции от YouTube"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "Файлът с лиценза не можа да се зареди. Проверете дали е в папката на приставката."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Изисква се приемане на лиценза"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Преди да използвате тази функция, трябва да приемете лиценза на приставката."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Отворете настройките на приставката и приемете условията на лиценза, за да продължите."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Как да приемете лиценза:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Отворете настройките на Obsidian"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Превъртете страничната лента до раздела с приставки на общността"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Намерете „Tubesage“ в списъка с приставки на общността"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Отворете настройките на приставката „Tubesage“"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Включете „Приемам лиценза и отказа от отговорност“, за да активирате приставката"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Отваряне на настройките на приставката"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — отказ чрез „Show active jobs“"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Взимане на транскрипцията"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Резюмиране на транскрипцията"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Създаване на бележка"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Добавяне на времеви отметки"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Превод на бележката"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Обработка на видеото"
+    }
+}

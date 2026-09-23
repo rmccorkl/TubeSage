@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Activat"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Dezactivat"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Închide"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Susține dezvoltarea"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Dacă acest plugin îți este util, ia în calcul să îi susții dezvoltarea:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…și ajută la semănarea unei viziuni mai ample: tehnologie în slujba oamenilor și a planetei."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Licență și declinarea responsabilității"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Vezi licența și declinarea responsabilității"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Acceptă licența și declinarea responsabilității"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Vezi readme"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Șabloane"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Fișierul șablon al pluginului Templater"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Calea către fișierul șablon al pluginului templater care va fi folosit"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Caută un fișier șablon"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Exemplu "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Vezi șablonul de exemplu"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Transcrieri"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "Setările pentru transcrieri stabilesc cum și unde sunt salvate notițele extrase, ce cheie API YouTube Data se folosește (necesară pentru canale și playlisturi) și parametrii opționali de traducere."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Folderul rădăcină al transcrierilor"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "Folderul rădăcină în care vor fi organizate subfolderele de transcrieri (de ex. inbox, notes etc.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "Cheie API YouTube Data"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "Cheia ta API din Google Cloud Console pentru accesarea transcrierilor publice YouTube (nu un token OAUTH). Necesară pentru descărcarea canalelor și a playlisturilor."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Introdu cheia API (începe cu aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Cheie API Scrape creators"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Cheie opțională pentru serviciul de transcriere scrapecreators. Dacă este setată, devine metoda principală de transcriere. Obții o cheie gratuită pe app.scrapecreators.com (100 de cereri gratuite). Recomandată pentru transcrieri fiabile; extragerea directă din YouTube se strică atunci când YouTube schimbă modul de livrare a subtitrărilor."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Introdu cheia API scrapecreators"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Cheie API Supa data"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Cheie opțională pentru serviciul de transcriere supadata. Dacă este setată, devine metoda principală (în lipsa unei chei scrapecreators). Obții o cheie pe supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Introdu cheia supadata"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Limba traducerii"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Codul limbii țintă pentru traducere (de ex. en, es, fr, de). Folosește „en” pentru a păstra conținutul în engleză."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Introdu codul limbii"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Țara traducerii"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Codul țării sau regiunii țintă pentru traducere (de ex. us, gb, ca). Folosit pentru variantele regionale ale limbii."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Model lingvistic"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Alege un furnizor de IA, introdu cheia lui API și selectează un model. Temperatura reglează creativitatea, iar numărul maxim de tokenuri limitează lungimea răspunsului. Recomandat pentru majoritate: furnizorul Google cu modelul gemini-2.5-flash — rapid, ieftin și de bună calitate. Dacă întâmpini limite de utilizare sau probleme de fiabilitate, OpenRouter este o alternativă solidă."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Furnizor"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Furnizorul folosit pentru rezumat. OpenRouter este recomandat pentru fiabilitate; nivelurile Gemini mai ieftine pot fi limitate."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "Cheie API {provider}"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Stocată în stocarea secretă a Obsidian, nu în datele pluginului."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "URL-ul serverului, stocat în datele pluginului."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "Model {provider}"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Selectează un model predefinit sau scrie mai jos un nume de model personalizat."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Folosește un model personalizat"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "Reîmprospătează lista de modele {provider}"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Nume de model personalizat"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Parametrii modelului ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Parametrii modelului personalizat ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Parametrii modelului ({provider}) — suprascriere"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Obligatoriu: acest model nu se află în registru — stabilește fereastra de context, ieșirea maximă și rezerva în % pentru ca bugetul de tokenuri să dimensioneze cererile în siguranță."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Acestea sunt limitele de tokenuri ale modelului, precompletate din date cunoscute. Editează un câmp pentru a-l suprascrie pentru acest furnizor și model."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Fereastră de context (k tokenuri)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Fereastra de context totală, în mii de tokenuri (de ex. 400 pentru 400k tokenuri)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Ieșire maximă (k tokenuri)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Tokenuri maxime de ieșire, în mii (de ex. 128 pentru 128k tokenuri)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Intrare maximă (k tokenuri) - opțional"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Limită explicită de intrare, dacă furnizorul publică una (lasă gol pentru calcul automat)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Procent de rezervă"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Rezervă de siguranță pentru tokenurile de ieșire (0.10 = 10%, implicit: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Temperatură"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Controlează aleatoriul răspunsului (0-1). Mai mic înseamnă mai concentrat, mai mare înseamnă mai creativ. Valoarea curentă: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Formatul notiței"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Pune data înaintea titlului notiței"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Adaugă automat data la începutul numelor fișierelor notițelor"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Formatul datei"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Formatul datei puse înaintea titlurilor notițelor"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Prompturi"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Prompturi pentru rezumatul rapid"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Prompturi pentru rezumatul extins"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Revino la valoarea implicită"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Prompt de sistem (rezumat rapid)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Instrucțiuni privind comportamentul modelului la generarea rezumatelor rapide"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Ești un asistent util..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Prompt de utilizator (rezumat rapid)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Instrucțiuni concrete pentru a rezuma transcrierea rapid și concis"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Rezumă următoarea transcriere YouTube..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Prompt de sistem (rezumat extins)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Instrucțiuni privind comportamentul modelului la generarea rezumatelor detaliate și complete"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Ești un asistent analitic..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Prompt de utilizator (rezumat extins)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Instrucțiuni concrete pentru a crea notițe detaliate și structurate din transcriere"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "Din transcrierea de mai jos, creează notițe detaliate și structurate..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Mod implicit de rezumat"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Alege modul de rezumat folosit la pornirea pluginului. Modul rapid sare peste linkurile cu marcaj temporal, ca să proceseze mai repede."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Rezumat extins (detaliat)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Rezumat rapid (scurt)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "Adaugă linkuri cu marcaj temporal YouTube"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Adaugă la fiecare titlu de secțiune numerotat un link care sare la marcajul temporal corespunzător din videoclipul YouTube (dezactivat în modul rezumat rapid)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Când este activ, reduce cu 12% tokenurile primei treceri pentru a face loc linkurilor. Se dezactivează automat în modul rezumat rapid."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Avansat"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Setări avansate pentru depanare și diagnosticare. Activează jurnalizarea de depanare pentru a adăuga la fiecare notiță informații detaliate pentru suportul tehnic."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Activează jurnalizarea de depanare"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Activează jurnale de depanare detaliate. Informațiile de depanare vor fi adăugate la fiecare notiță ca un callout ascuns, pentru diagnosticare."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Când este activ, informațiile de depanare sunt colectate și adăugate la notițe ca un callout ascuns, în loc să fie scrise în consolă."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Licența pluginului de transcriere YouTube Tubesage"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "Fișierul de licență nu a putut fi încărcat. Verifică dacă există un fișier de licență în folderul pluginului."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Este necesară acceptarea licenței"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Trebuie să accepți licența pluginului înainte de a folosi această funcție."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Deschide setările pluginului și acceptă termenii licenței pentru a continua."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Cum accepți licența:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Deschide setările Obsidian"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Derulează în bara laterală până la secțiunea pluginurilor comunității"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Caută „Tubesage” în lista pluginurilor comunității"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Deschide setările pluginului „Tubesage”"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Activează „Acceptă licența și declinarea responsabilității” pentru a activa pluginul"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Deschide setările pluginului"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — anulează din „Show active jobs”"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Se preia transcrierea"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Se rezumă transcrierea"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Se creează notița"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Se adaugă marcajele temporale"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Se traduce notița"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Se procesează videoclipul"
+    }
+}

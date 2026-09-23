@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "활성화"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "비활성화"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "닫기"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "개발 후원"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "이 플러그인이 유용하다면 개발을 후원해 주세요:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…그리고 더 큰 비전에 씨앗을 심어 주세요. 사람과 지구를 위한 기술."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "라이선스 및 면책 조항"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "라이선스 및 면책 조항 보기"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "라이선스 및 면책 조항 동의"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "README 보기"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "템플릿"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Templater 플러그인 템플릿 파일"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "사용할 Templater 플러그인 템플릿 파일 경로"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "템플릿 파일 찾아보기"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "예시 "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "예시 템플릿 보기"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "자막"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "자막 설정은 추출한 노트를 어디에 어떻게 저장할지, 어떤 YouTube 데이터 API 키를 쓸지(채널·재생목록 처리에 필요), 그리고 선택적 번역 설정을 정합니다."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "자막 루트 폴더"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "자막 하위 폴더를 정리할 루트 폴더(예: inbox, notes 등)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "YouTube 데이터 API 키"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "공개 YouTube 자막에 접근하기 위한 Google Cloud Console API 키(OAUTH 토큰이 아님). 채널과 재생목록을 내려받을 때 필요합니다."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "API 키 입력(aiza로 시작)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Scrape creators API 키"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "scrapecreators 자막 서비스용 선택 키. 설정하면 기본 자막 방식으로 쓰입니다. app.scrapecreators.com에서 무료 키를 받을 수 있습니다(100회 요청 무료). 안정적인 자막 수집에 권장합니다. YouTube가 자막 제공 방식을 바꾸면 직접 추출은 실패합니다."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "scrapecreators API 키 입력"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Supa data API 키"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "supadata 자막 서비스용 선택 키. 설정하면(scrapecreators 키가 없을 때) 기본 자막 방식으로 쓰입니다. supadata.ai에서 키를 받으세요."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "supadata 키 입력"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "번역 언어"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "번역할 대상 언어 코드(예: en, es, fr, de). 내용을 영어로 두려면 “en”을 쓰세요."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "언어 코드 입력"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "번역 국가"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "번역할 대상 국가/지역 코드(예: us, gb, ca). 지역별 언어 변형에 쓰입니다."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "언어 모델"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "AI 공급자를 고르고 API 키를 입력한 뒤 모델을 선택하세요. temperature는 창의성을, max tokens는 출력 길이를 조절합니다. 대부분의 사용자에게는 Google 공급자와 gemini-2.5-flash 모델을 권장합니다 — 빠르고 저렴하며 품질이 좋습니다. 속도 제한이나 안정성 문제가 있으면 OpenRouter가 든든한 대안입니다."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "공급자"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "요약에 쓰이는 공급자. 안정성을 위해 OpenRouter를 권장합니다. 저가 Gemini 등급은 속도가 제한될 수 있습니다."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "{provider} API 키"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "플러그인 데이터가 아니라 Obsidian 보안 저장소에 저장됩니다."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "서버 URL이며 플러그인 데이터에 저장됩니다."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "{provider} 모델"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "사전 설정 모델을 고르거나 아래에 모델 이름을 직접 입력하세요."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "사용자 지정 모델 사용"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "{provider} 모델 목록 새로 고침"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "사용자 지정 모델 이름"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "모델 매개변수({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "사용자 지정 모델 매개변수({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "모델 매개변수({provider}) — 재정의"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "필수: 이 모델은 레지스트리에 없습니다 — 토큰 예산이 요청 크기를 안전하게 계산하도록 컨텍스트 창, 최대 출력, 예약 비율을 설정하세요."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "이 모델의 토큰 한도이며 알려진 데이터로 미리 채워졌습니다. 항목을 고치면 이 공급자와 모델에 한해 재정의됩니다."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "컨텍스트 창(k 토큰)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "전체 컨텍스트 창 크기, 천 토큰 단위(예: 400k 토큰이면 400)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "최대 출력(k 토큰)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "최대 출력 토큰 수, 천 단위(예: 128k 토큰이면 128)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "최대 입력(k 토큰) - 선택"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "공급사가 명시한 입력 상한(비워 두면 자동 계산)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "예약 비율"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "출력 토큰용 안전 예약(0.10 = 10%, 기본값: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "온도"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "출력의 무작위성 조절(0-1). 낮을수록 집중되고 높을수록 창의적입니다. 현재 값: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "노트 형식"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "노트 제목 앞에 날짜 추가"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "노트 파일 이름 앞에 날짜를 자동으로 붙입니다"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "날짜 형식"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "노트 제목 앞에 붙일 날짜의 형식"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "프롬프트"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "빠른 요약 프롬프트"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "상세 요약 프롬프트"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "기본값으로 재설정"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "시스템 프롬프트(빠른 요약)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "빠른 요약을 생성할 때 llm의 동작 지침"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "당신은 도움이 되는 어시스턴트입니다…"
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "사용자 프롬프트(빠른 요약)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "자막을 빠르고 간결하게 요약하기 위한 구체적 지침"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "다음 YouTube 자막을 요약해 주세요…"
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "시스템 프롬프트(상세 요약)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "상세하고 포괄적인 요약을 생성할 때 llm의 동작 지침"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "당신은 분석적인 어시스턴트입니다…"
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "사용자 프롬프트(상세 요약)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "자막에서 상세하고 구조화된 노트를 만들기 위한 구체적 지침"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "아래 자막을 바탕으로 상세하고 구조화된 노트를 만들어 주세요…"
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "기본 요약 모드"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "플러그인 시작 시 쓸 기본 요약 모드를 고르세요. 빠른 요약 모드는 처리를 앞당기려고 타임스탬프 링크를 건너뜁니다."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "상세 요약(자세히)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "빠른 요약(간략히)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "YouTube 타임스탬프 링크 추가"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "번호가 매겨진 각 소제목에 YouTube 영상의 해당 시점으로 이동하는 링크를 답니다(빠른 요약 모드에서는 꺼짐)."
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "켜면 링크 자리를 내주려고 1차 패스 토큰을 12% 줄입니다. 빠른 요약 모드에서는 자동으로 꺼집니다."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "고급"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "디버깅과 문제 해결을 위한 고급 설정. 디버그 로깅을 켜면 기술 지원용 상세 정보가 각 노트에 덧붙습니다."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "디버그 로깅 사용"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "상세 디버그 로그를 켭니다. 켜면 문제 해결용 디버그 정보가 숨김 콜아웃으로 각 노트에 덧붙습니다."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "켜면 디버그 정보가 콘솔에 출력되는 대신 숨김 콜아웃으로 노트에 추가됩니다."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Tubesage YouTube 자막 플러그인 라이선스"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "라이선스 파일을 불러올 수 없습니다. 플러그인 폴더에 라이선스 파일이 있는지 확인하세요."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "라이선스 동의 필요"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "이 기능을 쓰려면 먼저 플러그인 라이선스에 동의해야 합니다."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "계속하려면 플러그인 설정에서 라이선스 조항에 동의하세요."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "라이선스에 동의하는 방법:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Obsidian 설정 열기"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "사이드바에서 커뮤니티 플러그인 섹션까지 내리기"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "커뮤니티 플러그인 목록에서 “Tubesage” 찾기"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "“Tubesage” 플러그인 설정 클릭"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "“라이선스 및 면책 조항 동의”를 켜서 플러그인 활성화"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "플러그인 설정 열기"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — “Show active jobs”에서 취소"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "자막 가져오는 중"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "자막 요약하는 중"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "노트 만드는 중"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "타임스탬프 추가하는 중"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "노트 번역하는 중"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "영상 처리 중"
+    }
+}

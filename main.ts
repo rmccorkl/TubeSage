@@ -1,5 +1,6 @@
 import { App, Plugin, PluginSettingTab, Modal, SettingDefinitionItem, Notice, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, ButtonComponent, TFile, ToggleComponent, addIcon, removeIcon, setTooltip, setIcon, getLanguage, normalizePath as obsidianNormalizePath } from 'obsidian';
 import { setLanguageResolver, t } from './src/i18n';
+import { loadRuntimeLocale } from './src/i18n/locale-loader';
 import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
@@ -48,6 +49,7 @@ import type { RecoveryAction, RecoveryRowModel, RecoveryTrigger } from './src/ru
 const logger = getLogger('PLUGIN');
 const transcriptLogger = getLogger('TRANSCRIPT');
 const llmLogger = getLogger('LLM');
+const i18nLogger = getLogger('I18N');
 
 // Per-vault localStorage key for this installation's id (spec I3). Vault-scoped
 // and device-local by construction (App.loadLocalStorage/saveLocalStorage,
@@ -327,6 +329,29 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // (translateLanguage / translateCountry in the settings are a different
         // feature: the language the generated NOTE is written in.)
         setLanguageResolver(() => getLanguage());
+
+        // Every locale is bundled, because Obsidian's installer downloads only
+        // main.js, manifest.json and styles.css from a release — so a shipped
+        // locale FILE would reach nobody who installed from the catalogue.
+        // This call is the OVERRIDE path: a <code>.json dropped into the
+        // plugin folder by hand wins over the bundled table for that language.
+        // AWAITED ON PURPOSE — `addSettingTab` below only registers the tab;
+        // the tab is built when the user opens Settings, which is necessarily
+        // after `onload` resolves, so awaiting one small JSON read means an
+        // override is in force before anything renders.
+        // `loadRuntimeLocale` never rejects and never outlives its own
+        // timeout, so a missing, unreadable, malformed or slow override file —
+        // or a `manifest.dir` Obsidian did not set — costs the bundled
+        // translation, not a stalled load. No override present is the normal
+        // case and is silent; it speaks at most one line, once, per load.
+        await loadRuntimeLocale(getLanguage(), {
+            dir: this.manifest.dir,
+            read: (path: string) => this.app.vault.adapter.read(path),
+            normalizePath: (path: string) => obsidianNormalizePath(path),
+            setTimer: (fn: () => void, ms: number) => window.setTimeout(fn, ms),
+            clearTimer: (handle: unknown) => window.clearTimeout(handle as number),
+            log: (message: string) => i18nLogger.warn(message),
+        });
 
         // loadSettings() must run first: it hydrates the job records out of
         // data.json and builds the serialized store that every later

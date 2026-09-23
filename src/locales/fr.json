@@ -416,7 +416,7 @@
         "translation": "Ouvrez les paramètres du plugin « Tubesage »"
     },
     "license.required.step5": {
-        "original": "Toggle \"Accept License\" to enable the plugin",
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
         "translation": "Activez « Accepter la licence et l'avertissement » pour activer le plugin"
     },
     "license.required.openSettings": {

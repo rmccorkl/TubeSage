@@ -10,14 +10,17 @@ import {
     translate,
 } from "./index";
 import type { LocaleTable } from "./index";
-import { LOCALES } from "./locales";
+import { LOCALES, clearRuntimeLocales, installRuntimeLocale } from "./locales";
 import { isLatinScript, sentenceCaseStatus } from "./script";
 import EN from "../locales/en.json";
-import DE_FLAT from "../locales/flat/de.json";
+// The generated flat translations live at the repo root and are what
+// `locales.ts` statically imports into the bundle. Importing them here too
+// lets an assertion compare the live table against the file by identity.
+import DE_FLAT from "../../locales/de.json";
 
-// A synthetic table. Batch A ships `en` only, so every fallback-chain
-// assertion drives the pure `translate()` over a table made here rather than
-// over the shipped one.
+// A synthetic table, for the fallback chain: `pt`/`pt-BR` are deliberately
+// codes the real table does not carry, so a chain assertion tests
+// `translate()` itself rather than the current translation set.
 const TABLE: LocaleTable = {
     en: { greet: "Hello", only: "English only", param: "Hello {name}" },
     pt: { greet: "Olá", param: "Olá {name}" },
@@ -26,6 +29,10 @@ const TABLE: LocaleTable = {
 
 afterEach(() => {
     setLanguageResolver(null);
+    // Symmetric with installRuntimeLocale(): an override installed by one case
+    // must not survive into the next, where it would look like a flake. Every
+    // bundled locale is restored, not deleted.
+    clearRuntimeLocales();
 });
 
 describe("normalizeLanguageCode", () => {
@@ -159,20 +166,84 @@ describe("the locale table", () => {
         expect(LOCALES.en).toBe(EN);
     });
 
-    it("imports the flat translation-only artifact directly, with no flattening step at load time", () => {
-        // flattenLocale() is gone: locales.ts imports src/locales/flat/<code>.json
-        // as-is, so LOCALES.de is the flat file's own object, not something
-        // computed from the paired src/locales/de.json at runtime.
+    it("serves Khmer under both kh and km, because the two sources disagree", () => {
+        // Obsidian's published table says `km`; the 1.12.7 binary's own
+        // language map says `kh` and has no `km` at all. Whichever a supported
+        // install emits, `t()` must answer in Khmer rather than fall through to
+        // English. Same object, not a copy: a copy could drift.
+        expect(LOCALES.kh).toBe(LOCALES.km);
+    });
+
+    it("bundles every translated locale, because a locale FILE never reaches a catalogue install", () => {
+        // The inversion of #8: Obsidian's installer downloads only main.js,
+        // manifest.json and styles.css, so a translation that is not compiled
+        // into main.js is a translation nobody sees. Growing main.js is the
+        // price of the coverage, and it is the only mechanism that delivers it.
+        expect(Object.keys(LOCALES).sort()).toEqual([
+            "am", "ar", "be", "bg", "bn", "ca", "cs", "da", "de",
+            "el", "en", "en-GB", "es", "fa", "fi", "fr", "ga", "gl",
+            "he", "hu", "id", "it", "ja", "ka", "kab", "kh", "km", "ko",
+            "lv", "ms", "ne", "nl", "no", "pl", "pt", "pt-BR", "ro",
+            "ru", "sa", "si", "sk", "sq", "sr", "sv", "ta", "th",
+            "tr", "uk", "uz", "vi", "zh", "zh-TW",
+        ]);
+    });
+
+    it("answers in the language itself for every bundled code, whatever case it arrives in", () => {
+        // The failure this exists for is silent: a bundled locale whose code
+        // never matches what `getLanguage()` returns falls through to English
+        // and nothing reports it — which is exactly how Italian was missing.
+        // `pt-BR` and `zh-TW` are the sharp cases: with `en-GB` they are the
+        // only codes carrying a region subtag, and `LOCALES['zh-TW']` is an
+        // exact-key lookup, so if `translate` did not canonicalise, a `zh-tw`
+        // from Obsidian would ship dead. `zh-TW` also exercises the fallback
+        // rung — it must answer in Traditional Chinese rather than sliding
+        // down to the Simplified `zh` that happens to sit under it.
+        for (const code of Object.keys(LOCALES)) {
+            if (code === BASE_LOCALE) continue;
+            for (const spelling of [code, code.toLowerCase(), code.toUpperCase()]) {
+                expect(normalizeLanguageCode(spelling), spelling).toBe(code);
+                expect(translate(LOCALES, spelling, "common.close"), spelling).toBe(LOCALES[code]["common.close"]);
+            }
+        }
+    });
+
+    it("falls from pt-BR to pt before English, and the two are different translations", () => {
+        // Both Portuguese variants ship, so the regional chain has a real
+        // middle rung: a key thin in pt-BR would land on European Portuguese,
+        // not on English.
+        expect(resolveLocaleChain("pt-br")).toEqual(["pt-BR", "pt", BASE_LOCALE]);
+        const key = "settings.templates.templaterFile.name";
+        expect(translate(LOCALES, "pt", key)).not.toBe(translate(LOCALES, "pt-BR", key));
+    });
+
+    it("holds the generated file's own object, with no flattening step at load time", () => {
+        // The generated file is already `key -> string`, so the table holds
+        // the imported file itself rather than something computed at lookup
+        // time from the paired src/locales/de.json. No install needed: this is
+        // the bundled table, straight from the static import.
         expect(LOCALES.de).toBe(DE_FLAT);
-        expect(LOCALES.de).toEqual(DE_FLAT);
     });
 
-    it("ships the six translated locales in Obsidian's own codes", () => {
+    it("lets a plugin-folder override displace a bundled translation", () => {
+        installRuntimeLocale("de", { "settings.templates.heading": "Vorlagen (override)" });
+        expect(LOCALES.de["settings.templates.heading"]).toBe("Vorlagen (override)");
+        expect(LOCALES.de).not.toBe(DE_FLAT);
+    });
+
+    it("restores the bundled translation when the override is cleared", () => {
+        installRuntimeLocale("de", { "settings.templates.heading": "Vorlagen (override)" });
+        clearRuntimeLocales();
+        expect(LOCALES.de).toBe(DE_FLAT);
+    });
+
+    it("refuses to let an override displace the bundled English fallback", () => {
+        installRuntimeLocale(BASE_LOCALE, { "settings.templates.heading": "Hijacked" });
+        expect(LOCALES.en).toBe(EN);
+    });
+
+    it("gives every bundled locale the full key set of en", () => {
         // `zh` IS Simplified Chinese in Obsidian's table; Traditional is `zh-TW`.
-        expect(Object.keys(LOCALES).sort()).toEqual(["de", "en", "en-GB", "es", "fr", "ja", "zh"]);
-    });
-
-    it("gives every shipped locale the full key set of en", () => {
         const enKeys = Object.keys(LOCALES.en).sort();
         for (const code of Object.keys(LOCALES)) {
             expect(Object.keys(LOCALES[code]).sort(), `${code} key set`).toEqual(enKeys);
@@ -180,10 +251,10 @@ describe("the locale table", () => {
     });
 });
 
-describe("t() over the shipped translations", () => {
+describe("t() over the bundled translations", () => {
     const sample = "settings.templates.heading";
 
-    it("renders a shipped key in each translated locale, not in English", () => {
+    it("renders a bundled key in each translated locale, not in English", () => {
         for (const code of ["de", "fr", "es", "ja", "zh"]) {
             setLanguageResolver(() => code);
             expect(t(sample), `${code} ${sample}`).toBe(LOCALES[code][sample]);
@@ -198,13 +269,21 @@ describe("t() over the shipped translations", () => {
         expect(rendered).not.toContain("{provider}");
     });
 
-    it("falls back through an unshipped regional code to its base language", () => {
+    it("falls back through an unbundled regional code to its base language", () => {
         setLanguageResolver(() => "de-AT");
         expect(t(sample)).toBe(LOCALES.de[sample]);
     });
 
-    it("falls back to English for a locale that is not shipped", () => {
-        setLanguageResolver(() => "ko");
+    it("falls back to English for a locale that is not bundled", () => {
+        // `qq`, not a real language code. This case used to name a language
+        // that simply had not been translated yet, which made it a test with an
+        // expiry date: bundling Korean turned it red, though the assertion it
+        // was making — unbundled resolves to English — had not changed at all.
+        // `qq` is the unassigned code this file already uses for exactly that
+        // job in `resolveLocaleChain`, so no batch can ever bundle it out from
+        // under this test. (`locale-loader.test.ts` picks `zxx` for its own
+        // version of this problem; the reasoning there is the same.)
+        setLanguageResolver(() => "qq");
         expect(t(sample)).toBe(LOCALES.en[sample]);
     });
 });

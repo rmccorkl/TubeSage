@@ -140,8 +140,8 @@ export function formatLocaleJson(payload) {
 
 /**
  * Reduce a `{ original, translation }` locale payload to `key -> translation`
- * — the flat, translation-only shape the bundle imports. Key order is
- * preserved from the input.
+ * — the flat, translation-only shape generated as `locales/<code>.json` and
+ * statically imported into the bundle. Key order is preserved from the input.
  */
 export function flattenTranslations(entries) {
   const flat = {};
@@ -172,12 +172,57 @@ export function scanKeysUsedInCode(sources) {
  * list of problems; empty means the gate passes.
  *
  * `flat`, when passed, is `{ [code]: { key: translation } }` — the second
- * generated artifact (`npm run i18n:build`'s `src/locales/flat/<code>.json`)
- * that `locales.ts` actually imports. It must exactly mirror
+ * generated artifact (`npm run i18n:build`'s flat `locales/<code>.json`, the
+ * one `src/i18n/locales.ts` imports). It must exactly mirror
  * `flattenTranslations(locales[code])`: same locale set, same key set, same
  * values. Omitting `flat` skips this check entirely (existing callers that
  * only care about the paired files are unaffected).
  */
+/**
+ * Keys whose text QUOTES the label of another key, and must therefore carry
+ * that key's value verbatim in the SAME locale.
+ *
+ * The failure this catches is drift: a label is reworded and the sentence
+ * quoting it is not, so the instruction names a control the user cannot find.
+ * The English drifted exactly this way — step 5 quoted "Accept License" long
+ * after the toggle itself had become "Accept license & disclaimer", and
+ * `en-GB` carried the same mismatch in British spelling. Every one of the 50
+ * translations was already correct, because a translator reads the two rows
+ * together; only the English, where nobody re-reads the source, went stale.
+ */
+/**
+ * `{name}` placeholders as a NAME -> COUNT map.
+ *
+ * Counts rather than a de-duplicated set, and a set rather than a sequence.
+ * Order is deliberately not compared: word order legitimately differs between
+ * languages, and a translation that puts `{service}` before `{provider}` is
+ * correct, not broken. Repetition IS compared, because `{provider} ... {provider}`
+ * substitutes twice and is a different string from one that substitutes once —
+ * a case the sorted, de-duplicated check in `i18n-locales.test.mjs` cannot see.
+ *
+ * The pattern matches `substitute()` in `src/i18n/index.ts` exactly; a
+ * placeholder it would not fill is not a placeholder this rule should demand.
+ */
+function placeholderCounts(text) {
+  const counts = {};
+  for (const match of String(text ?? "").match(/\{[A-Za-z0-9_]+\}/g) ?? []) {
+    counts[match] = (counts[match] ?? 0) + 1;
+  }
+  return counts;
+}
+
+function sameCounts(a, b) {
+  const names = new Set([...Object.keys(a), ...Object.keys(b)]);
+  for (const name of names) {
+    if ((a[name] ?? 0) !== (b[name] ?? 0)) return false;
+  }
+  return true;
+}
+
+export const QUOTED_LABELS = [
+  { key: "license.required.step5", quotes: "settings.support.license.acceptLabel" },
+];
+
 export function checkLocales({ csvText, en, locales = {}, flat, keysUsedInCode, glossary = GLOSSARY }) {
   const problems = [];
   const add = (problem) => problems.push(problem);
@@ -206,6 +251,23 @@ export function checkLocales({ csvText, en, locales = {}, flat, keysUsedInCode, 
         add({ code: "empty-translation", locale: code, key, message: `${code}.json has no translation for ${key}` });
         continue;
       }
+      const enPlaceholders = placeholderCounts(en[key]);
+      const gotPlaceholders = placeholderCounts(entry.translation);
+      if (!sameCounts(enPlaceholders, gotPlaceholders)) {
+        const fmt = (counts) =>
+          Object.keys(counts).length === 0
+            ? "none"
+            : Object.entries(counts)
+                .sort(([a], [b]) => (a < b ? -1 : 1))
+                .map(([name, n]) => (n === 1 ? name : `${name}x${n}`))
+                .join(" ");
+        add({
+          code: "placeholder-mismatch",
+          locale: code,
+          key,
+          message: `${code}.json's ${key} does not carry the English placeholder set: expected ${fmt(enPlaceholders)}, got ${fmt(gotPlaceholders)}`,
+        });
+      }
       for (const term of glossary) {
         const lower = term.toLowerCase();
         if (en[key].toLowerCase().includes(lower) && !entry.translation.toLowerCase().includes(lower)) {
@@ -220,17 +282,33 @@ export function checkLocales({ csvText, en, locales = {}, flat, keysUsedInCode, 
     }
   }
 
+  for (const { key, quotes } of QUOTED_LABELS) {
+    const enSentence = en[key];
+    const enLabel = en[quotes];
+    if (typeof enSentence === "string" && typeof enLabel === "string" && !enSentence.includes(enLabel)) {
+      add({ code: "label-quote-drift", locale: "en", key, message: `en.json's ${key} does not quote ${quotes} ("${enLabel}") verbatim` });
+    }
+    for (const [code, entries] of Object.entries(locales)) {
+      const sentence = entries[key]?.translation;
+      const label = entries[quotes]?.translation;
+      if (typeof sentence !== "string" || typeof label !== "string") continue;
+      if (!sentence.includes(label)) {
+        add({ code: "label-quote-drift", locale: code, key, message: `${code}.json's ${key} does not quote its own ${quotes} ("${label}") verbatim` });
+      }
+    }
+  }
+
   if (flat !== undefined) {
     const pairedCodes = Object.keys(locales);
     const flatCodes = Object.keys(flat);
     for (const code of pairedCodes) {
       if (!(code in flat)) {
-        add({ code: "flat-missing-locale", locale: code, message: `flat/${code}.json is missing though ${code}.json exists` });
+        add({ code: "flat-missing-locale", locale: code, message: `locales/${code}.json is missing though ${code}.json exists` });
       }
     }
     for (const code of flatCodes) {
       if (!(code in locales)) {
-        add({ code: "flat-orphan-locale", locale: code, message: `flat/${code}.json exists but ${code}.json does not — a stale flat file` });
+        add({ code: "flat-orphan-locale", locale: code, message: `locales/${code}.json exists but ${code}.json does not — a stale generated file` });
       }
     }
     for (const code of pairedCodes) {
@@ -239,16 +317,16 @@ export function checkLocales({ csvText, en, locales = {}, flat, keysUsedInCode, 
       const expected = flattenTranslations(locales[code]);
       for (const key of Object.keys(expected)) {
         if (!(key in flatEntries)) {
-          add({ code: "flat-missing-key", locale: code, key, message: `flat/${code}.json is missing ${key}` });
+          add({ code: "flat-missing-key", locale: code, key, message: `locales/${code}.json is missing ${key}` });
           continue;
         }
         if (flatEntries[key] !== expected[key]) {
-          add({ code: "flat-stale", locale: code, key, message: `flat/${code}.json value for ${key} does not match ${code}.json's translation` });
+          add({ code: "flat-stale", locale: code, key, message: `locales/${code}.json value for ${key} does not match ${code}.json's translation` });
         }
       }
       for (const key of Object.keys(flatEntries)) {
         if (!(key in expected)) {
-          add({ code: "flat-orphan-key", locale: code, key, message: `flat/${code}.json has ${key}, which ${code}.json does not` });
+          add({ code: "flat-orphan-key", locale: code, key, message: `locales/${code}.json has ${key}, which ${code}.json does not` });
         }
       }
     }

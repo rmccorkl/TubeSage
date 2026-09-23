@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Käytössä"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Ei käytössä"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Sulje"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Tue kehitystä"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Jos tästä laajennuksesta on sinulle hyötyä, harkitse sen kehityksen tukemista:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…ja auta kylvämään suurempaa visiota: teknologiaa, joka palvelee ihmisiä ja planeettaa."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Lisenssi ja vastuuvapauslauseke"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Näytä lisenssi ja vastuuvapauslauseke"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Hyväksy lisenssi ja vastuuvapauslauseke"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Näytä readme"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Mallit"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Templater-laajennuksen mallitiedosto"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Käytettävän templater-laajennuksen mallitiedoston polku"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Selaa mallitiedostoa"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Esimerkki "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Näytä esimerkkimalli"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Litteroinnit"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "Litterointiasetukset määräävät, miten ja minne poimitut muistiinpanot tallennetaan, mitä YouTube Data -API-avainta käytetään (vaaditaan kanaville ja soittolistoille) ja mitkä valinnaiset käännösparametrit ovat voimassa."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Litterointien juurikansio"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "Juurikansio, johon litterointien alikansiot järjestetään (esim. inbox, notes jne.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "YouTube Data -API-avain"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "Google Cloud Console -API-avaimesi julkisten YouTube-litterointien käyttöön (ei OAUTH-tunnus). Vaaditaan kanavien ja soittolistojen lataamiseen."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Anna API-avain (alkaa aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Scrape creators -API-avain"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Valinnainen avain scrapecreators-litterointipalvelulle. Kun se on asetettu, sitä käytetään ensisijaisena litterointitapana. Hanki ilmainen avain osoitteesta app.scrapecreators.com (100 pyyntöä ilmaiseksi). Suositellaan luotettavaan litterointiin; suora poiminta YouTubesta hajoaa, kun YouTube muuttaa tekstitysten jakelutapaa."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Anna scrapecreators-API-avain"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Supa data -API-avain"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Valinnainen avain supadata-litterointipalvelulle. Kun se on asetettu, sitä käytetään ensisijaisena tapana (jos scrapecreators-avainta ei ole). Hanki avain osoitteesta supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Anna supadata-avain"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Käännöskieli"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Käännöksen kohdekielen koodi (esim. en, es, fr, de). Käytä arvoa ”en”, jos sisällön halutaan pysyvän englanniksi."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Anna kielikoodi"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Käännösmaa"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Käännöksen kohdemaan tai -alueen koodi (esim. us, gb, ca). Käytetään kielen alueellisiin muunnelmiin."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Kielimalli"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Valitse tekoälyn palveluntarjoaja, anna sen API-avain ja valitse malli. Lämpötila säätää luovuutta; tokenien enimmäismäärä rajaa vastauksen pituutta. Suositus useimmille: palveluntarjoaja Google ja malli gemini-2.5-flash — nopea, edullinen ja laadukas. Jos vastaan tulee käyttörajoja tai häiriöitä, OpenRouter on vakaa vaihtoehto."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Palveluntarjoaja"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Tiivistelmään käytettävä palveluntarjoaja. OpenRouter on suositeltava luotettavuutensa vuoksi; edullisempia Gemini-tasoja voidaan rajoittaa."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "{provider}-API-avain"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Tallennetaan Obsidianin salaiseen säilöön, ei laajennuksen tietoihin."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "Palvelimen URL, tallennetaan laajennuksen tietoihin."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "{provider}-malli"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Valitse valmis malli tai kirjoita alle oma mallin nimi."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Käytä omaa mallia"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "Päivitä palveluntarjoajan {provider} malliluettelo"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Oman mallin nimi"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Mallin parametrit ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Oman mallin parametrit ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Mallin parametrit ({provider}) — ohitus"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Pakollinen: tätä mallia ei ole rekisterissä — aseta konteksti-ikkuna, enimmäistuloste ja varaus prosentteina, jotta tokenbudjetti osaa mitoittaa pyynnöt turvallisesti."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Nämä ovat tämän mallin tokenrajat, esitäytettyinä tunnetuista tiedoista. Muokkaa kenttää ohittaaksesi sen tälle palveluntarjoajalle ja mallille."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Konteksti-ikkuna (k tokenia)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Koko konteksti-ikkuna tuhansina tokeneina (esim. 400 = 400k tokenia)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Enimmäistuloste (k tokenia)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Tulosteen enimmäistokenit tuhansina (esim. 128 = 128k tokenia)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Enimmäissyöte (k tokenia) - valinnainen"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Nimenomainen syöteraja, jos palveluntarjoaja ilmoittaa sellaisen (jätä tyhjäksi automaattista laskentaa varten)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Varausprosentti"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Turvavaraus tulosteen tokeneille (0.10 = 10 %, oletus: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Lämpötila"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Säätää vastauksen satunnaisuutta (0-1). Pienempi on täsmällisempi, suurempi luovempi. Nykyinen arvo: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Muistiinpanon muoto"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Lisää päivämäärä muistiinpanon otsikon eteen"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Lisää päivämäärä automaattisesti muistiinpanojen tiedostonimien alkuun"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Päivämäärän muoto"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Muistiinpanojen otsikoiden eteen lisättävän päivämäärän muoto"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Kehotteet"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Nopean tiivistelmän kehotteet"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Laajan tiivistelmän kehotteet"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Palauta oletusarvo"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Järjestelmäkehote (nopea tiivistelmä)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Ohjeet mallin toiminnalle nopeita tiivistelmiä luotaessa"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Olet avulias avustaja..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Käyttäjäkehote (nopea tiivistelmä)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Tarkat ohjeet litteroinnin tiivistämiseen nopeasti ja ytimekkäästi"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Tiivistä seuraava YouTube-litterointi..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Järjestelmäkehote (laaja tiivistelmä)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Ohjeet mallin toiminnalle yksityiskohtaisia ja kattavia tiivistelmiä luotaessa"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Olet analyyttinen avustaja..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Käyttäjäkehote (laaja tiivistelmä)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Tarkat ohjeet yksityiskohtaisten ja jäsenneltyjen muistiinpanojen luomiseen litteroinnista"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "Luo alla olevasta litteroinnista yksityiskohtaiset ja jäsennellyt muistiinpanot..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Oletustiivistelmätila"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Valitse tiivistelmätila, jossa laajennus käynnistyy. Nopea tila ohittaa aikaleimalinkit ja käsittelee siksi nopeammin."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Laaja tiivistelmä (yksityiskohtainen)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Nopea tiivistelmä (lyhyt)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "Lisää YouTube-aikaleimalinkit"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Lisää jokaiseen numeroituun osion otsikkoon linkki, joka hyppää YouTube-videon vastaavaan aikaleimaan (pois käytöstä nopeassa tilassa)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Käytössä tämä vähentää ensimmäisen vaiheen tokeneita 12 %, jotta linkeille jää tilaa. Poistuu automaattisesti käytöstä nopeassa tilassa."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Lisäasetukset"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Lisäasetukset virheenetsintään ja vianmääritykseen. Ota virheenkorjausloki käyttöön, jolloin jokaiseen muistiinpanoon lisätään yksityiskohtaiset tiedot teknistä tukea varten."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Ota virheenkorjausloki käyttöön"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Ota yksityiskohtainen virheenkorjausloki käyttöön. Virheenkorjaustiedot lisätään tällöin jokaiseen muistiinpanoon piilotettuna callout-lohkona vianmääritystä varten."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Käytössä virheenkorjaustiedot kerätään ja lisätään muistiinpanoihin piilotettuna callout-lohkona sen sijaan, että ne kirjattaisiin konsoliin."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Tubesage-YouTube-litterointilaajennuksen lisenssi"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "Lisenssitiedostoa ei voitu ladata. Tarkista, että laajennuksen kansiossa on lisenssitiedosto."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Lisenssin hyväksyntä vaaditaan"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Sinun on hyväksyttävä laajennuksen lisenssi ennen tämän toiminnon käyttöä."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Avaa laajennuksen asetukset ja hyväksy lisenssiehdot jatkaaksesi."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Näin hyväksyt lisenssin:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Avaa Obsidianin asetukset"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Vieritä sivupalkissa alas yhteisölaajennusten kohtaan"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Etsi ”Tubesage” yhteisölaajennusten luettelosta"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Avaa laajennuksen ”Tubesage” asetukset"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Ota käyttöön ”Hyväksy lisenssi ja vastuuvapauslauseke” ottaaksesi laajennuksen käyttöön"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Avaa laajennuksen asetukset"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — peruuta kohdasta ”Show active jobs”"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Haetaan litterointia"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Tiivistetään litterointia"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Luodaan muistiinpanoa"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Lisätään aikaleimoja"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Käännetään muistiinpanoa"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Käsitellään videota"
+    }
+}
