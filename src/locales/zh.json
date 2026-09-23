@@ -140,8 +140,8 @@
         "translation": "语言模型"
     },
     "settings.llm.info": {
-        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
-        "translation": "选择 AI 提供方，输入其 API 密钥并挑选模型。temperature 控制创造性，max tokens 限制输出长度。多数用户推荐：Google 提供方搭配 gemini-2.5-flash 模型 — 快速、便宜且质量好。如果遇到速率限制或稳定性问题，OpenRouter 是可靠的备选。"
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. OpenRouter is recommended for reliability; Google's gemini-2.5-flash is cheaper, but its lower-cost tiers can be throttled.",
+        "translation": "选择 AI 提供方，输入其 API 密钥并挑选模型。temperature 控制创造性，max tokens 限制输出长度。推荐 OpenRouter，稳定性更好；Google 的 gemini-2.5-flash 更便宜，但低价档位可能被限流。"
     },
     "settings.llm.provider.name": {
         "original": "Provider",

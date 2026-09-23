@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "翻訳先の国",
     "settings.transcripts.translateCountry.desc": "翻訳先の国・地域コード（例：us、gb、ca）。地域ごとの言語バリエーションに使われます。",
     "settings.llm.heading": "言語モデル",
-    "settings.llm.info": "AI プロバイダを選び、その API キーを入力してモデルを選びます。temperature は創造性を、max tokens は出力の長さを制御します。多くのユーザーには Google プロバイダと gemini-2.5-flash モデルの組み合わせがおすすめです — 高速・低コスト・高品質。レート制限や不安定さに当たる場合は、OpenRouter が堅実な代替になります。",
+    "settings.llm.info": "AI プロバイダを選び、その API キーを入力してモデルを選びます。temperature は創造性を、max tokens は出力の長さを制御します。安定性の点で OpenRouter を推奨します。Google の gemini-2.5-flash は安価ですが、低価格帯は制限がかかることがあります。",
     "settings.llm.provider.name": "プロバイダ",
     "settings.llm.provider.desc": "要約に使うプロバイダ。安定性の点で OpenRouter を推奨します。低価格帯の Gemini は制限がかかることがあります。",
     "settings.llm.apiKey.name": "{provider} の API キー",

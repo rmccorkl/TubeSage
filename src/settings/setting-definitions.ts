@@ -699,9 +699,16 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                     type: 'dropdown',
                     key: 'dateFormat',
                     options: {
-                        'YYYY-MM-DD': 'Yyyy-mm-dd',
-                        'MM-DD-YYYY': 'Mm-dd-yyyy',
-                        'DD-MM-YYYY': 'Dd-mm-yyyy',
+                        // Displayed verbatim: these are format TOKENS, not
+                        // prose. Sentence-casing them ("Yyyy-mm-dd") was an
+                        // autofix artefact — it describes a pattern the plugin
+                        // does not accept, and it is the UI-text class the
+                        // Obsidian review bot flags. Not translated either:
+                        // a localised token would name a format `moment` cannot
+                        // parse, which is why these stay out of the matrix.
+                        'YYYY-MM-DD': 'YYYY-MM-DD',
+                        'MM-DD-YYYY': 'MM-DD-YYYY',
+                        'DD-MM-YYYY': 'DD-MM-YYYY',
                     },
                     disabled: locked,
                 },
@@ -1051,9 +1058,17 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
         }
 
         apply(host.settings.customModelLimits[customKey]);
-        await host.saveSettings();
 
-        // Update maxTokens setting based on the new limits
+        // Re-derive maxTokens from the new limits BEFORE persisting, so one
+        // edit is one write. This used to save, recompute, and save again —
+        // two writes per keystroke, the first of them storing a maxTokens the
+        // very next line replaced.
+        //
+        // The stored result is unchanged: `getEffectiveMaxTokens()` reads only
+        // in-memory settings (`selectedLLM`, `selectedModels` and the
+        // `customModelLimits` entry applied on the line above), never anything
+        // `saveSettings()` writes, so it returns here exactly what it returned
+        // after the first save.
         host.settings.maxTokens = host.getEffectiveMaxTokens();
         await host.saveSettings();
     })();

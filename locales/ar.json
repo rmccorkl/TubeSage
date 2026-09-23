@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "بلد الترجمة",
     "settings.transcripts.translateCountry.desc": "رمز البلد/المنطقة الهدف للترجمة (مثل us أو gb أو ca). يُستخدم للصيغ اللغوية الخاصة بكل منطقة.",
     "settings.llm.heading": "نموذج اللغة",
-    "settings.llm.info": "اختر مزوّد الذكاء الاصطناعي، وأدخل مفتاح API الخاص به، ثم اختر نموذجًا. temperature يتحكم في الإبداع، و max tokens يحدّ طول المخرجات. المقترح لمعظم المستخدمين: مزوّد Google مع النموذج gemini-2.5-flash — سريع وزهيد وعالي الجودة. إن واجهت حدود المعدّل أو مشكلات في الموثوقية، فإن OpenRouter بديل متين.",
+    "settings.llm.info": "اختر مزوّد الذكاء الاصطناعي، وأدخل مفتاح API الخاص به، ثم اختر نموذجًا. temperature يتحكم في الإبداع، و max tokens يحدّ طول المخرجات. يُنصح بـ OpenRouter للموثوقية؛ ونموذج gemini-2.5-flash من Google أقل تكلفة، لكن قد تُقيَّد فئاته الأقل تكلفة.",
     "settings.llm.provider.name": "المزوّد",
     "settings.llm.provider.desc": "المزوّد المستخدَم للتلخيص. يُنصح بـ OpenRouter للموثوقية؛ وقد تُقيَّد فئات Gemini الأقل تكلفة.",
     "settings.llm.apiKey.name": "مفتاح API لـ {provider}",

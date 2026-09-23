@@ -95,26 +95,54 @@ describe("sanitizeFilename - existing edge cases (regression, #6)", () => {
     expect(sanitizeFilename("   ")).toBe("untitled-note");
   });
 
-  it("dot-only title -> untitled", () => {
-    expect(sanitizeFilename("...")).toBe("untitled");
+  // These three used to return "untitled" while an empty or whitespace-only
+  // title returned "untitled-note". Nothing about a title of dots makes it a
+  // different kind of nothing from a title of hashes, so all fully-stripped
+  // input now takes the one documented default.
+  it("dot-only title -> untitled-note", () => {
+    expect(sanitizeFilename("...")).toBe("untitled-note");
   });
 
-  it("slash-only title -> untitled", () => {
-    expect(sanitizeFilename("///")).toBe("untitled");
+  it("slash-only title -> untitled-note", () => {
+    expect(sanitizeFilename("///")).toBe("untitled-note");
   });
 
-  it("a title that sanitizes to nothing (only disallowed punctuation) -> untitled", () => {
-    expect(sanitizeFilename("###")).toBe("untitled");
+  it("a title that sanitizes to nothing (only disallowed punctuation) -> untitled-note", () => {
+    expect(sanitizeFilename("###")).toBe("untitled-note");
+  });
+
+  it("every fully-stripped title agrees on the same default", () => {
+    const stripped = ["", "   ", "...", "///", "###", "!!!", "@@@", "   ...   "];
+    const results = stripped.map((t) => sanitizeFilename(t));
+    expect(new Set(results)).toEqual(new Set(["untitled-note"]));
   });
 
   it("a title starting with a digit gets a note- prefix", () => {
     expect(sanitizeFilename("123 My Video")).toBe("note-123-My-Video");
   });
 
-  it("a title over 255 characters is truncated to 252 chars (the length cap appends '...', but the final trailing-separator strip removes it again since periods are in [-_.]+$)", () => {
-    const longTitle = "A".repeat(300);
-    const result = sanitizeFilename(longTitle);
-    expect(result).toBe("A".repeat(252));
-    expect(result.length).toBe(252);
+  it("a title over 255 characters is capped cleanly at 255, with no ellipsis", () => {
+    // The cap used to take 252 characters and append '...', which the final
+    // trailing-separator strip then removed — so the name lost three characters
+    // to a marker that never shipped. It now uses the whole budget.
+    const result = sanitizeFilename("A".repeat(300));
+    expect(result).toBe("A".repeat(255));
+    expect(result.length).toBe(255);
+  });
+
+  it("never ends in a dot, so Windows cannot silently rename the file", () => {
+    // Windows drops trailing dots from a filename. An ellipsis marker would be
+    // exactly that, which is the other reason the cap does not add one.
+    for (const title of ["A".repeat(300), "B".repeat(256), "Some title..."]) {
+      expect(sanitizeFilename(title).endsWith(".")).toBe(false);
+    }
+  });
+
+  it("stays within the cap even when the note- prefix is added", () => {
+    // The prefix used to be applied AFTER truncation, so a long title starting
+    // with a digit came out at 257 — over the limit the cap exists to enforce.
+    const result = sanitizeFilename("9".repeat(300));
+    expect(result.startsWith("note-")).toBe(true);
+    expect(result.length).toBeLessThanOrEqual(255);
   });
 });

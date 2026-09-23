@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "පරිවර්තන රට",
     "settings.transcripts.translateCountry.desc": "පරිවර්තනය සඳහා ඉලක්ක රට/කලාප කේතය (උදා. us, gb, ca). කලාපීය භාෂා ප්‍රභේද සඳහා භාවිත වේ.",
     "settings.llm.heading": "භාෂා ආකෘතිය",
-    "settings.llm.info": "AI සපයන්නෙකු තෝරා, එහි API යතුර ඇතුළු කර, ආකෘතියක් තෝරන්න. temperature නිර්මාණශීලීත්වය පාලනය කරයි; max tokens ප්‍රතිදාන දිග සීමා කරයි. බොහෝ පරිශීලකයන්ට නිර්දේශිතයි: Google සපයන්නා සමඟ gemini-2.5-flash ආකෘතිය — වේගවත්, අඩු වියදම් සහ උසස් ගුණාත්මක. අනුපාත සීමා හෝ විශ්වාසනීයත්ව ගැටලු එනවා නම්, OpenRouter හොඳ විකල්පයකි.",
+    "settings.llm.info": "AI සපයන්නෙකු තෝරා, එහි API යතුර ඇතුළු කර, ආකෘතියක් තෝරන්න. temperature නිර්මාණශීලීත්වය පාලනය කරයි; max tokens ප්‍රතිදාන දිග සීමා කරයි. විශ්වාසනීයත්වය සඳහා OpenRouter නිර්දේශ කෙරේ; Google හි gemini-2.5-flash ලාභදායී වුවත්, එහි අඩු මිල ස්ථර අනුපාත සීමාවට ලක් විය හැක.",
     "settings.llm.provider.name": "සපයන්නා",
     "settings.llm.provider.desc": "සාරාංශ කිරීමට භාවිත වන සපයන්නා. විශ්වාසනීයත්වය සඳහා OpenRouter නිර්දේශ කෙරේ; අඩු මිල Gemini ස්ථර අනුපාත සීමාවට ලක් විය හැක.",
     "settings.llm.apiKey.name": "{provider} API යතුර",

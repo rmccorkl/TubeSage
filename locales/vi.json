@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Quốc gia dịch",
     "settings.transcripts.translateCountry.desc": "Mã quốc gia/khu vực đích của bản dịch (ví dụ: us, gb, ca). Dùng cho các biến thể ngôn ngữ theo vùng.",
     "settings.llm.heading": "Mô hình ngôn ngữ",
-    "settings.llm.info": "Chọn nhà cung cấp AI, nhập khoá API rồi chọn mô hình. Temperature điều chỉnh mức sáng tạo; max tokens giới hạn độ dài đầu ra. Gợi ý cho phần lớn người dùng: nhà cung cấp Google với mô hình gemini-2.5-flash — nhanh, rẻ và chất lượng cao. Nếu gặp giới hạn tần suất hoặc trục trặc, OpenRouter là phương án dự phòng vững vàng.",
+    "settings.llm.info": "Chọn nhà cung cấp AI, nhập khoá API rồi chọn mô hình. Temperature điều chỉnh mức sáng tạo; max tokens giới hạn độ dài đầu ra. Nên chọn OpenRouter cho ổn định; gemini-2.5-flash của Google rẻ hơn, nhưng các gói giá thấp có thể bị bóp tần suất.",
     "settings.llm.provider.name": "Nhà cung cấp",
     "settings.llm.provider.desc": "Nhà cung cấp dùng để tóm tắt. Nên chọn OpenRouter cho ổn định; các gói Gemini giá thấp có thể bị bóp tần suất.",
     "settings.llm.apiKey.name": "Khoá API {provider}",

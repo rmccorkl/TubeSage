@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "თარგმნის ქვეყანა",
     "settings.transcripts.translateCountry.desc": "თარგმნის სამიზნე ქვეყნის ან რეგიონის კოდი (მაგ. us, gb, ca). გამოიყენება ენის რეგიონული ვარიანტებისთვის.",
     "settings.llm.heading": "ენობრივი მოდელი",
-    "settings.llm.info": "აირჩიეთ AI მომწოდებელი, შეიყვანეთ მისი API გასაღები და აირჩიეთ მოდელი. temperature აკონტროლებს შემოქმედებითობას; max tokens ზღუდავს პასუხის სიგრძეს. რეკომენდებულია უმეტესობისთვის: მომწოდებელი Google მოდელით gemini-2.5-flash — სწრაფი, იაფი და ხარისხიანი. თუ შეზღუდვებს ან საიმედოობის პრობლემებს წააწყდებით, OpenRouter კარგი ალტერნატივაა.",
+    "settings.llm.info": "აირჩიეთ AI მომწოდებელი, შეიყვანეთ მისი API გასაღები და აირჩიეთ მოდელი. temperature აკონტროლებს შემოქმედებითობას; max tokens ზღუდავს პასუხის სიგრძეს. საიმედოობისთვის რეკომენდებულია OpenRouter; Google-ის gemini-2.5-flash უფრო იაფია, თუმცა მისი იაფი დონეები შეიძლება შეიზღუდოს.",
     "settings.llm.provider.name": "მომწოდებელი",
     "settings.llm.provider.desc": "შეჯამებისთვის გამოყენებული მომწოდებელი. საიმედოობისთვის რეკომენდებულია OpenRouter; Gemini-ის იაფი დონეები შეიძლება შეიზღუდოს.",
     "settings.llm.apiKey.name": "{provider} API გასაღები",

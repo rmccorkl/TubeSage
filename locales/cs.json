@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Země překladu",
     "settings.transcripts.translateCountry.desc": "Kód cílové země nebo regionu překladu (např. us, gb, ca). Slouží pro regionální varianty jazyka.",
     "settings.llm.heading": "Jazykový model",
-    "settings.llm.info": "Vyberte poskytovatele AI, zadejte jeho klíč API a zvolte model. Teplota řídí kreativitu, maximum tokenů omezuje délku odpovědi. Pro většinu uživatelů: poskytovatel Google s modelem gemini-2.5-flash — rychlý, levný a kvalitní. Při limitech dotazů či potížích se spolehlivostí je dobrou náhradou OpenRouter.",
+    "settings.llm.info": "Vyberte poskytovatele AI, zadejte jeho klíč API a zvolte model. Teplota řídí kreativitu, maximum tokenů omezuje délku odpovědi. Pro spolehlivost doporučujeme OpenRouter; gemini-2.5-flash od Google je levnější, ale jeho levnější úrovně bývají omezovány.",
     "settings.llm.provider.name": "Poskytovatel",
     "settings.llm.provider.desc": "Poskytovatel použitý pro shrnutí. Pro spolehlivost doporučujeme OpenRouter; levnější úrovně Gemini bývají omezovány.",
     "settings.llm.apiKey.name": "Klíč API {provider}",

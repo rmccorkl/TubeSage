@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "የትርጉም አገር",
     "settings.transcripts.translateCountry.desc": "የትርጉም ዒላማ አገር/ክልል ኮድ (ለምሳሌ us፣ gb፣ ca)። ለክልል-ተኮር የቋንቋ ልዩነቶች ያገለግላል።",
     "settings.llm.heading": "የቋንቋ ሞዴል",
-    "settings.llm.info": "የAI አቅራቢ ይምረጡ፣ የAPI ቁልፉን ያስገቡ፣ ከዚያም ሞዴል ይምረጡ። temperature ፈጠራን ይቆጣጠራል፤ max tokens የውጤት ርዝመትን ይገድባል። ለአብዛኞቹ ተጠቃሚዎች የሚመከር፦ የGoogle አቅራቢ ከgemini-2.5-flash ሞዴል ጋር — ፈጣን፣ ርካሽና ጥራት ያለው። የፍጥነት ገደብ ወይም የመተማመኛ ችግር ካጋጠመዎት OpenRouter ጠንካራ አማራጭ ነው።",
+    "settings.llm.info": "የAI አቅራቢ ይምረጡ፣ የAPI ቁልፉን ያስገቡ፣ ከዚያም ሞዴል ይምረጡ። temperature ፈጠራን ይቆጣጠራል፤ max tokens የውጤት ርዝመትን ይገድባል። ለአስተማማኝነት OpenRouter ይመከራል፤ የGoogle gemini-2.5-flash ርካሽ ነው፣ ነገር ግን ዝቅተኛ ወጪ ያላቸው እርከኖቹ ሊገደቡ ይችላሉ።",
     "settings.llm.provider.name": "አቅራቢ",
     "settings.llm.provider.desc": "ለማጠቃለል የሚያገለግል አቅራቢ። ለአስተማማኝነት OpenRouter ይመከራል፤ ዝቅተኛ ወጪ ያላቸው የGemini እርከኖች ሊገደቡ ይችላሉ።",
     "settings.llm.apiKey.name": "የ{provider} API ቁልፍ",

@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Tulkojuma valsts",
     "settings.transcripts.translateCountry.desc": "Mērķa valsts vai reģiona kods tulkojumam (piem., us, gb, ca). Lieto valodas reģionālajiem variantiem.",
     "settings.llm.heading": "Valodas modelis",
-    "settings.llm.info": "Izvēlieties MI pakalpojumu sniedzēju, ievadiet tā API atslēgu un izvēlieties modeli. Temperatūra nosaka radošumu, maksimālais marķieru skaits ierobežo atbildes garumu. Vairumam lietotāju: sniedzējs Google ar modeli gemini-2.5-flash — ātrs, lēts un kvalitatīvs. Ja rodas pieprasījumu ierobežojumi vai uzticamības problēmas, laba alternatīva ir OpenRouter.",
+    "settings.llm.info": "Izvēlieties MI pakalpojumu sniedzēju, ievadiet tā API atslēgu un izvēlieties modeli. Temperatūra nosaka radošumu, maksimālais marķieru skaits ierobežo atbildes garumu. Uzticamībai ieteicams OpenRouter; Google gemini-2.5-flash ir lētāks, bet tā lētākie līmeņi var tikt ierobežoti.",
     "settings.llm.provider.name": "Pakalpojumu sniedzējs",
     "settings.llm.provider.desc": "Sniedzējs, kas veido kopsavilkumu. Uzticamībai ieteicams OpenRouter; lētākie Gemini līmeņi var tikt ierobežoti.",
     "settings.llm.apiKey.name": "{provider} API atslēga",

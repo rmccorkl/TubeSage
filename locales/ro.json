@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Țara traducerii",
     "settings.transcripts.translateCountry.desc": "Codul țării sau regiunii țintă pentru traducere (de ex. us, gb, ca). Folosit pentru variantele regionale ale limbii.",
     "settings.llm.heading": "Model lingvistic",
-    "settings.llm.info": "Alege un furnizor de IA, introdu cheia lui API și selectează un model. Temperatura reglează creativitatea, iar numărul maxim de tokenuri limitează lungimea răspunsului. Recomandat pentru majoritate: furnizorul Google cu modelul gemini-2.5-flash — rapid, ieftin și de bună calitate. Dacă întâmpini limite de utilizare sau probleme de fiabilitate, OpenRouter este o alternativă solidă.",
+    "settings.llm.info": "Alege un furnizor de IA, introdu cheia lui API și selectează un model. Temperatura reglează creativitatea, iar numărul maxim de tokenuri limitează lungimea răspunsului. OpenRouter este recomandat pentru fiabilitate; gemini-2.5-flash de la Google este mai ieftin, dar nivelurile lui mai ieftine pot fi limitate.",
     "settings.llm.provider.name": "Furnizor",
     "settings.llm.provider.desc": "Furnizorul folosit pentru rezumat. OpenRouter este recomandat pentru fiabilitate; nivelurile Gemini mai ieftine pot fi limitate.",
     "settings.llm.apiKey.name": "Cheie API {provider}",

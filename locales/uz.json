@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Tarjima mamlakati",
     "settings.transcripts.translateCountry.desc": "Tarjimaning maqsadli mamlakat/mintaqa kodi (masalan us, gb, ca). Mintaqaviy til variantlari uchun ishlatiladi.",
     "settings.llm.heading": "Til modeli",
-    "settings.llm.info": "AI provayderini tanlang, uning API kalitini kiriting va model tanlang. Temperatura ijodkorlikni boshqaradi; maksimal tokenlar javob uzunligini cheklaydi. Koʻpchilikka tavsiya: gemini-2.5-flash modeli bilan Google provayderi — tez, arzon va sifatli. Tezlik cheklovlari yoki ishonchlilik muammolari boʻlsa, OpenRouter yaxshi muqobil.",
+    "settings.llm.info": "AI provayderini tanlang, uning API kalitini kiriting va model tanlang. Temperatura ijodkorlikni boshqaradi; maksimal tokenlar javob uzunligini cheklaydi. Ishonchlilik uchun OpenRouter tavsiya etiladi; Google gemini-2.5-flash modeli arzonroq, ammo uning arzon darajalari sekinlashtirilishi mumkin.",
     "settings.llm.provider.name": "Provayder",
     "settings.llm.provider.desc": "Xulosa uchun ishlatiladigan provayder. Ishonchlilik uchun OpenRouter tavsiya etiladi; arzon Gemini darajalari sekinlashtirilishi mumkin.",
     "settings.llm.apiKey.name": "{provider} API kaliti",

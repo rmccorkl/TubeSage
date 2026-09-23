@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "کشور ترجمه",
     "settings.transcripts.translateCountry.desc": "کد کشور/منطقهٔ مقصد برای ترجمه (مثلاً us، gb، ca). برای گونه‌های زبانی ویژهٔ هر منطقه به کار می‌رود.",
     "settings.llm.heading": "مدل زبانی",
-    "settings.llm.info": "یک ارائه‌دهندهٔ هوش مصنوعی انتخاب کنید، کلید API آن را وارد کنید و مدلی برگزینید. temperature خلاقیت را کنترل می‌کند و max tokens طول خروجی را محدود می‌کند. پیشنهاد برای بیشتر کاربران: ارائه‌دهندهٔ Google با مدل gemini-2.5-flash — سریع، کم‌هزینه و باکیفیت. اگر به محدودیت نرخ یا مشکل پایداری برخوردید، OpenRouter جایگزین مطمئنی است.",
+    "settings.llm.info": "یک ارائه‌دهندهٔ هوش مصنوعی انتخاب کنید، کلید API آن را وارد کنید و مدلی برگزینید. temperature خلاقیت را کنترل می‌کند و max tokens طول خروجی را محدود می‌کند. OpenRouter برای پایداری توصیه می‌شود؛ gemini-2.5-flash شرکت Google ارزان‌تر است، اما رده‌های ارزان آن ممکن است محدود شوند.",
     "settings.llm.provider.name": "ارائه‌دهنده",
     "settings.llm.provider.desc": "ارائه‌دهنده‌ای که برای خلاصه‌سازی به کار می‌رود. OpenRouter برای پایداری توصیه می‌شود؛ رده‌های ارزان‌تر Gemini ممکن است محدود شوند.",
     "settings.llm.apiKey.name": "کلید API {provider}",

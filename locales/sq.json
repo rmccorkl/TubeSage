@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Shteti i përkthimit",
     "settings.transcripts.translateCountry.desc": "Kodi i shtetit/rajonit të synuar për përkthim (p.sh. us, gb, ca). Përdoret për variante gjuhësore sipas rajonit.",
     "settings.llm.heading": "Modeli gjuhësor",
-    "settings.llm.info": "Zgjidhni një ofrues AI, jepni çelësin e tij API dhe zgjidhni një model. Temperatura kontrollon kreativitetin; maksimumi i tokenave kufizon gjatësinë e daljes. E rekomanduar për shumicën: ofruesi Google me modelin gemini-2.5-flash — i shpejtë, i lirë dhe cilësor. Nëse hasni kufij shpejtësie ose probleme besueshmërie, OpenRouter është zgjidhje e mirë.",
+    "settings.llm.info": "Zgjidhni një ofrues AI, jepni çelësin e tij API dhe zgjidhni një model. Temperatura kontrollon kreativitetin; maksimumi i tokenave kufizon gjatësinë e daljes. OpenRouter rekomandohet për besueshmëri; gemini-2.5-flash i Google është më i lirë, por nivelet e tij më të lira mund të kufizohen.",
     "settings.llm.provider.name": "Ofruesi",
     "settings.llm.provider.desc": "Ofruesi i përdorur për përmbledhje. OpenRouter rekomandohet për besueshmëri; nivelet më të lira të Gemini mund të kufizohen.",
     "settings.llm.apiKey.name": "Çelësi API i {provider}",

@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Translate country",
     "settings.transcripts.translateCountry.desc": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
     "settings.llm.heading": "Language model",
-    "settings.llm.info": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+    "settings.llm.info": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. OpenRouter is recommended for reliability; Google's gemini-2.5-flash is cheaper, but its lower-cost tiers can be throttled.",
     "settings.llm.provider.name": "Provider",
     "settings.llm.provider.desc": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
     "settings.llm.apiKey.name": "{provider} api key",
