@@ -104,5 +104,12 @@
     "license.required.step3": "Busca «Tubesage» en la lista de plugins de la comunidad",
     "license.required.step4": "Abre los ajustes del plugin «Tubesage»",
     "license.required.step5": "Activa «Aceptar licencia y descargo de responsabilidad» para habilitar el plugin",
-    "license.required.openSettings": "Abrir los ajustes del plugin"
+    "license.required.openSettings": "Abrir los ajustes del plugin",
+    "notice.progress.message": "{stage}: cancelar desde «Show active jobs»",
+    "notice.progress.stage.transcript": "Obteniendo la transcripción",
+    "notice.progress.stage.summary": "Resumiendo la transcripción",
+    "notice.progress.stage.noteCreating": "Creando la nota",
+    "notice.progress.stage.timestamps": "Añadiendo marcas de tiempo",
+    "notice.progress.stage.translation": "Traduciendo la nota",
+    "notice.progress.stage.working": "Procesando el vídeo"
 }

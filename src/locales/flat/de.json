@@ -104,5 +104,12 @@
     "license.required.step3": "„Tubesage“ in der Liste der Community-Plugins suchen",
     "license.required.step4": "Die Einstellungen des Plugins „Tubesage“ öffnen",
     "license.required.step5": "„Lizenz & Haftungsausschluss akzeptieren“ einschalten, um das Plugin zu aktivieren",
-    "license.required.openSettings": "Plugin-Einstellungen öffnen"
+    "license.required.openSettings": "Plugin-Einstellungen öffnen",
+    "notice.progress.message": "{stage} – Abbrechen über „Show active jobs“",
+    "notice.progress.stage.transcript": "Transkript wird abgerufen",
+    "notice.progress.stage.summary": "Transkript wird zusammengefasst",
+    "notice.progress.stage.noteCreating": "Notiz wird erstellt",
+    "notice.progress.stage.timestamps": "Zeitstempel werden hinzugefügt",
+    "notice.progress.stage.translation": "Notiz wird übersetzt",
+    "notice.progress.stage.working": "Video wird verarbeitet"
 }

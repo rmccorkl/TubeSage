@@ -222,8 +222,12 @@ describe("the shipped en.json", () => {
     });
 
     it("namespaces every key by area", () => {
+        // The areas, in the order they arrived: the settings tab and the
+        // licence dialog (#4 phase 1), shared words used by both, and the
+        // floating job notices (#7). A new area belongs in this list
+        // deliberately — the point is that a key cannot be coined outside one.
         for (const [key] of EN_ENTRIES) {
-            expect(key, `${key} is not namespaced`).toMatch(/^(settings|license|common)\.[A-Za-z0-9.]+$/);
+            expect(key, `${key} is not namespaced`).toMatch(/^(settings|license|common|notice)\.[A-Za-z0-9.]+$/);
         }
     });
 
