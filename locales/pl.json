@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Kraj tłumaczenia",
     "settings.transcripts.translateCountry.desc": "Kod kraju lub regionu tłumaczenia (np. us, gb, ca). Służy do regionalnych wariantów języka.",
     "settings.llm.heading": "Model językowy",
-    "settings.llm.info": "Wybierz dostawcę AI, wpisz jego klucz API i wybierz model. Temperatura steruje kreatywnością, maksymalna liczba tokenów ogranicza długość odpowiedzi. Dla większości: dostawca Google z modelem gemini-2.5-flash — szybki, tani i dobry. Przy limitach zapytań lub problemach z niezawodnością dobrą alternatywą jest OpenRouter.",
+    "settings.llm.info": "Wybierz dostawcę AI, wpisz jego klucz API i wybierz model. Temperatura steruje kreatywnością, maksymalna liczba tokenów ogranicza długość odpowiedzi. OpenRouter jest zalecany ze względu na niezawodność; gemini-2.5-flash od Google jest tańszy, ale jego tańsze plany bywają ograniczane.",
     "settings.llm.provider.name": "Dostawca",
     "settings.llm.provider.desc": "Dostawca używany do streszczeń. OpenRouter jest zalecany ze względu na niezawodność; tańsze plany Gemini bywają ograniczane.",
     "settings.llm.apiKey.name": "Klucz API {provider}",

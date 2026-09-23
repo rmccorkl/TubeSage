@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "ប្រទេសបកប្រែ",
     "settings.transcripts.translateCountry.desc": "កូដប្រទេស/តំបន់គោលដៅសម្រាប់ការបកប្រែ (ឧ. us, gb, ca)។ ប្រើសម្រាប់ភាសាបំណែកតាមតំបន់។",
     "settings.llm.heading": "ម៉ូដែលភាសា",
-    "settings.llm.info": "ជ្រើសអ្នកផ្ដល់សេវា AI បញ្ចូលសោ API របស់វា រួចជ្រើសម៉ូដែល។ temperature គ្រប់គ្រងភាពច្នៃប្រឌិត ចំណែក max tokens កំណត់ប្រវែងលទ្ធផល។ ណែនាំសម្រាប់អ្នកប្រើភាគច្រើន៖ អ្នកផ្ដល់សេវា Google ជាមួយម៉ូដែល gemini-2.5-flash — លឿន ថោក និងគុណភាពល្អ។ បើជួបដែនកំណត់អត្រា ឬបញ្ហាភាពជឿជាក់ OpenRouter ជាជម្រើសបម្រុងដ៏រឹងមាំ។",
+    "settings.llm.info": "ជ្រើសអ្នកផ្ដល់សេវា AI បញ្ចូលសោ API របស់វា រួចជ្រើសម៉ូដែល។ temperature គ្រប់គ្រងភាពច្នៃប្រឌិត ចំណែក max tokens កំណត់ប្រវែងលទ្ធផល។ ណែនាំ OpenRouter ព្រោះជឿជាក់ជាង ចំណែក gemini-2.5-flash របស់ Google ថោកជាង ប៉ុន្តែកម្រិតថោកអាចត្រូវកំណត់អត្រា។",
     "settings.llm.provider.name": "អ្នកផ្ដល់សេវា",
     "settings.llm.provider.desc": "អ្នកផ្ដល់សេវាដែលប្រើសម្រាប់សង្ខេប។ ណែនាំ OpenRouter ព្រោះជឿជាក់ជាង ចំណែកកម្រិត Gemini ថោកអាចត្រូវកំណត់អត្រា។",
     "settings.llm.apiKey.name": "សោ API របស់ {provider}",

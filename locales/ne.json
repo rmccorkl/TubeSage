@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "अनुवादको देश",
     "settings.transcripts.translateCountry.desc": "अनुवादको लक्ष्य देश वा क्षेत्रको कोड (जस्तै us, gb, ca)। क्षेत्रअनुसार भाषाका रूपका लागि प्रयोग हुन्छ।",
     "settings.llm.heading": "भाषा मोडेल",
-    "settings.llm.info": "AI प्रदायक छान्नुहोस्, त्यसको API कुञ्जी लेख्नुहोस् र मोडेल रोज्नुहोस्। temperature ले सिर्जनशीलता नियन्त्रण गर्छ; max tokens ले उत्पादनको लम्बाइ सीमित गर्छ। धेरैलाई सिफारिस: Google प्रदायक र gemini-2.5-flash मोडेल — छिटो, सस्तो र गुणस्तरीय। दर सीमा वा भरपर्दोपनको समस्या आएमा OpenRouter राम्रो विकल्प हो।",
+    "settings.llm.info": "AI प्रदायक छान्नुहोस्, त्यसको API कुञ्जी लेख्नुहोस् र मोडेल रोज्नुहोस्। temperature ले सिर्जनशीलता नियन्त्रण गर्छ; max tokens ले उत्पादनको लम्बाइ सीमित गर्छ। भरपर्दोपनका लागि OpenRouter सिफारिस गरिन्छ; Google को gemini-2.5-flash सस्तो छ, तर यसका कम मूल्यका तह सुस्त हुन सक्छन्।",
     "settings.llm.provider.name": "प्रदायक",
     "settings.llm.provider.desc": "सारांशका लागि प्रयोग हुने प्रदायक। भरपर्दोपनका लागि OpenRouter सिफारिस गरिन्छ; कम मूल्यका Gemini तह सुस्त हुन सक्छन्।",
     "settings.llm.apiKey.name": "{provider} API कुञ्जी",

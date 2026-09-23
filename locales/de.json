@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Übersetzungsland",
     "settings.transcripts.translateCountry.desc": "Ziel-Länder- bzw. Regionscode für die Übersetzung (z. B. us, gb, ca). Wird für regionale Sprachvarianten verwendet.",
     "settings.llm.heading": "Sprachmodell",
-    "settings.llm.info": "Wähle einen KI-Anbieter, trage seinen API-Schlüssel ein und wähle ein Modell. Die Temperatur steuert die Kreativität, die maximalen Tokens begrenzen die Ausgabelänge. Für die meisten empfohlen: Anbieter Google mit dem Modell gemini-2.5-flash — schnell, günstig und hochwertig. Bei Ratenbegrenzungen oder Ausfällen ist OpenRouter ein solider Ersatz.",
+    "settings.llm.info": "Wähle einen KI-Anbieter, trage seinen API-Schlüssel ein und wähle ein Modell. Die Temperatur steuert die Kreativität, die maximalen Tokens begrenzen die Ausgabelänge. OpenRouter wird wegen der Zuverlässigkeit empfohlen; Googles gemini-2.5-flash ist preiswerter, aber seine günstigeren Stufen können gedrosselt werden.",
     "settings.llm.provider.name": "Anbieter",
     "settings.llm.provider.desc": "Anbieter für die Zusammenfassung. OpenRouter wird wegen der Zuverlässigkeit empfohlen; günstigere Gemini-Stufen können gedrosselt werden.",
     "settings.llm.apiKey.name": "{provider}-API-Schlüssel",

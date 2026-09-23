@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Negara terjemahan",
     "settings.transcripts.translateCountry.desc": "Kod negara/wilayah sasaran bagi terjemahan (cth. us, gb, ca). Digunakan untuk varian bahasa mengikut wilayah.",
     "settings.llm.heading": "Model bahasa",
-    "settings.llm.info": "Pilih pembekal AI, masukkan kunci API-nya, kemudian pilih model. Temperature mengawal daya cipta; max tokens mengehadkan panjang keluaran. Disyorkan bagi kebanyakan pengguna: pembekal Google dengan model gemini-2.5-flash — pantas, murah dan bermutu tinggi. Jika anda terkena had kadar atau masalah kebolehharapan, OpenRouter ialah sandaran yang kukuh.",
+    "settings.llm.info": "Pilih pembekal AI, masukkan kunci API-nya, kemudian pilih model. Temperature mengawal daya cipta; max tokens mengehadkan panjang keluaran. OpenRouter disyorkan demi kebolehharapan; gemini-2.5-flash daripada Google lebih murah, tetapi peringkatnya yang murah mungkin dikenakan had kadar.",
     "settings.llm.provider.name": "Pembekal",
     "settings.llm.provider.desc": "Pembekal yang digunakan untuk meringkaskan. OpenRouter disyorkan demi kebolehharapan; peringkat Gemini yang murah mungkin dikenakan had kadar.",
     "settings.llm.apiKey.name": "Kunci API {provider}",

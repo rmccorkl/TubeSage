@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Översättningsland",
     "settings.transcripts.translateCountry.desc": "Land- eller regionkod för översättningen (t.ex. us, gb, ca). Används för regionala språkvarianter.",
     "settings.llm.heading": "Språkmodell",
-    "settings.llm.info": "Välj en AI-leverantör, ange dess API-nyckel och välj en modell. Temperaturen styr kreativiteten; max antal token begränsar svarets längd. Rekommenderas för de flesta: leverantören Google med modellen gemini-2.5-flash — snabb, billig och av god kvalitet. Vid hastighetsgränser eller driftstörningar är OpenRouter ett stabilt alternativ.",
+    "settings.llm.info": "Välj en AI-leverantör, ange dess API-nyckel och välj en modell. Temperaturen styr kreativiteten; max antal token begränsar svarets längd. OpenRouter rekommenderas för tillförlitligheten; Googles gemini-2.5-flash är billigare, men de billigaste nivåerna kan begränsas.",
     "settings.llm.provider.name": "Leverantör",
     "settings.llm.provider.desc": "Leverantören som används för sammanfattningen. OpenRouter rekommenderas för tillförlitligheten; billigare Gemini-nivåer kan begränsas.",
     "settings.llm.apiKey.name": "{provider} API-nyckel",

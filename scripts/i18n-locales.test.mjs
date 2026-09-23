@@ -710,14 +710,13 @@ describe("values the plugin parses or matches survive translation verbatim", () 
     // So the guard is that they are STILL literals — a later commit routing
     // them through `t()` would reopen exactly the hole this block closes.
     const source = readFileSync(join(root, "src", "settings", "setting-definitions.ts"), "utf8");
-    for (const [value, label] of [
-      ["YYYY-MM-DD", "Yyyy-mm-dd"],
-      ["MM-DD-YYYY", "Mm-dd-yyyy"],
-      ["DD-MM-YYYY", "Dd-mm-yyyy"],
-    ]) {
-      expect(source, `the ${value} option label must stay a literal`).toContain(`'${value}': '${label}'`);
+    for (const token of ["YYYY-MM-DD", "MM-DD-YYYY", "DD-MM-YYYY"]) {
+      // The label must be the token itself, character for character. A
+      // sentence-cased label ("Yyyy-mm-dd") names a pattern the plugin does not
+      // accept, and is the UI-text class the review bot flags.
+      expect(source, `the ${token} option must label itself with its own token`).toContain(`'${token}': '${token}'`);
     }
-    const localisable = enKeys.filter((key) => /Yyyy-mm-dd|Mm-dd-yyyy|Dd-mm-yyyy/i.test(en[key]));
+    const localisable = enKeys.filter((key) => /YYYY-MM-DD|MM-DD-YYYY|DD-MM-YYYY/i.test(en[key]));
     expect(localisable, "a date-format pattern token reached the translation matrix").toEqual([]);
   });
 });

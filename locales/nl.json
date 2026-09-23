@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Vertaalland",
     "settings.transcripts.translateCountry.desc": "Land- of regiocode van de vertaling (bijv. us, gb, ca). Wordt gebruikt voor regionale taalvarianten.",
     "settings.llm.heading": "Taalmodel",
-    "settings.llm.info": "Kies een AI-aanbieder, voer de API-sleutel in en selecteer een model. De temperatuur regelt de creativiteit; het maximum aantal tokens begrenst de lengte van het antwoord. Aanbevolen voor de meeste gebruikers: de aanbieder Google met het model gemini-2.5-flash — snel, goedkoop en van goede kwaliteit. Bij snelheidslimieten of storingen is OpenRouter een degelijk alternatief.",
+    "settings.llm.info": "Kies een AI-aanbieder, voer de API-sleutel in en selecteer een model. De temperatuur regelt de creativiteit; het maximum aantal tokens begrenst de lengte van het antwoord. OpenRouter wordt aanbevolen vanwege de betrouwbaarheid; gemini-2.5-flash van Google is goedkoper, maar de goedkoopste niveaus kunnen worden afgeknepen.",
     "settings.llm.provider.name": "Aanbieder",
     "settings.llm.provider.desc": "Aanbieder die de samenvatting maakt. OpenRouter wordt aanbevolen vanwege de betrouwbaarheid; goedkopere Gemini-niveaus kunnen worden afgeknepen.",
     "settings.llm.apiKey.name": "{provider} API-sleutel",

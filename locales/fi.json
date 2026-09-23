@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Käännösmaa",
     "settings.transcripts.translateCountry.desc": "Käännöksen kohdemaan tai -alueen koodi (esim. us, gb, ca). Käytetään kielen alueellisiin muunnelmiin.",
     "settings.llm.heading": "Kielimalli",
-    "settings.llm.info": "Valitse tekoälyn palveluntarjoaja, anna sen API-avain ja valitse malli. Lämpötila säätää luovuutta; tokenien enimmäismäärä rajaa vastauksen pituutta. Suositus useimmille: palveluntarjoaja Google ja malli gemini-2.5-flash — nopea, edullinen ja laadukas. Jos vastaan tulee käyttörajoja tai häiriöitä, OpenRouter on vakaa vaihtoehto.",
+    "settings.llm.info": "Valitse tekoälyn palveluntarjoaja, anna sen API-avain ja valitse malli. Lämpötila säätää luovuutta; tokenien enimmäismäärä rajaa vastauksen pituutta. OpenRouter on suositeltava luotettavuutensa vuoksi; Googlen gemini-2.5-flash on edullisempi, mutta sen halvempia tasoja voidaan rajoittaa.",
     "settings.llm.provider.name": "Palveluntarjoaja",
     "settings.llm.provider.desc": "Tiivistelmään käytettävä palveluntarjoaja. OpenRouter on suositeltava luotettavuutensa vuoksi; edullisempia Gemini-tasoja voidaan rajoittaa.",
     "settings.llm.apiKey.name": "{provider}-API-avain",

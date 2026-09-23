@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "翻译国家/地区",
     "settings.transcripts.translateCountry.desc": "翻译目标国家/地区代码（例如 us、gb、ca）。用于区分地区性语言变体。",
     "settings.llm.heading": "语言模型",
-    "settings.llm.info": "选择 AI 提供方，输入其 API 密钥并挑选模型。temperature 控制创造性，max tokens 限制输出长度。多数用户推荐：Google 提供方搭配 gemini-2.5-flash 模型 — 快速、便宜且质量好。如果遇到速率限制或稳定性问题，OpenRouter 是可靠的备选。",
+    "settings.llm.info": "选择 AI 提供方，输入其 API 密钥并挑选模型。temperature 控制创造性，max tokens 限制输出长度。推荐 OpenRouter，稳定性更好；Google 的 gemini-2.5-flash 更便宜，但低价档位可能被限流。",
     "settings.llm.provider.name": "提供方",
     "settings.llm.provider.desc": "用于生成摘要的提供方。推荐 OpenRouter，稳定性更好；低价的 Gemini 档位可能被限流。",
     "settings.llm.apiKey.name": "{provider} API 密钥",

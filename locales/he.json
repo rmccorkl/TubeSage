@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "מדינת תרגום",
     "settings.transcripts.translateCountry.desc": "קוד מדינה/אזור היעד לתרגום (למשל us, gb, ca). משמש לגרסאות שפה ייחודיות לאזור.",
     "settings.llm.heading": "מודל שפה",
-    "settings.llm.info": "בחר ספק בינה מלאכותית, הזן את מפתח ה-API שלו ובחר מודל. temperature שולט ביצירתיות; max tokens מגביל את אורך הפלט. מומלץ לרוב המשתמשים: הספק Google עם המודל gemini-2.5-flash — מהיר, זול ואיכותי. אם נתקלת במגבלות קצב או בבעיות אמינות, OpenRouter הוא גיבוי איתן.",
+    "settings.llm.info": "בחר ספק בינה מלאכותית, הזן את מפתח ה-API שלו ובחר מודל. temperature שולט ביצירתיות; max tokens מגביל את אורך הפלט. OpenRouter מומלץ לאמינות; gemini-2.5-flash של Google זול יותר, אך הרמות הזולות שלו עלולות להיחנק.",
     "settings.llm.provider.name": "ספק",
     "settings.llm.provider.desc": "הספק המשמש לסיכום. OpenRouter מומלץ לאמינות; רמות Gemini הזולות יותר עלולות להיחנק.",
     "settings.llm.apiKey.name": "מפתח API של {provider}",

@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Çeviri ülkesi",
     "settings.transcripts.translateCountry.desc": "Çeviri için hedef ülke/bölge kodu (ör. us, gb, ca). Bölgeye özgü dil varyantları için kullanılır.",
     "settings.llm.heading": "Dil modeli",
-    "settings.llm.info": "Bir AI sağlayıcısı seçin, API anahtarını girin ve bir model belirleyin. Temperature yaratıcılığı denetler; max tokens çıktı uzunluğunu sınırlar. Çoğu kullanıcı için önerilen: gemini-2.5-flash modeliyle Google sağlayıcısı — hızlı, ucuz ve kaliteli. Hız sınırı veya güvenilirlik sorunu yaşarsanız OpenRouter sağlam bir seçenektir.",
+    "settings.llm.info": "Bir AI sağlayıcısı seçin, API anahtarını girin ve bir model belirleyin. Temperature yaratıcılığı denetler; max tokens çıktı uzunluğunu sınırlar. Güvenilirlik için OpenRouter önerilir; Google'ın gemini-2.5-flash modeli daha ucuzdur, ancak düşük maliyetli katmanları kısıtlanabilir.",
     "settings.llm.provider.name": "Sağlayıcı",
     "settings.llm.provider.desc": "Özetleme için kullanılan sağlayıcı. Güvenilirlik için OpenRouter önerilir; düşük maliyetli Gemini katmanları kısıtlanabilir.",
     "settings.llm.apiKey.name": "{provider} API anahtarı",

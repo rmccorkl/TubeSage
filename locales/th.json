@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "ประเทศที่แปล",
     "settings.transcripts.translateCountry.desc": "รหัสประเทศ/ภูมิภาคปลายทางสำหรับการแปล (เช่น us, gb, ca) ใช้กับภาษาย่อยเฉพาะภูมิภาค",
     "settings.llm.heading": "โมเดลภาษา",
-    "settings.llm.info": "เลือกผู้ให้บริการ AI ใส่คีย์ API แล้วเลือกโมเดล temperature ควบคุมความสร้างสรรค์ ส่วน max tokens จำกัดความยาวผลลัพธ์ แนะนำสำหรับผู้ใช้ส่วนใหญ่: ผู้ให้บริการ Google กับโมเดล gemini-2.5-flash ซึ่งเร็ว ประหยัด และคุณภาพดี หากเจอการจำกัดอัตราหรือปัญหาความเสถียร OpenRouter เป็นตัวเลือกสำรองที่ดี",
+    "settings.llm.info": "เลือกผู้ให้บริการ AI ใส่คีย์ API แล้วเลือกโมเดล temperature ควบคุมความสร้างสรรค์ ส่วน max tokens จำกัดความยาวผลลัพธ์ แนะนำ OpenRouter เพราะเสถียรกว่า ส่วน gemini-2.5-flash ของ Google ถูกกว่า แต่แพ็กเกจราคาถูกอาจถูกจำกัดอัตรา",
     "settings.llm.provider.name": "ผู้ให้บริการ",
     "settings.llm.provider.desc": "ผู้ให้บริการที่ใช้สรุปเนื้อหา แนะนำ OpenRouter เพราะเสถียรกว่า ส่วนแพ็กเกจ Gemini ราคาถูกอาจถูกจำกัดอัตรา",
     "settings.llm.apiKey.name": "คีย์ API ของ {provider}",

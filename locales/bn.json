@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "অনুবাদের দেশ",
     "settings.transcripts.translateCountry.desc": "অনুবাদের লক্ষ্য দেশ বা অঞ্চলের কোড (যেমন us, gb, ca)। অঞ্চলভিত্তিক ভাষার রূপভেদে ব্যবহৃত হয়।",
     "settings.llm.heading": "ভাষা মডেল",
-    "settings.llm.info": "একটি AI সরবরাহকারী বাছুন, তার API কী দিন এবং একটি মডেল নির্বাচন করুন। temperature সৃজনশীলতা নিয়ন্ত্রণ করে; max tokens আউটপুটের দৈর্ঘ্য সীমিত করে। অধিকাংশ ব্যবহারকারীর জন্য সুপারিশ: Google সরবরাহকারী ও gemini-2.5-flash মডেল — দ্রুত, সস্তা ও উচ্চমানের। হার সীমা বা নির্ভরযোগ্যতার সমস্যা হলে OpenRouter ভালো বিকল্প।",
+    "settings.llm.info": "একটি AI সরবরাহকারী বাছুন, তার API কী দিন এবং একটি মডেল নির্বাচন করুন। temperature সৃজনশীলতা নিয়ন্ত্রণ করে; max tokens আউটপুটের দৈর্ঘ্য সীমিত করে। নির্ভরযোগ্যতার জন্য OpenRouter সুপারিশ করা হয়; Google-এর gemini-2.5-flash সস্তা, তবে এর কম খরচের স্তরে গতি কমানো হতে পারে।",
     "settings.llm.provider.name": "সরবরাহকারী",
     "settings.llm.provider.desc": "সারাংশের জন্য ব্যবহৃত সরবরাহকারী। নির্ভরযোগ্যতার জন্য OpenRouter সুপারিশ করা হয়; কম খরচের Gemini স্তরে গতি কমানো হতে পারে।",
     "settings.llm.apiKey.name": "{provider} API কী",

@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Tír an aistriúcháin",
     "settings.transcripts.translateCountry.desc": "Cód na sprioctíre nó an réigiúin don aistriúchán (m.sh. us, gb, ca). Úsáidtear é le haghaidh leaganacha teanga réigiúnacha.",
     "settings.llm.heading": "Múnla teanga",
-    "settings.llm.info": "Roghnaigh soláthraí AI, cuir a eochair API isteach, agus roghnaigh múnla. Rialaíonn an teocht an chruthaitheacht; cuireann uasmhéid na gcomharthaí teorainn le fad an aschuir. Moltar don chuid is mó: an soláthraí Google leis an múnla gemini-2.5-flash — tapa, saor agus ardchaighdeáin. Má bhuaileann tú le teorainneacha ráta nó le fadhbanna iontaofachta, is rogha mhaith é OpenRouter.",
+    "settings.llm.info": "Roghnaigh soláthraí AI, cuir a eochair API isteach, agus roghnaigh múnla. Rialaíonn an teocht an chruthaitheacht; cuireann uasmhéid na gcomharthaí teorainn le fad an aschuir. Moltar OpenRouter mar gheall ar a iontaofacht; tá gemini-2.5-flash ó Google níos saoire, ach féadfar na leibhéil is saoire a mhaolú.",
     "settings.llm.provider.name": "Soláthraí",
     "settings.llm.provider.desc": "An soláthraí a úsáidtear le haghaidh achoimrithe. Moltar OpenRouter mar gheall ar a iontaofacht; féadfar na leibhéil Gemini is saoire a mhaolú.",
     "settings.llm.apiKey.name": "Eochair API {provider}",

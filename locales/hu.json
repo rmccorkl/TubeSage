@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Fordítás országa",
     "settings.transcripts.translateCountry.desc": "A fordítás célországának vagy régiójának kódja (pl. us, gb, ca). A nyelv regionális változataihoz.",
     "settings.llm.heading": "Nyelvi modell",
-    "settings.llm.info": "Válassz MI-szolgáltatót, add meg az API-kulcsát, és válassz modellt. A hőmérséklet a kreativitást szabályozza, a maximális tokenszám a válasz hosszát korlátozza. A legtöbb felhasználónak: Google szolgáltató a gemini-2.5-flash modellel — gyors, olcsó és jó minőségű. Kéréskorlát vagy megbízhatósági gond esetén az OpenRouter jó tartalék.",
+    "settings.llm.info": "Válassz MI-szolgáltatót, add meg az API-kulcsát, és válassz modellt. A hőmérséklet a kreativitást szabályozza, a maximális tokenszám a válasz hosszát korlátozza. Megbízhatóság miatt az OpenRouter ajánlott; a Google gemini-2.5-flash modellje olcsóbb, de az olcsóbb csomagok korlátozhatók.",
     "settings.llm.provider.name": "Szolgáltató",
     "settings.llm.provider.desc": "Az összefoglalót készítő szolgáltató. Megbízhatóság miatt az OpenRouter ajánlott; az olcsóbb Gemini csomagok korlátozhatók.",
     "settings.llm.apiKey.name": "{provider} API-kulcs",

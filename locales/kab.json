@@ -34,7 +34,7 @@
     "settings.transcripts.translateCountry.name": "Tamurt n usuqqel",
     "settings.transcripts.translateCountry.desc": "Tangalt n tmurt neɣ n temnaḍt tasaḍest i usuqqel (am us, gb, ca). Tettuseqdac i lqem n tutlayt s temnaḍt.",
     "settings.llm.heading": "Tamudelt n tutlayt",
-    "settings.llm.info": "Fren amefki AI, sekcem tasarut-is API, syen fren tamudelt. Tazɣelt tseddu tasnulfut; amḍan afellay n ijitunen isewḥel teɣzi n tuffɣa. Yettwawelleh i tuget n yiseqdacen: amefki Google s tmudelt gemini-2.5-flash — arurad, arxis, yelha. Ma tmuger-d tilisa n trusi neɣ uguren n twuridt, OpenRouter d tifrat yelhan.",
+    "settings.llm.info": "Fren amefki AI, sekcem tasarut-is API, syen fren tamudelt. Tazɣelt tseddu tasnulfut; amḍan afellay n ijitunen isewḥel teɣzi n tuffɣa. Yettwawelleh OpenRouter ɣef twuridt-is; gemini-2.5-flash n Google d arxis, maca iswiren-is irxisen zemren ad ttwaḥebsen.",
     "settings.llm.provider.name": "Amefki",
     "settings.llm.provider.desc": "Amefki ara yesseqdec i ugzul. Yettwawelleh OpenRouter ɣef twuridt-is; iswiren irxisen n Gemini zemren ad ttwaḥebsen.",
     "settings.llm.apiKey.name": "Tasarut API n {provider}",

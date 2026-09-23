@@ -140,8 +140,8 @@
         "translation": "Tamudelt n tutlayt"
     },
     "settings.llm.info": {
-        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
-        "translation": "Fren amefki AI, sekcem tasarut-is API, syen fren tamudelt. Tazɣelt tseddu tasnulfut; amḍan afellay n ijitunen isewḥel teɣzi n tuffɣa. Yettwawelleh i tuget n yiseqdacen: amefki Google s tmudelt gemini-2.5-flash — arurad, arxis, yelha. Ma tmuger-d tilisa n trusi neɣ uguren n twuridt, OpenRouter d tifrat yelhan."
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. OpenRouter is recommended for reliability; Google's gemini-2.5-flash is cheaper, but its lower-cost tiers can be throttled.",
+        "translation": "Fren amefki AI, sekcem tasarut-is API, syen fren tamudelt. Tazɣelt tseddu tasnulfut; amḍan afellay n ijitunen isewḥel teɣzi n tuffɣa. Yettwawelleh OpenRouter ɣef twuridt-is; gemini-2.5-flash n Google d arxis, maca iswiren-is irxisen zemren ad ttwaḥebsen."
     },
     "settings.llm.provider.name": {
         "original": "Provider",
