@@ -11,7 +11,9 @@
     "test": "vitest run",
     "postbuild": "npm run audit:fallow",
     "audit:fallow": "fallow audit --base main",
-    "graph:update": "graphify . --update"
+    "graph:update": "graphify . --update",
+    "i18n:build": "node scripts/i18n-build.mjs",
+    "i18n:check": "node scripts/i18n-check.mjs"
   },
   "keywords": [
     "obsidian",

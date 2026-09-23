@@ -1,4 +1,5 @@
-import { App, Plugin, PluginSettingTab, Modal, SettingDefinitionItem, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, ButtonComponent, TFile, ToggleComponent, addIcon, removeIcon, setTooltip, setIcon, normalizePath as obsidianNormalizePath } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Modal, SettingDefinitionItem, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, ButtonComponent, TFile, ToggleComponent, addIcon, removeIcon, setTooltip, setIcon, getLanguage, normalizePath as obsidianNormalizePath } from 'obsidian';
+import { setLanguageResolver, t } from './src/i18n';
 import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
@@ -318,6 +319,14 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     }
 
     async onload() {
+        // TubeSage's interface language follows Obsidian's own: getLanguage()
+        // reports Settings -> General -> Language. There is no plugin language
+        // setting, and the code is read on every lookup rather than cached,
+        // because the 1.13 API carries no language-change event to react to.
+        // (translateLanguage / translateCountry in the settings are a different
+        // feature: the language the generated NOTE is written in.)
+        setLanguageResolver(() => getLanguage());
+
         // loadSettings() must run first: it hydrates the job records out of
         // data.json and builds the serialized store that every later
         // persist() — including the legacy maxTokens migration write just
@@ -4588,7 +4597,7 @@ class LicenseModal extends Modal {
             modalEl.addClass('tubesage-license-modal-size');
         }
         
-        contentEl.createEl('h2', { text: 'Tubesage YouTube transcript plugin license' });
+        contentEl.createEl('h2', { text: t('license.modal.title') });
 
         // Run async work without returning a promise to Modal
         void (async () => {
@@ -4686,7 +4695,7 @@ class LicenseModal extends Modal {
             // Handle error if license file can't be read
             logger.error('Error loading license file:', error);
             contentEl.createEl('p', { 
-                text: 'Could not load license file. Please check that a license file exists in your plugin directory.',
+                text: t('license.modal.loadError'),
                 cls: 'tubesage-license-load-error' // Apply new class
             });
         }
@@ -4697,7 +4706,7 @@ class LicenseModal extends Modal {
         });
         
         const closeButton = new ButtonComponent(footerEl);
-        closeButton.setButtonText('Close');
+        closeButton.setButtonText(t('common.close'));
         closeButton.buttonEl.addClass('tubesage-license-close-button');
         closeButton.onClick(() => {
             this.close();
@@ -4728,7 +4737,7 @@ class LicenseRequiredModal extends Modal {
         
         // Add title
         contentEl.createEl('h2', { 
-            text: 'License acceptance required', 
+            text: t('license.required.title'), 
             cls: 'tubesage-license-required-title' // Apply new class
         });
         
@@ -4749,12 +4758,12 @@ class LicenseRequiredModal extends Modal {
         });
         
         messageDiv.createEl('p', {
-            text: 'You must accept the plugin license before using this feature.',
+            text: t('license.required.message'),
             cls: 'tubesage-license-required-message-bold' // Apply new class
         });
         
         messageDiv.createEl('p', {
-            text: 'Please go to the plugin settings and accept the license terms to continue.'
+            text: t('license.required.instruction')
         });
         
         // Add instructions with steps
@@ -4763,16 +4772,16 @@ class LicenseRequiredModal extends Modal {
         });
         
         stepsDiv.createEl('p', {
-            text: 'How to accept the license:',
+            text: t('license.required.stepsTitle'),
             cls: 'tubesage-license-required-steps-title' // Apply new class
         });
         
         const steps = [
-            'Open Obsidian Settings',
-            'Scroll down to the "Community Plugins" section in the sidebar',
-            'Find "Tubesage" in the Community Plugins list',
-            'Click the "Tubesage" plugin settings',
-            'Toggle "Accept License" to enable the plugin'
+            t('license.required.step1'),
+            t('license.required.step2'),
+            t('license.required.step3'),
+            t('license.required.step4'),
+            t('license.required.step5'),
         ];
         
         const stepsList = stepsDiv.createEl('ol', {
@@ -4793,7 +4802,7 @@ class LicenseRequiredModal extends Modal {
         
         // Open settings button
         const openSettingsButton = new ButtonComponent(buttonContainer);
-        openSettingsButton.setButtonText('Open plugin settings');
+        openSettingsButton.setButtonText(t('license.required.openSettings'));
         openSettingsButton.buttonEl.addClass('tubesage-license-required-button-primary');
         openSettingsButton.onClick(() => {
             this.close();
@@ -4803,7 +4812,7 @@ class LicenseRequiredModal extends Modal {
 
         // Close button
         const closeButton = new ButtonComponent(buttonContainer);
-        closeButton.setButtonText('Close');
+        closeButton.setButtonText(t('common.close'));
         closeButton.buttonEl.addClass('tubesage-license-required-button-secondary');
         closeButton.onClick(() => {
             this.close();
