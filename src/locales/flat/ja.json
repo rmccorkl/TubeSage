@@ -104,5 +104,12 @@
     "license.required.step3": "コミュニティプラグインの一覧から「Tubesage」を探す",
     "license.required.step4": "「Tubesage」プラグインの設定を開く",
     "license.required.step5": "「ライセンスと免責事項に同意する」をオンにしてプラグインを有効にする",
-    "license.required.openSettings": "プラグインの設定を開く"
+    "license.required.openSettings": "プラグインの設定を開く",
+    "notice.progress.message": "{stage}（「Show active jobs」で中止できます）",
+    "notice.progress.stage.transcript": "字幕を取得中",
+    "notice.progress.stage.summary": "字幕を要約中",
+    "notice.progress.stage.noteCreating": "ノートを作成中",
+    "notice.progress.stage.timestamps": "タイムスタンプを追加中",
+    "notice.progress.stage.translation": "ノートを翻訳中",
+    "notice.progress.stage.working": "動画を処理中"
 }

@@ -422,5 +422,33 @@
     "license.required.openSettings": {
         "original": "Open plugin settings",
         "translation": "プラグインの設定を開く"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage}（「Show active jobs」で中止できます）"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "字幕を取得中"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "字幕を要約中"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "ノートを作成中"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "タイムスタンプを追加中"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "ノートを翻訳中"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "動画を処理中"
     }
 }

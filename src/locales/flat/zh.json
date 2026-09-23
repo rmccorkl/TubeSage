@@ -104,5 +104,12 @@
     "license.required.step3": "在社区插件列表中找到“Tubesage”",
     "license.required.step4": "点击“Tubesage”插件的设置",
     "license.required.step5": "打开“接受许可与免责声明”开关以启用插件",
-    "license.required.openSettings": "打开插件设置"
+    "license.required.openSettings": "打开插件设置",
+    "notice.progress.message": "{stage}（可在“Show active jobs”中取消）",
+    "notice.progress.stage.transcript": "正在获取字幕",
+    "notice.progress.stage.summary": "正在总结字幕",
+    "notice.progress.stage.noteCreating": "正在创建笔记",
+    "notice.progress.stage.timestamps": "正在添加时间戳",
+    "notice.progress.stage.translation": "正在翻译笔记",
+    "notice.progress.stage.working": "正在处理视频"
 }

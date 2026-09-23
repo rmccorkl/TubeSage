@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Modal, SettingDefinitionItem, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, ButtonComponent, TFile, ToggleComponent, addIcon, removeIcon, setTooltip, setIcon, getLanguage, normalizePath as obsidianNormalizePath } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Modal, SettingDefinitionItem, Notice, Platform, DropdownComponent, TextComponent, ExtraButtonComponent, ButtonComponent, TFile, ToggleComponent, addIcon, removeIcon, setTooltip, setIcon, getLanguage, normalizePath as obsidianNormalizePath } from 'obsidian';
 import { setLanguageResolver, t } from './src/i18n';
 import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-transcript';
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
@@ -41,6 +41,7 @@ import type { YouTubeTranscriptSettings } from './src/settings/settings-defaults
 import { timestampPassFailure } from './src/runtime/timestamp-pass-policy';
 import type { TimestampPassOptions } from './src/runtime/timestamp-pass-policy';
 import { buildRecoveryRow, coldStartNoticeText, doneNoticeText, formatJobAge, recoveryNoticeText, shouldOpenRecoveryModal } from './src/runtime/recovery-ui-model';
+import { JobProgressNotices } from './src/runtime/job-progress-notice';
 import type { RecoveryAction, RecoveryRowModel, RecoveryTrigger } from './src/runtime/recovery-ui-model';
 
 // Initialize logger here
@@ -292,21 +293,21 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     // Jobs submitted by THIS process: only these may auto-open their note on
     // `done` (spec §5 F5 — recovered jobs never do).
     private readonly sessionJobIds = new Set<string>();
-    // Fan-out of runner events to UI subscribers (modals, spinners).
+    // Fan-out of runner events to UI subscribers (the recovery modal).
     private readonly jobEventListeners = new Set<JobEventListener>();
-    // Desktop status-bar spinners keyed by job id (the plugin owns them: the
-    // modal is closed as soon as the job starts). Mobile spinners live in the
-    // modal and are stopped there.
-    private readonly jobSpinners = new Map<string, ProcessingSpinner>();
+    // The single progress surface for single-video jobs, on both platforms
+    // (#7): one floating notice per job, created on its first `progress`
+    // event and hidden on its terminal one. The submitting modal closes as
+    // soon as the job starts, so the plugin owns these exactly as it owned
+    // the status-bar spinners they replace.
+    private readonly progressNotices = new JobProgressNotices(
+        (message) => new Notice(message, 0)
+    );
     // Cold start (onLayoutReady) must be the FIRST recovery pass; until it
     // has run, visibility edges are ignored.
     private layoutReady = false;
     private visibilityRecoveryTimer: number | null = null;
     private recoveryModal: JobRecoveryModal | null = null;
-    // Every mobile processing modal left open over a running job (spinner
-    // interval + event subscription): all closed on unload like recoveryModal.
-    // A Set, not a slot — several videos can be processing at once (M5).
-    private readonly processingModals = new Set<YouTubeTranscriptModal>();
 
     // Replace the duplicated showNotice method with a wrapper that calls the shared utility
     showNotice(message: string, timeout: number = 5000): void {
@@ -455,19 +456,13 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             window.clearTimeout(this.visibilityRecoveryTimer);
             this.visibilityRecoveryTimer = null;
         }
-        for (const spinner of this.jobSpinners.values()) {
-            spinner.stop();
-        }
-        this.jobSpinners.clear();
+        // No progress notice may outlive the plugin: a floating notice has no
+        // owner once the events driving it have stopped.
+        this.progressNotices.dismissAll();
         // A stale recovery modal could still reach resume/cancel/discard
         // (their store writes precede the runner's fence): close it.
         this.recoveryModal?.close();
         this.recoveryModal = null;
-        // Snapshot first: each close() untracks itself from the set.
-        for (const modal of Array.from(this.processingModals)) {
-            modal.close();
-        }
-        this.processingModals.clear();
         this.jobEventListeners.clear();
 
         // Clean up file watcher if it exists
@@ -713,15 +708,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         return result;
     }
 
-    /** Mobile: remembers a processing modal left open over a job so onunload can close every one of them. */
-    trackProcessingModal(modal: YouTubeTranscriptModal): void {
-        this.processingModals.add(modal);
-    }
-
-    untrackProcessingModal(modal: YouTubeTranscriptModal): void {
-        this.processingModals.delete(modal);
-    }
-
     /** Subscribes to runner events; returns the unsubscribe function. */
     subscribeToJobEvents(listener: JobEventListener): () => void {
         this.jobEventListeners.add(listener);
@@ -730,38 +716,19 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         };
     }
 
-    /**
-     * Desktop: the modal closes as soon as the job starts, so the plugin owns the status-bar spinner
-     * and stops it on the job's terminal event. (Mobile spinners live in the modal.)
-     */
-    trackJobInStatusBar(id: string): void {
-        if (this.jobSpinners.has(id)) {
-            return;
-        }
-        const spinner = new ProcessingSpinner(this, 'Processing video', createDiv());
-        spinner.start();
-        this.jobSpinners.set(id, spinner);
-    }
-
-    private stopJobSpinner(id: string): void {
-        const spinner = this.jobSpinners.get(id);
-        if (spinner !== undefined) {
-            spinner.stop();
-            this.jobSpinners.delete(id);
-        }
-    }
-
-    // Runner events: the plugin's own policy first (notices, note opening,
-    // spinners, the debug note), then the UI subscribers.
+    // Runner events: the plugin's own policy first (the progress notice,
+    // completion notices, note opening, the debug note), then the UI
+    // subscribers. The progress notice is driven from ONE place — every
+    // event type reaches it, so a job's notice appears on its first progress
+    // event and is hidden by whichever terminal event ends it.
     private onJobEvent(event: JobEvent): void {
+        this.progressNotices.handle(event);
         switch (event.type) {
             case 'progress':
                 logger.debug(`[jobs] ${event.id} ${event.stage}: ${event.message}`);
-                this.jobSpinners.get(event.id)?.setLabel(event.message);
                 break;
             case 'done':
                 logger.info(`[jobs] ${event.id} done: ${event.notePath}`);
-                this.stopJobSpinner(event.id);
                 this.showNotice(doneNoticeText(event), 5000);
                 // Auto-open ONLY for a job submitted in this session while the
                 // app is visible; a recovered job never opens its note (F5).
@@ -772,7 +739,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 break;
             case 'failed':
                 logger.error(`[jobs] ${event.id} failed: ${event.error}`);
-                this.stopJobSpinner(event.id);
                 this.sessionJobIds.delete(event.id);
                 this.showNotice(`Error: ${event.error}`, 5000);
                 if (this.settings.debugLogging) {
@@ -789,13 +755,11 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 break;
             case 'cancelled':
                 logger.info(`[jobs] ${event.id} cancelled`);
-                this.stopJobSpinner(event.id);
                 this.sessionJobIds.delete(event.id);
                 this.showNotice('Processing cancelled', 3000);
                 break;
             case 'interrupted':
                 logger.warn(`[jobs] ${event.id} interrupted`, event.prompt);
-                this.stopJobSpinner(event.id);
                 // From here on the job is a recovered one even if it was
                 // submitted in this session: a later resume must not auto-open.
                 this.sessionJobIds.delete(event.id);
@@ -3208,10 +3172,6 @@ class YouTubeTranscriptModal extends Modal {
     private errorEl: HTMLElement;
     private isProcessing: boolean = false;
     private selectedFolder: string = '';
-    // Mobile-only: the in-modal spinner and the runner subscription that
-    // drives it; both are released in onClose (the job keeps running).
-    private mobileSpinner: ProcessingSpinner | null = null;
-    private unsubscribeJobEvents: (() => void) | null = null;
     constructor(app: App, plugin: YouTubeTranscriptPlugin) {
         super(app);
         this.plugin = plugin;
@@ -3934,57 +3894,18 @@ class YouTubeTranscriptModal extends Modal {
                 break;
         }
 
-        const jobId = result.id;
-        if (!Platform.isMobile) {
-            // Desktop: the status bar is the progress surface; the plugin owns
-            // that spinner because this modal closes now.
-            this.plugin.trackJobInStatusBar(jobId);
-            this.close();
-            return;
-        }
-
-        // Mobile: no status bar, so the modal stays open with the spinner
-        // driven by `progress` events and a Cancel button.
-        const { contentEl } = this;
-        contentEl.empty();
-        const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
-        if (modalEl && modalEl.instanceOf(HTMLElement)) {
-            modalEl.addClass('tubesage-processing-modal');
-        }
-        const spinner = new ProcessingSpinner(this.plugin, 'Processing video', contentEl);
-        spinner.start();
-        this.mobileSpinner = spinner;
-        // The plugin closes this modal on unload so the spinner interval and
-        // the subscription below are released even if the user never does.
-        this.plugin.trackProcessingModal(this);
-        const actions = contentEl.createDiv({ cls: 'tubesage-jobs-actions' });
-        new ButtonComponent(actions)
-            .setButtonText('Cancel')
-            .onClick(() => {
-                void this.plugin.jobRunner.cancel(jobId);
-            });
-        this.unsubscribeJobEvents = this.plugin.subscribeToJobEvents((event) => {
-            if (event.id !== jobId) {
-                return;
-            }
-            if (event.type === 'progress') {
-                spinner.setLabel(event.message);
-                return;
-            }
-            // done / failed / cancelled / interrupted: the plugin has already
-            // shown the Notice (and opened the note when allowed).
-            this.close();
-        });
+        // Desktop and mobile alike: the job is the runner's from here and its
+        // progress is the plugin's floating notice, so this modal has nothing
+        // left to show and closes at once — nothing blocks the note
+        // underneath (#7). Cancel is not lost with the old panel: "Show
+        // active jobs" offers it as the action for a running job, which is
+        // what the progress notice points at.
+        this.close();
     }
 
-    // Dismissing the modal only detaches its UI from the job (spinner,
-    // subscription); the job keeps running in the runner.
+    // Dismissing the modal never touches a job: the runner owns every
+    // submitted job and its progress notice outlives this modal.
     onClose() {
-        this.unsubscribeJobEvents?.();
-        this.unsubscribeJobEvents = null;
-        this.mobileSpinner?.stop();
-        this.mobileSpinner = null;
-        this.plugin.untrackProcessingModal(this);
         this.isProcessing = false;
         const { contentEl } = this;
         contentEl.empty();

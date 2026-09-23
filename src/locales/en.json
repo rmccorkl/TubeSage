@@ -104,5 +104,12 @@
     "license.required.step3": "Find \"Tubesage\" in the Community Plugins list",
     "license.required.step4": "Click the \"Tubesage\" plugin settings",
     "license.required.step5": "Toggle \"Accept License\" to enable the plugin",
-    "license.required.openSettings": "Open plugin settings"
+    "license.required.openSettings": "Open plugin settings",
+    "notice.progress.message": "{stage} — cancel from \"Show active jobs\"",
+    "notice.progress.stage.transcript": "Fetching transcript",
+    "notice.progress.stage.summary": "Summarizing transcript",
+    "notice.progress.stage.noteCreating": "Creating note",
+    "notice.progress.stage.timestamps": "Adding timestamps",
+    "notice.progress.stage.translation": "Translating note",
+    "notice.progress.stage.working": "Processing video"
 }

@@ -422,5 +422,33 @@
     "license.required.openSettings": {
         "original": "Open plugin settings",
         "translation": "Open plugin settings"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — cancel from \"Show active jobs\""
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Fetching transcript"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Summarising transcript"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Creating note"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Adding timestamps"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Translating note"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Processing video"
     }
 }
