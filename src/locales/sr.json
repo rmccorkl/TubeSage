@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Омогућено"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Онемогућено"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Затвори"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Подржи развој"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Ако вам је овај додатак користан, размислите о подршци његовом развоју:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…и помозите да никне већа визија: технологија у служби људи и планете."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Лиценца и одрицање одговорности"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Прикажи лиценцу и одрицање одговорности"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Прихватам лиценцу и одрицање одговорности"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Прикажи readme"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Шаблони"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Датотека шаблона додатка Templater"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Путања до датотеке шаблона додатка Templater"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Изабери датотеку шаблона"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Пример "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Прикажи пример шаблона"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Транскрипти"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "Подешавања транскрипата одређују како се и где чувају направљене белешке, који кључ за YouTube data API се користи (потребан за канале и плејлисте) и необавезне параметре превода."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Коренска фасцикла транскрипата"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "Коренска фасцикла у којој се праве подфасцикле транскрипата (нпр. inbox, notes и сл.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "Кључ за YouTube data API"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "Ваш кључ за API из Google cloud console за јавне транскрипте са YouTube (није OAUTH токен). Потребан за преузимање канала и плејлиста."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Унесите кључ за API (почиње са aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Кључ за API услуге Scrape creators"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Необавезан кључ за услугу транскрипата scrapecreators. Ако је задат, користи се као главни начин добијања транскрипта. Бесплатан кључ: app.scrapecreators.com (100 захтева бесплатно). Препоручено ради поузданости: директно преузимање са YouTube престаје да ради када YouTube промени начин испоруке титлова."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Унесите кључ за API услуге scrapecreators"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Кључ за API услуге Supa data"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Необавезан кључ за услугу транскрипата supadata. Ако је задат, користи се као главни начин добијања транскрипта (када нема кључа за scrapecreators). Кључ: supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Унесите кључ за supadata"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Језик превода"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Код циљног језика превода (нпр. en, es, fr, de). Унесите „en“ да садржај остане на енглеском."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Унесите код језика"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Држава превода"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Код циљне државе или региона превода (нпр. us, gb, ca). Користи се за регионалне варијанте језика."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Језички модел"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Изаберите добављача ВИ, унесите његов кључ за API и изаберите модел. Температура управља креативношћу, а највећи број токена ограничава дужину одговора. Већини корисника: добављач Google са моделом gemini-2.5-flash — брз, јефтин и квалитетан. Код ограничења захтева или проблема с поузданошћу добра замена је OpenRouter."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Добављач"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Добављач који прави сажетак. Ради поузданости препоручује се OpenRouter; јефтинији нивои услуге Gemini могу бити успорени."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "Кључ за API добављача {provider}"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Чува се у безбедном складишту програма Obsidian, а не у подацима додатка."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "URL сервера, чува се у подацима додатка."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "Модел добављача {provider}"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Изаберите понуђени модел или испод унесите сопствени назив модела."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Користи сопствени модел"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "Освежи списак модела добављача {provider}"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Назив сопственог модела"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Параметри модела ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Параметри сопственог модела ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Параметри модела ({provider}) — замена"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Обавезно: овог модела нема у регистру — подесите контекстни прозор, највећи излаз и резерву у % да би се буџет токена рачунао безбедно."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Ово су ограничења токена овог модела, попуњена из познатих података. Измените поље да га замените за овог добављача и модел."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Контекстни прозор (хиљ. токена)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Укупан контекстни прозор у хиљадама токена (нпр. 400 за 400 хиљ.)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Највећи излаз (хиљ. токена)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Највећи број излазних токена у хиљадама (нпр. 128 за 128 хиљ.)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Највећи улаз (хиљ. токена) — необавезно"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Изричито ограничење улаза ако га добављач објављује (празно — рачуна се аутоматски)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Проценат резерве"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Сигурносна резерва за излазне токене (0.10 = 10 %, подразумевано: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Температура"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Управља насумичношћу одговора (0–1). Ниже је усредсређеније, више је креативније. Тренутна вредност: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Формат белешке"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Датум испред наслова белешке"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Аутоматски додај датум на почетак назива датотека белешки"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Формат датума"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Формат датума испред наслова белешке"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Упити"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Упити за брзи сажетак"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Упити за опширни сажетак"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Врати на подразумевано"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Системски упит (брзи сажетак)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Упутства о понашању модела при брзим сажецима"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Ти си користан асистент..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Кориснички упит (брзи сажетак)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Конкретна упутства како транскрипт сажети брзо и језгровито"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Сажми следећи транскрипт са YouTube..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Системски упит (опширни сажетак)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Упутства о понашању модела при детаљним, исцрпним сажецима"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Ти си аналитички асистент..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Кориснички упит (опширни сажетак)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Конкретна упутства за прављење детаљних и структурираних белешки из транскрипта"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "Од транскрипта испод направи детаљне и структуриране белешке..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Подразумевани режим сажетка"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Изаберите режим сажетка при покретању додатка. Брзи режим прескаче везе ка временским ознакама и ради брже."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Опширни сажетак (детаљан)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Брзи сажетак (кратак)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "Додај везе ка временским ознакама на YouTube"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Уз сваки нумерисани наслов додај везу ка одговарајућем тренутку видеа на YouTube (у брзом режиму је искључено)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Када је укључено, смањује токене првог пролаза за 12 % да би било места за везе. У брзом режиму се искључује аутоматски."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Напредно"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Напредна подешавања за отклањање грешака. Укључите дневник за отклањање грешака да се уз сваку белешку додају детаљни подаци за техничку подршку."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Укључи дневник за отклањање грешака"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Укључи детаљне дневнике за отклањање грешака. Подаци се додају уз сваку белешку као скривени callout."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Када је укључено, подаци за отклањање грешака се прикупљају и додају у белешке као скривени callout уместо у конзолу."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Лиценца додатка Tubesage за транскрипте са YouTube"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "Датотека лиценце није могла да се учита. Проверите да ли постоји у фасцикли додатка."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Потребно је прихватање лиценце"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Пре коришћења ове могућности морате прихватити лиценцу додатка."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Отворите подешавања додатка и прихватите услове лиценце да наставите."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Како прихватити лиценцу:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Отворите подешавања програма Obsidian"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Померите бочну траку до одељка са додацима заједнице"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Пронађите „Tubesage“ на списку додатака заједнице"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Отворите подешавања додатка „Tubesage“"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Укључите „Прихватам лиценцу и одрицање одговорности“ да омогућите додатак"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Отвори подешавања додатка"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — отказивање преко „Show active jobs“"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Преузимање транскрипта"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Сажимање транскрипта"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Прављење белешке"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Додавање временских ознака"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Превођење белешке"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Обрада видеа"
+    }
+}

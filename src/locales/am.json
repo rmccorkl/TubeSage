@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "ነቅቷል"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "ጠፍቷል"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "ዝጋ"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "ልማትን መደገፍ"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "ይህ ተሰኪ ጠቃሚ ሆኖ ካገኙት፣ ልማቱን መደገፍ ያስቡበት፦"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…እና ትልቅ ራእይ ለመዝራት ያግዙ፦ ሰውንና ፕላኔቷን የምታገለግል ቴክኖሎጂ።"
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "ፈቃድና የኃላፊነት ማስተባበያ"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "ፈቃድና የኃላፊነት ማስተባበያ ይመልከቱ"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "ፈቃድና የኃላፊነት ማስተባበያ ተቀበል"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "README ይመልከቱ"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "አብነቶች"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "የTemplater ተሰኪ አብነት ፋይል"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "የሚጠቀሙበት የTemplater ተሰኪ አብነት ፋይል መንገድ"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "የአብነት ፋይል አስስ"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "ምሳሌ "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "የአብነት ምሳሌ ይመልከቱ"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "ግልባጮች"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "የግልባጭ ቅንብሮች የተወሰዱ ማስታወሻዎችዎ እንዴትና የት እንደሚቀመጡ፣ የትኛው YouTube data API ቁልፍ እንደሚያገለግል (ለቻናል/ለአጫዋች ዝርዝር ማስኬድ ያስፈልጋል) እና አማራጭ የትርጉም መለኪያዎችን ይቆጣጠራሉ።"
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "የግልባጭ ሥር አቃፊ"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "የግልባጭ ንዑስ አቃፊዎች የሚደራጁበት ሥር አቃፊ (ለምሳሌ inbox፣ notes ወዘተ)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "የYouTube data API ቁልፍ"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "ይፋዊ የYouTube ግልባጮችን ለማግኘት የሚያገለግል የGoogle cloud console API ቁልፍዎ (የOAUTH ቶክን አይደለም)። ቻናሎችንና የአጫዋች ዝርዝሮችን ለማውረድ ያስፈልጋል።"
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "የAPI ቁልፍ ያስገቡ (በaiza ይጀምራል)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "የScrape creators API ቁልፍ"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "ለscrapecreators የግልባጭ አገልግሎት አማራጭ ቁልፍ። ሲቀመጥ እንደ ዋና የግልባጭ ዘዴ ያገለግላል። ነፃ ቁልፍ በapp.scrapecreators.com ያግኙ (100 ጥያቄዎች ነፃ)። አስተማማኝ ግልባጭ ለማግኘት ይመከራል፤ YouTube የትርጉም ጽሑፎችን የሚያቀርብበትን መንገድ ሲቀይር ቀጥታ ከYouTube የሚደረግ ማውጣት ይቋረጣል።"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "የscrapecreators API ቁልፍ ያስገቡ"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "የSupa data API ቁልፍ"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "ለsupadata የግልባጭ አገልግሎት አማራጭ ቁልፍ። ሲቀመጥ እንደ ዋና የግልባጭ ዘዴ ያገለግላል (የscrapecreators ቁልፍ ከሌለ)። ቁልፍ በsupadata.ai ያግኙ።"
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "የsupadata ቁልፍ ያስገቡ"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "የትርጉም ቋንቋ"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "የትርጉም ዒላማ ቋንቋ ኮድ (ለምሳሌ en፣ es፣ fr፣ de)። ይዘቱን በእንግሊዝኛ ለማቆየት «en» ይጠቀሙ።"
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "የቋንቋ ኮድ ያስገቡ"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "የትርጉም አገር"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "የትርጉም ዒላማ አገር/ክልል ኮድ (ለምሳሌ us፣ gb፣ ca)። ለክልል-ተኮር የቋንቋ ልዩነቶች ያገለግላል።"
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "የቋንቋ ሞዴል"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "የAI አቅራቢ ይምረጡ፣ የAPI ቁልፉን ያስገቡ፣ ከዚያም ሞዴል ይምረጡ። temperature ፈጠራን ይቆጣጠራል፤ max tokens የውጤት ርዝመትን ይገድባል። ለአብዛኞቹ ተጠቃሚዎች የሚመከር፦ የGoogle አቅራቢ ከgemini-2.5-flash ሞዴል ጋር — ፈጣን፣ ርካሽና ጥራት ያለው። የፍጥነት ገደብ ወይም የመተማመኛ ችግር ካጋጠመዎት OpenRouter ጠንካራ አማራጭ ነው።"
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "አቅራቢ"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "ለማጠቃለል የሚያገለግል አቅራቢ። ለአስተማማኝነት OpenRouter ይመከራል፤ ዝቅተኛ ወጪ ያላቸው የGemini እርከኖች ሊገደቡ ይችላሉ።"
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "የ{provider} API ቁልፍ"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "በObsidian ሚስጥር ማከማቻ ውስጥ ይቀመጣል፤ በተሰኪ ውሂብ ውስጥ አይደለም።"
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "የአገልጋይ URL፤ በተሰኪ ውሂብ ውስጥ ይቀመጣል።"
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "የ{provider} ሞዴል"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "ቀድሞ የተዘጋጀ ሞዴል ይምረጡ ወይም ከታች ብጁ የሞዴል ስም ይጻፉ።"
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "ብጁ ሞዴል ተጠቀም"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "የ{provider} ሞዴል ዝርዝርን አድስ"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "የብጁ ሞዴል ስም"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "የሞዴል መለኪያዎች ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "የብጁ ሞዴል መለኪያዎች ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "የሞዴል መለኪያዎች ({provider}) — መሻር"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "ያስፈልጋል፦ ይህ ሞዴል በመዝገቡ ውስጥ የለም — የቶክን በጀት ጥያቄዎችን በአስተማማኝ መንገድ መጠን እንዲያደርግ የዐውድ መስኮት፣ ከፍተኛ ውጤትና የመጠባበቂያ % ያዘጋጁ።"
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "እነዚህ የዚህ ሞዴል የቶክን ገደቦች ሲሆኑ ከታወቁ ውሂቦች ቀድመው ተሞልተዋል። ለዚህ አቅራቢና ሞዴል ለመሻር መስኩን ያርትዑ።"
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "የዐውድ መስኮት (ሺህ ቶክን)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "ጠቅላላ የዐውድ መስኮት በሺህ ቶክን (ለምሳሌ ለ400k ቶክን 400)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "ከፍተኛ ውጤት (ሺህ ቶክን)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "ከፍተኛ የውጤት ቶክኖች በሺህ (ለምሳሌ ለ128k ቶክን 128)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "ከፍተኛ ግብዓት (ሺህ ቶክን) - አማራጭ"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "አቅራቢው ካሳተመ ግልጽ የግብዓት ጣሪያ (በራስ-ሰር ለማስላት ባዶ ይተዉት)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "የመጠባበቂያ መቶኛ"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "ለውጤት ቶክኖች የደኅንነት መጠባበቂያ (0.10 = 10%፣ ነባሪ፦ {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "ሙቀት"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "የውጤትን በዘፈቀደነት ይቆጣጠራል (0-1)። ዝቅተኛው የበለጠ ያተኮረ፣ ከፍተኛው የበለጠ ፈጠራ ያለው ነው። የአሁኑ ዋጋ፦ {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "የማስታወሻ ቅርጸት"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "ቀንን ከማስታወሻ ርዕስ በፊት አስቀድም"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "ቀንን በራስ-ሰር በማስታወሻ ፋይል ስሞች መጀመሪያ ላይ ይጨምራል"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "የቀን ቅርጸት"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "ከማስታወሻ ርዕሶች በፊት ለሚቀመጠው ቀን ቅርጸት"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "ፕሮምፕቶች"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "የፈጣን ማጠቃለያ ፕሮምፕቶች"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "የሰፊ ማጠቃለያ ፕሮምፕቶች"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "ወደ ነባሪ ዳግም አስጀምር"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "የስርዓት ፕሮምፕት (ፈጣን ማጠቃለያ)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "ፈጣን ማጠቃለያዎችን ሲያመነጩ ለቋንቋ ሞዴሎች ባህሪ መመሪያዎች"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "አንተ አጋዥ ረዳት ነህ..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "የተጠቃሚ ፕሮምፕት (ፈጣን ማጠቃለያ)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "ግልባጩን በፍጥነትና በአጭሩ ለማጠቃለል የተወሰኑ መመሪያዎች"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "እባክህ የሚከተለውን የYouTube ግልባጭ አጠቃልል..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "የስርዓት ፕሮምፕት (ሰፊ ማጠቃለያ)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "ዝርዝርና አጠቃላይ ማጠቃለያዎችን ሲያመነጩ ለቋንቋ ሞዴሎች ባህሪ መመሪያዎች"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "አንተ ተንታኝ ረዳት ነህ..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "የተጠቃሚ ፕሮምፕት (ሰፊ ማጠቃለያ)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "ከግልባጩ ዝርዝርና የተዋቀሩ ማስታወሻዎችን ለመፍጠር የተወሰኑ መመሪያዎች"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "ከታች ካለው ግልባጭ ዝርዝርና የተዋቀሩ ማስታወሻዎችን ፍጠር..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "ነባሪ የማጠቃለያ ሁነታ"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "ተሰኪው ሲጀምር የሚያገለግለውን ነባሪ የማጠቃለያ ሁነታ ይምረጡ። ፈጣን የማጠቃለያ ሁነታ ለፈጣን ማስኬድ የጊዜ ማህተም አገናኞችን ይዘላል።"
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "ሰፊ ማጠቃለያ (ዝርዝር)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "ፈጣን ማጠቃለያ (አጭር)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "የYouTube የጊዜ ማህተም አገናኞችን ጨምር"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "በYouTube ቪዲዮ ውስጥ ወዳለው ተዛማጅ የጊዜ ማህተም የሚዘሉ አገናኞችን ለእያንዳንዱ ቁጥር ላለው የክፍል ርዕስ ይጨምራል (ማስታወሻ፦ በፈጣን ማጠቃለያ ሁነታ ጠፍቷል)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "ሲነቃ ለአገናኞች ቦታ ለመስጠት የመጀመሪያውን ዙር ቶክኖች በ12% ይቀንሳል። በፈጣን ማጠቃለያ ሁነታ በራስ-ሰር ይጠፋል።"
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "የላቀ"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "ለማረሚያና ለችግር መፍቻ የላቁ ቅንብሮች። ለቴክኒክ ድጋፍ በእያንዳንዱ ማስታወሻ ላይ ዝርዝር መረጃ እንዲጨመር የማረሚያ መዝገብን ያንቁ።"
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "የማረሚያ መዝገብን አንቃ"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "ዝርዝር የማረሚያ መዝገቦችን ያንቁ። ሲነቃ የማረሚያ መረጃ ለችግር መፍቻ እንደ ድብቅ የጥሪ ብሎክ በእያንዳንዱ ማስታወሻ ላይ ይጨመራል።"
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "ሲነቃ የማረሚያ መረጃ ወደ ኮንሶል ከመመዝገብ ይልቅ ተሰብስቦ እንደ ድብቅ የጥሪ ብሎክ ወደ ማስታወሻዎች ይጨመራል።"
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "የTubesage YouTube ግልባጭ ተሰኪ ፈቃድ"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "የፈቃድ ፋይልን መጫን አልተቻለም። በተሰኪ ማውጫዎ ውስጥ የፈቃድ ፋይል መኖሩን ያረጋግጡ።"
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "የፈቃድ ተቀባይነት ያስፈልጋል"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "ይህን ባህሪ ከመጠቀምዎ በፊት የተሰኪውን ፈቃድ መቀበል አለብዎት።"
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "ለመቀጠል ወደ ተሰኪ ቅንብሮች ሄደው የፈቃድ ውሎችን ይቀበሉ።"
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "ፈቃዱን እንዴት መቀበል እንደሚቻል፦"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "የObsidian ቅንብሮችን ይክፈቱ"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "በጎን አሞሌው ውስጥ ወደ የማህበረሰብ ተሰኪዎች ክፍል ወደታች ይሸብልሉ"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "በማህበረሰብ ተሰኪዎች ዝርዝር ውስጥ «Tubesage» ይፈልጉ"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "የ«Tubesage» ተሰኪ ቅንብሮችን ጠቅ ያድርጉ"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "ተሰኪውን ለማንቃት «ፈቃድና የኃላፊነት ማስተባበያ ተቀበል» ያብሩ"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "የተሰኪ ቅንብሮችን ክፈት"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — ከ«Show active jobs» ይሰርዙ"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "ግልባጭ በማምጣት ላይ"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "ግልባጭ በማጠቃለል ላይ"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "ማስታወሻ በመፍጠር ላይ"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "የጊዜ ማህተሞችን በመጨመር ላይ"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "ማስታወሻ በመተርጎም ላይ"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "ቪዲዮ በማስኬድ ላይ"
+    }
+}

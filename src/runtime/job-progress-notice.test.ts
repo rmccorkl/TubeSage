@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { setLanguageResolver } from "../i18n";
+import { clearRuntimeLocales } from "../i18n/locales";
 import type { JobStage } from "../jobs/job-record";
 import type { JobEvent } from "../jobs/job-runner";
 import { JobProgressNotices, progressNoticeText } from "./job-progress-notice";
@@ -51,6 +52,7 @@ const progress = (id: string, stage: JobStage): JobEvent => ({
 
 afterEach(() => {
   setLanguageResolver(null);
+  clearRuntimeLocales();
 });
 
 describe("progressNoticeText", () => {
@@ -76,6 +78,8 @@ describe("progressNoticeText", () => {
   });
 
   it("is translated, never the runner's English message verbatim", () => {
+    // German is bundled, so nothing has to be installed for this to hold —
+    // which is exactly what a catalogue install gets.
     setLanguageResolver(() => "de");
     const text = progressNoticeText("transcript");
     expect(text).not.toContain("Fetching transcript");

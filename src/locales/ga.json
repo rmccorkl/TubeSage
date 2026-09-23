@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Cumasaithe"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Díchumasaithe"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Dún"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Tacaigh leis an bhforbairt"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Má tá an breiseán seo úsáideach duit, smaoinigh ar thacú lena fhorbairt:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…agus cuidigh le fís níos mó a chur: teicneolaíocht a fhreastalaíonn ar dhaoine agus ar an bpláinéad."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Ceadúnas & séanadh"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Féach ar an gceadúnas & an séanadh"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Glac leis an gceadúnas & leis an séanadh"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Féach ar an readme"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Teimpléid"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Comhad teimpléid an bhreiseáin Templater"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Conair chuig comhad teimpléid an bhreiseáin Templater atá le húsáid"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Brabhsáil le haghaidh comhad teimpléid"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Sampla "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Féach ar an teimpléad samplach"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Tras-scríbhinní"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "Rialaíonn na socruithe tras-scríbhinne conas agus cá sábháiltear do chuid nótaí, cén eochair API sonraí YouTube a úsáidtear (riachtanach do chainéil agus do sheinmliostaí), agus paraiméadair roghnacha aistriúcháin."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Fillteán fréimhe na dtras-scríbhinní"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "An fillteán fréimhe ina n-eagrófar na fofhillteáin tras-scríbhinne (m.sh. inbox, notes srl.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "Eochair API sonraí YouTube"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "D'eochair API Google cloud console chun teacht ar thras-scríbhinní poiblí YouTube (ní comhartha OAUTH é). Riachtanach chun cainéil agus seinmliostaí a íoslódáil."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Cuir an eochair API isteach (tosaíonn sí le aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Eochair API Scrape creators"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Eochair roghnach don tseirbhís tras-scríbhinne scrapecreators. Nuair a shocraítear í, úsáidtear í mar phríomhmhodh. Faigh eochair saor in aisce ag app.scrapecreators.com (100 iarratas saor). Moltar í le haghaidh tras-scríbhinní iontaofa; briseann an bhaint dhíreach ó YouTube nuair a athraíonn YouTube an tslí a gcuirtear fotheidil ar fáil."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Cuir an eochair API scrapecreators isteach"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Eochair API Supa data"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Eochair roghnach don tseirbhís tras-scríbhinne supadata. Nuair a shocraítear í, úsáidtear í mar phríomhmhodh (mura bhfuil eochair scrapecreators ann). Faigh eochair ag supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Cuir an eochair supadata isteach"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Teanga an aistriúcháin"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Cód na sprioctheanga don aistriúchán (m.sh. en, es, fr, de). Úsáid “en” chun an t-ábhar a choinneáil i mBéarla."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Cuir cód teanga isteach"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Tír an aistriúcháin"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Cód na sprioctíre nó an réigiúin don aistriúchán (m.sh. us, gb, ca). Úsáidtear é le haghaidh leaganacha teanga réigiúnacha."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Múnla teanga"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Roghnaigh soláthraí AI, cuir a eochair API isteach, agus roghnaigh múnla. Rialaíonn an teocht an chruthaitheacht; cuireann uasmhéid na gcomharthaí teorainn le fad an aschuir. Moltar don chuid is mó: an soláthraí Google leis an múnla gemini-2.5-flash — tapa, saor agus ardchaighdeáin. Má bhuaileann tú le teorainneacha ráta nó le fadhbanna iontaofachta, is rogha mhaith é OpenRouter."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Soláthraí"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "An soláthraí a úsáidtear le haghaidh achoimrithe. Moltar OpenRouter mar gheall ar a iontaofacht; féadfar na leibhéil Gemini is saoire a mhaolú."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "Eochair API {provider}"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Stóráilte i stór rúnda Obsidian, ní i sonraí an bhreiseáin."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "URL an fhreastalaí, stóráilte i sonraí an bhreiseáin."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "Múnla {provider}"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Roghnaigh múnla réamhshocraithe nó clóscríobh ainm múnla saincheaptha thíos."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Úsáid múnla saincheaptha"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "Athnuaigh liosta múnlaí {provider}"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Ainm an mhúnla shaincheaptha"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Paraiméadair an mhúnla ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Paraiméadair an mhúnla shaincheaptha ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Paraiméadair an mhúnla ({provider}) — sárú"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Riachtanach: níl an múnla seo sa chlár — socraigh an fhuinneog chomhthéacs, an t-uasaschur agus an céatadán cúltaca ionas gur féidir méid na n-iarratas a ríomh go sábháilte."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Seo teorainneacha comharthaí an mhúnla seo, réamhlíonta ó shonraí aitheanta. Cuir réimse in eagar chun é a shárú don soláthraí agus don mhúnla seo."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Fuinneog chomhthéacs (k comhartha)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "An fhuinneog chomhthéacs iomlán i mílte comharthaí (m.sh. 400 le haghaidh 400k comhartha)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Uasaschur (k comhartha)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Uaslíon comharthaí aschuir i mílte (m.sh. 128 le haghaidh 128k comhartha)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Uasionchur (k comhartha) - roghnach"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Teorainn shainráite ionchuir má fhoilsíonn an soláthraí ceann (fág folamh le ríomh uathoibríoch)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Céatadán cúltaca"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Cúltaca sábháilteachta do chomharthaí aschuir (0.10 = 10%, réamhshocrú: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Teocht"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Rialaíonn sé randamacht an aschuir (0-1). Is dírithe an luach íseal, is cruthaithí an luach ard. Luach reatha: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Formáid an nóta"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Cuir an dáta roimh theideal an nóta"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Cuir an dáta go huathoibríoch ag tús ainmneacha na gcomhad nóta"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Formáid dáta"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Formáid an dáta a chuirtear roimh theidil na nótaí"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Leideanna"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Leideanna na hachoimre tapa"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Leideanna na hachoimre fairsinge"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Athshocraigh go dtí an réamhshocrú"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Leid chórais (achoimre thapa)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Treoracha d'iompar na llms agus achoimrí tapa á nginiúint"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Is cúntóir cabhrach thú..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Leid úsáideora (achoimre thapa)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Treoracha sonracha chun an tras-scríbhinn a achoimriú go tapa agus go gonta"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Déan achoimre ar an tras-scríbhinn YouTube seo a leanas..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Leid chórais (achoimre fhairsing)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Treoracha d'iompar na llms agus achoimrí mionsonraithe cuimsitheacha á nginiúint"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Is cúntóir anailíseach thú..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Leid úsáideora (achoimre fhairsing)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Treoracha sonracha chun nótaí mionsonraithe struchtúrtha a chruthú ón tras-scríbhinn"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "Ón tras-scríbhinn thíos, cruthaigh nótaí mionsonraithe struchtúrtha..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Modh réamhshocraithe achoimre"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Roghnaigh an modh achoimre réamhshocraithe nuair a thosaíonn an breiseán. Fágann an modh tapa naisc stampaí ama ar lár le go mbeidh an próiseáil níos tapa."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Achoimre fhairsing (mionsonraithe)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Achoimre thapa (gonta)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "Cuir naisc stampaí ama YouTube leis"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Cuir nasc le gach ceannteideal rannóige uimhrithe a léimeann chuig an stampa ama comhfhreagrach san fhíseán YouTube (nóta: díchumasaithe sa mhodh achoimre tapa)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Nuair atá sé cumasaithe, laghdaíonn sé comharthaí an chéad phas faoi 12% chun spás a dhéanamh do na naisc. Díchumasaítear go huathoibríoch é sa mhodh achoimre tapa."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Casta"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Socruithe casta le haghaidh dífhabhtaithe agus fabhtcheartaithe. Cumasaigh logáil dhífhabhtaithe chun eolas mionsonraithe a chur le gach nóta le haghaidh tacaíochta teicniúla."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Cumasaigh logáil dhífhabhtaithe"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Cumasaigh logaí mionsonraithe dífhabhtaithe. Nuair atá sé cumasaithe, cuirfear eolas dífhabhtaithe le gach nóta mar bhosca folaithe le haghaidh fabhtcheartaithe."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Nuair atá sé cumasaithe, baileofar eolas dífhabhtaithe agus cuirfear leis na nótaí é mar bhosca folaithe in ionad é a logáil chuig an gconsól."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Ceadúnas bhreiseán tras-scríbhinní YouTube Tubesage"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "Níorbh fhéidir comhad an cheadúnais a lódáil. Deimhnigh go bhfuil comhad ceadúnais i gcomhadlann do bhreiseáin."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Glacadh leis an gceadúnas riachtanach"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Caithfidh tú glacadh le ceadúnas an bhreiseáin sula n-úsáideann tú an ghné seo."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Téigh chuig socruithe an bhreiseáin agus glac le téarmaí an cheadúnais chun leanúint ar aghaidh."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Conas glacadh leis an gceadúnas:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Oscail Socruithe Obsidian"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Scrollaigh síos chuig rannóg bhreiseáin an phobail sa bharra taoibh"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Aimsigh “Tubesage” i liosta bhreiseáin an phobail"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Cliceáil ar shocruithe an bhreiseáin “Tubesage”"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Cas air “Glac leis an gceadúnas & leis an séanadh” chun an breiseán a chumasú"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Oscail socruithe an bhreiseáin"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — cealaigh ó “Show active jobs”"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Tras-scríbhinn á fáil"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Tras-scríbhinn á hachoimriú"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Nóta á chruthú"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Stampaí ama á gcur leis"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Nóta á aistriú"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Físeán á phróiseáil"
+    }
+}

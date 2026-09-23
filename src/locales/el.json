@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Ενεργό"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Ανενεργό"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Κλείσιμο"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Υποστήριξη της ανάπτυξης"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Αν σας φαίνεται χρήσιμο αυτό το πρόσθετο, σκεφτείτε να στηρίξετε την ανάπτυξή του:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…και βοηθήστε να σπείρουμε ένα μεγαλύτερο όραμα: τεχνολογία που υπηρετεί τους ανθρώπους και τον πλανήτη."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Άδεια & αποποίηση ευθύνης"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Προβολή άδειας & αποποίησης ευθύνης"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Αποδοχή άδειας & αποποίησης ευθύνης"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Προβολή readme"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Πρότυπα"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Αρχείο προτύπου του πρόσθετου Templater"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Διαδρομή προς το αρχείο προτύπου του πρόσθετου Templater"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Αναζήτηση αρχείου προτύπου"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Παράδειγμα "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Προβολή παραδείγματος προτύπου"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Απομαγνητοφωνήσεις"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "Οι ρυθμίσεις απομαγνητοφώνησης ελέγχουν πώς και πού αποθηκεύονται οι σημειώσεις σας, ποιο κλειδί API δεδομένων YouTube χρησιμοποιείται (απαιτείται για κανάλια και λίστες αναπαραγωγής) και τις προαιρετικές παραμέτρους μετάφρασης."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Ριζικός φάκελος απομαγνητοφωνήσεων"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "Ο ριζικός φάκελος όπου θα οργανωθούν οι υποφάκελοι απομαγνητοφώνησης (π.χ. inbox, notes κ.λπ.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "Κλειδί API δεδομένων YouTube"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "Το κλειδί API του Google cloud console για πρόσβαση σε δημόσιες απομαγνητοφωνήσεις YouTube (όχι διακριτικό OAUTH). Απαιτείται για τη λήψη καναλιών και λιστών αναπαραγωγής."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Εισαγάγετε κλειδί API (ξεκινά με aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Κλειδί API Scrape creators"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Προαιρετικό κλειδί για την υπηρεσία απομαγνητοφώνησης scrapecreators. Όταν οριστεί, χρησιμοποιείται ως κύρια μέθοδος. Αποκτήστε δωρεάν κλειδί στο app.scrapecreators.com (100 δωρεάν αιτήματα). Συνιστάται για αξιόπιστη λήψη· η απευθείας εξαγωγή από το YouTube χαλάει όταν το YouTube αλλάζει τον τρόπο παράδοσης των υποτίτλων."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Εισαγάγετε κλειδί API scrapecreators"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Κλειδί API Supa data"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Προαιρετικό κλειδί για την υπηρεσία απομαγνητοφώνησης supadata. Όταν οριστεί, χρησιμοποιείται ως κύρια μέθοδος (αν δεν υπάρχει κλειδί scrapecreators). Αποκτήστε κλειδί στο supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Εισαγάγετε κλειδί supadata"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Γλώσσα μετάφρασης"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Κωδικός γλώσσας-στόχου για τη μετάφραση (π.χ. en, es, fr, de). Χρησιμοποιήστε «en» για να μείνει το περιεχόμενο στα αγγλικά."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Εισαγάγετε κωδικό γλώσσας"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Χώρα μετάφρασης"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Κωδικός χώρας/περιοχής για τη μετάφραση (π.χ. us, gb, ca). Χρησιμοποιείται για παραλλαγές γλώσσας ανά περιοχή."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Γλωσσικό μοντέλο"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Επιλέξτε πάροχο AI, εισαγάγετε το κλειδί API του και διαλέξτε μοντέλο. Η θερμοκρασία ελέγχει τη δημιουργικότητα· τα μέγιστα tokens περιορίζουν το μήκος της απάντησης. Συνιστάται για τους περισσότερους: πάροχος Google με το μοντέλο gemini-2.5-flash — γρήγορο, φθηνό και ποιοτικό. Αν συναντήσετε όρια ρυθμού ή προβλήματα αξιοπιστίας, το OpenRouter είναι καλή εναλλακτική."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Πάροχος"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Πάροχος που χρησιμοποιείται για τη σύνοψη. Συνιστάται το OpenRouter για αξιοπιστία· οι φθηνότερες βαθμίδες Gemini μπορεί να περιορίζονται."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "Κλειδί API {provider}"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Αποθηκεύεται στον μυστικό χώρο του Obsidian, όχι στα δεδομένα του πρόσθετου."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "Διεύθυνση URL διακομιστή, αποθηκεύεται στα δεδομένα του πρόσθετου."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "Μοντέλο {provider}"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Επιλέξτε έτοιμο μοντέλο ή πληκτρολογήστε προσαρμοσμένο όνομα παρακάτω."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Χρήση προσαρμοσμένου μοντέλου"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "Ανανέωση λίστας μοντέλων {provider}"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Όνομα προσαρμοσμένου μοντέλου"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Παράμετροι μοντέλου ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Παράμετροι προσαρμοσμένου μοντέλου ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Παράμετροι μοντέλου ({provider}) — παράκαμψη"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Απαιτείται: αυτό το μοντέλο δεν είναι στο μητρώο — ορίστε παράθυρο συμφραζομένων, μέγιστη έξοδο και ποσοστό εφεδρείας ώστε ο προϋπολογισμός tokens να υπολογίζεται με ασφάλεια."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Αυτά είναι τα όρια tokens του μοντέλου, συμπληρωμένα από γνωστά δεδομένα. Επεξεργαστείτε ένα πεδίο για να το παρακάμψετε για αυτόν τον πάροχο και το μοντέλο."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Παράθυρο συμφραζομένων (k tokens)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Συνολικό παράθυρο συμφραζομένων σε χιλιάδες tokens (π.χ. 400 για 400k tokens)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Μέγιστη έξοδος (k tokens)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Μέγιστα tokens εξόδου σε χιλιάδες (π.χ. 128 για 128k tokens)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Μέγιστη είσοδος (k tokens) - προαιρετικό"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Ρητό όριο εισόδου, αν το δημοσιεύει ο πάροχος (αφήστε κενό για αυτόματο υπολογισμό)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Ποσοστό εφεδρείας"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Εφεδρεία ασφαλείας για tokens εξόδου (0.10 = 10%, προεπιλογή: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Θερμοκρασία"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Ελέγχει την τυχαιότητα της εξόδου (0-1). Χαμηλότερη τιμή είναι πιο εστιασμένη, υψηλότερη πιο δημιουργική. Τρέχουσα τιμή: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Μορφή σημείωσης"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Προσθήκη ημερομηνίας πριν από τον τίτλο"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Αυτόματη προσθήκη ημερομηνίας στην αρχή των ονομάτων αρχείων"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Μορφή ημερομηνίας"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Μορφή της ημερομηνίας που προηγείται των τίτλων"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Προτροπές"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Προτροπές γρήγορης σύνοψης"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Προτροπές εκτενούς σύνοψης"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Επαναφορά στην προεπιλογή"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Προτροπή συστήματος (γρήγορη σύνοψη)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Οδηγίες για τη συμπεριφορά των llms κατά τη δημιουργία γρήγορων συνόψεων"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Είστε ένας χρήσιμος βοηθός..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Προτροπή χρήστη (γρήγορη σύνοψη)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Συγκεκριμένες οδηγίες για γρήγορη και συνοπτική σύνοψη της απομαγνητοφώνησης"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Συνοψίστε την παρακάτω απομαγνητοφώνηση YouTube..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Προτροπή συστήματος (εκτενής σύνοψη)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Οδηγίες για τη συμπεριφορά των llms κατά τη δημιουργία λεπτομερών, περιεκτικών συνόψεων"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Είστε ένας αναλυτικός βοηθός..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Προτροπή χρήστη (εκτενής σύνοψη)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Συγκεκριμένες οδηγίες για τη δημιουργία λεπτομερών και δομημένων σημειώσεων από την απομαγνητοφώνηση"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "Από την παρακάτω απομαγνητοφώνηση, δημιουργήστε λεπτομερείς και δομημένες σημειώσεις..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Προεπιλεγμένη λειτουργία σύνοψης"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Επιλέξτε την προεπιλεγμένη λειτουργία σύνοψης κατά την εκκίνηση. Η γρήγορη σύνοψη παραλείπει τους συνδέσμους χρονοσήμανσης για ταχύτερη επεξεργασία."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Εκτενής σύνοψη (λεπτομερής)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Γρήγορη σύνοψη (σύντομη)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "Προσθήκη συνδέσμων χρονοσήμανσης YouTube"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Προσθήκη σε κάθε αριθμημένη επικεφαλίδα ενός συνδέσμου προς την αντίστοιχη χρονοσήμανση στο βίντεο YouTube (σημείωση: ανενεργό στη γρήγορη σύνοψη)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Όταν είναι ενεργό, μειώνει τα tokens του πρώτου περάσματος κατά 12% για να χωρέσουν οι σύνδεσμοι. Απενεργοποιείται αυτόματα στη γρήγορη σύνοψη."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Για προχωρημένους"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Ρυθμίσεις για προχωρημένους, για εντοπισμό σφαλμάτων. Ενεργοποιήστε την καταγραφή εντοπισμού σφαλμάτων για αναλυτικές πληροφορίες σε κάθε σημείωση, χρήσιμες στην τεχνική υποστήριξη."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Ενεργοποίηση καταγραφής εντοπισμού σφαλμάτων"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Ενεργοποιήστε αναλυτικά αρχεία καταγραφής. Όταν είναι ενεργό, οι πληροφορίες εντοπισμού σφαλμάτων προστίθενται σε κάθε σημείωση ως κρυφό πλαίσιο."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Όταν είναι ενεργό, οι πληροφορίες εντοπισμού σφαλμάτων συλλέγονται και προστίθενται στις σημειώσεις ως κρυφό πλαίσιο αντί να καταγράφονται στην κονσόλα."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Άδεια του πρόσθετου απομαγνητοφώνησης YouTube Tubesage"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "Δεν ήταν δυνατή η φόρτωση του αρχείου άδειας. Ελέγξτε ότι υπάρχει αρχείο άδειας στον φάκελο του πρόσθετου."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Απαιτείται αποδοχή της άδειας"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Πρέπει να αποδεχτείτε την άδεια του πρόσθετου πριν χρησιμοποιήσετε αυτή τη λειτουργία."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Μεταβείτε στις ρυθμίσεις του πρόσθετου και αποδεχτείτε τους όρους της άδειας για να συνεχίσετε."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Πώς να αποδεχτείτε την άδεια:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Ανοίξτε τις Ρυθμίσεις του Obsidian"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Κυλήστε στην πλαϊνή στήλη ως την ενότητα των πρόσθετων της κοινότητας"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Βρείτε το «Tubesage» στη λίστα των πρόσθετων της κοινότητας"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Κάντε κλικ στις ρυθμίσεις του πρόσθετου «Tubesage»"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Ενεργοποιήστε το «Αποδοχή άδειας & αποποίησης ευθύνης» για να ενεργοποιηθεί το πρόσθετο"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Άνοιγμα ρυθμίσεων πρόσθετου"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — ακύρωση από «Show active jobs»"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Λήψη απομαγνητοφώνησης"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Σύνοψη απομαγνητοφώνησης"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Δημιουργία σημείωσης"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Προσθήκη χρονοσημάνσεων"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Μετάφραση σημείωσης"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Επεξεργασία βίντεο"
+    }
+}

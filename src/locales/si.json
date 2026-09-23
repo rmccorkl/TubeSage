@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "සක්‍රියයි"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "අක්‍රියයි"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "වසන්න"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "සංවර්ධනයට සහාය වන්න"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "මෙම ප්ලගිනය ඔබට ප්‍රයෝජනවත් නම්, එහි සංවර්ධනයට සහාය දීම ගැන සලකා බලන්න:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…සහ විශාල දැක්මක් වපුරන්නට උදව් වන්න: මිනිසාටත් පෘථිවියටත් සේවය කරන තාක්ෂණය."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "බලපත්‍රය සහ වගකීමෙන් බැහැරවීම"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "බලපත්‍රය සහ වගකීමෙන් බැහැරවීම බලන්න"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "බලපත්‍රය සහ වගකීමෙන් බැහැරවීම පිළිගන්න"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "README බලන්න"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "අච්චු"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Templater ප්ලගිනයේ අච්චු ගොනුව"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "භාවිත කළ යුතු Templater ප්ලගිනයේ අච්චු ගොනුවට මාර්ගය"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "අච්චු ගොනුව සොයන්න"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "උදාහරණය "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "උදාහරණ අච්චුව බලන්න"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "පිටපත්"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "පිටපත් සැකසුම් මගින් උපුටාගත් සටහන් කෙසේ, කොහේ සුරැකෙනවාද, කුමන YouTube data API යතුර භාවිත වේද (නාලිකා සහ ධාවන ලැයිස්තු සැකසීමට අවශ්‍යයි), සහ අමතර පරිවර්තන පරාමිති තීරණය වේ."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "පිටපත්වල මූල ෆෝල්ඩරය"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "පිටපත් උප ෆෝල්ඩර සකසා තබන මූල ෆෝල්ඩරය (උදා. inbox, notes ආදිය)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "YouTube data API යතුර"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "පොදු YouTube පිටපත් වෙත ළඟා වීමට ඔබේ Google Cloud Console API යතුර (OAUTH ටෝකනයක් නොවේ). නාලිකා සහ ධාවන ලැයිස්තු බාගැනීමට අවශ්‍යයි."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "API යතුර ඇතුළු කරන්න (aiza යනුවෙන් පටන් ගනී)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Scrape creators API යතුර"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "scrapecreators පිටපත් සේවාව සඳහා අමතර යතුරකි. සකසා ඇති විට එය ප්‍රධාන පිටපත් ක්‍රමය ලෙස භාවිත වේ. app.scrapecreators.com වෙතින් නොමිලේ යතුරක් ගන්න (ඉල්ලීම් 100ක් නොමිලේ). විශ්වාසදායක පිටපත් ලබාගැනීමට නිර්දේශිතයි; YouTube උපසිරැසි සපයන ආකාරය වෙනස් කළ විට සෘජු උපුටාගැනීම බිඳ වැටේ."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "scrapecreators API යතුර ඇතුළු කරන්න"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Supa data API යතුර"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "supadata පිටපත් සේවාව සඳහා අමතර යතුරකි. සකසා ඇති විට (scrapecreators යතුරක් නොමැති නම්) එය ප්‍රධාන පිටපත් ක්‍රමය ලෙස භාවිත වේ. supadata.ai වෙතින් යතුරක් ගන්න."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "supadata යතුර ඇතුළු කරන්න"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "පරිවර්තන භාෂාව"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "පරිවර්තනය සඳහා ඉලක්ක භාෂා කේතය (උදා. en, es, fr, de). අන්තර්ගතය ඉංග්‍රීසියෙන්ම තබා ගැනීමට “en” භාවිත කරන්න."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "භාෂා කේතය ඇතුළු කරන්න"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "පරිවර්තන රට"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "පරිවර්තනය සඳහා ඉලක්ක රට/කලාප කේතය (උදා. us, gb, ca). කලාපීය භාෂා ප්‍රභේද සඳහා භාවිත වේ."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "භාෂා ආකෘතිය"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "AI සපයන්නෙකු තෝරා, එහි API යතුර ඇතුළු කර, ආකෘතියක් තෝරන්න. temperature නිර්මාණශීලීත්වය පාලනය කරයි; max tokens ප්‍රතිදාන දිග සීමා කරයි. බොහෝ පරිශීලකයන්ට නිර්දේශිතයි: Google සපයන්නා සමඟ gemini-2.5-flash ආකෘතිය — වේගවත්, අඩු වියදම් සහ උසස් ගුණාත්මක. අනුපාත සීමා හෝ විශ්වාසනීයත්ව ගැටලු එනවා නම්, OpenRouter හොඳ විකල්පයකි."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "සපයන්නා"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "සාරාංශ කිරීමට භාවිත වන සපයන්නා. විශ්වාසනීයත්වය සඳහා OpenRouter නිර්දේශ කෙරේ; අඩු මිල Gemini ස්ථර අනුපාත සීමාවට ලක් විය හැක."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "{provider} API යතුර"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "ප්ලගින දත්තවල නොව, Obsidian හි රහස් ගබඩාවේ තැන්පත් වේ."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "සේවාදායක URL එක, ප්ලගින දත්තවල තැන්පත් වේ."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "{provider} ආකෘතිය"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "පෙර සැකසූ ආකෘතියක් තෝරන්න, නැතහොත් පහතින් අභිරුචි ආකෘති නමක් ටයිප් කරන්න."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "අභිරුචි ආකෘතිය භාවිත කරන්න"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "{provider} ආකෘති ලැයිස්තුව නැවුම් කරන්න"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "අභිරුචි ආකෘති නම"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "ආකෘති පරාමිති ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "අභිරුචි ආකෘති පරාමිති ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "ආකෘති පරාමිති ({provider}) — ඉක්මවා යාම"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "අවශ්‍යයි: මෙම ආකෘතිය ලේඛනයේ නැත — ටෝකන අයවැය ඉල්ලීම්වල ප්‍රමාණය ආරක්ෂිතව තීරණය කිරීමට සන්දර්භ කවුළුව, උපරිම ප්‍රතිදානය සහ වෙන්කිරීම් ප්‍රතිශතය සකසන්න."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "මේවා මෙම ආකෘතියේ ටෝකන සීමා වන අතර, දන්නා දත්ත අනුව කලින් පුරවා ඇත. ක්ෂේත්‍රයක් සංස්කරණය කර මෙම සපයන්නාට සහ ආකෘතියට එය ඉක්මවා යන්න."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "සන්දර්භ කවුළුව (දහස් ටෝකන)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "මුළු සන්දර්භ කවුළුව, දහස් ටෝකන වලින් (උදා. 400k ටෝකන සඳහා 400)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "උපරිම ප්‍රතිදානය (දහස් ටෝකන)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "උපරිම ප්‍රතිදාන ටෝකන ගණන, දහස් වලින් (උදා. 128k ටෝකන සඳහා 128)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "උපරිම ආදානය (දහස් ටෝකන) - අමතර"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "සැපයුම්කරු ප්‍රකාශ කර ඇත්නම් පැහැදිලි ආදාන සීමාව (ස්වයංක්‍රීයව ගණනය කිරීමට හිස්ව තබන්න)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "වෙන්කිරීම් ප්‍රතිශතය"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "ප්‍රතිදාන ටෝකන සඳහා ආරක්ෂිත වෙන්කිරීම (0.10 = 10%, පෙරනිමි: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "උෂ්ණත්වය"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "ප්‍රතිදානයේ අහඹුබව පාලනය කරයි (0-1). අඩු අගයක් වඩා නිශ්චිතයි, වැඩි අගයක් වඩා නිර්මාණශීලීයි. වත්මන් අගය: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "සටහන් ආකෘතිය"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "සටහන් මාතෘකාවට පෙර දිනය එක් කරන්න"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "සටහන් ගොනු නාමයේ ආරම්භයට දිනය ස්වයංක්‍රීයව එක් කරයි"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "දින ආකෘතිය"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "සටහන් මාතෘකාවට පෙර එක් කරන දිනයේ ආකෘතිය"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "උපදෙස්"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "වේගවත් සාරාංශ උපදෙස්"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "විස්තරාත්මක සාරාංශ උපදෙස්"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "පෙරනිමියට යළි සකසන්න"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "පද්ධති උපදෙස් (වේගවත් සාරාංශය)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "වේගවත් සාරාංශ සාදන විට භාෂා ආකෘතියේ හැසිරීම සඳහා උපදෙස්"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "ඔබ උපකාරශීලී සහායකයෙකි…"
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "පරිශීලක උපදෙස් (වේගවත් සාරාංශය)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "පිටපත වේගයෙන් හා කෙටියෙන් සාරාංශ කිරීමට නිශ්චිත උපදෙස්"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "පහත YouTube පිටපත සාරාංශ කරන්න…"
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "පද්ධති උපදෙස් (විස්තරාත්මක සාරාංශය)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "විස්තරාත්මක, සවිස්තර සාරාංශ සාදන විට භාෂා ආකෘතියේ හැසිරීම සඳහා උපදෙස්"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "ඔබ විශ්ලේෂණාත්මක සහායකයෙකි…"
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "පරිශීලක උපදෙස් (විස්තරාත්මක සාරාංශය)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "පිටපතින් විස්තරාත්මක, ව්‍යුහගත සටහන් සෑදීමට නිශ්චිත උපදෙස්"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "පහත පිටපතින්, විස්තරාත්මක හා ව්‍යුහගත සටහන් සාදන්න…"
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "පෙරනිමි සාරාංශ ප්‍රකාරය"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "ප්ලගිනය ඇරඹෙන විට භාවිත කළ යුතු පෙරනිමි සාරාංශ ප්‍රකාරය තෝරන්න. වේගවත් සාරාංශ ප්‍රකාරය සැකසීම ඉක්මන් කිරීමට කාල මුද්‍රා සබැඳි මඟහරියි."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "විස්තරාත්මක සාරාංශය (සවිස්තර)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "වේගවත් සාරාංශය (කෙටි)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "YouTube කාල මුද්‍රා සබැඳි එක් කරන්න"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "අංකිත සෑම උපමාතෘකාවකටම, YouTube වීඩියෝවේ අදාළ මොහොතට පනින සබැඳියක් එක් කරයි (සටහන: වේගවත් සාරාංශ ප්‍රකාරයේ අක්‍රියයි)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "සක්‍රිය විට, සබැඳි සඳහා ඉඩ සෑදීමට පළමු වටයේ ටෝකන 12% කින් අඩු කරයි. වේගවත් සාරාංශ ප්‍රකාරයේ ස්වයංක්‍රීයව අක්‍රිය වේ."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "උසස්"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "දෝෂ නිරාකරණය සහ ගැටලු විසඳීම සඳහා උසස් සැකසුම්. තාක්ෂණික සහාය සඳහා සෑම සටහනකටම විස්තරාත්මක තොරතුරු එක් කිරීමට දෝෂ නිරාකරණ ලොග සක්‍රිය කරන්න."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "දෝෂ නිරාකරණ ලොග සක්‍රිය කරන්න"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "විස්තරාත්මක දෝෂ නිරාකරණ ලොග සක්‍රිය කරයි. සක්‍රිය විට, ගැටලු විසඳීම සඳහා දෝෂ තොරතුරු සැඟවුණු කෝල්අවුට් එකක් ලෙස සෑම සටහනකටම එක් වේ."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "සක්‍රිය විට, දෝෂ තොරතුරු කොන්සෝලයට ලොග කරනවා වෙනුවට සැඟවුණු කෝල්අවුට් එකක් ලෙස සටහන්වලට එක් කෙරේ."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Tubesage YouTube පිටපත් ප්ලගින බලපත්‍රය"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "බලපත්‍ර ගොනුව පූරණය කළ නොහැකි විය. ඔබේ ප්ලගින නාමාවලියේ බලපත්‍ර ගොනුවක් තිබේදැයි පරීක්ෂා කරන්න."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "බලපත්‍රය පිළිගැනීම අවශ්‍යයි"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "මෙම විශේෂාංගය භාවිත කිරීමට පෙර ඔබ ප්ලගින බලපත්‍රය පිළිගත යුතුය."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "ඉදිරියට යාමට, ප්ලගින සැකසුම් වෙත ගොස් බලපත්‍ර නියම පිළිගන්න."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "බලපත්‍රය පිළිගන්නා ආකාරය:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Obsidian සැකසුම් විවෘත කරන්න"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "පැති තීරුවේ ප්‍රජා ප්ලගින කොටස දක්වා පහළට අනුචලනය කරන්න"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "ප්‍රජා ප්ලගින ලැයිස්තුවේ “Tubesage” සොයා ගන්න"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "“Tubesage” ප්ලගිනයේ සැකසුම් ක්ලික් කරන්න"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "ප්ලගිනය සක්‍රිය කිරීමට “බලපත්‍රය සහ වගකීමෙන් බැහැරවීම පිළිගන්න” ටොගලය ක්‍රියාත්මක කරන්න"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "ප්ලගින සැකසුම් විවෘත කරන්න"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — “Show active jobs” වෙතින් අවලංගු කරන්න"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "පිටපත ලබා ගනිමින්"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "පිටපත සාරාංශ කරමින්"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "සටහන සාදමින්"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "කාල මුද්‍රා එක් කරමින්"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "සටහන පරිවර්තනය කරමින්"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "වීඩියෝව සකසමින්"
+    }
+}

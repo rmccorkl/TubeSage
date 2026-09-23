@@ -103,7 +103,7 @@
     "license.required.step2": "Scroll down to the \"Community Plugins\" section in the sidebar",
     "license.required.step3": "Find \"Tubesage\" in the Community Plugins list",
     "license.required.step4": "Click the \"Tubesage\" plugin settings",
-    "license.required.step5": "Toggle \"Accept Licence\" to enable the plugin",
+    "license.required.step5": "Toggle \"Accept licence & disclaimer\" to enable the plugin",
     "license.required.openSettings": "Open plugin settings",
     "notice.progress.message": "{stage} — cancel from \"Show active jobs\"",
     "notice.progress.stage.transcript": "Fetching transcript",

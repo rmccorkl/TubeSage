@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "ჩართული"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "გამორთული"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "დახურვა"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "განვითარების მხარდაჭერა"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "თუ ეს მოდული თქვენთვის სასარგებლოა, დაუჭირეთ მხარი მის განვითარებას:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…და დაეხმარეთ უფრო დიდი ხედვის დათესვას: ტექნოლოგია, რომელიც ემსახურება ადამიანებსა და პლანეტას."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "ლიცენზია და პასუხისმგებლობის უარყოფა"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "ლიცენზიისა და პასუხისმგებლობის უარყოფის ნახვა"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "ლიცენზიისა და პასუხისმგებლობის უარყოფის მიღება"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "readme-ის ნახვა"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "შაბლონები"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Templater მოდულის შაბლონის ფაილი"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "გამოსაყენებელი Templater მოდულის შაბლონის ფაილის ბილიკი"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "შაბლონის ფაილის მოძიება"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "მაგალითი "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "შაბლონის მაგალითის ნახვა"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "ტრანსკრიპტები"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "ტრანსკრიპტის პარამეტრები განსაზღვრავს, როგორ და სად ინახება თქვენი ჩანაწერები, რომელი YouTube data API გასაღები გამოიყენება (საჭიროა არხებისა და დასაკრავი სიების დასამუშავებლად) და თარგმნის არასავალდებულო პარამეტრებს."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "ტრანსკრიპტების ძირითადი საქაღალდე"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "ძირითადი საქაღალდე, სადაც დალაგდება ტრანსკრიპტების ქვესაქაღალდეები (მაგ. inbox, notes და ა.შ.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "YouTube data API გასაღები"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "თქვენი Google cloud console API გასაღები საჯარო YouTube ტრანსკრიპტებთან წვდომისთვის (არა OAUTH ტოკენი). საჭიროა არხებისა და დასაკრავი სიების ჩამოსატვირთად."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "შეიყვანეთ API გასაღები (იწყება aiza-ით)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Scrape creators API გასაღები"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "არასავალდებულო გასაღები scrapecreators ტრანსკრიპტების სერვისისთვის. მითითებისას გამოიყენება ძირითად მეთოდად. უფასო გასაღები აიღეთ app.scrapecreators.com-ზე (100 მოთხოვნა უფასოდ). რეკომენდებულია საიმედო ტრანსკრიპტებისთვის; YouTube-იდან პირდაპირი ამოღება წყდება, როცა YouTube ცვლის სუბტიტრების მიწოდების წესს."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "შეიყვანეთ scrapecreators API გასაღები"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Supa data API გასაღები"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "არასავალდებულო გასაღები supadata ტრანსკრიპტების სერვისისთვის. მითითებისას გამოიყენება ძირითად მეთოდად (თუ scrapecreators გასაღები არ არის). გასაღები აიღეთ supadata.ai-ზე."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "შეიყვანეთ supadata გასაღები"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "თარგმნის ენა"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "თარგმნის სამიზნე ენის კოდი (მაგ. en, es, fr, de). გამოიყენეთ „en“, რომ შიგთავსი ინგლისურად დარჩეს."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "შეიყვანეთ ენის კოდი"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "თარგმნის ქვეყანა"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "თარგმნის სამიზნე ქვეყნის ან რეგიონის კოდი (მაგ. us, gb, ca). გამოიყენება ენის რეგიონული ვარიანტებისთვის."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "ენობრივი მოდელი"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "აირჩიეთ AI მომწოდებელი, შეიყვანეთ მისი API გასაღები და აირჩიეთ მოდელი. temperature აკონტროლებს შემოქმედებითობას; max tokens ზღუდავს პასუხის სიგრძეს. რეკომენდებულია უმეტესობისთვის: მომწოდებელი Google მოდელით gemini-2.5-flash — სწრაფი, იაფი და ხარისხიანი. თუ შეზღუდვებს ან საიმედოობის პრობლემებს წააწყდებით, OpenRouter კარგი ალტერნატივაა."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "მომწოდებელი"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "შეჯამებისთვის გამოყენებული მომწოდებელი. საიმედოობისთვის რეკომენდებულია OpenRouter; Gemini-ის იაფი დონეები შეიძლება შეიზღუდოს."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "{provider} API გასაღები"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "ინახება Obsidian-ის საიდუმლო საცავში და არა მოდულის მონაცემებში."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "სერვერის URL, ინახება მოდულის მონაცემებში."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "{provider} მოდელი"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "აირჩიეთ მზა მოდელი ან ქვემოთ აკრიფეთ მორგებული მოდელის სახელი."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "მორგებული მოდელის გამოყენება"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "{provider} მოდელების სიის განახლება"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "მორგებული მოდელის სახელი"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "მოდელის პარამეტრები ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "მორგებული მოდელის პარამეტრები ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "მოდელის პარამეტრები ({provider}) — გადაფარვა"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "სავალდებულოა: ეს მოდელი რეესტრში არ არის — მიუთითეთ კონტექსტის ფანჯარა, მაქსიმალური გამოსავალი და სარეზერვო პროცენტი, რომ ტოკენების დაგეგმვა უსაფრთხო იყოს."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "ეს არის ამ მოდელის ტოკენების ზღვრები, შევსებული ცნობილი მონაცემებით. შეცვალეთ ველი, რომ ის ამ მომწოდებლისა და მოდელისთვის გადაფაროთ."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "კონტექსტის ფანჯარა (k ტოკენი)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "კონტექსტის სრული ფანჯარა ათასობით ტოკენში (მაგ. 400 ნიშნავს 400k ტოკენს)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "მაქსიმალური გამოსავალი (k ტოკენი)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "გამოსავალი ტოკენების მაქსიმუმი ათასობით (მაგ. 128 ნიშნავს 128k ტოკენს)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "მაქსიმალური შემავალი (k ტოკენი) - არასავალდებულო"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "შემავალის მკაფიო ზღვარი, თუ მომწოდებელი აქვეყნებს (ავტომატური გამოთვლისთვის დატოვეთ ცარიელი)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "სარეზერვო პროცენტი"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "უსაფრთხოების რეზერვი გამოსავალი ტოკენებისთვის (0.10 = 10%, ნაგულისხმევი: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "ტემპერატურა"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "აკონტროლებს გამოსავალის შემთხვევითობას (0-1). დაბალი უფრო ფოკუსირებულია, მაღალი უფრო შემოქმედებითი. მიმდინარე მნიშვნელობა: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "ჩანაწერის ფორმატი"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "თარიღის დამატება ჩანაწერის სათაურის წინ"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "თარიღის ავტომატური დამატება ჩანაწერის ფაილის სახელის დასაწყისში"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "თარიღის ფორმატი"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "ჩანაწერების სათაურების წინ დასმული თარიღის ფორმატი"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "მითითებები"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "სწრაფი შეჯამების მითითებები"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "ვრცელი შეჯამების მითითებები"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "ნაგულისხმევზე დაბრუნება"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "სისტემური მითითება (სწრაფი შეჯამება)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "llms-ის ქცევის ინსტრუქციები სწრაფი შეჯამებების შექმნისას"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "თქვენ ხართ დამხმარე ასისტენტი..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "მომხმარებლის მითითება (სწრაფი შეჯამება)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "კონკრეტული ინსტრუქციები ტრანსკრიპტის სწრაფად და მოკლედ შესაჯამებლად"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "შეაჯამეთ ქვემოთ მოცემული YouTube ტრანსკრიპტი..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "სისტემური მითითება (ვრცელი შეჯამება)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "llms-ის ქცევის ინსტრუქციები დეტალური, ამომწურავი შეჯამებების შექმნისას"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "თქვენ ხართ ანალიტიკური ასისტენტი..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "მომხმარებლის მითითება (ვრცელი შეჯამება)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "კონკრეტული ინსტრუქციები ტრანსკრიპტიდან დეტალური და სტრუქტურირებული ჩანაწერების შესაქმნელად"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "ქვემოთ მოცემული ტრანსკრიპტიდან შექმენით დეტალური და სტრუქტურირებული ჩანაწერები..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "შეჯამების ნაგულისხმევი რეჟიმი"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "აირჩიეთ შეჯამების ნაგულისხმევი რეჟიმი მოდულის გაშვებისას. სწრაფი რეჟიმი გამოტოვებს დროის ნიშნულების ბმულებს უფრო სწრაფი დამუშავებისთვის."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "ვრცელი შეჯამება (დეტალური)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "სწრაფი შეჯამება (მოკლე)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "YouTube დროის ნიშნულების ბმულების დამატება"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "თითოეულ დანომრილ სექციის სათაურს დაემატოს ბმული, რომელიც YouTube ვიდეოში შესაბამის დროის ნიშნულზე გადადის (შენიშვნა: სწრაფ რეჟიმში გამორთულია)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "ჩართვისას პირველი გავლის ტოკენებს ამცირებს 12%-ით, რომ ბმულებს ადგილი დარჩეს. სწრაფ რეჟიმში ავტომატურად გამოირთვება."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "დამატებითი"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "დამატებითი პარამეტრები გამართვისა და პრობლემების აღმოფხვრისთვის. ჩართეთ გამართვის ჟურნალი, რომ თითოეულ ჩანაწერს დეტალური ინფორმაცია დაემატოს ტექნიკური მხარდაჭერისთვის."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "გამართვის ჟურნალის ჩართვა"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "ჩართეთ დეტალური გამართვის ჟურნალები. ჩართვისას გამართვის ინფორმაცია თითოეულ ჩანაწერს დაემატება დამალული ბლოკის სახით."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "ჩართვისას გამართვის ინფორმაცია შეგროვდება და ჩანაწერებს დაემატება დამალული ბლოკის სახით, კონსოლში ჩაწერის ნაცვლად."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Tubesage YouTube ტრანსკრიპტების მოდულის ლიცენზია"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "ლიცენზიის ფაილის ჩატვირთვა ვერ მოხერხდა. შეამოწმეთ, რომ ლიცენზიის ფაილი მოდულის საქაღალდეშია."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "საჭიროა ლიცენზიის მიღება"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "ამ ფუნქციის გამოყენებამდე უნდა მიიღოთ მოდულის ლიცენზია."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "გასაგრძელებლად გადადით მოდულის პარამეტრებში და მიიღეთ ლიცენზიის პირობები."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "როგორ მივიღოთ ლიცენზია:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "გახსენით Obsidian-ის პარამეტრები"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "გვერდით პანელში ჩამოწიეთ საზოგადოების მოდულების განყოფილებამდე"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "იპოვეთ „Tubesage“ საზოგადოების მოდულების სიაში"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "დააწკაპუნეთ მოდულის „Tubesage“ პარამეტრებზე"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "მოდულის ასამოქმედებლად ჩართეთ „ლიცენზიისა და პასუხისმგებლობის უარყოფის მიღება“"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "მოდულის პარამეტრების გახსნა"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — გაუქმება „Show active jobs“-იდან"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "ტრანსკრიპტის მიღება"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "ტრანსკრიპტის შეჯამება"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "ჩანაწერის შექმნა"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "დროის ნიშნულების დამატება"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "ჩანაწერის თარგმნა"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "ვიდეოს დამუშავება"
+    }
+}

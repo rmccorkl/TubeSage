@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Aktiveret"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Deaktiveret"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Luk"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Støt udviklingen"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Hvis du finder dette plugin nyttigt, kan du overveje at støtte udviklingen:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…og hjælp med at så en større vision: teknologi i menneskets og klodens tjeneste."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Licens og ansvarsfraskrivelse"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Vis licens og ansvarsfraskrivelse"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Accepter licens og ansvarsfraskrivelse"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Vis readme"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Skabeloner"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Skabelonfil til Templater-plugin'et"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Sti til den skabelonfil fra templater-plugin'et, der skal bruges"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Find en skabelonfil"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Eksempel "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Vis eksempelskabelon"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Transskriptioner"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "Indstillingerne for transskriptioner bestemmer, hvordan og hvor dine udtrukne noter gemmes, hvilken YouTube Data API-nøgle der bruges (påkrævet for kanaler og afspilningslister), og hvilke valgfrie oversættelsesparametre der gælder."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Rodmappe til transskriptioner"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "Rodmappen, hvor undermapper til transskriptioner organiseres (f.eks. inbox, notes osv.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "YouTube Data API-nøgle"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "Din API-nøgle fra Google Cloud Console til offentlige YouTube-transskriptioner (ikke et OAUTH-token). Påkrævet for at hente kanaler og afspilningslister."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Indtast API-nøglen (begynder med aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Scrape creators API-nøgle"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Valgfri nøgle til transskriptionstjenesten scrapecreators. Når den er sat, bruges den som primær transskriptionsmetode. Hent en gratis nøgle på app.scrapecreators.com (100 forespørgsler gratis). Anbefales for pålidelige transskriptioner; direkte udtræk fra YouTube går i stykker, når YouTube ændrer måden, undertekster leveres på."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Indtast scrapecreators API-nøglen"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Supa data API-nøgle"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Valgfri nøgle til transskriptionstjenesten supadata. Når den er sat, bruges den som primær metode (hvis der ikke er en scrapecreators-nøgle). Hent en nøgle på supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Indtast supadata-nøglen"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Oversættelsessprog"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Sprogkode for målsproget ved oversættelse (f.eks. en, es, fr, de). Brug \"en\" for at beholde indholdet på engelsk."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Indtast sprogkoden"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Oversættelsesland"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Lande- eller regionskode for oversættelsen (f.eks. us, gb, ca). Bruges til regionale sprogvarianter."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Sprogmodel"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Vælg en AI-udbyder, indtast dens API-nøgle, og vælg en model. Temperaturen styrer kreativiteten; maks. tokens begrænser svarets længde. Anbefalet til de fleste: udbyderen Google med modellen gemini-2.5-flash — hurtig, billig og af god kvalitet. Ved hastighedsgrænser eller ustabilitet er OpenRouter et solidt alternativ."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Udbyder"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Udbyder, der bruges til resuméet. OpenRouter anbefales for pålidelighedens skyld; billigere Gemini-niveauer kan blive begrænset."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "{provider} API-nøgle"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Gemmes i Obsidians hemmelige lager, ikke i plugin-dataene."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "Server-URL, gemt i plugin-dataene."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "{provider}-model"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Vælg en foruddefineret model, eller skriv et eget modelnavn nedenfor."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Brug en egen model"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "Opdater modellisten fra {provider}"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Eget modelnavn"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Modelparametre ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Parametre for egen model ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Modelparametre ({provider}) — tilsidesæt"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Påkrævet: denne model findes ikke i registret — angiv kontekstvindue, maks. output og reserve i %, så tokenbudgettet kan dimensionere forespørgsler sikkert."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Dette er modellens tokengrænser, udfyldt på forhånd ud fra kendte data. Rediger et felt for at tilsidesætte det for denne udbyder og model."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Kontekstvindue (k tokens)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Samlet kontekstvindue i tusinder af tokens (f.eks. 400 for 400k tokens)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Maks. output (k tokens)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Maksimalt antal outputtokens i tusinder (f.eks. 128 for 128k tokens)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Maks. input (k tokens) - valgfrit"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Udtrykkelig inputgrænse, hvis udbyderen offentliggør en (lad feltet stå tomt for automatisk beregning)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Reserveprocent"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Sikkerhedsreserve til outputtokens (0.10 = 10 %, standard: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Temperatur"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Styrer tilfældigheden i svaret (0-1). Lavere er mere fokuseret, højere er mere kreativt. Aktuel værdi: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Noteformat"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Sæt datoen foran notens titel"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Tilføj automatisk datoen forrest i noternes filnavne"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Datoformat"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Format for datoen, der sættes foran notetitler"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Prompter"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Prompter til det hurtige resumé"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Prompter til det udførlige resumé"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Nulstil til standard"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Systemprompt (hurtigt resumé)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Instruktioner om modellens adfærd, når den laver hurtige resuméer"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Du er en hjælpsom assistent..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Brugerprompt (hurtigt resumé)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Konkrete instruktioner til at resumere transskriptionen hurtigt og kortfattet"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Resumér følgende YouTube-transskription..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Systemprompt (udførligt resumé)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Instruktioner om modellens adfærd, når den laver detaljerede, udførlige resuméer"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Du er en analytisk assistent..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Brugerprompt (udførligt resumé)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Konkrete instruktioner til at lave detaljerede og strukturerede noter ud fra transskriptionen"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "Lav detaljerede og strukturerede noter ud fra transskriptionen nedenfor..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Standardtilstand for resumé"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Vælg den resumétilstand, plugin'et starter i. Den hurtige tilstand springer tidsstempellinks over og arbejder derfor hurtigere."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Udførligt resumé (detaljeret)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Hurtigt resumé (kort)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "Tilføj YouTube-tidsstempellinks"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Tilføj et link til hver nummereret afsnitsoverskrift, der hopper til det tilsvarende tidsstempel i YouTube-videoen (slået fra i hurtig tilstand)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Når det er slået til, reduceres første gennemløbs tokens med 12 % for at give plads til links. Slås automatisk fra i hurtig tilstand."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Avanceret"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Avancerede indstillinger til fejlfinding. Slå fejlfindingslog til for at få detaljerede oplysninger føjet til hver note til teknisk support."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Slå fejlfindingslog til"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Slå detaljeret fejlfindingslog til. Fejlfindingsoplysninger føjes så til hver note som en skjult callout til fejlfinding."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Når det er slået til, indsamles fejlfindingsoplysninger og føjes til noterne som en skjult callout i stedet for at blive skrevet til konsollen."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Licens til Tubesage YouTube-transskriptionsplugin"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "Licensfilen kunne ikke indlæses. Kontrollér, at der findes en licensfil i plugin-mappen."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Licensen skal accepteres"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Du skal acceptere plugin'ets licens, før du kan bruge denne funktion."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Åbn plugin'ets indstillinger, og accepter licensvilkårene for at fortsætte."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Sådan accepterer du licensen:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Åbn indstillingerne i Obsidian"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Rul ned i sidepanelet til afsnittet med community-plugins"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Find \"Tubesage\" på listen over community-plugins"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Åbn indstillingerne for plugin'et \"Tubesage\""
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Slå \"Accepter licens og ansvarsfraskrivelse\" til for at aktivere plugin'et"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Åbn plugin-indstillinger"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — annuller via \"Show active jobs\""
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Henter transskription"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Resumerer transskription"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Opretter note"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Tilføjer tidsstempler"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Oversætter note"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Behandler video"
+    }
+}

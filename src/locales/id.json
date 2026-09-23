@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Aktif"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Nonaktif"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Tutup"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Dukung pengembangan"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Jika plugin ini bermanfaat, pertimbangkan untuk mendukung pengembangannya:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…dan bantu menyemai visi yang lebih besar: teknologi yang melayani manusia dan bumi."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Lisensi dan penafian"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Lihat lisensi dan penafian"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Terima lisensi dan penafian"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Lihat README"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Templat"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Berkas templat plugin Templater"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Jalur berkas templat plugin Templater yang akan dipakai"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Telusuri berkas templat"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Contoh "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Lihat contoh templat"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Transkrip"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "Pengaturan transkrip menentukan bagaimana dan di mana catatan hasil ekstraksi disimpan, kunci YouTube data API mana yang dipakai (wajib untuk memproses kanal dan daftar putar), serta parameter terjemahan yang bersifat opsional."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Folder induk transkrip"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "Folder induk tempat subfolder transkrip ditata (mis. inbox, notes, dsb.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "Kunci YouTube data API"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "Kunci API Google Cloud Console untuk mengakses transkrip YouTube publik (bukan token OAUTH). Wajib untuk mengunduh kanal dan daftar putar."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Masukkan kunci API (diawali aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Kunci API Scrape creators"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Kunci opsional untuk layanan transkrip scrapecreators. Jika diisi, dipakai sebagai metode transkrip utama. Dapatkan kunci gratis di app.scrapecreators.com (100 permintaan gratis). Disarankan agar pengambilan transkrip andal; ekstraksi langsung dari YouTube rusak setiap kali YouTube mengubah cara takarir disajikan."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Masukkan kunci API scrapecreators"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Kunci API Supa data"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Kunci opsional untuk layanan transkrip supadata. Jika diisi, dipakai sebagai metode transkrip utama (bila tidak ada kunci scrapecreators). Dapatkan kunci di supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Masukkan kunci supadata"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Bahasa terjemahan"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Kode bahasa tujuan terjemahan (mis. en, es, fr, de). Gunakan “en” agar isinya tetap berbahasa Inggris."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Masukkan kode bahasa"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Negara terjemahan"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Kode negara/wilayah tujuan terjemahan (mis. us, gb, ca). Dipakai untuk varian bahasa per wilayah."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Model bahasa"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Pilih penyedia AI, masukkan kunci API-nya, lalu pilih model. Temperature mengatur kreativitas; max tokens membatasi panjang keluaran. Saran untuk kebanyakan pengguna: penyedia Google dengan model gemini-2.5-flash — cepat, murah, dan berkualitas. Jika terbentur batas laju atau masalah keandalan, OpenRouter adalah cadangan yang mantap."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Penyedia"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Penyedia yang dipakai untuk meringkas. OpenRouter disarankan demi keandalan; paket Gemini yang murah bisa terkena pembatasan laju."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "Kunci API {provider}"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Disimpan di penyimpanan rahasia Obsidian, bukan di data plugin."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "URL server, disimpan di data plugin."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "Model {provider}"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Pilih model bawaan atau ketik nama model kustom di bawah."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Pakai model kustom"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "Segarkan daftar model {provider}"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Nama model kustom"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Parameter model ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Parameter model kustom ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Parameter model ({provider}) — timpa"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Wajib: model ini tidak ada di registri — atur jendela konteks, keluaran maksimum, dan persen cadangan agar penganggaran token bisa menakar ukuran permintaan dengan aman."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Ini batas token model tersebut, terisi otomatis dari data yang diketahui. Ubah salah satu isian untuk menimpanya bagi penyedia dan model ini."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Jendela konteks (ribu token)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Total jendela konteks dalam ribuan token (mis. 400 untuk 400k token)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Keluaran maksimum (ribu token)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Jumlah token keluaran maksimum dalam ribuan (mis. 128 untuk 128k token)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Masukan maksimum (ribu token) - opsional"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Batas masukan eksplisit bila vendor mengumumkannya (kosongkan untuk hitung otomatis)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Persen cadangan"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Cadangan aman untuk token keluaran (0.10 = 10%, bawaan: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Suhu"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Mengatur keacakan keluaran (0-1). Makin rendah makin terarah, makin tinggi makin kreatif. Nilai saat ini: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Format catatan"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Tambahkan tanggal di depan judul catatan"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Otomatis menambahkan tanggal di awal nama berkas catatan"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Format tanggal"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Format tanggal yang ditaruh di depan judul catatan"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Prompt"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Prompt ringkasan cepat"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Prompt ringkasan mendalam"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Kembalikan ke bawaan"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Prompt sistem (ringkasan cepat)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Instruksi untuk perilaku model bahasa saat membuat ringkasan cepat"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Anda adalah asisten yang membantu…"
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Prompt pengguna (ringkasan cepat)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Instruksi khusus untuk meringkas transkrip secara cepat dan ringkas"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Tolong ringkas transkrip YouTube berikut…"
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Prompt sistem (ringkasan mendalam)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Instruksi untuk perilaku model bahasa saat membuat ringkasan yang rinci dan menyeluruh"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Anda adalah asisten analitis…"
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Prompt pengguna (ringkasan mendalam)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Instruksi khusus untuk membuat catatan yang rinci dan terstruktur dari transkrip"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "Dari transkrip di bawah ini, buat catatan yang rinci dan terstruktur…"
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Mode ringkasan bawaan"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Pilih mode ringkasan yang dipakai saat plugin mulai berjalan. Mode ringkasan cepat melewati tautan stempel waktu agar pemrosesan lebih gesit."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Ringkasan mendalam (rinci)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Ringkasan cepat (singkat)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "Tambahkan tautan stempel waktu YouTube"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Tambahkan tautan pada tiap judul bagian bernomor yang melompat ke stempel waktu terkait di video YouTube (catatan: mati di mode ringkasan cepat)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Saat aktif, token babak pertama dipangkas 12% untuk memberi ruang bagi tautan. Otomatis mati di mode ringkasan cepat."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Lanjutan"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Pengaturan lanjutan untuk debug dan penelusuran masalah. Aktifkan log debug agar keterangan rinci ditempelkan pada tiap catatan untuk dukungan teknis."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Aktifkan log debug"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Aktifkan log debug yang rinci. Saat aktif, keterangan debug ditempelkan pada tiap catatan sebagai callout tersembunyi untuk penelusuran masalah."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Saat aktif, keterangan debug dikumpulkan dan ditambahkan ke catatan sebagai callout tersembunyi, bukan dicetak ke konsol."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Lisensi plugin transkrip YouTube Tubesage"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "Berkas lisensi tidak bisa dimuat. Periksa apakah berkas lisensi ada di direktori plugin Anda."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Perlu menerima lisensi"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Anda harus menerima lisensi plugin sebelum memakai fitur ini."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Silakan buka pengaturan plugin dan terima ketentuan lisensi untuk melanjutkan."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Cara menerima lisensi:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Buka Pengaturan Obsidian"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Gulir ke bawah sampai bagian plugin komunitas di bilah sisi"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Cari “Tubesage” di daftar plugin komunitas"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Klik pengaturan plugin “Tubesage”"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Nyalakan “Terima lisensi dan penafian” untuk mengaktifkan plugin"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Buka pengaturan plugin"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — batalkan dari “Show active jobs”"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Mengambil transkrip"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Meringkas transkrip"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Membuat catatan"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Menambahkan stempel waktu"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Menerjemahkan catatan"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Memproses video"
+    }
+}

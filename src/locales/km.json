@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "បានបើក"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "បានបិទ"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "បិទ"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "គាំទ្រការអភិវឌ្ឍ"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "បើអ្នកយល់ថាកម្មវិធីជំនួយនេះមានប្រយោជន៍ សូមពិចារណាគាំទ្រការអភិវឌ្ឍរបស់វា៖"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…និងជួយបណ្ដុះចក្ខុវិស័យធំជាងនេះ៖ បច្ចេកវិទ្យាដែលបម្រើមនុស្សនិងភពផែនដី។"
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "អាជ្ញាបណ្ណនិងសេចក្ដីបដិសេធ"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "មើលអាជ្ញាបណ្ណនិងសេចក្ដីបដិសេធ"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "ទទួលយកអាជ្ញាបណ្ណនិងសេចក្ដីបដិសេធ"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "មើល README"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "ពុម្ព"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "ឯកសារពុម្ពរបស់កម្មវិធីជំនួយ Templater"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "ផ្លូវទៅឯកសារពុម្ពរបស់កម្មវិធីជំនួយ Templater ដែលត្រូវប្រើ"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "រកមើលឯកសារពុម្ព"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "ឧទាហរណ៍ "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "មើលពុម្ពឧទាហរណ៍"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "ប្រតិចារិក"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "ការកំណត់ប្រតិចារិកកំណត់ថាកំណត់ត្រាដែលបានទាញយកត្រូវរក្សាទុកយ៉ាងណានិងនៅទីណា ត្រូវប្រើសោ YouTube data API មួយណា (ចាំបាច់សម្រាប់ដំណើរការឆានែលនិងបញ្ជីចាក់) និងប៉ារ៉ាម៉ែត្របកប្រែជាជម្រើស។"
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "ថតមេរបស់ប្រតិចារិក"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "ថតមេដែលថតរងនៃប្រតិចារិកត្រូវរៀបចំក្នុងនោះ (ឧ. inbox, notes ជាដើម)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "សោ YouTube data API"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "សោ API ពី Google Cloud Console សម្រាប់ចូលមើលប្រតិចារិក YouTube សាធារណៈ (មិនមែនថូខឹន OAUTH ទេ)។ ចាំបាច់សម្រាប់ទាញយកឆានែលនិងបញ្ជីចាក់។"
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "បញ្ចូលសោ API (ចាប់ផ្ដើមដោយ aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "សោ API របស់ Scrape creators"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "សោជាជម្រើសសម្រាប់សេវាប្រតិចារិក scrapecreators។ ពេលកំណត់រួច វាត្រូវប្រើជាវិធីប្រតិចារិកចម្បង។ ទទួលសោឥតគិតថ្លៃនៅ app.scrapecreators.com (ឥតគិតថ្លៃ 100 សំណើ)។ ណែនាំឱ្យប្រើដើម្បីទទួលប្រតិចារិកដែលអាចទុកចិត្តបាន ព្រោះការទាញដោយផ្ទាល់ពី YouTube នឹងខូចរាល់ពេល YouTube ប្ដូរវិធីផ្ដល់អក្សររត់។"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "បញ្ចូលសោ API របស់ scrapecreators"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "សោ API របស់ Supa data"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "សោជាជម្រើសសម្រាប់សេវាប្រតិចារិក supadata។ ពេលកំណត់រួច វាត្រូវប្រើជាវិធីប្រតិចារិកចម្បង (បើគ្មានសោ scrapecreators)។ ទទួលសោនៅ supadata.ai។"
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "បញ្ចូលសោ supadata"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "ភាសាបកប្រែ"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "កូដភាសាគោលដៅសម្រាប់ការបកប្រែ (ឧ. en, es, fr, de)។ ប្រើ “en” ដើម្បីរក្សាខ្លឹមសារជាភាសាអង់គ្លេស។"
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "បញ្ចូលកូដភាសា"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "ប្រទេសបកប្រែ"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "កូដប្រទេស/តំបន់គោលដៅសម្រាប់ការបកប្រែ (ឧ. us, gb, ca)។ ប្រើសម្រាប់ភាសាបំណែកតាមតំបន់។"
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "ម៉ូដែលភាសា"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "ជ្រើសអ្នកផ្ដល់សេវា AI បញ្ចូលសោ API របស់វា រួចជ្រើសម៉ូដែល។ temperature គ្រប់គ្រងភាពច្នៃប្រឌិត ចំណែក max tokens កំណត់ប្រវែងលទ្ធផល។ ណែនាំសម្រាប់អ្នកប្រើភាគច្រើន៖ អ្នកផ្ដល់សេវា Google ជាមួយម៉ូដែល gemini-2.5-flash — លឿន ថោក និងគុណភាពល្អ។ បើជួបដែនកំណត់អត្រា ឬបញ្ហាភាពជឿជាក់ OpenRouter ជាជម្រើសបម្រុងដ៏រឹងមាំ។"
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "អ្នកផ្ដល់សេវា"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "អ្នកផ្ដល់សេវាដែលប្រើសម្រាប់សង្ខេប។ ណែនាំ OpenRouter ព្រោះជឿជាក់ជាង ចំណែកកម្រិត Gemini ថោកអាចត្រូវកំណត់អត្រា។"
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "សោ API របស់ {provider}"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "រក្សាទុកក្នុងឃ្លាំងសម្ងាត់របស់ Obsidian មិនមែនក្នុងទិន្នន័យកម្មវិធីជំនួយទេ។"
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "URL របស់ម៉ាស៊ីនបម្រើ រក្សាទុកក្នុងទិន្នន័យកម្មវិធីជំនួយ។"
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "ម៉ូដែលរបស់ {provider}"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "ជ្រើសម៉ូដែលកំណត់ជាមុន ឬវាយឈ្មោះម៉ូដែលផ្ទាល់ខ្លួននៅខាងក្រោម។"
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "ប្រើម៉ូដែលផ្ទាល់ខ្លួន"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "ធ្វើឱ្យបញ្ជីម៉ូដែលរបស់ {provider} ស្រស់ឡើងវិញ"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "ឈ្មោះម៉ូដែលផ្ទាល់ខ្លួន"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "ប៉ារ៉ាម៉ែត្រម៉ូដែល ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "ប៉ារ៉ាម៉ែត្រម៉ូដែលផ្ទាល់ខ្លួន ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "ប៉ារ៉ាម៉ែត្រម៉ូដែល ({provider}) — ជំនួស"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "ចាំបាច់៖ ម៉ូដែលនេះមិនមានក្នុងបញ្ជីទេ — សូមកំណត់បង្អួចបរិបទ លទ្ធផលអតិបរមា និងភាគរយបម្រុង ដើម្បីឱ្យថវិកាថូខឹនអាចវាស់ទំហំសំណើដោយសុវត្ថិភាព។"
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "ទាំងនេះជាដែនកំណត់ថូខឹនរបស់ម៉ូដែលនេះ បំពេញជាមុនពីទិន្នន័យដែលដឹង។ កែវាលណាមួយដើម្បីជំនួសវាសម្រាប់អ្នកផ្ដល់សេវានិងម៉ូដែលនេះ។"
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "បង្អួចបរិបទ (ពាន់ថូខឹន)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "បង្អួចបរិបទសរុបគិតជាពាន់ថូខឹន (ឧ. 400 សម្រាប់ 400k ថូខឹន)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "លទ្ធផលអតិបរមា (ពាន់ថូខឹន)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "ចំនួនថូខឹនលទ្ធផលអតិបរមាគិតជាពាន់ (ឧ. 128 សម្រាប់ 128k ថូខឹន)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "ធាតុចូលអតិបរមា (ពាន់ថូខឹន) - ជាជម្រើស"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "ដែនកំណត់ធាតុចូលច្បាស់លាស់ បើអ្នកលក់ប្រកាស (ទុកទទេដើម្បីគណនាស្វ័យប្រវត្តិ)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "ភាគរយបម្រុង"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "ទុនបម្រុងសុវត្ថិភាពសម្រាប់ថូខឹនលទ្ធផល (0.10 = 10% លំនាំដើម៖ {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "សីតុណ្ហភាព"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "គ្រប់គ្រងភាពចៃដន្យនៃលទ្ធផល (0-1)។ ទាបជាងផ្ដោតជាង ខ្ពស់ជាងច្នៃប្រឌិតជាង។ តម្លៃបច្ចុប្បន្ន៖ {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "ទម្រង់កំណត់ត្រា"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "ដាក់កាលបរិច្ឆេទពីមុខចំណងជើងកំណត់ត្រា"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "បន្ថែមកាលបរិច្ឆេទដោយស្វ័យប្រវត្តិនៅដើមឈ្មោះឯកសារកំណត់ត្រា"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "ទម្រង់កាលបរិច្ឆេទ"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "ទម្រង់កាលបរិច្ឆេទដែលដាក់ពីមុខចំណងជើងកំណត់ត្រា"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "ការណែនាំ"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "ការណែនាំសម្រាប់សង្ខេបរហ័ស"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "ការណែនាំសម្រាប់សង្ខេបលម្អិត"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "កំណត់ឡើងវិញជាលំនាំដើម"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "ការណែនាំប្រព័ន្ធ (សង្ខេបរហ័ស)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "សេចក្ដីណែនាំអំពីឥរិយាបថរបស់ម៉ូដែលភាសាពេលបង្កើតសង្ខេបរហ័ស"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "អ្នកគឺជាជំនួយការដ៏មានប្រយោជន៍…"
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "ការណែនាំអ្នកប្រើ (សង្ខេបរហ័ស)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "សេចក្ដីណែនាំជាក់លាក់សម្រាប់សង្ខេបប្រតិចារិកឱ្យរហ័សនិងខ្លី"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "សូមសង្ខេបប្រតិចារិក YouTube ខាងក្រោម…"
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "ការណែនាំប្រព័ន្ធ (សង្ខេបលម្អិត)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "សេចក្ដីណែនាំអំពីឥរិយាបថរបស់ម៉ូដែលភាសាពេលបង្កើតសង្ខេបលម្អិតនិងគ្រប់ជ្រុងជ្រោយ"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "អ្នកគឺជាជំនួយការវិភាគ…"
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "ការណែនាំអ្នកប្រើ (សង្ខេបលម្អិត)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "សេចក្ដីណែនាំជាក់លាក់សម្រាប់បង្កើតកំណត់ត្រាលម្អិតនិងមានរចនាសម្ព័ន្ធពីប្រតិចារិក"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "ពីប្រតិចារិកខាងក្រោម សូមបង្កើតកំណត់ត្រាលម្អិតនិងមានរចនាសម្ព័ន្ធ…"
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "របៀបសង្ខេបលំនាំដើម"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "ជ្រើសរបៀបសង្ខេបដែលត្រូវប្រើពេលកម្មវិធីជំនួយចាប់ផ្ដើម។ របៀបសង្ខេបរហ័សរំលងតំណត្រាពេលវេលា ដើម្បីដំណើរការឱ្យលឿនជាង។"
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "សង្ខេបលម្អិត (ពិស្ដារ)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "សង្ខេបរហ័ស (ខ្លី)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "បន្ថែមតំណត្រាពេលវេលា YouTube"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "បន្ថែមតំណនៅចំណងជើងផ្នែកមានលេខនីមួយៗ ដែលលោតទៅត្រាពេលវេលាត្រូវគ្នាក្នុងវីដេអូ YouTube (ចំណាំ៖ បិទក្នុងរបៀបសង្ខេបរហ័ស)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "ពេលបើក វាបន្ថយថូខឹនជុំទីមួយ 12% ដើម្បីទុកកន្លែងសម្រាប់តំណ។ បិទដោយស្វ័យប្រវត្តិក្នុងរបៀបសង្ខេបរហ័ស។"
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "កម្រិតខ្ពស់"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "ការកំណត់កម្រិតខ្ពស់សម្រាប់បំបាត់កំហុសនិងដោះស្រាយបញ្ហា។ បើកកំណត់ហេតុបំបាត់កំហុស ដើម្បីភ្ជាប់ព័ត៌មានលម្អិតទៅកំណត់ត្រានីមួយៗសម្រាប់ជំនួយបច្ចេកទេស។"
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "បើកកំណត់ហេតុបំបាត់កំហុស"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "បើកកំណត់ហេតុបំបាត់កំហុសលម្អិត។ ពេលបើក ព័ត៌មានបំបាត់កំហុសនឹងភ្ជាប់ទៅកំណត់ត្រានីមួយៗជាប្រអប់កំណត់សម្គាល់លាក់ ដើម្បីដោះស្រាយបញ្ហា។"
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "ពេលបើក ព័ត៌មានបំបាត់កំហុសនឹងត្រូវប្រមូលនិងបន្ថែមទៅកំណត់ត្រាជាប្រអប់កំណត់សម្គាល់លាក់ ជំនួសឱ្យការកត់ត្រាទៅកុងសូល។"
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "អាជ្ញាបណ្ណកម្មវិធីជំនួយប្រតិចារិក YouTube របស់ Tubesage"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "មិនអាចផ្ទុកឯកសារអាជ្ញាបណ្ណបានទេ។ សូមពិនិត្យថាឯកសារអាជ្ញាបណ្ណមាននៅក្នុងថតកម្មវិធីជំនួយរបស់អ្នក។"
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "ត្រូវការការទទួលយកអាជ្ញាបណ្ណ"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "អ្នកត្រូវទទួលយកអាជ្ញាបណ្ណកម្មវិធីជំនួយមុននឹងប្រើមុខងារនេះ។"
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "សូមចូលទៅការកំណត់កម្មវិធីជំនួយ ហើយទទួលយកលក្ខខណ្ឌអាជ្ញាបណ្ណដើម្បីបន្ត។"
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "របៀបទទួលយកអាជ្ញាបណ្ណ៖"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "បើកការកំណត់របស់ Obsidian"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "រំកិលចុះទៅផ្នែកកម្មវិធីជំនួយសហគមន៍នៅរបារចំហៀង"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "រក “Tubesage” ក្នុងបញ្ជីកម្មវិធីជំនួយសហគមន៍"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "ចុចការកំណត់កម្មវិធីជំនួយ “Tubesage”"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "បើក “ទទួលយកអាជ្ញាបណ្ណនិងសេចក្ដីបដិសេធ” ដើម្បីដំណើរការកម្មវិធីជំនួយ"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "បើកការកំណត់កម្មវិធីជំនួយ"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — បោះបង់ពី “Show active jobs”"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "កំពុងទាញប្រតិចារិក"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "កំពុងសង្ខេបប្រតិចារិក"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "កំពុងបង្កើតកំណត់ត្រា"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "កំពុងបន្ថែមត្រាពេលវេលា"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "កំពុងបកប្រែកំណត់ត្រា"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "កំពុងដំណើរការវីដេអូ"
+    }
+}

@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "সক্রিয়"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "নিষ্ক্রিয়"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "বন্ধ করুন"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "উন্নয়নে সহায়তা"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "এই প্লাগইনটি কাজে লাগলে এর উন্নয়নে সহায়তা করার কথা ভাবুন:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…এবং একটি বড় স্বপ্নের বীজ বুনতে সাহায্য করুন: প্রযুক্তি যা মানুষ ও গ্রহের সেবা করে।"
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "লাইসেন্স ও দাবিত্যাগ"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "লাইসেন্স ও দাবিত্যাগ দেখুন"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "লাইসেন্স ও দাবিত্যাগ গ্রহণ করুন"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "readme দেখুন"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "টেমপ্লেট"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Templater প্লাগইনের টেমপ্লেট ফাইল"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "ব্যবহারের জন্য Templater প্লাগইনের টেমপ্লেট ফাইলের পথ"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "টেমপ্লেট ফাইল খুঁজুন"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "উদাহরণ "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "উদাহরণ টেমপ্লেট দেখুন"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "প্রতিলিপি"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "প্রতিলিপির সেটিংস ঠিক করে আপনার নোট কীভাবে ও কোথায় সংরক্ষিত হবে, কোন YouTube data API কী ব্যবহার হবে (চ্যানেল ও প্লেলিস্টের জন্য প্রয়োজনীয়) এবং ঐচ্ছিক অনুবাদ প্যারামিটার।"
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "প্রতিলিপির মূল ফোল্ডার"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "যে মূল ফোল্ডারে প্রতিলিপির সাবফোল্ডার সাজানো হবে (যেমন inbox, notes ইত্যাদি)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "YouTube data API কী"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "সর্বজনীন YouTube প্রতিলিপিতে প্রবেশের জন্য আপনার Google cloud console API কী (OAUTH টোকেন নয়)। চ্যানেল ও প্লেলিস্ট ডাউনলোডের জন্য প্রয়োজনীয়।"
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "API কী লিখুন (aiza দিয়ে শুরু)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Scrape creators API কী"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "scrapecreators প্রতিলিপি পরিষেবার ঐচ্ছিক কী। নির্ধারিত হলে এটিই প্রধান পদ্ধতি হিসেবে ব্যবহৃত হয়। app.scrapecreators.com থেকে বিনামূল্যে কী নিন (100টি অনুরোধ বিনামূল্যে)। নির্ভরযোগ্য প্রতিলিপির জন্য সুপারিশ করা হয়; YouTube ক্যাপশন সরবরাহের ধরন বদলালে সরাসরি নিষ্কাশন ভেঙে যায়।"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "scrapecreators API কী লিখুন"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Supa data API কী"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "supadata প্রতিলিপি পরিষেবার ঐচ্ছিক কী। নির্ধারিত হলে এটিই প্রধান পদ্ধতি হিসেবে ব্যবহৃত হয় (scrapecreators কী না থাকলে)। supadata.ai থেকে কী নিন।"
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "supadata কী লিখুন"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "অনুবাদের ভাষা"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "অনুবাদের লক্ষ্য ভাষার কোড (যেমন en, es, fr, de)। বিষয়বস্তু ইংরেজিতে রাখতে “en” ব্যবহার করুন।"
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "ভাষার কোড লিখুন"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "অনুবাদের দেশ"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "অনুবাদের লক্ষ্য দেশ বা অঞ্চলের কোড (যেমন us, gb, ca)। অঞ্চলভিত্তিক ভাষার রূপভেদে ব্যবহৃত হয়।"
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "ভাষা মডেল"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "একটি AI সরবরাহকারী বাছুন, তার API কী দিন এবং একটি মডেল নির্বাচন করুন। temperature সৃজনশীলতা নিয়ন্ত্রণ করে; max tokens আউটপুটের দৈর্ঘ্য সীমিত করে। অধিকাংশ ব্যবহারকারীর জন্য সুপারিশ: Google সরবরাহকারী ও gemini-2.5-flash মডেল — দ্রুত, সস্তা ও উচ্চমানের। হার সীমা বা নির্ভরযোগ্যতার সমস্যা হলে OpenRouter ভালো বিকল্প।"
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "সরবরাহকারী"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "সারাংশের জন্য ব্যবহৃত সরবরাহকারী। নির্ভরযোগ্যতার জন্য OpenRouter সুপারিশ করা হয়; কম খরচের Gemini স্তরে গতি কমানো হতে পারে।"
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "{provider} API কী"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Obsidian-এর গোপন সংরক্ষণে রাখা হয়, প্লাগইন ডেটায় নয়।"
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "সার্ভারের URL, প্লাগইন ডেটায় সংরক্ষিত।"
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "{provider} মডেল"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "একটি প্রস্তুত মডেল বাছুন অথবা নিচে নিজের মডেলের নাম লিখুন।"
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "নিজের মডেল ব্যবহার করুন"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "{provider} মডেলের তালিকা রিফ্রেশ করুন"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "নিজের মডেলের নাম"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "মডেল প্যারামিটার ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "নিজস্ব মডেলের প্যারামিটার ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "মডেল প্যারামিটার ({provider}) — ওভাররাইড"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "আবশ্যক: এই মডেলটি রেজিস্ট্রিতে নেই — কনটেক্সট উইন্ডো, সর্বোচ্চ আউটপুট ও সংরক্ষিত শতাংশ ঠিক করুন যাতে টোকেন হিসাব নিরাপদে হয়।"
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "এগুলি এই মডেলের টোকেন সীমা, জানা তথ্য থেকে পূরণ করা। এই সরবরাহকারী ও মডেলের জন্য বদলাতে কোনো ঘর সম্পাদনা করুন।"
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "কনটেক্সট উইন্ডো (k টোকেন)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "হাজার টোকেনে মোট কনটেক্সট উইন্ডো (যেমন 400k টোকেনের জন্য 400)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "সর্বোচ্চ আউটপুট (k টোকেন)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "হাজারে সর্বোচ্চ আউটপুট টোকেন (যেমন 128k টোকেনের জন্য 128)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "সর্বোচ্চ ইনপুট (k টোকেন) - ঐচ্ছিক"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "সরবরাহকারী প্রকাশ করলে স্পষ্ট ইনপুট সীমা (স্বয়ংক্রিয় হিসাবের জন্য ফাঁকা রাখুন)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "সংরক্ষিত শতাংশ"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "আউটপুট টোকেনের নিরাপত্তা সংরক্ষণ (0.10 = 10%, পূর্বনির্ধারিত: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "টেম্পারেচার"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "আউটপুটের এলোমেলোভাব নিয়ন্ত্রণ করে (0-1)। কম মান বেশি নিবদ্ধ, বেশি মান বেশি সৃজনশীল। বর্তমান মান: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "নোটের বিন্যাস"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "নোটের শিরোনামের আগে তারিখ যোগ করুন"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "নোট ফাইলের নামের শুরুতে স্বয়ংক্রিয়ভাবে তারিখ যোগ করুন"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "তারিখের বিন্যাস"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "নোটের শিরোনামের আগে বসানো তারিখের বিন্যাস"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "প্রম্পট"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "দ্রুত সারাংশের প্রম্পট"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "বিস্তারিত সারাংশের প্রম্পট"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "পূর্বনির্ধারিতে ফিরুন"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "সিস্টেম প্রম্পট (দ্রুত সারাংশ)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "দ্রুত সারাংশ তৈরির সময় llms-এর আচরণের নির্দেশনা"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "আপনি একজন সহায়ক সহকারী..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "ব্যবহারকারীর প্রম্পট (দ্রুত সারাংশ)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "প্রতিলিপি দ্রুত ও সংক্ষেপে সারাংশ করার সুনির্দিষ্ট নির্দেশনা"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "নিচের YouTube প্রতিলিপির সারাংশ করুন..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "সিস্টেম প্রম্পট (বিস্তারিত সারাংশ)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "বিশদ ও সর্বাঙ্গীণ সারাংশ তৈরির সময় llms-এর আচরণের নির্দেশনা"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "আপনি একজন বিশ্লেষণী সহকারী..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "ব্যবহারকারীর প্রম্পট (বিস্তারিত সারাংশ)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "প্রতিলিপি থেকে বিশদ ও কাঠামোবদ্ধ নোট তৈরির সুনির্দিষ্ট নির্দেশনা"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "নিচের প্রতিলিপি থেকে বিশদ ও কাঠামোবদ্ধ নোট তৈরি করুন..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "পূর্বনির্ধারিত সারাংশ মোড"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "প্লাগইন চালু হলে যে সারাংশ মোড ব্যবহার হবে তা বাছুন। দ্রুত সারাংশ মোড দ্রুত প্রক্রিয়াকরণের জন্য টাইমস্ট্যাম্প লিঙ্ক বাদ দেয়।"
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "বিস্তারিত সারাংশ (বিশদ)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "দ্রুত সারাংশ (সংক্ষিপ্ত)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "YouTube টাইমস্ট্যাম্প লিঙ্ক যোগ করুন"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "প্রতিটি সংখ্যাযুক্ত বিভাগের শিরোনামে এমন লিঙ্ক যোগ করুন যা YouTube ভিডিওর সংশ্লিষ্ট টাইমস্ট্যাম্পে নিয়ে যায় (দ্রষ্টব্য: দ্রুত সারাংশ মোডে নিষ্ক্রিয়)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "সক্রিয় থাকলে লিঙ্কের জায়গা করতে প্রথম ধাপের টোকেন 12% কমায়। দ্রুত সারাংশ মোডে স্বয়ংক্রিয়ভাবে নিষ্ক্রিয় হয়।"
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "উন্নত"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "ডিবাগিং ও সমস্যা সমাধানের উন্নত সেটিংস। কারিগরি সহায়তার জন্য প্রতিটি নোটে বিশদ তথ্য যোগ করতে ডিবাগ লগিং সক্রিয় করুন।"
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "ডিবাগ লগিং সক্রিয় করুন"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "বিশদ ডিবাগ লগ সক্রিয় করুন। সক্রিয় থাকলে সমস্যা সমাধানের জন্য ডিবাগ তথ্য প্রতিটি নোটে লুকানো কলআউট হিসেবে যোগ হবে।"
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "সক্রিয় থাকলে ডিবাগ তথ্য কনসোলে না লিখে সংগ্রহ করে নোটে লুকানো কলআউট হিসেবে যোগ করা হবে।"
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Tubesage YouTube প্রতিলিপি প্লাগইনের লাইসেন্স"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "লাইসেন্স ফাইল লোড করা যায়নি। আপনার প্লাগইন ডিরেক্টরিতে লাইসেন্স ফাইল আছে কি না দেখুন।"
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "লাইসেন্স গ্রহণ আবশ্যক"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "এই সুবিধা ব্যবহারের আগে আপনাকে প্লাগইনের লাইসেন্স গ্রহণ করতে হবে।"
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "চালিয়ে যেতে প্লাগইন সেটিংসে গিয়ে লাইসেন্সের শর্ত গ্রহণ করুন।"
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "লাইসেন্স যেভাবে গ্রহণ করবেন:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Obsidian সেটিংস খুলুন"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "সাইডবারে কমিউনিটি প্লাগইন বিভাগে নিচে যান"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "কমিউনিটি প্লাগইনের তালিকায় “Tubesage” খুঁজুন"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "“Tubesage” প্লাগইনের সেটিংসে ক্লিক করুন"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "প্লাগইন চালু করতে “লাইসেন্স ও দাবিত্যাগ গ্রহণ করুন” টগল করুন"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "প্লাগইন সেটিংস খুলুন"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — “Show active jobs” থেকে বাতিল করুন"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "প্রতিলিপি আনা হচ্ছে"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "প্রতিলিপির সারাংশ হচ্ছে"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "নোট তৈরি হচ্ছে"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "টাইমস্ট্যাম্প যোগ হচ্ছে"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "নোট অনুবাদ হচ্ছে"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "ভিডিও প্রক্রিয়া হচ্ছে"
+    }
+}

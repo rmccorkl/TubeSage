@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "فعال"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "غیرفعال"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "بستن"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "حمایت از توسعه"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "اگر این افزونه برایتان مفید است، از توسعهٔ آن حمایت کنید:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…و به پرورش چشم‌اندازی بزرگ‌تر کمک کنید: فناوری‌ای در خدمت مردم و کرهٔ زمین.."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "مجوز و سلب مسئولیت"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "نمایش مجوز و سلب مسئولیت"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "پذیرش مجوز و سلب مسئولیت"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "نمایش README"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "قالب‌ها"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "فایل قالب افزونهٔ Templater"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "مسیر فایل قالب افزونهٔ Templater که باید استفاده شود"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "مرور برای فایل قالب"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "نمونه "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "نمایش قالب نمونه"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "رونوشت‌ها"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "تنظیمات رونوشت تعیین می‌کند یادداشت‌های استخراج‌شده چگونه و کجا ذخیره شوند، کدام کلید YouTube data API به کار رود (برای پردازش کانال و فهرست پخش لازم است) و چه پارامترهای اختیاری ترجمه‌ای اعمال شود."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "پوشهٔ ریشهٔ رونوشت‌ها"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "پوشهٔ ریشه‌ای که زیرپوشه‌های رونوشت در آن سازمان‌دهی می‌شوند (مثلاً inbox، notes و…)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "کلید YouTube data API"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "کلید API شما در Google cloud console برای دسترسی به رونوشت‌های عمومی YouTube (نه توکن OAUTH). برای دانلود کانال‌ها و فهرست‌های پخش لازم است."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "کلید API را وارد کنید (با aiza آغاز می‌شود)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "کلید Scrape creators API"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "کلید اختیاری برای سرویس رونوشت scrapecreators. در صورت تنظیم، به‌عنوان روش اصلی رونوشت استفاده می‌شود. کلید رایگان را از app.scrapecreators.com بگیرید (100 درخواست رایگان). برای دریافت مطمئن رونوشت توصیه می‌شود؛ استخراج مستقیم از YouTube وقتی YouTube شیوهٔ ارائهٔ زیرنویس را تغییر دهد از کار می‌افتد."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "کلید scrapecreators API را وارد کنید"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "کلید Supa data API"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "کلید اختیاری برای سرویس رونوشت supadata. در صورت تنظیم، به‌عنوان روش اصلی رونوشت استفاده می‌شود (اگر کلید scrapecreators نباشد). کلید را از supadata.ai بگیرید."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "کلید supadata را وارد کنید"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "زبان ترجمه"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "کد زبان مقصد برای ترجمه (مثلاً en، es، fr، de). برای نگه‌داشتن محتوا به انگلیسی از «en» استفاده کنید."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "کد زبان را وارد کنید"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "کشور ترجمه"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "کد کشور/منطقهٔ مقصد برای ترجمه (مثلاً us، gb، ca). برای گونه‌های زبانی ویژهٔ هر منطقه به کار می‌رود."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "مدل زبانی"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "یک ارائه‌دهندهٔ هوش مصنوعی انتخاب کنید، کلید API آن را وارد کنید و مدلی برگزینید. temperature خلاقیت را کنترل می‌کند و max tokens طول خروجی را محدود می‌کند. پیشنهاد برای بیشتر کاربران: ارائه‌دهندهٔ Google با مدل gemini-2.5-flash — سریع، کم‌هزینه و باکیفیت. اگر به محدودیت نرخ یا مشکل پایداری برخوردید، OpenRouter جایگزین مطمئنی است."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "ارائه‌دهنده"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "ارائه‌دهنده‌ای که برای خلاصه‌سازی به کار می‌رود. OpenRouter برای پایداری توصیه می‌شود؛ رده‌های ارزان‌تر Gemini ممکن است محدود شوند."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "کلید API {provider}"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "در فضای ذخیرهٔ اسرار Obsidian نگهداری می‌شود، نه در داده‌های افزونه."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "نشانی URL سرور، در داده‌های افزونه ذخیره می‌شود."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "مدل {provider}"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "یک مدل آماده انتخاب کنید یا نام مدل دلخواه را در زیر بنویسید."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "استفاده از مدل دلخواه"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "تازه‌سازی فهرست مدل‌های {provider}"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "نام مدل دلخواه"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "پارامترهای مدل ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "پارامترهای مدل دلخواه ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "پارامترهای مدل ({provider}) — بازنویسی"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "لازم است: این مدل در فهرست ثبت‌شده نیست — پنجرهٔ زمینه، بیشینهٔ خروجی و درصد ذخیره % را تنظیم کنید تا بودجه‌بندی توکن بتواند اندازهٔ درخواست‌ها را ایمن تعیین کند."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "این‌ها حدود توکن همین مدل است که از داده‌های شناخته‌شده پیش‌پر شده‌اند. برای بازنویسی آن برای این ارائه‌دهنده و مدل، هر فیلد را ویرایش کنید."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "پنجرهٔ زمینه (هزار توکن)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "کل پنجرهٔ زمینه به هزار توکن (مثلاً 400 برای 400k توکن)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "بیشینهٔ خروجی (هزار توکن)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "بیشینهٔ توکن‌های خروجی به هزار (مثلاً 128 برای 128k توکن)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "بیشینهٔ ورودی (هزار توکن) - اختیاری"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "سقف صریح ورودی اگر سازنده اعلام کرده باشد (برای محاسبهٔ خودکار خالی بگذارید)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "درصد ذخیره"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "ذخیرهٔ ایمنی برای توکن‌های خروجی (0.10 = 10%، پیش‌فرض: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "دما"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "تصادفی‌بودن خروجی را کنترل می‌کند (0-1). کمتر یعنی متمرکزتر و بیشتر یعنی خلاقانه‌تر. مقدار کنونی: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "قالب یادداشت"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "افزودن تاریخ به ابتدای عنوان یادداشت"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "تاریخ به‌طور خودکار به ابتدای نام فایل یادداشت‌ها افزوده می‌شود"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "قالب تاریخ"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "قالب تاریخی که پیش از عنوان یادداشت‌ها می‌آید"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "پرامپت‌ها"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "پرامپت‌های خلاصهٔ سریع"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "پرامپت‌های خلاصهٔ گسترده"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "بازنشانی به پیش‌فرض"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "پرامپت سیستم (خلاصهٔ سریع)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "دستورهای رفتار مدل‌های زبانی هنگام ساخت خلاصه‌های سریع"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "تو یک دستیار یاری‌رسان هستی..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "پرامپت کاربر (خلاصهٔ سریع)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "دستورهای مشخص برای خلاصه‌کردن سریع و فشردهٔ رونوشت"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "لطفاً رونوشت YouTube زیر را خلاصه کن..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "پرامپت سیستم (خلاصهٔ گسترده)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "دستورهای رفتار مدل‌های زبانی هنگام ساخت خلاصه‌های مفصل و جامع"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "تو یک دستیار تحلیلگر هستی..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "پرامپت کاربر (خلاصهٔ گسترده)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "دستورهای مشخص برای ساخت یادداشت‌های مفصل و ساختارمند از رونوشت"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "از رونوشت زیر یادداشت‌های مفصل و ساختارمند بساز..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "حالت خلاصهٔ پیش‌فرض"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "حالت خلاصهٔ پیش‌فرض هنگام آغاز افزونه را انتخاب کنید. حالت خلاصهٔ سریع برای پردازش سریع‌تر، پیوندهای زمانی را نادیده می‌گیرد."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "خلاصهٔ گسترده (مفصل)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "خلاصهٔ سریع (کوتاه)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "افزودن پیوندهای زمانی YouTube"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "به هر عنوان بخش شماره‌دار پیوندی افزوده می‌شود که به زمان متناظر در ویدیوی YouTube می‌رود (توجه: در حالت خلاصهٔ سریع غیرفعال است)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "وقتی فعال باشد، توکن‌های گذر نخست را 12% کم می‌کند تا جا برای پیوندها باز شود. در حالت خلاصهٔ سریع خودبه‌خود غیرفعال می‌شود."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "پیشرفته"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "تنظیمات پیشرفته برای اشکال‌زدایی و رفع مشکل. برای افزوده‌شدن اطلاعات مفصل به هر یادداشت جهت پشتیبانی فنی، ثبت اشکال‌زدایی را فعال کنید."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "فعال‌کردن ثبت اشکال‌زدایی"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "ثبت گزارش‌های مفصل اشکال‌زدایی. وقتی فعال باشد، اطلاعات اشکال‌زدایی به‌صورت کال‌اوت پنهان به هر یادداشت افزوده می‌شود."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "وقتی فعال باشد، اطلاعات اشکال‌زدایی گردآوری و به‌صورت کال‌اوت پنهان به یادداشت‌ها افزوده می‌شود، به‌جای ثبت در کنسول."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "مجوز افزونهٔ Tubesage برای رونوشت YouTube"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "فایل مجوز بارگذاری نشد. بررسی کنید که فایل مجوز در پوشهٔ افزونه وجود داشته باشد."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "پذیرش مجوز لازم است"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "پیش از استفاده از این قابلیت باید مجوز افزونه را بپذیرید."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "برای ادامه، به تنظیمات افزونه بروید و شرایط مجوز را بپذیرید."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "روش پذیرش مجوز:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "تنظیمات Obsidian را باز کنید"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "در نوار کناری تا بخش افزونه‌های انجمن پایین بروید"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "«Tubesage» را در فهرست افزونه‌های انجمن پیدا کنید"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "روی تنظیمات افزونهٔ «Tubesage» کلیک کنید"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "برای فعال‌کردن افزونه «پذیرش مجوز و سلب مسئولیت» را روشن کنید"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "گشودن تنظیمات افزونه"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — لغو از «Show active jobs»"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "در حال دریافت رونوشت"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "در حال خلاصه‌کردن رونوشت"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "در حال ساخت یادداشت"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "در حال افزودن زمان‌ها"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "در حال ترجمهٔ یادداشت"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "در حال پردازش ویدیو"
+    }
+}

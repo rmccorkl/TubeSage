@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Yermed"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Yensa"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Mdel"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Ɛiwen asnerni"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Ma yella asiɣzef-agi yesɛa azal ɣur-k, xemmem ad tɛiwneḍ asnerni-ines:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…tɛiwneḍ daɣen ad nezreɛ tamuɣli tameqqrant: tatiknulujit i iqeddcen ɣef yemdanen d umtiweg."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Turagt & tukksa n tmasit"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Wali turagt & tukksa n tmasit"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Qbel turagt & tukksa n tmasit"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Wali readme"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Timudemin"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Afaylu n tmudemt n usiɣzef Templater"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Abrid ɣer ufaylu n tmudemt n usiɣzef Templater ara nesseqdec"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Nadi afaylu n tmudemt"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Amedya "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Wali tamudemt n umedya"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Iḍrisen"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "Iɣewwaṛen n yiḍrisen ttwalin amek d anida ttwaḥerzen tezmilin-ik, tasarut API n yisefka YouTube ara nesseqdec (tilaq i yibuddar d tebdarin n turart), d iɣewwaṛen ifrayanen n usuqqel."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Akaram aẓar n yiḍrisen"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "Akaram aẓar anda ara ttwaseggmen ikaramen i d-izeddin n yiḍrisen (am inbox, notes atg.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "Tasarut API n yisefka YouTube"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "Tasarut-ik API n Google cloud console i unekcum ɣer yiḍrisen izuyaz n YouTube (mačči d ajiṭun OAUTH). Tilaq i usader n yibuddar d tebdarin n turart."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Sekcem tasarut API (tebdu s aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Tasarut API n Scrape creators"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Tasarut tafrayant i umeẓlu n yiḍrisen scrapecreators. Ticki tettusbadu, tettuseqdac d tarrayt tagejdant. Awi tasarut baṭel deg app.scrapecreators.com (100 n yisutar baṭel). Tettwawelleh i yiḍrisen iṣeḥḥan; asekcem usrid seg YouTube yerreẓ ticki YouTube ibeddel amek i d-yettak iḍrisen n ddaw."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Sekcem tasarut API scrapecreators"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Tasarut API n Supa data"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Tasarut tafrayant i umeẓlu n yiḍrisen supadata. Ticki tettusbadu, tettuseqdac d tarrayt tagejdant (ma ulac tasarut scrapecreators). Awi tasarut deg supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Sekcem tasarut supadata"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Tutlayt n usuqqel"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Tangalt n tutlayt tasaḍest i usuqqel (am en, es, fr, de). Seqdec «en» akken ad yeqqim ugbur s teglizit."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Sekcem tangalt n tutlayt"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Tamurt n usuqqel"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Tangalt n tmurt neɣ n temnaḍt tasaḍest i usuqqel (am us, gb, ca). Tettuseqdac i lqem n tutlayt s temnaḍt."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Tamudelt n tutlayt"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Fren amefki AI, sekcem tasarut-is API, syen fren tamudelt. Tazɣelt tseddu tasnulfut; amḍan afellay n ijitunen isewḥel teɣzi n tuffɣa. Yettwawelleh i tuget n yiseqdacen: amefki Google s tmudelt gemini-2.5-flash — arurad, arxis, yelha. Ma tmuger-d tilisa n trusi neɣ uguren n twuridt, OpenRouter d tifrat yelhan."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Amefki"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Amefki ara yesseqdec i ugzul. Yettwawelleh OpenRouter ɣef twuridt-is; iswiren irxisen n Gemini zemren ad ttwaḥebsen."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "Tasarut API n {provider}"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Yettwaḥrez deg uḥraz uffir n Obsidian, mačči deg yisefka n usiɣzef."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "URL n uqeddac, yettwaḥrez deg yisefka n usiɣzef."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "Tamudelt n {provider}"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Fren tamudelt tuheggit neɣ aru isem n tmudelt tudmawant ddaw-a."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Seqdec tamudelt tudmawant"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "Smiren tabdart n tmudelin n {provider}"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Isem n tmudelt tudmawant"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Iɣewwaṛen n tmudelt ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Iɣewwaṛen n tmudelt tudmawant ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Iɣewwaṛen n tmudelt ({provider}) — asnifel"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Ilaq: tamudelt-a ulac-itt deg ukaram — sbadu asfaylu n umnaḍ, tuffɣa tafellayt, d amḍan n uḥraz akken ad yili usmizeḍ n yijitunen s laman."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Ha-t-an ilisa n yijitunen n tmudelt-a, ččuren-d seg yisefka yettwassnen. Ẓreg urti akken ad t-tesnifleḍ i umefki d tmudelt-a."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Asfaylu n umnaḍ (k ijitunen)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Asfaylu n umnaḍ ummid s walfat n yijitunen (am 400 i 400k n yijitunen)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Tuffɣa tafellayt (k ijitunen)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Ijitunen n tuffɣa ufellay s walfat (am 128 i 128k n yijitunen)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Anekcum afellay (k ijitunen) - afrayan"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Talast tuzrirt n unekcum ma yella amefki yessufeɣ-itt (eǧǧ d ilem i usiḍen awurman)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Amḍan n uḥraz"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Aḥraz n tɣellist i yijitunen n tuffɣa (0.10 = 10%, amezwer: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Tazɣelt"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Yesseddu tarurbant n tuffɣa (0-1). Azal amejṭuḥ yettuẓẓig ugar, azal ameqqran yesnulfuy ugar. Azal amiran: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Amasal n tzemmilt"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Rnu azemz send azwel n tzemmilt"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Rnu s wudem awurman azemz deg tazwara n yismawen n yifuyla n tzemmilt"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Amasal n uzemz"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Amasal n uzemz i d-yettwarnan send izwal n tzemmilin"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Isuturen"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Isuturen n ugzul arurad"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Isuturen n ugzul usliɣ"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Err ɣer umezwer"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Asuter n unagraw (agzul arurad)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Iwellihen i tikli n llms ticki d-snulfuyen igzulen iruraden"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Kečč d amɛiwen i yettɛawanen..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Asuter n useqdac (agzul arurad)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Iwellihen ussiden i ugzul n uḍris s zzerb d tewzel"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Ttxil-k gzel aḍris YouTube i d-iteddun..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Asuter n unagraw (agzul usliɣ)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Iwellihen i tikli n llms ticki d-snulfuyen igzulen leqqayen d yemmden"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Kečč d amɛiwen asleḍan..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Asuter n useqdac (agzul usliɣ)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Iwellihen ussiden i tmerna n tzemmilin leqqayen d yesɣiwsen seg uḍris"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "Seg uḍris ddaw-a, snulfu-d tizemmilin leqqayen d yesɣiwsen..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Askar amezwer n ugzul"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Fren askar amezwer n ugzul ticki ibeddu usiɣzef. Askar arurad yettaǧǧa iseɣwan n tirect n wakud akken ad yezreb usesfer."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Agzul usliɣ (leqqay)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Agzul arurad (awezlan)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "Rnu iseɣwan n tirect n wakud YouTube"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Rnu i yal azwel n tigzi yettwaṭṭfen s umḍan aseɣwen ara yawin ɣer tirect n wakud yemṣadan deg tvidyut YouTube (tamawt: yensa deg uskar n ugzul arurad)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Ticki yermed, yesnaqas ijitunen n tikkelt tamezwarut s 12% akken ad yeǧǧ amkan i yiseɣwan. Yettensay s wudem awurman deg uskar n ugzul arurad."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Talqayt"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Iɣewwaṛen leqqayen i useɣti n tuccḍiwin. Rmed aɣmis n useɣti akken ad ternuḍ talɣut leqqayen i yal tazmilt i tallalt tatiknikt."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Rmed aɣmis n useɣti"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Rmed iɣmisen leqqayen n useɣti. Ticki yermed, talɣut n useɣti ad tettwarnu i yal tazmilt d tanaḍt tuffirt i useɣti n wuguren."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Ticki yermed, talɣut n useɣti ad d-tettwajmeɛ ad ternu ɣer tzemmilin d tanaḍt tuffirt, deg umkan n uɣmis ɣer tdiwennit."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Turagt n usiɣzef n yiḍrisen YouTube Tubesage"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "Ur yezmir ara ad d-yali ufaylu n turagt. Senqed ma yella ufaylu n turagt deg ukaram n usiɣzef-ik."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Ilaq uqbal n turagt"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Ilaq ad tqebleḍ turagt n usiɣzef send aseqdec n tmahilt-a."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Ddu ɣer yiɣewwaṛen n usiɣzef, tqebleḍ tiwtilin n turagt akken ad tkemmleḍ."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Amek ara tqebleḍ turagt:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Ldi Iɣewwaṛen n Obsidian"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Ader ɣer tigzi n yisiɣzaf n temɣiwent deg ufeggag idisan"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Nadi «Tubesage» deg tebdart n yisiɣzaf n temɣiwent"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Sit ɣef yiɣewwaṛen n usiɣzef «Tubesage»"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Rmed «Qbel turagt & tukksa n tmasit» akken ad yeddu usiɣzef"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Ldi iɣewwaṛen n usiɣzef"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — sefsex seg «Show active jobs»"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Awway n uḍris"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Agzul n uḍris"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Asnulfu n tzemmilt"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Timerna n tirectiwin n wakud"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Asuqqel n tzemmilt"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Asesfer n tvidyut"
+    }
+}

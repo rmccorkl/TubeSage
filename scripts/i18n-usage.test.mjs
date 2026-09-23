@@ -22,7 +22,7 @@ for (const file of readdirSync(localesDir)) {
   locales[file.slice(0, -".json".length)] = JSON.parse(readFileSync(join(localesDir, file), "utf8"));
 }
 
-const flatDir = join(localesDir, "flat");
+const flatDir = join(root, "locales");
 const flat = {};
 for (const file of readdirSync(flatDir)) {
   if (!file.endsWith(".json")) continue;
@@ -51,10 +51,10 @@ describe("i18n:check against the repository", () => {
     expect(problems.map((p) => p.message)).toEqual([]);
   });
 
-  it("keeps every shipped flat locale file exactly matching its paired translations", () => {
+  it("keeps every shipped locale file exactly matching its paired translations", () => {
     // Guards the second generated artifact locales.ts actually imports:
-    // src/locales/flat/<code>.json must equal { key: paired[key].translation }
-    // for every key of every shipped locale — a stale flat file, hand-edited
+    // locales/<code>.json must equal { key: paired[key].translation }
+    // for every key of every shipped locale — a stale shipped file, hand-edited
     // or left behind by a partial i18n:build, must fail here.
     const problems = checkLocales({ en, locales, flat, keysUsedInCode });
     const flatProblems = problems.filter((p) => p.code.startsWith("flat-"));

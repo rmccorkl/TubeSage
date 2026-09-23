@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Povoleno"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Zakázáno"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Zavřít"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Podpořit vývoj"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Pokud je pro vás tento plugin užitečný, zvažte podporu jeho vývoje:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…a pomozte zasít větší vizi: technologii, která slouží lidem i planetě."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Licence a vyloučení odpovědnosti"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Zobrazit licenci a vyloučení odpovědnosti"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Přijímám licenci a vyloučení odpovědnosti"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Zobrazit readme"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Šablony"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Soubor šablony pluginu Templater"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Cesta k souboru šablony pluginu Templater"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Vybrat soubor šablony"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Příklad "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Zobrazit ukázkovou šablonu"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Přepisy"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "Nastavení přepisů určuje, jak a kam se ukládají vytvořené poznámky, který klíč YouTube data API se použije (nutný pro kanály a playlisty) a volitelné parametry překladu."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Kořenová složka přepisů"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "Kořenová složka, ve které vzniknou podsložky přepisů (např. inbox, notes apod.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "Klíč YouTube data API"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "Váš klíč API z Google cloud console pro veřejné přepisy YouTube (nikoli token OAUTH). Nutný pro stahování kanálů a playlistů."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "Zadejte klíč API (začíná na aiza)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Klíč API Scrape creators"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "Volitelný klíč ke službě přepisů scrapecreators. Je-li zadán, použije se jako hlavní způsob získání přepisu. Klíč zdarma na app.scrapecreators.com (100 dotazů zdarma). Doporučeno pro spolehlivost; přímé stahování z YouTube selže, jakmile YouTube změní způsob poskytování titulků."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "Zadejte klíč API scrapecreators"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Klíč API Supa data"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "Volitelný klíč ke službě přepisů supadata. Je-li zadán, použije se jako hlavní způsob získání přepisu (není-li klíč scrapecreators). Klíč na supadata.ai."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "Zadejte klíč supadata"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Jazyk překladu"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Kód cílového jazyka překladu (např. en, es, fr, de). Zadejte „en“, chcete-li obsah ponechat anglicky."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Zadejte kód jazyka"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Země překladu"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Kód cílové země nebo regionu překladu (např. us, gb, ca). Slouží pro regionální varianty jazyka."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Jazykový model"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Vyberte poskytovatele AI, zadejte jeho klíč API a zvolte model. Teplota řídí kreativitu, maximum tokenů omezuje délku odpovědi. Pro většinu uživatelů: poskytovatel Google s modelem gemini-2.5-flash — rychlý, levný a kvalitní. Při limitech dotazů či potížích se spolehlivostí je dobrou náhradou OpenRouter."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Poskytovatel"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Poskytovatel použitý pro shrnutí. Pro spolehlivost doporučujeme OpenRouter; levnější úrovně Gemini bývají omezovány."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "Klíč API {provider}"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Uloženo v zabezpečeném úložišti Obsidian, nikoli v datech pluginu."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "Adresa URL serveru, uložená v datech pluginu."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "Model {provider}"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Vyberte přednastavený model nebo níže zadejte vlastní název modelu."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Použít vlastní model"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "Obnovit seznam modelů {provider}"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Vlastní název modelu"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Parametry modelu ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Parametry vlastního modelu ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Parametry modelu ({provider}) — přepsání"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Povinné: tento model není v registru — nastavte kontextové okno, maximální výstup a rezervu v %, aby bylo možné bezpečně plánovat tokeny."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Toto jsou limity tokenů tohoto modelu, předvyplněné ze známých dat. Úpravou pole je přepíšete pro tohoto poskytovatele a model."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Kontextové okno (tis. tokenů)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Celkové kontextové okno v tisících tokenů (např. 400 pro 400 tis.)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "Maximální výstup (tis. tokenů)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Maximální počet výstupních tokenů v tisících (např. 128 pro 128 tis.)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "Maximální vstup (tis. tokenů) — volitelné"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Výslovný limit vstupu, pokud jej dodavatel uvádí (prázdné = vypočítá se automaticky)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Procento rezervy"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Bezpečnostní rezerva pro výstupní tokeny (0.10 = 10 %, výchozí: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Teplota"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Řídí náhodnost výstupu (0–1). Nižší je soustředěnější, vyšší kreativnější. Aktuální hodnota: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Formát poznámky"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Datum před názvem poznámky"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Automaticky přidávat datum na začátek názvů souborů poznámek"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Formát data"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Formát data přidávaného před názvy poznámek"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "Prompty"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Prompty rychlého shrnutí"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Prompty rozsáhlého shrnutí"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Obnovit výchozí"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Systémový prompt (rychlé shrnutí)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Pokyny k chování modelu při rychlých shrnutích"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Jsi nápomocný asistent..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Uživatelský prompt (rychlé shrnutí)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Konkrétní pokyny, jak přepis shrnout rychle a stručně"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Shrň následující přepis z YouTube..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Systémový prompt (rozsáhlé shrnutí)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Pokyny k chování modelu při podrobných a vyčerpávajících shrnutích"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Jsi analytický asistent..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Uživatelský prompt (rozsáhlé shrnutí)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Konkrétní pokyny k vytvoření podrobných a strukturovaných poznámek z přepisu"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "Z následujícího přepisu vytvoř podrobné a strukturované poznámky..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Výchozí režim shrnutí"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Zvolte režim shrnutí, který se použije po spuštění pluginu. Rychlý režim vynechává odkazy na časové značky, a je proto rychlejší."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Rozsáhlé shrnutí (podrobné)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Rychlé shrnutí (stručné)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "Přidat odkazy na časové značky YouTube"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Přidat ke každému číslovanému nadpisu odkaz na odpovídající okamžik ve videu na YouTube (pozn.: v rychlém režimu vypnuto)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Je-li zapnuto, sníží tokeny prvního průchodu o 12 %, aby se vešly odkazy. V rychlém režimu se automaticky vypíná."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Pokročilé"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Pokročilá nastavení pro ladění a řešení potíží. Zapněte ladicí protokol, aby se ke každé poznámce připojily podrobné informace pro technickou podporu."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Zapnout ladicí protokol"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Zapnout podrobné ladicí protokoly. Informace se připojí ke každé poznámce jako skrytý callout pro řešení potíží."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Je-li zapnuto, ladicí informace se shromáždí a přidají do poznámek jako skrytý callout místo zápisu do konzole."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Licence pluginu Tubesage pro přepisy z YouTube"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "Soubor licence se nepodařilo načíst. Zkontrolujte, zda je v adresáři pluginu."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Vyžaduje se přijetí licence"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Před použitím této funkce musíte přijmout licenci pluginu."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Přejděte do nastavení pluginu a přijměte licenční podmínky, abyste mohli pokračovat."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Jak přijmout licenci:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Otevřete nastavení Obsidian"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "V postranním panelu sjeďte k sekci komunitních pluginů"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "V seznamu komunitních pluginů najděte „Tubesage“"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "Klikněte na nastavení pluginu „Tubesage“"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Zapněte „Přijímám licenci a vyloučení odpovědnosti“, čímž plugin povolíte"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Otevřít nastavení pluginu"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — zrušit přes „Show active jobs“"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Načítání přepisu"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Shrnování přepisu"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Vytváření poznámky"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Přidávání časových značek"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Překlad poznámky"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Zpracování videa"
+    }
+}

@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "Etkin"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "Devre dışı"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "Kapat"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "Geliştirmeyi destekle"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "Bu eklentiyi yararlı buluyorsanız geliştirilmesine destek olmayı düşünün:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…ve daha büyük bir vizyonu ekmeye yardım edin: insana ve gezegene hizmet eden teknoloji."
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "Lisans ve sorumluluk reddi"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "Lisansı ve sorumluluk reddini görüntüle"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "Lisansı ve sorumluluk reddini kabul et"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "Readme'yi görüntüle"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "Şablonlar"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Templater eklentisi şablon dosyası"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "Kullanılacak Templater eklentisi şablon dosyasının yolu"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "Şablon dosyası seç"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "Örnek "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "Örnek şablonu görüntüle"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "Transkriptler"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "Transkript ayarları, çıkarılan notlarınızın nasıl ve nerede kaydedileceğini, hangi YouTube data API anahtarının kullanılacağını (kanal ve oynatma listesi işlemek için gerekli) ve isteğe bağlı çeviri parametrelerini denetler."
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "Transkript kök klasörü"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "Transkript alt klasörlerinin düzenleneceği kök klasör (ör. inbox, notes vb.)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "YouTube data API anahtarı"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "Herkese açık YouTube transkriptlerine erişmek için Google cloud console API anahtarınız (OAUTH belirteci değil). Kanal ve oynatma listesi indirmek için gereklidir."
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "API anahtarını girin (aiza ile başlar)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Scrape creators API anahtarı"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "scrapecreators transkript hizmeti için isteğe bağlı anahtar. Ayarlandığında birincil transkript yöntemi olarak kullanılır. app.scrapecreators.com adresinden ücretsiz anahtar alın (100 istek ücretsiz). Güvenilir transkript için önerilir; YouTube altyazıları sunma biçimini değiştirdiğinde doğrudan çıkarma bozulur."
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "scrapecreators API anahtarını girin"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Supa data API anahtarı"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "supadata transkript hizmeti için isteğe bağlı anahtar. Ayarlandığında birincil transkript yöntemi olarak kullanılır (scrapecreators anahtarı yoksa). Anahtarı supadata.ai adresinden alın."
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "supadata anahtarını girin"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "Çeviri dili"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "Çeviri için hedef dil kodu (ör. en, es, fr, de). İçeriği İngilizce tutmak için “en” kullanın."
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "Dil kodunu girin"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "Çeviri ülkesi"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "Çeviri için hedef ülke/bölge kodu (ör. us, gb, ca). Bölgeye özgü dil varyantları için kullanılır."
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "Dil modeli"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "Bir AI sağlayıcısı seçin, API anahtarını girin ve bir model belirleyin. Temperature yaratıcılığı denetler; max tokens çıktı uzunluğunu sınırlar. Çoğu kullanıcı için önerilen: gemini-2.5-flash modeliyle Google sağlayıcısı — hızlı, ucuz ve kaliteli. Hız sınırı veya güvenilirlik sorunu yaşarsanız OpenRouter sağlam bir seçenektir."
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "Sağlayıcı"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "Özetleme için kullanılan sağlayıcı. Güvenilirlik için OpenRouter önerilir; düşük maliyetli Gemini katmanları kısıtlanabilir."
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "{provider} API anahtarı"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "Eklenti verilerinde değil, Obsidian gizli deposunda saklanır."
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "Sunucu URL'si, eklenti verilerinde saklanır."
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "{provider} modeli"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "Hazır bir model seçin veya aşağıya özel bir model adı yazın."
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "Özel model kullan"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "{provider} model listesini yenile"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "Özel model adı"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "Model parametreleri ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "Özel model parametreleri ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "Model parametreleri ({provider}) — geçersiz kıl"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "Gerekli: bu model kayıtlı değil — istek boyutlandırması güvenli olsun diye bağlam penceresini, en fazla çıktıyı ve yedek yüzdesini ayarlayın."
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "Bunlar bu modelin bilinen verilerden doldurulmuş token sınırlarıdır. Bu sağlayıcı ve model için geçersiz kılmak üzere bir alanı düzenleyin."
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "Bağlam penceresi (k token)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "Bin token cinsinden toplam bağlam penceresi (ör. 400k token için 400)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "En fazla çıktı (k token)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "Bin token cinsinden en fazla çıktı (ör. 128k token için 128)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "En fazla girdi (k token) - isteğe bağlı"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "Sağlayıcı yayımlıyorsa açık girdi sınırı (otomatik hesaplama için boş bırakın)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "Yedek yüzdesi"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "Çıktı tokenları için güvenlik yedeği (0.10 = %10, varsayılan: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "Sıcaklık"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "Çıktının rastgeleliğini denetler (0-1). Düşük değer daha odaklı, yüksek değer daha yaratıcıdır. Geçerli değer: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "Not biçimi"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "Not başlığının önüne tarih ekle"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "Not dosya adlarının başına otomatik olarak tarih ekle"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "Tarih biçimi"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "Not başlıklarının önüne eklenen tarihin biçimi"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "İstemler"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "Hızlı özet istemleri"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "Kapsamlı özet istemleri"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "Varsayılana sıfırla"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "Sistem istemi (hızlı özet)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "Hızlı özet üretirken llms davranışına ilişkin yönergeler"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "Yardımcı bir asistansınız..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "Kullanıcı istemi (hızlı özet)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "Transkripti hızlı ve öz biçimde özetlemek için özel yönergeler"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "Aşağıdaki YouTube transkriptini özetleyin..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "Sistem istemi (kapsamlı özet)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "Ayrıntılı, kapsamlı özetler üretirken llms davranışına ilişkin yönergeler"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "Analitik bir asistansınız..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "Kullanıcı istemi (kapsamlı özet)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "Transkriptten ayrıntılı ve yapılandırılmış notlar oluşturmak için özel yönergeler"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "Aşağıdaki transkriptten ayrıntılı ve yapılandırılmış notlar oluşturun..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "Varsayılan özet kipi"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "Eklenti başlarken kullanılacak varsayılan özet kipini seçin. Hızlı özet kipi, daha hızlı işlem için zaman damgası bağlantılarını atlar."
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "Kapsamlı özet (ayrıntılı)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "Hızlı özet (kısa)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "YouTube zaman damgası bağlantıları ekle"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "Numaralı her bölüm başlığına, YouTube videosundaki ilgili zaman damgasına atlayan bir bağlantı ekle (not: hızlı özet kipinde devre dışıdır)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "Etkinken bağlantılara yer açmak için ilk geçiş tokenlarını %12 azaltır. Hızlı özet kipinde otomatik olarak devre dışı kalır."
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "Gelişmiş"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "Hata ayıklama ve sorun giderme için gelişmiş ayarlar. Teknik destek için her nota ayrıntılı bilgi eklenmesini sağlamak üzere hata ayıklama günlüğünü etkinleştirin."
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "Hata ayıklama günlüğünü etkinleştir"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "Ayrıntılı hata ayıklama günlüklerini etkinleştirin. Etkinken hata ayıklama bilgileri sorun giderme için her nota gizli bir çağrı kutusu olarak eklenir."
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "Etkinken hata ayıklama bilgileri konsola yazılmak yerine toplanır ve notlara gizli bir çağrı kutusu olarak eklenir."
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Tubesage YouTube transkript eklentisi lisansı"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "Lisans dosyası yüklenemedi. Eklenti dizininizde bir lisans dosyası bulunduğunu denetleyin."
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "Lisans kabulü gerekli"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "Bu özelliği kullanmadan önce eklenti lisansını kabul etmelisiniz."
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "Devam etmek için eklenti ayarlarına gidip lisans koşullarını kabul edin."
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "Lisans nasıl kabul edilir:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Obsidian Ayarları'nı açın"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "Kenar çubuğunda topluluk eklentileri bölümüne kaydırın"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "Topluluk eklentileri listesinde “Tubesage”i bulun"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "“Tubesage” eklenti ayarlarına tıklayın"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "Eklentiyi etkinleştirmek için “Lisansı ve sorumluluk reddini kabul et” anahtarını açın"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "Eklenti ayarlarını aç"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — “Show active jobs” üzerinden iptal edin"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Transkript alınıyor"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "Transkript özetleniyor"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Not oluşturuluyor"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "Zaman damgaları ekleniyor"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "Not çevriliyor"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "Video işleniyor"
+    }
+}

@@ -1,0 +1,454 @@
+{
+    "common.enabled": {
+        "original": "Enabled",
+        "translation": "सक्षम"
+    },
+    "common.disabled": {
+        "original": "Disabled",
+        "translation": "असक्षम"
+    },
+    "common.close": {
+        "original": "Close",
+        "translation": "बन्द गर्नुहोस्"
+    },
+    "settings.support.name": {
+        "original": "Support development",
+        "translation": "विकासलाई सहयोग"
+    },
+    "settings.support.blurb": {
+        "original": "If you find this plugin useful, consider supporting its development:",
+        "translation": "यो प्लगइन उपयोगी लागेमा यसको विकासमा सहयोग गर्ने विचार गर्नुहोस्:"
+    },
+    "settings.support.mission": {
+        "original": "…and help seed a bigger vision: technology that serves people and planet..",
+        "translation": "…र ठूलो सपनाको बीउ छर्न मद्दत गर्नुहोस्: मानिस र पृथ्वीको सेवा गर्ने प्रविधि।"
+    },
+    "settings.support.license.label": {
+        "original": "License & disclaimer",
+        "translation": "इजाजतपत्र र अस्वीकरण"
+    },
+    "settings.support.license.viewTooltip": {
+        "original": "View license & disclaimer",
+        "translation": "इजाजतपत्र र अस्वीकरण हेर्नुहोस्"
+    },
+    "settings.support.license.acceptLabel": {
+        "original": "Accept license & disclaimer",
+        "translation": "इजाजतपत्र र अस्वीकरण स्वीकार गर्नुहोस्"
+    },
+    "settings.support.readme.viewTooltip": {
+        "original": "View readme",
+        "translation": "readme हेर्नुहोस्"
+    },
+    "settings.templates.heading": {
+        "original": "Templates",
+        "translation": "टेम्प्लेटहरू"
+    },
+    "settings.templates.templaterFile.name": {
+        "original": "Templater plugin template file",
+        "translation": "Templater प्लगइनको टेम्प्लेट फाइल"
+    },
+    "settings.templates.templaterFile.desc": {
+        "original": "Path to the templater plugin template file to use",
+        "translation": "प्रयोग गरिने Templater प्लगइनको टेम्प्लेट फाइलको बाटो"
+    },
+    "settings.templates.templaterFile.browseTooltip": {
+        "original": "Browse for template file",
+        "translation": "टेम्प्लेट फाइल खोज्नुहोस्"
+    },
+    "settings.templates.example.label": {
+        "original": "Example ",
+        "translation": "उदाहरण "
+    },
+    "settings.templates.example.viewTooltip": {
+        "original": "View example template",
+        "translation": "उदाहरण टेम्प्लेट हेर्नुहोस्"
+    },
+    "settings.transcripts.heading": {
+        "original": "Transcripts",
+        "translation": "प्रतिलिपिहरू"
+    },
+    "settings.transcripts.info": {
+        "original": "Transcript settings control how and where your extracted notes are saved, which youtube data API key to use (required for channel/playlist processing), and optional language-translation parameters.",
+        "translation": "प्रतिलिपि सेटिङले तपाईंका नोट कसरी र कहाँ बचत हुने, कुन YouTube data API कुञ्जी प्रयोग गर्ने (च्यानल र प्लेलिस्टका लागि आवश्यक) र वैकल्पिक अनुवाद प्यारामिटर निर्धारण गर्छ।"
+    },
+    "settings.transcripts.rootFolder.name": {
+        "original": "Transcript root folder",
+        "translation": "प्रतिलिपिको मूल फोल्डर"
+    },
+    "settings.transcripts.rootFolder.desc": {
+        "original": "The root folder where transcript subfolders will be organized (e.g., inbox, notes, etc.)",
+        "translation": "प्रतिलिपिका उपफोल्डर मिलाइने मूल फोल्डर (जस्तै inbox, notes आदि)"
+    },
+    "settings.transcripts.youtubeApiKey.name": {
+        "original": "YouTube data API key",
+        "translation": "YouTube data API कुञ्जी"
+    },
+    "settings.transcripts.youtubeApiKey.desc": {
+        "original": "Your Google cloud console API key for accessing public YouTube transcripts (not an OAUTH token). Required for downloading channels and playlists.",
+        "translation": "सार्वजनिक YouTube प्रतिलिपिमा पहुँचका लागि तपाईंको Google cloud console API कुञ्जी (OAUTH टोकन होइन)। च्यानल र प्लेलिस्ट डाउनलोड गर्न आवश्यक।"
+    },
+    "settings.transcripts.youtubeApiKey.placeholder": {
+        "original": "Enter API key (starts with aiza)",
+        "translation": "API कुञ्जी लेख्नुहोस् (aiza बाट सुरु हुन्छ)"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.name": {
+        "original": "Scrape creators API key",
+        "translation": "Scrape creators API कुञ्जी"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.desc": {
+        "original": "Optional key for scrapecreators transcript service. When set, used as the primary transcript method. Get a free key at app.scrapecreators.com (100 requests free). Recommended for reliable transcript retrieval; direct YouTube extraction breaks when YouTube changes how captions are served.",
+        "translation": "scrapecreators प्रतिलिपि सेवाको वैकल्पिक कुञ्जी। तोकिएमा यही मुख्य विधिका रूपमा प्रयोग हुन्छ। app.scrapecreators.com मा निःशुल्क कुञ्जी लिनुहोस् (100 अनुरोध निःशुल्क)। भरपर्दो प्रतिलिपिका लागि सिफारिस; YouTube ले क्याप्सन दिने तरिका बदल्दा सिधा निकासी बिग्रन्छ।"
+    },
+    "settings.transcripts.scrapeCreatorsApiKey.placeholder": {
+        "original": "Enter scrapecreators API key",
+        "translation": "scrapecreators API कुञ्जी लेख्नुहोस्"
+    },
+    "settings.transcripts.supadataApiKey.name": {
+        "original": "Supa data API key",
+        "translation": "Supa data API कुञ्जी"
+    },
+    "settings.transcripts.supadataApiKey.desc": {
+        "original": "Optional key for supadata transcript service. When set, used as the primary transcript method (if no scrapecreators key). Get a key at supadata.ai.",
+        "translation": "supadata प्रतिलिपि सेवाको वैकल्पिक कुञ्जी। तोकिएमा यही मुख्य विधिका रूपमा प्रयोग हुन्छ (scrapecreators कुञ्जी नभए)। supadata.ai मा कुञ्जी लिनुहोस्।"
+    },
+    "settings.transcripts.supadataApiKey.placeholder": {
+        "original": "Enter supadata key",
+        "translation": "supadata कुञ्जी लेख्नुहोस्"
+    },
+    "settings.transcripts.translateLanguage.name": {
+        "original": "Translate language",
+        "translation": "अनुवादको भाषा"
+    },
+    "settings.transcripts.translateLanguage.desc": {
+        "original": "Target language code for translation (e.g., en, es, fr, de). Use \"en\" to keep content in english.",
+        "translation": "अनुवादको लक्ष्य भाषा कोड (जस्तै en, es, fr, de)। सामग्री अङ्ग्रेजीमै राख्न “en” प्रयोग गर्नुहोस्।"
+    },
+    "settings.transcripts.translateLanguage.placeholder": {
+        "original": "Enter language code",
+        "translation": "भाषा कोड लेख्नुहोस्"
+    },
+    "settings.transcripts.translateCountry.name": {
+        "original": "Translate country",
+        "translation": "अनुवादको देश"
+    },
+    "settings.transcripts.translateCountry.desc": {
+        "original": "Target country/region code for translation (e.g., us, gb, ca). Used for region-specific language variants.",
+        "translation": "अनुवादको लक्ष्य देश वा क्षेत्रको कोड (जस्तै us, gb, ca)। क्षेत्रअनुसार भाषाका रूपका लागि प्रयोग हुन्छ।"
+    },
+    "settings.llm.heading": {
+        "original": "Language model",
+        "translation": "भाषा मोडेल"
+    },
+    "settings.llm.info": {
+        "original": "Choose an AI provider, enter its API key, and pick a model. Temperature controls creativity; max tokens caps output length. Suggested for most users: Google provider with the gemini-2.5-flash model — fast, inexpensive, and high-quality. If you hit rate limits or reliability issues, OpenRouter is a solid fallback.",
+        "translation": "AI प्रदायक छान्नुहोस्, त्यसको API कुञ्जी लेख्नुहोस् र मोडेल रोज्नुहोस्। temperature ले सिर्जनशीलता नियन्त्रण गर्छ; max tokens ले उत्पादनको लम्बाइ सीमित गर्छ। धेरैलाई सिफारिस: Google प्रदायक र gemini-2.5-flash मोडेल — छिटो, सस्तो र गुणस्तरीय। दर सीमा वा भरपर्दोपनको समस्या आएमा OpenRouter राम्रो विकल्प हो।"
+    },
+    "settings.llm.provider.name": {
+        "original": "Provider",
+        "translation": "प्रदायक"
+    },
+    "settings.llm.provider.desc": {
+        "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
+        "translation": "सारांशका लागि प्रयोग हुने प्रदायक। भरपर्दोपनका लागि OpenRouter सिफारिस गरिन्छ; कम मूल्यका Gemini तह सुस्त हुन सक्छन्।"
+    },
+    "settings.llm.apiKey.name": {
+        "original": "{provider} api key",
+        "translation": "{provider} API कुञ्जी"
+    },
+    "settings.llm.apiKey.desc.cloud": {
+        "original": "Stored in Obsidian secret storage, not in plugin data.",
+        "translation": "प्लगइन डेटामा होइन, Obsidian को गोप्य भण्डारणमा राखिन्छ।"
+    },
+    "settings.llm.apiKey.desc.ollama": {
+        "original": "Server URL, stored in plugin data.",
+        "translation": "सर्भरको URL, प्लगइन डेटामा राखिन्छ।"
+    },
+    "settings.llm.model.name": {
+        "original": "{provider} model",
+        "translation": "{provider} मोडेल"
+    },
+    "settings.llm.model.desc": {
+        "original": "Select a preset model or type a custom model name below.",
+        "translation": "तयारी मोडेल छान्नुहोस् वा तल आफ्नै मोडेलको नाम लेख्नुहोस्।"
+    },
+    "settings.llm.model.customOption": {
+        "original": "Use custom model",
+        "translation": "आफ्नै मोडेल प्रयोग गर्नुहोस्"
+    },
+    "settings.llm.model.refreshTooltip": {
+        "original": "Refresh {provider} model list",
+        "translation": "{provider} मोडेल सूची ताजा गर्नुहोस्"
+    },
+    "settings.llm.model.customPlaceholder": {
+        "original": "Custom model name",
+        "translation": "आफ्नै मोडेलको नाम"
+    },
+    "settings.llm.modelParams.heading": {
+        "original": "Model parameters ({provider})",
+        "translation": "मोडेल प्यारामिटर ({provider})"
+    },
+    "settings.llm.modelParams.headingCustom": {
+        "original": "Custom model parameters ({provider})",
+        "translation": "आफ्नै मोडेलका प्यारामिटर ({provider})"
+    },
+    "settings.llm.modelParams.headingOverride": {
+        "original": "Model parameters ({provider}) — override",
+        "translation": "मोडेल प्यारामिटर ({provider}) — अधिलेखन"
+    },
+    "settings.llm.modelParams.descCustom": {
+        "original": "Required: this model isn't in the registry — set context window, max output, and reserve % so token budgeting can size requests safely.",
+        "translation": "आवश्यक: यो मोडेल दर्तामा छैन — टोकन बजेट सुरक्षित होस् भनेर कन्टेक्स्ट विन्डो, अधिकतम उत्पादन र सञ्चित प्रतिशत तोक्नुहोस्।"
+    },
+    "settings.llm.modelParams.descOverride": {
+        "original": "These are this model's token limits, prefilled from known data. Edit a field to override it for this provider and model.",
+        "translation": "यी यस मोडेलका टोकन सीमा हुन्, ज्ञात तथ्यबाट भरिएका। यो प्रदायक र मोडेलका लागि बदल्न कुनै खाना सम्पादन गर्नुहोस्।"
+    },
+    "settings.llm.contextWindow.name": {
+        "original": "Context window (k tokens)",
+        "translation": "कन्टेक्स्ट विन्डो (k टोकन)"
+    },
+    "settings.llm.contextWindow.desc": {
+        "original": "Total context window in thousands of tokens (e.g., 400 for 400k tokens)",
+        "translation": "हजार टोकनमा कुल कन्टेक्स्ट विन्डो (जस्तै 400k टोकनका लागि 400)"
+    },
+    "settings.llm.maxOutput.name": {
+        "original": "Max output (k tokens)",
+        "translation": "अधिकतम उत्पादन (k टोकन)"
+    },
+    "settings.llm.maxOutput.desc": {
+        "original": "Maximum output tokens in thousands (e.g., 128 for 128k tokens)",
+        "translation": "हजारमा अधिकतम उत्पादन टोकन (जस्तै 128k टोकनका लागि 128)"
+    },
+    "settings.llm.inputMax.name": {
+        "original": "Input max (k tokens) - optional",
+        "translation": "अधिकतम इनपुट (k टोकन) - वैकल्पिक"
+    },
+    "settings.llm.inputMax.desc": {
+        "original": "Explicit input cap if vendor publishes one (leave empty to auto calculate)",
+        "translation": "प्रदायकले प्रकाशित गरेको भए स्पष्ट इनपुट सीमा (स्वतः गणनाका लागि खाली छोड्नुहोस्)"
+    },
+    "settings.llm.reservePct.name": {
+        "original": "Reserve percentage",
+        "translation": "सञ्चित प्रतिशत"
+    },
+    "settings.llm.reservePct.desc": {
+        "original": "Safety reserve for output tokens (0.10 = 10%, default: {default})",
+        "translation": "उत्पादन टोकनका लागि सुरक्षा सञ्चिति (0.10 = 10%, पूर्वनिर्धारित: {default})"
+    },
+    "settings.llm.temperature.name": {
+        "original": "Temperature",
+        "translation": "तापक्रम"
+    },
+    "settings.llm.temperature.desc": {
+        "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
+        "translation": "उत्पादनको अनियमितता नियन्त्रण गर्छ (0-1)। कम मान बढी केन्द्रित, बढी मान बढी सिर्जनशील। हालको मान: {value}"
+    },
+    "settings.noteFormat.heading": {
+        "original": "Note format",
+        "translation": "नोटको ढाँचा"
+    },
+    "settings.noteFormat.prependDate.name": {
+        "original": "Prepend date to note title",
+        "translation": "नोटको शीर्षकअघि मिति राख्नुहोस्"
+    },
+    "settings.noteFormat.prependDate.desc": {
+        "original": "Automatically add date to the beginning of note filenames",
+        "translation": "नोट फाइलको नामको सुरुमा स्वतः मिति थप्नुहोस्"
+    },
+    "settings.noteFormat.dateFormat.name": {
+        "original": "Date format",
+        "translation": "मितिको ढाँचा"
+    },
+    "settings.noteFormat.dateFormat.desc": {
+        "original": "Format for date prepended to note titles",
+        "translation": "नोटका शीर्षकअघि राखिने मितिको ढाँचा"
+    },
+    "settings.prompts.heading": {
+        "original": "Prompts",
+        "translation": "प्रम्प्ट"
+    },
+    "settings.prompts.fast.heading": {
+        "original": "Fast summary prompts",
+        "translation": "छिटो सारांशका प्रम्प्ट"
+    },
+    "settings.prompts.extensive.heading": {
+        "original": "Extensive summary prompts",
+        "translation": "विस्तृत सारांशका प्रम्प्ट"
+    },
+    "settings.prompts.resetTooltip": {
+        "original": "Reset to default",
+        "translation": "पूर्वनिर्धारितमा फर्काउनुहोस्"
+    },
+    "settings.prompts.systemFast.name": {
+        "original": "System prompt (fast summary)",
+        "translation": "सिस्टम प्रम्प्ट (छिटो सारांश)"
+    },
+    "settings.prompts.systemFast.desc": {
+        "original": "Instructions for the llms behavior when generating fast summaries",
+        "translation": "छिटो सारांश बनाउँदा llms को व्यवहारका निर्देशन"
+    },
+    "settings.prompts.systemFast.placeholder": {
+        "original": "You are a helpful assistant...",
+        "translation": "तपाईं एक सहयोगी सहायक हुनुहुन्छ..."
+    },
+    "settings.prompts.userFast.name": {
+        "original": "User prompt (fast summary)",
+        "translation": "प्रयोगकर्ता प्रम्प्ट (छिटो सारांश)"
+    },
+    "settings.prompts.userFast.desc": {
+        "original": "Specific instructions for summarizing the transcript quickly and concisely",
+        "translation": "प्रतिलिपिलाई छिटो र छोटो सारांश गर्ने विशेष निर्देशन"
+    },
+    "settings.prompts.userFast.placeholder": {
+        "original": "Please summarize the following YouTube transcript...",
+        "translation": "तलको YouTube प्रतिलिपिको सारांश गर्नुहोस्..."
+    },
+    "settings.prompts.systemExtensive.name": {
+        "original": "System prompt (extensive summary)",
+        "translation": "सिस्टम प्रम्प्ट (विस्तृत सारांश)"
+    },
+    "settings.prompts.systemExtensive.desc": {
+        "original": "Instructions for the llms behavior when generating detailed, comprehensive summaries",
+        "translation": "विस्तृत र पूर्ण सारांश बनाउँदा llms को व्यवहारका निर्देशन"
+    },
+    "settings.prompts.systemExtensive.placeholder": {
+        "original": "You are an analytical assistant...",
+        "translation": "तपाईं एक विश्लेषणात्मक सहायक हुनुहुन्छ..."
+    },
+    "settings.prompts.userExtensive.name": {
+        "original": "User prompt (extensive summary)",
+        "translation": "प्रयोगकर्ता प्रम्प्ट (विस्तृत सारांश)"
+    },
+    "settings.prompts.userExtensive.desc": {
+        "original": "Specific instructions for creating detailed and structured notes from the transcript",
+        "translation": "प्रतिलिपिबाट विस्तृत र संरचित नोट बनाउने विशेष निर्देशन"
+    },
+    "settings.prompts.userExtensive.placeholder": {
+        "original": "From the transcript below, create detailed and structured notes...",
+        "translation": "तलको प्रतिलिपिबाट विस्तृत र संरचित नोट बनाउनुहोस्..."
+    },
+    "settings.prompts.defaultMode.name": {
+        "original": "Default summary mode",
+        "translation": "पूर्वनिर्धारित सारांश मोड"
+    },
+    "settings.prompts.defaultMode.desc": {
+        "original": "Choose the default summary mode to use when the plugin starts. Fast summary mode skips timestamp links for quicker processing.",
+        "translation": "प्लगइन सुरु हुँदा प्रयोग हुने पूर्वनिर्धारित सारांश मोड छान्नुहोस्। छिटो सारांश मोडले छिटो प्रशोधनका लागि टाइमस्ट्याम्प लिङ्क छोड्छ।"
+    },
+    "settings.prompts.defaultMode.option.extensive": {
+        "original": "Extensive summary (detailed)",
+        "translation": "विस्तृत सारांश (पूर्ण विवरण)"
+    },
+    "settings.prompts.defaultMode.option.fast": {
+        "original": "Fast summary (brief)",
+        "translation": "छिटो सारांश (छोटो)"
+    },
+    "settings.prompts.timestampLinks.name": {
+        "original": "Add YouTube timestamp links",
+        "translation": "YouTube टाइमस्ट्याम्प लिङ्क थप्नुहोस्"
+    },
+    "settings.prompts.timestampLinks.desc": {
+        "original": "Add links to each numbered section heading that jump to the corresponding timestamp in the YouTube video (note: disabled in fast summary mode)",
+        "translation": "प्रत्येक क्रमाङ्कित खण्ड शीर्षकमा YouTube भिडियोको सम्बन्धित टाइमस्ट्याम्पमा लैजाने लिङ्क थप्नुहोस् (नोट: छिटो सारांश मोडमा निष्क्रिय)"
+    },
+    "settings.prompts.timestampLinks.infoTooltip": {
+        "original": "When enabled, reduces first pass tokens by 12% to make room for links. Automatically disabled in fast summary mode.",
+        "translation": "सक्षम हुँदा लिङ्कका लागि ठाउँ बनाउन पहिलो चरणका टोकन 12% घटाउँछ। छिटो सारांश मोडमा स्वतः निष्क्रिय हुन्छ।"
+    },
+    "settings.advanced.heading": {
+        "original": "Advanced",
+        "translation": "उन्नत"
+    },
+    "settings.advanced.info": {
+        "original": "Advanced settings for debugging and troubleshooting. Enable debug logging to get detailed information appended to each note for technical support.",
+        "translation": "डिबग र समस्या समाधानका उन्नत सेटिङ। प्राविधिक सहयोगका लागि प्रत्येक नोटमा विस्तृत जानकारी थप्न डिबग लगिङ सक्षम गर्नुहोस्।"
+    },
+    "settings.advanced.debugLogging.name": {
+        "original": "Enable debug logging",
+        "translation": "डिबग लगिङ सक्षम गर्नुहोस्"
+    },
+    "settings.advanced.debugLogging.desc": {
+        "original": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
+        "translation": "विस्तृत डिबग लग सक्षम गर्नुहोस्। सक्षम हुँदा समस्या समाधानका लागि डिबग जानकारी प्रत्येक नोटमा लुकेको कलआउटका रूपमा थपिन्छ।"
+    },
+    "settings.advanced.debugLogging.infoTooltip": {
+        "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+        "translation": "सक्षम हुँदा डिबग जानकारी कन्सोलमा नलेखी सङ्कलन गरेर नोटमा लुकेको कलआउटका रूपमा थपिन्छ।"
+    },
+    "license.modal.title": {
+        "original": "Tubesage YouTube transcript plugin license",
+        "translation": "Tubesage YouTube प्रतिलिपि प्लगइनको इजाजतपत्र"
+    },
+    "license.modal.loadError": {
+        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
+        "translation": "इजाजतपत्र फाइल लोड गर्न सकिएन। तपाईंको प्लगइन डाइरेक्टरीमा इजाजतपत्र फाइल छ कि छैन जाँच्नुहोस्।"
+    },
+    "license.required.title": {
+        "original": "License acceptance required",
+        "translation": "इजाजतपत्र स्वीकार आवश्यक"
+    },
+    "license.required.message": {
+        "original": "You must accept the plugin license before using this feature.",
+        "translation": "यो सुविधा प्रयोग गर्नुअघि तपाईंले प्लगइनको इजाजतपत्र स्वीकार गर्नुपर्छ।"
+    },
+    "license.required.instruction": {
+        "original": "Please go to the plugin settings and accept the license terms to continue.",
+        "translation": "जारी राख्न प्लगइन सेटिङमा गई इजाजतपत्रका सर्त स्वीकार गर्नुहोस्।"
+    },
+    "license.required.stepsTitle": {
+        "original": "How to accept the license:",
+        "translation": "इजाजतपत्र कसरी स्वीकार गर्ने:"
+    },
+    "license.required.step1": {
+        "original": "Open Obsidian Settings",
+        "translation": "Obsidian सेटिङ खोल्नुहोस्"
+    },
+    "license.required.step2": {
+        "original": "Scroll down to the \"Community Plugins\" section in the sidebar",
+        "translation": "साइडबारमा सामुदायिक प्लगइन खण्डसम्म तल जानुहोस्"
+    },
+    "license.required.step3": {
+        "original": "Find \"Tubesage\" in the Community Plugins list",
+        "translation": "सामुदायिक प्लगइनको सूचीमा “Tubesage” खोज्नुहोस्"
+    },
+    "license.required.step4": {
+        "original": "Click the \"Tubesage\" plugin settings",
+        "translation": "“Tubesage” प्लगइनको सेटिङमा क्लिक गर्नुहोस्"
+    },
+    "license.required.step5": {
+        "original": "Toggle \"Accept license & disclaimer\" to enable the plugin",
+        "translation": "प्लगइन सक्षम गर्न “इजाजतपत्र र अस्वीकरण स्वीकार गर्नुहोस्” टगल गर्नुहोस्"
+    },
+    "license.required.openSettings": {
+        "original": "Open plugin settings",
+        "translation": "प्लगइन सेटिङ खोल्नुहोस्"
+    },
+    "notice.progress.message": {
+        "original": "{stage} — cancel from \"Show active jobs\"",
+        "translation": "{stage} — “Show active jobs” बाट रद्द गर्नुहोस्"
+    },
+    "notice.progress.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "प्रतिलिपि ल्याइँदै"
+    },
+    "notice.progress.stage.summary": {
+        "original": "Summarizing transcript",
+        "translation": "प्रतिलिपिको सारांश बनाइँदै"
+    },
+    "notice.progress.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "नोट बनाइँदै"
+    },
+    "notice.progress.stage.timestamps": {
+        "original": "Adding timestamps",
+        "translation": "टाइमस्ट्याम्प थपिँदै"
+    },
+    "notice.progress.stage.translation": {
+        "original": "Translating note",
+        "translation": "नोट अनुवाद गरिँदै"
+    },
+    "notice.progress.stage.working": {
+        "original": "Processing video",
+        "translation": "भिडियो प्रशोधन गरिँदै"
+    }
+}
