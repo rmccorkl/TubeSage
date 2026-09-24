@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — “Show active jobs” इत्यस्मात् निरसतु"
+        "translation": "{stage} — “सक्रियकार्याणि दर्शय” इत्यस्मात् निरसतु"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,673 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "चलचित्रस्य संसाधनम्"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Youtube प्रतिलेखसंयोजकः: {provider} कृते API कुञ्जिका न विन्यस्ता। संयोजकविन्यासेषु स्वकीयां API कुञ्जिकां योजयतु।"
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "दोषः: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "संसाधनं निरस्तम्"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "संसाधनं विच्छिन्नम्; “सक्रियकार्याणि दर्शय” इत्यस्मात् पुनः आरभताम्"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "दोषनिवारणसूचनासहितं दोषटिप्पणं निर्मितम्: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "दोषः: {error} (दोषनिवारणटिप्पणम् अपि न निर्मितम्)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "विच्छिन्नकार्याणि परीक्षितुं न शक्यन्ते: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "सावधानम्: प्रतिलेखे कालमुद्राः न प्राप्ताः। संसाधनाय कालमुद्राः आवश्यकाः।"
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "दोषः: Templater संयोजकः आवश्यकः, परं सः न स्थापितः न वा सक्रियः"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "टिप्पणं निर्मितम्: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "टिप्पणनिर्माणे दोषः: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Youtube प्रतिलेखसंयोजकाय Templater संयोजकः आवश्यकः। तं स्थापयतु सक्रियं च करोतु।"
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "सङ्ग्रहस्य सूचनायाः आनयनम्..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "चलचित्रसूचिः आनीयते, ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "चलचित्रसूचेः चलचित्राणि आनीयन्ते..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "चलचित्रसूचेः चलचित्राणि आनीयन्ते (अनुवर्तते)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "{limit} चलचित्राणां सुरक्षासीमा प्राप्ता। प्रथमानि {limit} चलचित्राणि संसाधयिष्यन्ते।"
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "वाहिन्याः चलचित्राणि आनीयन्ते..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "वाहिन्याः चलचित्राणि आनीयन्ते (अनुवर्तते)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "{title} प्राप्तम्: चलचित्राणि {count}"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "LLM साहाय्येन कालमुद्रासम्पर्काः योज्यन्ते..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "न्यूनतोकनसीमया पुनः प्रयत्नः क्रियते..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "कालमुद्रासम्पर्काः योजयितुं न शक्ताः: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "खण्डशीर्षकेषु कालमुद्रासम्पर्काः योजिताः, सङ्ख्या: {count}"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "विषयवस्तु {locale} भाषायाम् अनूद्यते..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "दोषः: सञ्चिका न प्राप्ता: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "अनुवाददोषः: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "विषयवस्तु अनुवादयितुं न शक्तम् (LLM तः रिक्तं प्रत्युत्तरम्)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "विषयवस्तु {locale} भाषायाम् अनूदितम्"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "{provider} कृते API कुञ्जिका नास्ति। निदर्शनानि आनेतुं न शक्यन्ते।"
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "{provider} निदर्शनानाम् आनयनम्..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "{provider} निदर्शनानाम् आनयनं विफलम्: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "{provider} निदर्शनानि नवीकृतानि!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "API प्रतिक्रियातः {provider} निदर्शनानि पठितुं न शक्यन्ते।"
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "{provider} निदर्शनानाम् आनयने दोषः: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "{total} मध्ये {current} खण्डस्य संसाधनम्..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "खण्डशः संसाधनेन कालमुद्रासम्पर्काः योजिताः, सङ्ख्या: {count}"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Youtube प्रतिलेखनिष्कर्षकः सज्जः"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "संसाधयतु"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "YouTube शीर्षकस्य उपयोगाय रिक्तं त्यजतु"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "एषः वैधः YouTube जालसङ्केतः न। चलचित्रस्य, वादनसूच्याः, वाहिन्याः च जालसङ्केताः एव समर्थिताः।"
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: YouTube इत्यस्य लेखनात् टिप्पणीनिर्माणम्"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "YouTube इत्यस्य URL"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "YouTube इत्यस्य वाहिन्याः गीतावल्याः वा URL प्राप्तम्"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "YouTube इत्यस्य चलचित्रस्य URL प्राप्तम्"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "कति चलचित्राणि संसाधनीयानि? परमा सीमा 50 अस्ति।"
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "सर्वाणि चलचित्राणि"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "परिमिता सङ्ख्या:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "स्वेच्छया टिप्पणीशीर्षकम् (विकल्पः)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "शीघ्रसारांशविधिः"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "ह्रस्वाः शीघ्राश्च सारांशाः (कालमुद्रासम्बन्धान् त्यजति)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "सक्रियकार्याणि"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "सक्रियकार्याणि न सन्ति"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "कार्यसूची पठितुं न शक्यते: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "“त्यागः” अस्याः सूचीतः कार्यं केवलं अपनयति; टिप्पण्यः कदापि न लुप्यन्ते।"
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "आदर्शसञ्चिकां चिनुत"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "“{folder}” इति निधौ आदर्शसञ्चिकाः न प्राप्ताः। Templater इत्यस्य विन्यासे आदर्शनिधिः सम्यक् निर्दिष्टः इति परीक्ष्यताम्।"
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "आदर्शान् अन्वेष्टुं लिखतु…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "अनुरूपाः आदर्शाः न प्राप्ताः।"
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "निधेः स्थानं चिनुत"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "{folder} इत्यस्मिन् उपनिधयः न सन्ति"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "प्राप्ताः उपनिधयः: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "निधीन् छानतु…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "अनुरूपाः निधयः न सन्ति"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Tubesage इति YouTube लेखनोपकरणस्य प्रलेखनम्"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "readme सञ्चिका न आरोपिता। उपकरणनिधौ readme.md विद्यते इति परीक्ष्यताम्।"
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "उदाहरणादर्शः: Templater इत्यत्र निर्दिष्टे आदर्शनिधौ प्रतिलिपिं स्थापयतु"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "आदर्शप्रतिलिपिः"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "प्रतिलिपितम्"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "प्रतिलिपिः न सफला"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "एषः YouTube लेखनटिप्पणीनां कृते प्रयुक्तः Templater इत्यस्य उदाहरणादर्शः। स्वापेक्षानुसारं परिवर्तयितुं शक्यते।"
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "उपलब्धाः आदर्शचराः:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "आदर्शसञ्चिका न आरोपिता। सा उपकरणनिधौ कोशस्य आदर्शनिधौ वा विद्यते इति परीक्ष्यताम्।"
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "गीतावल्याः नाम प्राप्यते…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "गीतावली प्राप्ता: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "YouTube गीतावल्याः संसाधनम् आरभते: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "YouTube वाहिन्याः संसाधनम् आरभते: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "गीतावलीनिधिः सृष्टः: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "वाहिनीनिधिः सृष्टः: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "गीतावल्याः चलचित्राणि प्राप्यन्ते: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "वाहिन्याः चलचित्राणि प्राप्यन्ते: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "संसाधनीयानि चलचित्राणि: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "चलचित्रं {current}/{total} संसाध्यते: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "चलचित्रं {title} त्यक्तम् – लेखनं नास्ति"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "गीतावलीचलचित्रे कालमुद्रासम्बन्धाः योज्यन्ते: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "वाहिनीचलचित्रे कालमुद्रासम्बन्धाः योज्यन्ते: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ {title} इत्यस्मिन् कालमुद्रासम्बन्धाः योजिताः"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} (“{title}”)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "टिप्पणी सृष्टा, परं “{title}” इत्यस्मिन् कालमुद्राः योजयितुं न शक्ताः"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ चलचित्रं {current}/{total} संसाधितम्"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ चलचित्रं “{title}” त्यक्तम् – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ चलचित्रस्य “{title}” संसाधने दोषः: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "वाहिन्याः संसाधनं समाप्तम् – संसाधितानि: {processed}, त्यक्तानि: {skipped}, दोषाः: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "कार्यं रक्षितुं न शक्तम्: {error}। चलचित्रम् अद्यापि संसाध्यमानं स्यात्; “सक्रियकार्याणि दर्शय” इति पश्यतु"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "इदं चलचित्रं पूर्वमेव संसाध्यते"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "इदं कार्यम् अस्मिन् स्थितौ पुनः आरब्धुं न शक्यते; तस्य स्थितिं पश्यतु"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "इदं कार्यम् अस्मिन् स्थितौ समापयितुं न शक्यते; तस्य स्थितिं पश्यतु"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "YouTube लेखनम् उद्धरतु"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Youtube चलचित्रस्य शीर्षकम्"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - Youtube चलचित्रस्य URL"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - कालमुद्रासहितं सम्पूर्णं लेखनम्"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - LLM इत्यनेन निर्मितः चलचित्रसारांशः"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - प्रयुक्तः LLM प्रदाता (यथा openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - प्रयुक्तः विशिष्टः प्रतिरूपः (यथा gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - LLM प्रदातुः प्रतिरूपाच्च जाताः चिह्नानि"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "सक्रियकार्याणि दर्शय"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "प्रदातृ {provider} इति नियोजितम्। निर्गमव्ययः — {tokens} टोकनानि (परमनिर्गमः न्यूनः संरक्षितांशः)।"
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "प्रतिरूपं {model} इति परिवर्तितम्। निर्गमव्ययः — {tokens} टोकनानि (परमनिर्गमः न्यूनः संरक्षितांशः)।"
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "{provider} इत्यस्य प्रतिरूपसूची नवीकृता।"
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "{provider} इत्यस्य प्रतिरूपाणि नवीकर्तुं न शक्यन्ते। विद्यमाना सूची प्रयुज्यते।"
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "अस्यां गानसूच्यां किमपि चलचित्रं न प्राप्तम्"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "अस्मिन् वाहिन्यां किमपि चलचित्रं न प्राप्तम्"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "{provider} इत्यस्य प्रतिरूपसूची नवीकृता। {count} प्रतिरूपस्य टोकनसीमा स्वयमेव पूरिता।"
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "{provider} इत्यस्य प्रतिरूपसूची नवीकृता। {count} प्रतिरूपाणां टोकनसीमाः स्वयमेव पूरिताः।"
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "लिखितरूपस्य आनयनम्"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "सारसंक्षेपणम्"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "टिप्पण्याः रचनम्"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "टिप्पणी रचिता"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "कालमुद्रासम्बन्धानां योजनम्"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "अनुवादः"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "समाप्तम्"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "निरस्यताम्"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "त्यज्यताम्"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "टिप्पणी उद्घाट्यताम्"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "कालमुद्राभिः विना समापनम्"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "अनुवादेन विना समापनम्"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "पुनरारभ्यताम्"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "पुनरारभ्यताम् (पुनः व्ययः सम्भवति)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "प्रचलति"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "अनुवर्तनाय सज्जम्"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "समापितम्"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "निरस्तम्"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "विफलम्"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "विफलम्: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "कालः अतीतः। {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Obsidian इत्यस्य पिधाने कार्यं विच्छिन्नम्; काचिदपि टिप्पणी न रचिता"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Obsidian इत्यस्य पिधाने कार्यं विच्छिन्नम्; {path} इत्यत्र टिप्पणी स्यात्"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Obsidian इत्यस्य पिधाने कार्यं विच्छिन्नम्; टिप्पणी कालमुद्राभिः विना रचिता"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Obsidian इत्यस्य पिधाने कार्यं विच्छिन्नम्; टिप्पणी अनुवादेन विना रचिता"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "{stage} इत्यस्मिन् काले विच्छिन्नम्; पूर्वप्रार्थनायाः व्ययः पूर्वमेव जातः स्यात्"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "{stage} इत्यस्मिन् काले विच्छिन्नम्; पूर्वप्रार्थनायाः व्ययः जातः न वा इति न ज्ञायते"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "{stage} इत्यस्य अतिबहवः प्रयत्नाः"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "लक्ष्यमार्गे टिप्पणी पूर्वमेव विद्यते — तस्याः नाम परिवर्तयतु अपसारयतु वा, ततः «सक्रियकार्याणि दर्शय» इत्यतः पुनरारभताम्"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "लक्ष्यमार्गस्थिता टिप्पणी अस्य कार्यस्य वा न वा इति निश्चेतुं न शक्यते"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "अस्य कार्यस्य टिप्पणी स्थानान्तरिता लोपिता वा"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "संस्करणकाले टिप्पणी परिवर्तिता; कालमुद्राः परित्यक्ताः"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater न उपलभ्यते; तत् सक्रियं कृत्वा पुनरारभताम्"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "पुनरारम्भे सशुल्कसेवया लिखितरूपं पुनः आनीयते"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "टिप्पण्याः मार्गः एकरूपेण गणयितुं न शक्यते (संचयिकायाः दिनाङ्कस्य च विन्यासान् पश्यतु), ततः पुनरारभताम्"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "लिखितरूपटिप्पणी सफलतया रचिता"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "टिप्पणी रचिता, किन्तु टिप्पण्याः परिवर्तनात् कालमुद्राः परित्यक्ताः"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "टिप्पणी रचिता, किन्तु टिप्पण्याः परिवर्तनात् अनुवादः परित्यक्तः"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "टिप्पणी रचिता, किन्तु टिप्पण्याः परिवर्तनात् कालमुद्राः अनुवादश्च परित्यक्ताः"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "अनुवादेन विना टिप्पणी रचिता"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "कालमुद्राभिः अनुवादेन च विना टिप्पणी रचिता"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: Obsidian इत्यस्य पिधाने 1 टिप्पणीकार्यं विच्छिन्नम् — {title}: काचिदपि टिप्पणी न रचिता"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: Obsidian इत्यस्य पिधाने 1 टिप्पणीकार्यं विच्छिन्नम् — {title}: {path} इत्यत्र टिप्पणी स्यात्"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: Obsidian इत्यस्य पिधाने 1 टिप्पणीकार्यं विच्छिन्नम् — {title}: टिप्पणी कालमुद्राभिः विना रचिता"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: Obsidian इत्यस्य पिधाने 1 टिप्पणीकार्यं विच्छिन्नम् — {title}: टिप्पणी अनुवादेन विना रचिता"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: Obsidian इत्यस्य पिधाने {count} टिप्पणीकार्याणि विच्छिन्नानि; नवीनतमानि «सक्रियकार्याणि दर्शय» इत्यत्र सूचितानि"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 विच्छिन्नं कार्यं ध्यानम् अपेक्षते"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: {count} विच्छिन्नानि कार्याणि ध्यानम् अपेक्षन्ते"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "कृपया {field} इति क्षेत्रम् पूरयतु"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "दोषः अभवत्"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "अस्य चलचित्रस्य प्रतिलेखः न विद्यते"
     }
 }

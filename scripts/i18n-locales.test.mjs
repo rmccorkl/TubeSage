@@ -12,7 +12,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { buildLocales, GLOSSARY } from "./i18n-lib.mjs";
+import { buildLocales, GLOSSARY, localeNeedsKey, pluralRowOf } from "./i18n-lib.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const localesDir = join(root, "src", "locales");
@@ -36,6 +36,29 @@ const TRANSLATED = SHIPPED.filter((code) => code !== "en-GB");
 
 const en = JSON.parse(readFileSync(join(localesDir, "en.json"), "utf8"));
 const enKeys = Object.keys(en);
+
+// Every row in the authoring matrix. This is a SUPERSET of en.json's keys and
+// the two are not interchangeable: a counted string is authored as one row per
+// CLDR category, and each language carries only the categories its own grammar
+// uses. English holds `one`/`other`; Polish holds `one`/`few`/`many`/`other`,
+// so Polish legitimately has rows English does not, and Japanese legitimately
+// lacks rows English has. Sweeping every locale against `enKeys` would call
+// both of those a defect.
+const allKeys = Object.keys(buildLocales(readFileSync(join(root, "i18n", "strings.csv"), "utf8")).context);
+
+/** The rows `code` is entitled to: every ordinary row, plus its own categories. */
+const keysFor = (code) => allKeys.filter((key) => localeNeedsKey(code, key));
+
+/**
+ * The English a row is measured against. A plural row outside English's own
+ * categories (Polish's `few`) has no English of its own, so the family's
+ * `other` row — the one category every language has — is the reference.
+ */
+const englishFor = (key) => {
+  if (key in en) return en[key];
+  const row = pluralRowOf(key);
+  return row === null ? undefined : en[`${row.base}.other`];
+};
 
 const read = (code) => {
   try {
@@ -93,30 +116,38 @@ describe("the shipped locale files", () => {
 
   it.each(SHIPPED)("%s has every en.json key and no extras", (code) => {
     const entries = locales[code] ?? {};
-    expect(Object.keys(entries).sort()).toEqual([...enKeys].sort());
+    expect(Object.keys(entries).sort()).toEqual([...keysFor(code)].sort());
   });
 
   it.each(SHIPPED)("%s has a non-empty translation for every key", (code) => {
-    const bare = enKeys.filter((key) => (translationOf(code, key) ?? "").trim() === "");
+    const bare = keysFor(code).filter((key) => (translationOf(code, key) ?? "").trim() === "");
     expect(bare).toEqual([]);
   });
 
   it.each(SHIPPED)("%s keeps the exact placeholder set of the English, per key", (code) => {
-    const wrong = enKeys
-      .filter((key) => placeholders(en[key]).join() !== placeholders(translationOf(code, key)).join())
-      .map((key) => `${key}: expected ${placeholders(en[key]).join(" ")}, got ${placeholders(translationOf(code, key)).join(" ")}`);
+    const wrong = keysFor(code)
+      .filter((key) => placeholders(englishFor(key)).join() !== placeholders(translationOf(code, key)).join())
+      .map((key) => `${key}: expected ${placeholders(englishFor(key)).join(" ")}, got ${placeholders(translationOf(code, key)).join(" ")}`);
     expect(wrong).toEqual([]);
   });
 
   it.each(SHIPPED)("%s preserves every never-translate glossary term, per key", (code) => {
     // Case-insensitive, as TERMS.md states: a locale may follow its own
     // capitalisation around a term, but may not replace the term itself.
+    //
+    // `englishFor`, NOT `en[key]`: a plural row outside English's own two
+    // categories — French's `many`, Polish's `few` — has no English column of
+    // its own, so `en[key]` is `undefined` there and this sweep threw rather
+    // than failed. The commit that introduced plural rows converted the other
+    // sweeps in this file and missed this one; it stayed invisible until the
+    // first real counted string shipped.
     const wrong = [];
-    for (const key of enKeys) {
+    for (const key of keysFor(code)) {
+      const english = englishFor(key) ?? "";
       const translation = (translationOf(code, key) ?? "").toLowerCase();
       for (const term of GLOSSARY) {
         const lower = term.toLowerCase();
-        if (en[key].toLowerCase().includes(lower) && !translation.includes(lower)) {
+        if (english.toLowerCase().includes(lower) && !translation.includes(lower)) {
           wrong.push(`${key}: lost "${term}"`);
         }
       }
@@ -131,8 +162,8 @@ describe("the shipped locale files", () => {
     // test is what makes the later one-word-per-locale correction findable.
     const wrong = [];
     for (const mangled of ["Scrape creators", "Supa data", "Tubesage"]) {
-      for (const key of enKeys) {
-        if (en[key].includes(mangled) && !(translationOf(code, key) ?? "").includes(mangled)) {
+      for (const key of keysFor(code)) {
+        if ((englishFor(key) ?? "").includes(mangled) && !(translationOf(code, key) ?? "").includes(mangled)) {
           wrong.push(`${key}: lost "${mangled}"`);
         }
       }
@@ -143,7 +174,7 @@ describe("the shipped locale files", () => {
   it.each(TRANSLATED)("%s is a real translation, not a copy of the English", (code) => {
     // Some rows legitimately match — `{provider} api key` is nearly a brand
     // string — so this is a bulk guard, not a per-row inequality.
-    const differing = enKeys.filter((key) => translationOf(code, key) !== en[key]);
+    const differing = keysFor(code).filter((key) => translationOf(code, key) !== englishFor(key));
     expect(differing.length).toBeGreaterThan(80);
   });
 
@@ -497,12 +528,47 @@ describe("every locale quotes its own accept-toggle label in the licence steps",
   });
 });
 
-describe("the plugin's own command name survives every translation", () => {
-  // `notice.progress.message` quotes this plugin's command, which Obsidian
-  // lists untranslated in the command palette. A locale that translated it
-  // would name a command the user cannot search for.
-  it.each(SHIPPED)("%s leaves \"Show active jobs\" in English", (code) => {
-    expect(translationOf(code, "notice.progress.message")).toContain("Show active jobs");
+describe("every sentence that names the plugin's command quotes its own locale's command name", () => {
+  // This block used to assert the opposite — that every locale left "Show
+  // active jobs" in English — and it was right to, because the command name
+  // itself was hardcoded English in main.ts. Now that the command is localised
+  // (`common.command.showActiveJobs`), English is exactly the wrong thing for a
+  // non-English locale to quote: it would name a command that locale's palette
+  // does not list. So the invariant is no longer "is English" but "matches the
+  // command this locale actually registers" — the same shape as the licence
+  // step quoting its own accept toggle, and enforced for the whole set by
+  // QUOTED_LABELS in i18n-lib.mjs.
+  //
+  // All five rows are swept, not only the three that shipped quoting it: the
+  // two recovery-dialog rows used to hardcode the English name inside
+  // recovery-ui-model.ts, which is why they were invisible here before.
+  const QUOTING = [
+    "notice.progress.message",
+    "notice.job.interrupted",
+    "notice.job.saveFailed",
+    "modal.jobs.reason.noteCollision",
+    "notice.coldStart.several",
+  ];
+
+  it.each(SHIPPED)("%s quotes its own command name in every row that names it", (code) => {
+    const command = translationOf(code, "common.command.showActiveJobs");
+    expect(typeof command).toBe("string");
+    const wrong = QUOTING.filter((key) => !(translationOf(code, key) ?? "").includes(command));
+    expect(wrong, `${code} must quote "${command}"`).toEqual([]);
+  });
+
+  it("still leaves the command in English for the English locales", () => {
+    // The guard the old test carried, kept where it is actually true.
+    expect(en["common.command.showActiveJobs"]).toBe("Show active jobs");
+    expect(translationOf("en-GB", "common.command.showActiveJobs")).toBe("Show active jobs");
+    for (const key of QUOTING) expect(en[key]).toContain("Show active jobs");
+  });
+
+  it("actually localises the command, rather than shipping the English everywhere", () => {
+    // Without this the block above would pass a matrix in which every locale
+    // simply kept the English name — which is the state this batch replaced.
+    const localised = TRANSLATED.filter((code) => translationOf(code, "common.command.showActiveJobs") !== "Show active jobs");
+    expect(localised.length).toBeGreaterThanOrEqual(45);
   });
 });
 

@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — ከ«Show active jobs» ይሰርዙ"
+        "translation": "{stage} — ከ«ንቁ ሥራዎችን አሳይ» ይሰርዙ"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,673 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "ቪዲዮ በማስኬድ ላይ"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "የYoutube ግልባጭ ተሰኪ፦ ለ{provider} የተዋቀረ የAPI ቁልፍ የለም። የAPI ቁልፍዎን በተሰኪ ቅንብሮች ውስጥ ያክሉ።"
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "ስህተት፦ {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "ሂደቱ ተሰርዟል"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "ሂደቱ ተቋርጧል፤ ከ«ንቁ ሥራዎችን አሳይ» ይቀጥሉ"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "የስህተት ማስታወሻ ከማረሚያ መረጃ ጋር ተፈጥሯል፦ {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "ስህተት፦ {error} (የማረሚያ ማስታወሻም አልተፈጠረም)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "የተቋረጡ ሥራዎችን ማረጋገጥ አልተቻለም፦ {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "ማስጠንቀቂያ፦ በግልባጭ ውስጥ የጊዜ ማህተሞች አልተገኙም። ለሂደቱ የጊዜ ማህተሞች ያስፈልጋሉ።"
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "ስህተት፦ የTemplater ተሰኪ ያስፈልጋል፣ ግን አልተጫነም ወይም አልነቃም"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "ማስታወሻ ተፈጥሯል፦ {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "ማስታወሻ ሲፈጠር ስህተት፦ {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "የYoutube ግልባጭ ተሰኪ የTemplater ተሰኪን ይፈልጋል። እባክዎ ይጫኑትና ያንቁት።"
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "የስብስብ መረጃ በማምጣት ላይ..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "የአጫዋች ዝርዝር በማምጣት ላይ፣ መለያ፦ {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "ከአጫዋች ዝርዝሩ ቪዲዮዎችን በማምጣት ላይ..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "ከአጫዋች ዝርዝሩ ቪዲዮዎችን በማምጣት ላይ (ቀጣይ)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "የ{limit} ቪዲዮ ደህንነት ገደብ ደርሷል። የመጀመሪያዎቹ {limit} ቪዲዮዎች ይሠራሉ።"
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "ከቻናሉ ቪዲዮዎችን በማምጣት ላይ..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "ከቻናሉ ቪዲዮዎችን በማምጣት ላይ (ቀጣይ)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "{title} ተገኝቷል፦ ቪዲዮዎች {count}"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "በLLM የጊዜ ማህተም አገናኞችን በመጨመር ላይ..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "የቶክን ገደብ በመቀነስ እንደገና በመሞከር ላይ..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "የጊዜ ማህተም አገናኞችን መጨመር አልተቻለም፦ {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "የጊዜ ማህተም አገናኞች ወደ ክፍል አርዕስቶች ተጨምረዋል፤ ብዛት፦ {count}"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "ይዘቱን ወደ {locale} በመተርጎም ላይ..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "ስህተት፦ ፋይሉ አልተገኘም፦ {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "የትርጉም ስህተት፦ {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "ይዘቱን መተርጎም አልተቻለም (ከLLM ባዶ ምላሽ)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "ይዘቱ ወደ {locale} ተተርጉሟል"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "የ{provider} የAPI ቁልፍ የለም። ሞዴሎችን ማምጣት አይቻልም።"
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "የ{provider} ሞዴሎች በማምጣት ላይ..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "የ{provider} ሞዴሎችን ማምጣት አልተሳካም፦ {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "የ{provider} ሞዴሎች ተዘምነዋል!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "የ{provider} ሞዴሎችን ከAPI ምላሽ ማንበብ አልተቻለም።"
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "የ{provider} ሞዴሎችን በማምጣት ላይ ስህተት፦ {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "ክፍል {current} ከ{total} በማስኬድ ላይ..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "በክፍል ማስኬድ የጊዜ ማህተም አገናኞች ተጨምረዋል፤ ብዛት፦ {count}"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "የYoutube ግልባጭ አውጪ ዝግጁ ነው"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "አስኪድ"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "የYouTube ርዕስን ለመጠቀም ባዶ ይተዉት"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "ትክክለኛ የYouTube አድራሻ አይደለም። የቪዲዮ፣ የአጫዋች ዝርዝር እና የቻናል አድራሻዎች ብቻ ይደገፋሉ።"
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage፦ ከYouTube ግልባጭ ማስታወሻ ይፍጠሩ"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "የYouTube URL"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "የYouTube ቻናል ወይም ዝርዝር URL ተገኝቷል"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "የYouTube ቪዲዮ URL ተገኝቷል"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "ስንት ቪዲዮዎች ይሠሩ? ከፍተኛው ገደብ 50 ነው።"
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "ሁሉም ቪዲዮዎች"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "የተወሰነ ቁጥር፦"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "ብጁ የማስታወሻ ርዕስ (አማራጭ)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "ፈጣን ማጠቃለያ ሁነታ"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "አጭርና ፈጣን ማጠቃለያዎች (የጊዜ ማህተም አገናኞችን ይዘላል)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "ንቁ ሥራዎች"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "ንቁ ሥራዎች የሉም"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "የሥራ ዝርዝሩን ማንበብ አልተቻለም፦ {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "«አስወግድ» ሥራውን ከዝርዝሩ ብቻ ያስወግዳል፤ ማስታወሻዎችን አይሰርዝም።"
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "የአብነት ፋይል ይምረጡ"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "በ«{folder}» አቃፊ ውስጥ የአብነት ፋይሎች አልተገኙም። የአብነት አቃፊው በTemplater ቅንብሮች በትክክል መዘጋጀቱን ያረጋግጡ።"
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "አብነቶችን ለመፈለግ ይተይቡ…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "ተዛማጅ አብነቶች አልተገኙም።"
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "የአቃፊ ቦታ ይምረጡ"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "በ{folder} ውስጥ ንዑስ አቃፊዎች የሉም"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "የተገኙ ንዑስ አቃፊዎች፦ {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "አቃፊዎችን ያጣሩ…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "ተዛማጅ አቃፊዎች የሉም"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}፦ "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "የTubesage የYouTube ግልባጭ ተሰኪ ሰነድ"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "የreadme ፋይሉን መጫን አልተቻለም። readme.md በተሰኪው አቃፊ ውስጥ መኖሩን ያረጋግጡ።"
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "የናሙና አብነት፦ በTemplater በተጠቀሰው የአብነት አቃፊ ውስጥ ይቅዱት"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "አብነት ቅዳ"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "ተቀድቷል"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "መቅዳት አልተሳካም"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "ይህ ለYouTube ግልባጭ ማስታወሻዎች የሚያገለግል የTemplater ናሙና አብነት ነው። እንደ ፍላጎትዎ ማስተካከል ይችላሉ።"
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "የሚገኙ የአብነት ተለዋዋጮች፦"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "የአብነት ፋይሉን መጫን አልተቻለም። በተሰኪው አቃፊ ወይም በመዝገቡ የአብነት አቃፊ ውስጥ መኖሩን ያረጋግጡ።"
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "የዝርዝሩን ስም በማምጣት ላይ…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "ዝርዝር ተገኝቷል፦ {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "የYouTube ዝርዝር ማስኬድ ተጀምሯል፦ {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "የYouTube ቻናል ማስኬድ ተጀምሯል፦ {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "የዝርዝር አቃፊ ተፈጥሯል፦ {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "የቻናል አቃፊ ተፈጥሯል፦ {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "ከዝርዝሩ ቪዲዮዎችን በማምጣት ላይ፦ {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "ከቻናሉ ቪዲዮዎችን በማምጣት ላይ፦ {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "የሚሠሩ ቪዲዮዎች፦ {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "ቪዲዮ {current}/{total} በመሠራት ላይ፦ {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "ቪዲዮ {title} ተዘሏል – ግልባጭ የለም"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "ለዝርዝሩ ቪዲዮ የጊዜ ማህተም አገናኞች በመጨመር ላይ፦ {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "ለቻናሉ ቪዲዮ የጊዜ ማህተም አገናኞች በመጨመር ላይ፦ {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ የጊዜ ማህተም አገናኞች ወደ {title} ተጨምረዋል"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} («{title}»)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "ማስታወሻው ተፈጥሯል፣ ነገር ግን ወደ «{title}» የጊዜ ማህተሞችን መጨመር አልተቻለም"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ ቪዲዮ {current}/{total} ተሠርቷል"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ ቪዲዮ «{title}» ተዘሏል – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ ቪዲዮ «{title}» በማስኬድ ላይ ስህተት፦ {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "የቻናል ማስኬድ ተጠናቋል – ተሠርተዋል፦ {processed}፣ ተዘለዋል፦ {skipped}፣ ስህተቶች፦ {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "ሥራውን ማስቀመጥ አልተቻለም፦ {error}። ቪዲዮው አሁንም እየተሠራ ሊሆን ይችላል፤ «ንቁ ሥራዎችን አሳይ» ይመልከቱ"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "ይህ ቪዲዮ አስቀድሞ እየተሠራ ነው"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "ይህ ሥራ በዚህ ሁኔታ ሊቀጥል አይችልም፤ ሁኔታውን ይመልከቱ"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "ይህ ሥራ በዚህ ሁኔታ ሊጠናቀቅ አይችልም፤ ሁኔታውን ይመልከቱ"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "የYouTube ግልባጭ ያውጡ"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - የYoutube ቪዲዮ ርዕስ"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - የYoutube ቪዲዮ URL"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - ሙሉ ግልባጭ ከጊዜ ማህተሞች ጋር"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - በLLM የተፈጠረ የቪዲዮ ማጠቃለያ"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - ጥቅም ላይ የዋለው የLLM አቅራቢ (ለምሳሌ openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - ጥቅም ላይ የዋለው ትክክለኛ ሞዴል (ለምሳሌ gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - ከLLM አቅራቢና ሞዴል የተፈጠሩ መለያዎች"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "ንቁ ሥራዎችን አሳይ"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "አቅራቢው ወደ {provider} ተቀናብሯል። የውጤት በጀት፦ {tokens} ቶከኖች (ከፍተኛው ውጤት ሲቀነስ መጠባበቂያ)።"
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "ሞዴሉ ወደ {model} ተቀይሯል። የውጤት በጀት፦ {tokens} ቶከኖች (ከፍተኛው ውጤት ሲቀነስ መጠባበቂያ)።"
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "የ{provider} ሞዴል ዝርዝር ታድሷል።"
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "የ{provider} ሞዴሎችን ማደስ አልተቻለም። አሁን ያለው ዝርዝር ይቀጥላል።"
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "በዚህ የአጫዋች ዝርዝር ውስጥ ምንም ቪዲዮ አልተገኘም"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "በዚህ ቻናል ውስጥ ምንም ቪዲዮ አልተገኘም"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "የ{provider} ሞዴል ዝርዝር ታድሷል። ለ{count} ሞዴል የቶከን ገደቦች በራስ-ሰር ተሞልተዋል።"
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "የ{provider} ሞዴል ዝርዝር ታድሷል። ለ{count} ሞዴሎች የቶከን ገደቦች በራስ-ሰር ተሞልተዋል።"
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "ግልባጭ በማምጣት ላይ"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "በማጠቃለል ላይ"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "ማስታወሻ በመፍጠር ላይ"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "ማስታወሻ ተፈጥሯል"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "የጊዜ ማህተም አገናኞችን በማከል ላይ"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "በመተርጎም ላይ"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "ተጠናቋል"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "ሰርዝ"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "አስወግድ"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "ማስታወሻ ክፈት"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "ያለ ጊዜ ማህተሞች ጨርስ"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "ያለ ትርጉም ጨርስ"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "ቀጥል"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "ቀጥል (እንደገና ሊከፈል ይችላል)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "በመካሄድ ላይ"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "ለመቀጠል ዝግጁ"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "ተጠናቅቋል"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "ተሰርዟል"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "አልተሳካም"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "አልተሳካም፦ {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "ጊዜው አልቋል። {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Obsidian ሲዘጋ ተቋርጧል፤ ምንም ማስታወሻ አልተፈጠረም"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Obsidian ሲዘጋ ተቋርጧል፤ በ{path} ማስታወሻ ሊኖር ይችላል"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Obsidian ሲዘጋ ተቋርጧል፤ ማስታወሻው ያለ ጊዜ ማህተሞች ተፈጥሯል"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Obsidian ሲዘጋ ተቋርጧል፤ ማስታወሻው ያለ ትርጉም ተፈጥሯል"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "በ{stage} ጊዜ ተቋርጧል፤ ቀዳሚው ጥያቄ አስቀድሞ ተከፍሎ ሊሆን ይችላል"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "በ{stage} ጊዜ ተቋርጧል፤ ቀዳሚው ጥያቄ መከፈሉ አይታወቅም"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "ለ{stage} በጣም ብዙ ሙከራዎች"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "በመድረሻው መንገድ ላይ ማስታወሻ አስቀድሞ አለ — ስሙን ይቀይሩ ወይም ያስወግዱት፣ ከዚያ ከ«ንቁ ሥራዎችን አሳይ» ይቀጥሉ"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "በመድረሻው መንገድ ያለው ማስታወሻ የዚህ ሥራ መሆኑን ማረጋገጥ አልተቻለም"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "የዚህ ሥራ ማስታወሻ ተዛውሯል ወይም ተሰርዟል"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "ማስታወሻው በሂደቱ ወቅት ተስተካክሏል፤ የጊዜ ማህተሞች ተዘለሉ"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater አይገኝም፤ ያንቁት፣ ከዚያ ይቀጥሉ"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "መቀጠል ግልባጩን በክፍያ አገልግሎት እንደገና ያመጣል"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "የማስታወሻው መንገድ በተመሳሳይ መንገድ ሊሰላ አልቻለም (የአቃፊና የቀን ቅንብሮችን ይፈትሹ)፣ ከዚያ ይቀጥሉ"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "የግልባጭ ማስታወሻ በተሳካ ሁኔታ ተፈጥሯል"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "ማስታወሻው ተፈጥሯል፣ ነገር ግን ማስታወሻው ስለተስተካከለ የጊዜ ማህተሞች ተዘለሉ"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "ማስታወሻው ተፈጥሯል፣ ነገር ግን ማስታወሻው ስለተስተካከለ ትርጉሙ ተዘለለ"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "ማስታወሻው ተፈጥሯል፣ ነገር ግን ማስታወሻው ስለተስተካከለ የጊዜ ማህተሞችና ትርጉሙ ተዘለሉ"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "ማስታወሻው ያለ ትርጉም ተፈጥሯል"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "ማስታወሻው ያለ ጊዜ ማህተሞችና ያለ ትርጉም ተፈጥሯል"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: Obsidian ሲዘጋ 1 የማስታወሻ ሥራ ተቋርጧል — {title}፦ ምንም ማስታወሻ አልተፈጠረም"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: Obsidian ሲዘጋ 1 የማስታወሻ ሥራ ተቋርጧል — {title}፦ በ{path} ማስታወሻ ሊኖር ይችላል"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: Obsidian ሲዘጋ 1 የማስታወሻ ሥራ ተቋርጧል — {title}፦ ማስታወሻው ያለ ጊዜ ማህተሞች ተፈጥሯል"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: Obsidian ሲዘጋ 1 የማስታወሻ ሥራ ተቋርጧል — {title}፦ ማስታወሻው ያለ ትርጉም ተፈጥሯል"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: Obsidian ሲዘጋ {count} የማስታወሻ ሥራዎች ተቋርጠዋል፤ የቅርብ ጊዜዎቹ በ«ንቁ ሥራዎችን አሳይ» ውስጥ ተዘርዝረዋል"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 የተቋረጠ ሥራ ትኩረት ይፈልጋል"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: {count} የተቋረጡ ሥራዎች ትኩረት ይፈልጋሉ"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "እባክዎ {field} ያስገቡ"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "ስህተት ተከስቷል"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "ለዚህ ቪዲዮ ግልባጭ የለም"
     }
 }

@@ -8,7 +8,7 @@ import { readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { buildLocales, checkLocales, scanKeysUsedInCode } from "./i18n-lib.mjs";
+import { buildLocales, checkLocales, pluralRowOf, scanKeysUsedInCode } from "./i18n-lib.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const localesDir = join(root, "src", "locales");
@@ -61,13 +61,24 @@ describe("i18n:check against the repository", () => {
     expect(flatProblems).toEqual([]);
   });
 
+  // Both sweeps below have to know about counted strings, for the same reason
+  // `checkLocales` does. `tPlural('base', n)` names a key FAMILY and never a
+  // row, so the scanner records `base` while en.json holds `base.one` and
+  // `base.other` — a plain `key in en` calls the call an orphan, and a plain
+  // `keysUsedInCode.has(key)` calls each row one.
   it("has no orphan keys: every key the code asks for exists in en.json", () => {
-    const missing = [...keysUsedInCode].filter((key) => !(key in en));
+    // A plural base is satisfied by its `other` row, the one category CLDR
+    // guarantees every language — and therefore English — has.
+    const missing = [...keysUsedInCode].filter((key) => !(key in en) && !(`${key}.other` in en));
     expect(missing).toEqual([]);
   });
 
   it("has no orphan keys the other way: every en.json key is asked for by the code", () => {
-    const unused = Object.keys(en).filter((key) => !keysUsedInCode.has(key));
+    const unused = Object.keys(en).filter((key) => {
+      if (keysUsedInCode.has(key)) return false;
+      const row = pluralRowOf(key);
+      return !(row !== null && keysUsedInCode.has(row.base));
+    });
     expect(unused).toEqual([]);
   });
 

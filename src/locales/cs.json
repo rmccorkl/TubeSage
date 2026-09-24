@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — zrušit přes „Show active jobs“"
+        "translation": "{stage} — zrušit přes „Zobrazit aktivní úlohy“"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,681 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "Zpracování videa"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Plugin přepisu Youtube: pro {provider} není nastaven žádný klíč API. Přidejte svůj klíč API v nastavení pluginu."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "Chyba: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "Zpracování zrušeno"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "Zpracování bylo přerušeno; obnovte je přes „Zobrazit aktivní úlohy“"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "Poznámka o chybě s ladicími informacemi byla vytvořena: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "Chyba: {error} (ladicí poznámku se také nepodařilo vytvořit)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "Přerušené úlohy se nepodařilo zkontrolovat: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "Upozornění: v přepisu nebyly nalezeny časové značky. Časové značky jsou pro zpracování nutné."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "Chyba: plugin Templater je vyžadován, ale není nainstalován ani zapnut"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "Poznámka vytvořena: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "Chyba při vytváření poznámky: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Plugin přepisu Youtube vyžaduje plugin Templater. Nainstalujte jej a zapněte."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "Načítání informací o kolekci..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "Načítání playlistu s ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "Načítání videí z playlistu..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "Načítání videí z playlistu (pokračování)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "Byl dosažen bezpečnostní limit {limit} videí. Zpracuje se prvních {limit} videí."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "Načítání videí z kanálu..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "Načítání videí z kanálu (pokračování)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "Nalezeno {title}, počet videí: {count}"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "Přidávání odkazů s časovými značkami pomocí LLM..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "Nový pokus s nižším limitem tokenů..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "Odkazy s časovými značkami se nepodařilo přidat: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "Přidány odkazy s časovými značkami, počet nadpisů: {count}"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "Překlad obsahu do {locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "Chyba: soubor nebyl nalezen: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "Chyba překladu: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "Obsah se nepodařilo přeložit (prázdná odpověď z LLM)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "Obsah byl přeložen do {locale}"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "Chybí klíč API pro {provider}. Modely nelze načíst."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "Načítání modelů {provider}..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "Modely {provider} se nepodařilo načíst: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "Modely {provider} aktualizovány!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "Modely {provider} se nepodařilo přečíst z odpovědi API."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "Chyba při načítání modelů {provider}: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "Zpracování části {current} z {total}..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "Přidány odkazy s časovými značkami při zpracování po částech, počet: {count}"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Extraktor přepisů Youtube je připraven"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "Zpracovat"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "Nechte prázdné, chcete-li použít název z YouTube"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "Neplatná adresa YouTube. Podporovány jsou jen adresy videa, playlistu a kanálu."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: vytvořit poznámku z přepisu YouTube"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "Adresa URL YouTube"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "Zjištěna adresa kanálu nebo playlistu YouTube"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "Zjištěna adresa videa YouTube"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "Kolik videí chcete zpracovat? Pevný limit je 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "Všechna videa"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "Omezený počet:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "Vlastní název poznámky (volitelné)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "Režim rychlého shrnutí"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "Kratší a rychlejší shrnutí (vynechá odkazy s časovými značkami)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "Aktivní úlohy"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "Žádné aktivní úlohy"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "Nelze načíst seznam úloh: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "Zahodit odebere úlohu z tohoto seznamu; poznámky nikdy nemaže."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "Vyberte soubor šablony"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "Ve složce „{folder}“ nebyly nalezeny žádné soubory šablon. Ověřte, že je složka šablon správně nastavena v nastavení Templateru."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "Zadejte text pro hledání šablon…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "Žádné odpovídající šablony."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "Vyberte umístění složky"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "Ve složce {folder} nejsou podsložky"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "Nalezené podsložky: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "Filtrovat složky…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "Žádné odpovídající složky"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Dokumentace pluginu pro přepisy YouTube Tubesage"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "Soubor readme nelze načíst. Ověřte, že readme.md je ve složce pluginu."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "Ukázková šablona: zkopírujte ji do složky šablon nastavené v Templateru"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "Kopírovat šablonu"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "Zkopírováno"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "Kopírování selhalo"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "Toto je ukázková šablona Templateru pro poznámky z přepisů YouTube. Můžete si ji upravit podle svých potřeb."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "Dostupné proměnné šablony:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "Soubor šablony nelze načíst. Ověřte, že existuje ve složce pluginu nebo ve složce šablon trezoru."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "Zjišťuji název playlistu…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "Nalezen playlist: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "Zahajuji zpracování playlistu YouTube: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "Zahajuji zpracování kanálu YouTube: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "Vytvořena složka playlistu: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "Vytvořena složka kanálu: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "Načítám videa z playlistu: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "Načítám videa z kanálu: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "Videí ke zpracování: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "Zpracovávám video {current}/{total}: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "Přeskakuji video {title} – přepis není k dispozici"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "Přidávám časové odkazy k videu z playlistu: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "Přidávám časové odkazy k videu z kanálu: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ Časové odkazy přidány k {title}"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} („{title}“)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "Poznámka vytvořena, ale časové značky se k „{title}“ nepodařilo přidat"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ Zpracováno video {current}/{total}"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ Přeskakuji video „{title}“ – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ Chyba při zpracování videa „{title}“: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "Zpracování kanálu dokončeno – zpracováno: {processed}, přeskočeno: {skipped}, chyby: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "Úlohu se nepodařilo uložit: {error}. Video se možná stále zpracovává; viz „Zobrazit aktivní úlohy“"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "Toto video se už zpracovává"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "Tuto úlohu nelze v tomto stavu obnovit; viz její stav"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "Tuto úlohu nelze v tomto stavu dokončit; viz její stav"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "Získat přepis YouTube"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Název videa Youtube"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - Adresa videa Youtube"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - Úplný přepis s časovými značkami"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - Shrnutí videa vygenerované LLM"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - Použitý poskytovatel LLM (např. openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - Konkrétní použitý model (např. gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - Štítky vygenerované z poskytovatele a modelu LLM"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "Zobrazit aktivní úlohy"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Poskytovatel nastaven na {provider}. Rozpočet výstupu: {tokens} tokenů (maximální výstup minus rezerva)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Model změněn na {model}. Rozpočet výstupu: {tokens} tokenů (maximální výstup minus rezerva)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "Seznam modelů {provider} byl obnoven."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "Modely {provider} se nepodařilo obnovit. Zůstává stávající seznam."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "V tomto seznamu stop nebyla nalezena žádná videa"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "Na tomto kanálu nebyla nalezena žádná videa"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "Seznam modelů {provider} byl obnoven. Limity tokenů doplněny automaticky: {count} model."
+    },
+    "notice.models.refreshedWithLimits.few": {
+        "original": "",
+        "translation": "Seznam modelů {provider} byl obnoven. Limity tokenů doplněny automaticky: {count} modely."
+    },
+    "notice.models.refreshedWithLimits.many": {
+        "original": "",
+        "translation": "Seznam modelů {provider} byl obnoven. Limity tokenů doplněny automaticky: {count} modelu."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "Seznam modelů {provider} byl obnoven. Limity tokenů doplněny automaticky: {count} modelů."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Načítání přepisu"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "Shrnování"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Vytváření poznámky"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "Poznámka vytvořena"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "Přidávání odkazů s časovými značkami"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "Překládání"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "Hotovo"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "Zrušit"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "Zahodit"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "Otevřít poznámku"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "Dokončit bez časových značek"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "Dokončit bez překladu"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "Pokračovat"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "Pokračovat (může být znovu účtováno)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "Probíhá"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "Připraveno pokračovat"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "Dokončeno"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "Zrušeno"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "Selhalo"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "Selhalo: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "Vypršel časový limit. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Přerušeno při zavření Obsidian; nebyla vytvořena žádná poznámka"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Přerušeno při zavření Obsidian; v {path} může existovat poznámka"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Přerušeno při zavření Obsidian; poznámka byla vytvořena bez časových značek"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Přerušeno při zavření Obsidian; poznámka byla vytvořena bez překladu"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "Přerušeno ve fázi {stage}; předchozí požadavek už mohl být účtován"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "Přerušeno ve fázi {stage}; není známo, zda byl předchozí požadavek účtován"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "Příliš mnoho pokusů ve fázi {stage}"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "V cílové cestě už poznámka existuje — přejmenujte ji nebo odstraňte a poté pokračujte z Zobrazit aktivní úlohy"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "Nepodařilo se potvrdit, zda poznámka v cílové cestě patří k této úloze"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "Poznámka této úlohy byla přesunuta nebo smazána"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "Poznámka byla během zpracování upravena; časové značky byly přeskočeny"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater není k dispozici; zapněte jej a poté pokračujte"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "Pokračování znovu stáhne přepis přes placenou službu"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "Cestu k poznámce nešlo určit jednoznačně (zkontrolujte nastavení složky a data) a poté pokračujte"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "Poznámka s přepisem byla úspěšně vytvořena"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "Poznámka vytvořena, ale časové značky byly přeskočeny, protože poznámka byla upravena"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "Poznámka vytvořena, ale překlad byl přeskočen, protože poznámka byla upravena"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "Poznámka vytvořena, ale časové značky a překlad byly přeskočeny, protože poznámka byla upravena"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "Poznámka vytvořena bez překladu"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "Poznámka vytvořena bez časových značek a bez překladu"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: 1 úloha poznámky byla přerušena při zavření Obsidian — {title}: nebyla vytvořena žádná poznámka"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: 1 úloha poznámky byla přerušena při zavření Obsidian — {title}: v {path} může existovat poznámka"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: 1 úloha poznámky byla přerušena při zavření Obsidian — {title}: poznámka vytvořena bez časových značek"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: 1 úloha poznámky byla přerušena při zavření Obsidian — {title}: poznámka vytvořena bez překladu"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: při zavření Obsidian bylo přerušeno {count} úloh poznámek; nejnovější najdete v Zobrazit aktivní úlohy"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 přerušená úloha vyžaduje pozornost"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: pozornost vyžaduje přerušených úloh: {count}"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "Vyplňte pole {field}"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "Došlo k chybě"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "Pro toto video není k dispozici přepis"
     }
 }

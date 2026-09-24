@@ -1,6 +1,14 @@
 /**
  * Form validation and UI utilities to reduce duplication across modal classes
+ *
+ * THE `t` IMPORT DOES NOT MAKE THIS MODULE OBSIDIAN-DEPENDENT. `../i18n`
+ * imports only `./locales`, which is static JSON, and reads the interface
+ * language through a resolver `main.ts` installs at runtime — `getLanguage`
+ * is imported in main.ts and nowhere else. `src/settings/setting-definitions.ts`
+ * and `src/runtime/recovery-ui-model.ts` both import `t` exactly this way to
+ * stay unit-testable without an Obsidian runtime; this module follows them.
  */
+import { t } from '../i18n';
 
 /**
  * Interface for validation results
@@ -21,16 +29,22 @@ export interface ErrorDisplayOptions {
 
 /**
  * Validates that a required field has a value
- * 
+ *
+ * `fieldName` is REQUIRED rather than defaulting to `'field'`: the default was
+ * an English literal a caller could inherit without noticing, which is the
+ * trap this file was localised to remove. Callers pass an already-translated
+ * label — `t('modal.create.urlLabel')` — so the name the sentence quotes is
+ * the one the dialog actually renders above the input.
+ *
  * @param value The value to check
- * @param fieldName The name of the field (for error message)
+ * @param fieldName The translated label of the field (quoted in the message)
  * @returns Validation result
  */
-export function validateRequired(value: string, fieldName: string = 'field'): ValidationResult {
+export function validateRequired(value: string, fieldName: string): ValidationResult {
     if (!value || value.trim() === '') {
         return {
             isValid: false,
-            message: `Please enter a ${fieldName}`
+            message: t('common.validation.required', { field: fieldName })
         };
     }
     
@@ -52,7 +66,7 @@ export function displayValidationResult(
     
     if (!result.isValid) {
         // Set error message, with a fallback if none provided
-        const message = result.message || 'An error occurred';
+        const message = result.message || t('common.validation.genericError');
         element.setText(message);
         
         // Show the error element by adding visible class and removing hidden class
@@ -98,16 +112,23 @@ export function validateYouTubeUrl(
     isYoutubeUrlFn: (url: string) => boolean
 ): ValidationResult {
     if (!url) {
+        // The same sentence validateRequired builds, with the same label: this
+        // branch and an empty-value validateRequired describe one condition.
         return {
             isValid: false,
-            message: 'Please enter a YouTube URL'
+            message: t('common.validation.required', { field: t('modal.create.urlLabel') })
         };
     }
     
     if (!isYoutubeUrlFn(url)) {
+        // Reused rather than coined: `modal.create.urlInvalid` is the line the
+        // SAME dialog already shows while the user types (main.ts:3429), and it
+        // asserts the same fact about the same three accepted forms. Two
+        // different sentences for one condition in one dialog is the drift the
+        // reuse-before-coining rule exists to prevent.
         return {
             isValid: false,
-            message: 'Please enter a valid YouTube video, playlist, or channel URL'
+            message: t('modal.create.urlInvalid')
         };
     }
     

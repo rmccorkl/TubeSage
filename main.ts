@@ -384,7 +384,16 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         });
         this.addCommand({
             id: 'show-active-jobs',
-            name: 'Show active jobs',
+            // Localised, and the three shipped rows that QUOTE it were
+            // retranslated in the same commit so that each locale's sentence
+            // names the command that locale's palette actually lists
+            // (notice.progress.message, notice.job.interrupted,
+            // notice.job.saveFailed, plus the two recovery-dialog rows that
+            // used to hardcode it). `QUOTED_LABELS` in scripts/i18n-lib.mjs
+            // now enforces that pairing the same way it enforces the licence
+            // step quoting its own accept toggle, so the two cannot drift
+            // apart again without the gate saying so.
+            name: t('common.command.showActiveJobs'),
             callback: () => {
                 void this.recoverJobs('manual');
             }
@@ -421,7 +430,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         this.register(() => removeIcon(TUBESAGE_RIBBON_ICON_ID));
 
         // Add ribbon icon
-        this.addRibbonIcon(TUBESAGE_RIBBON_ICON_ID, 'Tubesage: create note from YouTube transcript', () => {
+        this.addRibbonIcon(TUBESAGE_RIBBON_ICON_ID, t('modal.create.title'), () => {
             // Check if license has been accepted
             if (!this.settings.licenseAccepted) {
                 // Show license required modal if not accepted
@@ -433,7 +442,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             const selectedLlm = this.settings.selectedLLM;
             if (!this.settings.apiKeys[selectedLlm] || this.settings.apiKeys[selectedLlm].trim() === '') {
                 // Show error notice
-                showNotice(`Youtube Transcript Plugin: No API key configured for ${selectedLlm}. Please add your API key in the plugin settings.`, 7000);
+                showNotice(t('notice.apiKey.missing', { provider: selectedLlm }), 7000);
                 return;
             }
 
@@ -444,7 +453,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // Add command
         this.addCommand({
             id: 'extract-youtube-transcript',
-            name: 'Extract YouTube transcript',
+            name: t('common.command.extract'),
             callback: () => {
                 // Check if license has been accepted
                 if (!this.settings.licenseAccepted) {
@@ -457,7 +466,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 const selectedLlm = this.settings.selectedLLM;
                 if (!this.settings.apiKeys[selectedLlm] || this.settings.apiKeys[selectedLlm].trim() === '') {
                     // Show error notice
-                    showNotice(`Youtube transcript plugin: No API key configured for ${selectedLlm}. Please add your API key in the plugin settings.`, 7000);
+                    showNotice(t('notice.apiKey.missing', { provider: selectedLlm }), 7000);
                     return;
                 }
                 
@@ -765,7 +774,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             case 'failed':
                 logger.error(`[jobs] ${event.id} failed: ${event.error}`);
                 this.sessionJobIds.delete(event.id);
-                this.showNotice(`Error: ${event.error}`, 5000);
+                this.showNotice(t('notice.job.failed', { error: event.error }), 5000);
                 if (this.settings.debugLogging) {
                     const record = this.jobStore.get(event.id);
                     if (record !== undefined) {
@@ -781,14 +790,14 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             case 'cancelled':
                 logger.info(`[jobs] ${event.id} cancelled`);
                 this.sessionJobIds.delete(event.id);
-                this.showNotice('Processing cancelled', 3000);
+                this.showNotice(t('notice.job.cancelled'), 3000);
                 break;
             case 'interrupted':
                 logger.warn(`[jobs] ${event.id} interrupted`, event.prompt);
                 // From here on the job is a recovered one even if it was
                 // submitted in this session: a later resume must not auto-open.
                 this.sessionJobIds.delete(event.id);
-                this.showNotice('Processing was interrupted; resume it from "Show active jobs"', 6000);
+                this.showNotice(t('notice.job.interrupted'), 6000);
                 break;
         }
         for (const listener of Array.from(this.jobEventListeners)) {
@@ -834,10 +843,10 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             const fileName = sanitizeFilename(title) + '.md';
             const notePath = normalizePath(joinPaths(folder, fileName));
             await this.app.vault.create(notePath, errorContent);
-            this.showNotice(`Error note created with debug information: ${fileName}`, 8000);
+            this.showNotice(t('notice.debugNote.created', { file: fileName }), 8000);
         } catch (noteError) {
             logger.error('Failed to create error note:', noteError);
-            this.showNotice(`Error: ${message} (Also failed to create debug note)`, 5000);
+            this.showNotice(t('notice.debugNote.failed', { error: message }), 5000);
         }
     }
 
@@ -869,7 +878,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             promptCount = prompts.length;
         } catch (error) {
             logger.error(`[jobs] Recovery pass (${trigger}) failed:`, error);
-            this.showNotice(`Could not check for interrupted jobs: ${getSafeErrorMessage(error)}`, 6000);
+            this.showNotice(t('notice.recovery.checkFailed', { error: getSafeErrorMessage(error) }), 6000);
             return;
         } finally {
             // In `finally`, not after the try/catch: a pass that throws partway through still closes
@@ -1459,7 +1468,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         formattedTranscript = "    [ERROR] No timestamps found in transcript. Please ensure the Youtube transcript contains timestamps.";
             
             // Show an error notice
-            this.showNotice("Warning: No timestamps found in transcript. Timestamps are required for proper processing.", 5000);
+            this.showNotice(t('notice.transcript.noTimestamps'), 5000);
         }
         
         // Now use this properly formatted transcript
@@ -1579,7 +1588,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     async applyTemplate(title: string, videoUrl: string, transcript: string, summary: string, folder?: string, _contentType?: string, createdAt: number = Date.now()): Promise<void> {
         // Check if Templater plugin is available
         if (!getTemplaterPlugin(this.app)) {
-            this.showNotice('Error: Templater plugin is required but not installed or enabled', 5000);
+            this.showNotice(t('notice.templater.required'), 5000);
             throw new Error('Templater plugin is required but not installed or enabled.');
         }
         
@@ -1592,11 +1601,11 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             const leaf = this.app.workspace.getLeaf(true);
             await leaf.openFile(newFile);
             
-            this.showNotice(`Created note: ${formatDatePrefix(createdAt, this.settings)}${sanitizeFilename(title)}`, 5000);
+            this.showNotice(t('notice.note.created', { name: `${formatDatePrefix(createdAt, this.settings)}${sanitizeFilename(title)}` }), 5000);
         } catch (error) {
             logger.error("Error applying template:", error);
             const errorMessage = getSafeErrorMessage(error);
-            this.showNotice(`Error creating note: ${errorMessage}`, 5000);
+            this.showNotice(t('notice.note.createFailed', { error: errorMessage }), 5000);
             // Clear logs on error too
             clearLogs();
             throw error;
@@ -1635,7 +1644,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         if (!templater) {
             // Show a notice with instructions on how to install Templater
             window.setTimeout(() => {
-        this.showNotice('Youtube transcript plugin requires the Templater plugin. Please install and enable it.', 5000);
+        this.showNotice(t('notice.templater.missing'), 5000);
             }, 3000); // Delay to ensure it's seen after initial plugin load
         }
 
@@ -1643,7 +1652,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         const selectedLlm = this.settings.selectedLLM;
         if (!this.settings.apiKeys[selectedLlm] || this.settings.apiKeys[selectedLlm].trim() === '') {
             window.setTimeout(() => {
-                this.showNotice(`Youtube transcript plugin: no API key configured for ${selectedLlm}. Please add your API key in settings.`, 5000);
+                this.showNotice(t('notice.apiKey.missing', { provider: selectedLlm }), 5000);
             }, 4500);
         }
     }
@@ -1673,7 +1682,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             throw new Error('Youtube API key is required. Please set it in the plugin settings.');
             }
             
-            this.showNotice('Fetching collection information...', 5000);
+            this.showNotice(t('notice.collection.fetchingInfo'), 5000);
             
             // Determine if it's a playlist or channel and get appropriate ID
             let isPlaylist = sourceUrl.includes('/playlist') || sourceUrl.includes('list=');
@@ -1687,7 +1696,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     const match = sourceUrl.match(/list=([^&]+)/);
                     if (match && match[1]) {
                         sourceId = match[1];
-                        this.showNotice(`Fetching playlist with ID: ${sourceId}`, 3000);
+                        this.showNotice(t('notice.collection.fetchingPlaylist', { id: sourceId }), 3000);
                         
                         // Get playlist details
                         const playlistResponse = await obsidianFetch(
@@ -1720,7 +1729,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                                 videosUrl += `&pageToken=${nextPageToken}`;
                             }
                             
-                            this.showNotice(`Fetching playlist videos${nextPageToken ? ' (continued)' : ''}...`, 3000);
+                            this.showNotice(nextPageToken ? t('notice.collection.fetchingPlaylistVideosMore') : t('notice.collection.fetchingPlaylistVideos'), 3000);
                             
                             const videosResponse = await obsidianFetch(videosUrl);
                             
@@ -1755,7 +1764,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                                 (limit === 0 && videosCount >= SAFETY_LIMIT)) {
                                 // If we hit the safety limit, show a notice
                                 if (limit === 0 && videosCount >= SAFETY_LIMIT) {
-                                    this.showNotice(`Reached safety limit of ${SAFETY_LIMIT} videos. Processing the first ${SAFETY_LIMIT} videos.`, 5000);
+                                    this.showNotice(t('notice.collection.safetyLimit', { limit: SAFETY_LIMIT }), 5000);
                                 }
                                 break;
                             }
@@ -1812,7 +1821,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                         videosUrl += `&pageToken=${nextPageToken}`;
                     }
                     
-                    this.showNotice(`Fetching channel videos${nextPageToken ? ' (continued)' : ''}...`, 3000);
+                    this.showNotice(nextPageToken ? t('notice.collection.fetchingChannelVideosMore') : t('notice.collection.fetchingChannelVideos'), 3000);
                     
                     const videosResponse = await obsidianFetch(videosUrl);
                     
@@ -1847,7 +1856,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                         (limit === 0 && videosCount >= SAFETY_LIMIT)) {
                         // If we hit the safety limit, show a notice
                         if (limit === 0 && videosCount >= SAFETY_LIMIT) {
-                            this.showNotice(`Reached safety limit of ${SAFETY_LIMIT} videos. Processing the first ${SAFETY_LIMIT} videos.`, 5000);
+                            this.showNotice(t('notice.collection.safetyLimit', { limit: SAFETY_LIMIT }), 5000);
                         }
                         break;
                     }
@@ -1856,7 +1865,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             }
             
             // Show what we found
-            this.showNotice(`Found ${sourceTitle}: ${videoResults.length} videos`, 3000);
+            this.showNotice(t('notice.collection.found', { title: sourceTitle, count: videoResults.length }), 3000);
             
             // Limit if needed (for specific requested limits)
             if (limit > 0 && videoResults.length > limit) {
@@ -2085,7 +2094,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 "INPUT NOTE TO BE MODIFIED WITH TIMESTAMPS:\n" + contentWithoutFrontmatter;
             
             // Send to LLM for processing
-            this.showNotice("Adding timestamp links with LLM...", 5000);
+            this.showNotice(t('notice.timestamps.adding'), 5000);
             
             // Log detailed information when debug logging is enabled
             if (this.settings.debugLogging) {
@@ -2201,7 +2210,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 // runner's own visible attempt budget is the retry.
                 if (!options?.strict && (errorMessage.includes("max_tokens") || errorMessage.includes("token limit"))) {
                     logger.debug("[addTimestampLinksSinglePass] Token limit error detected, retrying with reduced token limit");
-                    this.showNotice("Retrying with reduced token limit...", 5000);
+                    this.showNotice(t('notice.timestamps.retrying'), 5000);
                     
                     // Significantly reduce token limit for retry (50% of previous)
                     const reducedTokens = Math.floor(maxTokens * 0.5);
@@ -2237,7 +2246,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     } catch (retryError) {
                         logger.error("[addTimestampLinksSinglePass] Error on second attempt:", retryError);
                         const retryMessage = getSafeErrorMessage(retryError);
-                        this.showNotice(`Failed to add timestamp links: ${retryMessage}`, 5000);
+                        this.showNotice(t('notice.timestamps.failed', { error: retryMessage }), 5000);
                         return null;
                     }
                 } else {
@@ -2300,7 +2309,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 
                 // Count number of section headings with links (use final converted note)
                 const linkCount = countTimestampLinks(enhancedNote);
-                this.showNotice(`Added timestamp links to ${linkCount} section headings`, 5000);
+                this.showNotice(t('notice.timestamps.added', { count: linkCount }), 5000);
                 
                 // Log the final output if debug logging is enabled
                 if (this.settings.debugLogging) {
@@ -2347,14 +2356,15 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         targetCountry: string
     ): Promise<void> {
         try {
-            this.showNotice(`Translating content to ${targetLang.toUpperCase()}-${targetCountry}...`, 5000);
+            const targetLocale = `${targetLang.toUpperCase()}-${targetCountry}`;
+            this.showNotice(t('notice.translate.starting', { locale: targetLocale }), 5000);
             logger.debug("[translateContent] Starting translation process");
             
             // Extract document components using the utility
             const noteFile = this.app.vault.getAbstractFileByPath(filePath);
             if (!(noteFile instanceof TFile)) {
                 logger.error(`[translateContent] File not found: ${filePath}`);
-                this.showNotice(`Error: File not found: ${filePath}`, 5000);
+                this.showNotice(t('notice.file.notFound', { path: filePath }), 5000);
                 return;
             }
             const fileContent = await this.app.vault.read(noteFile);
@@ -2394,13 +2404,13 @@ ${contentToTranslate}
             } catch (e) {
                 logger.error("[translateContent] Error during translation:", e);
                 const errorMessage = getSafeErrorMessage(e);
-                this.showNotice(`Translation error: ${errorMessage}`, 5000);
+                this.showNotice(t('notice.translate.failed', { error: errorMessage }), 5000);
                 return;
             }
             
             if (!translatedContent) {
                 logger.error("[translateContent] Failed to translate content (empty response)");
-                this.showNotice("Failed to translate content (empty response from LLM)", 5000);
+                this.showNotice(t('notice.translate.emptyResponse'), 5000);
                 return;
             }
             
@@ -2412,7 +2422,7 @@ ${contentToTranslate}
             if (!(await writeIfUnchanged(this.app.vault, noteFile, fileContent, translatedNote))) {
                 throw new NoteChangedError(NOTE_EDITED_DURING_TRANSLATION);
             }
-            this.showNotice(`Successfully translated content to ${targetLang.toUpperCase()}-${targetCountry}`, 5000);
+            this.showNotice(t('notice.translate.done', { locale: targetLocale }), 5000);
             
         } catch (error) {
             if (error instanceof NoteChangedError) {
@@ -2420,7 +2430,7 @@ ${contentToTranslate}
             }
             logger.error("[translateContent] Error:", error);
             const errorMessage = getSafeErrorMessage(error);
-            this.showNotice(`Error translating content: ${errorMessage}`, 5000);
+            this.showNotice(t('notice.translate.failed', { error: errorMessage }), 5000);
         }
     }
 
@@ -2560,7 +2570,7 @@ ${contentWithoutFrontmatter}
                 }
                 
                 logger.debug(`[addTimestampLinksInChunks] Processing chunk ${i+1} of ${chunks.length}, length: ${chunk.length}`);
-                this.showNotice(`Processing section ${i+1} of ${chunks.length}...`, 2000);
+                this.showNotice(t('notice.timestamps.chunkProgress', { current: i + 1, total: chunks.length }), 2000);
                 
                 // Get timestamp link configuration
                 const timestampConfig = getTimestampLinkConfig(this.settings, videoId, this.getEffectiveMaxTokens());
@@ -2741,7 +2751,7 @@ ${contentWithoutFrontmatter}
                     return null;
                 }
                 
-                this.showNotice(`Added ${linkCount} timestamp links using chunked processing`, 5000);
+                this.showNotice(t('notice.timestamps.addedChunked', { count: linkCount }), 5000);
                 
                 // Return the combined content for potential translation
                 return combinedContent;
@@ -2888,14 +2898,14 @@ ${contentWithoutFrontmatter}
 
     async fetchOpenAIModels(apiKey: string): Promise<FetchedModelInfo[]> {
         if (!apiKey || apiKey.trim() === "") {
-            this.showNotice("OpenAI API key is missing. Cannot fetch models.", 5000);
+            this.showNotice(t('notice.models.apiKeyMissing', { provider: 'OpenAI' }), 5000);
             logger.warn("[fetchOpenAIModels] OpenAI API key is missing.");
             return [];
         }
 
         const url = "https://api.openai.com/v1/models";
         try {
-            this.showNotice("Fetching OpenAI models...", 3000);
+            this.showNotice(t('notice.models.fetching', { provider: 'OpenAI' }), 3000);
             const response = await obsidianFetch(url, {
                 method: 'GET',
                 headers: {
@@ -2907,7 +2917,7 @@ ${contentWithoutFrontmatter}
                 const errorData = await response.json().catch(() => ({ message: response.statusText })) as ApiErrorResponse;
                 const errorMessage = errorData.error?.message || errorData.message || `HTTP error ${response.status}`;
                 logger.error(`[fetchOpenAIModels] Failed to fetch OpenAI models: ${errorMessage}`);
-                this.showNotice(`Failed to fetch OpenAI models: ${errorMessage}`, 5000);
+                this.showNotice(t('notice.models.fetchFailed', { provider: 'OpenAI', error: errorMessage }), 5000);
                 return [];
             }
 
@@ -2931,38 +2941,38 @@ ${contentWithoutFrontmatter}
                 await this.saveSettings();
 
                 logger.info(`[fetchOpenAIModels] Successfully fetched ${models.length} OpenAI models.`);
-                this.showNotice("OpenAI models updated!", 3000);
+                this.showNotice(t('notice.models.updated', { provider: 'OpenAI' }), 3000);
                 return models;
             } else {
                 logger.warn("[fetchOpenAIModels] Unexpected response structure from OpenAI API.");
-                this.showNotice("Could not parse OpenAI models from API response.", 5000);
+                this.showNotice(t('notice.models.parseFailed', { provider: 'OpenAI' }), 5000);
                 return [];
             }
         } catch (error) {
             const errorMessage = getSafeErrorMessage(error);
             logger.error("[fetchOpenAIModels] Error fetching or parsing OpenAI models:", errorMessage);
-            this.showNotice(`Error fetching OpenAI models: ${errorMessage}`, 5000);
+            this.showNotice(t('notice.models.error', { provider: 'OpenAI', error: errorMessage }), 5000);
             return []; // Or a default list
         }
     }
 
     async fetchGoogleModels(apiKey: string): Promise<FetchedModelInfo[]> {
         if (!apiKey || apiKey.trim() === "") {
-            this.showNotice("Google API key is missing. Cannot fetch models.", 5000);
+            this.showNotice(t('notice.models.apiKeyMissing', { provider: 'Google' }), 5000);
             logger.warn("[fetchGoogleModels] Google API key is missing.");
             return [];
         }
 
         const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
         try {
-            this.showNotice("Fetching Google models...", 3000);
+            this.showNotice(t('notice.models.fetching', { provider: 'Google' }), 3000);
             const response = await obsidianFetch(url, { method: 'GET' });
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({ message: response.statusText })) as ApiErrorResponse;
                 const errorMessage = errorData.error?.message || errorData.message || `HTTP error ${response.status}`;
                 logger.error(`[fetchGoogleModels] Failed to fetch Google models: ${errorMessage}`);
-                this.showNotice(`Failed to fetch Google models: ${errorMessage}`, 5000);
+                this.showNotice(t('notice.models.fetchFailed', { provider: 'Google', error: errorMessage }), 5000);
                 return [];
             }
 
@@ -3012,31 +3022,31 @@ ${contentWithoutFrontmatter}
                 await this.saveSettings();
 
                 logger.info(`[fetchGoogleModels] Successfully fetched ${models.length} Google models.`);
-                this.showNotice("Google models updated!", 3000);
+                this.showNotice(t('notice.models.updated', { provider: 'Google' }), 3000);
                 return models;
             } else {
                 logger.warn("[fetchGoogleModels] Unexpected response structure from Google API.");
-                this.showNotice("Could not parse Google models from API response.", 5000);
+                this.showNotice(t('notice.models.parseFailed', { provider: 'Google' }), 5000);
                 return [];
             }
         } catch (error) {
             const errorMessage = getSafeErrorMessage(error);
             logger.error("[fetchGoogleModels] Error fetching or parsing Google models:", errorMessage);
-            this.showNotice(`Error fetching Google models: ${errorMessage}`, 5000);
+            this.showNotice(t('notice.models.error', { provider: 'Google', error: errorMessage }), 5000);
             return [];
         }
     }
 
     async fetchAnthropicModels(apiKey: string): Promise<FetchedModelInfo[]> {
         if (!apiKey || apiKey.trim() === "") {
-            this.showNotice("Anthropic API key is missing. Cannot fetch models.", 5000);
+            this.showNotice(t('notice.models.apiKeyMissing', { provider: 'Anthropic' }), 5000);
             logger.warn("[fetchAnthropicModels] Anthropic API key is missing.");
             return [];
         }
 
         const url = "https://api.anthropic.com/v1/models";
         try {
-            this.showNotice("Fetching Anthropic models...", 3000);
+            this.showNotice(t('notice.models.fetching', { provider: 'Anthropic' }), 3000);
             const response = await obsidianFetch(url, {
                 method: 'GET',
                 headers: {
@@ -3049,7 +3059,7 @@ ${contentWithoutFrontmatter}
                 const errorData = await response.json().catch(() => ({ message: response.statusText })) as ApiErrorResponse;
                 const errorMessage = errorData.error?.message || errorData.message || `HTTP error ${response.status}`;
                 logger.error(`[fetchAnthropicModels] Failed to fetch Anthropic models: ${errorMessage}`);
-                this.showNotice(`Failed to fetch Anthropic models: ${errorMessage}`, 5000);
+                this.showNotice(t('notice.models.fetchFailed', { provider: 'Anthropic', error: errorMessage }), 5000);
                 return [];
             }
 
@@ -3097,17 +3107,17 @@ ${contentWithoutFrontmatter}
                 await this.saveSettings();
 
                 logger.info(`[fetchAnthropicModels] Successfully fetched ${models.length} Anthropic models.`);
-                this.showNotice("Anthropic models updated!", 3000);
+                this.showNotice(t('notice.models.updated', { provider: 'Anthropic' }), 3000);
                 return models;
             } else {
                 logger.warn("[fetchAnthropicModels] Unexpected response structure from Anthropic API.");
-                this.showNotice("Could not parse Anthropic models from API response.", 5000);
+                this.showNotice(t('notice.models.parseFailed', { provider: 'Anthropic' }), 5000);
                 return [];
             }
         } catch (error) {
             const errorMessage = getSafeErrorMessage(error);
             logger.error("[fetchAnthropicModels] Error fetching or parsing Anthropic models:", errorMessage);
-            this.showNotice(`Error fetching Anthropic models: ${errorMessage}`, 5000);
+            this.showNotice(t('notice.models.error', { provider: 'Anthropic', error: errorMessage }), 5000);
             return [];
         }
     }
@@ -3115,13 +3125,13 @@ ${contentWithoutFrontmatter}
     async fetchOpenRouterModels(): Promise<FetchedModelInfo[]> {
         const url = 'https://openrouter.ai/api/v1/models';
         try {
-            this.showNotice("Fetching OpenRouter models...", 3000);
+            this.showNotice(t('notice.models.fetching', { provider: 'OpenRouter' }), 3000);
             const response = await obsidianFetch(url, { method: 'GET' });
 
             if (!response.ok) {
                 const errorMessage = `HTTP error ${response.status}`;
                 logger.error(`[fetchOpenRouterModels] Failed to fetch OpenRouter models: ${errorMessage}`);
-                this.showNotice(`Failed to fetch OpenRouter models: ${errorMessage}`, 5000);
+                this.showNotice(t('notice.models.fetchFailed', { provider: 'OpenRouter', error: errorMessage }), 5000);
                 return [];
             }
 
@@ -3174,17 +3184,17 @@ ${contentWithoutFrontmatter}
                 await this.saveSettings();
 
                 logger.info(`[fetchOpenRouterModels] Successfully fetched ${models.length} OpenRouter models.`);
-                this.showNotice("OpenRouter models updated!", 3000);
+                this.showNotice(t('notice.models.updated', { provider: 'OpenRouter' }), 3000);
                 return models;
             } else {
                 logger.warn("[fetchOpenRouterModels] Unexpected response structure from OpenRouter API.");
-                this.showNotice("Could not parse OpenRouter models from API response.", 5000);
+                this.showNotice(t('notice.models.parseFailed', { provider: 'OpenRouter' }), 5000);
                 return [];
             }
         } catch (error) {
             const errorMessage = getSafeErrorMessage(error);
             logger.error("[fetchOpenRouterModels] Error fetching or parsing OpenRouter models:", errorMessage);
-            this.showNotice(`Error fetching OpenRouter models: ${errorMessage}`, 5000);
+            this.showNotice(t('notice.models.error', { provider: 'OpenRouter', error: errorMessage }), 5000);
             return [];
         }
     }
@@ -3243,14 +3253,14 @@ class YouTubeTranscriptModal extends Modal {
     
     onOpen() {
         // Initialize
-        this.showNotice('Youtube transcript extractor ready', 3000);
+        this.showNotice(t('notice.extractor.ready'), 3000);
         
         // Clear content and create container
         const { contentEl } = this;
         contentEl.empty();
         
         // Add header
-        contentEl.createEl('h2', { text: 'Tubesage: create note from YouTube transcript' });
+        contentEl.createEl('h2', { text: t('modal.create.title') });
         
         // Build the input stage UI
         this.buildInputStage();
@@ -3261,7 +3271,7 @@ class YouTubeTranscriptModal extends Modal {
         contentEl.empty();
         
         // Add header
-        contentEl.createEl('h2', { text: 'Tubesage: create note from YouTube transcript' });
+        contentEl.createEl('h2', { text: t('modal.create.title') });
         
         // Check if we're on mobile
         const isMobile = Platform.isMobile;
@@ -3271,7 +3281,7 @@ class YouTubeTranscriptModal extends Modal {
         
         // URL input group - first input
         const urlGroup = formEl.createDiv({ cls: 'form-group' });
-        urlGroup.createEl('label', { text: 'YouTube URL', attr: { for: 'url' } });
+        urlGroup.createEl('label', { text: t('modal.create.urlLabel'), attr: { for: 'url' } });
         const urlText = new TextComponent(urlGroup);
         urlText.setPlaceholder(YOUTUBE_URL_PLACEHOLDER);
         urlText.inputEl.id = 'url';
@@ -3289,7 +3299,7 @@ class YouTubeTranscriptModal extends Modal {
         
         // Add channel message
         channelOptionsContainer.createDiv({ 
-            text: 'How many videos would you like to process? Max hard limit is 50.',
+            text: t('modal.create.videoCountPrompt'),
             cls: 'channel-message'
         });
         
@@ -3305,7 +3315,7 @@ class YouTubeTranscriptModal extends Modal {
         
         // Create label first
         allVideosContainer.createEl('label', {
-            text: 'All videos',
+            text: t('modal.create.allVideos'),
             cls: 'tubesage-modal-radio-label',
             attr: { for: 'all-videos-radio' }
         });
@@ -3332,7 +3342,7 @@ class YouTubeTranscriptModal extends Modal {
         
         // Create label first
         limitedVideosContainer.createEl('label', {
-            text: 'Limited number:',
+            text: t('modal.create.limitedNumber'),
             cls: 'tubesage-modal-radio-label',
             attr: { for: 'limited-videos-radio' }
         });
@@ -3360,7 +3370,7 @@ class YouTubeTranscriptModal extends Modal {
         });
         
         const processBtn = new ButtonComponent(processBtnContainer);
-        processBtn.setButtonText('Process');
+        processBtn.setButtonText(t('modal.create.processButton'));
         processBtn.setCta();
         if (isMobile) {
             processBtn.buttonEl.addClass('tubesage-process-btn-mobile');
@@ -3382,9 +3392,9 @@ class YouTubeTranscriptModal extends Modal {
         
         // Title input group - second input (for single video mode)
         const titleGroup = formEl.createDiv({ cls: 'form-group' });
-        titleGroup.createEl('label', { text: 'Custom note title (optional)', attr: { for: 'title' } });
+        titleGroup.createEl('label', { text: t('modal.create.titleLabel'), attr: { for: 'title' } });
         const titleText = new TextComponent(titleGroup);
-        titleText.setPlaceholder('Leave empty to use YouTube title');
+        titleText.setPlaceholder(t('modal.create.titlePlaceholder'));
         titleText.inputEl.id = 'title';
         this.titleInputEl = titleText.inputEl;
         
@@ -3393,9 +3403,9 @@ class YouTubeTranscriptModal extends Modal {
         
         // Label for the toggle
         const toggleLabel = toggleContainer.createDiv({ cls: 'toggle-label' });
-        toggleLabel.createDiv({ text: 'Fast summary mode' });
+        toggleLabel.createDiv({ text: t('modal.create.fastMode') });
         toggleLabel.createDiv({ 
-            text: 'Enable for shorter, quicker summaries (skips timestamp links)', 
+            text: t('modal.create.fastModeDesc'), 
             cls: 'summary-info' 
         });
         
@@ -3416,7 +3426,7 @@ class YouTubeTranscriptModal extends Modal {
             
             // First check if it's a valid URL
             if (url && !this.isYoutubeUrl(url)) {
-                urlValidationEl.setText('Not a valid YouTube URL. Only video, playlist, and channel urls are supported.');
+                urlValidationEl.setText(t('modal.create.urlInvalid'));
                 urlValidationEl.removeClass('tubesage-validation-success', 'tubesage-validation-accent');
                 urlValidationEl.addClass('tubesage-validation-error', 'tubesage-validation-visible');
                 urlValidationEl.removeClass('tubesage-validation-hidden');
@@ -3425,7 +3435,7 @@ class YouTubeTranscriptModal extends Modal {
             
             // Check if it's a channel URL
             if (url && this.isYoutubeChannelOrPlaylistUrl(url)) {
-                urlValidationEl.setText('YouTube channel or playlist URL detected');
+                urlValidationEl.setText(t('modal.create.urlPlaylist'));
                 urlValidationEl.removeClass('tubesage-validation-error', 'tubesage-validation-success');
                 urlValidationEl.addClass('tubesage-validation-accent', 'tubesage-validation-visible');
                 urlValidationEl.removeClass('tubesage-validation-hidden');
@@ -3436,7 +3446,7 @@ class YouTubeTranscriptModal extends Modal {
                 titleGroup.addClass('tubesage-display-none');
                 titleGroup.removeClass('tubesage-display-block');
             } else if (url) {
-                urlValidationEl.setText('YouTube video URL detected');
+                urlValidationEl.setText(t('modal.create.urlVideo'));
                 urlValidationEl.removeClass('tubesage-validation-error', 'tubesage-validation-accent');
                 urlValidationEl.addClass('tubesage-validation-success', 'tubesage-validation-visible');
                 urlValidationEl.removeClass('tubesage-validation-hidden');
@@ -3498,7 +3508,7 @@ class YouTubeTranscriptModal extends Modal {
         // Create validation rules
         const validations: ValidationResult[] = [
             // URL is required
-            validateRequired(url, 'Youtube URL'),
+            validateRequired(url, t('modal.create.urlLabel')),
             
             // URL must be a valid YouTube URL
             validateYouTubeUrl(url, this.isYoutubeUrl)
@@ -3604,7 +3614,7 @@ class YouTubeTranscriptModal extends Modal {
                     const match = sourceUrl.match(/list=([^&]+)/);
                     if (match && match[1]) {
                         const playlistId = match[1];
-                        this.showNotice(`Extracting playlist name...`, 5000);
+                        this.showNotice(t('notice.collection.extractingName'), 5000);
                         
                         try {
                             // Get the playlist name from the API
@@ -3617,7 +3627,7 @@ class YouTubeTranscriptModal extends Modal {
                                 const data = await response.json() as PlaylistResponse;
                                 if (data.items && data.items.length > 0) {
                                     sourceName = data.items[0].snippet?.title ?? '';
-                                    this.showNotice(`Found playlist: ${sourceName}`, 5000);
+                                    this.showNotice(t('notice.collection.playlistFound', { name: sourceName }), 5000);
                                 }
                             }
                         } catch (error) {
@@ -3640,7 +3650,9 @@ class YouTubeTranscriptModal extends Modal {
             const sanitizedName = this.sanitizePathComponent(sourceName);
             
             // Show starting notice
-            this.showNotice(`Starting to process YouTube ${contentType.toLowerCase()}: ${sourceName}`, 5000);
+            this.showNotice(isPlaylist
+                ? t('notice.collection.start.playlist', { name: sourceName })
+                : t('notice.collection.start.channel', { name: sourceName }), 5000);
             
             // Create the subfolder with content type prefix
             const formattedSourceName = `${contentType} - ${sanitizedName}`;
@@ -3650,20 +3662,29 @@ class YouTubeTranscriptModal extends Modal {
             
             // Ensure the subfolder exists
             await ensureFolder(this.app.vault, sourceSubfolder);
-                this.showNotice(`Created ${contentType.toLowerCase()} folder: ${formattedSourceName}`, 5000);
+                this.showNotice(isPlaylist
+                    ? t('notice.collection.folderCreated.playlist', { path: formattedSourceName })
+                    : t('notice.collection.folderCreated.channel', { path: formattedSourceName }), 5000);
             
             // Fetch videos from the source using the source URL
-            this.showNotice(`Fetching videos from ${contentType.toLowerCase()}: ${sourceName}`, 5000);
+            this.showNotice(isPlaylist
+                ? t('notice.collection.fetchingFrom.playlist', { name: sourceName })
+                : t('notice.collection.fetchingFrom.channel', { name: sourceName }), 5000);
             
             // Use the plugin's fetchCollectionVideos method
             // @ts-ignore - This is a mistake in our code structure
             const collectionVideos = await this.plugin.fetchCollectionVideos(sourceUrl, videoCount);
             
             if (!collectionVideos || collectionVideos.length === 0) {
-                throw new Error(`No videos found in this ${contentType.toLowerCase()}`);
+                // Two whole sentences rather than one with the noun spliced in:
+                // the noun's gender and case differ by language, and this text
+                // reaches the user through notice.job.failed's {error}.
+                throw new Error(isPlaylist
+                    ? t('notice.collection.noVideos.playlist')
+                    : t('notice.collection.noVideos.channel'));
             }
             
-            this.showNotice(`Found ${collectionVideos.length} videos to process`, 5000);
+            this.showNotice(t('notice.collection.videosToProcess', { count: collectionVideos.length }), 5000);
             
             // Get the actual number of videos to process - respect ALL vs Limited options
             const videosToProcess = videoCount === 0 ? collectionVideos : collectionVideos.slice(0, videoCount);
@@ -3683,14 +3704,18 @@ class YouTubeTranscriptModal extends Modal {
                     const createdAt = Date.now();
                     
                     // Update processing message
-                    this.showNotice(`Processing video ${processedCount + skippedCount + errorCount + 1}/${videosToProcess.length}: ${video.title}`, 5000);
+                    this.showNotice(t('notice.collection.processingVideo', {
+                        current: processedCount + skippedCount + errorCount + 1,
+                        total: videosToProcess.length,
+                        title: video.title,
+                    }), 5000);
                     
                     // Extract and summarize transcript
                     try {
                         const transcript = await this.plugin.extractTranscript(video.url);
                         
                         if (!transcript) {
-                            this.showNotice(`Skipping video ${video.title} - No transcript available`, 5000);
+                            this.showNotice(t('notice.collection.skipNoTranscript', { title: video.title }), 5000);
                             skippedCount++;
                             continue;
                         }
@@ -3718,26 +3743,34 @@ class YouTubeTranscriptModal extends Modal {
                         // Add timestamp links if enabled and not in fast summary mode
                         if (this.plugin.settings.addTimestampLinks && !this.plugin.settings.useFastSummary) {
                             // Add timestamp links to the note - with specific notification for channel vs playlist
-                            this.showNotice(`Adding timestamp links to ${isPlaylist ? 'playlist' : 'channel'} video: ${video.title}`, 3000);
+                            this.showNotice(isPlaylist
+                                ? t('notice.collection.addingTimestamps.playlist', { title: video.title })
+                                : t('notice.collection.addingTimestamps.channel', { title: video.title }), 3000);
                             try {
                                 // Simple, small delay to allow file creation to complete
                                 await new Promise(resolve => window.setTimeout(resolve, 300));
                                 logger.debug(`Adding timestamps to file: ${notePath}`);
                                 
                                 await this.plugin.addSectionLinksToNote(notePath, video.url);
-                                this.showNotice(`✓ Timestamp links added to ${video.title}`, 2000);
+                                this.showNotice(t('notice.collection.timestampsAdded', { title: video.title }), 2000);
                             } catch (timestampError) {
                                 logger.error(`Error adding timestamp links to ${isPlaylist ? 'playlist' : 'channel'} video (${video.title}):`, timestampError);
                                 if (timestampError instanceof NoteChangedError) {
-                                    this.showNotice(`${timestampError.message} ("${video.title}")`, 5000);
+                                    this.showNotice(t('notice.collection.timestampError', {
+                                        error: timestampError.message,
+                                        title: video.title,
+                                    }), 5000);
                                 } else {
-                                    this.showNotice(`Note created but timestamps could not be added to "${video.title}"`, 3000);
+                                    this.showNotice(t('notice.collection.timestampsFailed', { title: video.title }), 3000);
                                 }
                             }
                         }
                         
                         processedCount++;
-                        this.showNotice(`✓ Processed video ${processedCount + skippedCount + errorCount}/${videosToProcess.length}`, 3000);
+                        this.showNotice(t('notice.collection.videoProcessed', {
+                            current: processedCount + skippedCount + errorCount,
+                            total: videosToProcess.length,
+                        }), 3000);
                         
                         // === NEW LOGGING LOGIC START (for collection items) ===
                         if (this.plugin.settings.debugLogging) {
@@ -3767,7 +3800,10 @@ class YouTubeTranscriptModal extends Modal {
                         
                     } catch (transcriptError) {
                     const transcriptErrorMessage = getSafeErrorMessage(transcriptError);
-                    this.showNotice(`⚠️ Skipping video "${video.title}" - ${transcriptErrorMessage}`, 5000);
+                    this.showNotice(t('notice.collection.videoSkipped', {
+                        title: video.title,
+                        error: transcriptErrorMessage,
+                    }), 5000);
                         skippedCount++;
                         // Clear logs even on skip, so next video starts fresh
                         clearLogs(); 
@@ -3775,7 +3811,10 @@ class YouTubeTranscriptModal extends Modal {
                 } catch (videoError) {
                     logger.error('Error processing video:', video, videoError);
                     const videoErrorMessage = getSafeErrorMessage(videoError);
-                    this.showNotice(`❌ Error processing video "${video.title}": ${videoErrorMessage}`, 5000);
+                    this.showNotice(t('notice.collection.videoError', {
+                        title: video.title,
+                        error: videoErrorMessage,
+                    }), 5000);
                     errorCount++;
                     // Clear logs on error, so next video starts fresh
                     clearLogs(); 
@@ -3783,7 +3822,11 @@ class YouTubeTranscriptModal extends Modal {
             }
             
             // Final success notice
-            this.showNotice(`Channel processing complete: ${processedCount} processed, ${skippedCount} skipped, ${errorCount} errors`, 7000);
+            this.showNotice(t('notice.collection.complete', {
+                processed: processedCount,
+                skipped: skippedCount,
+                errors: errorCount,
+            }), 7000);
             
             // Close the modal
             this.close();
@@ -3795,7 +3838,7 @@ class YouTubeTranscriptModal extends Modal {
             const errorMessage = getSafeErrorMessage(err);
             
             // Show error notice
-            this.showNotice(`Error: ${errorMessage}`, 5000);
+            this.showNotice(t('notice.job.failed', { error: errorMessage }), 5000);
             
             // Close the modal on error
             this.close();
@@ -3840,7 +3883,7 @@ class YouTubeTranscriptModal extends Modal {
         
         // Validate URL using form utilities
         const urlValidations: ValidationResult[] = [
-            validateRequired(url, 'Youtube URL'),
+            validateRequired(url, t('modal.create.urlLabel')),
             validateYouTubeUrl(url, this.isYoutubeUrl)
         ];
         
@@ -3896,7 +3939,7 @@ class YouTubeTranscriptModal extends Modal {
             // claim nothing is running.
             logger.error('[processTranscript] submit failed to persist the job:', error);
             this.showNotice(
-                `Could not save the job: ${getSafeErrorMessage(error)}. The video may still be processing; check "Show active jobs"`,
+                t('notice.job.saveFailed', { error: getSafeErrorMessage(error) }),
                 8000
             );
             this.isProcessing = false;
@@ -3907,7 +3950,7 @@ class YouTubeTranscriptModal extends Modal {
         switch (result.kind) {
             case 'already-running':
                 this.isProcessing = false;
-                this.showNotice('This video is already being processed', 5000);
+                this.showNotice(t('notice.job.alreadyRunning'), 5000);
                 return;
             case 'recovery':
                 // An interrupted job for this video already exists: it needs a
@@ -3958,7 +4001,7 @@ class JobRecoveryModal extends Modal {
 
     onOpen() {
         this.isOpen = true;
-        this.setTitle('Active jobs');
+        this.setTitle(t('modal.jobs.title'));
         this.unsubscribeJobEvents = this.plugin.subscribeToJobEvents(() => {
             void this.refresh();
         });
@@ -4007,7 +4050,7 @@ class JobRecoveryModal extends Modal {
             contentEl.empty();
         }
         contentEl.querySelector('.tubesage-jobs-error')?.remove();
-        contentEl.createDiv({ cls: ['tubesage-jobs-status', 'tubesage-jobs-error'], text: `Could not read the job list: ${message}` });
+        contentEl.createDiv({ cls: ['tubesage-jobs-status', 'tubesage-jobs-error'], text: t('modal.jobs.loadError', { error: message }) });
     }
 
     private render(entries: RecoveryRowEntry[]): void {
@@ -4015,7 +4058,7 @@ class JobRecoveryModal extends Modal {
         contentEl.empty();
         this.hasRendered = true;
         if (entries.length === 0) {
-            contentEl.createDiv({ cls: 'tubesage-jobs-empty', text: 'No active jobs' });
+            contentEl.createDiv({ cls: 'tubesage-jobs-empty', text: t('modal.jobs.empty') });
             return;
         }
         const now = Date.now();
@@ -4028,7 +4071,7 @@ class JobRecoveryModal extends Modal {
                 highlighted = rowEl;
             }
             rowEl.createDiv({ cls: 'tubesage-jobs-title', text: row.title });
-            rowEl.createDiv({ cls: 'tubesage-jobs-meta', text: `${row.stageLabel} · ${formatJobAge(updatedAt, now)}` });
+            rowEl.createDiv({ cls: 'tubesage-jobs-meta', text: t('modal.jobs.meta', { stage: row.stageLabel, age: formatJobAge(updatedAt, now) }) });
             rowEl.createDiv({ cls: 'tubesage-jobs-status', text: row.statusLine });
             if (row.notePath !== undefined) {
                 rowEl.createDiv({ cls: 'tubesage-jobs-path', text: row.notePath });
@@ -4050,7 +4093,7 @@ class JobRecoveryModal extends Modal {
         }
         contentEl.createDiv({
             cls: 'tubesage-jobs-meta',
-            text: 'Discard removes a job from this list; it never deletes notes.',
+            text: t('modal.jobs.discardHint'),
         });
         if (highlighted !== null) {
             highlighted.scrollIntoView({ block: 'nearest' });
@@ -4065,14 +4108,14 @@ class JobRecoveryModal extends Modal {
                 case 'resume': {
                     const result = await runner.resume(id, { confirmed: true });
                     if (result.kind === 'prompt') {
-                        this.plugin.showNotice('This job cannot be resumed as it is; see its status', 5000);
+                        this.plugin.showNotice(t('notice.job.cannotResume'), 5000);
                     }
                     break;
                 }
                 case 'finish-without-timestamps': {
                     const result = await runner.resume(id, { confirmed: true, finishWithoutTimestamps: true });
                     if (result.kind === 'prompt') {
-                        this.plugin.showNotice('This job cannot be finished as it is; see its status', 5000);
+                        this.plugin.showNotice(t('notice.job.cannotFinish'), 5000);
                     }
                     break;
                 }
@@ -4091,7 +4134,7 @@ class JobRecoveryModal extends Modal {
             }
         } catch (error) {
             logger.error(`[jobs] ${action.id} failed for ${id}:`, error);
-            this.plugin.showNotice(`Error: ${getSafeErrorMessage(error)}`, 5000);
+            this.plugin.showNotice(t('notice.job.failed', { error: getSafeErrorMessage(error) }), 5000);
         }
         await this.refresh();
     }
@@ -4185,7 +4228,7 @@ class TemplateFilePickerModal extends Modal {
     onOpen() {
         const { contentEl } = this;
         
-        contentEl.createEl('h2', { text: 'Select template file' });
+        contentEl.createEl('h2', { text: t('modal.templatePicker.title') });
         
         // Collect template files by walking only the configured templates
         // folder subtree — no whole-vault enumeration.
@@ -4196,8 +4239,7 @@ class TemplateFilePickerModal extends Modal {
         // Display a message if no template files were found
         if (this.templates.length === 0) {
             contentEl.createDiv({ 
-                text: `No template files found in "${this.templatesFolder}" folder. ` +
-                      `Make sure your template folder is correctly configured in Templater settings.`,
+                text: t('modal.templatePicker.empty', { folder: this.templatesFolder }),
                 cls: 'setting-item-description'
             });
         }
@@ -4205,7 +4247,7 @@ class TemplateFilePickerModal extends Modal {
         // Create search input
         const searchEl = contentEl.createEl('input', {
             type: 'text',
-            placeholder: 'Type to search templates...'
+            placeholder: t('modal.templatePicker.searchPlaceholder')
         });
         searchEl.addEventListener('input', () => {
             const query = searchEl.value.toLowerCase();
@@ -4247,7 +4289,7 @@ class TemplateFilePickerModal extends Modal {
         }
         
         if (filteredTemplates.length === 0) {
-            templateListEl.createDiv({ text: 'No matching templates found.' });
+            templateListEl.createDiv({ text: t('modal.templatePicker.noMatches') });
         }
     }
 
@@ -4365,18 +4407,18 @@ class FolderPickerModal extends Modal {
         const normalizedRootFolder = normalizePath(rootFolder, false); // Keep leading slash for display
         
         // Simple title only
-        contentEl.createEl('h2', { text: 'Select folder location' });
+        contentEl.createEl('h2', { text: t('modal.folderPicker.title') });
         
         // Debug info about folder count
         const rootSubfolderCount = this.folders.length - 1; // Subtract root folder itself
         if (rootSubfolderCount <= 0) {
             contentEl.createDiv({
-                text: `No subfolders found under ${rootFolder}`,
+                text: t('modal.folderPicker.empty', { folder: rootFolder }),
                 cls: 'tubesage-folder-picker-status-error' // Apply new class
             });
         } else {
             contentEl.createDiv({
-                text: `Found ${rootSubfolderCount} subfolder${rootSubfolderCount === 1 ? '' : 's'}`,
+                text: t('modal.folderPicker.found', { count: rootSubfolderCount }),
                 cls: 'tubesage-folder-picker-status-info' // Apply new class
             });
         }
@@ -4384,7 +4426,7 @@ class FolderPickerModal extends Modal {
         // Create search input
         const searchEl = contentEl.createEl('input', {
             type: 'text',
-            placeholder: 'Filter folders...',
+            placeholder: t('modal.folderPicker.searchPlaceholder'),
             cls: 'folder-search-input'
         });
         searchEl.focus();
@@ -4419,7 +4461,7 @@ class FolderPickerModal extends Modal {
             
             if (foldersToShow.length === 0) {
                 folderListEl.createDiv({
-                    text: 'No matching folders',
+                    text: t('modal.folderPicker.noMatches'),
                     cls: 'empty-state'
                 });
                 return;
@@ -4613,9 +4655,10 @@ class LicenseModal extends Modal {
                     if (match) {
                         const [, number, title, content] = match;
                         
-                        listItem.createSpan({ text: `${number}. `, cls: 'tubesage-license-list-item-title-segment' });
-                        
-                        listItem.createSpan({ text: `${title}: `, cls: 'tubesage-license-list-item-title-segment' });
+                        listItem.createSpan({
+                            text: t('modal.license.listItem', { number, title }),
+                            cls: 'tubesage-license-list-item-title-segment',
+                        });
                         
                         listItem.createSpan({ text: content });
                     } else {
@@ -4786,7 +4829,7 @@ class READMEModal extends Modal {
             modalEl.addClass('tubesage-readme-modal-size');
         }
         
-        contentEl.createEl('h2', { text: 'Tubesage YouTube transcript plugin documentation' });
+        contentEl.createEl('h2', { text: t('modal.readme.title') });
 
         // Run async work without returning a promise to Modal
         void (async () => {
@@ -4967,7 +5010,7 @@ class READMEModal extends Modal {
             // Handle error if README file can't be read
             logger.error('Error loading README file:', error);
             contentEl.createEl('p', { 
-                text: 'Could not load readme file. Please check that readme.md exists in your plugin directory.',
+                text: t('modal.readme.loadError'),
                 cls: 'tubesage-license-load-error' // Assumes this class is defined and appropriate
             });
         }
@@ -4978,7 +5021,7 @@ class READMEModal extends Modal {
         });
         
         const closeButton = new ButtonComponent(footerEl);
-        closeButton.setButtonText('Close');
+        closeButton.setButtonText(t('common.close'));
         closeButton.buttonEl.addClass('tubesage-readme-close-button');
         closeButton.onClick(() => {
             this.close();
@@ -5171,7 +5214,7 @@ class TemplateViewModal extends Modal {
         }
         
             contentEl.createEl('h2', { 
-                text: 'Example template: copy and place in your templater plugin specified template directory',
+                text: t('modal.template.title'),
             cls: 'tubesage-template-view-title'
         });
 
@@ -5233,7 +5276,7 @@ class TemplateViewModal extends Modal {
             
             // Add copy text
             copyContainer.createSpan({ 
-                text: 'Copy template',
+                text: t('modal.template.copy'),
                 cls: 'tubesage-template-view-copy-text'
             });
             
@@ -5247,7 +5290,7 @@ class TemplateViewModal extends Modal {
                         // Show success state
                         if (copyTextElement) {
                             const originalText = copyTextElement.textContent;
-                            copyTextElement.textContent = 'Copied';
+                            copyTextElement.textContent = t('modal.template.copied');
                             window.setTimeout(() => {
                                 copyTextElement.textContent = originalText;
                             }, 2000);
@@ -5257,9 +5300,9 @@ class TemplateViewModal extends Modal {
                         logger.error('Failed to copy template:', err);
                         // Show error state
                         if (copyTextElement) {
-                            copyTextElement.textContent = 'Failed to copy';
+                            copyTextElement.textContent = t('modal.template.copyFailed');
                             window.setTimeout(() => {
-                                copyTextElement.textContent = 'Copy template';
+                                copyTextElement.textContent = t('modal.template.copy');
                             }, 2000);
                         }
                     });
@@ -5268,7 +5311,7 @@ class TemplateViewModal extends Modal {
             // Copy icon button
             new ExtraButtonComponent(copyContainer)
                 .setIcon('copy')
-                .setTooltip('Copy template')
+                .setTooltip(t('modal.template.copy'))
                 .onClick(handleCopy);
 
             if (copyTextElement) {
@@ -5283,7 +5326,7 @@ class TemplateViewModal extends Modal {
             
             // Add explanation
             contentEl.createDiv({
-                text: 'This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.',
+                text: t('modal.template.explanation'),
                 cls: 'tubesage-template-view-explanation'
             });
             
@@ -5292,29 +5335,32 @@ class TemplateViewModal extends Modal {
                 cls: 'tubesage-template-view-variables-container'
             });
             
-            variablesContainer.createEl('h3', {text: 'Available template variables:'});
+            variablesContainer.createEl('h3', {text: t('modal.template.variablesHeading')});
             
+            // `desc` carries its own leading separator, so the line is one
+            // translated string rather than punctuation glued to a translated
+            // fragment. The variable names are Templater identifiers, never translated.
             const variables = [
-                {name: 'tp.user.title', desc: 'The title of the Youtube video'},
-                {name: 'tp.user.videoUrl', desc: 'The URL of the Youtube video'},
-                {name: 'tp.user.transcript', desc: 'The full transcript with timestamps'},
-                {name: 'tp.user.summary', desc: 'The LLM-generated summary of the video'},
-                {name: 'tp.user.llmProvider', desc: 'The LLM provider used (e.g., openai, anthropic)'},
-                {name: 'tp.user.llmModel', desc: 'The specific model used (e.g., gpt-4, claude-3-opus)'},
-                {name: 'tp.user.llmTags', desc: 'Tags generated from the LLM provider and model'}
+                {name: 'tp.user.title', desc: t('modal.template.var.title.desc')},
+                {name: 'tp.user.videoUrl', desc: t('modal.template.var.videoUrl.desc')},
+                {name: 'tp.user.transcript', desc: t('modal.template.var.transcript.desc')},
+                {name: 'tp.user.summary', desc: t('modal.template.var.summary.desc')},
+                {name: 'tp.user.llmProvider', desc: t('modal.template.var.llmProvider.desc')},
+                {name: 'tp.user.llmModel', desc: t('modal.template.var.llmModel.desc')},
+                {name: 'tp.user.llmTags', desc: t('modal.template.var.llmTags.desc')}
             ];
             
             const varList = variablesContainer.createEl('ul');
             variables.forEach(v => {
                 const item = varList.createEl('li');
                 item.createEl('code', {text: v.name});
-                item.createSpan({text: ` - ${v.desc}`});
+                item.createSpan({text: v.desc});
             });
         } catch (error) {
             // Handle error if template file can't be read
             logger.error('Error loading template file:', error);
             contentEl.createEl('p', { 
-                text: 'Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.',
+                text: t('modal.template.loadError'),
                 cls: 'tubesage-license-load-error' // Reuse existing class for error messages
             });
         }
@@ -5325,7 +5371,7 @@ class TemplateViewModal extends Modal {
         });
         
         const closeButton = new ButtonComponent(footerEl);
-        closeButton.setButtonText('Close');
+        closeButton.setButtonText(t('common.close'));
         closeButton.buttonEl.addClass('tubesage-license-close-button');
         closeButton.onClick(() => {
             this.close();

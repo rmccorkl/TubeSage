@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — peruuta kohdasta ”Show active jobs”"
+        "translation": "{stage} — peruuta kohdasta ”Näytä aktiiviset työt”"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,673 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "Käsitellään videota"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Youtube-litterointilaajennus: palvelulle {provider} ei ole määritetty API-avainta. Lisää API-avaimesi laajennuksen asetuksiin."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "Virhe: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "Käsittely peruutettu"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "Käsittely keskeytyi; jatka sitä kohdasta ”Näytä aktiiviset työt”"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "Virhemuistiinpano vianmääritystiedoilla luotu: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "Virhe: {error} (myöskään vianmäärityksen muistiinpanoa ei voitu luoda)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "Keskeytyneitä töitä ei voitu tarkistaa: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "Varoitus: litteroinnista ei löytynyt aikaleimoja. Aikaleimat ovat käsittelyn edellytys."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "Virhe: Templater-laajennus vaaditaan, mutta sitä ei ole asennettu tai otettu käyttöön"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "Muistiinpano luotu: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "Virhe muistiinpanoa luotaessa: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Youtube-litterointilaajennus tarvitsee Templater-laajennuksen. Asenna ja ota se käyttöön."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "Haetaan kokoelman tietoja..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "Haetaan soittolistaa, tunnus: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "Haetaan soittolistan videoita..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "Haetaan soittolistan videoita (jatkuu)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "Turvaraja {limit} videota saavutettiin. Käsitellään ensimmäiset {limit} videota."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "Haetaan kanavan videoita..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "Haetaan kanavan videoita (jatkuu)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "Löytyi {title}: {count} videota"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "Lisätään aikaleimalinkkejä LLM:n avulla..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "Yritetään uudelleen pienemmällä token-rajalla..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "Aikaleimalinkkien lisääminen epäonnistui: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "Aikaleimalinkit lisätty {count} otsikkoon"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "Käännetään sisältöä kielelle {locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "Virhe: tiedostoa ei löydy: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "Käännösvirhe: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "Sisältöä ei voitu kääntää (tyhjä vastaus LLM:ltä)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "Sisältö käännettiin kielelle {locale}"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "Palvelun {provider} API-avain puuttuu. Malleja ei voi hakea."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "Haetaan palvelun {provider} malleja..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "Palvelun {provider} mallien haku epäonnistui: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "Palvelun {provider} mallit päivitetty!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "Palvelun {provider} malleja ei voitu lukea API-vastauksesta."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "Virhe haettaessa palvelun {provider} malleja: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "Käsitellään osaa {current}/{total}..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "Lisättiin {count} aikaleimalinkkiä osissa käsitellen"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Youtube-litteroinnin poimintatyökalu on valmis"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "Käsittele"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "Jätä tyhjäksi, niin käytetään YouTube-otsikkoa"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "Osoite ei ole kelvollinen YouTube-osoite. Vain videoiden, soittolistojen ja kanavien osoitteet ovat tuettuja."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: luo muistiinpano YouTube-tekstityksestä"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "YouTube-osoite"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "Havaittiin YouTube-kanavan tai -soittolistan osoite"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "Havaittiin YouTube-videon osoite"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "Kuinka monta videota haluat käsitellä? Ehdoton yläraja on 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "Kaikki videot"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "Rajoitettu määrä:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "Oma muistiinpanon otsikko (valinnainen)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "Nopea tiivistelmätila"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "Lyhyempiä ja nopeampia tiivistelmiä (ohittaa aikaleimalinkit)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "Aktiiviset työt"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "Ei aktiivisia töitä"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "Työlistaa ei voitu lukea: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "Hylkää poistaa työn tästä listasta; muistiinpanoja ei koskaan poisteta."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "Valitse mallitiedosto"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "Kansiosta ”{folder}” ei löytynyt mallitiedostoja. Tarkista, että mallikansio on määritetty oikein Templaterin asetuksissa."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "Kirjoita hakeaksesi malleja…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "Ei vastaavia malleja."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "Valitse kansion sijainti"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "Kansiossa {folder} ei ole alikansioita"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "Löydetyt alikansiot: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "Suodata kansioita…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "Ei vastaavia kansioita"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Tubesage YouTube -tekstityslisäosan ohjeet"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "readme-tiedostoa ei voitu ladata. Tarkista, että readme.md on lisäosan kansiossa."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "Esimerkkimalli: kopioi se Templaterissa määritettyyn mallikansioon"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "Kopioi malli"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "Kopioitu"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "Kopiointi epäonnistui"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "Tämä on Templaterin esimerkkimalli YouTube-tekstitysmuistiinpanoille. Voit muokata sitä tarpeisiisi."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "Käytettävissä olevat mallimuuttujat:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "Mallitiedostoa ei voitu ladata. Tarkista, että se on lisäosan kansiossa tai holvin mallikansiossa."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "Haetaan soittolistan nimeä…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "Soittolista löytyi: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "Käsitellään YouTube-soittolistaa: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "Käsitellään YouTube-kanavaa: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "Soittolistan kansio luotu: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "Kanavan kansio luotu: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "Haetaan soittolistan videoita: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "Haetaan kanavan videoita: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "Käsiteltäviä videoita: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "Käsitellään videota {current}/{total}: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "Ohitetaan video {title} – ei tekstitystä"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "Lisätään aikaleimalinkkejä soittolistan videoon: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "Lisätään aikaleimalinkkejä kanavan videoon: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ Aikaleimalinkit lisätty: {title}"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} (”{title}”)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "Muistiinpano luotiin, mutta aikaleimoja ei voitu lisätä kohteeseen ”{title}”"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ Video {current}/{total} käsitelty"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ Ohitetaan video ”{title}” – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ Virhe käsiteltäessä videota ”{title}”: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "Kanavan käsittely valmis – käsitelty: {processed}, ohitettu: {skipped}, virheitä: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "Työtä ei voitu tallentaa: {error}. Videon käsittely voi jatkua; katso ”Näytä aktiiviset työt”"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "Tätä videota käsitellään jo"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "Tätä työtä ei voi jatkaa tällaisenaan; katso sen tila"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "Tätä työtä ei voi viimeistellä tällaisenaan; katso sen tila"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "Pura YouTube-tekstitys"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Youtube-videon otsikko"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - Youtube-videon osoite"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - Koko tekstitys aikaleimoineen"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - LLM:n luoma tiivistelmä videosta"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - Käytetty LLM-tarjoaja (esim. openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - Käytetty tarkka malli (esim. gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - LLM-tarjoajasta ja mallista luodut tunnisteet"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "Näytä aktiiviset työt"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Palveluntarjoajaksi asetettiin {provider}. Tulostebudjetti: {tokens} tokenia (enimmäistuloste miinus varaus)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Malliksi vaihdettiin {model}. Tulostebudjetti: {tokens} tokenia (enimmäistuloste miinus varaus)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "{provider}-malliluettelo päivitetty."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "{provider}-malleja ei voitu päivittää. Nykyinen luettelo jää käyttöön."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "Tästä soittolistasta ei löytynyt videoita"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "Tältä kanavalta ei löytynyt videoita"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "{provider}-malliluettelo päivitetty. Tokenrajat täytettiin automaattisesti {count} mallille."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "{provider}-malliluettelo päivitetty. Tokenrajat täytettiin automaattisesti {count} mallille."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Haetaan tekstitystä"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "Tiivistetään"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Luodaan muistiinpanoa"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "Muistiinpano luotu"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "Lisätään aikaleimalinkkejä"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "Käännetään"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "Valmis"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "Peruuta"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "Hylkää"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "Avaa muistiinpano"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "Viimeistele ilman aikaleimoja"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "Viimeistele ilman käännöstä"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "Jatka"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "Jatka (voi laskuttaa uudelleen)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "Käynnissä"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "Valmis jatkamaan"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "Päättynyt"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "Peruutettu"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "Epäonnistui"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "Epäonnistui: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "Aikakatkaisu. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Keskeytyi, kun Obsidian suljettiin; muistiinpanoa ei luotu"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Keskeytyi, kun Obsidian suljettiin; polussa {path} voi olla muistiinpano"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Keskeytyi, kun Obsidian suljettiin; muistiinpano luotiin ilman aikaleimoja"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Keskeytyi, kun Obsidian suljettiin; muistiinpano luotiin ilman käännöstä"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "Keskeytyi vaiheessa {stage}; edellisestä pyynnöstä on ehkä jo veloitettu"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "Keskeytyi vaiheessa {stage}; ei tiedetä, veloitettiinko edellisestä pyynnöstä"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "Liian monta yritystä vaiheessa {stage}"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "Kohdepolussa on jo muistiinpano — nimeä se uudelleen tai poista se ja jatka sitten kohdasta Näytä aktiiviset työt"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "Ei voitu varmistaa, kuuluuko kohdepolun muistiinpano tähän työhön"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "Tämän työn muistiinpano on siirretty tai poistettu"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "Muistiinpanoa muokattiin käsittelyn aikana; aikaleimat ohitettiin"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater ei ole käytettävissä; ota se käyttöön ja jatka sitten"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "Jatkaminen hakee tekstityksen uudelleen maksullisesta palvelusta"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "Muistiinpanon polkua ei voitu laskea johdonmukaisesti (tarkista kansio- ja päivämääräasetukset) ja jatka sitten"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "Tekstitysmuistiinpano luotiin onnistuneesti"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "Muistiinpano luotiin, mutta aikaleimat ohitettiin, koska muistiinpanoa muokattiin"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "Muistiinpano luotiin, mutta käännös ohitettiin, koska muistiinpanoa muokattiin"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "Muistiinpano luotiin, mutta aikaleimat ja käännös ohitettiin, koska muistiinpanoa muokattiin"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "Muistiinpano luotiin ilman käännöstä"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "Muistiinpano luotiin ilman aikaleimoja ja käännöstä"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: 1 muistiinpanotyö keskeytyi, kun Obsidian suljettiin — {title}: muistiinpanoa ei luotu"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: 1 muistiinpanotyö keskeytyi, kun Obsidian suljettiin — {title}: polussa {path} voi olla muistiinpano"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: 1 muistiinpanotyö keskeytyi, kun Obsidian suljettiin — {title}: muistiinpano luotiin ilman aikaleimoja"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: 1 muistiinpanotyö keskeytyi, kun Obsidian suljettiin — {title}: muistiinpano luotiin ilman käännöstä"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: {count} muistiinpanotyötä keskeytyi, kun Obsidian suljettiin; uusimmat näkyvät kohdassa Näytä aktiiviset työt"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 keskeytynyt työ vaatii huomiota"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: {count} keskeytynyttä työtä vaatii huomiota"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "Täytä kenttä {field}"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "Tapahtui virhe"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "Tälle videolle ei ole litterointia"
     }
 }

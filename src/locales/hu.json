@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — megszakítás a „Show active jobs” paranccsal"
+        "translation": "{stage} — megszakítás a „Aktív feladatok megjelenítése” paranccsal"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,673 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "Videó feldolgozása"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Youtube-átirat bővítmény: a(z) {provider} szolgáltatáshoz nincs API-kulcs beállítva. Add meg az API-kulcsodat a bővítmény beállításaiban."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "Hiba: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "A feldolgozás megszakítva"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "A feldolgozás megszakadt; folytasd a „Aktív feladatok megjelenítése” paranccsal"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "Hibajegyzet készült hibakeresési adatokkal: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "Hiba: {error} (a hibakeresési jegyzet sem jött létre)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "Nem sikerült ellenőrizni a megszakadt feladatokat: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "Figyelmeztetés: az átiratban nincsenek időbélyegek. Az időbélyegek a feldolgozáshoz szükségesek."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "Hiba: a Templater bővítmény szükséges, de nincs telepítve vagy engedélyezve"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "Jegyzet létrehozva: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "Hiba a jegyzet létrehozásakor: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "A Youtube-átirat bővítményhez szükség van a Templater bővítményre. Telepítsd és engedélyezd."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "Gyűjtemény adatainak letöltése..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "Lejátszási lista letöltése, azonosító: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "A lejátszási lista videóinak letöltése..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "A lejátszási lista videóinak letöltése (folytatás)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "Elérted a {limit} videós biztonsági korlátot. Az első {limit} videó kerül feldolgozásra."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "A csatorna videóinak letöltése..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "A csatorna videóinak letöltése (folytatás)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "{title} megtalálva: {count} videó"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "Időbélyeg-hivatkozások hozzáadása LLM-mel..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "Újrapróbálkozás alacsonyabb tokenkorláttal..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "Nem sikerült hozzáadni az időbélyeg-hivatkozásokat: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "Időbélyeg-hivatkozások hozzáadva {count} szakaszcímhez"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "Tartalom fordítása erre: {locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "Hiba: a fájl nem található: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "Fordítási hiba: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "Nem sikerült lefordítani a tartalmat (üres válasz az LLM-től)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "A tartalom lefordítva erre: {locale}"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "Hiányzik a(z) {provider} API-kulcs. A modellek nem tölthetők le."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "{provider} modellek letöltése..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "A(z) {provider} modellek letöltése nem sikerült: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "A(z) {provider} modellek frissültek!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "A(z) {provider} modellek nem olvashatók ki az API válaszából."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "Hiba a(z) {provider} modellek letöltésekor: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "{total} szakaszból a(z) {current}. feldolgozása..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "{count} időbélyeg-hivatkozás hozzáadva szakaszos feldolgozással"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "A Youtube-átirat kinyerő kész"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "Feldolgozás"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "Hagyd üresen a YouTube-cím használatához"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "Nem érvényes YouTube-cím. Csak videó, lejátszási lista és csatorna címe támogatott."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: jegyzet készítése YouTube-átiratból"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "YouTube-URL"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "YouTube-csatorna vagy -lejátszási lista URL-je észlelve"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "YouTube-videó URL-je észlelve"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "Hány videót szeretnél feldolgozni? A szigorú felső korlát 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "Összes videó"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "Korlátozott darabszám:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "Egyéni jegyzetcím (nem kötelező)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "Gyors összefoglaló mód"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "Rövidebb, gyorsabb összefoglalók (kihagyja az időbélyeg-hivatkozásokat)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "Aktív feladatok"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "Nincs aktív feladat"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "A feladatlista nem olvasható: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "Az Elvetés kiveszi a feladatot a listából; jegyzetet soha nem töröl."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "Válassz sablonfájlt"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "Nincs sablonfájl a(z) „{folder}” mappában. Ellenőrizd, hogy a sablonmappa helyesen van-e beállítva a Templater beállításaiban."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "Írj a sablonok kereséséhez…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "Nincs találat a sablonok között."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "Válassz mappahelyet"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "Nincs almappa itt: {folder}"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "Talált almappák: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "Mappák szűrése…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "Nincs találat a mappák között"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "A Tubesage YouTube-átirat bővítmény dokumentációja"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "A readme fájl nem tölthető be. Ellenőrizd, hogy a readme.md ott van-e a bővítmény mappájában."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "Példasablon: másold a Templaterben megadott sablonmappába"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "Sablon másolása"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "Másolva"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "A másolás nem sikerült"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "Ez a Templater példasablon a YouTube-átiratok jegyzeteihez. Igényeid szerint szabadon alakíthatod."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "Elérhető sablonváltozók:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "A sablonfájl nem tölthető be. Ellenőrizd, hogy ott van-e a bővítmény mappájában vagy a tár sablonmappájában."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "Lejátszási lista nevének lekérése…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "Lejátszási lista: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "Kezdődik a YouTube-lejátszási lista feldolgozása: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "Kezdődik a YouTube-csatorna feldolgozása: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "Lejátszási lista mappája létrehozva: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "Csatorna mappája létrehozva: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "Videók betöltése a lejátszási listáról: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "Videók betöltése a csatornáról: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "Feldolgozandó videók: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "Videó feldolgozása {current}/{total}: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "A(z) {title} videó kihagyva – nincs átirat"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "Időbélyeg-hivatkozások hozzáadása a lejátszási lista videójához: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "Időbélyeg-hivatkozások hozzáadása a csatorna videójához: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ Időbélyeg-hivatkozások hozzáadva: {title}"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} („{title}”)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "A jegyzet elkészült, de az időbélyegek nem kerültek be ide: „{title}”"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ Videó feldolgozva: {current}/{total}"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ A(z) „{title}” videó kihagyva – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ Hiba a(z) „{title}” videó feldolgozásakor: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "A csatorna feldolgozása kész – feldolgozva: {processed}, kihagyva: {skipped}, hiba: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "A feladat mentése nem sikerült: {error}. A videó feldolgozása még tarthat; lásd „Aktív feladatok megjelenítése”"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "Ez a videó már feldolgozás alatt áll"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "Ez a feladat így nem folytatható; nézd meg az állapotát"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "Ez a feladat így nem fejezhető be; nézd meg az állapotát"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "YouTube-átirat kinyerése"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - A Youtube-videó címe"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - A Youtube-videó URL-je"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - A teljes átirat időbélyegekkel"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - A videó LLM által készített összefoglalója"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - A használt LLM-szolgáltató (pl. openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - A használt konkrét modell (pl. gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - Az LLM-szolgáltatóból és modellből képzett címkék"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "Aktív feladatok megjelenítése"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "A szolgáltató {provider} lett. Kimeneti keret: {tokens} token (maximális kimenet mínusz a tartalék)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "A modell {model} lett. Kimeneti keret: {tokens} token (maximális kimenet mínusz a tartalék)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "A(z) {provider} modelllista frissítve."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "A(z) {provider} modelljei nem frissíthetők. A meglévő lista marad érvényben."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "Ebben a lejátszási listában nincs videó"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "Ezen a csatornán nincs videó"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "A(z) {provider} modelllista frissítve. A tokenkorlátok automatikusan kitöltve {count} modellhez."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "A(z) {provider} modelllista frissítve. A tokenkorlátok automatikusan kitöltve {count} modellhez."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Átirat letöltése"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "Összefoglalás"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Jegyzet létrehozása"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "Jegyzet létrehozva"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "Időbélyeg-hivatkozások hozzáadása"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "Fordítás"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "Kész"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "Mégse"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "Elvetés"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "Jegyzet megnyitása"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "Befejezés időbélyegek nélkül"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "Befejezés fordítás nélkül"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "Folytatás"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "Folytatás (újra felszámítható)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "Fut"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "Folytatható"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "Befejeződött"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "Megszakítva"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "Sikertelen"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "Sikertelen: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "Időtúllépés. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Megszakadt az Obsidian bezárásakor; nem jött létre jegyzet"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Megszakadt az Obsidian bezárásakor; a(z) {path} helyen lehet egy jegyzet"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Megszakadt az Obsidian bezárásakor; a jegyzet időbélyegek nélkül jött létre"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Megszakadt az Obsidian bezárásakor; a jegyzet fordítás nélkül jött létre"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "Megszakadt a(z) {stage} közben; az előző kérés már lehet, hogy ki lett számlázva"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "Megszakadt a(z) {stage} közben; nem tudni, kiszámlázták-e az előző kérést"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "Túl sok próbálkozás a(z) {stage} során"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "A célútvonalon már van jegyzet — nevezze át vagy törölje, majd folytassa innen: Aktív feladatok megjelenítése"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "Nem sikerült megerősíteni, hogy a célútvonalon lévő jegyzet ehhez a feladathoz tartozik-e"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "A feladathoz tartozó jegyzetet áthelyezték vagy törölték"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "A jegyzetet feldolgozás közben szerkesztették; az időbélyegek kimaradtak"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "A Templater nem érhető el; kapcsolja be, majd folytassa"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "A folytatás fizetős szolgáltatáson keresztül újra letölti az átiratot"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "A jegyzet útvonala nem volt egyértelműen kiszámítható (ellenőrizze a mappa- és dátumbeállításokat), majd folytassa"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "Az átirat jegyzete létrejött"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "A jegyzet létrejött, de az időbélyegek kimaradtak, mert a jegyzetet szerkesztették"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "A jegyzet létrejött, de a fordítás kimaradt, mert a jegyzetet szerkesztették"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "A jegyzet létrejött, de az időbélyegek és a fordítás kimaradtak, mert a jegyzetet szerkesztették"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "A jegyzet fordítás nélkül jött létre"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "A jegyzet időbélyegek és fordítás nélkül jött létre"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: 1 jegyzetfeladat megszakadt az Obsidian bezárásakor — {title}: nem jött létre jegyzet"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: 1 jegyzetfeladat megszakadt az Obsidian bezárásakor — {title}: a(z) {path} helyen lehet egy jegyzet"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: 1 jegyzetfeladat megszakadt az Obsidian bezárásakor — {title}: a jegyzet időbélyegek nélkül jött létre"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: 1 jegyzetfeladat megszakadt az Obsidian bezárásakor — {title}: a jegyzet fordítás nélkül jött létre"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: {count} jegyzetfeladat szakadt meg az Obsidian bezárásakor; a legutóbbiak itt láthatók: Aktív feladatok megjelenítése"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 megszakadt feladat figyelmet igényel"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: {count} megszakadt feladat figyelmet igényel"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "Add meg a(z) {field} mezőt"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "Hiba történt"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "Ehhez a videóhoz nincs átirat"
     }
 }

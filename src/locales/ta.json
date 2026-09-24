@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — “Show active jobs” இல் ரத்துசெய்யவும்"
+        "translation": "{stage} — “செயலில் உள்ள பணிகளைக் காட்டு” இல் ரத்துசெய்யவும்"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,673 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "காணொளியைச் செயலாக்குகிறது"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Youtube எழுத்துப்படி செருகுநிரல்: {provider} க்கான API விசை அமைக்கப்படவில்லை. உங்கள் API விசையைச் செருகுநிரல் அமைப்புகளில் சேர்க்கவும்."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "பிழை: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "செயலாக்கம் ரத்துசெய்யப்பட்டது"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "செயலாக்கம் தடைபட்டது; “செயலில் உள்ள பணிகளைக் காட்டு” இல் இருந்து தொடரவும்"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "பிழைத்திருத்தத் தகவலுடன் பிழைக் குறிப்பு உருவாக்கப்பட்டது: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "பிழை: {error} (பிழைத்திருத்தக் குறிப்பையும் உருவாக்க முடியவில்லை)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "தடைபட்ட பணிகளைச் சரிபார்க்க முடியவில்லை: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "எச்சரிக்கை: எழுத்துப்படியில் நேர முத்திரைகள் இல்லை. செயலாக்கத்திற்கு நேர முத்திரைகள் தேவை."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "பிழை: Templater செருகுநிரல் தேவை, ஆனால் அது நிறுவப்படவில்லை அல்லது இயக்கப்படவில்லை"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "குறிப்பு உருவாக்கப்பட்டது: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "குறிப்பை உருவாக்கும்போது பிழை: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Youtube எழுத்துப்படி செருகுநிரலுக்கு Templater செருகுநிரல் தேவை. அதை நிறுவி இயக்கவும்."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "தொகுப்புத் தகவலைப் பெறுகிறது..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "இயக்கப்பட்டியலைப் பெறுகிறது, ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "இயக்கப்பட்டியலின் காணொளிகளைப் பெறுகிறது..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "இயக்கப்பட்டியலின் காணொளிகளைப் பெறுகிறது (தொடர்ச்சி)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "{limit} காணொளிகள் என்ற பாதுகாப்பு வரம்பை எட்டியது. முதல் {limit} காணொளிகள் செயலாக்கப்படும்."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "சேனலின் காணொளிகளைப் பெறுகிறது..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "சேனலின் காணொளிகளைப் பெறுகிறது (தொடர்ச்சி)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "{title} கிடைத்தது: காணொளிகள் {count}"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "LLM மூலம் நேர முத்திரை இணைப்புகளைச் சேர்க்கிறது..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "குறைந்த டோக்கன் வரம்புடன் மீண்டும் முயல்கிறது..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "நேர முத்திரை இணைப்புகளைச் சேர்க்க முடியவில்லை: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "{count} பிரிவுத் தலைப்புகளில் நேர முத்திரை இணைப்புகள் சேர்க்கப்பட்டன"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "உள்ளடக்கத்தை {locale} க்கு மொழிபெயர்க்கிறது..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "பிழை: கோப்பு காணப்படவில்லை: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "மொழிபெயர்ப்புப் பிழை: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "உள்ளடக்கத்தை மொழிபெயர்க்க முடியவில்லை (LLM இலிருந்து வெற்றுப் பதில்)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "உள்ளடக்கம் {locale} க்கு மொழிபெயர்க்கப்பட்டது"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "{provider} API விசை இல்லை. மாடல்களைப் பெற முடியாது."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "{provider} மாடல்களைப் பெறுகிறது..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "{provider} மாடல்களைப் பெற முடியவில்லை: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "{provider} மாடல்கள் புதுப்பிக்கப்பட்டன!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "API பதிலிலிருந்து {provider} மாடல்களைப் படிக்க முடியவில்லை."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "{provider} மாடல்களைப் பெறும்போது பிழை: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "{total} இல் {current} ஆம் பிரிவைச் செயலாக்குகிறது..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "பகுதிவாரியான செயலாக்கத்தில் {count} நேர முத்திரை இணைப்புகள் சேர்க்கப்பட்டன"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Youtube எழுத்துப்படி பிரித்தெடுப்பான் தயார்"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "செயலாக்கு"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "YouTube தலைப்பைப் பயன்படுத்த காலியாக விடவும்"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "செல்லுபடியாகும் YouTube முகவரி அல்ல. காணொளி, இயக்கப்பட்டியல், சேனல் முகவரிகள் மட்டுமே ஆதரிக்கப்படுகின்றன."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: YouTube எழுத்துப்படியிலிருந்து குறிப்பை உருவாக்கவும்"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "YouTube முகவரி"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "YouTube சேனல் அல்லது இயக்கப்பட்டியல் URL கண்டறியப்பட்டது"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "YouTube வீடியோ URL கண்டறியப்பட்டது"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "எத்தனை வீடியோக்களைச் செயலாக்க வேண்டும்? அதிகபட்ச வரம்பு 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "எல்லா வீடியோக்களும்"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "குறிப்பிட்ட எண்ணிக்கை:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "தனிப்பயன் குறிப்புத் தலைப்பு (விருப்பம்)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "விரைவு சுருக்க முறை"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "குறுகிய, விரைவான சுருக்கங்கள் (நேர முத்திரை இணைப்புகளைத் தவிர்க்கும்)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "செயலில் உள்ள பணிகள்"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "செயலில் பணிகள் இல்லை"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "பணிப் பட்டியலைப் படிக்க முடியவில்லை: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "“நிராகரி” இப்பட்டியலிலிருந்து பணியை மட்டும் நீக்கும்; குறிப்புகளை அழிக்காது."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "வார்ப்புரு கோப்பைத் தேர்ந்தெடுக்கவும்"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "“{folder}” கோப்புறையில் வார்ப்புரு கோப்புகள் இல்லை. Templater அமைப்புகளில் வார்ப்புரு கோப்புறை சரியாக உள்ளதா எனப் பாருங்கள்."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "வார்ப்புருக்களைத் தேட தட்டச்சு செய்க…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "பொருந்தும் வார்ப்புருக்கள் இல்லை."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "கோப்புறை இடத்தைத் தேர்ந்தெடுக்கவும்"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "{folder} இல் துணைக் கோப்புறைகள் இல்லை"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "கண்டறியப்பட்ட துணைக் கோப்புறைகள்: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "கோப்புறைகளை வடிகட்டு…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "பொருந்தும் கோப்புறைகள் இல்லை"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Tubesage YouTube எழுத்துப்படி செருகுநிரல் ஆவணம்"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "readme கோப்பை ஏற்ற முடியவில்லை. செருகுநிரல் கோப்புறையில் readme.md உள்ளதா எனப் பாருங்கள்."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "எடுத்துக்காட்டு வார்ப்புரு: நகலெடுத்து Templater இல் குறித்த வார்ப்புரு கோப்புறையில் வைக்கவும்"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "வார்ப்புருவை நகலெடு"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "நகலெடுக்கப்பட்டது"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "நகலெடுக்க முடியவில்லை"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "இது YouTube எழுத்துப்படி குறிப்புகளுக்கான Templater எடுத்துக்காட்டு வார்ப்புரு. உங்கள் தேவைக்கேற்ப மாற்றிக்கொள்ளலாம்."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "கிடைக்கும் வார்ப்புரு மாறிகள்:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "வார்ப்புரு கோப்பை ஏற்ற முடியவில்லை. செருகுநிரல் கோப்புறையிலோ சேமிப்பகத்தின் வார்ப்புரு கோப்புறையிலோ உள்ளதா எனப் பாருங்கள்."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "இயக்கப்பட்டியல் பெயரைப் பெறுகிறது…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "இயக்கப்பட்டியல் கிடைத்தது: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "YouTube இயக்கப்பட்டியலைச் செயலாக்கத் தொடங்குகிறது: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "YouTube சேனலைச் செயலாக்கத் தொடங்குகிறது: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "இயக்கப்பட்டியல் கோப்புறை உருவாக்கப்பட்டது: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "சேனல் கோப்புறை உருவாக்கப்பட்டது: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "இயக்கப்பட்டியலிலிருந்து வீடியோக்களைப் பெறுகிறது: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "சேனலிலிருந்து வீடியோக்களைப் பெறுகிறது: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "செயலாக்க வேண்டிய வீடியோக்கள்: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "வீடியோ {current}/{total} செயலாக்கப்படுகிறது: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "வீடியோ {title} தவிர்க்கப்பட்டது – எழுத்துப்படி இல்லை"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "இயக்கப்பட்டியல் வீடியோவுக்கு நேர முத்திரை இணைப்புகள் சேர்க்கப்படுகின்றன: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "சேனல் வீடியோவுக்கு நேர முத்திரை இணைப்புகள் சேர்க்கப்படுகின்றன: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ {title} இல் நேர முத்திரை இணைப்புகள் சேர்க்கப்பட்டன"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} (“{title}”)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "குறிப்பு உருவாக்கப்பட்டது, ஆனால் “{title}” இல் நேர முத்திரைகளைச் சேர்க்க முடியவில்லை"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ வீடியோ {current}/{total} செயலாக்கப்பட்டது"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ வீடியோ “{title}” தவிர்க்கப்பட்டது – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ வீடியோ “{title}” செயலாக்கத்தில் பிழை: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "சேனல் செயலாக்கம் முடிந்தது – செயலாக்கியவை: {processed}, தவிர்த்தவை: {skipped}, பிழைகள்: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "பணியைச் சேமிக்க முடியவில்லை: {error}. வீடியோ இன்னும் செயலாக்கத்தில் இருக்கலாம்; “செயலில் உள்ள பணிகளைக் காட்டு” ஐப் பாருங்கள்"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "இந்த வீடியோ ஏற்கனவே செயலாக்கத்தில் உள்ளது"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "இந்தப் பணியை இந்நிலையில் தொடர முடியாது; அதன் நிலையைப் பாருங்கள்"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "இந்தப் பணியை இந்நிலையில் முடிக்க முடியாது; அதன் நிலையைப் பாருங்கள்"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "YouTube எழுத்துப்படியைப் பிரித்தெடு"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Youtube வீடியோவின் தலைப்பு"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - Youtube வீடியோவின் முகவரி"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - நேர முத்திரைகளுடன் முழு எழுத்துப்படி"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - LLM உருவாக்கிய வீடியோவின் சுருக்கம்"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - பயன்படுத்திய LLM வழங்குநர் (எ.கா. openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - பயன்படுத்திய குறிப்பிட்ட மாதிரி (எ.கா. gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - LLM வழங்குநர் மற்றும் மாதிரியிலிருந்து உருவாக்கப்பட்ட குறிச்சொற்கள்"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "செயலில் உள்ள பணிகளைக் காட்டு"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "வழங்குநர் {provider} என அமைக்கப்பட்டது. வெளியீட்டு வரம்பு: {tokens} டோக்கன்கள் (அதிகபட்ச வெளியீடு கழித்தல் ஒதுக்கீடு)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "மாதிரி {model} ஆக மாற்றப்பட்டது. வெளியீட்டு வரம்பு: {tokens} டோக்கன்கள் (அதிகபட்ச வெளியீடு கழித்தல் ஒதுக்கீடு)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "{provider} மாதிரிப் பட்டியல் புதுப்பிக்கப்பட்டது."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "{provider} மாதிரிகளைப் புதுப்பிக்க முடியவில்லை. ஏற்கெனவே உள்ள பட்டியலே பயன்படுத்தப்படும்."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "இந்த இயக்கப்பட்டியலில் வீடியோ எதுவும் இல்லை"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "இந்தச் சேனலில் வீடியோ எதுவும் இல்லை"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "{provider} மாதிரிப் பட்டியல் புதுப்பிக்கப்பட்டது. {count} மாதிரிக்கு டோக்கன் வரம்புகள் தானாக நிரப்பப்பட்டன."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "{provider} மாதிரிப் பட்டியல் புதுப்பிக்கப்பட்டது. {count} மாதிரிகளுக்கு டோக்கன் வரம்புகள் தானாக நிரப்பப்பட்டன."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "எழுத்துப்படி பெறப்படுகிறது"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "சுருக்கப்படுகிறது"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "குறிப்பு உருவாக்கப்படுகிறது"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "குறிப்பு உருவாக்கப்பட்டது"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "நேரமுத்திரை இணைப்புகள் சேர்க்கப்படுகின்றன"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "மொழிபெயர்க்கப்படுகிறது"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "முடிந்தது"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "ரத்துசெய்"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "நீக்கு"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "குறிப்பைத் திற"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "நேரமுத்திரைகள் இன்றி முடி"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "மொழிபெயர்ப்பு இன்றி முடி"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "தொடர்"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "தொடர் (மீண்டும் கட்டணம் ஆகலாம்)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "இயங்குகிறது"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "தொடரத் தயார்"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "நிறைவடைந்தது"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "ரத்துசெய்யப்பட்டது"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "தோல்வி"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "தோல்வி: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "நேரம் முடிந்தது. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Obsidian மூடப்பட்டபோது தடைபட்டது; எந்தக் குறிப்பும் உருவாக்கப்படவில்லை"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Obsidian மூடப்பட்டபோது தடைபட்டது; {path} இல் ஒரு குறிப்பு இருக்கலாம்"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Obsidian மூடப்பட்டபோது தடைபட்டது; குறிப்பு நேரமுத்திரைகள் இன்றி உருவாக்கப்பட்டது"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Obsidian மூடப்பட்டபோது தடைபட்டது; குறிப்பு மொழிபெயர்ப்பு இன்றி உருவாக்கப்பட்டது"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "{stage} போது தடைபட்டது; முந்தைய கோரிக்கைக்கு ஏற்கெனவே கட்டணம் ஆகியிருக்கலாம்"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "{stage} போது தடைபட்டது; முந்தைய கோரிக்கைக்குக் கட்டணம் ஆனதா என்பது தெரியவில்லை"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "{stage} முயற்சிகள் மிக அதிகம்"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "இலக்குப் பாதையில் ஏற்கெனவே ஒரு குறிப்பு உள்ளது — அதற்குப் பெயர் மாற்றவும் அல்லது நீக்கவும், பிறகு “செயலில் உள்ள பணிகளைக் காட்டு” இலிருந்து தொடரவும்"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "இலக்குப் பாதையில் உள்ள குறிப்பு இந்தப் பணிக்கு உரியதா என உறுதிப்படுத்த முடியவில்லை"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "இந்தப் பணியின் குறிப்பு நகர்த்தப்பட்டது அல்லது நீக்கப்பட்டது"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "செயலாக்கத்தின் போது குறிப்பு திருத்தப்பட்டது; நேரமுத்திரைகள் தவிர்க்கப்பட்டன"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater கிடைக்கவில்லை; அதை இயக்கிவிட்டுத் தொடரவும்"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "தொடர்ந்தால் கட்டணச் சேவை வழியாக எழுத்துப்படி மீண்டும் பெறப்படும்"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "குறிப்பின் பாதையை நிலையாகக் கணக்கிட முடியவில்லை (கோப்புறை மற்றும் தேதி அமைப்புகளைச் சரிபார்க்கவும்), பிறகு தொடரவும்"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "எழுத்துப்படி குறிப்பு வெற்றிகரமாக உருவாக்கப்பட்டது"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "குறிப்பு உருவாக்கப்பட்டது, ஆனால் குறிப்பு திருத்தப்பட்டதால் நேரமுத்திரைகள் தவிர்க்கப்பட்டன"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "குறிப்பு உருவாக்கப்பட்டது, ஆனால் குறிப்பு திருத்தப்பட்டதால் மொழிபெயர்ப்பு தவிர்க்கப்பட்டது"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "குறிப்பு உருவாக்கப்பட்டது, ஆனால் குறிப்பு திருத்தப்பட்டதால் நேரமுத்திரைகளும் மொழிபெயர்ப்பும் தவிர்க்கப்பட்டன"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "மொழிபெயர்ப்பு இன்றி குறிப்பு உருவாக்கப்பட்டது"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "நேரமுத்திரைகளும் மொழிபெயர்ப்பும் இன்றி குறிப்பு உருவாக்கப்பட்டது"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: Obsidian மூடப்பட்டபோது 1 குறிப்புப் பணி தடைபட்டது — {title}: எந்தக் குறிப்பும் உருவாக்கப்படவில்லை"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: Obsidian மூடப்பட்டபோது 1 குறிப்புப் பணி தடைபட்டது — {title}: {path} இல் ஒரு குறிப்பு இருக்கலாம்"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: Obsidian மூடப்பட்டபோது 1 குறிப்புப் பணி தடைபட்டது — {title}: குறிப்பு நேரமுத்திரைகள் இன்றி உருவாக்கப்பட்டது"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: Obsidian மூடப்பட்டபோது 1 குறிப்புப் பணி தடைபட்டது — {title}: குறிப்பு மொழிபெயர்ப்பு இன்றி உருவாக்கப்பட்டது"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: Obsidian மூடப்பட்டபோது {count} குறிப்புப் பணிகள் தடைபட்டன; சமீபத்தியவை “செயலில் உள்ள பணிகளைக் காட்டு” இல் பட்டியலிடப்பட்டுள்ளன"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: தடைபட்ட 1 பணிக்குக் கவனம் தேவை"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: தடைபட்ட {count} பணிகளுக்குக் கவனம் தேவை"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "{field} புலத்தை நிரப்பவும்"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "பிழை ஏற்பட்டது"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "இந்த வீடியோவுக்கு எழுத்துப்படி இல்லை"
     }
 }

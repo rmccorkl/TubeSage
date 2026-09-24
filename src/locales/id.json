@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — batalkan dari “Show active jobs”"
+        "translation": "{stage} — batalkan dari “Tampilkan pekerjaan aktif”"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,669 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "Memproses video"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Plugin transkrip Youtube: belum ada kunci API untuk {provider}. Tambahkan kunci API Anda di pengaturan plugin."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "Kesalahan: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "Pemrosesan dibatalkan"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "Pemrosesan terhenti; lanjutkan dari “Tampilkan pekerjaan aktif”"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "Catatan kesalahan dengan informasi debug dibuat: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "Kesalahan: {error} (catatan debug juga gagal dibuat)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "Tidak bisa memeriksa tugas yang terhenti: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "Peringatan: tidak ada stempel waktu dalam transkrip. Stempel waktu diperlukan untuk pemrosesan."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "Kesalahan: plugin Templater diperlukan tetapi belum dipasang atau diaktifkan"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "Catatan dibuat: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "Kesalahan saat membuat catatan: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Plugin transkrip Youtube memerlukan plugin Templater. Pasang dan aktifkan plugin itu."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "Mengambil informasi koleksi..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "Mengambil daftar putar dengan ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "Mengambil video dari daftar putar..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "Mengambil video dari daftar putar (lanjutan)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "Batas aman {limit} video tercapai. Yang diproses adalah {limit} video pertama."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "Mengambil video dari kanal..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "Mengambil video dari kanal (lanjutan)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "Ditemukan {title}: {count} video"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "Menambahkan tautan stempel waktu dengan LLM..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "Mencoba lagi dengan batas token lebih kecil..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "Gagal menambahkan tautan stempel waktu: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "Tautan stempel waktu ditambahkan ke {count} judul bagian"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "Menerjemahkan konten ke {locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "Kesalahan: berkas tidak ditemukan: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "Kesalahan penerjemahan: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "Gagal menerjemahkan konten (respons kosong dari LLM)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "Konten berhasil diterjemahkan ke {locale}"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "Kunci API {provider} tidak ada. Model tidak dapat diambil."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "Mengambil model {provider}..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "Gagal mengambil model {provider}: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "Model {provider} diperbarui!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "Model {provider} tidak dapat dibaca dari respons API."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "Kesalahan saat mengambil model {provider}: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "Memproses bagian {current} dari {total}..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "Menambahkan {count} tautan stempel waktu dengan pemrosesan bertahap"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Pengekstrak transkrip Youtube siap"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "Proses"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "Kosongkan untuk memakai judul YouTube"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "Bukan URL YouTube yang valid. Hanya URL video, daftar putar, dan kanal yang didukung."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: buat catatan dari transkrip YouTube"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "URL YouTube"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "Terdeteksi URL kanal atau daftar putar YouTube"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "Terdeteksi URL video YouTube"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "Berapa banyak video yang ingin diproses? Batas maksimumnya 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "Semua video"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "Jumlah terbatas:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "Judul catatan khusus (opsional)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "Mode ringkasan cepat"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "Ringkasan lebih singkat dan cepat (melewati tautan stempel waktu)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "Tugas aktif"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "Tidak ada tugas aktif"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "Tidak dapat membaca daftar tugas: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "Buang hanya menghapus tugas dari daftar ini; catatan tidak pernah dihapus."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "Pilih berkas templat"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "Tidak ada berkas templat di folder “{folder}”. Pastikan folder templat sudah diatur dengan benar di pengaturan Templater."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "Ketik untuk mencari templat…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "Tidak ada templat yang cocok."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "Pilih lokasi folder"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "Tidak ada subfolder di {folder}"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "Subfolder ditemukan: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "Saring folder…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "Tidak ada folder yang cocok"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Dokumentasi plugin transkrip YouTube Tubesage"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "Tidak dapat memuat berkas readme. Pastikan readme.md ada di folder plugin."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "Contoh templat: salin ke folder templat yang diatur di Templater"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "Salin templat"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "Tersalin"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "Gagal menyalin"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "Ini adalah contoh templat Templater untuk catatan transkrip YouTube. Kamu bisa menyesuaikannya dengan kebutuhanmu."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "Variabel templat yang tersedia:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "Tidak dapat memuat berkas templat. Pastikan berkas ada di folder plugin atau folder templat brankas."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "Mengambil nama daftar putar…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "Daftar putar ditemukan: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "Mulai memproses daftar putar YouTube: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "Mulai memproses kanal YouTube: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "Folder daftar putar dibuat: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "Folder kanal dibuat: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "Mengambil video dari daftar putar: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "Mengambil video dari kanal: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "Video untuk diproses: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "Memproses video {current}/{total}: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "Melewati video {title} – transkrip tidak tersedia"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "Menambahkan tautan stempel waktu ke video daftar putar: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "Menambahkan tautan stempel waktu ke video kanal: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ Tautan stempel waktu ditambahkan ke {title}"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} (“{title}”)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "Catatan dibuat, tetapi stempel waktu tidak dapat ditambahkan ke “{title}”"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ Video {current}/{total} diproses"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ Melewati video “{title}” – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ Kesalahan saat memproses video “{title}”: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "Pemrosesan kanal selesai – diproses: {processed}, dilewati: {skipped}, kesalahan: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "Tidak dapat menyimpan tugas: {error}. Video mungkin masih diproses; lihat “Tampilkan pekerjaan aktif”"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "Video ini sedang diproses"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "Tugas ini tidak dapat dilanjutkan dalam keadaan ini; lihat statusnya"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "Tugas ini tidak dapat diselesaikan dalam keadaan ini; lihat statusnya"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "Ekstrak transkrip YouTube"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Judul video Youtube"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - URL video Youtube"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - Transkrip lengkap dengan stempel waktu"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - Ringkasan video yang dibuat LLM"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - Penyedia LLM yang dipakai (mis. openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - Model spesifik yang dipakai (mis. gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - Tag yang dibuat dari penyedia dan model LLM"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "Tampilkan pekerjaan aktif"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Penyedia disetel ke {provider}. Anggaran keluaran: {tokens} token (keluaran maksimum dikurangi cadangan)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Model diubah ke {model}. Anggaran keluaran: {tokens} token (keluaran maksimum dikurangi cadangan)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "Daftar model {provider} disegarkan."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "Tidak dapat menyegarkan model {provider}. Daftar yang ada tetap dipakai."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "Tidak ada video yang ditemukan di daftar putar ini"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "Tidak ada video yang ditemukan di kanal ini"
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "Daftar model {provider} disegarkan. Batas token diisi otomatis untuk {count} model."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Mengambil transkrip"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "Meringkas"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Membuat catatan"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "Catatan dibuat"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "Menambahkan tautan stempel waktu"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "Menerjemahkan"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "Selesai"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "Batalkan"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "Buang"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "Buka catatan"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "Selesaikan tanpa stempel waktu"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "Selesaikan tanpa terjemahan"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "Lanjutkan"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "Lanjutkan (mungkin ditagih ulang)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "Berjalan"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "Siap dilanjutkan"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "Selesai"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "Dibatalkan"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "Gagal"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "Gagal: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "Waktu habis. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Terhenti saat Obsidian ditutup; tidak ada catatan yang dibuat"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Terhenti saat Obsidian ditutup; mungkin ada catatan di {path}"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Terhenti saat Obsidian ditutup; catatan dibuat tanpa stempel waktu"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Terhenti saat Obsidian ditutup; catatan dibuat tanpa terjemahan"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "Terhenti saat {stage}; permintaan sebelumnya mungkin sudah ditagih"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "Terhenti saat {stage}; tidak diketahui apakah permintaan sebelumnya ditagih"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "Terlalu banyak percobaan untuk {stage}"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "Sudah ada catatan di jalur tujuan — ubah namanya atau hapus, lalu lanjutkan dari “Tampilkan pekerjaan aktif”"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "Tidak dapat memastikan apakah catatan di jalur tujuan milik pekerjaan ini"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "Catatan pekerjaan ini telah dipindahkan atau dihapus"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "Catatan disunting saat pemrosesan; stempel waktu dilewati"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater tidak tersedia; aktifkan, lalu lanjutkan"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "Melanjutkan akan mengambil ulang transkrip lewat layanan berbayar"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "Jalur catatan tidak dapat dihitung secara konsisten (periksa pengaturan folder dan tanggal), lalu lanjutkan"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "Catatan transkrip berhasil dibuat"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "Catatan dibuat, tetapi stempel waktu dilewati karena catatan disunting"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "Catatan dibuat, tetapi terjemahan dilewati karena catatan disunting"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "Catatan dibuat, tetapi stempel waktu dan terjemahan dilewati karena catatan disunting"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "Catatan dibuat tanpa terjemahan"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "Catatan dibuat tanpa stempel waktu dan tanpa terjemahan"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: 1 pekerjaan catatan terhenti saat Obsidian ditutup — {title}: tidak ada catatan yang dibuat"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: 1 pekerjaan catatan terhenti saat Obsidian ditutup — {title}: mungkin ada catatan di {path}"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: 1 pekerjaan catatan terhenti saat Obsidian ditutup — {title}: catatan dibuat tanpa stempel waktu"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: 1 pekerjaan catatan terhenti saat Obsidian ditutup — {title}: catatan dibuat tanpa terjemahan"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: {count} pekerjaan catatan terhenti saat Obsidian ditutup; yang terbaru tercantum di “Tampilkan pekerjaan aktif”"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 pekerjaan yang terhenti perlu ditangani"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: {count} pekerjaan yang terhenti perlu ditangani"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "Isi kolom {field}"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "Terjadi kesalahan"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "Transkrip tidak tersedia untuk video ini"
     }
 }

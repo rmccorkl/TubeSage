@@ -85,6 +85,75 @@ export function translate(table: LocaleTable, code: string, key: string, params?
     return key;
 }
 
+/** The CLDR plural categories, in CLDR's own order. */
+export const PLURAL_CATEGORIES = ['zero', 'one', 'two', 'few', 'many', 'other'] as const;
+export type PluralCategory = typeof PLURAL_CATEGORIES[number];
+
+/**
+ * Which plural form `count` takes in `code`.
+ *
+ * `Intl.PluralRules` is the platform's own CLDR data and is the only correct
+ * answer here: the categories are not a property of the number, they are a
+ * property of the language. English and German have two, French six fewer than
+ * Arabic's six, Polish four, and Japanese exactly one — so a hand-rolled
+ * `count === 1 ? a : b` is wrong everywhere outside a handful of languages.
+ *
+ * Verified available before this was written: Obsidian runs Chromium (1.12.7
+ * ships Chrome 142) and `minAppVersion` here is 1.13.0, while `Intl.PluralRules`
+ * has existed since Chrome 63. The `try` is not for that — it is for a locale
+ * code ICU does not know, which throws on construction rather than falling back.
+ *
+ * NOTE on the fallback ICU performs SILENTLY: `sa` (Sanskrit) has no CLDR
+ * plural data, so `new Intl.PluralRules('sa').resolvedOptions().locale` is
+ * `en-US`. The categories it returns are English's, not Sanskrit's. That is an
+ * acceptable answer — it is still `one`/`other` — but it is a fallback, and the
+ * locale data is not evidence about Sanskrit.
+ */
+export function pluralCategory(code: string, count: number): PluralCategory {
+    try {
+        const selected = new Intl.PluralRules(code).select(count);
+        return (PLURAL_CATEGORIES as readonly string[]).includes(selected) ? selected : 'other';
+    } catch {
+        return count === 1 ? 'one' : 'other';
+    }
+}
+
+/**
+ * Translate a counted string, choosing the plural form of whichever locale
+ * actually answers.
+ *
+ * The category is recomputed at EVERY rung of the fallback chain, not once for
+ * the requested language. If Japanese is asked for and Japanese has the key,
+ * Japanese has one category and takes `other`. If Japanese does NOT have the
+ * key, the English string is what the user will read, so the form must be
+ * English's — asking Japanese's rules about a sentence rendered in English
+ * would pick a form the English text does not have.
+ *
+ * `{count}` is supplied as a parameter automatically, so a translation may use
+ * it without the caller passing it twice; an explicit `params.count` wins.
+ */
+export function translatePlural(
+    table: LocaleTable,
+    code: string,
+    key: string,
+    count: number,
+    params?: TranslationParams,
+): string {
+    const withCount: TranslationParams = { count, ...params };
+    for (const locale of resolveLocaleChain(code)) {
+        const entries = table[locale];
+        if (entries === undefined) continue;
+        const category = pluralCategory(locale, count);
+        // `other` is the one category CLDR guarantees every language has, so it
+        // is the within-locale fallback before dropping to the next language.
+        for (const candidate of [`${key}.${category}`, `${key}.other`]) {
+            const value = entries[candidate];
+            if (typeof value === 'string' && value !== '') return substitute(value, withCount);
+        }
+    }
+    return key;
+}
+
 let languageResolver: (() => string) | null = null;
 
 /** Install (or, with `null`, remove) the source of the interface language. */
@@ -106,4 +175,9 @@ export function currentLanguage(): string {
 /** Translate `key` into the current interface language. */
 export function t(key: string, params?: TranslationParams): string {
     return translate(LOCALES, currentLanguage(), key, params);
+}
+
+/** Translate a counted `key` into the current interface language. */
+export function tPlural(key: string, count: number, params?: TranslationParams): string {
+    return translatePlural(LOCALES, currentLanguage(), key, count, params);
 }

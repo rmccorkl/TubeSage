@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — отказивање преко „Show active jobs“"
+        "translation": "{stage} — отказивање преко „Прикажи активне послове“"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,677 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "Обрада видеа"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Додатак за транскрипте са Youtube: за {provider} није подешен кључ за API. Додајте свој кључ за API у подешавањима додатка."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "Грешка: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "Обрада је отказана"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "Обрада је прекинута; наставите је преко „Прикажи активне послове“"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "Направљена је белешка о грешци са подацима за отклањање грешака: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "Грешка: {error} (ни белешка за отклањање грешака није направљена)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "Прекинути послови нису могли да се провере: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "Упозорење: у транскрипту нису пронађене временске ознаке. Временске ознаке су неопходне за обраду."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "Грешка: потребан је додатак Templater, али није инсталиран нити укључен"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "Белешка је направљена: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "Грешка при прављењу белешке: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Додатку за транскрипте са Youtube потребан је додатак Templater. Инсталирајте га и укључите."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "Преузимање података о збирци..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "Преузимање плејлисте са идентификатором: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "Преузимање видеа са плејлисте..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "Преузимање видеа са плејлисте (наставак)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "Достигнуто је безбедносно ограничење од {limit} видеа. Биће обрађено првих {limit} видеа."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "Преузимање видеа са канала..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "Преузимање видеа са канала (наставак)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "Пронађено {title}, број видеа: {count}"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "Додавање веза са временским ознакама помоћу LLM..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "Нови покушај са мањим ограничењем токена..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "Везе са временским ознакама нису додате: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "Додате су везе са временским ознакама, број наслова: {count}"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "Превођење садржаја на {locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "Грешка: датотека није пронађена: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "Грешка при превођењу: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "Садржај није преведен (празан одговор од LLM)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "Садржај је преведен на {locale}"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "Недостаје кључ за API за {provider}. Модели се не могу преузети."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "Преузимање модела добављача {provider}..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "Модели добављача {provider} нису преузети: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "Модели добављача {provider} су освежени!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "Модели добављача {provider} нису прочитани из одговора API."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "Грешка при преузимању модела добављача {provider}: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "Обрада одељка {current} од {total}..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "Додате су везе са временским ознакама уз обраду по деловима, број: {count}"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Извлачење транскрипата са Youtube је спремно"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "Обради"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "Оставите празно да би се користио наслов са YouTube"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "Неисправна YouTube адреса. Подржане су само адресе видеа, плејлисте и канала."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: направи белешку из YouTube транскрипта"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "YouTube URL адреса"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "Откривена је адреса YouTube канала или плејлисте"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "Откривена је адреса YouTube видеа"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "Колико видеа желите да обрадите? Тврдо ограничење је 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "Сви видеи"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "Ограничен број:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "Прилагођени наслов белешке (опционално)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "Режим кратког сажетка"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "Краћи и бржи сажеци (прескаче везе са временским ознакама)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "Активни послови"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "Нема активних послова"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "Није могуће прочитати списак послова: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "„Одбаци“ уклања посао са овог списка; белешке се никада не бришу."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "Изаберите датотеку шаблона"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "У фасцикли „{folder}“ нема датотека шаблона. Проверите да ли је фасцикла шаблона исправно подешена у подешавањима Templater-а."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "Укуцајте да претражите шаблоне…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "Нема одговарајућих шаблона."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "Изаберите локацију фасцикле"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "У {folder} нема подфасцикли"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "Пронађено подфасцикли: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "Филтрирај фасцикле…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "Нема одговарајућих фасцикли"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Документација Tubesage додатка за YouTube транскрипте"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "Није могуће учитати readme датотеку. Проверите да ли readme.md постоји у фасцикли додатка."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "Пример шаблона: копирајте га у фасциклу шаблона наведену у Templater-у"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "Копирај шаблон"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "Копирано"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "Копирање није успело"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "Ово је пример Templater шаблона за белешке са YouTube транскриптима. Можете га прилагодити својим потребама."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "Доступне променљиве шаблона:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "Није могуће учитати датотеку шаблона. Проверите да ли постоји у фасцикли додатка или у фасцикли шаблона трезора."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "Преузимање назива плејлисте…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "Пронађена плејлиста: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "Почиње обрада YouTube плејлисте: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "Почиње обрада YouTube канала: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "Направљена фасцикла плејлисте: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "Направљена фасцикла канала: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "Преузимање видеа са плејлисте: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "Преузимање видеа са канала: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "Видеа за обраду: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "Обрада видеа {current}/{total}: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "Видео {title} је прескочено – нема транскрипта"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "Додавање веза са временским ознакама видеу са плејлисте: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "Додавање веза са временским ознакама видеу са канала: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ Везе са временским ознакама додате у {title}"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} („{title}“)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "Белешка је направљена, али временске ознаке нису додате у „{title}“"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ Обрађено видео {current}/{total}"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ Видео „{title}“ је прескочено – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ Грешка при обради видеа „{title}“: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "Обрада канала завршена – обрађено: {processed}, прескочено: {skipped}, грешака: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "Није могуће сачувати посао: {error}. Видео се можда још обрађује; погледајте „Прикажи активне послове“"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "Овај видео се већ обрађује"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "Овај посао се у овом стању не може наставити; погледајте његов статус"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "Овај посао се у овом стању не може довршити; погледајте његов статус"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "Извуци YouTube транскрипт"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Наслов Youtube видеа"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - Адреса Youtube видеа"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - Пуни транскрипт са временским ознакама"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - Сажетак видеа који је направио LLM"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - Коришћени LLM провајдер (нпр. openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - Конкретни коришћени модел (нпр. gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - Ознаке направљене од LLM провајдера и модела"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "Прикажи активне послове"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Добављач је подешен на {provider}. Буџет излаза: {tokens} токена (максимални излаз минус резерва)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Модел је промењен на {model}. Буџет излаза: {tokens} токена (максимални излаз минус резерва)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "Листа модела {provider} је освежена."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "Модели {provider} нису могли да се освеже. Задржава се постојећа листа."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "У овој плејлисти није пронађен ниједан видео"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "На овом каналу није пронађен ниједан видео"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "Листа модела {provider} је освежена. Ограничења токена аутоматски попуњена: {count} модел."
+    },
+    "notice.models.refreshedWithLimits.few": {
+        "original": "",
+        "translation": "Листа модела {provider} је освежена. Ограничења токена аутоматски попуњена: {count} модела."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "Листа модела {provider} је освежена. Ограничења токена аутоматски попуњена: {count} модела."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Преузимање транскрипта"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "Сажимање"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Прављење белешке"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "Белешка направљена"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "Додавање временских веза"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "Превођење"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "Готово"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "Откажи"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "Одбаци"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "Отвори белешку"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "Заврши без временских ознака"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "Заврши без превода"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "Настави"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "Настави (могуће поновно наплаћивање)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "У току"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "Спремно за наставак"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "Завршено"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "Отказано"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "Није успело"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "Није успело: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "Време је истекло. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Прекинуто при затварању програма Obsidian; ниједна белешка није направљена"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Прекинуто при затварању програма Obsidian; на путањи {path} можда постоји белешка"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Прекинуто при затварању програма Obsidian; белешка је направљена без временских ознака"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Прекинуто при затварању програма Obsidian; белешка је направљена без превода"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "Прекинуто током фазе {stage}; претходни захтев је можда већ наплаћен"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "Прекинуто током фазе {stage}; није познато да ли је претходни захтев наплаћен"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "Превише покушаја за фазу {stage}"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "На циљној путањи већ постоји белешка — преименујте је или је уклоните, па наставите из „Прикажи активне послове“"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "Није могло да се потврди да ли белешка на циљној путањи припада овом послу"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "Белешка овог посла је премештена или обрисана"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "Белешка је измењена током обраде; временске ознаке су прескочене"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater није доступан; укључите га, па наставите"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "Настављање поново преузима транскрипт преко плаћене услуге"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "Путања белешке није могла да се израчуна доследно (проверите подешавања фасцикле и датума), па наставите"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "Белешка с транскриптом је успешно направљена"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "Белешка је направљена, али су временске ознаке прескочене јер је белешка измењена"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "Белешка је направљена, али је превод прескочен јер је белешка измењена"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "Белешка је направљена, али су временске ознаке и превод прескочени јер је белешка измењена"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "Белешка направљена без превода"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "Белешка направљена без временских ознака и без превода"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: 1 посао белешке је прекинут при затварању програма Obsidian — {title}: ниједна белешка није направљена"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: 1 посао белешке је прекинут при затварању програма Obsidian — {title}: на путањи {path} можда постоји белешка"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: 1 посао белешке је прекинут при затварању програма Obsidian — {title}: белешка направљена без временских ознака"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: 1 посао белешке је прекинут при затварању програма Obsidian — {title}: белешка направљена без превода"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: при затварању програма Obsidian прекинуто је послова белешки — {count}; најновији су наведени у „Прикажи активне послове“"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 прекинут посао захтева пажњу"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: пажњу захтевају прекинути послови — {count}"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "Попуните поље {field}"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "Дошло је до грешке"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "Нема транскрипта за овај видео"
     }
 }

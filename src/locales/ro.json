@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — anulează din „Show active jobs”"
+        "translation": "{stage} — anulează din „Afișează sarcinile active”"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,677 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "Se procesează videoclipul"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Pluginul de transcriere Youtube: nu există nicio cheie API configurată pentru {provider}. Adaugă cheia ta API în setările pluginului."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "Eroare: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "Procesare anulată"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "Procesarea a fost întreruptă; reia-o din „Afișează sarcinile active”"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "S-a creat o notiță de eroare cu informații de depanare: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "Eroare: {error} (nici notița de depanare nu a putut fi creată)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "Sarcinile întrerupte nu au putut fi verificate: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "Avertisment: nu s-au găsit marcaje temporale în transcriere. Marcajele temporale sunt necesare pentru procesare."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "Eroare: pluginul Templater este necesar, dar nu este instalat sau activat"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "Notiță creată: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "Eroare la crearea notiței: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Pluginul de transcriere Youtube are nevoie de pluginul Templater. Instalează-l și activează-l."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "Se preiau informațiile colecției..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "Se preia lista de redare cu ID-ul: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "Se preiau videoclipurile listei de redare..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "Se preiau videoclipurile listei de redare (continuare)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "S-a atins limita de siguranță de {limit} videoclipuri. Se vor procesa primele {limit} videoclipuri."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "Se preiau videoclipurile canalului..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "Se preiau videoclipurile canalului (continuare)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "S-a găsit {title}: {count} videoclipuri"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "Se adaugă legăturile cu marcaje temporale folosind LLM..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "Se reîncearcă cu o limită de tokenuri mai mică..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "Legăturile cu marcaje temporale nu au putut fi adăugate: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "Legături cu marcaje temporale adăugate la {count} titluri de secțiune"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "Se traduce conținutul în {locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "Eroare: fișierul nu a fost găsit: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "Eroare de traducere: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "Conținutul nu a putut fi tradus (răspuns gol de la LLM)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "Conținutul a fost tradus în {locale}"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "Lipsește cheia API {provider}. Modelele nu pot fi preluate."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "Se preiau modelele {provider}..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "Modelele {provider} nu au putut fi preluate: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "Modelele {provider} au fost actualizate!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "Modelele {provider} nu au putut fi citite din răspunsul API."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "Eroare la preluarea modelelor {provider}: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "Se procesează secțiunea {current} din {total}..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "S-au adăugat {count} legături cu marcaje temporale prin procesarea pe fragmente"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Extractorul de transcrieri Youtube este gata"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "Procesează"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "Lasă gol pentru a folosi titlul de pe YouTube"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "URL YouTube nevalid. Sunt acceptate doar URL-uri de videoclip, playlist și canal."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: creează o notiță dintr-o transcriere YouTube"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "URL YouTube"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "A fost detectat un URL de canal sau playlist YouTube"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "A fost detectat un URL de videoclip YouTube"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "Câte videoclipuri vrei să procesezi? Limita maximă este 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "Toate videoclipurile"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "Număr limitat:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "Titlu personalizat al notiței (opțional)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "Mod rezumat rapid"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "Pentru rezumate mai scurte și mai rapide (omite linkurile cu marcaj de timp)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "Sarcini active"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "Nicio sarcină activă"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "Lista de sarcini nu a putut fi citită: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "Renunță elimină o sarcină din listă; nu șterge niciodată notițe."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "Selectează fișierul șablon"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "Niciun fișier șablon în folderul „{folder}”. Verifică dacă folderul de șabloane este configurat corect în setările Templater."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "Scrie pentru a căuta șabloane…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "Niciun șablon care să corespundă."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "Selectează locația folderului"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "Niciun subfolder în {folder}"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "Subfoldere găsite: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "Filtrează folderele…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "Niciun folder care să corespundă"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Documentația pluginului de transcrieri YouTube Tubesage"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "Fișierul readme nu a putut fi încărcat. Verifică dacă readme.md există în folderul pluginului."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "Șablon de exemplu: copiază-l în folderul de șabloane definit în Templater"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "Copiază șablonul"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "Copiat"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "Copierea a eșuat"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "Acesta este șablonul Templater de exemplu folosit pentru notițele de transcriere YouTube. Îl poți adapta la nevoile tale."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "Variabile de șablon disponibile:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "Fișierul șablon nu a putut fi încărcat. Verifică dacă există în folderul pluginului sau în cel de șabloane al seifului."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "Se obține numele playlistului…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "Playlist găsit: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "Începe procesarea playlistului YouTube: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "Începe procesarea canalului YouTube: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "Folder de playlist creat: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "Folder de canal creat: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "Se preiau videoclipurile din playlist: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "Se preiau videoclipurile din canal: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "Videoclipuri de procesat: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "Se procesează videoclipul {current}/{total}: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "Videoclipul {title} este omis – nu există transcriere"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "Se adaugă linkuri cu marcaj de timp la videoclipul din playlist: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "Se adaugă linkuri cu marcaj de timp la videoclipul din canal: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ Linkuri cu marcaj de timp adăugate la {title}"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} („{title}”)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "Notița a fost creată, dar marcajele de timp nu au putut fi adăugate la „{title}”"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ Videoclip {current}/{total} procesat"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ Videoclipul „{title}” este omis – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ Eroare la procesarea videoclipului „{title}”: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "Procesarea canalului s-a încheiat – procesate: {processed}, omise: {skipped}, erori: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "Sarcina nu a putut fi salvată: {error}. Videoclipul poate fi încă în procesare; vezi „Afișează sarcinile active”"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "Acest videoclip este deja în procesare"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "Această sarcină nu poate fi reluată așa; vezi starea ei"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "Această sarcină nu poate fi finalizată așa; vezi starea ei"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "Extrage transcrierea YouTube"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Titlul videoclipului Youtube"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - URL-ul videoclipului Youtube"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - Transcrierea completă cu marcaje de timp"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - Rezumatul videoclipului generat de LLM"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - Furnizorul de LLM folosit (de ex., openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - Modelul exact folosit (de ex., gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - Etichete generate din furnizorul și modelul LLM"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "Afișează sarcinile active"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Furnizor setat pe {provider}. Buget de ieșire: {tokens} tokenuri (ieșire maximă minus rezerva)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Model schimbat în {model}. Buget de ieșire: {tokens} tokenuri (ieșire maximă minus rezerva)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "Lista de modele {provider} a fost reîmprospătată."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "Modelele {provider} nu au putut fi reîmprospătate. Se păstrează lista existentă."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "Nu s-a găsit niciun videoclip în această listă de redare"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "Nu s-a găsit niciun videoclip pe acest canal"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "Lista de modele {provider} a fost reîmprospătată. Limite de tokenuri completate automat pentru {count} model."
+    },
+    "notice.models.refreshedWithLimits.few": {
+        "original": "",
+        "translation": "Lista de modele {provider} a fost reîmprospătată. Limite de tokenuri completate automat pentru {count} modele."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "Lista de modele {provider} a fost reîmprospătată. Limite de tokenuri completate automat pentru {count} de modele."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Se preia transcrierea"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "Se rezumă"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Se creează nota"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "Notă creată"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "Se adaugă legăturile cu marcaj temporal"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "Se traduce"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "Gata"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "Anulează"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "Renunță"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "Deschide nota"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "Finalizează fără marcaje temporale"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "Finalizează fără traducere"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "Reia"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "Reia (se poate taxa din nou)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "În curs"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "Gata de continuare"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "Încheiat"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "Anulat"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "A eșuat"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "A eșuat: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "Timp expirat. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Întrerupt la închiderea Obsidian; nu a fost creată nicio notă"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Întrerupt la închiderea Obsidian; s-ar putea să existe o notă la {path}"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Întrerupt la închiderea Obsidian; nota a fost creată fără marcaje temporale"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Întrerupt la închiderea Obsidian; nota a fost creată fără traducere"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "Întrerupt în timpul {stage}; cererea anterioară ar putea fi deja taxată"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "Întrerupt în timpul {stage}; nu se știe dacă cererea anterioară a fost taxată"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "Prea multe încercări pentru {stage}"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "Există deja o notă la calea țintă — redenumește-o sau șterge-o, apoi reia din Afișează sarcinile active"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "Nu s-a putut confirma dacă nota de la calea țintă aparține acestei sarcini"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "Nota acestei sarcini a fost mutată sau ștearsă"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "Nota a fost editată în timpul procesării; marcajele temporale au fost omise"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater nu este disponibil; activează-l, apoi reia"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "Reluarea preia din nou transcrierea printr-un serviciu cu plată"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "Calea notei nu a putut fi calculată consecvent (verifică setările de dosar și dată), apoi reia"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "Nota transcrierii a fost creată cu succes"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "Notă creată, dar marcajele temporale au fost omise fiindcă nota a fost editată"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "Notă creată, dar traducerea a fost omisă fiindcă nota a fost editată"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "Notă creată, dar marcajele temporale și traducerea au fost omise fiindcă nota a fost editată"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "Notă creată fără traducere"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "Notă creată fără marcaje temporale și fără traducere"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: 1 sarcină de notă a fost întreruptă la închiderea Obsidian — {title}: nu a fost creată nicio notă"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: 1 sarcină de notă a fost întreruptă la închiderea Obsidian — {title}: s-ar putea să existe o notă la {path}"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: 1 sarcină de notă a fost întreruptă la închiderea Obsidian — {title}: notă creată fără marcaje temporale"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: 1 sarcină de notă a fost întreruptă la închiderea Obsidian — {title}: notă creată fără traducere"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: {count} sarcini de notă au fost întrerupte la închiderea Obsidian; cele mai recente apar în Afișează sarcinile active"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 sarcină întreruptă necesită atenție"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: {count} sarcini întrerupte necesită atenție"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "Completează câmpul {field}"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "A apărut o eroare"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "Nu există transcriere pentru acest videoclip"
     }
 }

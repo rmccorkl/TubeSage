@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — لغو از «Show active jobs»"
+        "translation": "{stage} — لغو از «نمایش کارهای فعال»"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,673 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "در حال پردازش ویدیو"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "افزونهٔ رونوشت Youtube: برای {provider} کلید API تنظیم نشده است. کلید API خود را در تنظیمات افزونه بیفزایید."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "خطا: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "پردازش لغو شد"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "پردازش نیمه‌کاره ماند؛ آن را از «نمایش کارهای فعال» ادامه دهید"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "یادداشت خطا همراه با اطلاعات اشکال‌زدایی ساخته شد: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "خطا: {error} (یادداشت اشکال‌زدایی هم ساخته نشد)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "بررسی کارهای نیمه‌تمام ممکن نشد: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "هشدار: در رونوشت هیچ زمانی یافت نشد. برای پردازش به زمان‌ها نیاز است."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "خطا: افزونهٔ Templater لازم است ولی نصب یا فعال نشده است"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "یادداشت ساخته شد: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "خطا هنگام ساخت یادداشت: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "افزونهٔ رونوشت Youtube به افزونهٔ Templater نیاز دارد. آن را نصب و فعال کنید."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "در حال دریافت اطلاعات مجموعه..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "در حال دریافت فهرست پخش با شناسهٔ: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "در حال دریافت ویدیوهای فهرست پخش..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "در حال دریافت ویدیوهای فهرست پخش (ادامه)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "به حد ایمنی {limit} ویدیو رسید. {limit} ویدیوی نخست پردازش می‌شود."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "در حال دریافت ویدیوهای کانال..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "در حال دریافت ویدیوهای کانال (ادامه)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "{title} یافت شد: شمار ویدیوها {count}"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "در حال افزودن پیوندهای زمانی با LLM..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "تلاش دوباره با محدودیت توکن کمتر..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "افزودن پیوندهای زمانی ناکام ماند: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "پیوندهای زمانی به سرفصل‌ها افزوده شد، شمار: {count}"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "در حال ترجمهٔ محتوا به {locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "خطا: فایل یافت نشد: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "خطای ترجمه: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "ترجمهٔ محتوا ناکام ماند (پاسخ خالی از LLM)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "محتوا به {locale} ترجمه شد"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "کلید API برای {provider} موجود نیست. دریافت مدل‌ها ممکن نیست."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "در حال دریافت مدل‌های {provider}..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "دریافت مدل‌های {provider} ناموفق بود: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "مدل‌های {provider} به‌روز شد!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "خواندن مدل‌های {provider} از پاسخ API ممکن نشد."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "خطا هنگام دریافت مدل‌های {provider}: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "در حال پردازش بخش {current} از {total}..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "پیوندهای زمانی با پردازش بخش‌بخش افزوده شد، شمار: {count}"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "استخراج‌کنندهٔ رونوشت Youtube آماده است"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "پردازش"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "برای استفاده از عنوان YouTube خالی بگذارید"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "نشانی YouTube معتبر نیست. تنها نشانی ویدیو، فهرست پخش و کانال پشتیبانی می‌شود."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: ایجاد یادداشت از رونویسی YouTube"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "نشانی YouTube"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "نشانی کانال یا فهرست پخش YouTube شناسایی شد"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "نشانی ویدیوی YouTube شناسایی شد"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "چند ویدیو پردازش شود؟ سقف قطعی 50 است."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "همهٔ ویدیوها"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "تعداد محدود:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "عنوان دلخواه یادداشت (اختیاری)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "حالت خلاصهٔ سریع"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "خلاصه‌های کوتاه‌تر و سریع‌تر (پیوندهای زمانی را رد می‌کند)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "کارهای فعال"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "هیچ کار فعالی نیست"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "فهرست کارها خوانده نشد: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "«دور انداختن» فقط کار را از این فهرست برمی‌دارد و یادداشتی را حذف نمی‌کند."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "فایل الگو را انتخاب کنید"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "در پوشهٔ «{folder}» فایل الگویی یافت نشد. مطمئن شوید پوشهٔ الگوها در تنظیمات Templater درست تعیین شده است."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "برای جستجوی الگوها بنویسید…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "الگوی مطابقی یافت نشد."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "محل پوشه را انتخاب کنید"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "در {folder} زیرپوشه‌ای نیست"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "زیرپوشه‌های یافت‌شده: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "پالایش پوشه‌ها…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "پوشهٔ مطابقی نیست"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "مستندات افزونهٔ رونویسی YouTube به نام Tubesage"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "فایل readme بارگذاری نشد. مطمئن شوید readme.md در پوشهٔ افزونه هست."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "الگوی نمونه: آن را در پوشهٔ الگوهای تعیین‌شده در Templater بگذارید"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "کپی الگو"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "کپی شد"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "کپی نشد"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "این الگوی نمونهٔ Templater برای یادداشت‌های رونویسی YouTube است. می‌توانید آن را به دلخواه تغییر دهید."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "متغیرهای در دسترس الگو:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "فایل الگو بارگذاری نشد. مطمئن شوید در پوشهٔ افزونه یا پوشهٔ الگوهای گنجینه هست."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "در حال گرفتن نام فهرست پخش…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "فهرست پخش پیدا شد: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "شروع پردازش فهرست پخش YouTube: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "شروع پردازش کانال YouTube: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "پوشهٔ فهرست پخش ساخته شد: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "پوشهٔ کانال ساخته شد: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "در حال گرفتن ویدیوها از فهرست پخش: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "در حال گرفتن ویدیوها از کانال: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "ویدیوهای در انتظار پردازش: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "در حال پردازش ویدیوی {current}/{total}: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "ویدیوی {title} رد شد – رونویسی موجود نیست"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "در حال افزودن پیوندهای زمانی به ویدیوی فهرست پخش: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "در حال افزودن پیوندهای زمانی به ویدیوی کانال: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ پیوندهای زمانی به {title} افزوده شد"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} («{title}»)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "یادداشت ساخته شد، اما افزودن نشانه‌های زمانی به «{title}» ممکن نشد"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ ویدیوی {current}/{total} پردازش شد"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ ویدیوی «{title}» رد شد – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ خطا در پردازش ویدیوی «{title}»: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "پردازش کانال پایان یافت – پردازش‌شده: {processed}، ردشده: {skipped}، خطاها: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "کار ذخیره نشد: {error}. شاید ویدیو هنوز در حال پردازش باشد؛ «نمایش کارهای فعال» را ببینید"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "این ویدیو هم‌اکنون در حال پردازش است"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "این کار در وضعیت کنونی ادامه‌پذیر نیست؛ وضعیتش را ببینید"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "این کار در وضعیت کنونی پایان‌پذیر نیست؛ وضعیتش را ببینید"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "استخراج رونویسی YouTube"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - عنوان ویدیوی Youtube"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - نشانی ویدیوی Youtube"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - رونویسی کامل همراه با نشانه‌های زمانی"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - خلاصهٔ ویدیو که LLM ساخته است"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - ارائه‌دهندهٔ LLM به‌کاررفته (مانند openai یا anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - مدل دقیق به‌کاررفته (مانند gpt-4 یا claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - برچسب‌هایی که از ارائه‌دهنده و مدل LLM ساخته می‌شوند"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "نمایش کارهای فعال"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "ارائه‌دهنده روی {provider} تنظیم شد. بودجهٔ خروجی: {tokens} توکن (بیشینهٔ خروجی منهای ذخیره)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "مدل به {model} تغییر کرد. بودجهٔ خروجی: {tokens} توکن (بیشینهٔ خروجی منهای ذخیره)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "فهرست مدل‌های {provider} تازه‌سازی شد."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "تازه‌سازی مدل‌های {provider} ممکن نشد. فهرست فعلی به کار می‌رود."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "در این فهرست پخش هیچ ویدیویی یافت نشد"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "در این کانال هیچ ویدیویی یافت نشد"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "فهرست مدل‌های {provider} تازه‌سازی شد. محدودیت توکن برای {count} مدل خودکار پر شد."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "فهرست مدل‌های {provider} تازه‌سازی شد. محدودیت توکن برای {count} مدل خودکار پر شد."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "دریافت متن پیاده‌شده"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "در حال خلاصه‌سازی"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "در حال ساخت یادداشت"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "یادداشت ساخته شد"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "افزودن پیوندهای زمانی"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "در حال ترجمه"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "انجام شد"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "لغو"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "دور انداختن"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "باز کردن یادداشت"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "پایان بدون زمان‌ها"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "پایان بدون ترجمه"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "ازسرگیری"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "ازسرگیری (ممکن است دوباره هزینه شود)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "در حال اجرا"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "آمادهٔ ادامه"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "پایان یافت"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "لغو شد"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "ناموفق"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "ناموفق: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "زمان به پایان رسید. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "هنگام بسته شدن Obsidian متوقف شد؛ هیچ یادداشتی ساخته نشد"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "هنگام بسته شدن Obsidian متوقف شد؛ ممکن است یادداشتی در {path} باشد"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "هنگام بسته شدن Obsidian متوقف شد؛ یادداشت بدون زمان‌ها ساخته شد"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "هنگام بسته شدن Obsidian متوقف شد؛ یادداشت بدون ترجمه ساخته شد"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "در مرحلهٔ {stage} متوقف شد؛ ممکن است درخواست قبلی قبلاً هزینه شده باشد"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "در مرحلهٔ {stage} متوقف شد؛ معلوم نیست درخواست قبلی هزینه شده است یا نه"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "تلاش‌های بیش از حد برای {stage}"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "در مسیر مقصد از پیش یادداشتی وجود دارد — نام آن را تغییر دهید یا حذفش کنید، سپس از «نمایش کارهای فعال» ادامه دهید"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "نمی‌توان تأیید کرد که یادداشت مسیر مقصد متعلق به این کار است"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "یادداشت این کار جابه‌جا یا حذف شده است"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "یادداشت حین پردازش ویرایش شد؛ زمان‌ها نادیده گرفته شدند"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater در دسترس نیست؛ آن را فعال کنید و سپس ادامه دهید"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "ازسرگیری، متن پیاده‌شده را دوباره از سرویسی پولی می‌گیرد"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "مسیر یادداشت به‌طور یکسان محاسبه نشد (تنظیمات پوشه و تاریخ را بررسی کنید)، سپس ادامه دهید"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "یادداشت متن پیاده‌شده با موفقیت ساخته شد"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "یادداشت ساخته شد، اما چون یادداشت ویرایش شد زمان‌ها نادیده گرفته شدند"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "یادداشت ساخته شد، اما چون یادداشت ویرایش شد ترجمه نادیده گرفته شد"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "یادداشت ساخته شد، اما چون یادداشت ویرایش شد زمان‌ها و ترجمه نادیده گرفته شدند"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "یادداشت بدون ترجمه ساخته شد"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "یادداشت بدون زمان‌ها و بدون ترجمه ساخته شد"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: هنگام بسته شدن Obsidian، 1 کار یادداشت متوقف شد — {title}: هیچ یادداشتی ساخته نشد"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: هنگام بسته شدن Obsidian، 1 کار یادداشت متوقف شد — {title}: ممکن است یادداشتی در {path} باشد"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: هنگام بسته شدن Obsidian، 1 کار یادداشت متوقف شد — {title}: یادداشت بدون زمان‌ها ساخته شد"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: هنگام بسته شدن Obsidian، 1 کار یادداشت متوقف شد — {title}: یادداشت بدون ترجمه ساخته شد"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: هنگام بسته شدن Obsidian، {count} کار یادداشت متوقف شد؛ تازه‌ترین‌ها در «نمایش کارهای فعال» فهرست شده‌اند"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 کار متوقف‌شده نیاز به رسیدگی دارد"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: {count} کار متوقف‌شده نیاز به رسیدگی دارد"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "لطفاً {field} را وارد کنید"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "خطایی رخ داد"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "برای این ویدیو رونوشتی موجود نیست"
     }
 }

@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — “Show active jobs” orqali bekor qiling"
+        "translation": "{stage} — “Faol ishlarni koʻrsatish” orqali bekor qiling"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,673 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "Video qayta ishlanmoqda"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Youtube transkript plagini: {provider} uchun API kaliti sozlanmagan. API kalitingizni plagin sozlamalariga qoʻshing."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "Xato: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "Qayta ishlash bekor qilindi"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "Qayta ishlash uzildi; uni “Faol ishlarni koʻrsatish” orqali davom ettiring"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "Nosozliklarni tuzatish maʼlumotlari bilan xato yozuvi yaratildi: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "Xato: {error} (nosozlik yozuvi ham yaratilmadi)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "Uzilgan vazifalarni tekshirib boʻlmadi: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "Ogohlantirish: transkriptda vaqt belgilari topilmadi. Qayta ishlash uchun ular zarur."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "Xato: Templater plagini kerak, ammo u oʻrnatilmagan yoki yoqilmagan"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "Yozuv yaratildi: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "Yozuv yaratishda xato: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Youtube transkript plagini Templater plaginini talab qiladi. Uni oʻrnating va yoqing."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "Toʻplam maʼlumotlari olinmoqda..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "Ijro roʻyxati olinmoqda, ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "Ijro roʻyxatidagi videolar olinmoqda..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "Ijro roʻyxatidagi videolar olinmoqda (davomi)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "{limit} ta video xavfsizlik chegarasiga yetildi. Dastlabki {limit} ta video qayta ishlanadi."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "Kanaldagi videolar olinmoqda..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "Kanaldagi videolar olinmoqda (davomi)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "{title} topildi: {count} ta video"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "LLM yordamida vaqt belgisi havolalari qoʻshilmoqda..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "Kamaytirilgan token chegarasi bilan qayta urinilmoqda..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "Vaqt belgisi havolalarini qoʻshib boʻlmadi: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "{count} ta boʻlim sarlavhasiga vaqt belgisi havolasi qoʻshildi"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "Mazmun {locale} tiliga tarjima qilinmoqda..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "Xato: fayl topilmadi: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "Tarjima xatosi: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "Mazmunni tarjima qilib boʻlmadi (LLM dan boʻsh javob)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "Mazmun {locale} tiliga tarjima qilindi"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "{provider} API kaliti yoʻq. Modellarni olib boʻlmaydi."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "{provider} modellari olinmoqda..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "{provider} modellarini olib boʻlmadi: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "{provider} modellari yangilandi!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "API javobidan {provider} modellarini oʻqib boʻlmadi."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "{provider} modellarini olishda xato: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "{total} boʻlimdan {current}-si qayta ishlanmoqda..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "Boʻlaklab qayta ishlash orqali {count} ta vaqt belgisi havolasi qoʻshildi"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Youtube transkript chiqaruvchisi tayyor"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "Qayta ishlash"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "YouTube sarlavhasidan foydalanish uchun boʻsh qoldiring"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "YouTube manzili notoʻgʻri. Faqat video, ijro roʻyxati va kanal manzillari qoʻllab-quvvatlanadi."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: YouTube matnidan qaydnoma yaratish"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "YouTube URL manzili"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "YouTube kanali yoki ijro roʻyxati URL manzili aniqlandi"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "YouTube video URL manzili aniqlandi"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "Nechta video qayta ishlansin? Qatʻiy chegara 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "Barcha videolar"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "Cheklangan son:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "Maxsus qaydnoma sarlavhasi (ixtiyoriy)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "Tez xulosa rejimi"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "Qisqaroq va tezroq xulosalar (vaqt belgisi havolalarini oʻtkazib yuboradi)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "Faol vazifalar"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "Faol vazifalar yoʻq"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "Vazifalar roʻyxatini oʻqib boʻlmadi: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "“Bekor qilish” vazifani faqat roʻyxatdan olib tashlaydi; qaydnomalarni hech qachon oʻchirmaydi."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "Andoza faylini tanlang"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "“{folder}” jildida andoza fayllari topilmadi. Templater sozlamalarida andoza jildi toʻgʻri koʻrsatilganini tekshiring."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "Andozalarni qidirish uchun yozing…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "Mos keladigan andozalar topilmadi."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "Jild joyini tanlang"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "{folder} ichida ost jildlar yoʻq"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "Topilgan ost jildlar: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "Jildlarni saralash…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "Mos keladigan jildlar yoʻq"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Tubesage YouTube matn plagini hujjatlari"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "readme fayli yuklanmadi. Plagin jildida readme.md borligini tekshiring."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "Namuna andoza: uni Templater da koʻrsatilgan andoza jildiga nusxalang"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "Andozani nusxalash"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "Nusxalandi"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "Nusxalab boʻlmadi"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "Bu YouTube matn qaydnomalari uchun ishlatiladigan Templater namuna andozasi. Uni oʻz ehtiyojingizga moslashtirishingiz mumkin."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "Mavjud andoza oʻzgaruvchilari:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "Andoza fayli yuklanmadi. U plagin jildida yoki xazina andoza jildida borligini tekshiring."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "Ijro roʻyxati nomi olinmoqda…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "Ijro roʻyxati topildi: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "YouTube ijro roʻyxati qayta ishlanmoqda: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "YouTube kanali qayta ishlanmoqda: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "Ijro roʻyxati jildi yaratildi: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "Kanal jildi yaratildi: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "Ijro roʻyxatidan videolar olinmoqda: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "Kanaldan videolar olinmoqda: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "Qayta ishlanadigan videolar: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "Video {current}/{total} qayta ishlanmoqda: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "{title} videosi oʻtkazib yuborildi – matn yoʻq"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "Ijro roʻyxati videosiga vaqt belgisi havolalari qoʻshilmoqda: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "Kanal videosiga vaqt belgisi havolalari qoʻshilmoqda: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ {title} ga vaqt belgisi havolalari qoʻshildi"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} (“{title}”)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "Qaydnoma yaratildi, lekin “{title}” ga vaqt belgilarini qoʻshib boʻlmadi"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ Video {current}/{total} qayta ishlandi"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ “{title}” videosi oʻtkazib yuborildi – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ “{title}” videosini qayta ishlashda xato: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "Kanalni qayta ishlash tugadi – qayta ishlandi: {processed}, oʻtkazib yuborildi: {skipped}, xatolar: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "Vazifani saqlab boʻlmadi: {error}. Video hamon qayta ishlanayotgan boʻlishi mumkin; “Faol ishlarni koʻrsatish” ni koʻring"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "Bu video allaqachon qayta ishlanmoqda"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "Bu vazifani shu holatda davom ettirib boʻlmaydi; uning holatini koʻring"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "Bu vazifani shu holatda tugatib boʻlmaydi; uning holatini koʻring"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "YouTube matnini chiqarish"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Youtube videosining sarlavhasi"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - Youtube videosining URL manzili"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - Vaqt belgilari bilan toʻliq matn"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - LLM yaratgan video xulosasi"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - Ishlatilgan LLM provayderi (masalan, openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - Ishlatilgan aniq model (masalan, gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - LLM provayderi va modelidan hosil qilingan teglar"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "Faol ishlarni koʻrsatish"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Taʼminotchi {provider} qilib belgilandi. Chiqish byudjeti: {tokens} token (maksimal chiqish minus zaxira)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Model {model} ga oʻzgartirildi. Chiqish byudjeti: {tokens} token (maksimal chiqish minus zaxira)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "{provider} modellar roʻyxati yangilandi."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "{provider} modellarini yangilab boʻlmadi. Mavjud roʻyxat ishlatiladi."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "Bu ijro roʻyxatida video topilmadi"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "Bu kanalda video topilmadi"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "{provider} modellar roʻyxati yangilandi. {count} model uchun token chegaralari avtomatik toʻldirildi."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "{provider} modellar roʻyxati yangilandi. {count} model uchun token chegaralari avtomatik toʻldirildi."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Matn olinmoqda"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "Xulosa qilinmoqda"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Qayd yaratilmoqda"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "Qayd yaratildi"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "Vaqt belgisi havolalari qoʻshilmoqda"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "Tarjima qilinmoqda"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "Tayyor"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "Bekor qilish"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "Tashlab yuborish"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "Qaydni ochish"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "Vaqt belgilarisiz yakunlash"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "Tarjimasiz yakunlash"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "Davom ettirish"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "Davom ettirish (qayta hisoblanishi mumkin)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "Bajarilmoqda"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "Davom ettirishga tayyor"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "Yakunlandi"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "Bekor qilindi"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "Muvaffaqiyatsiz"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "Muvaffaqiyatsiz: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "Vaqt tugadi. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Obsidian yopilganda uzildi; hech qanday qayd yaratilmadi"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Obsidian yopilganda uzildi; {path} manzilida qayd boʻlishi mumkin"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Obsidian yopilganda uzildi; qayd vaqt belgilarisiz yaratildi"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Obsidian yopilganda uzildi; qayd tarjimasiz yaratildi"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "{stage} paytida uzildi; oldingi soʻrov allaqachon hisoblangan boʻlishi mumkin"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "{stage} paytida uzildi; oldingi soʻrov hisoblanganmi, nomaʼlum"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "{stage} uchun urinishlar juda koʻp"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "Maqsad manzilda allaqachon qayd bor — uning nomini oʻzgartiring yoki oʻchiring, soʻng “Faol ishlarni koʻrsatish” orqali davom eting"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "Maqsad manzildagi qayd shu ishga tegishlimi, tasdiqlab boʻlmadi"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "Bu ishning qaydi koʻchirilgan yoki oʻchirilgan"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "Qayd ishlov paytida tahrirlandi; vaqt belgilari oʻtkazib yuborildi"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater mavjud emas; uni yoqing, soʻng davom eting"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "Davom ettirish matnni pullik xizmat orqali qaytadan oladi"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "Qayd manzili izchil hisoblab boʻlmadi (jild va sana sozlamalarini tekshiring), soʻng davom eting"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "Matn qaydi muvaffaqiyatli yaratildi"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "Qayd yaratildi, lekin qayd tahrirlangani uchun vaqt belgilari oʻtkazib yuborildi"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "Qayd yaratildi, lekin qayd tahrirlangani uchun tarjima oʻtkazib yuborildi"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "Qayd yaratildi, lekin qayd tahrirlangani uchun vaqt belgilari va tarjima oʻtkazib yuborildi"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "Qayd tarjimasiz yaratildi"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "Qayd vaqt belgilarisiz va tarjimasiz yaratildi"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: Obsidian yopilganda 1 ta qayd ishi uzildi — {title}: hech qanday qayd yaratilmadi"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: Obsidian yopilganda 1 ta qayd ishi uzildi — {title}: {path} manzilida qayd boʻlishi mumkin"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: Obsidian yopilganda 1 ta qayd ishi uzildi — {title}: qayd vaqt belgilarisiz yaratildi"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: Obsidian yopilganda 1 ta qayd ishi uzildi — {title}: qayd tarjimasiz yaratildi"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: Obsidian yopilganda {count} ta qayd ishi uzildi; eng yangilari “Faol ishlarni koʻrsatish” roʻyxatida"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: uzilgan 1 ta ish eʼtibor talab qiladi"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: uzilgan {count} ta ish eʼtibor talab qiladi"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "{field} maydonini toʻldiring"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "Xatolik yuz berdi"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "Bu video uchun transkript yoʻq"
     }
 }

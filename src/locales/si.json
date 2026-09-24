@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — “Show active jobs” වෙතින් අවලංගු කරන්න"
+        "translation": "{stage} — “ක්‍රියාකාරී කාර්ය පෙන්වන්න” වෙතින් අවලංගු කරන්න"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,673 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "වීඩියෝව සකසමින්"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Youtube පිටපත් ප්ලගිනය: {provider} සඳහා API යතුරක් සකසා නැත. ඔබේ API යතුර ප්ලගින සැකසුම්වල එක් කරන්න."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "දෝෂය: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "සැකසීම අවලංගු කෙරිණි"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "සැකසීම බිඳුණි; “ක්‍රියාකාරී කාර්ය පෙන්වන්න” වෙතින් නැවත අරඹන්න"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "දෝෂහරණ තොරතුරු සහිත දෝෂ සටහන සාදන ලදී: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "දෝෂය: {error} (දෝෂහරණ සටහනද සෑදිය නොහැකි විය)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "බිඳුණු කාර්ය පරීක්ෂා කළ නොහැකි විය: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "අවවාදයයි: පිටපතේ කාල මුද්‍රා හමු නොවීය. සැකසීමට කාල මුද්‍රා අවශ්‍යයි."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "දෝෂය: Templater ප්ලගිනය අවශ්‍යයි, නමුත් එය ස්ථාපනය හෝ සක්‍රිය කර නැත"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "සටහන සාදන ලදී: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "සටහන සෑදීමේ දෝෂය: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Youtube පිටපත් ප්ලගිනයට Templater ප්ලගිනය අවශ්‍යයි. එය ස්ථාපනය කර සක්‍රිය කරන්න."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "එකතුවේ තොරතුරු ලබා ගනිමින්..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "ධාවන ලැයිස්තුව ලබා ගනිමින්, ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "ධාවන ලැයිස්තුවේ වීඩියෝ ලබා ගනිමින්..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "ධාවන ලැයිස්තුවේ වීඩියෝ ලබා ගනිමින් (දිගටම)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "වීඩියෝ {limit}ක ආරක්ෂිත සීමාවට ළඟා විය. පළමු වීඩියෝ {limit} සකසනු ලැබේ."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "නාලිකාවේ වීඩියෝ ලබා ගනිමින්..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "නාලිකාවේ වීඩියෝ ලබා ගනිමින් (දිගටම)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "{title} හමු විය: වීඩියෝ {count}"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "LLM භාවිතයෙන් කාල මුද්‍රා සබැඳි එක් කරමින්..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "අඩු ටෝකන සීමාවකින් නැවත උත්සාහ කරමින්..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "කාල මුද්‍රා සබැඳි එක් කළ නොහැකි විය: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "කොටස් ශීර්ෂ {count}කට කාල මුද්‍රා සබැඳි එක් කෙරිණි"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "අන්තර්ගතය {locale} වෙත පරිවර්තනය කරමින්..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "දෝෂය: ගොනුව හමු නොවීය: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "පරිවර්තන දෝෂය: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "අන්තර්ගතය පරිවර්තනය කළ නොහැකි විය (LLM වෙතින් හිස් ප්‍රතිචාරයක්)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "අන්තර්ගතය {locale} වෙත පරිවර්තනය කෙරිණි"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "{provider} API යතුර නැත. ආකෘති ලබා ගත නොහැක."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "{provider} ආකෘති ලබා ගනිමින්..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "{provider} ආකෘති ලබා ගැනීම අසාර්ථකයි: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "{provider} ආකෘති යාවත්කාලීන කෙරිණි!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "API ප්‍රතිචාරයෙන් {provider} ආකෘති කියවිය නොහැකි විය."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "{provider} ආකෘති ලබා ගැනීමේදී දෝෂය: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "{total} න් {current} වන කොටස සකසමින්..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "කොටස් වශයෙන් සැකසීමෙන් කාල මුද්‍රා සබැඳි {count}ක් එක් කෙරිණි"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Youtube පිටපත් නිස්සාරකය සූදානම්"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "සකසන්න"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "YouTube මාතෘකාව භාවිතයට හිස්ව තබන්න"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "වලංගු YouTube ලිපිනයක් නොවේ. වීඩියෝ, වාදන ලැයිස්තු සහ නාලිකා ලිපින පමණක් සහාය දක්වයි."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: YouTube පිටපතෙන් සටහනක් සාදන්න"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "YouTube URL එක"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "YouTube නාලිකා හෝ ධාවන ලැයිස්තු URL එකක් හමු විය"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "YouTube වීඩියෝ URL එකක් හමු විය"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "වීඩියෝ කීයක් සකසන්නද? උපරිම සීමාව 50 කි."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "සියලු වීඩියෝ"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "සීමිත ගණන:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "අභිරුචි සටහන් මාතෘකාව (විකල්ප)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "ඉක්මන් සාරාංශ ප්‍රකාරය"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "කෙටි හා වේගවත් සාරාංශ (කාල මුද්‍රා සබැඳි මඟ හරී)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "ක්‍රියාකාරී කාර්ය"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "ක්‍රියාකාරී කාර්ය නැත"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "කාර්ය ලැයිස්තුව කියවිය නොහැකි විය: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "“ඉවතලන්න” මෙම ලැයිස්තුවෙන් කාර්යය පමණක් ඉවත් කරයි; සටහන් මකන්නේ නැත."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "සැකිලි ගොනුව තෝරන්න"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "“{folder}” ෆෝල්ඩරයේ සැකිලි ගොනු නැත. Templater සැකසුම්වල සැකිලි ෆෝල්ඩරය නිවැරදිදැයි පරීක්ෂා කරන්න."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "සැකිලි සෙවීමට ටයිප් කරන්න…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "ගැළපෙන සැකිලි නැත."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "ෆෝල්ඩර ස්ථානය තෝරන්න"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "{folder} තුළ උපෆෝල්ඩර නැත"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "හමු වූ උපෆෝල්ඩර: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "ෆෝල්ඩර පෙරන්න…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "ගැළපෙන ෆෝල්ඩර නැත"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Tubesage YouTube පිටපත් ප්ලගිනයේ ප්‍රලේඛනය"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "readme ගොනුව පූරණය කළ නොහැකි විය. ප්ලගින ෆෝල්ඩරයේ readme.md ඇතිදැයි පරීක්ෂා කරන්න."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "උදාහරණ සැකිල්ල: පිටපත් කර Templater හි දක්වා ඇති සැකිලි ෆෝල්ඩරයේ තබන්න"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "සැකිල්ල පිටපත් කරන්න"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "පිටපත් විය"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "පිටපත් කිරීම අසාර්ථකයි"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "මෙය YouTube පිටපත් සටහන් සඳහා භාවිත වන Templater උදාහරණ සැකිල්ලයි. ඔබේ අවශ්‍යතාවට අනුව එය වෙනස් කළ හැකිය."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "ලබාගත හැකි සැකිලි විචල්‍ය:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "සැකිලි ගොනුව පූරණය කළ නොහැකි විය. එය ප්ලගින ෆෝල්ඩරයේ හෝ ගබඩාවේ සැකිලි ෆෝල්ඩරයේ ඇතිදැයි පරීක්ෂා කරන්න."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "ධාවන ලැයිස්තුවේ නම ලබාගනිමින්…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "ධාවන ලැයිස්තුව හමු විය: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "YouTube ධාවන ලැයිස්තුව සැකසීම ආරම්භ වේ: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "YouTube නාලිකාව සැකසීම ආරම්භ වේ: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "ධාවන ලැයිස්තු ෆෝල්ඩරය සෑදිණි: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "නාලිකා ෆෝල්ඩරය සෑදිණි: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "ධාවන ලැයිස්තුවෙන් වීඩියෝ ලබාගනිමින්: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "නාලිකාවෙන් වීඩියෝ ලබාගනිමින්: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "සැකසීමට ඇති වීඩියෝ: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "වීඩියෝ {current}/{total} සකසමින්: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "වීඩියෝ {title} මඟ හැරිණි – පිටපතක් නැත"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "ධාවන ලැයිස්තු වීඩියෝවට කාල මුද්‍රා සබැඳි එක් කරමින්: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "නාලිකා වීඩියෝවට කාල මුද්‍රා සබැඳි එක් කරමින්: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ {title} වෙත කාල මුද්‍රා සබැඳි එක් කෙරිණි"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} (“{title}”)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "සටහන සෑදිණි, නමුත් “{title}” වෙත කාල මුද්‍රා එක් කළ නොහැකි විය"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ වීඩියෝ {current}/{total} සැකසිණි"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ වීඩියෝ “{title}” මඟ හැරිණි – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ වීඩියෝ “{title}” සැකසීමේ දෝෂය: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "නාලිකා සැකසීම අවසන් – සැකසූ: {processed}, මඟහැරි: {skipped}, දෝෂ: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "කාර්යය සුරැකිය නොහැකි විය: {error}. වීඩියෝව තවමත් සැකසෙමින් තිබිය හැක; “ක්‍රියාකාරී කාර්ය පෙන්වන්න” බලන්න"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "මෙම වීඩියෝව දැනටමත් සැකසෙමින් පවතී"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "මෙම කාර්යය මෙම තත්ත්වයේ නැවත ඇරඹිය නොහැක; එහි තත්ත්වය බලන්න"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "මෙම කාර්යය මෙම තත්ත්වයේ අවසන් කළ නොහැක; එහි තත්ත්වය බලන්න"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "YouTube පිටපත උපුටන්න"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Youtube වීඩියෝවේ මාතෘකාව"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - Youtube වීඩියෝවේ URL එක"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - කාල මුද්‍රා සමඟ සම්පූර්ණ පිටපත"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - LLM විසින් සාදන ලද වීඩියෝවේ සාරාංශය"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - භාවිත කළ LLM සපයන්නා (උදා. openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - භාවිත කළ නිශ්චිත ආකෘතිය (උදා. gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - LLM සපයන්නා සහ ආකෘතියෙන් සාදන ලද ටැග්"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "ක්‍රියාකාරී කාර්ය පෙන්වන්න"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "සැපයුම්කරු {provider} ලෙස සකසා ඇත. ප්‍රතිදාන අයවැය: ටෝකන {tokens} (උපරිම ප්‍රතිදානය අඩු වෙන් කිරීම)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "ආකෘතිය {model} ලෙස වෙනස් කර ඇත. ප්‍රතිදාන අයවැය: ටෝකන {tokens} (උපරිම ප්‍රතිදානය අඩු වෙන් කිරීම)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "{provider} ආකෘති ලැයිස්තුව නැවුම් කෙරිණි."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "{provider} ආකෘති නැවුම් කළ නොහැකි විය. දැනට ඇති ලැයිස්තුව භාවිත කෙරේ."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "මෙම වාදන ලැයිස්තුවේ වීඩියෝ හමු නොවීය"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "මෙම නාලිකාවේ වීඩියෝ හමු නොවීය"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "{provider} ආකෘති ලැයිස්තුව නැවුම් කෙරිණි. ආකෘති {count} සඳහා ටෝකන සීමා ස්වයංක්‍රීයව පිරවිණි."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "{provider} ආකෘති ලැයිස්තුව නැවුම් කෙරිණි. ආකෘති {count} සඳහා ටෝකන සීමා ස්වයංක්‍රීයව පිරවිණි."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "පිටපත ලබා ගනිමින්"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "සාරාංශ කරමින්"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "සටහන සාදමින්"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "සටහන සාදන ලදි"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "කාල මුද්‍රා සබැඳි එක් කරමින්"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "පරිවර්තනය කරමින්"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "අවසන්"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "අවලංගු කරන්න"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "ඉවත ලන්න"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "සටහන විවෘත කරන්න"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "කාල මුද්‍රා නොමැතිව අවසන් කරන්න"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "පරිවර්තනයකින් තොරව අවසන් කරන්න"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "නැවත ආරම්භ කරන්න"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "නැවත ආරම්භ කරන්න (නැවත අය කිරීමක් විය හැක)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "ක්‍රියාත්මකයි"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "ඉදිරියට යාමට සූදානම්"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "නිම විය"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "අවලංගු කෙරිණි"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "අසාර්ථකයි"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "අසාර්ථකයි: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "කාලය ඉකුත් විය. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Obsidian වැසෙන විට බාධා විය; සටහනක් සාදා නැත"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Obsidian වැසෙන විට බාධා විය; {path} හි සටහනක් තිබිය හැක"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Obsidian වැසෙන විට බාධා විය; සටහන කාල මුද්‍රා නොමැතිව සාදන ලදි"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Obsidian වැසෙන විට බාධා විය; සටහන පරිවර්තනයකින් තොරව සාදන ලදි"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "{stage} අතරතුර බාධා විය; පෙර ඉල්ලීමට දැනටමත් අය කර තිබිය හැක"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "{stage} අතරතුර බාධා විය; පෙර ඉල්ලීමට අය කළාද යන්න නොදනී"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "{stage} සඳහා උත්සාහ ගණන වැඩියි"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "ඉලක්ක මාර්ගයේ දැනටමත් සටහනක් ඇත — එය නැවත නම් කරන්න හෝ ඉවත් කරන්න, පසුව “ක්‍රියාකාරී කාර්ය පෙන්වන්න” වෙතින් නැවත ආරම්භ කරන්න"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "ඉලක්ක මාර්ගයේ ඇති සටහන මෙම කාර්යයට අයත්ද යන්න තහවුරු කළ නොහැකි විය"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "මෙම කාර්යයේ සටහන ගෙන ගොස් හෝ මකා ඇත"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "සැකසීම අතරතුර සටහන සංස්කරණය විය; කාල මුද්‍රා මඟහැරිණි"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater ලබා ගත නොහැක; එය සක්‍රීය කර නැවත ආරම්භ කරන්න"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "නැවත ආරම්භ කිරීමෙන් ගෙවන සේවාවක් හරහා පිටපත යළි ලබා ගැනේ"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "සටහනේ මාර්ගය ස්ථාවරව ගණනය කළ නොහැකි විය (ෆෝල්ඩර සහ දින සැකසුම් පරීක්ෂා කරන්න), පසුව නැවත ආරම්භ කරන්න"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "පිටපත් සටහන සාර්ථකව සාදන ලදි"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "සටහන සාදන ලදි, නමුත් සටහන සංස්කරණය වූ නිසා කාල මුද්‍රා මඟහැරිණි"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "සටහන සාදන ලදි, නමුත් සටහන සංස්කරණය වූ නිසා පරිවර්තනය මඟහැරිණි"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "සටහන සාදන ලදි, නමුත් සටහන සංස්කරණය වූ නිසා කාල මුද්‍රා සහ පරිවර්තනය මඟහැරිණි"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "පරිවර්තනයකින් තොරව සටහන සාදන ලදි"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "කාල මුද්‍රා හෝ පරිවර්තනයකින් තොරව සටහන සාදන ලදි"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: Obsidian වැසෙන විට සටහන් කාර්ය 1ක් බාධා විය — {title}: සටහනක් සාදා නැත"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: Obsidian වැසෙන විට සටහන් කාර්ය 1ක් බාධා විය — {title}: {path} හි සටහනක් තිබිය හැක"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: Obsidian වැසෙන විට සටහන් කාර්ය 1ක් බාධා විය — {title}: සටහන කාල මුද්‍රා නොමැතිව සාදන ලදි"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: Obsidian වැසෙන විට සටහන් කාර්ය 1ක් බාධා විය — {title}: සටහන පරිවර්තනයකින් තොරව සාදන ලදි"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: Obsidian වැසෙන විට සටහන් කාර්ය {count}ක් බාධා විය; අලුත්ම ඒවා “ක්‍රියාකාරී කාර්ය පෙන්වන්න” යටතේ ඇත"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: බාධා වූ කාර්ය 1කට අවධානය අවශ්‍යයි"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: බාධා වූ කාර්ය {count}කට අවධානය අවශ්‍යයි"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "{field} ක්ෂේත්‍රය සම්පූර්ණ කරන්න"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "දෝෂයක් ඇති විය"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "මෙම වීඩියෝව සඳහා පිටපතක් නැත"
     }
 }

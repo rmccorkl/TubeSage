@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — “Show active jobs”에서 취소"
+        "translation": "{stage} — “활성 작업 표시”에서 취소"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,669 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "영상 처리 중"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Youtube 자막 플러그인: {provider}에 설정된 API 키가 없습니다. 플러그인 설정에서 API 키를 추가하세요."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "오류: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "처리를 취소했습니다"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "처리가 중단되었습니다. “활성 작업 표시”에서 다시 시작하세요"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "디버그 정보가 담긴 오류 노트를 만들었습니다: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "오류: {error} (디버그 노트도 만들지 못했습니다)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "중단된 작업을 확인하지 못했습니다: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "경고: 자막에서 타임스탬프를 찾지 못했습니다. 처리하려면 타임스탬프가 필요합니다."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "오류: Templater 플러그인이 필요하지만 설치되어 있지 않거나 켜져 있지 않습니다"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "노트를 만들었습니다: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "노트를 만드는 중 오류: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Youtube 자막 플러그인에는 Templater 플러그인이 필요합니다. 설치한 뒤 켜 주세요."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "컬렉션 정보를 가져오는 중…"
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "재생목록을 가져오는 중, ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "재생목록의 영상을 가져오는 중…"
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "재생목록의 영상을 가져오는 중(계속)…"
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "안전 한도인 {limit}개에 도달했습니다. 처음 {limit}개만 처리합니다."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "채널의 영상을 가져오는 중…"
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "채널의 영상을 가져오는 중(계속)…"
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "{title}을(를) 찾았습니다: 영상 {count}개"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "LLM으로 타임스탬프 링크를 추가하는 중…"
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "토큰 한도를 낮춰 다시 시도하는 중…"
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "타임스탬프 링크를 추가하지 못했습니다: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "제목 {count}개에 타임스탬프 링크를 추가했습니다"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "내용을 {locale}(으)로 번역하는 중…"
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "오류: 파일을 찾을 수 없습니다: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "번역 오류: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "내용을 번역하지 못했습니다(LLM의 응답이 비어 있음)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "내용을 {locale}(으)로 번역했습니다"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "{provider} API 키가 없습니다. 모델을 가져올 수 없습니다."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "{provider} 모델을 가져오는 중…"
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "{provider} 모델을 가져오지 못했습니다: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "{provider} 모델을 업데이트했습니다!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "API 응답에서 {provider} 모델을 읽을 수 없습니다."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "{provider} 모델을 가져오는 중 오류: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "섹션 {current}/{total} 처리 중…"
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "분할 처리로 타임스탬프 링크 {count}개를 추가했습니다"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Youtube 자막 추출기가 준비되었습니다"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "처리"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "비워 두면 YouTube 제목을 사용합니다"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "유효한 YouTube 주소가 아닙니다. 영상, 재생목록, 채널 주소만 지원합니다."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: YouTube 스크립트로 노트 만들기"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "YouTube 주소"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "YouTube 채널 또는 재생목록 URL이 감지되었습니다"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "YouTube 동영상 URL이 감지되었습니다"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "동영상을 몇 개 처리할까요? 최대 한도는 50개입니다."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "모든 동영상"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "제한된 개수:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "사용자 지정 노트 제목 (선택)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "빠른 요약 모드"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "더 짧고 빠른 요약 (타임스탬프 링크 생략)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "진행 중인 작업"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "진행 중인 작업이 없습니다"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "작업 목록을 읽을 수 없습니다: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "‘버리기’는 목록에서 작업만 제거하며 노트는 삭제하지 않습니다."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "템플릿 파일 선택"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "“{folder}” 폴더에 템플릿 파일이 없습니다. Templater 설정에서 템플릿 폴더가 올바른지 확인하세요."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "입력하여 템플릿 검색…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "일치하는 템플릿이 없습니다."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "폴더 위치 선택"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "{folder} 아래에 하위 폴더가 없습니다"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "찾은 하위 폴더: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "폴더 필터…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "일치하는 폴더가 없습니다"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Tubesage YouTube 스크립트 플러그인 설명서"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "readme 파일을 불러올 수 없습니다. 플러그인 폴더에 readme.md가 있는지 확인하세요."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "예시 템플릿: 복사해서 Templater에 지정된 템플릿 폴더에 넣으세요"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "템플릿 복사"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "복사됨"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "복사 실패"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "YouTube 스크립트 노트에 쓰이는 Templater 예시 템플릿입니다. 필요에 맞게 고쳐 쓸 수 있습니다."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "사용할 수 있는 템플릿 변수:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "템플릿 파일을 불러올 수 없습니다. 플러그인 폴더나 보관함의 템플릿 폴더에 있는지 확인하세요."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "재생목록 이름 가져오는 중…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "재생목록 찾음: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "YouTube 재생목록 처리 시작: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "YouTube 채널 처리 시작: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "재생목록 폴더 생성됨: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "채널 폴더 생성됨: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "재생목록에서 동영상 가져오는 중: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "채널에서 동영상 가져오는 중: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "처리할 동영상: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "동영상 처리 중 {current}/{total}: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "동영상 {title} 건너뜀 – 스크립트 없음"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "재생목록 동영상에 타임스탬프 링크 추가 중: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "채널 동영상에 타임스탬프 링크 추가 중: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ {title}에 타임스탬프 링크를 추가했습니다"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} (“{title}”)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "노트는 만들었지만 “{title}”에 타임스탬프를 추가하지 못했습니다"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ 동영상 {current}/{total} 처리 완료"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ 동영상 “{title}” 건너뜀 – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ 동영상 “{title}” 처리 오류: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "채널 처리 완료 – 처리: {processed}, 건너뜀: {skipped}, 오류: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "작업을 저장하지 못했습니다: {error}. 동영상은 계속 처리 중일 수 있습니다. “활성 작업 표시”를 확인하세요"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "이 동영상은 이미 처리 중입니다"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "이 작업은 현재 상태로는 다시 시작할 수 없습니다. 상태를 확인하세요"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "이 작업은 현재 상태로는 마칠 수 없습니다. 상태를 확인하세요"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "YouTube 스크립트 추출"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Youtube 동영상의 제목"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - Youtube 동영상의 주소"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - 타임스탬프가 포함된 전체 스크립트"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - LLM이 생성한 동영상 요약"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - 사용한 LLM 제공자 (예: openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - 사용한 구체적인 모델 (예: gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - LLM 제공자와 모델에서 만들어진 태그"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "활성 작업 표시"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "공급자를 {provider}(으)로 설정했습니다. 출력 예산: {tokens} 토큰(최대 출력에서 예비분을 뺀 값)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "모델을 {model}(으)로 변경했습니다. 출력 예산: {tokens} 토큰(최대 출력에서 예비분을 뺀 값)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "{provider} 모델 목록을 새로 고쳤습니다."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "{provider} 모델을 새로 고칠 수 없습니다. 기존 목록을 그대로 사용합니다."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "이 재생목록에서 동영상을 찾을 수 없습니다"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "이 채널에서 동영상을 찾을 수 없습니다"
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "{provider} 모델 목록을 새로 고쳤습니다. 모델 {count}개의 토큰 한도를 자동으로 채웠습니다."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "스크립트 가져오는 중"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "요약하는 중"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "노트 만드는 중"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "노트 생성됨"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "타임스탬프 링크 추가하는 중"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "번역하는 중"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "완료"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "취소"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "버리기"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "노트 열기"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "타임스탬프 없이 완료"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "번역 없이 완료"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "재개"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "재개(재청구될 수 있음)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "실행 중"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "계속할 수 있음"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "종료됨"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "취소됨"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "실패함"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "실패함: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "시간이 초과되었습니다. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Obsidian이 종료되면서 중단되었습니다. 노트는 생성되지 않았습니다"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Obsidian이 종료되면서 중단되었습니다. {path}에 노트가 있을 수 있습니다"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Obsidian이 종료되면서 중단되었습니다. 노트는 타임스탬프 없이 생성되었습니다"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Obsidian이 종료되면서 중단되었습니다. 노트는 번역 없이 생성되었습니다"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "{stage} 중에 중단되었습니다. 이전 요청에 이미 요금이 청구되었을 수 있습니다"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "{stage} 중에 중단되었습니다. 이전 요청의 청구 여부는 알 수 없습니다"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "{stage} 시도 횟수가 너무 많습니다"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "대상 경로에 이미 노트가 있습니다. 이름을 바꾸거나 삭제한 뒤 ‘활성 작업 표시’에서 재개하세요"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "대상 경로의 노트가 이 작업의 것인지 확인할 수 없었습니다"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "이 작업의 노트가 이동되었거나 삭제되었습니다"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "처리 중에 노트가 편집되어 타임스탬프를 건너뛰었습니다"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater를 사용할 수 없습니다. 활성화한 뒤 재개하세요"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "재개하면 유료 서비스로 스크립트를 다시 가져옵니다"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "노트 경로를 일관되게 계산할 수 없었습니다(폴더와 날짜 설정을 확인하세요). 그런 다음 재개하세요"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "스크립트 노트를 만들었습니다"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "노트를 만들었지만 노트가 편집되어 타임스탬프를 건너뛰었습니다"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "노트를 만들었지만 노트가 편집되어 번역을 건너뛰었습니다"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "노트를 만들었지만 노트가 편집되어 타임스탬프와 번역을 건너뛰었습니다"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "번역 없이 노트를 만들었습니다"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "타임스탬프와 번역 없이 노트를 만들었습니다"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: Obsidian이 종료되면서 노트 작업 1개가 중단되었습니다 — {title}: 노트는 생성되지 않았습니다"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: Obsidian이 종료되면서 노트 작업 1개가 중단되었습니다 — {title}: {path}에 노트가 있을 수 있습니다"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: Obsidian이 종료되면서 노트 작업 1개가 중단되었습니다 — {title}: 노트는 타임스탬프 없이 생성되었습니다"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: Obsidian이 종료되면서 노트 작업 1개가 중단되었습니다 — {title}: 노트는 번역 없이 생성되었습니다"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: Obsidian이 종료되면서 노트 작업 {count}개가 중단되었습니다. 최근 항목은 ‘활성 작업 표시’에 표시됩니다"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 중단된 작업 1개에 조치가 필요합니다"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: 중단된 작업 {count}개에 조치가 필요합니다"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "{field} 항목을 입력하세요"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "오류가 발생했습니다"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "이 동영상에는 스크립트가 없습니다"
     }
 }

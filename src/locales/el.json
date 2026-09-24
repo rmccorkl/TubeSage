@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — ακύρωση από «Show active jobs»"
+        "translation": "{stage} — ακύρωση από «Εμφάνιση ενεργών εργασιών»"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,673 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "Επεξεργασία βίντεο"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Πρόσθετο απομαγνητοφώνησης Youtube: δεν έχει οριστεί κλειδί API για {provider}. Προσθέστε το κλειδί API στις ρυθμίσεις του πρόσθετου."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "Σφάλμα: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "Η επεξεργασία ακυρώθηκε"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "Η επεξεργασία διακόπηκε· συνεχίστε την από «Εμφάνιση ενεργών εργασιών»"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "Δημιουργήθηκε σημείωση σφάλματος με πληροφορίες εντοπισμού σφαλμάτων: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "Σφάλμα: {error} (δεν ήταν δυνατή ούτε η δημιουργία της σημείωσης εντοπισμού σφαλμάτων)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "Δεν ήταν δυνατός ο έλεγχος των διακομμένων εργασιών: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "Προειδοποίηση: δεν βρέθηκαν χρονοσημάνσεις στην απομαγνητοφώνηση. Οι χρονοσημάνσεις είναι απαραίτητες για την επεξεργασία."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "Σφάλμα: απαιτείται το πρόσθετο Templater, αλλά δεν είναι εγκατεστημένο ή ενεργοποιημένο"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "Δημιουργήθηκε σημείωση: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "Σφάλμα κατά τη δημιουργία της σημείωσης: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Το πρόσθετο απομαγνητοφώνησης Youtube απαιτεί το πρόσθετο Templater. Εγκαταστήστε το και ενεργοποιήστε το."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "Λήψη πληροφοριών συλλογής..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "Λήψη λίστας αναπαραγωγής με αναγνωριστικό: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "Λήψη βίντεο της λίστας αναπαραγωγής..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "Λήψη βίντεο της λίστας αναπαραγωγής (συνέχεια)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "Συμπληρώθηκε το όριο ασφαλείας των {limit} βίντεο. Θα υποβληθούν σε επεξεργασία τα πρώτα {limit} βίντεο."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "Λήψη βίντεο του καναλιού..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "Λήψη βίντεο του καναλιού (συνέχεια)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "Βρέθηκε {title}: {count} βίντεο"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "Προσθήκη συνδέσμων χρονοσήμανσης με LLM..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "Νέα προσπάθεια με χαμηλότερο όριο διακριτικών..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "Δεν ήταν δυνατή η προσθήκη συνδέσμων χρονοσήμανσης: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "Προστέθηκαν σύνδεσμοι χρονοσήμανσης σε {count} επικεφαλίδες ενοτήτων"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "Μετάφραση περιεχομένου σε {locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "Σφάλμα: το αρχείο δεν βρέθηκε: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "Σφάλμα μετάφρασης: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "Δεν ήταν δυνατή η μετάφραση του περιεχομένου (κενή απάντηση από το LLM)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "Το περιεχόμενο μεταφράστηκε σε {locale}"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "Λείπει το κλειδί API για {provider}. Δεν είναι δυνατή η λήψη μοντέλων."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "Λήψη μοντέλων {provider}..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "Αποτυχία λήψης μοντέλων {provider}: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "Τα μοντέλα {provider} ενημερώθηκαν!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "Δεν ήταν δυνατή η ανάγνωση των μοντέλων {provider} από την απόκριση του API."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "Σφάλμα κατά τη λήψη μοντέλων {provider}: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "Επεξεργασία ενότητας {current} από {total}..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "Προστέθηκαν {count} σύνδεσμοι χρονοσήμανσης με τμηματική επεξεργασία"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Ο εξαγωγέας απομαγνητοφωνήσεων Youtube είναι έτοιμος"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "Επεξεργασία"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "Αφήστε το κενό για χρήση του τίτλου YouTube"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "Μη έγκυρη διεύθυνση YouTube. Υποστηρίζονται μόνο διευθύνσεις βίντεο, λίστας αναπαραγωγής και καναλιού."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: δημιουργία σημείωσης από απομαγνητοφώνηση YouTube"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "Διεύθυνση YouTube"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "Εντοπίστηκε διεύθυνση καναλιού ή λίστας αναπαραγωγής YouTube"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "Εντοπίστηκε διεύθυνση βίντεο YouTube"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "Πόσα βίντεο θέλετε να επεξεργαστείτε; Το αυστηρό όριο είναι 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "Όλα τα βίντεο"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "Περιορισμένος αριθμός:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "Προσαρμοσμένος τίτλος σημείωσης (προαιρετικό)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "Λειτουργία σύντομης περίληψης"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "Συντομότερες και ταχύτερες περιλήψεις (παραλείπει τους συνδέσμους χρονοσήμανσης)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "Ενεργές εργασίες"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "Δεν υπάρχουν ενεργές εργασίες"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "Δεν ήταν δυνατή η ανάγνωση της λίστας εργασιών: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "Η Απόρριψη αφαιρεί μια εργασία από τη λίστα· δεν διαγράφει ποτέ σημειώσεις."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "Επιλογή αρχείου προτύπου"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "Δεν βρέθηκαν αρχεία προτύπου στον φάκελο «{folder}». Βεβαιωθείτε ότι ο φάκελος προτύπων έχει οριστεί σωστά στις ρυθμίσεις του Templater."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "Πληκτρολογήστε για αναζήτηση προτύπων…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "Δεν βρέθηκαν αντίστοιχα πρότυπα."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "Επιλογή θέσης φακέλου"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "Δεν υπάρχουν υποφάκελοι στο {folder}"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "Υποφάκελοι που βρέθηκαν: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "Φιλτράρισμα φακέλων…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "Δεν υπάρχουν αντίστοιχοι φάκελοι"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Τεκμηρίωση του πρόσθετου απομαγνητοφώνησης YouTube Tubesage"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "Δεν ήταν δυνατή η φόρτωση του αρχείου readme. Ελέγξτε ότι το readme.md υπάρχει στον φάκελο του πρόσθετου."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "Πρότυπο δείγματος: αντιγράψτε το στον φάκελο προτύπων που ορίζεται στο Templater"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "Αντιγραφή προτύπου"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "Αντιγράφηκε"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "Η αντιγραφή απέτυχε"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "Αυτό είναι το πρότυπο δείγματος του Templater για σημειώσεις απομαγνητοφώνησης YouTube. Μπορείτε να το προσαρμόσετε στις ανάγκες σας."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "Διαθέσιμες μεταβλητές προτύπου:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "Δεν ήταν δυνατή η φόρτωση του αρχείου προτύπου. Ελέγξτε ότι υπάρχει στον φάκελο του πρόσθετου ή στον φάκελο προτύπων του θησαυροφυλακίου."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "Ανάκτηση ονόματος λίστας αναπαραγωγής…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "Βρέθηκε λίστα αναπαραγωγής: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "Έναρξη επεξεργασίας λίστας αναπαραγωγής YouTube: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "Έναρξη επεξεργασίας καναλιού YouTube: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "Δημιουργήθηκε φάκελος λίστας αναπαραγωγής: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "Δημιουργήθηκε φάκελος καναλιού: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "Ανάκτηση βίντεο από τη λίστα αναπαραγωγής: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "Ανάκτηση βίντεο από το κανάλι: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "Βίντεο προς επεξεργασία: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "Επεξεργασία βίντεο {current}/{total}: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "Παράλειψη βίντεο {title} – δεν υπάρχει απομαγνητοφώνηση"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "Προσθήκη συνδέσμων χρονοσήμανσης στο βίντεο της λίστας: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "Προσθήκη συνδέσμων χρονοσήμανσης στο βίντεο του καναλιού: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ Προστέθηκαν σύνδεσμοι χρονοσήμανσης στο {title}"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} («{title}»)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "Η σημείωση δημιουργήθηκε, αλλά δεν ήταν δυνατή η προσθήκη χρονοσημάνσεων στο «{title}»"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ Επεξεργάστηκε το βίντεο {current}/{total}"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ Παράλειψη βίντεο «{title}» – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ Σφάλμα κατά την επεξεργασία του βίντεο «{title}»: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "Η επεξεργασία του καναλιού ολοκληρώθηκε – επεξεργάστηκαν: {processed}, παραλείφθηκαν: {skipped}, σφάλματα: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "Δεν ήταν δυνατή η αποθήκευση της εργασίας: {error}. Το βίντεο ίσως επεξεργάζεται ακόμη· δείτε «Εμφάνιση ενεργών εργασιών»"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "Αυτό το βίντεο επεξεργάζεται ήδη"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "Αυτή η εργασία δεν μπορεί να συνεχιστεί ως έχει· δείτε την κατάστασή της"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "Αυτή η εργασία δεν μπορεί να ολοκληρωθεί ως έχει· δείτε την κατάστασή της"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "Εξαγωγή απομαγνητοφώνησης YouTube"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Ο τίτλος του βίντεο Youtube"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - Η διεύθυνση του βίντεο Youtube"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - Η πλήρης απομαγνητοφώνηση με χρονοσημάνσεις"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - Η περίληψη του βίντεο που παρήγαγε το LLM"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - Ο πάροχος LLM που χρησιμοποιήθηκε (π.χ. openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - Το συγκεκριμένο μοντέλο που χρησιμοποιήθηκε (π.χ. gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - Ετικέτες που δημιουργούνται από τον πάροχο και το μοντέλο LLM"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "Εμφάνιση ενεργών εργασιών"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Ο πάροχος ορίστηκε σε {provider}. Προϋπολογισμός εξόδου: {tokens} διακριτικά (μέγιστη έξοδος μείον το απόθεμα)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Το μοντέλο άλλαξε σε {model}. Προϋπολογισμός εξόδου: {tokens} διακριτικά (μέγιστη έξοδος μείον το απόθεμα)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "Η λίστα μοντέλων {provider} ανανεώθηκε."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "Δεν ήταν δυνατή η ανανέωση των μοντέλων {provider}. Διατηρείται η υπάρχουσα λίστα."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "Δεν βρέθηκαν βίντεο σε αυτήν τη λίστα αναπαραγωγής"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "Δεν βρέθηκαν βίντεο σε αυτό το κανάλι"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "Η λίστα μοντέλων {provider} ανανεώθηκε. Τα όρια διακριτικών συμπληρώθηκαν αυτόματα για {count} μοντέλο."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "Η λίστα μοντέλων {provider} ανανεώθηκε. Τα όρια διακριτικών συμπληρώθηκαν αυτόματα για {count} μοντέλα."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Λήψη απομαγνητοφώνησης"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "Σύνοψη"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Δημιουργία σημείωσης"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "Η σημείωση δημιουργήθηκε"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "Προσθήκη συνδέσμων χρόνου"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "Μετάφραση"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "Ολοκληρώθηκε"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "Άκυρο"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "Απόρριψη"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "Άνοιγμα σημείωσης"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "Ολοκλήρωση χωρίς χρονικές σημάνσεις"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "Ολοκλήρωση χωρίς μετάφραση"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "Συνέχεια"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "Συνέχεια (ενδέχεται να χρεωθεί ξανά)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "Σε εξέλιξη"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "Έτοιμο για συνέχεια"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "Τελείωσε"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "Ακυρώθηκε"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "Απέτυχε"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "Απέτυχε: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "Έληξε ο χρόνος. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Διακόπηκε όταν έκλεισε το Obsidian· δεν δημιουργήθηκε σημείωση"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Διακόπηκε όταν έκλεισε το Obsidian· ίσως υπάρχει σημείωση στο {path}"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Διακόπηκε όταν έκλεισε το Obsidian· η σημείωση δημιουργήθηκε χωρίς χρονικές σημάνσεις"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Διακόπηκε όταν έκλεισε το Obsidian· η σημείωση δημιουργήθηκε χωρίς μετάφραση"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "Διακόπηκε κατά τη φάση {stage}· το προηγούμενο αίτημα ίσως έχει ήδη χρεωθεί"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "Διακόπηκε κατά τη φάση {stage}· δεν είναι γνωστό αν χρεώθηκε το προηγούμενο αίτημα"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "Πάρα πολλές προσπάθειες για {stage}"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "Υπάρχει ήδη σημείωση στη διαδρομή προορισμού — μετονομάστε την ή αφαιρέστε την και μετά συνεχίστε από «Εμφάνιση ενεργών εργασιών»"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "Δεν ήταν δυνατό να επιβεβαιωθεί αν η σημείωση στη διαδρομή προορισμού ανήκει σε αυτήν την εργασία"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "Η σημείωση αυτής της εργασίας μετακινήθηκε ή διαγράφηκε"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "Η σημείωση επεξεργάστηκε κατά την εκτέλεση· οι χρονικές σημάνσεις παραλείφθηκαν"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Το Templater δεν είναι διαθέσιμο· ενεργοποιήστε το και μετά συνεχίστε"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "Η συνέχεια θα ανακτήσει ξανά την απομαγνητοφώνηση μέσω επί πληρωμή υπηρεσίας"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "Η διαδρομή της σημείωσης δεν υπολογίστηκε με συνέπεια (ελέγξτε τις ρυθμίσεις φακέλου και ημερομηνίας) και μετά συνεχίστε"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "Η σημείωση της απομαγνητοφώνησης δημιουργήθηκε με επιτυχία"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "Η σημείωση δημιουργήθηκε, αλλά οι χρονικές σημάνσεις παραλείφθηκαν επειδή η σημείωση επεξεργάστηκε"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "Η σημείωση δημιουργήθηκε, αλλά η μετάφραση παραλείφθηκε επειδή η σημείωση επεξεργάστηκε"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "Η σημείωση δημιουργήθηκε, αλλά οι χρονικές σημάνσεις και η μετάφραση παραλείφθηκαν επειδή η σημείωση επεξεργάστηκε"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "Η σημείωση δημιουργήθηκε χωρίς μετάφραση"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "Η σημείωση δημιουργήθηκε χωρίς χρονικές σημάνσεις και χωρίς μετάφραση"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: 1 εργασία σημείωσης διακόπηκε όταν έκλεισε το Obsidian — {title}: δεν δημιουργήθηκε σημείωση"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: 1 εργασία σημείωσης διακόπηκε όταν έκλεισε το Obsidian — {title}: ίσως υπάρχει σημείωση στο {path}"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: 1 εργασία σημείωσης διακόπηκε όταν έκλεισε το Obsidian — {title}: η σημείωση δημιουργήθηκε χωρίς χρονικές σημάνσεις"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: 1 εργασία σημείωσης διακόπηκε όταν έκλεισε το Obsidian — {title}: η σημείωση δημιουργήθηκε χωρίς μετάφραση"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: {count} εργασίες σημειώσεων διακόπηκαν όταν έκλεισε το Obsidian· οι πιο πρόσφατες εμφανίζονται στο «Εμφάνιση ενεργών εργασιών»"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 διακοπείσα εργασία χρειάζεται προσοχή"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: {count} διακοπείσες εργασίες χρειάζονται προσοχή"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "Συμπληρώστε το πεδίο {field}"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "Παρουσιάστηκε σφάλμα"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "Δεν υπάρχει απομαγνητοφώνηση για αυτό το βίντεο"
     }
 }

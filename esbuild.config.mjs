@@ -55,6 +55,13 @@ const context = await esbuild.context({
     ],
     format: "cjs",
     target: "es2018",
+    // Emit the bundle as UTF-8 instead of \uXXXX-escaping every non-ASCII
+    // character. esbuild's default is ASCII-safe output, which costs six bytes
+    // per character for 50 locales of Cyrillic, CJK, Arabic, Devanagari and the
+    // rest — a 4,025,180-byte bundle contained just 84 non-ASCII bytes because
+    // of it. The locale JSON is already UTF-8 and Obsidian loads main.js as
+    // UTF-8, so this is a pure size win with no source change.
+    charset: "utf8",
     logLevel: "info",
     sourcemap: prod ? false : "inline",
     treeShaking: true,
