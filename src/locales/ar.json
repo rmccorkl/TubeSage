@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "ترخيص إضافة Tubesage لنصوص YouTube"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "تعذّر تحميل ملف الترخيص. تأكّد من وجود ملف ترخيص في مجلد الإضافة."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "الموافقة على الترخيص مطلوبة"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "لا توجد مجلدات مطابقة"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "توثيق إضافة Tubesage لنصوص YouTube"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "تعذّر تحميل ملف readme. تأكد من وجود readme.md في مجلد الإضافة."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "متغيرات القالب المتاحة:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "تعذّر تحميل ملف القالب. تأكد من وجوده في مجلد الإضافة أو في مجلد قوالب الخزنة."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Licencja wtyczki Tubesage do transkrypcji YouTube"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Nie udało się wczytać pliku licencji. Sprawdź, czy plik licencji jest w katalogu wtyczki."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Wymagana akceptacja licencji"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Brak pasujących folderów"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Dokumentacja wtyczki transkrypcji YouTube Tubesage"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Nie można wczytać pliku readme. Sprawdź, czy readme.md znajduje się w folderze wtyczki."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Dostępne zmienne szablonu:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Nie można wczytać pliku szablonu. Sprawdź, czy istnieje w folderze wtyczki lub w folderze szablonów skarbca."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

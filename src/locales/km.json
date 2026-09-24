@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "អាជ្ញាបណ្ណកម្មវិធីជំនួយប្រតិចារិក YouTube របស់ Tubesage"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "មិនអាចផ្ទុកឯកសារអាជ្ញាបណ្ណបានទេ។ សូមពិនិត្យថាឯកសារអាជ្ញាបណ្ណមាននៅក្នុងថតកម្មវិធីជំនួយរបស់អ្នក។"
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "ត្រូវការការទទួលយកអាជ្ញាបណ្ណ"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "រកមិនឃើញថតដែលត្រូវគ្នាទេ"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}៖ "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "ឯកសារកម្មវិធីជំនួយ Tubesage សម្រាប់អត្ថបទ YouTube"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "មិនអាចផ្ទុកឯកសារ readme បានទេ។ សូមពិនិត្យថា readme.md មានក្នុងថតកម្មវិធីជំនួយ។"
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "អថេរគំរូដែលមាន៖"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "មិនអាចផ្ទុកឯកសារគំរូបានទេ។ សូមពិនិត្យថាវាមានក្នុងថតកម្មវិធីជំនួយ ឬថតគំរូរបស់ឃ្លាំង។"
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

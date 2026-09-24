@@ -5,13 +5,14 @@
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
-    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "build": "npm run bundled-text:build && tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "deploy": "chmod +x scripts/deploy.sh && ./scripts/deploy.sh",
     "lint": "eslint .",
     "test": "vitest run",
     "postbuild": "npm run audit:fallow",
     "audit:fallow": "fallow audit --base main",
     "graph:update": "graphify . --update",
+    "bundled-text:build": "node scripts/bundled-text-build.mjs",
     "i18n:build": "node scripts/i18n-build.mjs",
     "i18n:check": "node scripts/i18n-check.mjs"
   },

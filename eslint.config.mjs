@@ -24,6 +24,17 @@ export default tseslint.config(
       // below does not match. vitest.config.mjs carves them out for the same
       // reason.
       ".worktrees/**",
+      // Generated DATA, not code. Each `src/bundled/*.generated.ts` is a single
+      // string literal holding one repo file verbatim (`npm run
+      // bundled-text:build`), so linting them lints the PROSE of README.md,
+      // MIT-license-tubesage.md and templates/YouTubeTranscript.md:
+      // `obsidianmd/hardcoded-config-path` fires on the README's own
+      // `.obsidian/plugins/...` example path, and nothing could be changed here
+      // to satisfy it without altering the source file the constant mirrors —
+      // which is the one thing the generator must never do. `tsc` still
+      // type-checks them and `scripts/bundled-text-packaging.test.mjs` gates
+      // them byte for byte.
+      "src/bundled/*.generated.ts",
       "*.config.mjs",
       "*.config.js",
       "esbuild.config.mjs",

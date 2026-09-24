@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Licentie van de Tubesage YouTube-transcriptieplug-in"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Het licentiebestand kon niet worden geladen. Controleer of er een licentiebestand in de plug-inmap staat."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Licentie moet worden geaccepteerd"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Geen overeenkomende mappen"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Documentatie van de Tubesage YouTube-transcriptieplug-in"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Kan het readme-bestand niet laden. Controleer of readme.md in de plug-inmap staat."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Beschikbare sjabloonvariabelen:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Kan het sjabloonbestand niet laden. Controleer of het in de plug-inmap of in de sjabloonmap van de kluis staat."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

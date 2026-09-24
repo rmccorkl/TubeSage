@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube 逐字稿外掛授權條款"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "無法載入授權檔案。請確認外掛目錄中是否有授權檔案。"
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "必須接受授權條款"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "沒有相符的資料夾"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}．{title}："
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Tubesage YouTube 逐字稿外掛說明文件"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "無法載入 readme 檔案。請確認外掛資料夾中有 readme.md。"
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "可用的範本變數："
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "無法載入範本檔案。請確認它存在於外掛資料夾或儲存庫的範本資料夾中。"
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

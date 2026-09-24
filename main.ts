@@ -46,6 +46,9 @@ import type { YouTubeTranscriptSettings } from './src/settings/settings-defaults
 import { timestampPassFailure } from './src/runtime/timestamp-pass-policy';
 import type { TimestampPassOptions } from './src/runtime/timestamp-pass-policy';
 import { JobProgressNotices, doneNoticeText } from './src/runtime/job-progress-notice';
+import { readmeText } from './src/bundled';
+import { exampleTemplateView } from './src/runtime/example-template-view';
+import { licenseView } from './src/runtime/license-view';
 
 // Initialize logger here
 const logger = getLogger('PLUGIN');
@@ -156,19 +159,6 @@ const getTemplaterSettings = (app: App): TemplaterSettings | null => {
         return null;
     }
     return settings;
-};
-
-const getPluginIdFromManifest = (app: App, fallback: string): string => {
-    const manifest = (app as AppWithPlugins).plugins?.manifest;
-    if (!manifest || typeof manifest !== 'object') {
-        return fallback;
-    }
-    const entry = manifest[fallback];
-    if (!isRecord(entry)) {
-        return fallback;
-    }
-    const id = entry['id'];
-    return typeof id === 'string' && id.trim() ? id : fallback;
 };
 
 interface YouTubePlaylistItem {
@@ -4223,108 +4213,35 @@ class LicenseModal extends Modal {
         
         contentEl.createEl('h2', { text: t('license.modal.title') });
 
-        // Run async work without returning a promise to Modal
-        void (async () => {
-        try {
-            // Get the plugin folder path
-            const pluginId = getPluginIdFromManifest(this.app, 'tubesage');
-            
-            // Try to read the license file - from multiple possible locations
-            let licenseContent = '';
-            let licenseFound = false;
-            
-            // List of possible file paths to try - use platform-independent paths with forward slashes
-            const possiblePaths = [
-                // Plugin directory paths
-                `${this.app.vault.configDir}/plugins/${pluginId}/MIT-license-tubesage.md`,
-                `${this.app.vault.configDir}/plugins/${pluginId}/LICENSE.md`,
-                `${this.app.vault.configDir}/plugins/${pluginId}/license.md`,
-                
-                // Root directory paths
-                `MIT-license-tubesage.md`,
-                `LICENSE.md`,
-                `license.md`
-            ];
-            
-            // Try each path in sequence
-            for (const filePath of possiblePaths) {
-                try {
-                    // Always normalize path before reading to ensure consistent slashes
-                    const normalizedPath = normalizePath(filePath);
-                    logger.debug(`Trying to find license file at: ${normalizedPath}`);
-                    licenseContent = await this.app.vault.adapter.read(normalizedPath);
-                    logger.debug(`License file found at: ${normalizedPath}`);
-                    licenseFound = true;
-                    break;
-                } catch (e) {
-                    logger.debug(`Failed to read license file at ${filePath}:`, e);
-                    // Continue to next path
-                }
+        // Create a div for the license content with scrollable style
+        const licenseContainer = contentEl.createDiv({
+            cls: 'tubesage-license-container'
+        });
+
+        // What the licence says, and how it divides into blocks, is decided by
+        // src/runtime/license-view — which has no `obsidian` import and so can
+        // be tested against the licence file. This loop only turns each block
+        // into an element; it composes no text of its own.
+        for (const block of licenseView()) {
+            if (block.kind === 'heading') {
+                licenseContainer.createEl('h3', { text: block.text, cls: 'tubesage-license-h3' });
+            } else if (block.kind === 'clause') {
+                const listItem = licenseContainer.createDiv({ cls: 'tubesage-license-list-item' });
+                listItem.createSpan({
+                    text: block.heading,
+                    cls: 'tubesage-license-list-item-title-segment',
+                });
+                listItem.createSpan({ text: block.body });
+            } else if (block.kind === 'subItem') {
+                const subItem = licenseContainer.createDiv({ cls: 'tubesage-license-sub-item' });
+                subItem.setText(block.text);
+            } else if (block.kind === 'paragraph') {
+                licenseContainer.createEl('p', { text: block.text, cls: 'tubesage-license-paragraph' });
+            } else {
+                licenseContainer.createDiv({ cls: 'tubesage-license-spacer' });
             }
-            
-            if (!licenseFound) {
-                throw new Error('Could not find license file in any of the expected locations.');
-            }
-            
-            // Create a div for the license content with scrollable style
-            const licenseContainer = contentEl.createDiv({
-                cls: 'tubesage-license-container'
-            });
-            
-            // Process the license markdown content
-            const lines = licenseContent.split('\n');
-            let inList = false;
-            
-            for (const line of lines) {
-                // Handle headers
-                if (line.startsWith('# ')) {
-                    inList = false;
-                    licenseContainer.createEl('h3', { text: line.substring(2), cls: 'tubesage-license-h3' });
-                }
-                // Handle list items
-                else if (line.match(/^\d+\.\s+\*\*.*\*\*/)) {
-                    inList = true;
-                    const listItem = licenseContainer.createDiv({ cls: 'tubesage-license-list-item' });
-                    
-                    // Extract and format the list item
-                    const match = line.match(/^(\d+)\.\s+\*\*(.*?)\*\*:\s+(.*)/);
-                    if (match) {
-                        const [, number, title, content] = match;
-                        
-                        listItem.createSpan({
-                            text: t('modal.license.listItem', { number, title }),
-                            cls: 'tubesage-license-list-item-title-segment',
-                        });
-                        
-                        listItem.createSpan({ text: content });
-                    } else {
-                        listItem.setText(line);
-                    }
-                }
-                // Handle list sub-items
-                else if (inList && line.match(/^\s+-\s+/)) {
-                    const subItem = licenseContainer.createDiv({ cls: 'tubesage-license-sub-item' });
-                    subItem.setText(line.replace(/^\s+-\s+/, '• '));
-                }
-                // Handle normal paragraphs
-                else if (line.trim() !== '') {
-                    inList = false;
-                    licenseContainer.createEl('p', { text: line, cls: 'tubesage-license-paragraph' });
-                }
-                // Handle empty lines
-                else {
-                    licenseContainer.createDiv({ cls: 'tubesage-license-spacer' });
-                }
-            }
-        } catch (error) {
-            // Handle error if license file can't be read
-            logger.error('Error loading license file:', error);
-            contentEl.createEl('p', { 
-                text: t('license.modal.loadError'),
-                cls: 'tubesage-license-load-error' // Apply new class
-            });
         }
-        
+
         // Add close button
         const footerEl = contentEl.createDiv({
             cls: 'tubesage-license-footer' // Apply new class
@@ -4336,7 +4253,6 @@ class LicenseModal extends Modal {
         closeButton.onClick(() => {
             this.close();
         });
-        })();
     }
 
     onClose() {
@@ -4467,188 +4383,146 @@ class READMEModal extends Modal {
         
         contentEl.createEl('h2', { text: t('modal.readme.title') });
 
-        // Run async work without returning a promise to Modal
-        void (async () => {
-        try {
-            // Get the plugin folder path
-            const pluginId = getPluginIdFromManifest(this.app, 'tubesage');
-            
-            // Try to read the README file from multiple possible locations
-            let readmeContent = '';
-            let readmeFound = false;
-            
-            // List of possible file paths to try - use platform-independent paths with forward slashes
-            const possiblePaths = [
-                // Plugin directory paths
-                `${this.app.vault.configDir}/plugins/${pluginId}/README.md`,
-                `${this.app.vault.configDir}/plugins/${pluginId}/readme.md`,
-                
-                // Root directory paths
-                `README.md`,
-                `readme.md`
-            ];
-            
-            // Try each path in sequence
-            for (const filePath of possiblePaths) {
-                try {
-                    // Always normalize path before reading to ensure consistent slashes
-                    const normalizedPath = normalizePath(filePath);
-                    logger.debug(`Trying to find README file at: ${normalizedPath}`);
-                    readmeContent = await this.app.vault.adapter.read(normalizedPath);
-                    logger.debug(`README file found at: ${normalizedPath}`);
-                    readmeFound = true;
-                    break;
-                } catch (e) {
-                    logger.debug(`Failed to read README file at ${filePath}:`, e);
-                    // Continue to next path
-                }
-            }
-            
-            if (!readmeFound) {
-                throw new Error('Could not find readme file in any of the expected locations.');
-            }
-            
-            // Create a div for the README content with scrollable style
-            const readmeContainer = contentEl.createDiv({
-                cls: 'tubesage-readme-container'
-            });
-            
-            // Process the README markdown content
-            const lines = readmeContent.split('\n');
-            let inCodeBlock = false;
-            let codeLanguage = '';
-            
-            for (const line of lines) {
-                // Handle code blocks
-                if (line.startsWith('```')) {
-                    if (!inCodeBlock) {
-                        // Start of code block
-                        inCodeBlock = true;
-                        codeLanguage = line.substring(3).trim();
-                        
-                        // Create code block container
-                        const codeContainer = readmeContainer.createDiv({
-                            cls: 'code-block-container' // Style now in CSS
+        // The README is inlined into main.js at build time: Obsidian's
+        // community installer copies only main.js, manifest.json and styles.css
+        // into the plugin folder, so reading the file from there found nothing on
+        // every store install. Nothing can fail to load now, which is why nothing
+        // below is async and nothing catches.
+        const readmeContent = readmeText();
+        
+        // Create a div for the README content with scrollable style
+        const readmeContainer = contentEl.createDiv({
+            cls: 'tubesage-readme-container'
+        });
+        
+        // Process the README markdown content
+        const lines = readmeContent.split('\n');
+        let inCodeBlock = false;
+        let codeLanguage = '';
+        
+        for (const line of lines) {
+            // Handle code blocks
+            if (line.startsWith('```')) {
+                if (!inCodeBlock) {
+                    // Start of code block
+                    inCodeBlock = true;
+                    codeLanguage = line.substring(3).trim();
+                    
+                    // Create code block container
+                    const codeContainer = readmeContainer.createDiv({
+                        cls: 'code-block-container' // Style now in CSS
+                    });
+                    
+                    // Add language tag if specified
+                    if (codeLanguage) {
+                        codeContainer.createDiv({
+                            text: codeLanguage,
+                            cls: 'tubesage-readme-code-lang' // Apply new class
                         });
-                        
-                        // Add language tag if specified
-                        if (codeLanguage) {
-                            codeContainer.createDiv({
-                                text: codeLanguage,
-                                cls: 'tubesage-readme-code-lang' // Apply new class
+                    }
+                    
+                    // Create pre>code element for the code
+                    const pre = codeContainer.createEl('pre', {
+                        cls: 'tubesage-readme-code-pre' // Apply new class
+                    });
+                    pre.createEl('code', {
+                        cls: `tubesage-readme-code-inline ${codeLanguage ? 'language-' + codeLanguage : ''}`.trim() // Apply new class and existing language class
+                    });
+                } else {
+                    // End of code block
+                    inCodeBlock = false;
+                    codeLanguage = '';
+                }
+                continue;
+            }
+            
+            // Add lines to code block
+            if (inCodeBlock) {
+                const codeContainer = readmeContainer.querySelector('.code-block-container:last-child');
+                if (codeContainer) {
+                    const code = codeContainer.querySelector('code');
+                    if (code) {
+                        const textNode = activeDocument.createTextNode(line + '\n');
+                        code.appendChild(textNode);
+                    }
+                }
+                continue;
+            }
+            
+            // Handle headers
+            if (line.startsWith('# ')) {
+                readmeContainer.createEl('h1', { text: line.substring(2), cls: 'tubesage-readme-h1' });
+            } else if (line.startsWith('## ')) {
+                readmeContainer.createEl('h2', { text: line.substring(3), cls: 'tubesage-readme-h2' });
+            } else if (line.startsWith('### ')) {
+                readmeContainer.createEl('h3', { text: line.substring(4), cls: 'tubesage-readme-h3' });
+            } else if (line.startsWith('#### ')) {
+                readmeContainer.createEl('h4', { text: line.substring(5), cls: 'tubesage-readme-h4' });
+            }
+            // Handle list items
+            else if (line.match(/^[*+-]\s/)) {
+                const listItem = readmeContainer.createDiv({ cls: 'tubesage-readme-list-item' });
+                
+                // Bullet
+                listItem.createSpan({ text: '• ', cls: 'tubesage-readme-list-bullet' });
+                
+                // Content
+                const content = line.replace(/^[*+-]\s/, '');
+                if (content.includes('[') && content.includes('](')) {
+                    // Handle links in list items
+                    const parts = this.splitMarkdownLink(content);
+                    const contentSpan = listItem.createSpan();
+                    
+                    parts.forEach(part => {
+                        if (part.isLink) {
+                            contentSpan.createEl('a', {
+                                text: part.text,
+                                attr: {
+                                    href: part.url || '#',
+                                    cls: 'tubesage-readme-link' // Apply new class
+                                }
                             });
+                        } else {
+                            // Process bold text in list items
+                            this.renderTextWithBold(contentSpan, part.text);
                         }
-                        
-                        // Create pre>code element for the code
-                        const pre = codeContainer.createEl('pre', {
-                            cls: 'tubesage-readme-code-pre' // Apply new class
-                        });
-                        pre.createEl('code', {
-                            cls: `tubesage-readme-code-inline ${codeLanguage ? 'language-' + codeLanguage : ''}`.trim() // Apply new class and existing language class
-                        });
-                    } else {
-                        // End of code block
-                        inCodeBlock = false;
-                        codeLanguage = '';
-                    }
-                    continue;
-                }
-                
-                // Add lines to code block
-                if (inCodeBlock) {
-                    const codeContainer = readmeContainer.querySelector('.code-block-container:last-child');
-                    if (codeContainer) {
-                        const code = codeContainer.querySelector('code');
-                        if (code) {
-                            const textNode = activeDocument.createTextNode(line + '\n');
-                            code.appendChild(textNode);
-                        }
-                    }
-                    continue;
-                }
-                
-                // Handle headers
-                if (line.startsWith('# ')) {
-                    readmeContainer.createEl('h1', { text: line.substring(2), cls: 'tubesage-readme-h1' });
-                } else if (line.startsWith('## ')) {
-                    readmeContainer.createEl('h2', { text: line.substring(3), cls: 'tubesage-readme-h2' });
-                } else if (line.startsWith('### ')) {
-                    readmeContainer.createEl('h3', { text: line.substring(4), cls: 'tubesage-readme-h3' });
-                } else if (line.startsWith('#### ')) {
-                    readmeContainer.createEl('h4', { text: line.substring(5), cls: 'tubesage-readme-h4' });
-                }
-                // Handle list items
-                else if (line.match(/^[*+-]\s/)) {
-                    const listItem = readmeContainer.createDiv({ cls: 'tubesage-readme-list-item' });
-                    
-                    // Bullet
-                    listItem.createSpan({ text: '• ', cls: 'tubesage-readme-list-bullet' });
-                    
-                    // Content
-                    const content = line.replace(/^[*+-]\s/, '');
-                    if (content.includes('[') && content.includes('](')) {
-                        // Handle links in list items
-                        const parts = this.splitMarkdownLink(content);
-                        const contentSpan = listItem.createSpan();
-                        
-                        parts.forEach(part => {
-                            if (part.isLink) {
-                                contentSpan.createEl('a', {
-                                    text: part.text,
-                                    attr: {
-                                        href: part.url || '#',
-                                        cls: 'tubesage-readme-link' // Apply new class
-                                    }
-                                });
-                            } else {
-                                // Process bold text in list items
-                                this.renderTextWithBold(contentSpan, part.text);
-                            }
-                        });
-                    } else {
-                        // Process bold text in list items
-                        this.renderTextWithBold(listItem, content);
-                    }
-                }
-                // Handle normal paragraphs
-                else if (line.trim() !== '') {
-                    const para = readmeContainer.createEl('p', { cls: 'tubesage-readme-paragraph' });
-                    
-                    // Check for links
-                    if (line.includes('[') && line.includes('](')) {
-                        const parts = this.splitMarkdownLink(line);
-                        
-                        parts.forEach(part => {
-                            if (part.isLink) {
-                                para.createEl('a', {
-                                    text: part.text,
-                                    attr: {
-                                        href: part.url || '#',
-                                        cls: 'tubesage-readme-link' // Apply new class
-                                    }
-                                });
-                            } else {
-                                // Process bold text in paragraphs
-                                this.renderTextWithBold(para, part.text);
-                            }
-                        });
-                    } else {
-                        // Process bold text in paragraphs
-                        this.renderTextWithBold(para, line);
-                    }
-                }
-                // Handle empty lines with more spacing between sections
-                else {
-                    readmeContainer.createDiv({ cls: 'tubesage-readme-spacer' });
+                    });
+                } else {
+                    // Process bold text in list items
+                    this.renderTextWithBold(listItem, content);
                 }
             }
-        } catch (error) {
-            // Handle error if README file can't be read
-            logger.error('Error loading README file:', error);
-            contentEl.createEl('p', { 
-                text: t('modal.readme.loadError'),
-                cls: 'tubesage-license-load-error' // Assumes this class is defined and appropriate
-            });
+            // Handle normal paragraphs
+            else if (line.trim() !== '') {
+                const para = readmeContainer.createEl('p', { cls: 'tubesage-readme-paragraph' });
+                
+                // Check for links
+                if (line.includes('[') && line.includes('](')) {
+                    const parts = this.splitMarkdownLink(line);
+                    
+                    parts.forEach(part => {
+                        if (part.isLink) {
+                            para.createEl('a', {
+                                text: part.text,
+                                attr: {
+                                    href: part.url || '#',
+                                    cls: 'tubesage-readme-link' // Apply new class
+                                }
+                            });
+                        } else {
+                            // Process bold text in paragraphs
+                            this.renderTextWithBold(para, part.text);
+                        }
+                    });
+                } else {
+                    // Process bold text in paragraphs
+                    this.renderTextWithBold(para, line);
+                }
+            }
+            // Handle empty lines with more spacing between sections
+            else {
+                readmeContainer.createDiv({ cls: 'tubesage-readme-spacer' });
+            }
         }
         
         // Add close button
@@ -4662,7 +4536,6 @@ class READMEModal extends Modal {
         closeButton.onClick(() => {
             this.close();
         });
-        })();
     }
 
     // Helper to handle markdown links
@@ -4854,152 +4727,101 @@ class TemplateViewModal extends Modal {
             cls: 'tubesage-template-view-title'
         });
 
-        // Run async work without returning a promise to Modal
-        void (async () => {
-        try {
-            // Get the plugin folder path
-            const pluginId = getPluginIdFromManifest(this.app, 'tubesage');
-            
-            // Try to read the template file from multiple possible locations
-            let templateContent = '';
-            let templateFound = false;
-            
-            // List of possible file paths to try
-            const possiblePaths = [
-                // Plugin directory paths
-                normalizePath(`${this.app.vault.configDir}/plugins/${pluginId}/templates/YouTubeTranscript.md`),
-                normalizePath(`${this.app.vault.configDir}/plugins/${pluginId}/templates/youtubeTranscript.md`),
-                
-                // Standard templates directory paths
-                normalizePath('templates/YouTubeTranscript.md'),
-                normalizePath('templates/youtubeTranscript.md'),
-                normalizePath('Templates/YouTubeTranscript.md'),
-                normalizePath('Templates/youtubeTranscript.md')
-            ];
-            
-            // Try each path in sequence
-            for (const filePath of possiblePaths) {
-                try {
-                    logger.debug(`Trying to find template file at: ${filePath}`);
-                    templateContent = await this.app.vault.adapter.read(filePath);
-                    logger.debug(`Template file found at: ${filePath}`);
-                    templateFound = true;
-                    break;
-                } catch (error) {
-                    logger.debug(`Failed to read template file at ${filePath}:`, error);
-                    // Continue to next path
-                }
-            }
-            
-            if (!templateFound) {
-                throw new Error('Could not find template file in any of the expected locations.');
-            }
-            
-            // Create a div for the template content with scrollable style
-            const templateContainer = contentEl.createDiv({
-                cls: ['tubesage-template-view-container', 'tubesage-template-view-container-short']
-            });
-            
-            // Add a subtle separator line for spacing
-            contentEl.createDiv({
-                cls: 'tubesage-divider'
-            });
-            
-            // Create a container for the copy button
-            const copyContainer = contentEl.createDiv({
-                cls: ['tubesage-template-view-copy-container', 'tubesage-row-end']
-            });
-            
-            // Add copy text
-            copyContainer.createSpan({ 
-                text: t('modal.template.copy'),
-                cls: 'tubesage-template-view-copy-text'
-            });
-            
-            // Make the text also clickable
-            const copyTextElement = copyContainer.querySelector('span');
+        // Everything this modal shows comes from src/runtime/example-template-view:
+        // the template body is inlined into main.js at build time (the installer
+        // copies only main.js, manifest.json and styles.css, so reading it from the
+        // plugin folder found nothing on a store install), and the explanation and
+        // variable reference are bundled strings that never needed a file. They
+        // arrive as one value, so no part of this modal can be skipped by another
+        // part failing — which is what used to happen: the help text was written
+        // after the read that threw.
+        const view = exampleTemplateView();
+        const templateContent = view.template;
+        
+        // Create a div for the template content with scrollable style
+        const templateContainer = contentEl.createDiv({
+            cls: ['tubesage-template-view-container', 'tubesage-template-view-container-short']
+        });
+        
+        // Add a subtle separator line for spacing
+        contentEl.createDiv({
+            cls: 'tubesage-divider'
+        });
+        
+        // Create a container for the copy button
+        const copyContainer = contentEl.createDiv({
+            cls: ['tubesage-template-view-copy-container', 'tubesage-row-end']
+        });
+        
+        // Add copy text
+        copyContainer.createSpan({ 
+            text: t('modal.template.copy'),
+            cls: 'tubesage-template-view-copy-text'
+        });
+        
+        // Make the text also clickable
+        const copyTextElement = copyContainer.querySelector('span');
 
-            // Function to handle copy
-            const handleCopy = () => {
-                navigator.clipboard.writeText(templateContent)
-                    .then(() => {
-                        // Show success state
-                        if (copyTextElement) {
-                            const originalText = copyTextElement.textContent;
-                            copyTextElement.textContent = t('modal.template.copied');
-                            window.setTimeout(() => {
-                                copyTextElement.textContent = originalText;
-                            }, 2000);
-                        }
-                    })
-                    .catch(err => {
-                        logger.error('Failed to copy template:', err);
-                        // Show error state
-                        if (copyTextElement) {
-                            copyTextElement.textContent = t('modal.template.copyFailed');
-                            window.setTimeout(() => {
-                                copyTextElement.textContent = t('modal.template.copy');
-                            }, 2000);
-                        }
-                    });
-            };
+        // Function to handle copy
+        const handleCopy = () => {
+            navigator.clipboard.writeText(templateContent)
+                .then(() => {
+                    // Show success state
+                    if (copyTextElement) {
+                        const originalText = copyTextElement.textContent;
+                        copyTextElement.textContent = t('modal.template.copied');
+                        window.setTimeout(() => {
+                            copyTextElement.textContent = originalText;
+                        }, 2000);
+                    }
+                })
+                .catch(err => {
+                    logger.error('Failed to copy template:', err);
+                    // Show error state
+                    if (copyTextElement) {
+                        copyTextElement.textContent = t('modal.template.copyFailed');
+                        window.setTimeout(() => {
+                            copyTextElement.textContent = t('modal.template.copy');
+                        }, 2000);
+                    }
+                });
+        };
 
-            // Copy icon button
-            new ExtraButtonComponent(copyContainer)
-                .setIcon('copy')
-                .setTooltip(t('modal.template.copy'))
-                .onClick(handleCopy);
+        // Copy icon button
+        new ExtraButtonComponent(copyContainer)
+            .setIcon('copy')
+            .setTooltip(t('modal.template.copy'))
+            .onClick(handleCopy);
 
-            if (copyTextElement) {
-                copyTextElement.addEventListener('click', handleCopy);
-            }
-            
-            // Display the content with syntax highlighting
-            templateContainer.createEl('pre', {
-                cls: 'language-markdown',
-                text: templateContent
-            });
-            
-            // Add explanation
-            contentEl.createDiv({
-                text: t('modal.template.explanation'),
-                cls: 'tubesage-template-view-explanation'
-            });
-            
-            // Add Templater variables explanation
-            const variablesContainer = contentEl.createDiv({
-                cls: 'tubesage-template-view-variables-container'
-            });
-            
-            variablesContainer.createEl('h3', {text: t('modal.template.variablesHeading')});
-            
-            // `desc` carries its own leading separator, so the line is one
-            // translated string rather than punctuation glued to a translated
-            // fragment. The variable names are Templater identifiers, never translated.
-            const variables = [
-                {name: 'tp.user.title', desc: t('modal.template.var.title.desc')},
-                {name: 'tp.user.videoUrl', desc: t('modal.template.var.videoUrl.desc')},
-                {name: 'tp.user.transcript', desc: t('modal.template.var.transcript.desc')},
-                {name: 'tp.user.summary', desc: t('modal.template.var.summary.desc')},
-                {name: 'tp.user.llmProvider', desc: t('modal.template.var.llmProvider.desc')},
-                {name: 'tp.user.llmModel', desc: t('modal.template.var.llmModel.desc')},
-                {name: 'tp.user.llmTags', desc: t('modal.template.var.llmTags.desc')}
-            ];
-            
-            const varList = variablesContainer.createEl('ul');
-            variables.forEach(v => {
-                const item = varList.createEl('li');
-                item.createEl('code', {text: v.name});
-                item.createSpan({text: v.desc});
-            });
-        } catch (error) {
-            // Handle error if template file can't be read
-            logger.error('Error loading template file:', error);
-            contentEl.createEl('p', { 
-                text: t('modal.template.loadError'),
-                cls: 'tubesage-license-load-error' // Reuse existing class for error messages
-            });
+        if (copyTextElement) {
+            copyTextElement.addEventListener('click', handleCopy);
         }
+        
+        // Display the content with syntax highlighting
+        templateContainer.createEl('pre', {
+            cls: 'language-markdown',
+            text: templateContent
+        });
+        
+        // Add explanation
+        contentEl.createDiv({
+            text: view.explanation,
+            cls: 'tubesage-template-view-explanation'
+        });
+        
+        // Add Templater variables explanation
+        const variablesContainer = contentEl.createDiv({
+            cls: 'tubesage-template-view-variables-container'
+        });
+        
+        variablesContainer.createEl('h3', {text: view.variablesHeading});
+        
+        const varList = variablesContainer.createEl('ul');
+        view.variables.forEach(variable => {
+            const item = varList.createEl('li');
+            item.createEl('code', {text: variable.name});
+            item.createSpan({text: variable.description});
+        });
         
         // Add close button
         const footerEl = contentEl.createDiv({
@@ -5012,7 +4834,6 @@ class TemplateViewModal extends Modal {
         closeButton.onClick(() => {
             this.close();
         });
-        })();
     }
 
     onClose() {

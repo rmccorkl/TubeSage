@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Licenca e shtojcës Tubesage për transkriptet e YouTube"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Skedari i licencës s'u ngarkua dot. Kontrolloni që në dosjen e shtojcës të ndodhet një skedar licence."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Kërkohet pranimi i licencës"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Nuk ka dosje përkatëse"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Dokumentimi i shtojcës Tubesage për transkripte YouTube"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Skedari readme nuk u ngarkua dot. Kontrolloni që readme.md ndodhet në dosjen e shtojcës."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Variablat e disponueshme të modelit:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Skedari i modelit nuk u ngarkua dot. Kontrolloni që ndodhet në dosjen e shtojcës ose te dosja e modeleve e kasafortës."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

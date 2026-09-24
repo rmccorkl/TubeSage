@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube transkriptu spraudņa licence"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Neizdevās ielādēt licences failu. Pārbaudiet, vai tas ir spraudņa mapē."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Nepieciešama licences pieņemšana"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Nav atbilstošu mapju"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Tubesage YouTube atšifrējumu spraudņa dokumentācija"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Neizdevās ielādēt readme failu. Pārbaudiet, vai readme.md ir spraudņa mapē."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Pieejamie veidnes mainīgie:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Neizdevās ielādēt veidnes failu. Pārbaudiet, vai tas ir spraudņa mapē vai glabātavas veidņu mapē."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

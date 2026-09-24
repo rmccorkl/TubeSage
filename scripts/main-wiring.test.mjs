@@ -38,3 +38,38 @@ describe("onunload leaves no progress surface behind", () => {
     expect(body).toContain(call);
   });
 });
+
+describe("the licence is never composed through a translation", () => {
+  // src/runtime/license-view.test.ts renders the licence under every locale
+  // and compares it with the licence file, but it can only see the view. The
+  // element loop in main.ts is outside its reach, and `t` is already imported
+  // and used throughout that file — so re-wrapping the clause heading in a
+  // translation there would restore the defect with nothing failing. This
+  // reads both halves as text, the way the file header explains.
+  //
+  // The licence is reproduced verbatim and stays in English in every
+  // interface language; its punctuation is part of the instrument.
+
+  /** Code with its comments removed — prose about `t()` is not a call to it. */
+  function code(text) {
+    return text.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/[^\n]*/g, "");
+  }
+
+  it("renders the licence in main.ts without translating any part of it", () => {
+    const start = main.indexOf("for (const block of licenseView())");
+    expect(start, "main.ts no longer renders licenseView() in a loop — check this test still looks in the right place").toBeGreaterThan(-1);
+    const end = main.indexOf("\n        }\n", start);
+    expect(end, "the licence render loop is not closed at the expected indent").toBeGreaterThan(start);
+
+    const loop = code(main.slice(start, end));
+    expect(loop).not.toMatch(/\bt\(/);
+    expect(loop).not.toMatch(/\btPlural\(/);
+  });
+
+  it("builds the view itself without reaching for the translation table", () => {
+    // No i18n import at all: the strongest form of the same guarantee, and one
+    // that cannot be argued about, unlike scanning for call shapes.
+    const view = readFileSync(join(root, "src", "runtime", "license-view.ts"), "utf8");
+    expect(code(view)).not.toMatch(/from '\.\.\/i18n'/);
+  });
+});
