@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Лиценца додатка Tubesage за транскрипте са YouTube"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Датотека лиценце није могла да се учита. Проверите да ли постоји у фасцикли додатка."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Потребно је прихватање лиценце"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Нема одговарајућих фасцикли"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Документација Tubesage додатка за YouTube транскрипте"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Није могуће учитати readme датотеку. Проверите да ли readme.md постоји у фасцикли додатка."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Доступне променљиве шаблона:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Није могуће учитати датотеку шаблона. Проверите да ли постоји у фасцикли додатка или у фасцикли шаблона трезора."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

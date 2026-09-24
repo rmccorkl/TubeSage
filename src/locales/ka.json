@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube ტრანსკრიპტების მოდულის ლიცენზია"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "ლიცენზიის ფაილის ჩატვირთვა ვერ მოხერხდა. შეამოწმეთ, რომ ლიცენზიის ფაილი მოდულის საქაღალდეშია."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "საჭიროა ლიცენზიის მიღება"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "შესაბამისი საქაღალდეები არ არის"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Tubesage YouTube ტრანსკრიპტების დანამატის დოკუმენტაცია"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "readme ფაილის ჩატვირთვა ვერ მოხერხდა. შეამოწმეთ, არის თუ არა readme.md დანამატის საქაღალდეში."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "ხელმისაწვდომი შაბლონის ცვლადები:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "შაბლონის ფაილის ჩატვირთვა ვერ მოხერხდა. შეამოწმეთ, არის თუ არა ის დანამატის საქაღალდეში ან საცავის შაბლონების საქაღალდეში."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

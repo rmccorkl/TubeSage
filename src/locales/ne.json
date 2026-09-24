@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube प्रतिलिपि प्लगइनको इजाजतपत्र"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "इजाजतपत्र फाइल लोड गर्न सकिएन। तपाईंको प्लगइन डाइरेक्टरीमा इजाजतपत्र फाइल छ कि छैन जाँच्नुहोस्।"
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "इजाजतपत्र स्वीकार आवश्यक"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "मिल्ने फोल्डर छैन"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Tubesage YouTube प्रतिलिपि प्लगइनको कागजात"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "readme फाइल लोड गर्न सकिएन। प्लगइन फोल्डरमा readme.md छ कि छैन जाँच्नुहोस्।"
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "उपलब्ध टेम्प्लेट चल:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "टेम्प्लेट फाइल लोड गर्न सकिएन। प्लगइन फोल्डर वा भल्टको टेम्प्लेट फोल्डरमा छ कि छैन जाँच्नुहोस्।"
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

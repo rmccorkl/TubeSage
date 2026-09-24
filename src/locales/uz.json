@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube transkript plagini litsenziyasi"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Litsenziya faylini yuklab boʻlmadi. Plagin jildingizda litsenziya fayli borligini tekshiring."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Litsenziyani qabul qilish zarur"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Mos keladigan jildlar yoʻq"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Tubesage YouTube matn plagini hujjatlari"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "readme fayli yuklanmadi. Plagin jildida readme.md borligini tekshiring."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Mavjud andoza oʻzgaruvchilari:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Andoza fayli yuklanmadi. U plagin jildida yoki xazina andoza jildida borligini tekshiring."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

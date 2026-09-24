@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube எழுத்துப்படிச் செருகுநிரல் உரிமம்"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "உரிமக் கோப்பை ஏற்ற முடியவில்லை. உங்கள் செருகுநிரல் கோப்பகத்தில் உரிமக் கோப்பு உள்ளதா எனச் சரிபார்க்கவும்."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "உரிமத்தை ஏற்க வேண்டும்"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "பொருந்தும் கோப்புறைகள் இல்லை"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Tubesage YouTube எழுத்துப்படி செருகுநிரல் ஆவணம்"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "readme கோப்பை ஏற்ற முடியவில்லை. செருகுநிரல் கோப்புறையில் readme.md உள்ளதா எனப் பாருங்கள்."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "கிடைக்கும் வார்ப்புரு மாறிகள்:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "வார்ப்புரு கோப்பை ஏற்ற முடியவில்லை. செருகுநிரல் கோப்புறையிலோ சேமிப்பகத்தின் வார்ப்புரு கோப்புறையிலோ உள்ளதா எனப் பாருங்கள்."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

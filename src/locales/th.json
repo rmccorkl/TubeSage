@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "สัญญาอนุญาตปลั๊กอินคำบรรยาย YouTube ของ Tubesage"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "โหลดไฟล์สัญญาอนุญาตไม่สำเร็จ โปรดตรวจสอบว่ามีไฟล์สัญญาอนุญาตอยู่ในโฟลเดอร์ปลั๊กอิน"
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "ต้องยอมรับสัญญาอนุญาต"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "ไม่พบโฟลเดอร์ที่ตรงกัน"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "เอกสารปลั๊กอินคำบรรยาย YouTube ของ Tubesage"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "โหลดไฟล์ readme ไม่ได้ ตรวจสอบว่ามี readme.md อยู่ในโฟลเดอร์ปลั๊กอิน"
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "ตัวแปรเทมเพลตที่ใช้ได้:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "โหลดไฟล์เทมเพลตไม่ได้ ตรวจสอบว่ามีอยู่ในโฟลเดอร์ปลั๊กอินหรือโฟลเดอร์เทมเพลตของห้องนิรภัย"
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

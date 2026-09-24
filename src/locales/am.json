@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "የTubesage YouTube ግልባጭ ተሰኪ ፈቃድ"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "የፈቃድ ፋይልን መጫን አልተቻለም። በተሰኪ ማውጫዎ ውስጥ የፈቃድ ፋይል መኖሩን ያረጋግጡ።"
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "የፈቃድ ተቀባይነት ያስፈልጋል"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "ተዛማጅ አቃፊዎች የሉም"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}፦ "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "የTubesage የYouTube ግልባጭ ተሰኪ ሰነድ"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "የreadme ፋይሉን መጫን አልተቻለም። readme.md በተሰኪው አቃፊ ውስጥ መኖሩን ያረጋግጡ።"
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "የሚገኙ የአብነት ተለዋዋጮች፦"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "የአብነት ፋይሉን መጫን አልተቻለም። በተሰኪው አቃፊ ወይም በመዝገቡ የአብነት አቃፊ ውስጥ መኖሩን ያረጋግጡ።"
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

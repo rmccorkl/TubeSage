@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Ceadúnas bhreiseán tras-scríbhinní YouTube Tubesage"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Níorbh fhéidir comhad an cheadúnais a lódáil. Deimhnigh go bhfuil comhad ceadúnais i gcomhadlann do bhreiseáin."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Glacadh leis an gceadúnas riachtanach"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Níl aon fhillteán comhoiriúnach ann"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Doiciméadú bhreiseán tras-scríbhinní YouTube Tubesage"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Níorbh fhéidir an comhad readme a luchtú. Deimhnigh go bhfuil readme.md i bhfillteán an bhreiseáin."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Athróga teimpléid atá ar fáil:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Níorbh fhéidir an comhad teimpléid a luchtú. Deimhnigh go bhfuil sé i bhfillteán an bhreiseáin nó i bhfillteán teimpléad na taisce."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

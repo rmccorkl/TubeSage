@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Άδεια του πρόσθετου απομαγνητοφώνησης YouTube Tubesage"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Δεν ήταν δυνατή η φόρτωση του αρχείου άδειας. Ελέγξτε ότι υπάρχει αρχείο άδειας στον φάκελο του πρόσθετου."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Απαιτείται αποδοχή της άδειας"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Δεν υπάρχουν αντίστοιχοι φάκελοι"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Τεκμηρίωση του πρόσθετου απομαγνητοφώνησης YouTube Tubesage"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Δεν ήταν δυνατή η φόρτωση του αρχείου readme. Ελέγξτε ότι το readme.md υπάρχει στον φάκελο του πρόσθετου."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Διαθέσιμες μεταβλητές προτύπου:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Δεν ήταν δυνατή η φόρτωση του αρχείου προτύπου. Ελέγξτε ότι υπάρχει στον φάκελο του πρόσθετου ή στον φάκελο προτύπων του θησαυροφυλακίου."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube 자막 플러그인 라이선스"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "라이선스 파일을 불러올 수 없습니다. 플러그인 폴더에 라이선스 파일이 있는지 확인하세요."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "라이선스 동의 필요"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "일치하는 폴더가 없습니다"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Tubesage YouTube 스크립트 플러그인 설명서"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "readme 파일을 불러올 수 없습니다. 플러그인 폴더에 readme.md가 있는지 확인하세요."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "사용할 수 있는 템플릿 변수:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "템플릿 파일을 불러올 수 없습니다. 플러그인 폴더나 보관함의 템플릿 폴더에 있는지 확인하세요."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

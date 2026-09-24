@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Licencia doplnku Tubesage na prepisy z YouTube"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Súbor licencie sa nepodarilo načítať. Skontrolujte, či je v priečinku doplnku."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Vyžaduje sa prijatie licencie"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Žiadne zodpovedajúce priečinky"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Dokumentácia pluginu na prepisy YouTube Tubesage"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Súbor readme sa nedá načítať. Overte, že readme.md je v priečinku pluginu."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Dostupné premenné šablóny:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Súbor šablóny sa nedá načítať. Overte, že existuje v priečinku pluginu alebo v priečinku šablón trezora."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

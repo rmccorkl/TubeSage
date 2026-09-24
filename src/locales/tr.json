@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube transkript eklentisi lisansı"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Lisans dosyası yüklenemedi. Eklenti dizininizde bir lisans dosyası bulunduğunu denetleyin."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Lisans kabulü gerekli"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Eşleşen klasör yok"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Tubesage YouTube deşifre eklentisi belgeleri"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "readme dosyası yüklenemedi. Eklenti klasöründe readme.md olduğundan emin olun."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Kullanılabilir şablon değişkenleri:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Şablon dosyası yüklenemedi. Eklenti klasöründe veya kasanın şablon klasöründe olduğundan emin olun."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

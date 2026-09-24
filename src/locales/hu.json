@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "A Tubesage YouTube-átirat bővítmény licence"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "A licencfájl nem tölthető be. Ellenőrizd, hogy a bővítmény mappájában van-e licencfájl."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Licencelfogadás szükséges"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Nincs találat a mappák között"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "A Tubesage YouTube-átirat bővítmény dokumentációja"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "A readme fájl nem tölthető be. Ellenőrizd, hogy a readme.md ott van-e a bővítmény mappájában."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Elérhető sablonváltozók:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "A sablonfájl nem tölthető be. Ellenőrizd, hogy ott van-e a bővítmény mappájában vagy a tár sablonmappájában."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

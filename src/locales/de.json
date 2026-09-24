@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Lizenz des Tubesage YouTube-Transkript-Plugins"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Die Lizenzdatei konnte nicht geladen werden. Prüfe, ob im Plugin-Verzeichnis eine Lizenzdatei vorhanden ist."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Zustimmung zur Lizenz erforderlich"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Keine passenden Ordner"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Dokumentation des Tubesage-YouTube-Transkript-Plugins"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Die readme-Datei konnte nicht geladen werden. Prüfe, ob readme.md im Plugin-Ordner liegt."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Verfügbare Vorlagenvariablen:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Die Vorlagendatei konnte nicht geladen werden. Prüfe, ob sie im Plugin-Ordner oder im Vorlagenordner des Tresors liegt."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Licența pluginului de transcriere YouTube Tubesage"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Fișierul de licență nu a putut fi încărcat. Verifică dacă există un fișier de licență în folderul pluginului."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Este necesară acceptarea licenței"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Niciun folder care să corespundă"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Documentația pluginului de transcrieri YouTube Tubesage"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Fișierul readme nu a putut fi încărcat. Verifică dacă readme.md există în folderul pluginului."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Variabile de șablon disponibile:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Fișierul șablon nu a putut fi încărcat. Verifică dacă există în folderul pluginului sau în cel de șabloane al seifului."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

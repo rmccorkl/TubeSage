@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Ліцензія плагіна Tubesage для транскриптів YouTube"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Не вдалося завантажити файл ліцензії. Перевірте, чи є він у теці плагіна."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Потрібне прийняття ліцензії"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Відповідних тек немає"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Документація плагіна розшифровок YouTube Tubesage"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Не вдалося завантажити файл readme. Перевірте, чи readme.md є в теці плагіна."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Доступні змінні шаблону:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Не вдалося завантажити файл шаблону. Перевірте, чи є він у теці плагіна або в теці шаблонів сховища."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

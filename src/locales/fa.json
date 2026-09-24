@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "مجوز افزونهٔ Tubesage برای رونوشت YouTube"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "فایل مجوز بارگذاری نشد. بررسی کنید که فایل مجوز در پوشهٔ افزونه وجود داشته باشد."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "پذیرش مجوز لازم است"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "پوشهٔ مطابقی نیست"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "مستندات افزونهٔ رونویسی YouTube به نام Tubesage"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "فایل readme بارگذاری نشد. مطمئن شوید readme.md در پوشهٔ افزونه هست."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "متغیرهای در دسترس الگو:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "فایل الگو بارگذاری نشد. مطمئن شوید در پوشهٔ افزونه یا پوشهٔ الگوهای گنجینه هست."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

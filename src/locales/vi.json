@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Giấy phép plugin bản chép lời YouTube Tubesage"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Không tải được tệp giấy phép. Hãy kiểm tra xem tệp giấy phép có nằm trong thư mục plugin không."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Cần chấp nhận giấy phép"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Không có thư mục nào khớp"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Tài liệu plugin chép lời YouTube Tubesage"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Không tải được tệp readme. Hãy kiểm tra readme.md có trong thư mục plugin."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Các biến mẫu khả dụng:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Không tải được tệp mẫu. Hãy kiểm tra tệp có trong thư mục plugin hoặc thư mục mẫu của kho."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Licencia del plugin de transcripción de YouTube Tubesage"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "No se ha podido cargar el archivo de licencia. Comprueba que exista un archivo de licencia en la carpeta del plugin."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Es necesario aceptar la licencia"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "No hay carpetas que coincidan"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Documentación del plugin de transcripciones de YouTube Tubesage"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "No se ha podido cargar el archivo readme. Comprueba que readme.md está en la carpeta del plugin."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Variables de plantilla disponibles:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "No se ha podido cargar el archivo de plantilla. Comprueba que existe en la carpeta del plugin o en la de plantillas del almacén."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

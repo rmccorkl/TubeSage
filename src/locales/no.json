@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Lisens for YouTube-transkripsjonstillegget Tubesage"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Lisensfilen kunne ikke lastes. Kontroller at det finnes en lisensfil i tilleggsmappen."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Lisensen må godtas"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Ingen samsvarende mapper"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Dokumentasjon for Tubesage YouTube-transkripsjonstillegget"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Kunne ikke laste readme-filen. Kontroller at readme.md finnes i tilleggsmappen."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Tilgjengelige malvariabler:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Kunne ikke laste malfilen. Kontroller at den finnes i tilleggsmappen eller i hvelvets malmappe."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Lesen pemalam transkrip YouTube Tubesage"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Fail lesen tidak dapat dimuatkan. Sila periksa sama ada fail lesen wujud dalam direktori pemalam anda."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Penerimaan lesen diperlukan"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Tiada folder yang sepadan"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Dokumentasi pemalam transkrip YouTube Tubesage"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Tidak dapat memuatkan fail readme. Pastikan readme.md ada dalam folder pemalam."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Pemboleh ubah templat yang ada:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Tidak dapat memuatkan fail templat. Pastikan fail ada dalam folder pemalam atau folder templat bilik kebal."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",

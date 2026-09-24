@@ -379,10 +379,6 @@
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Turagt n usiɣzef n yiḍrisen YouTube Tubesage"
     },
-    "license.modal.loadError": {
-        "original": "Could not load license file. Please check that a license file exists in your plugin directory.",
-        "translation": "Ur yezmir ara ad d-yali ufaylu n turagt. Senqed ma yella ufaylu n turagt deg ukaram n usiɣzef-ik."
-    },
     "license.required.title": {
         "original": "License acceptance required",
         "translation": "Ilaq uqbal n turagt"
@@ -683,17 +679,9 @@
         "original": "No matching folders",
         "translation": "Ulac ikaramen i imṣadan"
     },
-    "modal.license.listItem": {
-        "original": "{number}. {title}: ",
-        "translation": "{number}. {title}: "
-    },
     "modal.readme.title": {
         "original": "Tubesage YouTube transcript plugin documentation",
         "translation": "Tasemlit n uzegrir Tubesage n uwennit n YouTube"
-    },
-    "modal.readme.loadError": {
-        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
-        "translation": "Ur nezmir ara ad d-nesali afaylu readme. Senqed ma yella readme.md deg ukaram n uzegrir."
     },
     "modal.template.title": {
         "original": "Example template: copy and place in your templater plugin specified template directory",
@@ -718,10 +706,6 @@
     "modal.template.variablesHeading": {
         "original": "Available template variables:",
         "translation": "Imuttiyen n tneɣruft yellan:"
-    },
-    "modal.template.loadError": {
-        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
-        "translation": "Ur nezmir ara ad d-nesali afaylu n tneɣruft. Senqed ma yella deg ukaram n uzegrir neɣ deg ukaram n tneɣrufin n tsenduqt."
     },
     "notice.collection.extractingName": {
         "original": "Extracting playlist name...",
