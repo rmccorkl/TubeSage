@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Tiek ielādēti atskaņošanas saraksta videoklipi: {name}",
     "notice.collection.fetchingFrom.channel": "Tiek ielādēti kanāla videoklipi: {name}",
     "notice.collection.videosToProcess": "Apstrādājamie videoklipi: {count}",
-    "notice.collection.processingVideo": "Tiek apstrādāts videoklips {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Videoklips {title} izlaists – nav atšifrējuma",
-    "notice.collection.addingTimestamps.playlist": "Atskaņošanas saraksta videoklipam tiek pievienotas laika saites: {title}",
-    "notice.collection.addingTimestamps.channel": "Kanāla videoklipam tiek pievienotas laika saites: {title}",
-    "notice.collection.timestampsAdded": "✓ Laika saites pievienotas: {title}",
-    "notice.collection.timestampError": "{error} („{title}“)",
-    "notice.collection.timestampsFailed": "Piezīme izveidota, bet laika zīmogus neizdevās pievienot „{title}“",
-    "notice.collection.videoProcessed": "✓ Apstrādāts videoklips {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ Videoklips „{title}“ izlaists – {error}",
-    "notice.collection.videoError": "❌ Kļūda, apstrādājot videoklipu „{title}“: {error}",
-    "notice.collection.complete": "Kanāla apstrāde pabeigta – apstrādāti: {processed}, izlaisti: {skipped}, kļūdas: {errors}",
     "notice.job.saveFailed": "Neizdevās saglabāt darbu: {error}. Videoklips, iespējams, vēl tiek apstrādāts; skatiet „Rādīt aktīvos darbus“",
     "notice.job.alreadyRunning": "Šis videoklips jau tiek apstrādāts",
     "notice.job.cannotResume": "Šo darbu šādā stāvoklī nevar atsākt; skatiet tā statusu",
@@ -279,5 +268,8 @@
     "notice.recovery.several": "TubeSage: uzmanību prasa {count} pārtraukti darbi",
     "common.validation.required": "Aizpildiet lauku {field}",
     "common.validation.genericError": "Radās kļūda",
-    "common.transcript.unavailable": "Šim videoklipam nav atšifrējuma"
+    "common.transcript.unavailable": "Šim videoklipam nav atšifrējuma",
+    "notice.collection.progress": "Apstrādā {name}: {done} no {total}",
+    "notice.collection.closedOnStart": "Slēgtas pārtrauktās kolekcijas: {count}",
+    "modal.jobs.cancelCollection": "Apturēt kolekciju"
 }

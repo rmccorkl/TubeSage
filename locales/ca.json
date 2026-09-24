@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "S'estan obtenint els vídeos de la llista de reproducció: {name}",
     "notice.collection.fetchingFrom.channel": "S'estan obtenint els vídeos del canal: {name}",
     "notice.collection.videosToProcess": "Vídeos per processar: {count}",
-    "notice.collection.processingVideo": "S'està processant el vídeo {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Es descarta el vídeo {title} – no hi ha transcripció",
-    "notice.collection.addingTimestamps.playlist": "S'afegeixen enllaços de temps al vídeo de la llista: {title}",
-    "notice.collection.addingTimestamps.channel": "S'afegeixen enllaços de temps al vídeo del canal: {title}",
-    "notice.collection.timestampsAdded": "✓ Enllaços de temps afegits a {title}",
-    "notice.collection.timestampError": "{error} («{title}»)",
-    "notice.collection.timestampsFailed": "S'ha creat la nota, però no s'han pogut afegir marques de temps a «{title}»",
-    "notice.collection.videoProcessed": "✓ Vídeo {current}/{total} processat",
-    "notice.collection.videoSkipped": "⚠️ Es descarta el vídeo «{title}» – {error}",
-    "notice.collection.videoError": "❌ Error en processar el vídeo «{title}»: {error}",
-    "notice.collection.complete": "Processament del canal acabat – processats: {processed}, descartats: {skipped}, errors: {errors}",
     "notice.job.saveFailed": "No s'ha pogut desar la tasca: {error}. El vídeo pot continuar processant-se; mira «Mostra les tasques actives»",
     "notice.job.alreadyRunning": "Aquest vídeo ja s'està processant",
     "notice.job.cannotResume": "Aquesta tasca no es pot reprendre tal com està; mira'n l'estat",
@@ -279,5 +268,8 @@
     "notice.recovery.several": "TubeSage: {count} tasques interrompudes necessiten atenció",
     "common.validation.required": "Omple el camp {field}",
     "common.validation.genericError": "S'ha produït un error",
-    "common.transcript.unavailable": "No hi ha cap transcripció per a aquest vídeo"
+    "common.transcript.unavailable": "No hi ha cap transcripció per a aquest vídeo",
+    "notice.collection.progress": "Processant {name}: {done} de {total}",
+    "notice.collection.closedOnStart": "Col·leccions interrompudes tancades: {count}",
+    "modal.jobs.cancelCollection": "Atura la col·lecció"
 }

@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Obtendo os vídeos da lista de reprodución: {name}",
     "notice.collection.fetchingFrom.channel": "Obtendo os vídeos da canle: {name}",
     "notice.collection.videosToProcess": "Vídeos por procesar: {count}",
-    "notice.collection.processingVideo": "Procesando o vídeo {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Omítese o vídeo {title} – non hai transcrición",
-    "notice.collection.addingTimestamps.playlist": "Engadindo ligazóns de tempo ao vídeo da lista: {title}",
-    "notice.collection.addingTimestamps.channel": "Engadindo ligazóns de tempo ao vídeo da canle: {title}",
-    "notice.collection.timestampsAdded": "✓ Ligazóns de tempo engadidas a {title}",
-    "notice.collection.timestampError": "{error} («{title}»)",
-    "notice.collection.timestampsFailed": "Creouse a nota, pero non se puideron engadir marcas de tempo a «{title}»",
-    "notice.collection.videoProcessed": "✓ Vídeo {current}/{total} procesado",
-    "notice.collection.videoSkipped": "⚠️ Omítese o vídeo «{title}» – {error}",
-    "notice.collection.videoError": "❌ Erro ao procesar o vídeo «{title}»: {error}",
-    "notice.collection.complete": "Procesamento da canle rematado – procesados: {processed}, omitidos: {skipped}, erros: {errors}",
     "notice.job.saveFailed": "Non foi posible gardar a tarefa: {error}. O vídeo pode seguir procesándose; mira «Amosar as tarefas activas»",
     "notice.job.alreadyRunning": "Este vídeo xa se está procesando",
     "notice.job.cannotResume": "Esta tarefa non se pode retomar así; mira o seu estado",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} tarefas interrompidas precisan atención",
     "common.validation.required": "Cubre o campo {field}",
     "common.validation.genericError": "Produciuse un erro",
-    "common.transcript.unavailable": "Non hai transcrición para este vídeo"
+    "common.transcript.unavailable": "Non hai transcrición para este vídeo",
+    "notice.collection.progress": "Procesando {name}: {done} de {total}",
+    "notice.collection.closedOnStart": "Coleccións interrompidas pechadas: {count}",
+    "modal.jobs.cancelCollection": "Deter a colección"
 }

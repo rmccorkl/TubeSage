@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Se preiau videoclipurile din playlist: {name}",
     "notice.collection.fetchingFrom.channel": "Se preiau videoclipurile din canal: {name}",
     "notice.collection.videosToProcess": "Videoclipuri de procesat: {count}",
-    "notice.collection.processingVideo": "Se procesează videoclipul {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Videoclipul {title} este omis – nu există transcriere",
-    "notice.collection.addingTimestamps.playlist": "Se adaugă linkuri cu marcaj de timp la videoclipul din playlist: {title}",
-    "notice.collection.addingTimestamps.channel": "Se adaugă linkuri cu marcaj de timp la videoclipul din canal: {title}",
-    "notice.collection.timestampsAdded": "✓ Linkuri cu marcaj de timp adăugate la {title}",
-    "notice.collection.timestampError": "{error} („{title}”)",
-    "notice.collection.timestampsFailed": "Notița a fost creată, dar marcajele de timp nu au putut fi adăugate la „{title}”",
-    "notice.collection.videoProcessed": "✓ Videoclip {current}/{total} procesat",
-    "notice.collection.videoSkipped": "⚠️ Videoclipul „{title}” este omis – {error}",
-    "notice.collection.videoError": "❌ Eroare la procesarea videoclipului „{title}”: {error}",
-    "notice.collection.complete": "Procesarea canalului s-a încheiat – procesate: {processed}, omise: {skipped}, erori: {errors}",
     "notice.job.saveFailed": "Sarcina nu a putut fi salvată: {error}. Videoclipul poate fi încă în procesare; vezi „Afișează sarcinile active”",
     "notice.job.alreadyRunning": "Acest videoclip este deja în procesare",
     "notice.job.cannotResume": "Această sarcină nu poate fi reluată așa; vezi starea ei",
@@ -279,5 +268,8 @@
     "notice.recovery.several": "TubeSage: {count} sarcini întrerupte necesită atenție",
     "common.validation.required": "Completează câmpul {field}",
     "common.validation.genericError": "A apărut o eroare",
-    "common.transcript.unavailable": "Nu există transcriere pentru acest videoclip"
+    "common.transcript.unavailable": "Nu există transcriere pentru acest videoclip",
+    "notice.collection.progress": "Se procesează {name}: {done} din {total}",
+    "notice.collection.closedOnStart": "Colecții întrerupte închise: {count}",
+    "modal.jobs.cancelCollection": "Oprește colecția"
 }

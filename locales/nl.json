@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Video's uit afspeellijst ophalen: {name}",
     "notice.collection.fetchingFrom.channel": "Video's uit kanaal ophalen: {name}",
     "notice.collection.videosToProcess": "Te verwerken video's: {count}",
-    "notice.collection.processingVideo": "Video {current}/{total} verwerken: {title}",
-    "notice.collection.skipNoTranscript": "Video {title} overgeslagen – geen transcriptie beschikbaar",
-    "notice.collection.addingTimestamps.playlist": "Tijdstemplinks toevoegen aan afspeellijstvideo: {title}",
-    "notice.collection.addingTimestamps.channel": "Tijdstemplinks toevoegen aan kanaalvideo: {title}",
-    "notice.collection.timestampsAdded": "✓ Tijdstemplinks toegevoegd aan {title}",
-    "notice.collection.timestampError": "{error} (‘{title}’)",
-    "notice.collection.timestampsFailed": "Notitie gemaakt, maar tijdstempels konden niet worden toegevoegd aan ‘{title}’",
-    "notice.collection.videoProcessed": "✓ Video {current}/{total} verwerkt",
-    "notice.collection.videoSkipped": "⚠️ Video ‘{title}’ overgeslagen – {error}",
-    "notice.collection.videoError": "❌ Fout bij verwerken van video ‘{title}’: {error}",
-    "notice.collection.complete": "Verwerking van kanaal voltooid – verwerkt: {processed}, overgeslagen: {skipped}, fouten: {errors}",
     "notice.job.saveFailed": "Kan de taak niet opslaan: {error}. De video wordt mogelijk nog verwerkt; zie \"Actieve taken tonen\"",
     "notice.job.alreadyRunning": "Deze video wordt al verwerkt",
     "notice.job.cannotResume": "Deze taak kan zo niet worden hervat; zie de status",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} onderbroken taken vragen om aandacht",
     "common.validation.required": "Vul het veld {field} in",
     "common.validation.genericError": "Er is een fout opgetreden",
-    "common.transcript.unavailable": "Voor deze video is geen transcriptie beschikbaar"
+    "common.transcript.unavailable": "Voor deze video is geen transcriptie beschikbaar",
+    "notice.collection.progress": "Bezig met {name}: {done} van {total}",
+    "notice.collection.closedOnStart": "Onderbroken verzamelingen gesloten: {count}",
+    "modal.jobs.cancelCollection": "Verzameling stoppen"
 }

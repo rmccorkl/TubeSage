@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Ανάκτηση βίντεο από τη λίστα αναπαραγωγής: {name}",
     "notice.collection.fetchingFrom.channel": "Ανάκτηση βίντεο από το κανάλι: {name}",
     "notice.collection.videosToProcess": "Βίντεο προς επεξεργασία: {count}",
-    "notice.collection.processingVideo": "Επεξεργασία βίντεο {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Παράλειψη βίντεο {title} – δεν υπάρχει απομαγνητοφώνηση",
-    "notice.collection.addingTimestamps.playlist": "Προσθήκη συνδέσμων χρονοσήμανσης στο βίντεο της λίστας: {title}",
-    "notice.collection.addingTimestamps.channel": "Προσθήκη συνδέσμων χρονοσήμανσης στο βίντεο του καναλιού: {title}",
-    "notice.collection.timestampsAdded": "✓ Προστέθηκαν σύνδεσμοι χρονοσήμανσης στο {title}",
-    "notice.collection.timestampError": "{error} («{title}»)",
-    "notice.collection.timestampsFailed": "Η σημείωση δημιουργήθηκε, αλλά δεν ήταν δυνατή η προσθήκη χρονοσημάνσεων στο «{title}»",
-    "notice.collection.videoProcessed": "✓ Επεξεργάστηκε το βίντεο {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ Παράλειψη βίντεο «{title}» – {error}",
-    "notice.collection.videoError": "❌ Σφάλμα κατά την επεξεργασία του βίντεο «{title}»: {error}",
-    "notice.collection.complete": "Η επεξεργασία του καναλιού ολοκληρώθηκε – επεξεργάστηκαν: {processed}, παραλείφθηκαν: {skipped}, σφάλματα: {errors}",
     "notice.job.saveFailed": "Δεν ήταν δυνατή η αποθήκευση της εργασίας: {error}. Το βίντεο ίσως επεξεργάζεται ακόμη· δείτε «Εμφάνιση ενεργών εργασιών»",
     "notice.job.alreadyRunning": "Αυτό το βίντεο επεξεργάζεται ήδη",
     "notice.job.cannotResume": "Αυτή η εργασία δεν μπορεί να συνεχιστεί ως έχει· δείτε την κατάστασή της",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} διακοπείσες εργασίες χρειάζονται προσοχή",
     "common.validation.required": "Συμπληρώστε το πεδίο {field}",
     "common.validation.genericError": "Παρουσιάστηκε σφάλμα",
-    "common.transcript.unavailable": "Δεν υπάρχει απομαγνητοφώνηση για αυτό το βίντεο"
+    "common.transcript.unavailable": "Δεν υπάρχει απομαγνητοφώνηση για αυτό το βίντεο",
+    "notice.collection.progress": "Επεξεργασία {name}: {done} από {total}",
+    "notice.collection.closedOnStart": "Έκλεισαν οι διακοπείσες συλλογές: {count}",
+    "modal.jobs.cancelCollection": "Διακοπή συλλογής"
 }

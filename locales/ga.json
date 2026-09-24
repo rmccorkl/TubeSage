@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Físeáin á bhfáil ón seinmliosta: {name}",
     "notice.collection.fetchingFrom.channel": "Físeáin á bhfáil ón gcainéal: {name}",
     "notice.collection.videosToProcess": "Físeáin le próiseáil: {count}",
-    "notice.collection.processingVideo": "Físeán {current}/{total} á phróiseáil: {title}",
-    "notice.collection.skipNoTranscript": "Físeán {title} á scipeáil – níl tras-scríbhinn ar fáil",
-    "notice.collection.addingTimestamps.playlist": "Naisc stampa ama á gcur le físeán an tseinmliosta: {title}",
-    "notice.collection.addingTimestamps.channel": "Naisc stampa ama á gcur le físeán an chainéil: {title}",
-    "notice.collection.timestampsAdded": "✓ Cuireadh naisc stampa ama le {title}",
-    "notice.collection.timestampError": "{error} (“{title}”)",
-    "notice.collection.timestampsFailed": "Cruthaíodh an nóta ach níorbh fhéidir stampaí ama a chur le “{title}”",
-    "notice.collection.videoProcessed": "✓ Físeán {current}/{total} próiseáilte",
-    "notice.collection.videoSkipped": "⚠️ Físeán “{title}” á scipeáil – {error}",
-    "notice.collection.videoError": "❌ Earráid agus físeán “{title}” á phróiseáil: {error}",
-    "notice.collection.complete": "Próiseáil an chainéil críochnaithe – próiseáilte: {processed}, scipeáilte: {skipped}, earráidí: {errors}",
     "notice.job.saveFailed": "Níorbh fhéidir an tasc a shábháil: {error}. D'fhéadfadh an físeán a bheith á phróiseáil fós; féach “Taispeáin jabanna gníomhacha”",
     "notice.job.alreadyRunning": "Tá an físeán seo á phróiseáil cheana",
     "notice.job.cannotResume": "Ní féidir an tasc seo a atosú mar atá; féach a stádas",
@@ -281,5 +270,8 @@
     "notice.recovery.several": "TubeSage: tá aird de dhíth ar {count} jab a cuireadh isteach orthu",
     "common.validation.required": "Líon isteach an réimse {field}, le do thoil",
     "common.validation.genericError": "Tharla earráid",
-    "common.transcript.unavailable": "Níl tras-scríbhinn ar fáil don fhíseán seo"
+    "common.transcript.unavailable": "Níl tras-scríbhinn ar fáil don fhíseán seo",
+    "notice.collection.progress": "{name} á phróiseáil: {done} as {total}",
+    "notice.collection.closedOnStart": "Bailiúcháin a briseadh, dúnta: {count}",
+    "modal.jobs.cancelCollection": "Stop an bailiúchán"
 }

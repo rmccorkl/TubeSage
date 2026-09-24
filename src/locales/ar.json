@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "مقاطع الفيديو المراد معالجتها: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "جارٍ معالجة الفيديو {current}/{total}: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "تم تخطي الفيديو {title} – لا يوجد نص"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "جارٍ إضافة روابط الطوابع الزمنية إلى فيديو قائمة التشغيل: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "جارٍ إضافة روابط الطوابع الزمنية إلى فيديو القناة: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ تمت إضافة روابط الطوابع الزمنية إلى {title}"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} («{title}»)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "تم إنشاء الملاحظة، لكن تعذّرت إضافة الطوابع الزمنية إلى «{title}»"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ تمت معالجة الفيديو {current}/{total}"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ تم تخطي الفيديو «{title}» – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ خطأ في معالجة الفيديو «{title}»: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "اكتملت معالجة القناة – تمت معالجة: {processed}، تم تخطي: {skipped}، أخطاء: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "تعذّر حفظ المهمة: {error}. قد يكون الفيديو قيد المعالجة؛ راجع «إظهار المهام النشطة»"
@@ -1134,5 +1090,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "لا يوجد نص لهذا الفيديو"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "جارٍ معالجة {name}: {done} من {total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "تم إغلاق المجموعات المتوقفة: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "إيقاف المجموعة"
     }
 }

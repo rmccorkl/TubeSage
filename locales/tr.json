@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Oynatma listesindeki videolar alınıyor: {name}",
     "notice.collection.fetchingFrom.channel": "Kanaldaki videolar alınıyor: {name}",
     "notice.collection.videosToProcess": "İşlenecek videolar: {count}",
-    "notice.collection.processingVideo": "{current}/{total} numaralı video işleniyor: {title}",
-    "notice.collection.skipNoTranscript": "{title} videosu atlandı – deşifre metni yok",
-    "notice.collection.addingTimestamps.playlist": "Oynatma listesi videosuna zaman damgası bağlantıları ekleniyor: {title}",
-    "notice.collection.addingTimestamps.channel": "Kanal videosuna zaman damgası bağlantıları ekleniyor: {title}",
-    "notice.collection.timestampsAdded": "✓ {title} videosuna zaman damgası bağlantıları eklendi",
-    "notice.collection.timestampError": "{error} (“{title}”)",
-    "notice.collection.timestampsFailed": "Not oluşturuldu ama “{title}” için zaman damgaları eklenemedi",
-    "notice.collection.videoProcessed": "✓ {current}/{total} numaralı video işlendi",
-    "notice.collection.videoSkipped": "⚠️ “{title}” videosu atlandı – {error}",
-    "notice.collection.videoError": "❌ “{title}” videosu işlenirken hata: {error}",
-    "notice.collection.complete": "Kanal işleme tamamlandı – işlenen: {processed}, atlanan: {skipped}, hata: {errors}",
     "notice.job.saveFailed": "İş kaydedilemedi: {error}. Video hâlâ işleniyor olabilir; “Etkin işleri göster” bölümüne bakın",
     "notice.job.alreadyRunning": "Bu video zaten işleniyor",
     "notice.job.cannotResume": "Bu iş bu hâliyle sürdürülemez; durumuna bakın",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: yarıda kalan {count} iş ilgi bekliyor",
     "common.validation.required": "{field} alanını doldurun",
     "common.validation.genericError": "Bir hata oluştu",
-    "common.transcript.unavailable": "Bu video için deşifre metni yok"
+    "common.transcript.unavailable": "Bu video için deşifre metni yok",
+    "notice.collection.progress": "{name} işleniyor: {done}/{total}",
+    "notice.collection.closedOnStart": "Kesintiye uğrayan koleksiyonlar kapatıldı: {count}",
+    "modal.jobs.cancelCollection": "Koleksiyonu durdur"
 }

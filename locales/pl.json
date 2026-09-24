@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Pobieranie filmów z playlisty: {name}",
     "notice.collection.fetchingFrom.channel": "Pobieranie filmów z kanału: {name}",
     "notice.collection.videosToProcess": "Filmy do przetworzenia: {count}",
-    "notice.collection.processingVideo": "Przetwarzanie filmu {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Pomijam film {title} – brak transkrypcji",
-    "notice.collection.addingTimestamps.playlist": "Dodawanie odnośników czasowych do filmu z playlisty: {title}",
-    "notice.collection.addingTimestamps.channel": "Dodawanie odnośników czasowych do filmu z kanału: {title}",
-    "notice.collection.timestampsAdded": "✓ Dodano odnośniki czasowe do {title}",
-    "notice.collection.timestampError": "{error} („{title}”)",
-    "notice.collection.timestampsFailed": "Notatka utworzona, ale nie udało się dodać znaczników czasu do „{title}”",
-    "notice.collection.videoProcessed": "✓ Przetworzono film {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ Pomijam film „{title}” – {error}",
-    "notice.collection.videoError": "❌ Błąd przetwarzania filmu „{title}”: {error}",
-    "notice.collection.complete": "Przetwarzanie kanału zakończone – przetworzone: {processed}, pominięte: {skipped}, błędy: {errors}",
     "notice.job.saveFailed": "Nie udało się zapisać zadania: {error}. Film może być nadal przetwarzany; zobacz „Pokaż aktywne zadania”",
     "notice.job.alreadyRunning": "Ten film jest już przetwarzany",
     "notice.job.cannotResume": "Tego zadania nie można wznowić w tym stanie; zobacz jego status",
@@ -280,5 +269,8 @@
     "notice.recovery.several": "TubeSage: uwagi wymaga przerwanych zadań: {count}",
     "common.validation.required": "Wypełnij pole {field}",
     "common.validation.genericError": "Wystąpił błąd",
-    "common.transcript.unavailable": "Do tego filmu nie ma transkrypcji"
+    "common.transcript.unavailable": "Do tego filmu nie ma transkrypcji",
+    "notice.collection.progress": "Przetwarzanie {name}: {done} z {total}",
+    "notice.collection.closedOnStart": "Zamknięte przerwane kolekcje: {count}",
+    "modal.jobs.cancelCollection": "Zatrzymaj kolekcję"
 }

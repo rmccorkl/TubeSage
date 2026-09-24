@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "დასამუშავებელი ვიდეოები: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "მიმდინარეობს ვიდეოს {current}/{total} დამუშავება: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "ვიდეო {title} გამოტოვებულია – ტრანსკრიპტი არ არის"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "მიმდინარეობს დროის ნიშნულების ბმულების დამატება დასაკრავი სიის ვიდეოსთვის: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "მიმდინარეობს დროის ნიშნულების ბმულების დამატება არხის ვიდეოსთვის: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ დროის ნიშნულების ბმულები დაემატა: {title}"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} („{title}“)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "შენიშვნა შეიქმნა, მაგრამ დროის ნიშნულების დამატება „{title}“-ში ვერ მოხერხდა"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ დამუშავდა ვიდეო {current}/{total}"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ ვიდეო „{title}“ გამოტოვებულია – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ შეცდომა ვიდეოს „{title}“ დამუშავებისას: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "არხის დამუშავება დასრულდა – დამუშავდა: {processed}, გამოტოვდა: {skipped}, შეცდომები: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "დავალების შენახვა ვერ მოხერხდა: {error}. ვიდეო შესაძლოა ჯერ კიდევ მუშავდებოდეს; იხილეთ „აქტიური სამუშაოების ჩვენება“"
@@ -1118,5 +1074,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "ამ ვიდეოსთვის ტრანსკრიპტი არ არის"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "მიმდინარეობს {name}: {done} / {total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "დახურულია შეწყვეტილი კოლექციები: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "კოლექციის შეჩერება"
     }
 }

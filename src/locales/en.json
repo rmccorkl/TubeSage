@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Fetching videos from playlist: {name}",
     "notice.collection.fetchingFrom.channel": "Fetching videos from channel: {name}",
     "notice.collection.videosToProcess": "Found {count} videos to process",
-    "notice.collection.processingVideo": "Processing video {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Skipping video {title} - No transcript available",
-    "notice.collection.addingTimestamps.playlist": "Adding timestamp links to playlist video: {title}",
-    "notice.collection.addingTimestamps.channel": "Adding timestamp links to channel video: {title}",
-    "notice.collection.timestampsAdded": "✓ Timestamp links added to {title}",
-    "notice.collection.timestampError": "{error} (\"{title}\")",
-    "notice.collection.timestampsFailed": "Note created but timestamps could not be added to \"{title}\"",
-    "notice.collection.videoProcessed": "✓ Processed video {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ Skipping video \"{title}\" - {error}",
-    "notice.collection.videoError": "❌ Error processing video \"{title}\": {error}",
-    "notice.collection.complete": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
     "notice.job.saveFailed": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
     "notice.job.alreadyRunning": "This video is already being processed",
     "notice.job.cannotResume": "This job cannot be resumed as it is; see its status",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} interrupted jobs need attention",
     "common.validation.required": "Please enter a {field}",
     "common.validation.genericError": "An error occurred",
-    "common.transcript.unavailable": "No transcript is available for this video"
+    "common.transcript.unavailable": "No transcript is available for this video",
+    "notice.collection.progress": "Processing {name}: {done} of {total}",
+    "notice.collection.closedOnStart": "Interrupted collections closed: {count}",
+    "modal.jobs.cancelCollection": "Stop collection"
 }

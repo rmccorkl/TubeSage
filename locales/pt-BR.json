@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Buscando os vídeos da playlist: {name}",
     "notice.collection.fetchingFrom.channel": "Buscando os vídeos do canal: {name}",
     "notice.collection.videosToProcess": "Vídeos para processar: {count}",
-    "notice.collection.processingVideo": "Processando o vídeo {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Vídeo {title} pulado – sem transcrição disponível",
-    "notice.collection.addingTimestamps.playlist": "Adicionando links de tempo ao vídeo da playlist: {title}",
-    "notice.collection.addingTimestamps.channel": "Adicionando links de tempo ao vídeo do canal: {title}",
-    "notice.collection.timestampsAdded": "✓ Links de tempo adicionados a {title}",
-    "notice.collection.timestampError": "{error} (\"{title}\")",
-    "notice.collection.timestampsFailed": "Nota criada, mas não foi possível adicionar marcações de tempo a \"{title}\"",
-    "notice.collection.videoProcessed": "✓ Vídeo {current}/{total} processado",
-    "notice.collection.videoSkipped": "⚠️ Vídeo \"{title}\" pulado – {error}",
-    "notice.collection.videoError": "❌ Erro ao processar o vídeo \"{title}\": {error}",
-    "notice.collection.complete": "Processamento do canal concluído – processados: {processed}, pulados: {skipped}, erros: {errors}",
     "notice.job.saveFailed": "Não foi possível salvar a tarefa: {error}. O vídeo pode continuar sendo processado; veja \"Mostrar trabalhos ativos\"",
     "notice.job.alreadyRunning": "Este vídeo já está sendo processado",
     "notice.job.cannotResume": "Esta tarefa não pode ser retomada assim; veja o status dela",
@@ -279,5 +268,8 @@
     "notice.recovery.several": "TubeSage: {count} trabalhos interrompidos precisam de atenção",
     "common.validation.required": "Informe o campo {field}",
     "common.validation.genericError": "Ocorreu um erro",
-    "common.transcript.unavailable": "Nenhuma transcrição disponível para este vídeo"
+    "common.transcript.unavailable": "Nenhuma transcrição disponível para este vídeo",
+    "notice.collection.progress": "Processando {name}: {done} de {total}",
+    "notice.collection.closedOnStart": "Coleções interrompidas fechadas: {count}",
+    "modal.jobs.cancelCollection": "Parar coleção"
 }

@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "Físeáin le próiseáil: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "Físeán {current}/{total} á phróiseáil: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "Físeán {title} á scipeáil – níl tras-scríbhinn ar fáil"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "Naisc stampa ama á gcur le físeán an tseinmliosta: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "Naisc stampa ama á gcur le físeán an chainéil: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ Cuireadh naisc stampa ama le {title}"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} (“{title}”)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "Cruthaíodh an nóta ach níorbh fhéidir stampaí ama a chur le “{title}”"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ Físeán {current}/{total} próiseáilte"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ Físeán “{title}” á scipeáil – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ Earráid agus físeán “{title}” á phróiseáil: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "Próiseáil an chainéil críochnaithe – próiseáilte: {processed}, scipeáilte: {skipped}, earráidí: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "Níorbh fhéidir an tasc a shábháil: {error}. D'fhéadfadh an físeán a bheith á phróiseáil fós; féach “Taispeáin jabanna gníomhacha”"
@@ -1130,5 +1086,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "Níl tras-scríbhinn ar fáil don fhíseán seo"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "{name} á phróiseáil: {done} as {total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "Bailiúcháin a briseadh, dúnta: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "Stop an bailiúchán"
     }
 }

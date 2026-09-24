@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "የሚሠሩ ቪዲዮዎች፦ {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "ቪዲዮ {current}/{total} በመሠራት ላይ፦ {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "ቪዲዮ {title} ተዘሏል – ግልባጭ የለም"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "ለዝርዝሩ ቪዲዮ የጊዜ ማህተም አገናኞች በመጨመር ላይ፦ {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "ለቻናሉ ቪዲዮ የጊዜ ማህተም አገናኞች በመጨመር ላይ፦ {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ የጊዜ ማህተም አገናኞች ወደ {title} ተጨምረዋል"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} («{title}»)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "ማስታወሻው ተፈጥሯል፣ ነገር ግን ወደ «{title}» የጊዜ ማህተሞችን መጨመር አልተቻለም"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ ቪዲዮ {current}/{total} ተሠርቷል"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ ቪዲዮ «{title}» ተዘሏል – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ ቪዲዮ «{title}» በማስኬድ ላይ ስህተት፦ {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "የቻናል ማስኬድ ተጠናቋል – ተሠርተዋል፦ {processed}፣ ተዘለዋል፦ {skipped}፣ ስህተቶች፦ {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "ሥራውን ማስቀመጥ አልተቻለም፦ {error}። ቪዲዮው አሁንም እየተሠራ ሊሆን ይችላል፤ «ንቁ ሥራዎችን አሳይ» ይመልከቱ"
@@ -1118,5 +1074,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "ለዚህ ቪዲዮ ግልባጭ የለም"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "{name} በማስኬድ ላይ፦ {done}/{total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "የተቋረጡ ስብስቦች ተዘግተዋል፦ {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "ስብስቡን አቁም"
     }
 }

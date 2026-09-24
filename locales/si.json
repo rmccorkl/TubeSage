@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "ධාවන ලැයිස්තුවෙන් වීඩියෝ ලබාගනිමින්: {name}",
     "notice.collection.fetchingFrom.channel": "නාලිකාවෙන් වීඩියෝ ලබාගනිමින්: {name}",
     "notice.collection.videosToProcess": "සැකසීමට ඇති වීඩියෝ: {count}",
-    "notice.collection.processingVideo": "වීඩියෝ {current}/{total} සකසමින්: {title}",
-    "notice.collection.skipNoTranscript": "වීඩියෝ {title} මඟ හැරිණි – පිටපතක් නැත",
-    "notice.collection.addingTimestamps.playlist": "ධාවන ලැයිස්තු වීඩියෝවට කාල මුද්‍රා සබැඳි එක් කරමින්: {title}",
-    "notice.collection.addingTimestamps.channel": "නාලිකා වීඩියෝවට කාල මුද්‍රා සබැඳි එක් කරමින්: {title}",
-    "notice.collection.timestampsAdded": "✓ {title} වෙත කාල මුද්‍රා සබැඳි එක් කෙරිණි",
-    "notice.collection.timestampError": "{error} (“{title}”)",
-    "notice.collection.timestampsFailed": "සටහන සෑදිණි, නමුත් “{title}” වෙත කාල මුද්‍රා එක් කළ නොහැකි විය",
-    "notice.collection.videoProcessed": "✓ වීඩියෝ {current}/{total} සැකසිණි",
-    "notice.collection.videoSkipped": "⚠️ වීඩියෝ “{title}” මඟ හැරිණි – {error}",
-    "notice.collection.videoError": "❌ වීඩියෝ “{title}” සැකසීමේ දෝෂය: {error}",
-    "notice.collection.complete": "නාලිකා සැකසීම අවසන් – සැකසූ: {processed}, මඟහැරි: {skipped}, දෝෂ: {errors}",
     "notice.job.saveFailed": "කාර්යය සුරැකිය නොහැකි විය: {error}. වීඩියෝව තවමත් සැකසෙමින් තිබිය හැක; “ක්‍රියාකාරී කාර්ය පෙන්වන්න” බලන්න",
     "notice.job.alreadyRunning": "මෙම වීඩියෝව දැනටමත් සැකසෙමින් පවතී",
     "notice.job.cannotResume": "මෙම කාර්යය මෙම තත්ත්වයේ නැවත ඇරඹිය නොහැක; එහි තත්ත්වය බලන්න",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: බාධා වූ කාර්ය {count}කට අවධානය අවශ්‍යයි",
     "common.validation.required": "{field} ක්ෂේත්‍රය සම්පූර්ණ කරන්න",
     "common.validation.genericError": "දෝෂයක් ඇති විය",
-    "common.transcript.unavailable": "මෙම වීඩියෝව සඳහා පිටපතක් නැත"
+    "common.transcript.unavailable": "මෙම වීඩියෝව සඳහා පිටපතක් නැත",
+    "notice.collection.progress": "{name} සකසමින්: {done}/{total}",
+    "notice.collection.closedOnStart": "බාධා වූ එකතු වසා දැමිණි: {count}",
+    "modal.jobs.cancelCollection": "එකතුව නවත්වන්න"
 }

@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Haetaan soittolistan videoita: {name}",
     "notice.collection.fetchingFrom.channel": "Haetaan kanavan videoita: {name}",
     "notice.collection.videosToProcess": "Käsiteltäviä videoita: {count}",
-    "notice.collection.processingVideo": "Käsitellään videota {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Ohitetaan video {title} – ei tekstitystä",
-    "notice.collection.addingTimestamps.playlist": "Lisätään aikaleimalinkkejä soittolistan videoon: {title}",
-    "notice.collection.addingTimestamps.channel": "Lisätään aikaleimalinkkejä kanavan videoon: {title}",
-    "notice.collection.timestampsAdded": "✓ Aikaleimalinkit lisätty: {title}",
-    "notice.collection.timestampError": "{error} (”{title}”)",
-    "notice.collection.timestampsFailed": "Muistiinpano luotiin, mutta aikaleimoja ei voitu lisätä kohteeseen ”{title}”",
-    "notice.collection.videoProcessed": "✓ Video {current}/{total} käsitelty",
-    "notice.collection.videoSkipped": "⚠️ Ohitetaan video ”{title}” – {error}",
-    "notice.collection.videoError": "❌ Virhe käsiteltäessä videota ”{title}”: {error}",
-    "notice.collection.complete": "Kanavan käsittely valmis – käsitelty: {processed}, ohitettu: {skipped}, virheitä: {errors}",
     "notice.job.saveFailed": "Työtä ei voitu tallentaa: {error}. Videon käsittely voi jatkua; katso ”Näytä aktiiviset työt”",
     "notice.job.alreadyRunning": "Tätä videota käsitellään jo",
     "notice.job.cannotResume": "Tätä työtä ei voi jatkaa tällaisenaan; katso sen tila",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} keskeytynyttä työtä vaatii huomiota",
     "common.validation.required": "Täytä kenttä {field}",
     "common.validation.genericError": "Tapahtui virhe",
-    "common.transcript.unavailable": "Tälle videolle ei ole litterointia"
+    "common.transcript.unavailable": "Tälle videolle ei ole litterointia",
+    "notice.collection.progress": "Käsitellään {name}: {done}/{total}",
+    "notice.collection.closedOnStart": "Keskeytyneet kokoelmat suljettu: {count}",
+    "modal.jobs.cancelCollection": "Pysäytä kokoelma"
 }

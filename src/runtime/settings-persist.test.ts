@@ -88,3 +88,17 @@ describe("settingsForPersist", () => {
     expect(payload[JOBS_KEY]).toEqual([expect.objectContaining({ id: "job-1" })]);
   });
 });
+
+describe("reserved store keys never round-trip as settings", () => {
+  it("drops _collections as well as _jobs", () => {
+    // Both are owned by the store and re-added at flush. If either survived
+    // here it would be written back as user configuration and then grow on
+    // every save.
+    const payload = settingsForPersist(
+      { apiKeys: { ollama: "http://localhost:11434" }, _jobs: [{ id: "j" }], _collections: [{ id: "c" }] } as never,
+      "http://localhost:11434",
+    );
+    expect(payload).not.toHaveProperty("_jobs");
+    expect(payload).not.toHaveProperty("_collections");
+  });
+});

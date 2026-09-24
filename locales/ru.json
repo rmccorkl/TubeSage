@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Загрузка видео из плейлиста: {name}",
     "notice.collection.fetchingFrom.channel": "Загрузка видео из канала: {name}",
     "notice.collection.videosToProcess": "Видео к обработке: {count}",
-    "notice.collection.processingVideo": "Обработка видео {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Видео {title} пропущено — расшифровки нет",
-    "notice.collection.addingTimestamps.playlist": "Добавление ссылок с метками времени к видео из плейлиста: {title}",
-    "notice.collection.addingTimestamps.channel": "Добавление ссылок с метками времени к видео из канала: {title}",
-    "notice.collection.timestampsAdded": "✓ Ссылки с метками времени добавлены к {title}",
-    "notice.collection.timestampError": "{error} («{title}»)",
-    "notice.collection.timestampsFailed": "Заметка создана, но метки времени не удалось добавить к «{title}»",
-    "notice.collection.videoProcessed": "✓ Обработано видео {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ Видео «{title}» пропущено — {error}",
-    "notice.collection.videoError": "❌ Ошибка обработки видео «{title}»: {error}",
-    "notice.collection.complete": "Обработка канала завершена — обработано: {processed}, пропущено: {skipped}, ошибок: {errors}",
     "notice.job.saveFailed": "Не удалось сохранить задачу: {error}. Видео может всё ещё обрабатываться; см. «Показать активные задачи»",
     "notice.job.alreadyRunning": "Это видео уже обрабатывается",
     "notice.job.cannotResume": "Эту задачу нельзя возобновить в таком состоянии; см. её статус",
@@ -280,5 +269,8 @@
     "notice.recovery.several": "TubeSage: внимания требуют прерванные задачи — {count}",
     "common.validation.required": "Заполните поле {field}",
     "common.validation.genericError": "Произошла ошибка",
-    "common.transcript.unavailable": "Для этого видео нет расшифровки"
+    "common.transcript.unavailable": "Для этого видео нет расшифровки",
+    "notice.collection.progress": "Обработка {name}: {done} из {total}",
+    "notice.collection.closedOnStart": "Закрыто прерванных коллекций: {count}",
+    "modal.jobs.cancelCollection": "Остановить коллекцию"
 }

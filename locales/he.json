@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "מאחזר סרטונים מהפלייליסט: {name}",
     "notice.collection.fetchingFrom.channel": "מאחזר סרטונים מהערוץ: {name}",
     "notice.collection.videosToProcess": "סרטונים לעיבוד: {count}",
-    "notice.collection.processingVideo": "מעבד סרטון {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "מדלג על הסרטון {title} – אין תמליל",
-    "notice.collection.addingTimestamps.playlist": "מוסיף קישורי חותמות זמן לסרטון מהפלייליסט: {title}",
-    "notice.collection.addingTimestamps.channel": "מוסיף קישורי חותמות זמן לסרטון מהערוץ: {title}",
-    "notice.collection.timestampsAdded": "✓ נוספו קישורי חותמות זמן ל-{title}",
-    "notice.collection.timestampError": "{error} (\"{title}\")",
-    "notice.collection.timestampsFailed": "הפתק נוצר, אך לא ניתן היה להוסיף חותמות זמן ל-\"{title}\"",
-    "notice.collection.videoProcessed": "✓ עובד סרטון {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ מדלג על הסרטון \"{title}\" – {error}",
-    "notice.collection.videoError": "❌ שגיאה בעיבוד הסרטון \"{title}\": {error}",
-    "notice.collection.complete": "עיבוד הערוץ הושלם – עובדו: {processed}, דולגו: {skipped}, שגיאות: {errors}",
     "notice.job.saveFailed": "לא ניתן לשמור את המשימה: {error}. ייתכן שהסרטון עדיין מעובד; ראה \"הצג משימות פעילות\"",
     "notice.job.alreadyRunning": "הסרטון הזה כבר בעיבוד",
     "notice.job.cannotResume": "לא ניתן להמשיך את המשימה הזו במצבה; ראה את הסטטוס שלה",
@@ -279,5 +268,8 @@
     "notice.recovery.several": "TubeSage: {count} משימות מופסקות דורשות טיפול",
     "common.validation.required": "יש להזין {field}",
     "common.validation.genericError": "אירעה שגיאה",
-    "common.transcript.unavailable": "אין תמליל זמין לסרטון זה"
+    "common.transcript.unavailable": "אין תמליל זמין לסרטון זה",
+    "notice.collection.progress": "מעבד את {name}: {done} מתוך {total}",
+    "notice.collection.closedOnStart": "אוספים שנקטעו נסגרו: {count}",
+    "modal.jobs.cancelCollection": "עצור אוסף"
 }

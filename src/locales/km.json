@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "វីដេអូដែលត្រូវដំណើរការ៖ {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "កំពុងដំណើរការវីដេអូ {current}/{total}៖ {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "រំលងវីដេអូ {title} – មិនមានអត្ថបទ"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "កំពុងបន្ថែមតំណពេលវេលាទៅវីដេអូក្នុងបញ្ជីចាក់៖ {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "កំពុងបន្ថែមតំណពេលវេលាទៅវីដេអូក្នុងឆានែល៖ {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ បានបន្ថែមតំណពេលវេលាទៅ {title}"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} (“{title}”)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "បានបង្កើតកំណត់ត្រា ប៉ុន្តែមិនអាចបន្ថែមពេលវេលាទៅ “{title}” បានទេ"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ បានដំណើរការវីដេអូ {current}/{total}"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ រំលងវីដេអូ “{title}” – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ កំហុសពេលដំណើរការវីដេអូ “{title}”៖ {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "ដំណើរការឆានែលបានបញ្ចប់ – បានដំណើរការ៖ {processed} រំលង៖ {skipped} កំហុស៖ {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "មិនអាចរក្សាទុកកិច្ចការបានទេ៖ {error}។ វីដេអូអាចនៅកំពុងដំណើរការ សូមមើល “បង្ហាញការងារសកម្ម”"
@@ -1114,5 +1070,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "មិនមានប្រតិចារិកសម្រាប់វីដេអូនេះទេ"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "កំពុងដំណើរការ {name}៖ {done}/{total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "បានបិទបណ្តុំដែលបានរំខាន: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "បញ្ឈប់បណ្តុំ"
     }
 }

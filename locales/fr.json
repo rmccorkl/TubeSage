@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Récupération des vidéos de la playlist : {name}",
     "notice.collection.fetchingFrom.channel": "Récupération des vidéos de la chaîne : {name}",
     "notice.collection.videosToProcess": "Vidéos à traiter : {count}",
-    "notice.collection.processingVideo": "Traitement de la vidéo {current}/{total} : {title}",
-    "notice.collection.skipNoTranscript": "Vidéo {title} ignorée – aucune transcription disponible",
-    "notice.collection.addingTimestamps.playlist": "Ajout des liens horodatés à la vidéo de la playlist : {title}",
-    "notice.collection.addingTimestamps.channel": "Ajout des liens horodatés à la vidéo de la chaîne : {title}",
-    "notice.collection.timestampsAdded": "✓ Liens horodatés ajoutés à {title}",
-    "notice.collection.timestampError": "{error} (« {title} »)",
-    "notice.collection.timestampsFailed": "Note créée, mais les horodatages n'ont pas pu être ajoutés à « {title} »",
-    "notice.collection.videoProcessed": "✓ Vidéo {current}/{total} traitée",
-    "notice.collection.videoSkipped": "⚠️ Vidéo « {title} » ignorée – {error}",
-    "notice.collection.videoError": "❌ Erreur lors du traitement de la vidéo « {title} » : {error}",
-    "notice.collection.complete": "Traitement de la chaîne terminé – traitées : {processed}, ignorées : {skipped}, erreurs : {errors}",
     "notice.job.saveFailed": "Impossible d'enregistrer la tâche : {error}. La vidéo est peut-être toujours en cours ; voyez « Afficher les tâches actives »",
     "notice.job.alreadyRunning": "Cette vidéo est déjà en cours de traitement",
     "notice.job.cannotResume": "Cette tâche ne peut pas être reprise telle quelle ; voyez son état",
@@ -279,5 +268,8 @@
     "notice.recovery.several": "TubeSage : {count} tâches interrompues demandent votre attention",
     "common.validation.required": "Veuillez renseigner le champ {field}",
     "common.validation.genericError": "Une erreur s'est produite",
-    "common.transcript.unavailable": "Aucune transcription n'est disponible pour cette vidéo"
+    "common.transcript.unavailable": "Aucune transcription n'est disponible pour cette vidéo",
+    "notice.collection.progress": "Traitement de {name} : {done} sur {total}",
+    "notice.collection.closedOnStart": "Collections interrompues fermées : {count}",
+    "modal.jobs.cancelCollection": "Arrêter la collection"
 }

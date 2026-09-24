@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Načítám videa z playlistu: {name}",
     "notice.collection.fetchingFrom.channel": "Načítám videa z kanálu: {name}",
     "notice.collection.videosToProcess": "Videí ke zpracování: {count}",
-    "notice.collection.processingVideo": "Zpracovávám video {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Přeskakuji video {title} – přepis není k dispozici",
-    "notice.collection.addingTimestamps.playlist": "Přidávám časové odkazy k videu z playlistu: {title}",
-    "notice.collection.addingTimestamps.channel": "Přidávám časové odkazy k videu z kanálu: {title}",
-    "notice.collection.timestampsAdded": "✓ Časové odkazy přidány k {title}",
-    "notice.collection.timestampError": "{error} („{title}“)",
-    "notice.collection.timestampsFailed": "Poznámka vytvořena, ale časové značky se k „{title}“ nepodařilo přidat",
-    "notice.collection.videoProcessed": "✓ Zpracováno video {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ Přeskakuji video „{title}“ – {error}",
-    "notice.collection.videoError": "❌ Chyba při zpracování videa „{title}“: {error}",
-    "notice.collection.complete": "Zpracování kanálu dokončeno – zpracováno: {processed}, přeskočeno: {skipped}, chyby: {errors}",
     "notice.job.saveFailed": "Úlohu se nepodařilo uložit: {error}. Video se možná stále zpracovává; viz „Zobrazit aktivní úlohy“",
     "notice.job.alreadyRunning": "Toto video se už zpracovává",
     "notice.job.cannotResume": "Tuto úlohu nelze v tomto stavu obnovit; viz její stav",
@@ -280,5 +269,8 @@
     "notice.recovery.several": "TubeSage: pozornost vyžaduje přerušených úloh: {count}",
     "common.validation.required": "Vyplňte pole {field}",
     "common.validation.genericError": "Došlo k chybě",
-    "common.transcript.unavailable": "Pro toto video není k dispozici přepis"
+    "common.transcript.unavailable": "Pro toto video není k dispozici přepis",
+    "notice.collection.progress": "Zpracovávání {name}: {done} z {total}",
+    "notice.collection.closedOnStart": "Přerušené kolekce uzavřeny: {count}",
+    "modal.jobs.cancelCollection": "Zastavit kolekci"
 }

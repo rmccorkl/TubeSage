@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Mengambil video dari daftar putar: {name}",
     "notice.collection.fetchingFrom.channel": "Mengambil video dari kanal: {name}",
     "notice.collection.videosToProcess": "Video untuk diproses: {count}",
-    "notice.collection.processingVideo": "Memproses video {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Melewati video {title} – transkrip tidak tersedia",
-    "notice.collection.addingTimestamps.playlist": "Menambahkan tautan stempel waktu ke video daftar putar: {title}",
-    "notice.collection.addingTimestamps.channel": "Menambahkan tautan stempel waktu ke video kanal: {title}",
-    "notice.collection.timestampsAdded": "✓ Tautan stempel waktu ditambahkan ke {title}",
-    "notice.collection.timestampError": "{error} (“{title}”)",
-    "notice.collection.timestampsFailed": "Catatan dibuat, tetapi stempel waktu tidak dapat ditambahkan ke “{title}”",
-    "notice.collection.videoProcessed": "✓ Video {current}/{total} diproses",
-    "notice.collection.videoSkipped": "⚠️ Melewati video “{title}” – {error}",
-    "notice.collection.videoError": "❌ Kesalahan saat memproses video “{title}”: {error}",
-    "notice.collection.complete": "Pemrosesan kanal selesai – diproses: {processed}, dilewati: {skipped}, kesalahan: {errors}",
     "notice.job.saveFailed": "Tidak dapat menyimpan tugas: {error}. Video mungkin masih diproses; lihat “Tampilkan pekerjaan aktif”",
     "notice.job.alreadyRunning": "Video ini sedang diproses",
     "notice.job.cannotResume": "Tugas ini tidak dapat dilanjutkan dalam keadaan ini; lihat statusnya",
@@ -277,5 +266,8 @@
     "notice.recovery.several": "TubeSage: {count} pekerjaan yang terhenti perlu ditangani",
     "common.validation.required": "Isi kolom {field}",
     "common.validation.genericError": "Terjadi kesalahan",
-    "common.transcript.unavailable": "Transkrip tidak tersedia untuk video ini"
+    "common.transcript.unavailable": "Transkrip tidak tersedia untuk video ini",
+    "notice.collection.progress": "Memproses {name}: {done} dari {total}",
+    "notice.collection.closedOnStart": "Koleksi terhenti yang ditutup: {count}",
+    "modal.jobs.cancelCollection": "Hentikan koleksi"
 }

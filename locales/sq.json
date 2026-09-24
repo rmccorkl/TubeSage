@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Po merren videot nga lista e luajtjes: {name}",
     "notice.collection.fetchingFrom.channel": "Po merren videot nga kanali: {name}",
     "notice.collection.videosToProcess": "Video për t'u përpunuar: {count}",
-    "notice.collection.processingVideo": "Po përpunohet videoja {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Videoja {title} u anashkalua – nuk ka transkript",
-    "notice.collection.addingTimestamps.playlist": "Po shtohen lidhje me vulë kohore te videoja e listës: {title}",
-    "notice.collection.addingTimestamps.channel": "Po shtohen lidhje me vulë kohore te videoja e kanalit: {title}",
-    "notice.collection.timestampsAdded": "✓ U shtuan lidhje me vulë kohore te {title}",
-    "notice.collection.timestampError": "{error} («{title}»)",
-    "notice.collection.timestampsFailed": "Shënimi u krijua, por vulat kohore nuk u shtuan dot te «{title}»",
-    "notice.collection.videoProcessed": "✓ U përpunua videoja {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ Videoja «{title}» u anashkalua – {error}",
-    "notice.collection.videoError": "❌ Gabim gjatë përpunimit të videos «{title}»: {error}",
-    "notice.collection.complete": "Përpunimi i kanalit përfundoi – të përpunuara: {processed}, të anashkaluara: {skipped}, gabime: {errors}",
     "notice.job.saveFailed": "Puna nuk u ruajt dot: {error}. Videoja mund të jetë ende në përpunim; shihni «Shfaq punët aktive»",
     "notice.job.alreadyRunning": "Kjo video po përpunohet tashmë",
     "notice.job.cannotResume": "Kjo punë nuk mund të vazhdohet kështu; shihni gjendjen e saj",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} punë të ndërprera kërkojnë vëmendje",
     "common.validation.required": "Ju lutemi, plotësoni fushën {field}",
     "common.validation.genericError": "Ndodhi një gabim",
-    "common.transcript.unavailable": "Nuk ka transkript për këtë video"
+    "common.transcript.unavailable": "Nuk ka transkript për këtë video",
+    "notice.collection.progress": "Po përpunohet {name}: {done} nga {total}",
+    "notice.collection.closedOnStart": "Koleksionet e ndërprera u mbyllën: {count}",
+    "modal.jobs.cancelCollection": "Ndalo koleksionin"
 }

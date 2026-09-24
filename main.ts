@@ -11,7 +11,6 @@ import { validateRequired, validateYouTubeUrl, ValidationResult, displayValidati
 import { getPromptConfig, cleanTranscript, SummaryMode, getTimestampLinkConfig } from './src/utils/prompt-utils';
 import { showNotice, isYoutubeUrl, isYoutubeChannelOrPlaylistUrl, extractChannelName, YOUTUBE_URL_PLACEHOLDER } from './src/utils/youtube-utils';
 import { obsidianFetch } from './src/utils/fetch-shim';
-import { ProcessingSpinner } from './src/utils/processing-spinner';
 import { 
     extractDocumentComponents, 
     reconstructDocument, 
@@ -27,10 +26,14 @@ import {
 import type { Provider } from './src/utils/model-limits-registry';
 import { getEffectiveLimits, isModelSupported, upsertModel } from './src/utils/model-limits-registry';
 import { effectiveTitle, formatDatePrefix } from './src/jobs/job-record';
-import type { NotePathSettings } from './src/jobs/job-record';
+import type { NotePathSettings, NoteJobRecord } from './src/jobs/job-record';
 import { JobStore, hydrate } from './src/jobs/job-store';
 import { JobRunner, NoteChangedError, isTerminal } from './src/jobs/job-runner';
 import type { JobEvent, SubmitInput, SubmitResult } from './src/jobs/job-runner';
+import { CollectionNotices } from './src/runtime/collection-notice';
+import { CollectionRunner } from './src/runtime/collection-runner';
+import { aggregateProgress } from './src/jobs/collection-record';
+import type { CollectionVideo } from './src/jobs/collection-record';
 import { writeIfUnchanged } from './src/runtime/guarded-write';
 import { createRunnerDeps, generateOpaqueId } from './src/runtime/job-adapters';
 import type { RenderedNote, VaultLike } from './src/runtime/job-adapters';
@@ -305,6 +308,21 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     private readonly progressNotices = new JobProgressNotices(
         (message) => new Notice(message, 0)
     );
+    // A channel/playlist gets ONE notice for the whole run (#9), not one per
+    // video: `JobProgressNotices` keys by job id, so a 40-video playlist would
+    // otherwise stack 40 notices. While a run is live it owns its children's
+    // ids and their individual notices are suppressed.
+    private readonly collectionNotices = new CollectionNotices(
+        (message) => new Notice(message, 0),
+        (progress, parent) => t('notice.collection.progress', {
+            name: parent.sourceName,
+            done: progress.done,
+            total: progress.total,
+        })
+    );
+    // Public for the same reason `jobRunner` is: the create-note modal hands a
+    // channel/playlist to it once the folder is chosen.
+    collectionRunner: CollectionRunner | null = null;
     // Cold start (onLayoutReady) must be the FIRST recovery pass; until it
     // has run, visibility edges are ignored.
     private layoutReady = false;
@@ -369,6 +387,37 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 installationId: () => this.installationId(),
             })
         );
+
+        // Collections run ON the job runner: each video is submitted through
+        // the same `submit()` a single video uses, so a child is not merely
+        // shaped like an ordinary job — it is one, duplicate detection and all.
+        this.collectionRunner = new CollectionRunner({
+            generateId: () => generateOpaqueId(),
+            now: () => Date.now(),
+            installationId: () => this.installationId(),
+            submitChild: async (video: CollectionVideo, folder: string) => {
+                const result = await this.submitJob({
+                    url: video.url,
+                    videoId: video.videoId,
+                    folder,
+                    customTitle: '',
+                    useFastSummary: this.settings.useFastSummary,
+                    addTimestampLinks: this.settings.addTimestampLinks,
+                });
+                // `recovery` hands back a record rather than a bare id: the
+                // video already has a job, which is the duplicate case this
+                // path exists to inherit rather than re-implement.
+                if (result.kind === 'started' || result.kind === 'already-running') return result.id;
+                if (result.kind === 'recovery') return result.record.id;
+                return undefined;
+            },
+            cancelChild: (id: string) => this.jobRunner.cancel(id),
+            isActive: (id: string) => this.jobRunner.isActive(id),
+            getChild: (id: string) => this.jobStore.get(id),
+            saveCollection: (record) => this.jobStore.upsertCollection(record, Date.now()),
+            listCollections: () => this.jobStore.listCollections(),
+            notices: this.collectionNotices,
+        });
 
         // Recovery entry points (spec §6). Cold start FIRST: onLayoutReady runs
         // the pass that closes every job the previous process left unfinished
@@ -742,6 +791,24 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         return result;
     }
 
+    /**
+     * The channel/playlist runs this installation currently has going, for the
+     * jobs modal's stop control. Another installation's run is not listed: it
+     * may be live on that device, exactly as for single jobs.
+     */
+    runningCollections(): { id: string; sourceName: string; done: number; total: number }[] {
+        const installation = this.installationId();
+        return this.jobStore.listCollections()
+            .filter((parent) => parent.status === 'running' && parent.installationId === installation)
+            .map((parent) => {
+                const children = parent.childIds
+                    .map((id) => this.jobStore.get(id))
+                    .filter((child): child is NoteJobRecord => child !== undefined);
+                const progress = aggregateProgress(parent, children);
+                return { id: parent.id, sourceName: parent.sourceName, done: progress.done, total: progress.total };
+            });
+    }
+
     /** Subscribes to runner events; returns the unsubscribe function. */
     subscribeToJobEvents(listener: JobEventListener): () => void {
         this.jobEventListeners.add(listener);
@@ -756,17 +823,33 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     // event type reaches it, so a job's notice appears on its first progress
     // event and is hidden by whichever terminal event ends it.
     private onJobEvent(event: JobEvent): void {
-        this.progressNotices.handle(event);
+        // A child of a live collection is reported by that run's single notice,
+        // so its own per-job notice and per-job completion notices are
+        // suppressed. Logging, the debug note and the UI subscribers below are
+        // unaffected — only the notice surface changes.
+        const inCollection = this.collectionRunner?.owns(event.id) ?? false;
+        if (!inCollection) {
+            this.progressNotices.handle(event);
+        }
+        // ADVANCE THE RUN. Without this a collection submits its first video
+        // and stops: every module was green while a 3-video playlist produced
+        // one note and a notice that never closed. The routing itself lives in
+        // CollectionRunner.handleJobEvent, where it is covered by tests.
+        void this.collectionRunner?.handleJobEvent(event);
         switch (event.type) {
             case 'progress':
                 logger.debug(`[jobs] ${event.id} ${event.stage}: ${event.message}`);
                 break;
             case 'done':
                 logger.info(`[jobs] ${event.id} done: ${event.notePath}`);
-                this.showNotice(doneNoticeText(event), 5000);
+                if (!inCollection) {
+                    this.showNotice(doneNoticeText(event), 5000);
+                }
                 // Auto-open ONLY for a job submitted in this session while the
                 // app is visible; a recovered job never opens its note (F5).
-                if (this.sessionJobIds.has(event.id) && activeDocument.visibilityState === 'visible') {
+                // Never for a collection child: a 40-video playlist would throw
+                // 40 notes open.
+                if (!inCollection && this.sessionJobIds.has(event.id) && activeDocument.visibilityState === 'visible') {
                     void this.openNote(event.notePath);
                 }
                 this.sessionJobIds.delete(event.id);
@@ -774,7 +857,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             case 'failed':
                 logger.error(`[jobs] ${event.id} failed: ${event.error}`);
                 this.sessionJobIds.delete(event.id);
-                this.showNotice(t('notice.job.failed', { error: event.error }), 5000);
+                if (!inCollection) { this.showNotice(t('notice.job.failed', { error: event.error }), 5000); }
                 if (this.settings.debugLogging) {
                     const record = this.jobStore.get(event.id);
                     if (record !== undefined) {
@@ -790,14 +873,14 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             case 'cancelled':
                 logger.info(`[jobs] ${event.id} cancelled`);
                 this.sessionJobIds.delete(event.id);
-                this.showNotice(t('notice.job.cancelled'), 3000);
+                if (!inCollection) { this.showNotice(t('notice.job.cancelled'), 3000); }
                 break;
             case 'interrupted':
                 logger.warn(`[jobs] ${event.id} interrupted`, event.prompt);
                 // From here on the job is a recovered one even if it was
                 // submitted in this session: a later resume must not auto-open.
                 this.sessionJobIds.delete(event.id);
-                this.showNotice(t('notice.job.interrupted'), 6000);
+                if (!inCollection) { this.showNotice(t('notice.job.interrupted'), 6000); }
                 break;
         }
         for (const listener of Array.from(this.jobEventListeners)) {
@@ -890,6 +973,18 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 if (closedNotice !== undefined) {
                     this.showNotice(closedNotice, 8000);
                 }
+                // The same rule for collections (#9): a run dies with the
+                // instance that began it, so one left `running` by a killed
+                // instance is closed here and reported. Children are ordinary
+                // jobs and were already closed by the pass above — closing the
+                // parent must not, and does not, restart any of them.
+                void this.collectionRunner?.closeAbandoned().then((closed) => {
+                    if (closed > 0) {
+                        this.showNotice(t('notice.collection.closedOnStart', { count: closed }), 8000);
+                    }
+                }).catch((error: unknown) => {
+                    logger.error('[collections] cold-start closure failed:', error);
+                });
             }
         }
         const notice = recoveryNoticeText(promptCount);
@@ -3579,27 +3674,8 @@ class YouTubeTranscriptModal extends Modal {
     private async beginCollectionProcessing(sourceUrl: string, videoCount: number) {
         if (this.isProcessing) return;
 
-        let spinner: ProcessingSpinner | undefined;
         try {
             this.isProcessing = true;
-            
-            // Processing UI. On mobile the modal stays open and hosts the
-            // spinner; on desktop the status bar is the spinner surface, so the
-            // modal is closed — no blank popup. ProcessingSpinner routes itself
-            // (status bar on desktop, in-modal on mobile).
-            const { contentEl } = this;
-            if (Platform.isMobile) {
-                contentEl.empty();
-                const modalEl = (this as unknown as { modalEl?: HTMLElement }).modalEl;
-                if (modalEl && modalEl.instanceOf(HTMLElement)) {
-                    modalEl.addClass('tubesage-processing-modal');
-                }
-            } else {
-                this.close();
-            }
-
-            spinner = new ProcessingSpinner(this.plugin, 'Processing collection', contentEl);
-            spinner.start();
 
             // Determine if this is a playlist or channel
             const isPlaylist = sourceUrl.includes('/playlist') || sourceUrl.includes('list=');
@@ -3690,147 +3766,39 @@ class YouTubeTranscriptModal extends Modal {
             const videosToProcess = videoCount === 0 ? collectionVideos : collectionVideos.slice(0, videoCount);
             
             // Process each video
-            let processedCount = 0;
-            let skippedCount = 0;
-            let errorCount = 0;
-            
+            // Hand the run to the job runner (#9). Each video is submitted as an
+            // ordinary single-video job, so a collection inherits generation
+            // fencing, the two-phase claim, per-item billing attribution and
+            // cancellation unchanged rather than re-implementing any of them —
+            // and ONE floating notice reports the whole run.
+            const videos: CollectionVideo[] = [];
             for (const video of videosToProcess) {
-                try {
-                    clearLogs(); // Clear logs for each video processed in the collection
-
-                    // Captured ONCE per video: the sole source of this note's
-                    // date prefix (creation, timestamps and debug append agree
-                    // even when the run crosses midnight).
-                    const createdAt = Date.now();
-                    
-                    // Update processing message
-                    this.showNotice(t('notice.collection.processingVideo', {
-                        current: processedCount + skippedCount + errorCount + 1,
-                        total: videosToProcess.length,
-                        title: video.title,
-                    }), 5000);
-                    
-                    // Extract and summarize transcript
-                    try {
-                        const transcript = await this.plugin.extractTranscript(video.url);
-                        
-                        if (!transcript) {
-                            this.showNotice(t('notice.collection.skipNoTranscript', { title: video.title }), 5000);
-                            skippedCount++;
-                            continue;
-                        }
-                        
-                        const summary = await this.plugin.summarizeTranscript(transcript);
-                        
-                        // Create note with video title as the note title
-                        await this.plugin.applyTemplate(
-                            video.title, 
-                            video.url, 
-                            transcript, 
-                            summary, 
-                            sourceSubfolder,
-                            contentType,  // Pass the content type (Channel or Playlist)
-                            createdAt
-                        );
-
-                        // The path of the created note: same epoch as applyTemplate,
-                        // the one date-prefix implementation
-                        const notePath = joinPaths(
-                            sourceSubfolder,
-                            `${formatDatePrefix(createdAt, this.plugin.settings)}${sanitizeFilename(video.title)}.md`
-                        );
-                        
-                        // Add timestamp links if enabled and not in fast summary mode
-                        if (this.plugin.settings.addTimestampLinks && !this.plugin.settings.useFastSummary) {
-                            // Add timestamp links to the note - with specific notification for channel vs playlist
-                            this.showNotice(isPlaylist
-                                ? t('notice.collection.addingTimestamps.playlist', { title: video.title })
-                                : t('notice.collection.addingTimestamps.channel', { title: video.title }), 3000);
-                            try {
-                                // Simple, small delay to allow file creation to complete
-                                await new Promise(resolve => window.setTimeout(resolve, 300));
-                                logger.debug(`Adding timestamps to file: ${notePath}`);
-                                
-                                await this.plugin.addSectionLinksToNote(notePath, video.url);
-                                this.showNotice(t('notice.collection.timestampsAdded', { title: video.title }), 2000);
-                            } catch (timestampError) {
-                                logger.error(`Error adding timestamp links to ${isPlaylist ? 'playlist' : 'channel'} video (${video.title}):`, timestampError);
-                                if (timestampError instanceof NoteChangedError) {
-                                    this.showNotice(t('notice.collection.timestampError', {
-                                        error: timestampError.message,
-                                        title: video.title,
-                                    }), 5000);
-                                } else {
-                                    this.showNotice(t('notice.collection.timestampsFailed', { title: video.title }), 3000);
-                                }
-                            }
-                        }
-                        
-                        processedCount++;
-                        this.showNotice(t('notice.collection.videoProcessed', {
-                            current: processedCount + skippedCount + errorCount,
-                            total: videosToProcess.length,
-                        }), 3000);
-                        
-                        // === NEW LOGGING LOGIC START (for collection items) ===
-                        if (this.plugin.settings.debugLogging) {
-                            const finalLogs = getLogsForCallout();
-                            if (finalLogs && finalLogs.trim() !== "") { // Only append if there are non-empty logs
-                                // Simplest approach to create debug section 
-                                const debugHeader = "\n\n> [!info]- Debug Information (hidden)\n> ```";
-                                const debugFooter = "\n> ```";
-                                
-                                const debugSection = debugHeader + "\n" + finalLogs + debugFooter;
-                                
-                                try {
-                                    const file = this.app.vault.getAbstractFileByPath(notePath);
-                                    if (file instanceof TFile) {
-                                        // An append is safe under the atomic process callback
-                                        await this.app.vault.process(file, (data) => data + debugSection);
-                                        logger.debug("Appended debug logs to note:", notePath);
-                                    } else {
-                                        logger.warn("Could not find file to append debug logs:", notePath);
-                                    }
-                                } catch (logAppendError) {
-                                    logger.error("Error appending debug logs to note:", logAppendError);
-                                }
-                            }
-                        }
-                        // === NEW LOGGING LOGIC END ===
-                        
-                    } catch (transcriptError) {
-                    const transcriptErrorMessage = getSafeErrorMessage(transcriptError);
-                    this.showNotice(t('notice.collection.videoSkipped', {
-                        title: video.title,
-                        error: transcriptErrorMessage,
-                    }), 5000);
-                        skippedCount++;
-                        // Clear logs even on skip, so next video starts fresh
-                        clearLogs(); 
-                    }
-                } catch (videoError) {
-                    logger.error('Error processing video:', video, videoError);
-                    const videoErrorMessage = getSafeErrorMessage(videoError);
-                    this.showNotice(t('notice.collection.videoError', {
-                        title: video.title,
-                        error: videoErrorMessage,
-                    }), 5000);
-                    errorCount++;
-                    // Clear logs on error, so next video starts fresh
-                    clearLogs(); 
+                const videoId = YouTubeTranscriptExtractor.extractVideoId(video.url);
+                if (videoId === null) {
+                    // Not fatal: one unparseable entry should not sink the run.
+                    logger.warn('[collection] no extractable video id, skipping:', video.url);
+                    continue;
                 }
+                videos.push({ url: video.url, videoId, title: video.title });
             }
-            
-            // Final success notice
-            this.showNotice(t('notice.collection.complete', {
-                processed: processedCount,
-                skipped: skippedCount,
-                errors: errorCount,
-            }), 7000);
-            
-            // Close the modal
+            if (videos.length === 0) {
+                throw new Error(isPlaylist
+                    ? t('notice.collection.noVideos.playlist')
+                    : t('notice.collection.noVideos.channel'));
+            }
+
+            await this.plugin.collectionRunner?.begin({
+                url: sourceUrl,
+                folder: sourceSubfolder,
+                sourceName,
+                contentType,
+                videos,
+            });
+
+            // The run owns its own notice from here, so the modal has no reason
+            // to keep the screen — which is the whole point of this issue.
             this.close();
-            
+
         } catch (err) {
             logger.error('Error in channel processing workflow:', err);
             
@@ -3843,7 +3811,6 @@ class YouTubeTranscriptModal extends Modal {
             // Close the modal on error
             this.close();
         } finally {
-            spinner?.stop();
             // Only stop the proxy server if currently using Anthropic
             if (this.plugin.settings.selectedLLM === 'anthropic') {
                 try {
@@ -4062,6 +4029,30 @@ class JobRecoveryModal extends Modal {
             return;
         }
         const now = Date.now();
+        // A running channel/playlist gets one row of its own with a stop
+        // control: cancelling the RUN is not the same as cancelling one of its
+        // videos, and without this the cooperative-cancel policy had no way in.
+        for (const collection of this.plugin.runningCollections()) {
+            const runEl = contentEl.createDiv({ cls: 'tubesage-jobs-row' });
+            runEl.createDiv({ cls: 'tubesage-jobs-title', text: collection.sourceName });
+            runEl.createDiv({
+                cls: 'tubesage-jobs-status',
+                text: t('notice.collection.progress', {
+                    name: collection.sourceName,
+                    done: collection.done,
+                    total: collection.total,
+                }),
+            });
+            const runActions = runEl.createDiv({ cls: 'tubesage-jobs-actions' });
+            new ButtonComponent(runActions)
+                .setButtonText(t('modal.jobs.cancelCollection'))
+                .onClick(() => {
+                    void (async () => {
+                        await this.plugin.collectionRunner?.cancel(collection.id);
+                        await this.refresh();
+                    })();
+                });
+        }
         const list = contentEl.createDiv({ cls: 'tubesage-jobs-list' });
         let highlighted: HTMLElement | null = null;
         for (const { row, updatedAt } of entries) {

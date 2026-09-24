@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Преузимање видеа са плејлисте: {name}",
     "notice.collection.fetchingFrom.channel": "Преузимање видеа са канала: {name}",
     "notice.collection.videosToProcess": "Видеа за обраду: {count}",
-    "notice.collection.processingVideo": "Обрада видеа {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Видео {title} је прескочено – нема транскрипта",
-    "notice.collection.addingTimestamps.playlist": "Додавање веза са временским ознакама видеу са плејлисте: {title}",
-    "notice.collection.addingTimestamps.channel": "Додавање веза са временским ознакама видеу са канала: {title}",
-    "notice.collection.timestampsAdded": "✓ Везе са временским ознакама додате у {title}",
-    "notice.collection.timestampError": "{error} („{title}“)",
-    "notice.collection.timestampsFailed": "Белешка је направљена, али временске ознаке нису додате у „{title}“",
-    "notice.collection.videoProcessed": "✓ Обрађено видео {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ Видео „{title}“ је прескочено – {error}",
-    "notice.collection.videoError": "❌ Грешка при обради видеа „{title}“: {error}",
-    "notice.collection.complete": "Обрада канала завршена – обрађено: {processed}, прескочено: {skipped}, грешака: {errors}",
     "notice.job.saveFailed": "Није могуће сачувати посао: {error}. Видео се можда још обрађује; погледајте „Прикажи активне послове“",
     "notice.job.alreadyRunning": "Овај видео се већ обрађује",
     "notice.job.cannotResume": "Овај посао се у овом стању не може наставити; погледајте његов статус",
@@ -279,5 +268,8 @@
     "notice.recovery.several": "TubeSage: пажњу захтевају прекинути послови — {count}",
     "common.validation.required": "Попуните поље {field}",
     "common.validation.genericError": "Дошло је до грешке",
-    "common.transcript.unavailable": "Нема транскрипта за овај видео"
+    "common.transcript.unavailable": "Нема транскрипта за овај видео",
+    "notice.collection.progress": "Обрада {name}: {done} од {total}",
+    "notice.collection.closedOnStart": "Затворене прекинуте колекције: {count}",
+    "modal.jobs.cancelCollection": "Заустави колекцију"
 }
