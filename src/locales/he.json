@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "פתיחת הגדרות התוסף"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — ביטול מתוך \"הצג משימות פעילות\""
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "מאחזר תמליל"
@@ -1090,5 +1086,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "עצור אוסף"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "הקש לביטול"
     }
 }

@@ -105,7 +105,6 @@
     "license.required.step4": "Cliceáil ar shocruithe an bhreiseáin “Tubesage”",
     "license.required.step5": "Cas air “Glac leis an gceadúnas & leis an séanadh” chun an breiseán a chumasú",
     "license.required.openSettings": "Oscail socruithe an bhreiseáin",
-    "notice.progress.message": "{stage} — cealaigh ó “Taispeáin jabanna gníomhacha”",
     "notice.progress.stage.transcript": "Tras-scríbhinn á fáil",
     "notice.progress.stage.summary": "Tras-scríbhinn á hachoimriú",
     "notice.progress.stage.noteCreating": "Nóta á chruthú",
@@ -273,5 +272,6 @@
     "common.transcript.unavailable": "Níl tras-scríbhinn ar fáil don fhíseán seo",
     "notice.collection.progress": "{name} á phróiseáil: {done} as {total}",
     "notice.collection.closedOnStart": "Bailiúcháin a briseadh, dúnta: {count}",
-    "modal.jobs.cancelCollection": "Stop an bailiúchán"
+    "modal.jobs.cancelCollection": "Stop an bailiúchán",
+    "notice.progress.tapToCancel": "Tapáil le cealú"
 }

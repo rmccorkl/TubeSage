@@ -105,7 +105,6 @@
     "license.required.step4": "Κάντε κλικ στις ρυθμίσεις του πρόσθετου «Tubesage»",
     "license.required.step5": "Ενεργοποιήστε το «Αποδοχή άδειας & αποποίησης ευθύνης» για να ενεργοποιηθεί το πρόσθετο",
     "license.required.openSettings": "Άνοιγμα ρυθμίσεων πρόσθετου",
-    "notice.progress.message": "{stage} — ακύρωση από «Εμφάνιση ενεργών εργασιών»",
     "notice.progress.stage.transcript": "Λήψη απομαγνητοφώνησης",
     "notice.progress.stage.summary": "Σύνοψη απομαγνητοφώνησης",
     "notice.progress.stage.noteCreating": "Δημιουργία σημείωσης",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "Δεν υπάρχει απομαγνητοφώνηση για αυτό το βίντεο",
     "notice.collection.progress": "Επεξεργασία {name}: {done} από {total}",
     "notice.collection.closedOnStart": "Έκλεισαν οι διακοπείσες συλλογές: {count}",
-    "modal.jobs.cancelCollection": "Διακοπή συλλογής"
+    "modal.jobs.cancelCollection": "Διακοπή συλλογής",
+    "notice.progress.tapToCancel": "Πατήστε για ακύρωση"
 }

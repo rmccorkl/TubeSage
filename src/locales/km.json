@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "បើកការកំណត់កម្មវិធីជំនួយ"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — បោះបង់ពី “បង្ហាញការងារសកម្ម”"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "កំពុងទាញប្រតិចារិក"
@@ -1082,5 +1078,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "បញ្ឈប់បណ្តុំ"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "ប៉ះដើម្បីបោះបង់"
     }
 }

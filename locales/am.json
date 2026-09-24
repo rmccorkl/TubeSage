@@ -105,7 +105,6 @@
     "license.required.step4": "የ«Tubesage» ተሰኪ ቅንብሮችን ጠቅ ያድርጉ",
     "license.required.step5": "ተሰኪውን ለማንቃት «ፈቃድና የኃላፊነት ማስተባበያ ተቀበል» ያብሩ",
     "license.required.openSettings": "የተሰኪ ቅንብሮችን ክፈት",
-    "notice.progress.message": "{stage} — ከ«ንቁ ሥራዎችን አሳይ» ይሰርዙ",
     "notice.progress.stage.transcript": "ግልባጭ በማምጣት ላይ",
     "notice.progress.stage.summary": "ግልባጭ በማጠቃለል ላይ",
     "notice.progress.stage.noteCreating": "ማስታወሻ በመፍጠር ላይ",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "ለዚህ ቪዲዮ ግልባጭ የለም",
     "notice.collection.progress": "{name} በማስኬድ ላይ፦ {done}/{total}",
     "notice.collection.closedOnStart": "የተቋረጡ ስብስቦች ተዘግተዋል፦ {count}",
-    "modal.jobs.cancelCollection": "ስብስቡን አቁም"
+    "modal.jobs.cancelCollection": "ስብስቡን አቁም",
+    "notice.progress.tapToCancel": "ለመሰረዝ ይንኩ"
 }

@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "செருகுநிரல் அமைப்புகளைத் திற"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — “செயலில் உள்ள பணிகளைக் காட்டு” இல் ரத்துசெய்யவும்"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "எழுத்துப்படியைப் பெறுகிறது"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "தொகுப்பை நிறுத்து"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "ரத்து செய்ய தட்டவும்"
     }
 }

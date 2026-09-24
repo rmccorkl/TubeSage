@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Отвори подешавања додатка"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — отказивање преко „Прикажи активне послове“"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Преузимање транскрипта"
@@ -1090,5 +1086,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Заустави колекцију"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Додирните да откажете"
     }
 }

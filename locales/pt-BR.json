@@ -105,7 +105,6 @@
     "license.required.step4": "Abra as configurações do plugin \"Tubesage\"",
     "license.required.step5": "Ative \"Aceitar licença e aviso legal\" para habilitar o plugin",
     "license.required.openSettings": "Abrir as configurações do plugin",
-    "notice.progress.message": "{stage} — cancele em \"Mostrar trabalhos ativos\"",
     "notice.progress.stage.transcript": "Buscando a transcrição",
     "notice.progress.stage.summary": "Resumindo a transcrição",
     "notice.progress.stage.noteCreating": "Criando a nota",
@@ -271,5 +270,6 @@
     "common.transcript.unavailable": "Nenhuma transcrição disponível para este vídeo",
     "notice.collection.progress": "Processando {name}: {done} de {total}",
     "notice.collection.closedOnStart": "Coleções interrompidas fechadas: {count}",
-    "modal.jobs.cancelCollection": "Parar coleção"
+    "modal.jobs.cancelCollection": "Parar coleção",
+    "notice.progress.tapToCancel": "Toque para cancelar"
 }

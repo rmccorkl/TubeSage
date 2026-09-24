@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Plug-ininstellingen openen"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — annuleren via \"Actieve taken tonen\""
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Transcriptie ophalen"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Verzameling stoppen"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Tik om te annuleren"
     }
 }

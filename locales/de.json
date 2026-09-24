@@ -105,7 +105,6 @@
     "license.required.step4": "Die Einstellungen des Plugins „Tubesage“ öffnen",
     "license.required.step5": "„Lizenz & Haftungsausschluss akzeptieren“ einschalten, um das Plugin zu aktivieren",
     "license.required.openSettings": "Plugin-Einstellungen öffnen",
-    "notice.progress.message": "{stage} – Abbrechen über „Aktive Aufträge anzeigen“",
     "notice.progress.stage.transcript": "Transkript wird abgerufen",
     "notice.progress.stage.summary": "Transkript wird zusammengefasst",
     "notice.progress.stage.noteCreating": "Notiz wird erstellt",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "Für dieses Video ist kein Transkript vorhanden",
     "notice.collection.progress": "Verarbeite {name}: {done} von {total}",
     "notice.collection.closedOnStart": "Unterbrochene Sammlungen geschlossen: {count}",
-    "modal.jobs.cancelCollection": "Sammlung stoppen"
+    "modal.jobs.cancelCollection": "Sammlung stoppen",
+    "notice.progress.tapToCancel": "Zum Abbrechen tippen"
 }

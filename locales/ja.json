@@ -105,7 +105,6 @@
     "license.required.step4": "「Tubesage」プラグインの設定を開く",
     "license.required.step5": "「ライセンスと免責事項に同意する」をオンにしてプラグインを有効にする",
     "license.required.openSettings": "プラグインの設定を開く",
-    "notice.progress.message": "{stage}（「実行中のジョブを表示」で中止できます）",
     "notice.progress.stage.transcript": "字幕を取得中",
     "notice.progress.stage.summary": "字幕を要約中",
     "notice.progress.stage.noteCreating": "ノートを作成中",
@@ -269,5 +268,6 @@
     "common.transcript.unavailable": "この動画には文字起こしがありません",
     "notice.collection.progress": "{name} を処理中: {done}/{total}",
     "notice.collection.closedOnStart": "中断されたコレクションを終了しました: {count}",
-    "modal.jobs.cancelCollection": "コレクションを停止"
+    "modal.jobs.cancelCollection": "コレクションを停止",
+    "notice.progress.tapToCancel": "タップで中止"
 }

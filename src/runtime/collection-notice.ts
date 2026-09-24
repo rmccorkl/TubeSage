@@ -1,6 +1,7 @@
 import { aggregateProgress } from "../jobs/collection-record";
 import type { CollectionJobRecord, CollectionProgress, CollectionStatus } from "../jobs/collection-record";
 import type { NoteJobRecord } from "../jobs/job-record";
+import { renderProgressNotice } from "./progress-notice-control";
 import type { ProgressNoticeFactory, ProgressNoticeHandle } from "./job-progress-notice";
 
 // ONE floating notice for a whole collection.
@@ -20,9 +21,16 @@ export class CollectionNotices {
   private handle: ProgressNoticeHandle | undefined;
   private finished = false;
 
+  /**
+   * `onStop` cancels the whole RUN, not one of its videos — the run is what
+   * this notice represents. Optional: without it the notice is text only.
+   * `stopLabel` supplies the already-translated tap hint, like `text`.
+   */
   constructor(
     private readonly create: ProgressNoticeFactory,
     private readonly text: (progress: CollectionProgress, parent: CollectionJobRecord) => string,
+    private readonly onStop?: (parentId: string) => void,
+    private readonly stopLabel?: () => string,
   ) {}
 
   /** Opens the run's single notice and takes ownership of its children's ids. */
@@ -30,6 +38,9 @@ export class CollectionNotices {
     if (this.handle !== undefined || this.finished) return;
     const progress = aggregateProgress(parent, children);
     this.handle = this.create(this.text(progress, parent));
+    // `create` already carried the opening text, so only the control is added
+    // here — painting again would write the same message twice.
+    this.renderControl(parent, this.text(progress, parent));
   }
 
   /**
@@ -40,7 +51,29 @@ export class CollectionNotices {
    */
   update(parent: CollectionJobRecord, children: readonly NoteJobRecord[]): void {
     if (this.finished || this.handle === undefined) return;
-    this.handle.setMessage(this.text(aggregateProgress(parent, children), parent));
+    this.paint(parent, children);
+  }
+
+  /**
+   * Draws the notice. With an element and a cancel route it renders the same
+   * in-notice stop control a single job gets; otherwise plain text.
+   */
+  private paint(parent: CollectionJobRecord, children: readonly NoteJobRecord[]): void {
+    if (this.handle === undefined) return;
+    const message = this.text(aggregateProgress(parent, children), parent);
+    if (!this.renderControl(parent, message)) {
+      this.handle.setMessage(message);
+    }
+  }
+
+  /** Renders the in-notice stop control; false when this surface cannot carry one. */
+  private renderControl(parent: CollectionJobRecord, message: string): boolean {
+    const element = this.handle?.element;
+    const onStop = this.onStop;
+    const stopLabel = this.stopLabel;
+    if (element === undefined || onStop === undefined || stopLabel === undefined) return false;
+    renderProgressNotice(element, { stage: message, hint: stopLabel(), onStop: () => onStop(parent.id) });
+    return true;
   }
 
   /**
@@ -59,5 +92,24 @@ export class CollectionNotices {
     this.handle?.hide();
     this.handle = undefined;
     void status;
+  }
+
+  /**
+   * Hides the run's notice without narrating an outcome. `onunload` must leave
+   * none floating: on desktop the surface is a status-bar item with a live
+   * `window.setInterval` behind it, on mobile a notice nothing is left to drive
+   * — either would outlive the plugin and only go on a restart.
+   *
+   * Deliberately not `finish`: there is no terminal status to report here and
+   * the run's PERSISTED state is untouched, exactly as `JobRunner.stopAll`
+   * leaves its records for the next cold start to close. Marking the run
+   * finished is what stops a straggling event reopening a surface this plugin
+   * no longer drives. Idempotent, and named for its counterpart on
+   * `JobProgressNotices` even though a run has at most one notice.
+   */
+  dismissAll(): void {
+    this.finished = true;
+    this.handle?.hide();
+    this.handle = undefined;
   }
 }

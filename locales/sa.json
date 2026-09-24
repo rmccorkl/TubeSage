@@ -105,7 +105,6 @@
     "license.required.step4": "“Tubesage” संयोजकस्य विन्यासान् नुदतु",
     "license.required.step5": "संयोजकं प्रवर्तयितुं “अनुज्ञापत्रं दायित्वत्यागं च स्वीकरोतु” इति प्रवर्तयतु",
     "license.required.openSettings": "संयोजकविन्यासान् उद्घाटयतु",
-    "notice.progress.message": "{stage} — “सक्रियकार्याणि दर्शय” इत्यस्मात् निरसतु",
     "notice.progress.stage.transcript": "प्रतिलेखस्य आनयनम्",
     "notice.progress.stage.summary": "प्रतिलेखस्य संक्षेपणम्",
     "notice.progress.stage.noteCreating": "टिप्पण्याः निर्माणम्",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "अस्य चलचित्रस्य प्रतिलेखः न विद्यते",
     "notice.collection.progress": "{name} संसाधनम्: {done}/{total}",
     "notice.collection.closedOnStart": "विच्छिन्नसङ्ग्रहाः पिहिताः: {count}",
-    "modal.jobs.cancelCollection": "सङ्ग्रहं विरमतु"
+    "modal.jobs.cancelCollection": "सङ्ग्रहं विरमतु",
+    "notice.progress.tapToCancel": "निरसनाय स्पृशतु"
 }

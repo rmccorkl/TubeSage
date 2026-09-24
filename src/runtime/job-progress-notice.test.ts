@@ -71,9 +71,14 @@ describe("progressNoticeText", () => {
     expect(progressNoticeText("note-created")).not.toBe("");
   });
 
-  it("says where to cancel, in one short clause", () => {
+  it("is the stage alone, with no instruction to go and find a control", () => {
+    // It used to append `— cancel from "Show active jobs"`. That named a
+    // command-palette entry with no ribbon icon, which is awkward to reach on a
+    // phone, and the notice now carries its own stop control — so describing a
+    // remote one is both wrong and unnecessary.
     const text = progressNoticeText("transcript");
-    expect(text).toContain("Show active jobs");
+    expect(text).toBe("Fetching transcript");
+    expect(text).not.toContain("Show active jobs");
     expect(text.length).toBeLessThan(80);
   });
 
@@ -84,12 +89,9 @@ describe("progressNoticeText", () => {
     const text = progressNoticeText("transcript");
     expect(text).not.toContain("Fetching transcript");
     expect(text).toContain("Transkript");
-    // The command name is translated too, so this row quotes the GERMAN one:
-    // the palette lists the command under the interface language, and quoting
-    // the English name here would send a German reader looking for an entry
-    // that is not there. The pairing is enforced across all 51 columns by
-    // QUOTED_LABELS in scripts/i18n-lib.mjs.
-    expect(text).toContain("Aktive Aufträge anzeigen");
+    // The command name no longer appears here at all: the stop control lives in
+    // the notice, so this row does not quote a palette entry in any language.
+    expect(text).not.toContain("Aktive Aufträge anzeigen");
     expect(text).not.toContain("Show active jobs");
   });
 });

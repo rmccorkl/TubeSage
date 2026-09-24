@@ -105,7 +105,6 @@
     "license.required.step4": "“Tubesage” செருகுநிரலின் அமைப்புகளைச் சொடுக்கவும்",
     "license.required.step5": "செருகுநிரலை இயக்க “உரிமத்தையும் மறுப்புரையையும் ஏற்கவும்” நிலைமாற்றியை இயக்கவும்",
     "license.required.openSettings": "செருகுநிரல் அமைப்புகளைத் திற",
-    "notice.progress.message": "{stage} — “செயலில் உள்ள பணிகளைக் காட்டு” இல் ரத்துசெய்யவும்",
     "notice.progress.stage.transcript": "எழுத்துப்படியைப் பெறுகிறது",
     "notice.progress.stage.summary": "எழுத்துப்படியைச் சுருக்குகிறது",
     "notice.progress.stage.noteCreating": "குறிப்பை உருவாக்குகிறது",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "இந்த வீடியோவுக்கு எழுத்துப்படி இல்லை",
     "notice.collection.progress": "{name} செயலாக்கப்படுகிறது: {done}/{total}",
     "notice.collection.closedOnStart": "தடைபட்ட தொகுப்புகள் மூடப்பட்டன: {count}",
-    "modal.jobs.cancelCollection": "தொகுப்பை நிறுத்து"
+    "modal.jobs.cancelCollection": "தொகுப்பை நிறுத்து",
+    "notice.progress.tapToCancel": "ரத்து செய்ய தட்டவும்"
 }

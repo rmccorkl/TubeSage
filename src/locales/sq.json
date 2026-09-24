@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Hap cilësimet e shtojcës"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — anulojeni nga «Shfaq punët aktive»"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Po merret transkripti"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Ndalo koleksionin"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Prekni për ta anuluar"
     }
 }

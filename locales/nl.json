@@ -105,7 +105,6 @@
     "license.required.step4": "Open de instellingen van de plug-in \"Tubesage\"",
     "license.required.step5": "Zet \"Licentie en disclaimer accepteren\" aan om de plug-in in te schakelen",
     "license.required.openSettings": "Plug-ininstellingen openen",
-    "notice.progress.message": "{stage} — annuleren via \"Actieve taken tonen\"",
     "notice.progress.stage.transcript": "Transcriptie ophalen",
     "notice.progress.stage.summary": "Transcriptie samenvatten",
     "notice.progress.stage.noteCreating": "Notitie maken",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "Voor deze video is geen transcriptie beschikbaar",
     "notice.collection.progress": "Bezig met {name}: {done} van {total}",
     "notice.collection.closedOnStart": "Onderbroken verzamelingen gesloten: {count}",
-    "modal.jobs.cancelCollection": "Verzameling stoppen"
+    "modal.jobs.cancelCollection": "Verzameling stoppen",
+    "notice.progress.tapToCancel": "Tik om te annuleren"
 }

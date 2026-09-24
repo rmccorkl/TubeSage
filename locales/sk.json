@@ -105,7 +105,6 @@
     "license.required.step4": "Kliknite na nastavenia doplnku „Tubesage“",
     "license.required.step5": "Zapnite „Prijímam licenciu a vylúčenie zodpovednosti“, čím doplnok povolíte",
     "license.required.openSettings": "Otvoriť nastavenia doplnku",
-    "notice.progress.message": "{stage} — zrušiť cez „Zobraziť aktívne úlohy“",
     "notice.progress.stage.transcript": "Načítanie prepisu",
     "notice.progress.stage.summary": "Zhrňovanie prepisu",
     "notice.progress.stage.noteCreating": "Vytváranie poznámky",
@@ -272,5 +271,6 @@
     "common.transcript.unavailable": "Pre toto video nie je k dispozícii prepis",
     "notice.collection.progress": "Spracúva sa {name}: {done} z {total}",
     "notice.collection.closedOnStart": "Prerušené kolekcie zatvorené: {count}",
-    "modal.jobs.cancelCollection": "Zastaviť kolekciu"
+    "modal.jobs.cancelCollection": "Zastaviť kolekciu",
+    "notice.progress.tapToCancel": "Ťuknutím zrušíte"
 }

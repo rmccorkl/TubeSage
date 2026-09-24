@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Oscail socruithe an bhreiseáin"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — cealaigh ó “Taispeáin jabanna gníomhacha”"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Tras-scríbhinn á fáil"
@@ -1098,5 +1094,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Stop an bailiúchán"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Tapáil le cealú"
     }
 }

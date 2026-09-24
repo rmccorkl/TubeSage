@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "플러그인 설정 열기"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — “활성 작업 표시”에서 취소"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "자막 가져오는 중"
@@ -1082,5 +1078,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "컬렉션 중지"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "탭하여 취소"
     }
 }

@@ -105,7 +105,6 @@
     "license.required.step4": "Klikněte na nastavení pluginu „Tubesage“",
     "license.required.step5": "Zapněte „Přijímám licenci a vyloučení odpovědnosti“, čímž plugin povolíte",
     "license.required.openSettings": "Otevřít nastavení pluginu",
-    "notice.progress.message": "{stage} — zrušit přes „Zobrazit aktivní úlohy“",
     "notice.progress.stage.transcript": "Načítání přepisu",
     "notice.progress.stage.summary": "Shrnování přepisu",
     "notice.progress.stage.noteCreating": "Vytváření poznámky",
@@ -272,5 +271,6 @@
     "common.transcript.unavailable": "Pro toto video není k dispozici přepis",
     "notice.collection.progress": "Zpracovávání {name}: {done} z {total}",
     "notice.collection.closedOnStart": "Přerušené kolekce uzavřeny: {count}",
-    "modal.jobs.cancelCollection": "Zastavit kolekci"
+    "modal.jobs.cancelCollection": "Zastavit kolekci",
+    "notice.progress.tapToCancel": "Klepnutím zrušíte"
 }

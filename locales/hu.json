@@ -105,7 +105,6 @@
     "license.required.step4": "Kattints a „Tubesage” bővítmény beállításaira",
     "license.required.step5": "Kapcsold be az „Elfogadom a licencet és a jogi nyilatkozatot” lehetőséget a bővítmény engedélyezéséhez",
     "license.required.openSettings": "Bővítmény beállításainak megnyitása",
-    "notice.progress.message": "{stage} — megszakítás a „Aktív feladatok megjelenítése” paranccsal",
     "notice.progress.stage.transcript": "Átirat letöltése",
     "notice.progress.stage.summary": "Átirat összefoglalása",
     "notice.progress.stage.noteCreating": "Jegyzet létrehozása",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "Ehhez a videóhoz nincs átirat",
     "notice.collection.progress": "{name} feldolgozása: {done}/{total}",
     "notice.collection.closedOnStart": "Lezárt megszakadt gyűjtemények: {count}",
-    "modal.jobs.cancelCollection": "Gyűjtemény leállítása"
+    "modal.jobs.cancelCollection": "Gyűjtemény leállítása",
+    "notice.progress.tapToCancel": "Koppintson a megszakításhoz"
 }

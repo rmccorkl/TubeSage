@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Atvērt spraudņa iestatījumus"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — atcelt no „Rādīt aktīvos darbus“"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Transkripta iegūšana"
@@ -1090,5 +1086,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Apturēt kolekciju"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Pieskarieties, lai atceltu"
     }
 }

@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "فتح إعدادات الإضافة"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — الإلغاء من «إظهار المهام النشطة»"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "جارٍ جلب النص"
@@ -1102,5 +1098,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "إيقاف المجموعة"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "اضغط للإلغاء"
     }
 }

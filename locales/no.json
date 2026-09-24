@@ -105,7 +105,6 @@
     "license.required.step4": "Åpne innstillingene for tillegget «Tubesage»",
     "license.required.step5": "Slå på «Godta lisens og ansvarsfraskrivelse» for å aktivere tillegget",
     "license.required.openSettings": "Åpne innstillingene for tillegget",
-    "notice.progress.message": "{stage} — avbryt via «Vis aktive jobber»",
     "notice.progress.stage.transcript": "Henter transkripsjon",
     "notice.progress.stage.summary": "Sammenfatter transkripsjon",
     "notice.progress.stage.noteCreating": "Oppretter notat",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "Ingen transkripsjon er tilgjengelig for denne videoen",
     "notice.collection.progress": "Behandler {name}: {done} av {total}",
     "notice.collection.closedOnStart": "Avbrutte samlinger lukket: {count}",
-    "modal.jobs.cancelCollection": "Stopp samling"
+    "modal.jobs.cancelCollection": "Stopp samling",
+    "notice.progress.tapToCancel": "Trykk for å avbryte"
 }

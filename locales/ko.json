@@ -105,7 +105,6 @@
     "license.required.step4": "“Tubesage” 플러그인 설정 클릭",
     "license.required.step5": "“라이선스 및 면책 조항 동의”를 켜서 플러그인 활성화",
     "license.required.openSettings": "플러그인 설정 열기",
-    "notice.progress.message": "{stage} — “활성 작업 표시”에서 취소",
     "notice.progress.stage.transcript": "자막 가져오는 중",
     "notice.progress.stage.summary": "자막 요약하는 중",
     "notice.progress.stage.noteCreating": "노트 만드는 중",
@@ -269,5 +268,6 @@
     "common.transcript.unavailable": "이 동영상에는 스크립트가 없습니다",
     "notice.collection.progress": "{name} 처리 중: {done}/{total}",
     "notice.collection.closedOnStart": "중단된 컬렉션을 닫았습니다: {count}",
-    "modal.jobs.cancelCollection": "컬렉션 중지"
+    "modal.jobs.cancelCollection": "컬렉션 중지",
+    "notice.progress.tapToCancel": "탭하여 취소"
 }

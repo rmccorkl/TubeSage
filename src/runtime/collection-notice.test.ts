@@ -68,3 +68,58 @@ describe("CollectionNotices — ONE notice per collection, not one per video", (
     expect(hidden.count).toBe(1);
   });
 });
+
+describe("dismissAll — unload must leave no surface behind", () => {
+  it("hides a live run's notice", () => {
+    const { notices, parent, hidden } = setup(3);
+    notices.start(parent, []);
+    notices.dismissAll();
+    expect(hidden.count).toBe(1);
+  });
+
+  it("says nothing on the way out", () => {
+    // `finish` narrates a final count because the run ended. Unload is not an
+    // outcome: the persisted collection is untouched and the next cold start
+    // closes it, so writing a last message here would report a result that
+    // never happened.
+    const { notices, parent, messages } = setup(3);
+    notices.start(parent, []);
+    notices.dismissAll();
+    expect(messages).toEqual(["0/3"]);
+  });
+
+  it("is idempotent, and leaves nothing for a second pass to hide", () => {
+    const { notices, parent, hidden } = setup(3);
+    notices.start(parent, []);
+    notices.dismissAll();
+    notices.dismissAll();
+    expect(hidden.count).toBe(1);
+  });
+
+  it("is a no-op when no run was live", () => {
+    const { notices, hidden, create } = setup(3);
+    notices.dismissAll();
+    expect(hidden.count).toBe(0);
+    expect(create).not.toHaveBeenCalled();
+  });
+
+  it("stops a straggling event reopening a surface nothing drives", () => {
+    // The child left executing still reports when it lands, and after unload
+    // there is no plugin behind the surface it would reopen.
+    const { notices, parent, create, hidden } = setup(2);
+    notices.start(parent, []);
+    notices.dismissAll();
+    notices.update(parent, [child("c1", "done")]);
+    notices.start(parent, [child("c1", "done")]);
+    expect(create).toHaveBeenCalledTimes(1);
+    expect(hidden.count).toBe(1);
+  });
+
+  it("does not double-hide when finish follows dismissAll", () => {
+    const { notices, parent, hidden } = setup(2);
+    notices.start(parent, []);
+    notices.dismissAll();
+    notices.finish(parent, [child("c1", "done")], "closed");
+    expect(hidden.count).toBe(1);
+  });
+});

@@ -105,7 +105,6 @@
     "license.required.step4": "Ouvrez les paramètres du plugin « Tubesage »",
     "license.required.step5": "Activez « Accepter la licence et l'avertissement » pour activer le plugin",
     "license.required.openSettings": "Ouvrir les paramètres du plugin",
-    "notice.progress.message": "{stage} — annuler via « Afficher les tâches actives »",
     "notice.progress.stage.transcript": "Récupération de la transcription",
     "notice.progress.stage.summary": "Résumé de la transcription",
     "notice.progress.stage.noteCreating": "Création de la note",
@@ -271,5 +270,6 @@
     "common.transcript.unavailable": "Aucune transcription n'est disponible pour cette vidéo",
     "notice.collection.progress": "Traitement de {name} : {done} sur {total}",
     "notice.collection.closedOnStart": "Collections interrompues fermées : {count}",
-    "modal.jobs.cancelCollection": "Arrêter la collection"
+    "modal.jobs.cancelCollection": "Arrêter la collection",
+    "notice.progress.tapToCancel": "Toucher pour annuler"
 }

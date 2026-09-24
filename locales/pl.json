@@ -105,7 +105,6 @@
     "license.required.step4": "Kliknij ustawienia wtyczki „Tubesage”",
     "license.required.step5": "Włącz „Akceptuję licencję i zastrzeżenia”, aby uruchomić wtyczkę",
     "license.required.openSettings": "Otwórz ustawienia wtyczki",
-    "notice.progress.message": "{stage} — anuluj przez „Pokaż aktywne zadania”",
     "notice.progress.stage.transcript": "Pobieranie transkrypcji",
     "notice.progress.stage.summary": "Streszczanie transkrypcji",
     "notice.progress.stage.noteCreating": "Tworzenie notatki",
@@ -272,5 +271,6 @@
     "common.transcript.unavailable": "Do tego filmu nie ma transkrypcji",
     "notice.collection.progress": "Przetwarzanie {name}: {done} z {total}",
     "notice.collection.closedOnStart": "Zamknięte przerwane kolekcje: {count}",
-    "modal.jobs.cancelCollection": "Zatrzymaj kolekcję"
+    "modal.jobs.cancelCollection": "Zatrzymaj kolekcję",
+    "notice.progress.tapToCancel": "Dotknij, aby anulować"
 }

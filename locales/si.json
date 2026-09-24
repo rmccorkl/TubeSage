@@ -105,7 +105,6 @@
     "license.required.step4": "“Tubesage” ප්ලගිනයේ සැකසුම් ක්ලික් කරන්න",
     "license.required.step5": "ප්ලගිනය සක්‍රිය කිරීමට “බලපත්‍රය සහ වගකීමෙන් බැහැරවීම පිළිගන්න” ටොගලය ක්‍රියාත්මක කරන්න",
     "license.required.openSettings": "ප්ලගින සැකසුම් විවෘත කරන්න",
-    "notice.progress.message": "{stage} — “ක්‍රියාකාරී කාර්ය පෙන්වන්න” වෙතින් අවලංගු කරන්න",
     "notice.progress.stage.transcript": "පිටපත ලබා ගනිමින්",
     "notice.progress.stage.summary": "පිටපත සාරාංශ කරමින්",
     "notice.progress.stage.noteCreating": "සටහන සාදමින්",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "මෙම වීඩියෝව සඳහා පිටපතක් නැත",
     "notice.collection.progress": "{name} සකසමින්: {done}/{total}",
     "notice.collection.closedOnStart": "බාධා වූ එකතු වසා දැමිණි: {count}",
-    "modal.jobs.cancelCollection": "එකතුව නවත්වන්න"
+    "modal.jobs.cancelCollection": "එකතුව නවත්වන්න",
+    "notice.progress.tapToCancel": "අවලංගු කිරීමට තට්ටු කරන්න"
 }

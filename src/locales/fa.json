@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "گشودن تنظیمات افزونه"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — لغو از «نمایش کارهای فعال»"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "در حال دریافت رونوشت"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "توقف مجموعه"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "برای لغو ضربه بزنید"
     }
 }

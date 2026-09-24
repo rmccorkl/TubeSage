@@ -279,15 +279,20 @@ function sameCounts(a, b) {
 
 export const QUOTED_LABELS = [
   { key: "license.required.step5", quotes: "settings.support.license.acceptLabel" },
-  // The same rule for the plugin's own command name. These five sentences tell
+  // The same rule for the plugin's own command name. These four sentences tell
   // the user to go and find `Show active jobs` in the command palette, and that
   // command's NAME is now localised too (main.ts), so each locale's sentence has
-  // to carry that locale's command name. Before, all five carried the English
+  // to carry that locale's command name. Before, they all carried the English
   // one in all 51 columns, which was correct only because the command itself was
   // English. Pinning the pair here is what stops the two drifting apart again:
   // rename the command in one locale and the gate names the sentence that no
   // longer quotes it.
-  { key: "notice.progress.message", quotes: "common.command.showActiveJobs" },
+  //
+  // `notice.progress.message` was a fifth row and went with the key: the mobile
+  // progress notice now carries its own cancel and names no command. Its row is
+  // removed rather than left to sit — a pairing whose sentence does not exist
+  // matches nothing and passes in silence, so it would read as enforcement
+  // while enforcing nothing.
   { key: "notice.job.interrupted", quotes: "common.command.showActiveJobs" },
   { key: "notice.job.saveFailed", quotes: "common.command.showActiveJobs" },
   { key: "modal.jobs.reason.noteCollision", quotes: "common.command.showActiveJobs" },

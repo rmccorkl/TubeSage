@@ -105,7 +105,6 @@
     "license.required.step4": "Avaa laajennuksen ”Tubesage” asetukset",
     "license.required.step5": "Ota käyttöön ”Hyväksy lisenssi ja vastuuvapauslauseke” ottaaksesi laajennuksen käyttöön",
     "license.required.openSettings": "Avaa laajennuksen asetukset",
-    "notice.progress.message": "{stage} — peruuta kohdasta ”Näytä aktiiviset työt”",
     "notice.progress.stage.transcript": "Haetaan litterointia",
     "notice.progress.stage.summary": "Tiivistetään litterointia",
     "notice.progress.stage.noteCreating": "Luodaan muistiinpanoa",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "Tälle videolle ei ole litterointia",
     "notice.collection.progress": "Käsitellään {name}: {done}/{total}",
     "notice.collection.closedOnStart": "Keskeytyneet kokoelmat suljettu: {count}",
-    "modal.jobs.cancelCollection": "Pysäytä kokoelma"
+    "modal.jobs.cancelCollection": "Pysäytä kokoelma",
+    "notice.progress.tapToCancel": "Peruuta napauttamalla"
 }

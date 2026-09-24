@@ -105,7 +105,6 @@
     "license.required.step4": "Sit ɣef yiɣewwaṛen n usiɣzef «Tubesage»",
     "license.required.step5": "Rmed «Qbel turagt & tukksa n tmasit» akken ad yeddu usiɣzef",
     "license.required.openSettings": "Ldi iɣewwaṛen n usiɣzef",
-    "notice.progress.message": "{stage} — sefsex seg «Sken-d imahilen urmiden»",
     "notice.progress.stage.transcript": "Awway n uḍris",
     "notice.progress.stage.summary": "Agzul n uḍris",
     "notice.progress.stage.noteCreating": "Asnulfu n tzemmilt",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "Ulac aḍris i tvidyut-a",
     "notice.collection.progress": "Asesfer n {name}: {done} seg {total}",
     "notice.collection.closedOnStart": "Tigrumma yegzemen ttwamdlent: {count}",
-    "modal.jobs.cancelCollection": "Ḥbes tagrumma"
+    "modal.jobs.cancelCollection": "Ḥbes tagrumma",
+    "notice.progress.tapToCancel": "Sedmer i usefsex"
 }
