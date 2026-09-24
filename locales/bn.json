@@ -105,7 +105,6 @@
     "license.required.step4": "“Tubesage” প্লাগইনের সেটিংসে ক্লিক করুন",
     "license.required.step5": "প্লাগইন চালু করতে “লাইসেন্স ও দাবিত্যাগ গ্রহণ করুন” টগল করুন",
     "license.required.openSettings": "প্লাগইন সেটিংস খুলুন",
-    "notice.progress.message": "{stage} — “সক্রিয় কাজ দেখান” থেকে বাতিল করুন",
     "notice.progress.stage.transcript": "প্রতিলিপি আনা হচ্ছে",
     "notice.progress.stage.summary": "প্রতিলিপির সারাংশ হচ্ছে",
     "notice.progress.stage.noteCreating": "নোট তৈরি হচ্ছে",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "এই ভিডিওর জন্য কোনো প্রতিলিপি নেই",
     "notice.collection.progress": "{name} প্রক্রিয়া করা হচ্ছে: {done}/{total}",
     "notice.collection.closedOnStart": "বাধাপ্রাপ্ত সংগ্রহ বন্ধ করা হয়েছে: {count}",
-    "modal.jobs.cancelCollection": "সংগ্রহ বন্ধ করুন"
+    "modal.jobs.cancelCollection": "সংগ্রহ বন্ধ করুন",
+    "notice.progress.tapToCancel": "বাতিল করতে ট্যাপ করুন"
 }

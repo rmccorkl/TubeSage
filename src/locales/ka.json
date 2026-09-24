@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "მოდულის პარამეტრების გახსნა"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — გაუქმება „აქტიური სამუშაოების ჩვენება“-იდან"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "ტრანსკრიპტის მიღება"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "კოლექციის შეჩერება"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "შესაწყვეტად შეეხეთ"
     }
 }

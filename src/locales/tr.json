@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Eklenti ayarlarını aç"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — “Etkin işleri göster” üzerinden iptal edin"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Transkript alınıyor"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Koleksiyonu durdur"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "İptal için dokunun"
     }
 }

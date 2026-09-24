@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Öppna tilläggets inställningar"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — avbryt via ”Visa aktiva jobb”"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Hämtar transkription"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Stoppa samling"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Tryck för att avbryta"
     }
 }

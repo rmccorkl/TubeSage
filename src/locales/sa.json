@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "संयोजकविन्यासान् उद्घाटयतु"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — “सक्रियकार्याणि दर्शय” इत्यस्मात् निरसतु"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "प्रतिलेखस्य आनयनम्"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "सङ्ग्रहं विरमतु"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "निरसनाय स्पृशतु"
     }
 }

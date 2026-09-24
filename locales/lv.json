@@ -105,7 +105,6 @@
     "license.required.step4": "Atveriet spraudņa „Tubesage“ iestatījumus",
     "license.required.step5": "Ieslēdziet „Pieņemu licenci un atrunu“, lai iespējotu spraudni",
     "license.required.openSettings": "Atvērt spraudņa iestatījumus",
-    "notice.progress.message": "{stage} — atcelt no „Rādīt aktīvos darbus“",
     "notice.progress.stage.transcript": "Transkripta iegūšana",
     "notice.progress.stage.summary": "Transkripta apkopošana",
     "notice.progress.stage.noteCreating": "Piezīmes izveide",
@@ -271,5 +270,6 @@
     "common.transcript.unavailable": "Šim videoklipam nav atšifrējuma",
     "notice.collection.progress": "Apstrādā {name}: {done} no {total}",
     "notice.collection.closedOnStart": "Slēgtas pārtrauktās kolekcijas: {count}",
-    "modal.jobs.cancelCollection": "Apturēt kolekciju"
+    "modal.jobs.cancelCollection": "Apturēt kolekciju",
+    "notice.progress.tapToCancel": "Pieskarieties, lai atceltu"
 }

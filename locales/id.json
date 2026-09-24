@@ -105,7 +105,6 @@
     "license.required.step4": "Klik pengaturan plugin “Tubesage”",
     "license.required.step5": "Nyalakan “Terima lisensi dan penafian” untuk mengaktifkan plugin",
     "license.required.openSettings": "Buka pengaturan plugin",
-    "notice.progress.message": "{stage} — batalkan dari “Tampilkan pekerjaan aktif”",
     "notice.progress.stage.transcript": "Mengambil transkrip",
     "notice.progress.stage.summary": "Meringkas transkrip",
     "notice.progress.stage.noteCreating": "Membuat catatan",
@@ -269,5 +268,6 @@
     "common.transcript.unavailable": "Transkrip tidak tersedia untuk video ini",
     "notice.collection.progress": "Memproses {name}: {done} dari {total}",
     "notice.collection.closedOnStart": "Koleksi terhenti yang ditutup: {count}",
-    "modal.jobs.cancelCollection": "Hentikan koleksi"
+    "modal.jobs.cancelCollection": "Hentikan koleksi",
+    "notice.progress.tapToCancel": "Ketuk untuk membatalkan"
 }

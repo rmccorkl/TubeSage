@@ -105,7 +105,6 @@
     "license.required.step4": "Åbn indstillingerne for plugin'et \"Tubesage\"",
     "license.required.step5": "Slå \"Accepter licens og ansvarsfraskrivelse\" til for at aktivere plugin'et",
     "license.required.openSettings": "Åbn plugin-indstillinger",
-    "notice.progress.message": "{stage} — annuller via \"Vis aktive job\"",
     "notice.progress.stage.transcript": "Henter transskription",
     "notice.progress.stage.summary": "Resumerer transskription",
     "notice.progress.stage.noteCreating": "Opretter note",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "Der er ingen transskription til denne video",
     "notice.collection.progress": "Behandler {name}: {done} af {total}",
     "notice.collection.closedOnStart": "Afbrudte samlinger lukket: {count}",
-    "modal.jobs.cancelCollection": "Stop samling"
+    "modal.jobs.cancelCollection": "Stop samling",
+    "notice.progress.tapToCancel": "Tryk for at annullere"
 }

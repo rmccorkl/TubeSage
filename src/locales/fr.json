@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Ouvrir les paramètres du plugin"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — annuler via « Afficher les tâches actives »"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Récupération de la transcription"
@@ -1090,5 +1086,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Arrêter la collection"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Toucher pour annuler"
     }
 }

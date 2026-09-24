@@ -900,6 +900,39 @@ describe("C a collection runs every one of its videos, not just the first", () =
     expect(collection.owns(executing)).toBe(false);
   });
 
+  it("leaves no surface behind when the plugin unloads mid-run", async () => {
+    // THE LEAK THIS LOCKS: `onunload` stopped the single-job surface and never
+    // touched the collection's. On desktop that surface is a status-bar item
+    // with a live `window.setInterval` behind it, so disabling or reloading the
+    // plugin during a channel/playlist left an item and its timer running until
+    // Obsidian restarted — on mobile, an ownerless floating notice.
+    //
+    // Driven against a real JobRunner and a real CollectionNotices, and the
+    // runner is deliberately NOT stopped: letting the children keep reporting
+    // is the harsher case, because a straggler must not repaint or reopen a
+    // surface the plugin no longer drives.
+    const { collection, notices, noticeState, drain } = collectionHarness();
+    await collection.begin({
+      url: "https://youtube.com/playlist?list=PL", folder: "Inbox",
+      sourceName: "Stuff", contentType: "Playlist", videos,
+    });
+    expect(noticeState.hidden()).toBe(0);
+    const shownAtUnload = noticeState.shown.length;
+
+    // What `onunload` now does to this surface.
+    notices.dismissAll();
+    expect(noticeState.hidden()).toBe(1);
+
+    await drain();
+    expect(noticeState.hidden()).toBe(1);
+    expect(noticeState.shown.length).toBe(shownAtUnload);
+  });
+
+  // The call site — that `onunload` actually ASKS for this — is guarded in
+  // scripts/main-wiring.test.mjs. It reads main.ts as text, and `src/` may not
+  // import node:fs (the lint rule that keeps this bundle mobile-safe), which is
+  // why it lives beside the other main.ts scanner rather than here.
+
   it("stalls on item one when nothing routes the events — the shipped bug", async () => {
     // The control arm. If this ever starts passing three, the routing has been
     // removed and the test above is no longer proving anything.

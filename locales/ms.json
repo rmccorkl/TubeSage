@@ -105,7 +105,6 @@
     "license.required.step4": "Klik tetapan pemalam “Tubesage”",
     "license.required.step5": "Hidupkan “Terima lesen dan penafian” untuk mengaktifkan pemalam",
     "license.required.openSettings": "Buka tetapan pemalam",
-    "notice.progress.message": "{stage} — batalkan daripada “Tunjukkan kerja aktif”",
     "notice.progress.stage.transcript": "Sedang mengambil transkrip",
     "notice.progress.stage.summary": "Sedang meringkaskan transkrip",
     "notice.progress.stage.noteCreating": "Sedang mencipta nota",
@@ -269,5 +268,6 @@
     "common.transcript.unavailable": "Transkrip tiada untuk video ini",
     "notice.collection.progress": "Memproses {name}: {done} daripada {total}",
     "notice.collection.closedOnStart": "Koleksi terganggu yang ditutup: {count}",
-    "modal.jobs.cancelCollection": "Hentikan koleksi"
+    "modal.jobs.cancelCollection": "Hentikan koleksi",
+    "notice.progress.tapToCancel": "Ketik untuk batal"
 }

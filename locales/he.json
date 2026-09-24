@@ -105,7 +105,6 @@
     "license.required.step4": "לחץ על הגדרות התוסף \"Tubesage\"",
     "license.required.step5": "הפעל את \"אישור רישיון וכתב ויתור\" כדי להפעיל את התוסף",
     "license.required.openSettings": "פתיחת הגדרות התוסף",
-    "notice.progress.message": "{stage} — ביטול מתוך \"הצג משימות פעילות\"",
     "notice.progress.stage.transcript": "מאחזר תמליל",
     "notice.progress.stage.summary": "מסכם תמליל",
     "notice.progress.stage.noteCreating": "יוצר הערה",
@@ -271,5 +270,6 @@
     "common.transcript.unavailable": "אין תמליל זמין לסרטון זה",
     "notice.collection.progress": "מעבד את {name}: {done} מתוך {total}",
     "notice.collection.closedOnStart": "אוספים שנקטעו נסגרו: {count}",
-    "modal.jobs.cancelCollection": "עצור אוסף"
+    "modal.jobs.cancelCollection": "עצור אוסף",
+    "notice.progress.tapToCancel": "הקש לביטול"
 }

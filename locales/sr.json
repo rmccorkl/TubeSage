@@ -105,7 +105,6 @@
     "license.required.step4": "Отворите подешавања додатка „Tubesage“",
     "license.required.step5": "Укључите „Прихватам лиценцу и одрицање одговорности“ да омогућите додатак",
     "license.required.openSettings": "Отвори подешавања додатка",
-    "notice.progress.message": "{stage} — отказивање преко „Прикажи активне послове“",
     "notice.progress.stage.transcript": "Преузимање транскрипта",
     "notice.progress.stage.summary": "Сажимање транскрипта",
     "notice.progress.stage.noteCreating": "Прављење белешке",
@@ -271,5 +270,6 @@
     "common.transcript.unavailable": "Нема транскрипта за овај видео",
     "notice.collection.progress": "Обрада {name}: {done} од {total}",
     "notice.collection.closedOnStart": "Затворене прекинуте колекције: {count}",
-    "modal.jobs.cancelCollection": "Заустави колекцију"
+    "modal.jobs.cancelCollection": "Заустави колекцију",
+    "notice.progress.tapToCancel": "Додирните да откажете"
 }

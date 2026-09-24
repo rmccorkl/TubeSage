@@ -105,7 +105,6 @@
     "license.required.step4": "Deschide setările pluginului „Tubesage”",
     "license.required.step5": "Activează „Acceptă licența și declinarea responsabilității” pentru a activa pluginul",
     "license.required.openSettings": "Deschide setările pluginului",
-    "notice.progress.message": "{stage} — anulează din „Afișează sarcinile active”",
     "notice.progress.stage.transcript": "Se preia transcrierea",
     "notice.progress.stage.summary": "Se rezumă transcrierea",
     "notice.progress.stage.noteCreating": "Se creează notița",
@@ -271,5 +270,6 @@
     "common.transcript.unavailable": "Nu există transcriere pentru acest videoclip",
     "notice.collection.progress": "Se procesează {name}: {done} din {total}",
     "notice.collection.closedOnStart": "Colecții întrerupte închise: {count}",
-    "modal.jobs.cancelCollection": "Oprește colecția"
+    "modal.jobs.cancelCollection": "Oprește colecția",
+    "notice.progress.tapToCancel": "Atinge pentru a anula"
 }

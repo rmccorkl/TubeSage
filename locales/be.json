@@ -105,7 +105,6 @@
     "license.required.step4": "Адкрыйце налады плагіна «Tubesage»",
     "license.required.step5": "Уключыце «Прымаю ліцэнзію і адмову ад адказнасці», каб актываваць плагін",
     "license.required.openSettings": "Адкрыць налады плагіна",
-    "notice.progress.message": "{stage} — адмена праз «Паказаць актыўныя заданні»",
     "notice.progress.stage.transcript": "Атрыманне транскрыпта",
     "notice.progress.stage.summary": "Пераказ транскрыпта",
     "notice.progress.stage.noteCreating": "Стварэнне нататкі",
@@ -272,5 +271,6 @@
     "common.transcript.unavailable": "Для гэтага відэа няма расшыфроўкі",
     "notice.collection.progress": "Апрацоўка {name}: {done} з {total}",
     "notice.collection.closedOnStart": "Закрыта перарваных калекцый: {count}",
-    "modal.jobs.cancelCollection": "Спыніць калекцыю"
+    "modal.jobs.cancelCollection": "Спыніць калекцыю",
+    "notice.progress.tapToCancel": "Націсніце, каб скасаваць"
 }

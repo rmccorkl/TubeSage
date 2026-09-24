@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "開啟外掛設定"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage}（可在「顯示進行中的工作」中取消）"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "正在取得逐字稿"
@@ -1082,5 +1078,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "停止合輯"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "點按以取消"
     }
 }

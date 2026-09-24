@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Ldi iɣewwaṛen n usiɣzef"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — sefsex seg «Sken-d imahilen urmiden»"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Awway n uḍris"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Ḥbes tagrumma"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Sedmer i usefsex"
     }
 }

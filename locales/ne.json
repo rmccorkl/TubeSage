@@ -105,7 +105,6 @@
     "license.required.step4": "“Tubesage” प्लगइनको सेटिङमा क्लिक गर्नुहोस्",
     "license.required.step5": "प्लगइन सक्षम गर्न “इजाजतपत्र र अस्वीकरण स्वीकार गर्नुहोस्” टगल गर्नुहोस्",
     "license.required.openSettings": "प्लगइन सेटिङ खोल्नुहोस्",
-    "notice.progress.message": "{stage} — “सक्रिय कामहरू देखाउनुहोस्” बाट रद्द गर्नुहोस्",
     "notice.progress.stage.transcript": "प्रतिलिपि ल्याइँदै",
     "notice.progress.stage.summary": "प्रतिलिपिको सारांश बनाइँदै",
     "notice.progress.stage.noteCreating": "नोट बनाइँदै",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "यो भिडियोको प्रतिलिपि उपलब्ध छैन",
     "notice.collection.progress": "{name} प्रशोधन गर्दै: {done}/{total}",
     "notice.collection.closedOnStart": "अवरुद्ध सङ्ग्रहहरू बन्द गरियो: {count}",
-    "modal.jobs.cancelCollection": "सङ्ग्रह रोक्नुहोस्"
+    "modal.jobs.cancelCollection": "सङ्ग्रह रोक्नुहोस्",
+    "notice.progress.tapToCancel": "रद्द गर्न ट्याप गर्नुहोस्"
 }

@@ -105,7 +105,6 @@
     "license.required.step4": "Nhấp vào phần cài đặt của plugin “Tubesage”",
     "license.required.step5": "Bật “Chấp nhận giấy phép và tuyên bố miễn trừ” để kích hoạt plugin",
     "license.required.openSettings": "Mở cài đặt plugin",
-    "notice.progress.message": "{stage} — huỷ từ “Hiển thị tác vụ đang chạy”",
     "notice.progress.stage.transcript": "Đang lấy bản chép lời",
     "notice.progress.stage.summary": "Đang tóm tắt bản chép lời",
     "notice.progress.stage.noteCreating": "Đang tạo ghi chú",
@@ -269,5 +268,6 @@
     "common.transcript.unavailable": "Không có bản chép lời cho video này",
     "notice.collection.progress": "Đang xử lý {name}: {done}/{total}",
     "notice.collection.closedOnStart": "Đã đóng các bộ sưu tập bị gián đoạn: {count}",
-    "modal.jobs.cancelCollection": "Dừng bộ sưu tập"
+    "modal.jobs.cancelCollection": "Dừng bộ sưu tập",
+    "notice.progress.tapToCancel": "Chạm để hủy"
 }

@@ -21,11 +21,20 @@
 import { t } from "../i18n";
 import type { JobStage } from "../jobs/job-record";
 import type { JobEvent } from "../jobs/job-runner";
+import { renderProgressNotice } from "./progress-notice-control";
+import type { NoticeElementLike } from "./progress-notice-control";
 
 /** What this module needs of Obsidian's `Notice`; see `new Notice(message, 0)` in main.ts. */
 export interface ProgressNoticeHandle {
   setMessage(message: string): unknown;
   hide(): void;
+  /**
+   * The notice's message element, when the host can supply it. Present for a
+   * real Obsidian `Notice` (its `messageEl`), which is what lets a tappable
+   * stop control be rendered INSIDE the notice; absent in surfaces that only
+   * carry text, which then keep the plain message.
+   */
+  element?: NoticeElementLike;
 }
 
 /** Builds a persistent notice showing `message`. */
@@ -54,13 +63,16 @@ function stageLabel(stage: JobStage): string {
 }
 
 /**
- * The whole notice text: the stage label plus the clause saying where to
- * cancel. Composed by placeholder substitution, never by concatenation — a
- * sentence assembled from fragments in code puts a space where Japanese and
- * Chinese want none (see src/i18n/index.ts).
+ * The notice's text: just the stage.
+ *
+ * It used to append `— cancel from "Show active jobs"`. That clause named a
+ * command-palette entry with no ribbon icon, so on a phone it pointed at
+ * something awkward to reach — and the notice now carries its own stop control,
+ * which makes describing a remote one both wrong and unnecessary. The key that
+ * embedded the command name is gone from all 51 locales with it.
  */
 export function progressNoticeText(stage: JobStage): string {
-  return t("notice.progress.message", { stage: stageLabel(stage) });
+  return stageLabel(stage);
 }
 
 /**
@@ -71,7 +83,15 @@ export function progressNoticeText(stage: JobStage): string {
 export class JobProgressNotices {
   private readonly notices = new Map<string, ProgressNoticeHandle>();
 
-  constructor(private readonly create: ProgressNoticeFactory) {}
+  /**
+   * `onStop` cancels the job a notice belongs to. Optional so a surface with no
+   * cancel route (or a test that does not care) still works; when it is absent
+   * the notice simply shows its stage without a control.
+   */
+  constructor(
+    private readonly create: ProgressNoticeFactory,
+    private readonly onStop?: (id: string) => void,
+  ) {}
 
   /**
    * Applies one runner event. `progress` creates the job's notice the first
@@ -119,9 +139,42 @@ export class JobProgressNotices {
   private show(id: string, message: string): void {
     const existing = this.notices.get(id);
     if (existing !== undefined) {
-      existing.setMessage(message);
+      this.paint(id, existing, message);
       return;
     }
-    this.notices.set(id, this.create(message));
+    const handle = this.create(message);
+    this.notices.set(id, handle);
+    // `create` already carried the opening text; only the control is added.
+    this.renderControl(id, handle, message);
+  }
+
+  /**
+   * Draws the notice's contents. With an element and a cancel route it renders
+   * the stop control; otherwise it falls back to the plain message, so no
+   * surface is left blank by the richer path being unavailable.
+   *
+   * Re-rendered on every progress event rather than only on creation: the stage
+   * changes as the job advances, and re-rendering also rebinds the control's
+   * action to THIS id — which is what stops a handler outliving its job. The
+   * rebinding happens through the content the control reads, not by attaching
+   * listeners again; see `renderProgressNotice`.
+   */
+  private paint(id: string, handle: ProgressNoticeHandle, message: string): void {
+    if (!this.renderControl(id, handle, message)) {
+      handle.setMessage(message);
+    }
+  }
+
+  /** Renders the in-notice stop control; false when this surface cannot carry one. */
+  private renderControl(id: string, handle: ProgressNoticeHandle, message: string): boolean {
+    const element = handle.element;
+    const onStop = this.onStop;
+    if (element === undefined || onStop === undefined) return false;
+    renderProgressNotice(element, {
+      stage: message,
+      hint: t("notice.progress.tapToCancel"),
+      onStop: () => onStop(id),
+    });
+    return true;
   }
 }

@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Open plugin settings"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — cancel from \"Show active jobs\""
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Fetching transcript"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Stop collection"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Tap to cancel"
     }
 }

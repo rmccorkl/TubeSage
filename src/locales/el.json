@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Άνοιγμα ρυθμίσεων πρόσθετου"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — ακύρωση από «Εμφάνιση ενεργών εργασιών»"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Λήψη απομαγνητοφώνησης"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Διακοπή συλλογής"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Πατήστε για ακύρωση"
     }
 }

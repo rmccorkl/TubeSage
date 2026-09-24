@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "เปิดการตั้งค่าปลั๊กอิน"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — ยกเลิกได้จาก “แสดงงานที่กำลังทำ”"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "กำลังดึงคำบรรยาย"
@@ -1082,5 +1078,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "หยุดคอลเลกชัน"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "แตะเพื่อยกเลิก"
     }
 }

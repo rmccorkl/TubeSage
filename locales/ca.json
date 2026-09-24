@@ -105,7 +105,6 @@
     "license.required.step4": "Obre la configuració del plugin «Tubesage»",
     "license.required.step5": "Activa «Accepta la llicència i l'avís legal» per habilitar el plugin",
     "license.required.openSettings": "Obre la configuració del plugin",
-    "notice.progress.message": "{stage} — cancel·la des de «Mostra les tasques actives»",
     "notice.progress.stage.transcript": "Obtenint la transcripció",
     "notice.progress.stage.summary": "Resumint la transcripció",
     "notice.progress.stage.noteCreating": "Creant la nota",
@@ -271,5 +270,6 @@
     "common.transcript.unavailable": "No hi ha cap transcripció per a aquest vídeo",
     "notice.collection.progress": "Processant {name}: {done} de {total}",
     "notice.collection.closedOnStart": "Col·leccions interrompudes tancades: {count}",
-    "modal.jobs.cancelCollection": "Atura la col·lecció"
+    "modal.jobs.cancelCollection": "Atura la col·lecció",
+    "notice.progress.tapToCancel": "Toca per cancel·lar"
 }

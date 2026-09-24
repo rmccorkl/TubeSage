@@ -105,7 +105,6 @@
     "license.required.step4": "Откройте настройки плагина «Tubesage»",
     "license.required.step5": "Включите «Принимаю лицензию и отказ от ответственности», чтобы активировать плагин",
     "license.required.openSettings": "Открыть настройки плагина",
-    "notice.progress.message": "{stage} — отмена через «Показать активные задачи»",
     "notice.progress.stage.transcript": "Получение транскрипта",
     "notice.progress.stage.summary": "Пересказ транскрипта",
     "notice.progress.stage.noteCreating": "Создание заметки",
@@ -272,5 +271,6 @@
     "common.transcript.unavailable": "Для этого видео нет расшифровки",
     "notice.collection.progress": "Обработка {name}: {done} из {total}",
     "notice.collection.closedOnStart": "Закрыто прерванных коллекций: {count}",
-    "modal.jobs.cancelCollection": "Остановить коллекцию"
+    "modal.jobs.cancelCollection": "Остановить коллекцию",
+    "notice.progress.tapToCancel": "Нажмите, чтобы отменить"
 }

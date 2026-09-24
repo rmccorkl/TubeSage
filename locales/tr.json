@@ -105,7 +105,6 @@
     "license.required.step4": "“Tubesage” eklenti ayarlarına tıklayın",
     "license.required.step5": "Eklentiyi etkinleştirmek için “Lisansı ve sorumluluk reddini kabul et” anahtarını açın",
     "license.required.openSettings": "Eklenti ayarlarını aç",
-    "notice.progress.message": "{stage} — “Etkin işleri göster” üzerinden iptal edin",
     "notice.progress.stage.transcript": "Transkript alınıyor",
     "notice.progress.stage.summary": "Transkript özetleniyor",
     "notice.progress.stage.noteCreating": "Not oluşturuluyor",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "Bu video için deşifre metni yok",
     "notice.collection.progress": "{name} işleniyor: {done}/{total}",
     "notice.collection.closedOnStart": "Kesintiye uğrayan koleksiyonlar kapatıldı: {count}",
-    "modal.jobs.cancelCollection": "Koleksiyonu durdur"
+    "modal.jobs.cancelCollection": "Koleksiyonu durdur",
+    "notice.progress.tapToCancel": "İptal için dokunun"
 }

@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "प्लगइन सेटिङ खोल्नुहोस्"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — “सक्रिय कामहरू देखाउनुहोस्” बाट रद्द गर्नुहोस्"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "प्रतिलिपि ल्याइँदै"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "सङ्ग्रह रोक्नुहोस्"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "रद्द गर्न ट्याप गर्नुहोस्"
     }
 }

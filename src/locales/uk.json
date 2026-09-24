@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Відкрити налаштування плагіна"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — скасування через «Показати активні завдання»"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Отримання транскрипта"
@@ -1094,5 +1090,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Зупинити колекцію"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Торкніться, щоб скасувати"
     }
 }

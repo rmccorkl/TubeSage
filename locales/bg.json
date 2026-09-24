@@ -105,7 +105,6 @@
     "license.required.step4": "Отворете настройките на приставката „Tubesage“",
     "license.required.step5": "Включете „Приемам лиценза и отказа от отговорност“, за да активирате приставката",
     "license.required.openSettings": "Отваряне на настройките на приставката",
-    "notice.progress.message": "{stage} — отказ чрез „Показване на активните задачи“",
     "notice.progress.stage.transcript": "Взимане на транскрипцията",
     "notice.progress.stage.summary": "Резюмиране на транскрипцията",
     "notice.progress.stage.noteCreating": "Създаване на бележка",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "Няма транскрипция за това видео",
     "notice.collection.progress": "Обработва се {name}: {done} от {total}",
     "notice.collection.closedOnStart": "Затворени прекъснати колекции: {count}",
-    "modal.jobs.cancelCollection": "Спиране на колекцията"
+    "modal.jobs.cancelCollection": "Спиране на колекцията",
+    "notice.progress.tapToCancel": "Докоснете за отказ"
 }

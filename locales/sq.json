@@ -105,7 +105,6 @@
     "license.required.step4": "Klikoni cilësimet e shtojcës «Tubesage»",
     "license.required.step5": "Aktivizoni «Prano licencën & shfajësimin» që shtojca të funksionojë",
     "license.required.openSettings": "Hap cilësimet e shtojcës",
-    "notice.progress.message": "{stage} — anulojeni nga «Shfaq punët aktive»",
     "notice.progress.stage.transcript": "Po merret transkripti",
     "notice.progress.stage.summary": "Po përmblidhet transkripti",
     "notice.progress.stage.noteCreating": "Po krijohet shënimi",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "Nuk ka transkript për këtë video",
     "notice.collection.progress": "Po përpunohet {name}: {done} nga {total}",
     "notice.collection.closedOnStart": "Koleksionet e ndërprera u mbyllën: {count}",
-    "modal.jobs.cancelCollection": "Ndalo koleksionin"
+    "modal.jobs.cancelCollection": "Ndalo koleksionin",
+    "notice.progress.tapToCancel": "Prekni për ta anuluar"
 }

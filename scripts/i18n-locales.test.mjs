@@ -539,11 +539,15 @@ describe("every sentence that names the plugin's command quotes its own locale's
   // step quoting its own accept toggle, and enforced for the whole set by
   // QUOTED_LABELS in i18n-lib.mjs.
   //
-  // All five rows are swept, not only the three that shipped quoting it: the
+  // All four rows are swept, not only the ones that shipped quoting it: the
   // two recovery-dialog rows used to hardcode the English name inside
   // recovery-ui-model.ts, which is why they were invisible here before.
+  //
+  // `notice.progress.message` was a fifth and is gone: the progress notice now
+  // carries its own stop control, so it no longer names the command at all —
+  // which was the point of removing it. A row that does not mention the command
+  // has nothing for this invariant to check.
   const QUOTING = [
-    "notice.progress.message",
     "notice.job.interrupted",
     "notice.job.saveFailed",
     "modal.jobs.reason.noteCollision",

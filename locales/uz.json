@@ -105,7 +105,6 @@
     "license.required.step4": "“Tubesage” plagin sozlamalarini bosing",
     "license.required.step5": "Plaginni yoqish uchun “Litsenziya va masʼuliyatdan voz kechishni qabul qilish” tugmasini yoqing",
     "license.required.openSettings": "Plagin sozlamalarini ochish",
-    "notice.progress.message": "{stage} — “Faol ishlarni koʻrsatish” orqali bekor qiling",
     "notice.progress.stage.transcript": "Transkript olinmoqda",
     "notice.progress.stage.summary": "Transkript xulosalanmoqda",
     "notice.progress.stage.noteCreating": "Yozuv yaratilmoqda",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "Bu video uchun transkript yoʻq",
     "notice.collection.progress": "{name} qayta ishlanmoqda: {done}/{total}",
     "notice.collection.closedOnStart": "Uzilgan toʻplamlar yopildi: {count}",
-    "modal.jobs.cancelCollection": "Toʻplamni toʻxtatish"
+    "modal.jobs.cancelCollection": "Toʻplamni toʻxtatish",
+    "notice.progress.tapToCancel": "Bekor qilish uchun bosing"
 }

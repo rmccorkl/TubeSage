@@ -105,7 +105,6 @@
     "license.required.step4": "روی تنظیمات افزونهٔ «Tubesage» کلیک کنید",
     "license.required.step5": "برای فعال‌کردن افزونه «پذیرش مجوز و سلب مسئولیت» را روشن کنید",
     "license.required.openSettings": "گشودن تنظیمات افزونه",
-    "notice.progress.message": "{stage} — لغو از «نمایش کارهای فعال»",
     "notice.progress.stage.transcript": "در حال دریافت رونوشت",
     "notice.progress.stage.summary": "در حال خلاصه‌کردن رونوشت",
     "notice.progress.stage.noteCreating": "در حال ساخت یادداشت",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "برای این ویدیو رونوشتی موجود نیست",
     "notice.collection.progress": "در حال پردازش {name}: {done} از {total}",
     "notice.collection.closedOnStart": "مجموعه‌های قطع‌شده بسته شد: {count}",
-    "modal.jobs.cancelCollection": "توقف مجموعه"
+    "modal.jobs.cancelCollection": "توقف مجموعه",
+    "notice.progress.tapToCancel": "برای لغو ضربه بزنید"
 }

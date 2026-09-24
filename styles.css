@@ -1013,3 +1013,61 @@
 .tubesage-jobs-error {
     color: var(--text-error);
 }
+
+/* ---- Floating job progress notice (#7/#9, reworked after device feedback) ---
+   The notice carries its own stop control now: it used to say "cancel from
+   'Show active jobs'", which named a command-palette entry with no ribbon
+   icon — awkward on a phone — and an Obsidian Notice dismisses on tap, so the
+   natural gesture destroyed the message instead of acting on it.
+
+   These rules style the MOBILE surface only. The desktop keeps its animated
+   status-bar spinner (ProcessingSpinner, recovered from git) and shows no
+   notice at all, which is what it had before #7/#9 replaced both surfaces when
+   only mobile needed changing. */
+.tubesage-notice-body {
+    display: flex;
+    align-items: center;
+    gap: var(--size-4-2);
+    flex-wrap: wrap;
+}
+
+.tubesage-notice-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex: none;
+    background-color: var(--text-accent);
+    animation: tubesage-notice-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes tubesage-notice-pulse {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 1; }
+}
+
+.tubesage-notice-stage {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.tubesage-notice-hint {
+    flex: none;
+    font-size: var(--font-ui-smaller);
+    color: var(--text-muted);
+}
+
+/* The WHOLE notice is the cancel target on mobile — there is no separate Stop
+   button, because a button inside a notice that already acts on tap was two
+   targets where one will do, which was the complaint. */
+.tubesage-notice-body {
+    cursor: pointer;
+}
+
+/* A user who has asked for less motion still needs to see the job is alive, so
+   the dot stays and only the animation stops. */
+@media (prefers-reduced-motion: reduce) {
+    .tubesage-notice-pulse {
+        animation: none;
+        opacity: 0.85;
+    }
+}

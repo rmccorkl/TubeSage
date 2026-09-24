@@ -31,6 +31,8 @@ import { JobStore, hydrate } from './src/jobs/job-store';
 import { JobRunner, NoteChangedError, isTerminal } from './src/jobs/job-runner';
 import type { JobEvent, SubmitInput, SubmitResult } from './src/jobs/job-runner';
 import { CollectionNotices } from './src/runtime/collection-notice';
+import { createProgressSurface } from './src/runtime/progress-surface';
+import { ProcessingSpinner } from './src/utils/processing-spinner';
 import { CollectionRunner } from './src/runtime/collection-runner';
 import { aggregateProgress } from './src/jobs/collection-record';
 import type { CollectionVideo } from './src/jobs/collection-record';
@@ -305,20 +307,65 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     // event and hidden on its terminal one. The submitting modal closes as
     // soon as the job starts, so the plugin owns these exactly as it owned
     // the status-bar spinners they replace.
+    /**
+     * WHERE A RUNNING JOB IS REPORTED — the one platform decision, as the
+     * original `ProcessingSpinner` had before #7/#9 replaced both surfaces when
+     * only mobile needed changing.
+     *
+     *   desktop: an animated status-bar item. No popup and no floating notice —
+     *            which is what the maintainer had and asked for back.
+     *   mobile:  a floating notice (Obsidian has no status bar there) whose
+     *            WHOLE surface cancels when tapped. Obsidian draws no close
+     *            control on a Notice, so while the job runs the ways to clear
+     *            this one without cancelling are its swipe-to-dismiss gesture
+     *            and letting the job finish.
+     *
+     * Declared before the two surfaces that use it: field initialisers run in
+     * order, so this must exist first.
+     */
+    private readonly progressSurface = createProgressSurface({
+        isMobile: Platform.isMobile,
+        createNotice: (message: string) => {
+            const notice = new Notice(message, 0);
+            return {
+                // `messageEl` is public since 1.8.7; handing it over is what
+                // lets the notice become its own cancel target.
+                setMessage: (text: string) => notice.setMessage(text),
+                hide: () => { notice.hide(); },
+                element: notice.messageEl,
+            };
+        },
+        createStatusBar: (message: string) => {
+            // `TubeSage` is a brand name and is never translated, so the prefix
+            // needs no key of its own.
+            const spinner = new ProcessingSpinner(this, 'TubeSage', message);
+            spinner.start();
+            return {
+                setLabel: (text: string) => { spinner.setLabel(text); },
+                stop: () => { spinner.stop(); },
+            };
+        },
+    });
     private readonly progressNotices = new JobProgressNotices(
-        (message) => new Notice(message, 0)
+        this.progressSurface,
+        // Only ever a single-video job: a collection child's own surface is
+        // suppressed, and the run's surface cancels the run instead.
+        (id: string) => { void this.jobRunner.cancel(id); }
     );
-    // A channel/playlist gets ONE notice for the whole run (#9), not one per
-    // video: `JobProgressNotices` keys by job id, so a 40-video playlist would
-    // otherwise stack 40 notices. While a run is live it owns its children's
-    // ids and their individual notices are suppressed.
+    // A channel/playlist gets ONE surface for the whole run (#9), not one per
+    // video. While a run is live it owns its children's ids and their
+    // individual surfaces are suppressed.
     private readonly collectionNotices = new CollectionNotices(
-        (message) => new Notice(message, 0),
+        this.progressSurface,
         (progress, parent) => t('notice.collection.progress', {
             name: parent.sourceName,
             done: progress.done,
             total: progress.total,
-        })
+        }),
+        // Stops the RUN, not one video: queued items are cancelled and the item
+        // already paid for is left to finish (see CollectionRunner.cancel).
+        (parentId: string) => { void this.collectionRunner?.cancel(parentId); },
+        () => t('notice.progress.tapToCancel')
     );
     // Public for the same reason `jobRunner` is: the create-note modal hands a
     // channel/playlist to it once the folder is chosen.
@@ -433,10 +480,9 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         });
         this.addCommand({
             id: 'show-active-jobs',
-            // Localised, and the three shipped rows that QUOTE it were
-            // retranslated in the same commit so that each locale's sentence
-            // names the command that locale's palette actually lists
-            // (notice.progress.message, notice.job.interrupted,
+            // Localised, and the rows that QUOTE it were retranslated in the
+            // same commit so that each locale's sentence names the command that
+            // locale's palette actually lists (notice.job.interrupted,
             // notice.job.saveFailed, plus the two recovery-dialog rows that
             // used to hardcode it). `QUOTED_LABELS` in scripts/i18n-lib.mjs
             // now enforces that pairing the same way it enforces the licence
@@ -542,6 +588,10 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // No progress notice may outlive the plugin: a floating notice has no
         // owner once the events driving it have stopped.
         this.progressNotices.dismissAll();
+        // Same for a channel/playlist run: its surface is a status-bar item
+        // with a live interval behind it on desktop, and nothing is left to
+        // drive it once the runners stop.
+        this.collectionNotices.dismissAll();
         // A stale recovery modal could still reach resume/cancel/discard
         // (their store writes precede the runner's fence): close it.
         this.recoveryModal?.close();

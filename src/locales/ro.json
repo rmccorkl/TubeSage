@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Deschide setările pluginului"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — anulează din „Afișează sarcinile active”"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Se preia transcrierea"
@@ -1090,5 +1086,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Oprește colecția"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Atinge pentru a anula"
     }
 }

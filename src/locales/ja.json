@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "プラグインの設定を開く"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage}（「実行中のジョブを表示」で中止できます）"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "字幕を取得中"
@@ -1082,5 +1078,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "コレクションを停止"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "タップで中止"
     }
 }

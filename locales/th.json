@@ -105,7 +105,6 @@
     "license.required.step4": "คลิกการตั้งค่าของปลั๊กอิน “Tubesage”",
     "license.required.step5": "เปิดสวิตช์ “ยอมรับสัญญาอนุญาตและข้อปฏิเสธความรับผิด” เพื่อเปิดใช้งานปลั๊กอิน",
     "license.required.openSettings": "เปิดการตั้งค่าปลั๊กอิน",
-    "notice.progress.message": "{stage} — ยกเลิกได้จาก “แสดงงานที่กำลังทำ”",
     "notice.progress.stage.transcript": "กำลังดึงคำบรรยาย",
     "notice.progress.stage.summary": "กำลังสรุปคำบรรยาย",
     "notice.progress.stage.noteCreating": "กำลังสร้างโน้ต",
@@ -269,5 +268,6 @@
     "common.transcript.unavailable": "ไม่มีคำบรรยายสำหรับวิดีโอนี้",
     "notice.collection.progress": "กำลังประมวลผล {name}: {done}/{total}",
     "notice.collection.closedOnStart": "ปิดคอลเลกชันที่หยุดกลางคัน: {count}",
-    "modal.jobs.cancelCollection": "หยุดคอลเลกชัน"
+    "modal.jobs.cancelCollection": "หยุดคอลเลกชัน",
+    "notice.progress.tapToCancel": "แตะเพื่อยกเลิก"
 }

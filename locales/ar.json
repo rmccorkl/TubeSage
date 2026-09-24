@@ -105,7 +105,6 @@
     "license.required.step4": "انقر على إعدادات إضافة «Tubesage»",
     "license.required.step5": "فعّل «الموافقة على الترخيص وإخلاء المسؤولية» لتمكين الإضافة",
     "license.required.openSettings": "فتح إعدادات الإضافة",
-    "notice.progress.message": "{stage} — الإلغاء من «إظهار المهام النشطة»",
     "notice.progress.stage.transcript": "جارٍ جلب النص",
     "notice.progress.stage.summary": "جارٍ تلخيص النص",
     "notice.progress.stage.noteCreating": "جارٍ إنشاء الملاحظة",
@@ -274,5 +273,6 @@
     "common.transcript.unavailable": "لا يوجد نص لهذا الفيديو",
     "notice.collection.progress": "جارٍ معالجة {name}: {done} من {total}",
     "notice.collection.closedOnStart": "تم إغلاق المجموعات المتوقفة: {count}",
-    "modal.jobs.cancelCollection": "إيقاف المجموعة"
+    "modal.jobs.cancelCollection": "إيقاف المجموعة",
+    "notice.progress.tapToCancel": "اضغط للإلغاء"
 }

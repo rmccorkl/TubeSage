@@ -105,7 +105,6 @@
     "license.required.step4": "ចុចការកំណត់កម្មវិធីជំនួយ “Tubesage”",
     "license.required.step5": "បើក “ទទួលយកអាជ្ញាបណ្ណនិងសេចក្ដីបដិសេធ” ដើម្បីដំណើរការកម្មវិធីជំនួយ",
     "license.required.openSettings": "បើកការកំណត់កម្មវិធីជំនួយ",
-    "notice.progress.message": "{stage} — បោះបង់ពី “បង្ហាញការងារសកម្ម”",
     "notice.progress.stage.transcript": "កំពុងទាញប្រតិចារិក",
     "notice.progress.stage.summary": "កំពុងសង្ខេបប្រតិចារិក",
     "notice.progress.stage.noteCreating": "កំពុងបង្កើតកំណត់ត្រា",
@@ -269,5 +268,6 @@
     "common.transcript.unavailable": "មិនមានប្រតិចារិកសម្រាប់វីដេអូនេះទេ",
     "notice.collection.progress": "កំពុងដំណើរការ {name}៖ {done}/{total}",
     "notice.collection.closedOnStart": "បានបិទបណ្តុំដែលបានរំខាន: {count}",
-    "modal.jobs.cancelCollection": "បញ្ឈប់បណ្តុំ"
+    "modal.jobs.cancelCollection": "បញ្ឈប់បណ្តុំ",
+    "notice.progress.tapToCancel": "ប៉ះដើម្បីបោះបង់"
 }

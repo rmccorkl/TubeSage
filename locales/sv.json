@@ -105,7 +105,6 @@
     "license.required.step4": "Öppna inställningarna för tillägget ”Tubesage”",
     "license.required.step5": "Slå på ”Godkänn licens och ansvarsfriskrivning” för att aktivera tillägget",
     "license.required.openSettings": "Öppna tilläggets inställningar",
-    "notice.progress.message": "{stage} — avbryt via ”Visa aktiva jobb”",
     "notice.progress.stage.transcript": "Hämtar transkription",
     "notice.progress.stage.summary": "Sammanfattar transkription",
     "notice.progress.stage.noteCreating": "Skapar anteckning",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "Ingen transkription är tillgänglig för den här videon",
     "notice.collection.progress": "Bearbetar {name}: {done} av {total}",
     "notice.collection.closedOnStart": "Avbrutna samlingar stängda: {count}",
-    "modal.jobs.cancelCollection": "Stoppa samling"
+    "modal.jobs.cancelCollection": "Stoppa samling",
+    "notice.progress.tapToCancel": "Tryck för att avbryta"
 }

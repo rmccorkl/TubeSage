@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Plagin sozlamalarini ochish"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — “Faol ishlarni koʻrsatish” orqali bekor qiling"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Transkript olinmoqda"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Toʻplamni toʻxtatish"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Bekor qilish uchun bosing"
     }
 }

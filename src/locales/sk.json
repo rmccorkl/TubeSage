@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Otvoriť nastavenia doplnku"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — zrušiť cez „Zobraziť aktívne úlohy“"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Načítanie prepisu"
@@ -1094,5 +1090,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Zastaviť kolekciu"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Ťuknutím zrušíte"
     }
 }

@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Bővítmény beállításainak megnyitása"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — megszakítás a „Aktív feladatok megjelenítése” paranccsal"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Átirat letöltése"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Gyűjtemény leállítása"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Koppintson a megszakításhoz"
     }
 }

@@ -423,10 +423,6 @@
         "original": "Open plugin settings",
         "translation": "Отваряне на настройките на приставката"
     },
-    "notice.progress.message": {
-        "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — отказ чрез „Показване на активните задачи“"
-    },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
         "translation": "Взимане на транскрипцията"
@@ -1086,5 +1082,9 @@
     "modal.jobs.cancelCollection": {
         "original": "Stop collection",
         "translation": "Спиране на колекцията"
+    },
+    "notice.progress.tapToCancel": {
+        "original": "Tap to cancel",
+        "translation": "Докоснете за отказ"
     }
 }

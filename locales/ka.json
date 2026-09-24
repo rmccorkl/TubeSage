@@ -105,7 +105,6 @@
     "license.required.step4": "დააწკაპუნეთ მოდულის „Tubesage“ პარამეტრებზე",
     "license.required.step5": "მოდულის ასამოქმედებლად ჩართეთ „ლიცენზიისა და პასუხისმგებლობის უარყოფის მიღება“",
     "license.required.openSettings": "მოდულის პარამეტრების გახსნა",
-    "notice.progress.message": "{stage} — გაუქმება „აქტიური სამუშაოების ჩვენება“-იდან",
     "notice.progress.stage.transcript": "ტრანსკრიპტის მიღება",
     "notice.progress.stage.summary": "ტრანსკრიპტის შეჯამება",
     "notice.progress.stage.noteCreating": "ჩანაწერის შექმნა",
@@ -270,5 +269,6 @@
     "common.transcript.unavailable": "ამ ვიდეოსთვის ტრანსკრიპტი არ არის",
     "notice.collection.progress": "მიმდინარეობს {name}: {done} / {total}",
     "notice.collection.closedOnStart": "დახურულია შეწყვეტილი კოლექციები: {count}",
-    "modal.jobs.cancelCollection": "კოლექციის შეჩერება"
+    "modal.jobs.cancelCollection": "კოლექციის შეჩერება",
+    "notice.progress.tapToCancel": "შესაწყვეტად შეეხეთ"
 }
