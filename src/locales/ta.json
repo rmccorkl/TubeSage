@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "செயலாக்க வேண்டிய வீடியோக்கள்: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "வீடியோ {current}/{total} செயலாக்கப்படுகிறது: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "வீடியோ {title} தவிர்க்கப்பட்டது – எழுத்துப்படி இல்லை"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "இயக்கப்பட்டியல் வீடியோவுக்கு நேர முத்திரை இணைப்புகள் சேர்க்கப்படுகின்றன: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "சேனல் வீடியோவுக்கு நேர முத்திரை இணைப்புகள் சேர்க்கப்படுகின்றன: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ {title} இல் நேர முத்திரை இணைப்புகள் சேர்க்கப்பட்டன"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} (“{title}”)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "குறிப்பு உருவாக்கப்பட்டது, ஆனால் “{title}” இல் நேர முத்திரைகளைச் சேர்க்க முடியவில்லை"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ வீடியோ {current}/{total} செயலாக்கப்பட்டது"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ வீடியோ “{title}” தவிர்க்கப்பட்டது – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ வீடியோ “{title}” செயலாக்கத்தில் பிழை: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "சேனல் செயலாக்கம் முடிந்தது – செயலாக்கியவை: {processed}, தவிர்த்தவை: {skipped}, பிழைகள்: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "பணியைச் சேமிக்க முடியவில்லை: {error}. வீடியோ இன்னும் செயலாக்கத்தில் இருக்கலாம்; “செயலில் உள்ள பணிகளைக் காட்டு” ஐப் பாருங்கள்"
@@ -1118,5 +1074,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "இந்த வீடியோவுக்கு எழுத்துப்படி இல்லை"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "{name} செயலாக்கப்படுகிறது: {done}/{total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "தடைபட்ட தொகுப்புகள் மூடப்பட்டன: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "தொகுப்பை நிறுத்து"
     }
 }

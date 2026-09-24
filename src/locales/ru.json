@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "Видео к обработке: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "Обработка видео {current}/{total}: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "Видео {title} пропущено — расшифровки нет"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "Добавление ссылок с метками времени к видео из плейлиста: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "Добавление ссылок с метками времени к видео из канала: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ Ссылки с метками времени добавлены к {title}"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} («{title}»)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "Заметка создана, но метки времени не удалось добавить к «{title}»"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ Обработано видео {current}/{total}"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ Видео «{title}» пропущено — {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ Ошибка обработки видео «{title}»: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "Обработка канала завершена — обработано: {processed}, пропущено: {skipped}, ошибок: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "Не удалось сохранить задачу: {error}. Видео может всё ещё обрабатываться; см. «Показать активные задачи»"
@@ -1126,5 +1082,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "Для этого видео нет расшифровки"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "Обработка {name}: {done} из {total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "Закрыто прерванных коллекций: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "Остановить коллекцию"
     }
 }

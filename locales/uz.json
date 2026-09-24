@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Ijro roʻyxatidan videolar olinmoqda: {name}",
     "notice.collection.fetchingFrom.channel": "Kanaldan videolar olinmoqda: {name}",
     "notice.collection.videosToProcess": "Qayta ishlanadigan videolar: {count}",
-    "notice.collection.processingVideo": "Video {current}/{total} qayta ishlanmoqda: {title}",
-    "notice.collection.skipNoTranscript": "{title} videosi oʻtkazib yuborildi – matn yoʻq",
-    "notice.collection.addingTimestamps.playlist": "Ijro roʻyxati videosiga vaqt belgisi havolalari qoʻshilmoqda: {title}",
-    "notice.collection.addingTimestamps.channel": "Kanal videosiga vaqt belgisi havolalari qoʻshilmoqda: {title}",
-    "notice.collection.timestampsAdded": "✓ {title} ga vaqt belgisi havolalari qoʻshildi",
-    "notice.collection.timestampError": "{error} (“{title}”)",
-    "notice.collection.timestampsFailed": "Qaydnoma yaratildi, lekin “{title}” ga vaqt belgilarini qoʻshib boʻlmadi",
-    "notice.collection.videoProcessed": "✓ Video {current}/{total} qayta ishlandi",
-    "notice.collection.videoSkipped": "⚠️ “{title}” videosi oʻtkazib yuborildi – {error}",
-    "notice.collection.videoError": "❌ “{title}” videosini qayta ishlashda xato: {error}",
-    "notice.collection.complete": "Kanalni qayta ishlash tugadi – qayta ishlandi: {processed}, oʻtkazib yuborildi: {skipped}, xatolar: {errors}",
     "notice.job.saveFailed": "Vazifani saqlab boʻlmadi: {error}. Video hamon qayta ishlanayotgan boʻlishi mumkin; “Faol ishlarni koʻrsatish” ni koʻring",
     "notice.job.alreadyRunning": "Bu video allaqachon qayta ishlanmoqda",
     "notice.job.cannotResume": "Bu vazifani shu holatda davom ettirib boʻlmaydi; uning holatini koʻring",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: uzilgan {count} ta ish eʼtibor talab qiladi",
     "common.validation.required": "{field} maydonini toʻldiring",
     "common.validation.genericError": "Xatolik yuz berdi",
-    "common.transcript.unavailable": "Bu video uchun transkript yoʻq"
+    "common.transcript.unavailable": "Bu video uchun transkript yoʻq",
+    "notice.collection.progress": "{name} qayta ishlanmoqda: {done}/{total}",
+    "notice.collection.closedOnStart": "Uzilgan toʻplamlar yopildi: {count}",
+    "modal.jobs.cancelCollection": "Toʻplamni toʻxtatish"
 }

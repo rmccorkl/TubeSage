@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Извличане на видеата от плейлиста: {name}",
     "notice.collection.fetchingFrom.channel": "Извличане на видеата от канала: {name}",
     "notice.collection.videosToProcess": "Видеа за обработка: {count}",
-    "notice.collection.processingVideo": "Обработка на видео {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Видеото {title} е пропуснато – няма транскрипция",
-    "notice.collection.addingTimestamps.playlist": "Добавяне на връзки с времеви маркери към видеото от плейлиста: {title}",
-    "notice.collection.addingTimestamps.channel": "Добавяне на връзки с времеви маркери към видеото от канала: {title}",
-    "notice.collection.timestampsAdded": "✓ Връзките с времеви маркери са добавени към {title}",
-    "notice.collection.timestampError": "{error} („{title}“)",
-    "notice.collection.timestampsFailed": "Бележката е създадена, но времевите маркери не можаха да бъдат добавени към „{title}“",
-    "notice.collection.videoProcessed": "✓ Обработено видео {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ Видеото „{title}“ е пропуснато – {error}",
-    "notice.collection.videoError": "❌ Грешка при обработката на видеото „{title}“: {error}",
-    "notice.collection.complete": "Обработката на канала завърши – обработени: {processed}, пропуснати: {skipped}, грешки: {errors}",
     "notice.job.saveFailed": "Задачата не може да бъде запазена: {error}. Видеото може още да се обработва; вижте „Показване на активните задачи“",
     "notice.job.alreadyRunning": "Това видео вече се обработва",
     "notice.job.cannotResume": "Тази задача не може да бъде възобновена в този вид; вижте състоянието ѝ",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} прекъснати задачи изискват внимание",
     "common.validation.required": "Попълнете полето {field}",
     "common.validation.genericError": "Възникна грешка",
-    "common.transcript.unavailable": "Няма транскрипция за това видео"
+    "common.transcript.unavailable": "Няма транскрипция за това видео",
+    "notice.collection.progress": "Обработва се {name}: {done} от {total}",
+    "notice.collection.closedOnStart": "Затворени прекъснати колекции: {count}",
+    "modal.jobs.cancelCollection": "Спиране на колекцията"
 }

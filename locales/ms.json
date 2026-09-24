@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Mendapatkan video daripada senarai main: {name}",
     "notice.collection.fetchingFrom.channel": "Mendapatkan video daripada saluran: {name}",
     "notice.collection.videosToProcess": "Video untuk diproses: {count}",
-    "notice.collection.processingVideo": "Memproses video {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Melangkau video {title} – transkrip tiada",
-    "notice.collection.addingTimestamps.playlist": "Menambah pautan cap masa pada video senarai main: {title}",
-    "notice.collection.addingTimestamps.channel": "Menambah pautan cap masa pada video saluran: {title}",
-    "notice.collection.timestampsAdded": "✓ Pautan cap masa ditambah pada {title}",
-    "notice.collection.timestampError": "{error} (“{title}”)",
-    "notice.collection.timestampsFailed": "Nota dicipta, tetapi cap masa tidak dapat ditambah pada “{title}”",
-    "notice.collection.videoProcessed": "✓ Video {current}/{total} diproses",
-    "notice.collection.videoSkipped": "⚠️ Melangkau video “{title}” – {error}",
-    "notice.collection.videoError": "❌ Ralat semasa memproses video “{title}”: {error}",
-    "notice.collection.complete": "Pemprosesan saluran selesai – diproses: {processed}, dilangkau: {skipped}, ralat: {errors}",
     "notice.job.saveFailed": "Tidak dapat menyimpan tugas: {error}. Video mungkin masih diproses; lihat “Tunjukkan kerja aktif”",
     "notice.job.alreadyRunning": "Video ini sedang diproses",
     "notice.job.cannotResume": "Tugas ini tidak boleh disambung dalam keadaan ini; lihat statusnya",
@@ -277,5 +266,8 @@
     "notice.recovery.several": "TubeSage: {count} kerja yang terhenti perlu perhatian",
     "common.validation.required": "Sila isi medan {field}",
     "common.validation.genericError": "Ralat telah berlaku",
-    "common.transcript.unavailable": "Transkrip tiada untuk video ini"
+    "common.transcript.unavailable": "Transkrip tiada untuk video ini",
+    "notice.collection.progress": "Memproses {name}: {done} daripada {total}",
+    "notice.collection.closedOnStart": "Koleksi terganggu yang ditutup: {count}",
+    "modal.jobs.cancelCollection": "Hentikan koleksi"
 }

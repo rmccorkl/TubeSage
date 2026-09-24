@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "संसाधनीयानि चलचित्राणि: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "चलचित्रं {current}/{total} संसाध्यते: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "चलचित्रं {title} त्यक्तम् – लेखनं नास्ति"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "गीतावलीचलचित्रे कालमुद्रासम्बन्धाः योज्यन्ते: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "वाहिनीचलचित्रे कालमुद्रासम्बन्धाः योज्यन्ते: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ {title} इत्यस्मिन् कालमुद्रासम्बन्धाः योजिताः"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} (“{title}”)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "टिप्पणी सृष्टा, परं “{title}” इत्यस्मिन् कालमुद्राः योजयितुं न शक्ताः"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ चलचित्रं {current}/{total} संसाधितम्"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ चलचित्रं “{title}” त्यक्तम् – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ चलचित्रस्य “{title}” संसाधने दोषः: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "वाहिन्याः संसाधनं समाप्तम् – संसाधितानि: {processed}, त्यक्तानि: {skipped}, दोषाः: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "कार्यं रक्षितुं न शक्तम्: {error}। चलचित्रम् अद्यापि संसाध्यमानं स्यात्; “सक्रियकार्याणि दर्शय” इति पश्यतु"
@@ -1118,5 +1074,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "अस्य चलचित्रस्य प्रतिलेखः न विद्यते"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "{name} संसाधनम्: {done}/{total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "विच्छिन्नसङ्ग्रहाः पिहिताः: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "सङ्ग्रहं विरमतु"
     }
 }

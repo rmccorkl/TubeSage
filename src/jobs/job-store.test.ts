@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createJobRecord } from "./job-record";
 import type { NoteJobRecord } from "./job-record";
+import { COLLECTIONS_KEY } from "./collection-record";
 import { JOBS_KEY, JobStore, PRUNE_AFTER_MS, hydrate } from "./job-store";
 import type { JobStoreIO } from "./job-store";
 
@@ -73,16 +74,16 @@ const noSettings = (): Record<string, unknown> => ({});
 
 describe("hydrate", () => {
   it("returns empty defaults for undefined/null/non-object input", () => {
-    expect(hydrate(undefined)).toEqual({ settings: {}, jobs: [], dropped: 0 });
-    expect(hydrate(null)).toEqual({ settings: {}, jobs: [], dropped: 0 });
-    expect(hydrate("nope")).toEqual({ settings: {}, jobs: [], dropped: 0 });
-    expect(hydrate(42)).toEqual({ settings: {}, jobs: [], dropped: 0 });
+    expect(hydrate(undefined)).toEqual({ settings: {}, jobs: [], collections: [], dropped: 0 });
+    expect(hydrate(null)).toEqual({ settings: {}, jobs: [], collections: [], dropped: 0 });
+    expect(hydrate("nope")).toEqual({ settings: {}, jobs: [], collections: [], dropped: 0 });
+    expect(hydrate(42)).toEqual({ settings: {}, jobs: [], collections: [], dropped: 0 });
   });
 
   it("leaves a settings-only object unchanged with no _jobs key", () => {
     const raw = { theme: "dark", maxTokens: 4000 };
     const result = hydrate(raw);
-    expect(result).toEqual({ settings: { theme: "dark", maxTokens: 4000 }, jobs: [], dropped: 0 });
+    expect(result).toEqual({ settings: { theme: "dark", maxTokens: 4000 }, jobs: [], collections: [], dropped: 0 });
     expect(Object.prototype.hasOwnProperty.call(result.settings, JOBS_KEY)).toBe(false);
   });
 
@@ -225,7 +226,7 @@ describe("hydrate", () => {
   it("treats a non-array _jobs as dropped:0, jobs:[], still stripped from settings", () => {
     const raw = { theme: "dark", [JOBS_KEY]: "not-an-array" };
     const result = hydrate(raw);
-    expect(result).toEqual({ settings: { theme: "dark" }, jobs: [], dropped: 0 });
+    expect(result).toEqual({ settings: { theme: "dark" }, jobs: [], collections: [], dropped: 0 });
   });
 });
 
@@ -293,7 +294,9 @@ describe("JobStore upsert", () => {
 
     expect(io.calls.length).toBe(1);
     const expected = { ...record, updatedAt: NOW + 1234 };
-    expect(io.calls[0]).toEqual({ theme: "dark", [JOBS_KEY]: [expected] });
+    // `_collections` is written by the same flush (#9): one payload, one file,
+    // so the two record kinds can never race each other to data.json.
+    expect(io.calls[0]).toEqual({ theme: "dark", [JOBS_KEY]: [expected], [COLLECTIONS_KEY]: [] });
     expect(store.get("a")?.customTitle).toBe("");
     expect(store.get("a")?.updatedAt).toBe(NOW + 1234);
   });

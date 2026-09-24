@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "正在取得播放清單中的影片：{name}",
     "notice.collection.fetchingFrom.channel": "正在取得頻道中的影片：{name}",
     "notice.collection.videosToProcess": "待處理的影片：{count}",
-    "notice.collection.processingVideo": "正在處理影片 {current}/{total}：{title}",
-    "notice.collection.skipNoTranscript": "略過影片 {title} – 沒有逐字稿",
-    "notice.collection.addingTimestamps.playlist": "正在為播放清單影片加入時間標記連結：{title}",
-    "notice.collection.addingTimestamps.channel": "正在為頻道影片加入時間標記連結：{title}",
-    "notice.collection.timestampsAdded": "✓ 已為 {title} 加入時間標記連結",
-    "notice.collection.timestampError": "{error}（「{title}」）",
-    "notice.collection.timestampsFailed": "筆記已建立，但無法為「{title}」加入時間標記",
-    "notice.collection.videoProcessed": "✓ 已處理影片 {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ 略過影片「{title}」 – {error}",
-    "notice.collection.videoError": "❌ 處理影片「{title}」時發生錯誤：{error}",
-    "notice.collection.complete": "頻道處理完成 – 已處理：{processed}，已略過：{skipped}，錯誤：{errors}",
     "notice.job.saveFailed": "無法儲存工作：{error}。影片可能仍在處理中，請查看「顯示進行中的工作」",
     "notice.job.alreadyRunning": "這部影片已在處理中",
     "notice.job.cannotResume": "此工作無法以目前狀態繼續，請查看其狀態",
@@ -277,5 +266,8 @@
     "notice.recovery.several": "TubeSage：有 {count} 項中斷的工作需要處理",
     "common.validation.required": "請輸入 {field}",
     "common.validation.genericError": "發生錯誤",
-    "common.transcript.unavailable": "此影片沒有逐字稿"
+    "common.transcript.unavailable": "此影片沒有逐字稿",
+    "notice.collection.progress": "正在處理 {name}：{done}/{total}",
+    "notice.collection.closedOnStart": "已關閉中斷的合輯：{count}",
+    "modal.jobs.cancelCollection": "停止合輯"
 }

@@ -1,4 +1,6 @@
 import { assertRecordIsMetadataOnly } from "./job-record";
+import { COLLECTIONS_KEY } from "./collection-record";
+import type { CollectionJobRecord } from "./collection-record";
 import type { BillingRisk, JobStage, JobStatus, NoteJobRecord } from "./job-record";
 
 // Serialized, compose-at-flush persistence for job records. No Obsidian, no
@@ -21,6 +23,8 @@ export interface HydratedData {
   /** everything in data.json except `_jobs` — what loadSettings should merge over DEFAULT_SETTINGS */
   settings: Record<string, unknown>;
   jobs: NoteJobRecord[];
+  /** collection parents (#9); a sibling of `jobs`, never part of `settings` */
+  collections: CollectionJobRecord[];
   /** records dropped because they were not valid v1 records (logged by the caller) */
   dropped: number;
 }
@@ -165,11 +169,12 @@ function isValidJobRecord(value: unknown): value is NoteJobRecord {
 /** Pure: split raw data.json content into settings + valid job records. Never throws on bad input. */
 export function hydrate(raw: unknown): HydratedData {
   if (!isPlainObject(raw)) {
-    return { settings: {}, jobs: [], dropped: 0 };
+    return { settings: {}, jobs: [], collections: [], dropped: 0 };
   }
-  const { [JOBS_KEY]: jobsRaw, ...settings } = raw;
+  const { [JOBS_KEY]: jobsRaw, [COLLECTIONS_KEY]: collectionsRaw, ...settings } = raw;
+  const collections = Array.isArray(collectionsRaw) ? collectionsRaw.filter(isValidCollectionRecord) : [];
   if (!Array.isArray(jobsRaw)) {
-    return { settings, jobs: [], dropped: 0 };
+    return { settings, jobs: [], collections, dropped: 0 };
   }
 
   let dropped = 0;
@@ -187,7 +192,7 @@ export function hydrate(raw: unknown): HydratedData {
       byId.set(record.id, record);
     }
   }
-  return { settings, jobs: Array.from(byId.values()), dropped };
+  return { settings, jobs: Array.from(byId.values()), collections, dropped };
 }
 
 // A record written before the translation stage existed has no
@@ -233,8 +238,33 @@ interface FlushWaiter {
   reject: (reason: unknown) => void;
 }
 
+/**
+ * A collection parent is deliberately thin — no stage, no claim, no billing —
+ * so validating it is a shape check, not the stage/status machine
+ * `isValidJobRecord` runs. Anything malformed is dropped rather than thrown on,
+ * matching how job records are treated.
+ */
+function isValidCollectionRecord(value: unknown): value is CollectionJobRecord {
+  if (!isPlainObject(value)) return false;
+  const v = value;
+  return (
+    v.version === 1 &&
+    v.kind === "collection" &&
+    typeof v.id === "string" && v.id !== "" &&
+    typeof v.url === "string" &&
+    typeof v.folder === "string" &&
+    typeof v.sourceName === "string" &&
+    (v.contentType === "Channel" || v.contentType === "Playlist") &&
+    Array.isArray(v.childIds) && v.childIds.every((id) => typeof id === "string") &&
+    typeof v.createdAt === "number" &&
+    typeof v.updatedAt === "number" &&
+    (v.status === "running" || v.status === "cancelled" || v.status === "closed" || v.status === "done")
+  );
+}
+
 export class JobStore {
   private readonly jobs = new Map<string, NoteJobRecord>();
+  private readonly collections = new Map<string, CollectionJobRecord>();
   private writing = false;
   private dirty = false;
   private pendingWaiters: FlushWaiter[] = [];
@@ -250,6 +280,40 @@ export class JobStore {
     for (const job of jobs) {
       this.jobs.set(job.id, clone(job));
     }
+  }
+
+  /** Replace the in-memory collections (called once by the plugin after hydrate()). */
+  loadCollections(collections: CollectionJobRecord[]): void {
+    this.collections.clear();
+    for (const collection of collections) {
+      this.collections.set(collection.id, clone(collection));
+    }
+  }
+
+  listCollections(): CollectionJobRecord[] {
+    return Array.from(this.collections.values())
+      .map((collection) => clone(collection))
+      .sort((a, b) => a.createdAt - b.createdAt);
+  }
+
+  getCollection(id: string): CollectionJobRecord | undefined {
+    const collection = this.collections.get(id);
+    return collection === undefined ? undefined : clone(collection);
+  }
+
+  /** Stores a copy with updatedAt = now and schedules the SAME flush jobs use. */
+  async upsertCollection(record: CollectionJobRecord, now: number): Promise<void> {
+    const copy = clone(record);
+    copy.updatedAt = now;
+    this.collections.set(copy.id, copy);
+    return this.flush();
+  }
+
+  removeCollection(id: string): Promise<void> {
+    if (!this.collections.delete(id)) {
+      return Promise.resolve();
+    }
+    return this.flush();
   }
 
   list(): NoteJobRecord[] {
@@ -338,7 +402,7 @@ export class JobStore {
         // Composition lives inside the try: a throwing composeSettings() or
         // list() must reject this write's waiters and let the loop exit
         // cleanly (resetting `writing`), not escape and wedge the store.
-        const payload = { ...this.composeSettings(), [JOBS_KEY]: this.list() };
+        const payload = { ...this.composeSettings(), [JOBS_KEY]: this.list(), [COLLECTIONS_KEY]: this.listCollections() };
         await this.io.saveData(payload);
         for (const waiter of waiters) {
           waiter.resolve();

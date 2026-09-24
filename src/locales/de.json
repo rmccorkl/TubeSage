@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "Zu verarbeitende Videos: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "Video {current}/{total} wird verarbeitet: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "Video {title} übersprungen – kein Transkript vorhanden"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "Zeitmarken werden zum Playlist-Video hinzugefügt: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "Zeitmarken werden zum Kanal-Video hinzugefügt: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ Zeitmarken hinzugefügt zu {title}"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} („{title}“)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "Notiz erstellt, aber Zeitmarken konnten zu „{title}“ nicht hinzugefügt werden"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ Video {current}/{total} verarbeitet"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ Video „{title}“ übersprungen – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ Fehler beim Verarbeiten von Video „{title}“: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "Kanal fertig verarbeitet – verarbeitet: {processed}, übersprungen: {skipped}, Fehler: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "Auftrag konnte nicht gespeichert werden: {error}. Das Video wird evtl. weiter verarbeitet; siehe „Aktive Aufträge anzeigen“"
@@ -1118,5 +1074,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "Für dieses Video ist kein Transkript vorhanden"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "Verarbeite {name}: {done} von {total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "Unterbrochene Sammlungen geschlossen: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "Sammlung stoppen"
     }
 }

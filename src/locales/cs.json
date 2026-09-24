@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "Videí ke zpracování: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "Zpracovávám video {current}/{total}: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "Přeskakuji video {title} – přepis není k dispozici"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "Přidávám časové odkazy k videu z playlistu: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "Přidávám časové odkazy k videu z kanálu: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ Časové odkazy přidány k {title}"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} („{title}“)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "Poznámka vytvořena, ale časové značky se k „{title}“ nepodařilo přidat"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ Zpracováno video {current}/{total}"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ Přeskakuji video „{title}“ – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ Chyba při zpracování videa „{title}“: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "Zpracování kanálu dokončeno – zpracováno: {processed}, přeskočeno: {skipped}, chyby: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "Úlohu se nepodařilo uložit: {error}. Video se možná stále zpracovává; viz „Zobrazit aktivní úlohy“"
@@ -1126,5 +1082,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "Pro toto video není k dispozici přepis"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "Zpracovávání {name}: {done} z {total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "Přerušené kolekce uzavřeny: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "Zastavit kolekci"
     }
 }

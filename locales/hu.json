@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Videók betöltése a lejátszási listáról: {name}",
     "notice.collection.fetchingFrom.channel": "Videók betöltése a csatornáról: {name}",
     "notice.collection.videosToProcess": "Feldolgozandó videók: {count}",
-    "notice.collection.processingVideo": "Videó feldolgozása {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "A(z) {title} videó kihagyva – nincs átirat",
-    "notice.collection.addingTimestamps.playlist": "Időbélyeg-hivatkozások hozzáadása a lejátszási lista videójához: {title}",
-    "notice.collection.addingTimestamps.channel": "Időbélyeg-hivatkozások hozzáadása a csatorna videójához: {title}",
-    "notice.collection.timestampsAdded": "✓ Időbélyeg-hivatkozások hozzáadva: {title}",
-    "notice.collection.timestampError": "{error} („{title}”)",
-    "notice.collection.timestampsFailed": "A jegyzet elkészült, de az időbélyegek nem kerültek be ide: „{title}”",
-    "notice.collection.videoProcessed": "✓ Videó feldolgozva: {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ A(z) „{title}” videó kihagyva – {error}",
-    "notice.collection.videoError": "❌ Hiba a(z) „{title}” videó feldolgozásakor: {error}",
-    "notice.collection.complete": "A csatorna feldolgozása kész – feldolgozva: {processed}, kihagyva: {skipped}, hiba: {errors}",
     "notice.job.saveFailed": "A feladat mentése nem sikerült: {error}. A videó feldolgozása még tarthat; lásd „Aktív feladatok megjelenítése”",
     "notice.job.alreadyRunning": "Ez a videó már feldolgozás alatt áll",
     "notice.job.cannotResume": "Ez a feladat így nem folytatható; nézd meg az állapotát",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} megszakadt feladat figyelmet igényel",
     "common.validation.required": "Add meg a(z) {field} mezőt",
     "common.validation.genericError": "Hiba történt",
-    "common.transcript.unavailable": "Ehhez a videóhoz nincs átirat"
+    "common.transcript.unavailable": "Ehhez a videóhoz nincs átirat",
+    "notice.collection.progress": "{name} feldolgozása: {done}/{total}",
+    "notice.collection.closedOnStart": "Lezárt megszakadt gyűjtemények: {count}",
+    "modal.jobs.cancelCollection": "Gyűjtemény leállítása"
 }

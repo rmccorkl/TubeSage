@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "처리할 동영상: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "동영상 처리 중 {current}/{total}: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "동영상 {title} 건너뜀 – 스크립트 없음"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "재생목록 동영상에 타임스탬프 링크 추가 중: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "채널 동영상에 타임스탬프 링크 추가 중: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ {title}에 타임스탬프 링크를 추가했습니다"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} (“{title}”)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "노트는 만들었지만 “{title}”에 타임스탬프를 추가하지 못했습니다"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ 동영상 {current}/{total} 처리 완료"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ 동영상 “{title}” 건너뜀 – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ 동영상 “{title}” 처리 오류: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "채널 처리 완료 – 처리: {processed}, 건너뜀: {skipped}, 오류: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "작업을 저장하지 못했습니다: {error}. 동영상은 계속 처리 중일 수 있습니다. “활성 작업 표시”를 확인하세요"
@@ -1114,5 +1070,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "이 동영상에는 스크립트가 없습니다"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "{name} 처리 중: {done}/{total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "중단된 컬렉션을 닫았습니다: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "컬렉션 중지"
     }
 }

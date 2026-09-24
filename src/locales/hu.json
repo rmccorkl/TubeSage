@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "Feldolgozandó videók: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "Videó feldolgozása {current}/{total}: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "A(z) {title} videó kihagyva – nincs átirat"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "Időbélyeg-hivatkozások hozzáadása a lejátszási lista videójához: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "Időbélyeg-hivatkozások hozzáadása a csatorna videójához: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ Időbélyeg-hivatkozások hozzáadva: {title}"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} („{title}”)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "A jegyzet elkészült, de az időbélyegek nem kerültek be ide: „{title}”"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ Videó feldolgozva: {current}/{total}"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ A(z) „{title}” videó kihagyva – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ Hiba a(z) „{title}” videó feldolgozásakor: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "A csatorna feldolgozása kész – feldolgozva: {processed}, kihagyva: {skipped}, hiba: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "A feladat mentése nem sikerült: {error}. A videó feldolgozása még tarthat; lásd „Aktív feladatok megjelenítése”"
@@ -1118,5 +1074,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "Ehhez a videóhoz nincs átirat"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "{name} feldolgozása: {done}/{total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "Lezárt megszakadt gyűjtemények: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "Gyűjtemény leállítása"
     }
 }

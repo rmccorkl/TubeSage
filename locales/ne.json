@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "प्लेलिस्टबाट भिडियो ल्याउँदै: {name}",
     "notice.collection.fetchingFrom.channel": "च्यानलबाट भिडियो ल्याउँदै: {name}",
     "notice.collection.videosToProcess": "प्रशोधन गर्ने भिडियो: {count}",
-    "notice.collection.processingVideo": "भिडियो {current}/{total} प्रशोधन गर्दै: {title}",
-    "notice.collection.skipNoTranscript": "भिडियो {title} छोडियो – प्रतिलिपि छैन",
-    "notice.collection.addingTimestamps.playlist": "प्लेलिस्टको भिडियोमा टाइमस्ट्याम्प लिंक थप्दै: {title}",
-    "notice.collection.addingTimestamps.channel": "च्यानलको भिडियोमा टाइमस्ट्याम्प लिंक थप्दै: {title}",
-    "notice.collection.timestampsAdded": "✓ {title} मा टाइमस्ट्याम्प लिंक थपियो",
-    "notice.collection.timestampError": "{error} (“{title}”)",
-    "notice.collection.timestampsFailed": "नोट बनाइयो, तर “{title}” मा टाइमस्ट्याम्प थप्न सकिएन",
-    "notice.collection.videoProcessed": "✓ भिडियो {current}/{total} प्रशोधन भयो",
-    "notice.collection.videoSkipped": "⚠️ भिडियो “{title}” छोडियो – {error}",
-    "notice.collection.videoError": "❌ भिडियो “{title}” प्रशोधनमा त्रुटि: {error}",
-    "notice.collection.complete": "च्यानल प्रशोधन सम्पन्न – प्रशोधित: {processed}, छोडिएका: {skipped}, त्रुटि: {errors}",
     "notice.job.saveFailed": "कार्य सुरक्षित गर्न सकिएन: {error}। भिडियो अझै प्रशोधन हुँदै हुन सक्छ; “सक्रिय कामहरू देखाउनुहोस्” हेर्नुहोस्",
     "notice.job.alreadyRunning": "यो भिडियो पहिले नै प्रशोधन हुँदैछ",
     "notice.job.cannotResume": "यो कार्य यही अवस्थामा पुनः सुरु गर्न मिल्दैन; यसको स्थिति हेर्नुहोस्",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: अवरुद्ध {count} काममा ध्यान दिनुपर्छ",
     "common.validation.required": "कृपया {field} भर्नुहोस्",
     "common.validation.genericError": "त्रुटि भयो",
-    "common.transcript.unavailable": "यो भिडियोको प्रतिलिपि उपलब्ध छैन"
+    "common.transcript.unavailable": "यो भिडियोको प्रतिलिपि उपलब्ध छैन",
+    "notice.collection.progress": "{name} प्रशोधन गर्दै: {done}/{total}",
+    "notice.collection.closedOnStart": "अवरुद्ध सङ्ग्रहहरू बन्द गरियो: {count}",
+    "modal.jobs.cancelCollection": "सङ्ग्रह रोक्नुहोस्"
 }

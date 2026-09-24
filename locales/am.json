@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "ከዝርዝሩ ቪዲዮዎችን በማምጣት ላይ፦ {name}",
     "notice.collection.fetchingFrom.channel": "ከቻናሉ ቪዲዮዎችን በማምጣት ላይ፦ {name}",
     "notice.collection.videosToProcess": "የሚሠሩ ቪዲዮዎች፦ {count}",
-    "notice.collection.processingVideo": "ቪዲዮ {current}/{total} በመሠራት ላይ፦ {title}",
-    "notice.collection.skipNoTranscript": "ቪዲዮ {title} ተዘሏል – ግልባጭ የለም",
-    "notice.collection.addingTimestamps.playlist": "ለዝርዝሩ ቪዲዮ የጊዜ ማህተም አገናኞች በመጨመር ላይ፦ {title}",
-    "notice.collection.addingTimestamps.channel": "ለቻናሉ ቪዲዮ የጊዜ ማህተም አገናኞች በመጨመር ላይ፦ {title}",
-    "notice.collection.timestampsAdded": "✓ የጊዜ ማህተም አገናኞች ወደ {title} ተጨምረዋል",
-    "notice.collection.timestampError": "{error} («{title}»)",
-    "notice.collection.timestampsFailed": "ማስታወሻው ተፈጥሯል፣ ነገር ግን ወደ «{title}» የጊዜ ማህተሞችን መጨመር አልተቻለም",
-    "notice.collection.videoProcessed": "✓ ቪዲዮ {current}/{total} ተሠርቷል",
-    "notice.collection.videoSkipped": "⚠️ ቪዲዮ «{title}» ተዘሏል – {error}",
-    "notice.collection.videoError": "❌ ቪዲዮ «{title}» በማስኬድ ላይ ስህተት፦ {error}",
-    "notice.collection.complete": "የቻናል ማስኬድ ተጠናቋል – ተሠርተዋል፦ {processed}፣ ተዘለዋል፦ {skipped}፣ ስህተቶች፦ {errors}",
     "notice.job.saveFailed": "ሥራውን ማስቀመጥ አልተቻለም፦ {error}። ቪዲዮው አሁንም እየተሠራ ሊሆን ይችላል፤ «ንቁ ሥራዎችን አሳይ» ይመልከቱ",
     "notice.job.alreadyRunning": "ይህ ቪዲዮ አስቀድሞ እየተሠራ ነው",
     "notice.job.cannotResume": "ይህ ሥራ በዚህ ሁኔታ ሊቀጥል አይችልም፤ ሁኔታውን ይመልከቱ",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} የተቋረጡ ሥራዎች ትኩረት ይፈልጋሉ",
     "common.validation.required": "እባክዎ {field} ያስገቡ",
     "common.validation.genericError": "ስህተት ተከስቷል",
-    "common.transcript.unavailable": "ለዚህ ቪዲዮ ግልባጭ የለም"
+    "common.transcript.unavailable": "ለዚህ ቪዲዮ ግልባጭ የለም",
+    "notice.collection.progress": "{name} በማስኬድ ላይ፦ {done}/{total}",
+    "notice.collection.closedOnStart": "የተቋረጡ ስብስቦች ተዘግተዋል፦ {count}",
+    "modal.jobs.cancelCollection": "ስብስቡን አቁም"
 }

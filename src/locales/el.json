@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "Βίντεο προς επεξεργασία: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "Επεξεργασία βίντεο {current}/{total}: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "Παράλειψη βίντεο {title} – δεν υπάρχει απομαγνητοφώνηση"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "Προσθήκη συνδέσμων χρονοσήμανσης στο βίντεο της λίστας: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "Προσθήκη συνδέσμων χρονοσήμανσης στο βίντεο του καναλιού: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ Προστέθηκαν σύνδεσμοι χρονοσήμανσης στο {title}"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} («{title}»)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "Η σημείωση δημιουργήθηκε, αλλά δεν ήταν δυνατή η προσθήκη χρονοσημάνσεων στο «{title}»"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ Επεξεργάστηκε το βίντεο {current}/{total}"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ Παράλειψη βίντεο «{title}» – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ Σφάλμα κατά την επεξεργασία του βίντεο «{title}»: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "Η επεξεργασία του καναλιού ολοκληρώθηκε – επεξεργάστηκαν: {processed}, παραλείφθηκαν: {skipped}, σφάλματα: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "Δεν ήταν δυνατή η αποθήκευση της εργασίας: {error}. Το βίντεο ίσως επεξεργάζεται ακόμη· δείτε «Εμφάνιση ενεργών εργασιών»"
@@ -1118,5 +1074,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "Δεν υπάρχει απομαγνητοφώνηση για αυτό το βίντεο"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "Επεξεργασία {name}: {done} από {total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "Έκλεισαν οι διακοπείσες συλλογές: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "Διακοπή συλλογής"
     }
 }

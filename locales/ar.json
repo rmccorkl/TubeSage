@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "جارٍ جلب مقاطع الفيديو من قائمة التشغيل: {name}",
     "notice.collection.fetchingFrom.channel": "جارٍ جلب مقاطع الفيديو من القناة: {name}",
     "notice.collection.videosToProcess": "مقاطع الفيديو المراد معالجتها: {count}",
-    "notice.collection.processingVideo": "جارٍ معالجة الفيديو {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "تم تخطي الفيديو {title} – لا يوجد نص",
-    "notice.collection.addingTimestamps.playlist": "جارٍ إضافة روابط الطوابع الزمنية إلى فيديو قائمة التشغيل: {title}",
-    "notice.collection.addingTimestamps.channel": "جارٍ إضافة روابط الطوابع الزمنية إلى فيديو القناة: {title}",
-    "notice.collection.timestampsAdded": "✓ تمت إضافة روابط الطوابع الزمنية إلى {title}",
-    "notice.collection.timestampError": "{error} («{title}»)",
-    "notice.collection.timestampsFailed": "تم إنشاء الملاحظة، لكن تعذّرت إضافة الطوابع الزمنية إلى «{title}»",
-    "notice.collection.videoProcessed": "✓ تمت معالجة الفيديو {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ تم تخطي الفيديو «{title}» – {error}",
-    "notice.collection.videoError": "❌ خطأ في معالجة الفيديو «{title}»: {error}",
-    "notice.collection.complete": "اكتملت معالجة القناة – تمت معالجة: {processed}، تم تخطي: {skipped}، أخطاء: {errors}",
     "notice.job.saveFailed": "تعذّر حفظ المهمة: {error}. قد يكون الفيديو قيد المعالجة؛ راجع «إظهار المهام النشطة»",
     "notice.job.alreadyRunning": "هذا الفيديو قيد المعالجة بالفعل",
     "notice.job.cannotResume": "لا يمكن استئناف هذه المهمة بحالتها؛ راجع حالتها",
@@ -282,5 +271,8 @@
     "notice.recovery.several": "TubeSage: {count} مهمة متوقفة تحتاج إلى انتباهك",
     "common.validation.required": "يرجى إدخال {field}",
     "common.validation.genericError": "حدث خطأ",
-    "common.transcript.unavailable": "لا يوجد نص لهذا الفيديو"
+    "common.transcript.unavailable": "لا يوجد نص لهذا الفيديو",
+    "notice.collection.progress": "جارٍ معالجة {name}: {done} من {total}",
+    "notice.collection.closedOnStart": "تم إغلاق المجموعات المتوقفة: {count}",
+    "modal.jobs.cancelCollection": "إيقاف المجموعة"
 }

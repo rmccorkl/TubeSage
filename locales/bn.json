@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "প্লেলিস্ট থেকে ভিডিও আনা হচ্ছে: {name}",
     "notice.collection.fetchingFrom.channel": "চ্যানেল থেকে ভিডিও আনা হচ্ছে: {name}",
     "notice.collection.videosToProcess": "প্রক্রিয়া করার ভিডিও: {count}",
-    "notice.collection.processingVideo": "ভিডিও {current}/{total} প্রক্রিয়া করা হচ্ছে: {title}",
-    "notice.collection.skipNoTranscript": "ভিডিও {title} বাদ দেওয়া হল – প্রতিলিপি নেই",
-    "notice.collection.addingTimestamps.playlist": "প্লেলিস্টের ভিডিওতে টাইমস্ট্যাম্প লিঙ্ক যোগ করা হচ্ছে: {title}",
-    "notice.collection.addingTimestamps.channel": "চ্যানেলের ভিডিওতে টাইমস্ট্যাম্প লিঙ্ক যোগ করা হচ্ছে: {title}",
-    "notice.collection.timestampsAdded": "✓ {title}-এ টাইমস্ট্যাম্প লিঙ্ক যোগ হয়েছে",
-    "notice.collection.timestampError": "{error} (“{title}”)",
-    "notice.collection.timestampsFailed": "নোট তৈরি হয়েছে, তবে “{title}”-এ টাইমস্ট্যাম্প যোগ করা যায়নি",
-    "notice.collection.videoProcessed": "✓ ভিডিও {current}/{total} প্রক্রিয়া হয়েছে",
-    "notice.collection.videoSkipped": "⚠️ ভিডিও “{title}” বাদ দেওয়া হল – {error}",
-    "notice.collection.videoError": "❌ ভিডিও “{title}” প্রক্রিয়াকরণে ত্রুটি: {error}",
-    "notice.collection.complete": "চ্যানেল প্রক্রিয়াকরণ শেষ – প্রক্রিয়া হয়েছে: {processed}, বাদ পড়েছে: {skipped}, ত্রুটি: {errors}",
     "notice.job.saveFailed": "কাজটি সংরক্ষণ করা যায়নি: {error}। ভিডিওটি এখনও প্রক্রিয়া হতে পারে; “সক্রিয় কাজ দেখান” দেখুন",
     "notice.job.alreadyRunning": "এই ভিডিওটি ইতিমধ্যে প্রক্রিয়া হচ্ছে",
     "notice.job.cannotResume": "এই কাজটি বর্তমান অবস্থায় চালু করা যাবে না; এর স্ট্যাটাস দেখুন",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: বাধাপ্রাপ্ত {count}টি কাজের দিকে নজর দেওয়া দরকার",
     "common.validation.required": "অনুগ্রহ করে {field} লিখুন",
     "common.validation.genericError": "একটি ত্রুটি ঘটেছে",
-    "common.transcript.unavailable": "এই ভিডিওর জন্য কোনো প্রতিলিপি নেই"
+    "common.transcript.unavailable": "এই ভিডিওর জন্য কোনো প্রতিলিপি নেই",
+    "notice.collection.progress": "{name} প্রক্রিয়া করা হচ্ছে: {done}/{total}",
+    "notice.collection.closedOnStart": "বাধাপ্রাপ্ত সংগ্রহ বন্ধ করা হয়েছে: {count}",
+    "modal.jobs.cancelCollection": "সংগ্রহ বন্ধ করুন"
 }

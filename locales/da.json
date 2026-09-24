@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Henter videoer fra playlisten: {name}",
     "notice.collection.fetchingFrom.channel": "Henter videoer fra kanalen: {name}",
     "notice.collection.videosToProcess": "Videoer til behandling: {count}",
-    "notice.collection.processingVideo": "Behandler video {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Springer video {title} over – ingen transskription",
-    "notice.collection.addingTimestamps.playlist": "Tilføjer tidsstempellinks til playlistevideoen: {title}",
-    "notice.collection.addingTimestamps.channel": "Tilføjer tidsstempellinks til kanalvideoen: {title}",
-    "notice.collection.timestampsAdded": "✓ Tidsstempellinks tilføjet til {title}",
-    "notice.collection.timestampError": "{error} (“{title}”)",
-    "notice.collection.timestampsFailed": "Noten blev oprettet, men tidsstempler kunne ikke tilføjes til “{title}”",
-    "notice.collection.videoProcessed": "✓ Video {current}/{total} behandlet",
-    "notice.collection.videoSkipped": "⚠️ Springer video “{title}” over – {error}",
-    "notice.collection.videoError": "❌ Fejl ved behandling af video “{title}”: {error}",
-    "notice.collection.complete": "Behandling af kanal fuldført – behandlet: {processed}, sprunget over: {skipped}, fejl: {errors}",
     "notice.job.saveFailed": "Kunne ikke gemme jobbet: {error}. Videoen behandles muligvis stadig; se \"Vis aktive job\"",
     "notice.job.alreadyRunning": "Denne video behandles allerede",
     "notice.job.cannotResume": "Dette job kan ikke genoptages som det er; se dets status",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} afbrudte job kræver opmærksomhed",
     "common.validation.required": "Udfyld feltet {field}",
     "common.validation.genericError": "Der opstod en fejl",
-    "common.transcript.unavailable": "Der er ingen transskription til denne video"
+    "common.transcript.unavailable": "Der er ingen transskription til denne video",
+    "notice.collection.progress": "Behandler {name}: {done} af {total}",
+    "notice.collection.closedOnStart": "Afbrudte samlinger lukket: {count}",
+    "modal.jobs.cancelCollection": "Stop samling"
 }

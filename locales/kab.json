@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Yettwawin-d tividyutin seg tebdart n urar: {name}",
     "notice.collection.fetchingFrom.channel": "Yettwawin-d tividyutin seg ubadu: {name}",
     "notice.collection.videosToProcess": "Tividyutin ara yettusesfeḍen: {count}",
-    "notice.collection.processingVideo": "Asesfeḍ n tvidyut {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Tettwaz tvidyut {title} – ulac awennit",
-    "notice.collection.addingTimestamps.playlist": "Yettwarna izdayen n wakud ɣer tvidyut n tebdart n urar: {title}",
-    "notice.collection.addingTimestamps.channel": "Yettwarna izdayen n wakud ɣer tvidyut n ubadu: {title}",
-    "notice.collection.timestampsAdded": "✓ Ttwarnan izdayen n wakud ɣer {title}",
-    "notice.collection.timestampError": "{error} («{title}»)",
-    "notice.collection.timestampsFailed": "Tazmilt tettwarna, maca ur nezmir ara ad nernu icudam n wakud ɣer «{title}»",
-    "notice.collection.videoProcessed": "✓ Tettwasesfeḍ tvidyut {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ Tettwaz tvidyut «{title}» – {error}",
-    "notice.collection.videoError": "❌ Tuccḍa deg usesfeḍ n tvidyut «{title}»: {error}",
-    "notice.collection.complete": "Yekfa usesfeḍ n ubadu – yettwasesfeḍ: {processed}, yettwazgel: {skipped}, tuccḍiwin: {errors}",
     "notice.job.saveFailed": "Ur nezmir ara ad nesekles awuri: {error}. Ahat tvidyut mazal tettusesfaḍ; wali «Sken-d imahilen urmiden»",
     "notice.job.alreadyRunning": "Tavidyut-a tettusesfaḍ yakan",
     "notice.job.cannotResume": "Awuri-a ur yezmir ara ad ikemmel akka; wali addad-is",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} n yixeddimen ḥebsen sran lewsaya",
     "common.validation.required": "Ttxil-k, sekcem {field}",
     "common.validation.genericError": "Tella-d tuccḍa",
-    "common.transcript.unavailable": "Ulac aḍris i tvidyut-a"
+    "common.transcript.unavailable": "Ulac aḍris i tvidyut-a",
+    "notice.collection.progress": "Asesfer n {name}: {done} seg {total}",
+    "notice.collection.closedOnStart": "Tigrumma yegzemen ttwamdlent: {count}",
+    "modal.jobs.cancelCollection": "Ḥbes tagrumma"
 }

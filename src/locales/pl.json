@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "Filmy do przetworzenia: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "Przetwarzanie filmu {current}/{total}: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "Pomijam film {title} – brak transkrypcji"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "Dodawanie odnośników czasowych do filmu z playlisty: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "Dodawanie odnośników czasowych do filmu z kanału: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ Dodano odnośniki czasowe do {title}"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} („{title}”)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "Notatka utworzona, ale nie udało się dodać znaczników czasu do „{title}”"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ Przetworzono film {current}/{total}"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ Pomijam film „{title}” – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ Błąd przetwarzania filmu „{title}”: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "Przetwarzanie kanału zakończone – przetworzone: {processed}, pominięte: {skipped}, błędy: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "Nie udało się zapisać zadania: {error}. Film może być nadal przetwarzany; zobacz „Pokaż aktywne zadania”"
@@ -1126,5 +1082,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "Do tego filmu nie ma transkrypcji"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "Przetwarzanie {name}: {done} z {total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "Zamknięte przerwane kolekcje: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "Zatrzymaj kolekcję"
     }
 }

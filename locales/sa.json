@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "गीतावल्याः चलचित्राणि प्राप्यन्ते: {name}",
     "notice.collection.fetchingFrom.channel": "वाहिन्याः चलचित्राणि प्राप्यन्ते: {name}",
     "notice.collection.videosToProcess": "संसाधनीयानि चलचित्राणि: {count}",
-    "notice.collection.processingVideo": "चलचित्रं {current}/{total} संसाध्यते: {title}",
-    "notice.collection.skipNoTranscript": "चलचित्रं {title} त्यक्तम् – लेखनं नास्ति",
-    "notice.collection.addingTimestamps.playlist": "गीतावलीचलचित्रे कालमुद्रासम्बन्धाः योज्यन्ते: {title}",
-    "notice.collection.addingTimestamps.channel": "वाहिनीचलचित्रे कालमुद्रासम्बन्धाः योज्यन्ते: {title}",
-    "notice.collection.timestampsAdded": "✓ {title} इत्यस्मिन् कालमुद्रासम्बन्धाः योजिताः",
-    "notice.collection.timestampError": "{error} (“{title}”)",
-    "notice.collection.timestampsFailed": "टिप्पणी सृष्टा, परं “{title}” इत्यस्मिन् कालमुद्राः योजयितुं न शक्ताः",
-    "notice.collection.videoProcessed": "✓ चलचित्रं {current}/{total} संसाधितम्",
-    "notice.collection.videoSkipped": "⚠️ चलचित्रं “{title}” त्यक्तम् – {error}",
-    "notice.collection.videoError": "❌ चलचित्रस्य “{title}” संसाधने दोषः: {error}",
-    "notice.collection.complete": "वाहिन्याः संसाधनं समाप्तम् – संसाधितानि: {processed}, त्यक्तानि: {skipped}, दोषाः: {errors}",
     "notice.job.saveFailed": "कार्यं रक्षितुं न शक्तम्: {error}। चलचित्रम् अद्यापि संसाध्यमानं स्यात्; “सक्रियकार्याणि दर्शय” इति पश्यतु",
     "notice.job.alreadyRunning": "इदं चलचित्रं पूर्वमेव संसाध्यते",
     "notice.job.cannotResume": "इदं कार्यम् अस्मिन् स्थितौ पुनः आरब्धुं न शक्यते; तस्य स्थितिं पश्यतु",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} विच्छिन्नानि कार्याणि ध्यानम् अपेक्षन्ते",
     "common.validation.required": "कृपया {field} इति क्षेत्रम् पूरयतु",
     "common.validation.genericError": "दोषः अभवत्",
-    "common.transcript.unavailable": "अस्य चलचित्रस्य प्रतिलेखः न विद्यते"
+    "common.transcript.unavailable": "अस्य चलचित्रस्य प्रतिलेखः न विद्यते",
+    "notice.collection.progress": "{name} संसाधनम्: {done}/{total}",
+    "notice.collection.closedOnStart": "विच्छिन्नसङ्ग्रहाः पिहिताः: {count}",
+    "modal.jobs.cancelCollection": "सङ्ग्रहं विरमतु"
 }

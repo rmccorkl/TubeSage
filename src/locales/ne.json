@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "प्रशोधन गर्ने भिडियो: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "भिडियो {current}/{total} प्रशोधन गर्दै: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "भिडियो {title} छोडियो – प्रतिलिपि छैन"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "प्लेलिस्टको भिडियोमा टाइमस्ट्याम्प लिंक थप्दै: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "च्यानलको भिडियोमा टाइमस्ट्याम्प लिंक थप्दै: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ {title} मा टाइमस्ट्याम्प लिंक थपियो"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} (“{title}”)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "नोट बनाइयो, तर “{title}” मा टाइमस्ट्याम्प थप्न सकिएन"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ भिडियो {current}/{total} प्रशोधन भयो"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ भिडियो “{title}” छोडियो – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ भिडियो “{title}” प्रशोधनमा त्रुटि: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "च्यानल प्रशोधन सम्पन्न – प्रशोधित: {processed}, छोडिएका: {skipped}, त्रुटि: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "कार्य सुरक्षित गर्न सकिएन: {error}। भिडियो अझै प्रशोधन हुँदै हुन सक्छ; “सक्रिय कामहरू देखाउनुहोस्” हेर्नुहोस्"
@@ -1118,5 +1074,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "यो भिडियोको प्रतिलिपि उपलब्ध छैन"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "{name} प्रशोधन गर्दै: {done}/{total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "अवरुद्ध सङ्ग्रहहरू बन्द गरियो: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "सङ्ग्रह रोक्नुहोस्"
     }
 }

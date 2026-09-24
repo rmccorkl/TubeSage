@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Videos der Playlist werden geladen: {name}",
     "notice.collection.fetchingFrom.channel": "Videos des Kanals werden geladen: {name}",
     "notice.collection.videosToProcess": "Zu verarbeitende Videos: {count}",
-    "notice.collection.processingVideo": "Video {current}/{total} wird verarbeitet: {title}",
-    "notice.collection.skipNoTranscript": "Video {title} übersprungen – kein Transkript vorhanden",
-    "notice.collection.addingTimestamps.playlist": "Zeitmarken werden zum Playlist-Video hinzugefügt: {title}",
-    "notice.collection.addingTimestamps.channel": "Zeitmarken werden zum Kanal-Video hinzugefügt: {title}",
-    "notice.collection.timestampsAdded": "✓ Zeitmarken hinzugefügt zu {title}",
-    "notice.collection.timestampError": "{error} („{title}“)",
-    "notice.collection.timestampsFailed": "Notiz erstellt, aber Zeitmarken konnten zu „{title}“ nicht hinzugefügt werden",
-    "notice.collection.videoProcessed": "✓ Video {current}/{total} verarbeitet",
-    "notice.collection.videoSkipped": "⚠️ Video „{title}“ übersprungen – {error}",
-    "notice.collection.videoError": "❌ Fehler beim Verarbeiten von Video „{title}“: {error}",
-    "notice.collection.complete": "Kanal fertig verarbeitet – verarbeitet: {processed}, übersprungen: {skipped}, Fehler: {errors}",
     "notice.job.saveFailed": "Auftrag konnte nicht gespeichert werden: {error}. Das Video wird evtl. weiter verarbeitet; siehe „Aktive Aufträge anzeigen“",
     "notice.job.alreadyRunning": "Dieses Video wird bereits verarbeitet",
     "notice.job.cannotResume": "Dieser Auftrag kann so nicht fortgesetzt werden; siehe seinen Status",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} unterbrochene Aufträge benötigen Aufmerksamkeit",
     "common.validation.required": "Fülle das Feld {field} aus",
     "common.validation.genericError": "Ein Fehler ist aufgetreten",
-    "common.transcript.unavailable": "Für dieses Video ist kein Transkript vorhanden"
+    "common.transcript.unavailable": "Für dieses Video ist kein Transkript vorhanden",
+    "notice.collection.progress": "Verarbeite {name}: {done} von {total}",
+    "notice.collection.closedOnStart": "Unterbrochene Sammlungen geschlossen: {count}",
+    "modal.jobs.cancelCollection": "Sammlung stoppen"
 }

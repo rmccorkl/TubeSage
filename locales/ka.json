@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "მიმდინარეობს ვიდეოების მიღება დასაკრავი სიიდან: {name}",
     "notice.collection.fetchingFrom.channel": "მიმდინარეობს ვიდეოების მიღება არხიდან: {name}",
     "notice.collection.videosToProcess": "დასამუშავებელი ვიდეოები: {count}",
-    "notice.collection.processingVideo": "მიმდინარეობს ვიდეოს {current}/{total} დამუშავება: {title}",
-    "notice.collection.skipNoTranscript": "ვიდეო {title} გამოტოვებულია – ტრანსკრიპტი არ არის",
-    "notice.collection.addingTimestamps.playlist": "მიმდინარეობს დროის ნიშნულების ბმულების დამატება დასაკრავი სიის ვიდეოსთვის: {title}",
-    "notice.collection.addingTimestamps.channel": "მიმდინარეობს დროის ნიშნულების ბმულების დამატება არხის ვიდეოსთვის: {title}",
-    "notice.collection.timestampsAdded": "✓ დროის ნიშნულების ბმულები დაემატა: {title}",
-    "notice.collection.timestampError": "{error} („{title}“)",
-    "notice.collection.timestampsFailed": "შენიშვნა შეიქმნა, მაგრამ დროის ნიშნულების დამატება „{title}“-ში ვერ მოხერხდა",
-    "notice.collection.videoProcessed": "✓ დამუშავდა ვიდეო {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ ვიდეო „{title}“ გამოტოვებულია – {error}",
-    "notice.collection.videoError": "❌ შეცდომა ვიდეოს „{title}“ დამუშავებისას: {error}",
-    "notice.collection.complete": "არხის დამუშავება დასრულდა – დამუშავდა: {processed}, გამოტოვდა: {skipped}, შეცდომები: {errors}",
     "notice.job.saveFailed": "დავალების შენახვა ვერ მოხერხდა: {error}. ვიდეო შესაძლოა ჯერ კიდევ მუშავდებოდეს; იხილეთ „აქტიური სამუშაოების ჩვენება“",
     "notice.job.alreadyRunning": "ეს ვიდეო უკვე მუშავდება",
     "notice.job.cannotResume": "ამ დავალების ამ მდგომარეობაში გაგრძელება შეუძლებელია; იხილეთ მისი სტატუსი",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} შეწყვეტილი დავალება საჭიროებს ყურადღებას",
     "common.validation.required": "გთხოვთ, შეავსოთ ველი {field}",
     "common.validation.genericError": "მოხდა შეცდომა",
-    "common.transcript.unavailable": "ამ ვიდეოსთვის ტრანსკრიპტი არ არის"
+    "common.transcript.unavailable": "ამ ვიდეოსთვის ტრანსკრიპტი არ არის",
+    "notice.collection.progress": "მიმდინარეობს {name}: {done} / {total}",
+    "notice.collection.closedOnStart": "დახურულია შეწყვეტილი კოლექციები: {count}",
+    "modal.jobs.cancelCollection": "კოლექციის შეჩერება"
 }

@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Recupero dei video della playlist: {name}",
     "notice.collection.fetchingFrom.channel": "Recupero dei video del canale: {name}",
     "notice.collection.videosToProcess": "Video da elaborare: {count}",
-    "notice.collection.processingVideo": "Elaborazione del video {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Video {title} saltato – nessuna trascrizione disponibile",
-    "notice.collection.addingTimestamps.playlist": "Aggiunta dei link temporali al video della playlist: {title}",
-    "notice.collection.addingTimestamps.channel": "Aggiunta dei link temporali al video del canale: {title}",
-    "notice.collection.timestampsAdded": "✓ Link temporali aggiunti a {title}",
-    "notice.collection.timestampError": "{error} («{title}»)",
-    "notice.collection.timestampsFailed": "Nota creata, ma non è stato possibile aggiungere i marcatori temporali a «{title}»",
-    "notice.collection.videoProcessed": "✓ Video {current}/{total} elaborato",
-    "notice.collection.videoSkipped": "⚠️ Video «{title}» saltato – {error}",
-    "notice.collection.videoError": "❌ Errore nell'elaborazione del video «{title}»: {error}",
-    "notice.collection.complete": "Elaborazione del canale completata – elaborati: {processed}, saltati: {skipped}, errori: {errors}",
     "notice.job.saveFailed": "Impossibile salvare l'attività: {error}. Il video potrebbe essere ancora in elaborazione; controlla «Mostra processi attivi»",
     "notice.job.alreadyRunning": "Questo video è già in elaborazione",
     "notice.job.cannotResume": "Questa attività non può essere ripresa così com'è; controlla il suo stato",
@@ -279,5 +268,8 @@
     "notice.recovery.several": "TubeSage: {count} processi interrotti richiedono attenzione",
     "common.validation.required": "Inserisci il campo {field}",
     "common.validation.genericError": "Si è verificato un errore",
-    "common.transcript.unavailable": "Nessuna trascrizione disponibile per questo video"
+    "common.transcript.unavailable": "Nessuna trascrizione disponibile per questo video",
+    "notice.collection.progress": "Elaborazione di {name}: {done} di {total}",
+    "notice.collection.closedOnStart": "Raccolte interrotte chiuse: {count}",
+    "modal.jobs.cancelCollection": "Ferma la raccolta"
 }

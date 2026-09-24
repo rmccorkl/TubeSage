@@ -1,15 +1,4 @@
 
-.tubesage-processing-modal {
-    width: 150px;
-    height: auto;
-    min-height: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
 .tubesage-transcript-form .error {
     color: var(--text-error);
     margin-bottom: var(--size-4-4);
@@ -212,18 +201,6 @@
     color: var(--text-muted);
     margin-top: var(--size-4-1);
     font-style: italic;
-}
-
-.tubesage-spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    min-height: 40px;
-    font-family: var(--font-monospace);
-    font-size: 14px;
-    color: var(--text-normal);
-    text-align: center;
 }
 
 .channel-options {
@@ -907,20 +884,6 @@
         font-size: 15px;
         margin-bottom: var(--size-4-3);
     }
-    /* Fix the modal container size on mobile - this is the real issue */
-    .tubesage-processing-modal.tubesage-processing-modal {
-        width: fit-content;
-        min-width: auto;
-        max-width: fit-content;
-        padding: var(--size-4-2);
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-    }
-
     /* Mobile-responsive prompt textareas */
     .tubesage-prompt-textarea.tubesage-prompt-textarea {
         width: 100%;

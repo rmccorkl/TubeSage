@@ -5,6 +5,9 @@ import { JOBS_KEY, JobStore, hydrate } from "../jobs/job-store";
 import { createJobRecord, formatDatePrefix } from "../jobs/job-record";
 import type { NoteJobRecord, NotePathSettings } from "../jobs/job-record";
 import { createRunnerDeps } from "./job-adapters";
+import { CollectionRunner } from "./collection-runner";
+import { CollectionNotices } from "./collection-notice";
+import type { CollectionVideo } from "../jobs/collection-record";
 import type { JobHost, JobHostSettings, RenderedNote, TimestampPassOptions, VaultLike } from "./job-adapters";
 import { sanitizeFilename } from "../utils/filename-sanitizer";
 import { NoCaptionsError } from "../utils/transcript-errors";
@@ -99,6 +102,8 @@ class ObsidianLikeVault implements VaultLike<{ path: string }> {
 class MainLikeHost implements JobHost {
   settings: JobHostSettings = { prependDate: true, dateFormat: "YYYY-MM-DD", scrapcreatorsApiKey: "", supadataApiKey: "" };
   title = "Video";
+  /** Optional per-url title, for runs where every item must land on its own path. */
+  titleFor: ((url: string) => string) | undefined = undefined;
   templaterAvailable = true;
   summarizeCalls = 0;
   timestampCalls = 0;
@@ -119,11 +124,17 @@ class MainLikeHost implements JobHost {
 
   constructor(private readonly vault: ObsidianLikeVault) {}
 
-  extractTranscriptStrict(): Promise<{ transcript: string; metadata: { title?: string } }> {
+  /**
+   * The real adapter passes `record.url` here, so a test can give each video
+   * its own title — which a collection needs, since otherwise every child
+   * derives the SAME note path and all but the first block on note-collision.
+   */
+  extractTranscriptStrict(url?: string): Promise<{ transcript: string; metadata: { title?: string } }> {
     if (this.extractError !== null) {
       return Promise.reject(this.extractError);
     }
-    return Promise.resolve({ transcript: "[00:00:01] hello", metadata: { title: this.title } });
+    const title = url !== undefined && this.titleFor !== undefined ? this.titleFor(url) : this.title;
+    return Promise.resolve({ transcript: "[00:00:01] hello", metadata: { title } });
   }
 
   canRenderNote(): boolean {
@@ -205,7 +216,7 @@ interface Harness {
   writes: unknown[];
 }
 
-function harness(options: { records?: NoteJobRecord[]; files?: Record<string, string> } = {}): Harness {
+function harness(options: { records?: NoteJobRecord[]; files?: Record<string, string>; onEvent?: (event: JobEvent) => void } = {}): Harness {
   const vault = new ObsidianLikeVault();
   for (const [path, content] of Object.entries(options.files ?? {})) {
     vault.files.set(path, content);
@@ -229,7 +240,12 @@ function harness(options: { records?: NoteJobRecord[]; files?: Record<string, st
   const events: JobEvent[] = [];
   // Inert timers: no stage here ever times out and no heartbeat needs to
   // fire, so nothing is left armed after a test (no globals, no cleanup).
-  const deps = createRunnerDeps(host, store, (event) => events.push(event), {
+  const deps = createRunnerDeps(host, store, (event) => {
+    events.push(event);
+    // Lets a test observe events as the runner emits them, which is how the
+    // host wires a collection to the runner.
+    options.onEvent?.(event);
+  }, {
     vault,
     normalizePath: obsidianNormalizePath,
     installationId: () => INSTALLATION,
@@ -775,3 +791,124 @@ describe("end-to-end: no resume path exists after a cold start (#3 batch E — a
     }
   });
 });
+
+describe("C a collection runs every one of its videos, not just the first", () => {
+  // THE REGRESSION THIS LOCKS: the first cut wired `begin()` and nothing else,
+  // so a 3-video playlist submitted ONE child, created ONE note and left its
+  // notice stuck on the opening message for ever — a regression against the
+  // blocking loop it replaced, which did process every video. Every module was
+  // green at the time; the gap was entirely in the host wiring, which is why
+  // the routing now lives in `CollectionRunner.handleJobEvent` and is driven
+  // here against a REAL `JobRunner`.
+  const videos: CollectionVideo[] = [1, 2, 3].map((n) => ({
+    url: `https://youtu.be/c${n}`, videoId: `c${n}`, title: `Video ${n}`,
+  }));
+
+  function collectionHarness(options: { route?: boolean } = {}) {
+    const pending: Promise<unknown>[] = [];
+    let collection: CollectionRunner;
+    const h = harness({
+      onEvent: (event) => {
+        // `route: false` reproduces the shipped bug: events arrive and nothing
+        // advances the queue.
+        if (options.route === false) return;
+        pending.push(collection.handleJobEvent(event));
+      },
+    });
+    // Distinct titles: three videos must land on three paths. With one shared
+    // title they would collide, which is a real scenario in its own right (see
+    // the duplicate-title note in the report) but not what this test proves.
+    h.host.titleFor = (url) => `Video ${url.slice(-1)}`;
+    // A REAL CollectionNotices, not a double: `finish()` is what releases the
+    // owned child ids, and a double cannot show that. The notice handle is fake
+    // only in that it records instead of drawing.
+    const shown: string[] = [];
+    let hidden = 0;
+    const notices = new CollectionNotices(
+      (message) => { shown.push(message); return { setMessage: (m: string) => { shown.push(m); return undefined; }, hide: () => { hidden += 1; } }; },
+      (progress) => `${progress.done}/${progress.total}`,
+    );
+    const noticeState = { shown, hidden: () => hidden };
+    collection = new CollectionRunner({
+      generateId: () => `col-${Math.random().toString(36).slice(2)}`,
+      now: () => HARNESS_NOW,
+      installationId: () => INSTALLATION,
+      submitChild: async (video) => {
+        const result = await h.runner.submit({
+          url: video.url, videoId: video.videoId, folder: "Inbox",
+          customTitle: "", useFastSummary: false, addTimestampLinks: true,
+        });
+        if (result.kind === "started" || result.kind === "already-running") return result.id;
+        if (result.kind === "recovery") return result.record.id;
+        return undefined;
+      },
+      cancelChild: (id) => h.runner.cancel(id),
+      isActive: (id) => h.runner.isActive(id),
+      getChild: (id) => h.store.get(id),
+      saveCollection: (record) => h.store.upsertCollection(record, HARNESS_NOW),
+      listCollections: () => h.store.listCollections(),
+      notices,
+    });
+    const drain = async () => {
+      for (let i = 0; i < 12; i += 1) {
+        await settle();
+        await Promise.all(pending.splice(0));
+      }
+    };
+    return { h, collection, notices, noticeState, drain };
+  }
+
+  it("submits all three, creates three notes, and finishes its notice", async () => {
+    const { h, collection, noticeState, drain } = collectionHarness();
+    await collection.begin({ url: "https://youtube.com/playlist?list=PL", folder: "Inbox", sourceName: "Stuff", contentType: "Playlist", videos });
+    await drain();
+    expect(h.store.list()).toHaveLength(3);
+    expect(h.store.list().every((r) => r.status === "done")).toBe(true);
+    expect(h.vault.files.size).toBe(3);
+    expect(h.host.summarizeCalls).toBe(3);
+    expect(noticeState.hidden()).toBe(1);
+  });
+
+
+  it("closes its notice when the run is stopped mid-item, and releases the child ids", async () => {
+    // THE DEFECT THIS LOCKS: the cancelled branch used to ask the RUNNER whether
+    // any child was still active. The runner emits a job's terminal event and
+    // only clears it from its active map afterwards, in a `.finally`, so the
+    // very child that just settled still read as active — the run took `update`,
+    // was never asked again, and its persistent (timeout 0) notice stayed on
+    // screen with stale progress until Obsidian restarted. A module double
+    // cannot reproduce that ordering, which is why this test drives a real
+    // JobRunner and a real CollectionNotices.
+    const { h, collection, noticeState, drain } = collectionHarness();
+    const parent = await collection.begin({
+      url: "https://youtube.com/playlist?list=PL", folder: "Inbox",
+      sourceName: "Stuff", contentType: "Playlist", videos,
+    });
+    const executing = h.store.list()[0].id;
+    expect(collection.owns(executing)).toBe(true);
+
+    // Stop the run while item one is still being processed.
+    await collection.cancel(parent.id);
+    await drain();
+
+    // The already-paid item finished and wrote its note; nothing further ran.
+    expect(h.host.summarizeCalls).toBe(1);
+    expect(h.vault.files.size).toBe(1);
+    // ...and the run's notice is closed, exactly once.
+    expect(noticeState.hidden()).toBe(1);
+    // finish() is also what releases the ids, so later single jobs notice again.
+    expect(collection.owns(executing)).toBe(false);
+  });
+
+  it("stalls on item one when nothing routes the events — the shipped bug", async () => {
+    // The control arm. If this ever starts passing three, the routing has been
+    // removed and the test above is no longer proving anything.
+    const { h, collection, noticeState, drain } = collectionHarness({ route: false });
+    await collection.begin({ url: "https://youtube.com/playlist?list=PL", folder: "Inbox", sourceName: "Stuff", contentType: "Playlist", videos });
+    await drain();
+    expect(h.store.list()).toHaveLength(1);
+    expect(h.vault.files.size).toBe(1);
+    expect(noticeState.hidden()).toBe(0);
+  });
+});
+

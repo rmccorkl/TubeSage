@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "Vídeos per processar: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "S'està processant el vídeo {current}/{total}: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "Es descarta el vídeo {title} – no hi ha transcripció"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "S'afegeixen enllaços de temps al vídeo de la llista: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "S'afegeixen enllaços de temps al vídeo del canal: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ Enllaços de temps afegits a {title}"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} («{title}»)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "S'ha creat la nota, però no s'han pogut afegir marques de temps a «{title}»"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ Vídeo {current}/{total} processat"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ Es descarta el vídeo «{title}» – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ Error en processar el vídeo «{title}»: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "Processament del canal acabat – processats: {processed}, descartats: {skipped}, errors: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "No s'ha pogut desar la tasca: {error}. El vídeo pot continuar processant-se; mira «Mostra les tasques actives»"
@@ -1122,5 +1078,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "No hi ha cap transcripció per a aquest vídeo"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "Processant {name}: {done} de {total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "Col·leccions interrompudes tancades: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "Atura la col·lecció"
     }
 }

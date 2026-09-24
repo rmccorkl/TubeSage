@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "இயக்கப்பட்டியலிலிருந்து வீடியோக்களைப் பெறுகிறது: {name}",
     "notice.collection.fetchingFrom.channel": "சேனலிலிருந்து வீடியோக்களைப் பெறுகிறது: {name}",
     "notice.collection.videosToProcess": "செயலாக்க வேண்டிய வீடியோக்கள்: {count}",
-    "notice.collection.processingVideo": "வீடியோ {current}/{total} செயலாக்கப்படுகிறது: {title}",
-    "notice.collection.skipNoTranscript": "வீடியோ {title} தவிர்க்கப்பட்டது – எழுத்துப்படி இல்லை",
-    "notice.collection.addingTimestamps.playlist": "இயக்கப்பட்டியல் வீடியோவுக்கு நேர முத்திரை இணைப்புகள் சேர்க்கப்படுகின்றன: {title}",
-    "notice.collection.addingTimestamps.channel": "சேனல் வீடியோவுக்கு நேர முத்திரை இணைப்புகள் சேர்க்கப்படுகின்றன: {title}",
-    "notice.collection.timestampsAdded": "✓ {title} இல் நேர முத்திரை இணைப்புகள் சேர்க்கப்பட்டன",
-    "notice.collection.timestampError": "{error} (“{title}”)",
-    "notice.collection.timestampsFailed": "குறிப்பு உருவாக்கப்பட்டது, ஆனால் “{title}” இல் நேர முத்திரைகளைச் சேர்க்க முடியவில்லை",
-    "notice.collection.videoProcessed": "✓ வீடியோ {current}/{total} செயலாக்கப்பட்டது",
-    "notice.collection.videoSkipped": "⚠️ வீடியோ “{title}” தவிர்க்கப்பட்டது – {error}",
-    "notice.collection.videoError": "❌ வீடியோ “{title}” செயலாக்கத்தில் பிழை: {error}",
-    "notice.collection.complete": "சேனல் செயலாக்கம் முடிந்தது – செயலாக்கியவை: {processed}, தவிர்த்தவை: {skipped}, பிழைகள்: {errors}",
     "notice.job.saveFailed": "பணியைச் சேமிக்க முடியவில்லை: {error}. வீடியோ இன்னும் செயலாக்கத்தில் இருக்கலாம்; “செயலில் உள்ள பணிகளைக் காட்டு” ஐப் பாருங்கள்",
     "notice.job.alreadyRunning": "இந்த வீடியோ ஏற்கனவே செயலாக்கத்தில் உள்ளது",
     "notice.job.cannotResume": "இந்தப் பணியை இந்நிலையில் தொடர முடியாது; அதன் நிலையைப் பாருங்கள்",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: தடைபட்ட {count} பணிகளுக்குக் கவனம் தேவை",
     "common.validation.required": "{field} புலத்தை நிரப்பவும்",
     "common.validation.genericError": "பிழை ஏற்பட்டது",
-    "common.transcript.unavailable": "இந்த வீடியோவுக்கு எழுத்துப்படி இல்லை"
+    "common.transcript.unavailable": "இந்த வீடியோவுக்கு எழுத்துப்படி இல்லை",
+    "notice.collection.progress": "{name} செயலாக்கப்படுகிறது: {done}/{total}",
+    "notice.collection.closedOnStart": "தடைபட்ட தொகுப்புகள் மூடப்பட்டன: {count}",
+    "modal.jobs.cancelCollection": "தொகுப்பை நிறுத்து"
 }

@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "処理する動画: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "動画 {current}/{total} を処理中: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "動画 {title} をスキップ – 文字起こしがありません"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "再生リストの動画にタイムスタンプリンクを追加中: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "チャンネルの動画にタイムスタンプリンクを追加中: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ {title} にタイムスタンプリンクを追加しました"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error}（「{title}」）"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "ノートは作成しましたが、「{title}」にタイムスタンプを追加できませんでした"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ 動画 {current}/{total} を処理しました"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ 動画「{title}」をスキップ – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ 動画「{title}」の処理でエラー: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "チャンネルの処理が完了 – 処理: {processed}、スキップ: {skipped}、エラー: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "ジョブを保存できませんでした: {error}。動画の処理は続いている可能性があります。「実行中のジョブを表示」を確認してください"
@@ -1114,5 +1070,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "この動画には文字起こしがありません"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "{name} を処理中: {done}/{total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "中断されたコレクションを終了しました: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "コレクションを停止"
     }
 }

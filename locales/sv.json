@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Hämtar videor från spellistan: {name}",
     "notice.collection.fetchingFrom.channel": "Hämtar videor från kanalen: {name}",
     "notice.collection.videosToProcess": "Videor att bearbeta: {count}",
-    "notice.collection.processingVideo": "Bearbetar video {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Hoppar över video {title} – ingen transkription",
-    "notice.collection.addingTimestamps.playlist": "Lägger till tidsstämpellänkar i spellistevideon: {title}",
-    "notice.collection.addingTimestamps.channel": "Lägger till tidsstämpellänkar i kanalvideon: {title}",
-    "notice.collection.timestampsAdded": "✓ Tidsstämpellänkar tillagda i {title}",
-    "notice.collection.timestampError": "{error} (”{title}”)",
-    "notice.collection.timestampsFailed": "Anteckningen skapades, men tidsstämplar kunde inte läggas till i ”{title}”",
-    "notice.collection.videoProcessed": "✓ Video {current}/{total} bearbetad",
-    "notice.collection.videoSkipped": "⚠️ Hoppar över video ”{title}” – {error}",
-    "notice.collection.videoError": "❌ Fel vid bearbetning av video ”{title}”: {error}",
-    "notice.collection.complete": "Bearbetning av kanal klar – bearbetade: {processed}, överhoppade: {skipped}, fel: {errors}",
     "notice.job.saveFailed": "Kunde inte spara jobbet: {error}. Videon kan fortfarande bearbetas; se ”Visa aktiva jobb”",
     "notice.job.alreadyRunning": "Den här videon bearbetas redan",
     "notice.job.cannotResume": "Det här jobbet kan inte återupptas som det är; se dess status",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} avbrutna jobb behöver åtgärdas",
     "common.validation.required": "Fyll i fältet {field}",
     "common.validation.genericError": "Ett fel uppstod",
-    "common.transcript.unavailable": "Ingen transkription är tillgänglig för den här videon"
+    "common.transcript.unavailable": "Ingen transkription är tillgänglig för den här videon",
+    "notice.collection.progress": "Bearbetar {name}: {done} av {total}",
+    "notice.collection.closedOnStart": "Avbrutna samlingar stängda: {count}",
+    "modal.jobs.cancelCollection": "Stoppa samling"
 }

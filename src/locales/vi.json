@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "Video cần xử lý: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "Đang xử lý video {current}/{total}: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "Bỏ qua video {title} – không có bản chép lời"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "Đang thêm liên kết dấu thời gian cho video trong danh sách phát: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "Đang thêm liên kết dấu thời gian cho video trong kênh: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ Đã thêm liên kết dấu thời gian cho {title}"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} (“{title}”)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "Đã tạo ghi chú nhưng không thêm được dấu thời gian cho “{title}”"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ Đã xử lý video {current}/{total}"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ Bỏ qua video “{title}” – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ Lỗi khi xử lý video “{title}”: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "Đã xử lý xong kênh – đã xử lý: {processed}, đã bỏ qua: {skipped}, lỗi: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "Không lưu được tác vụ: {error}. Video có thể vẫn đang xử lý; xem “Hiển thị tác vụ đang chạy”"
@@ -1114,5 +1070,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "Không có bản chép lời cho video này"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "Đang xử lý {name}: {done}/{total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "Đã đóng các bộ sưu tập bị gián đoạn: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "Dừng bộ sưu tập"
     }
 }

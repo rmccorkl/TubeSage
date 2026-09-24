@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "در حال گرفتن ویدیوها از فهرست پخش: {name}",
     "notice.collection.fetchingFrom.channel": "در حال گرفتن ویدیوها از کانال: {name}",
     "notice.collection.videosToProcess": "ویدیوهای در انتظار پردازش: {count}",
-    "notice.collection.processingVideo": "در حال پردازش ویدیوی {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "ویدیوی {title} رد شد – رونویسی موجود نیست",
-    "notice.collection.addingTimestamps.playlist": "در حال افزودن پیوندهای زمانی به ویدیوی فهرست پخش: {title}",
-    "notice.collection.addingTimestamps.channel": "در حال افزودن پیوندهای زمانی به ویدیوی کانال: {title}",
-    "notice.collection.timestampsAdded": "✓ پیوندهای زمانی به {title} افزوده شد",
-    "notice.collection.timestampError": "{error} («{title}»)",
-    "notice.collection.timestampsFailed": "یادداشت ساخته شد، اما افزودن نشانه‌های زمانی به «{title}» ممکن نشد",
-    "notice.collection.videoProcessed": "✓ ویدیوی {current}/{total} پردازش شد",
-    "notice.collection.videoSkipped": "⚠️ ویدیوی «{title}» رد شد – {error}",
-    "notice.collection.videoError": "❌ خطا در پردازش ویدیوی «{title}»: {error}",
-    "notice.collection.complete": "پردازش کانال پایان یافت – پردازش‌شده: {processed}، ردشده: {skipped}، خطاها: {errors}",
     "notice.job.saveFailed": "کار ذخیره نشد: {error}. شاید ویدیو هنوز در حال پردازش باشد؛ «نمایش کارهای فعال» را ببینید",
     "notice.job.alreadyRunning": "این ویدیو هم‌اکنون در حال پردازش است",
     "notice.job.cannotResume": "این کار در وضعیت کنونی ادامه‌پذیر نیست؛ وضعیتش را ببینید",
@@ -278,5 +267,8 @@
     "notice.recovery.several": "TubeSage: {count} کار متوقف‌شده نیاز به رسیدگی دارد",
     "common.validation.required": "لطفاً {field} را وارد کنید",
     "common.validation.genericError": "خطایی رخ داد",
-    "common.transcript.unavailable": "برای این ویدیو رونوشتی موجود نیست"
+    "common.transcript.unavailable": "برای این ویدیو رونوشتی موجود نیست",
+    "notice.collection.progress": "در حال پردازش {name}: {done} از {total}",
+    "notice.collection.closedOnStart": "مجموعه‌های قطع‌شده بسته شد: {count}",
+    "modal.jobs.cancelCollection": "توقف مجموعه"
 }

@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "ویدیوهای در انتظار پردازش: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "در حال پردازش ویدیوی {current}/{total}: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "ویدیوی {title} رد شد – رونویسی موجود نیست"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "در حال افزودن پیوندهای زمانی به ویدیوی فهرست پخش: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "در حال افزودن پیوندهای زمانی به ویدیوی کانال: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ پیوندهای زمانی به {title} افزوده شد"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} («{title}»)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "یادداشت ساخته شد، اما افزودن نشانه‌های زمانی به «{title}» ممکن نشد"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ ویدیوی {current}/{total} پردازش شد"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ ویدیوی «{title}» رد شد – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ خطا در پردازش ویدیوی «{title}»: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "پردازش کانال پایان یافت – پردازش‌شده: {processed}، ردشده: {skipped}، خطاها: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "کار ذخیره نشد: {error}. شاید ویدیو هنوز در حال پردازش باشد؛ «نمایش کارهای فعال» را ببینید"
@@ -1118,5 +1074,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "برای این ویدیو رونوشتی موجود نیست"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "در حال پردازش {name}: {done} از {total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "مجموعه‌های قطع‌شده بسته شد: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "توقف مجموعه"
     }
 }

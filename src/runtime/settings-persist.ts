@@ -1,3 +1,4 @@
+import { COLLECTIONS_KEY } from "../jobs/collection-record";
 import { JOBS_KEY } from "../jobs/job-store";
 
 // The settings payload that reaches data.json. Pure and Obsidian-free so the
@@ -8,6 +9,9 @@ import { JOBS_KEY } from "../jobs/job-store";
 // never in data.json (only the ollama entry — a server URL, not a secret —
 // is kept); and the reserved `_jobs` key is owned by the store, which adds
 // it at flush time, so it must never leak through from the settings object.
+// `_collections` (#9) is reserved the same way and for the same reason: it is a
+// sibling of `_jobs`, not a setting, and a run's records must not be rewritten
+// as user configuration.
 
 /** Structural: any settings object with an optional apiKeys map (the plugin's interface satisfies it). */
 export interface PersistableSettings {
@@ -19,5 +23,6 @@ export function settingsForPersist(settings: PersistableSettings, ollamaDefault:
   const sanitizedApiKeys: Record<string, string> = { ollama: settings.apiKeys?.ollama ?? ollamaDefault };
   const payload: Record<string, unknown> = { ...settings, apiKeys: sanitizedApiKeys };
   delete payload[JOBS_KEY];
+  delete payload[COLLECTIONS_KEY];
   return payload;
 }

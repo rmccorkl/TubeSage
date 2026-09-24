@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "待處理的影片：{count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "正在處理影片 {current}/{total}：{title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "略過影片 {title} – 沒有逐字稿"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "正在為播放清單影片加入時間標記連結：{title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "正在為頻道影片加入時間標記連結：{title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ 已為 {title} 加入時間標記連結"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error}（「{title}」）"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "筆記已建立，但無法為「{title}」加入時間標記"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ 已處理影片 {current}/{total}"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ 略過影片「{title}」 – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ 處理影片「{title}」時發生錯誤：{error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "頻道處理完成 – 已處理：{processed}，已略過：{skipped}，錯誤：{errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "無法儲存工作：{error}。影片可能仍在處理中，請查看「顯示進行中的工作」"
@@ -1114,5 +1070,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "此影片沒有逐字稿"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "正在處理 {name}：{done}/{total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "已關閉中斷的合輯：{count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "停止合輯"
     }
 }

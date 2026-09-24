@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "Đang lấy video từ danh sách phát: {name}",
     "notice.collection.fetchingFrom.channel": "Đang lấy video từ kênh: {name}",
     "notice.collection.videosToProcess": "Video cần xử lý: {count}",
-    "notice.collection.processingVideo": "Đang xử lý video {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "Bỏ qua video {title} – không có bản chép lời",
-    "notice.collection.addingTimestamps.playlist": "Đang thêm liên kết dấu thời gian cho video trong danh sách phát: {title}",
-    "notice.collection.addingTimestamps.channel": "Đang thêm liên kết dấu thời gian cho video trong kênh: {title}",
-    "notice.collection.timestampsAdded": "✓ Đã thêm liên kết dấu thời gian cho {title}",
-    "notice.collection.timestampError": "{error} (“{title}”)",
-    "notice.collection.timestampsFailed": "Đã tạo ghi chú nhưng không thêm được dấu thời gian cho “{title}”",
-    "notice.collection.videoProcessed": "✓ Đã xử lý video {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ Bỏ qua video “{title}” – {error}",
-    "notice.collection.videoError": "❌ Lỗi khi xử lý video “{title}”: {error}",
-    "notice.collection.complete": "Đã xử lý xong kênh – đã xử lý: {processed}, đã bỏ qua: {skipped}, lỗi: {errors}",
     "notice.job.saveFailed": "Không lưu được tác vụ: {error}. Video có thể vẫn đang xử lý; xem “Hiển thị tác vụ đang chạy”",
     "notice.job.alreadyRunning": "Video này đang được xử lý",
     "notice.job.cannotResume": "Không thể tiếp tục tác vụ này ở trạng thái hiện tại; hãy xem trạng thái",
@@ -277,5 +266,8 @@
     "notice.recovery.several": "TubeSage: {count} tác vụ bị gián đoạn cần được xử lý",
     "common.validation.required": "Hãy nhập {field}",
     "common.validation.genericError": "Đã xảy ra lỗi",
-    "common.transcript.unavailable": "Không có bản chép lời cho video này"
+    "common.transcript.unavailable": "Không có bản chép lời cho video này",
+    "notice.collection.progress": "Đang xử lý {name}: {done}/{total}",
+    "notice.collection.closedOnStart": "Đã đóng các bộ sưu tập bị gián đoạn: {count}",
+    "modal.jobs.cancelCollection": "Dừng bộ sưu tập"
 }

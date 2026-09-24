@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "วิดีโอที่จะประมวลผล: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "กำลังประมวลผลวิดีโอ {current}/{total}: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "ข้ามวิดีโอ {title} – ไม่มีคำบรรยาย"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "กำลังเพิ่มลิงก์ประทับเวลาให้วิดีโอในเพลย์ลิสต์: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "กำลังเพิ่มลิงก์ประทับเวลาให้วิดีโอในช่อง: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ เพิ่มลิงก์ประทับเวลาให้ {title} แล้ว"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} (“{title}”)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "สร้างโน้ตแล้ว แต่เพิ่มการประทับเวลาให้ “{title}” ไม่ได้"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ ประมวลผลวิดีโอ {current}/{total} แล้ว"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ ข้ามวิดีโอ “{title}” – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ เกิดข้อผิดพลาดขณะประมวลผลวิดีโอ “{title}”: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "ประมวลผลช่องเสร็จแล้ว – สำเร็จ: {processed}, ข้าม: {skipped}, ผิดพลาด: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "บันทึกงานไม่ได้: {error} วิดีโออาจยังประมวลผลอยู่ ดูที่ “แสดงงานที่กำลังทำ”"
@@ -1114,5 +1070,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "ไม่มีคำบรรยายสำหรับวิดีโอนี้"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "กำลังประมวลผล {name}: {done}/{total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "ปิดคอลเลกชันที่หยุดกลางคัน: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "หยุดคอลเลกชัน"
     }
 }

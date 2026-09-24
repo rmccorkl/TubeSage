@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "Videoclipuri de procesat: {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "Se procesează videoclipul {current}/{total}: {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "Videoclipul {title} este omis – nu există transcriere"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "Se adaugă linkuri cu marcaj de timp la videoclipul din playlist: {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "Se adaugă linkuri cu marcaj de timp la videoclipul din canal: {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ Linkuri cu marcaj de timp adăugate la {title}"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} („{title}”)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "Notița a fost creată, dar marcajele de timp nu au putut fi adăugate la „{title}”"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ Videoclip {current}/{total} procesat"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ Videoclipul „{title}” este omis – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ Eroare la procesarea videoclipului „{title}”: {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "Procesarea canalului s-a încheiat – procesate: {processed}, omise: {skipped}, erori: {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "Sarcina nu a putut fi salvată: {error}. Videoclipul poate fi încă în procesare; vezi „Afișează sarcinile active”"
@@ -1122,5 +1078,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "Nu există transcriere pentru acest videoclip"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "Se procesează {name}: {done} din {total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "Colecții întrerupte închise: {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "Oprește colecția"
     }
 }

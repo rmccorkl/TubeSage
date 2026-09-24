@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "កំពុងទាញយកវីដេអូពីបញ្ជីចាក់៖ {name}",
     "notice.collection.fetchingFrom.channel": "កំពុងទាញយកវីដេអូពីឆានែល៖ {name}",
     "notice.collection.videosToProcess": "វីដេអូដែលត្រូវដំណើរការ៖ {count}",
-    "notice.collection.processingVideo": "កំពុងដំណើរការវីដេអូ {current}/{total}៖ {title}",
-    "notice.collection.skipNoTranscript": "រំលងវីដេអូ {title} – មិនមានអត្ថបទ",
-    "notice.collection.addingTimestamps.playlist": "កំពុងបន្ថែមតំណពេលវេលាទៅវីដេអូក្នុងបញ្ជីចាក់៖ {title}",
-    "notice.collection.addingTimestamps.channel": "កំពុងបន្ថែមតំណពេលវេលាទៅវីដេអូក្នុងឆានែល៖ {title}",
-    "notice.collection.timestampsAdded": "✓ បានបន្ថែមតំណពេលវេលាទៅ {title}",
-    "notice.collection.timestampError": "{error} (“{title}”)",
-    "notice.collection.timestampsFailed": "បានបង្កើតកំណត់ត្រា ប៉ុន្តែមិនអាចបន្ថែមពេលវេលាទៅ “{title}” បានទេ",
-    "notice.collection.videoProcessed": "✓ បានដំណើរការវីដេអូ {current}/{total}",
-    "notice.collection.videoSkipped": "⚠️ រំលងវីដេអូ “{title}” – {error}",
-    "notice.collection.videoError": "❌ កំហុសពេលដំណើរការវីដេអូ “{title}”៖ {error}",
-    "notice.collection.complete": "ដំណើរការឆានែលបានបញ្ចប់ – បានដំណើរការ៖ {processed} រំលង៖ {skipped} កំហុស៖ {errors}",
     "notice.job.saveFailed": "មិនអាចរក្សាទុកកិច្ចការបានទេ៖ {error}។ វីដេអូអាចនៅកំពុងដំណើរការ សូមមើល “បង្ហាញការងារសកម្ម”",
     "notice.job.alreadyRunning": "វីដេអូនេះកំពុងដំណើរការរួចហើយ",
     "notice.job.cannotResume": "កិច្ចការនេះមិនអាចបន្តក្នុងស្ថានភាពនេះបានទេ សូមមើលស្ថានភាពរបស់វា",
@@ -277,5 +266,8 @@
     "notice.recovery.several": "TubeSage៖ ការងារដែលត្រូវបានរំខាន {count} ត្រូវការការដោះស្រាយ",
     "common.validation.required": "សូមបញ្ចូល {field}",
     "common.validation.genericError": "មានកំហុសកើតឡើង",
-    "common.transcript.unavailable": "មិនមានប្រតិចារិកសម្រាប់វីដេអូនេះទេ"
+    "common.transcript.unavailable": "មិនមានប្រតិចារិកសម្រាប់វីដេអូនេះទេ",
+    "notice.collection.progress": "កំពុងដំណើរការ {name}៖ {done}/{total}",
+    "notice.collection.closedOnStart": "បានបិទបណ្តុំដែលបានរំខាន: {count}",
+    "modal.jobs.cancelCollection": "បញ្ឈប់បណ្តុំ"
 }

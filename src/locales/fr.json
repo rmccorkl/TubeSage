@@ -787,50 +787,6 @@
         "original": "Found {count} videos to process",
         "translation": "Vidéos à traiter : {count}"
     },
-    "notice.collection.processingVideo": {
-        "original": "Processing video {current}/{total}: {title}",
-        "translation": "Traitement de la vidéo {current}/{total} : {title}"
-    },
-    "notice.collection.skipNoTranscript": {
-        "original": "Skipping video {title} - No transcript available",
-        "translation": "Vidéo {title} ignorée – aucune transcription disponible"
-    },
-    "notice.collection.addingTimestamps.playlist": {
-        "original": "Adding timestamp links to playlist video: {title}",
-        "translation": "Ajout des liens horodatés à la vidéo de la playlist : {title}"
-    },
-    "notice.collection.addingTimestamps.channel": {
-        "original": "Adding timestamp links to channel video: {title}",
-        "translation": "Ajout des liens horodatés à la vidéo de la chaîne : {title}"
-    },
-    "notice.collection.timestampsAdded": {
-        "original": "✓ Timestamp links added to {title}",
-        "translation": "✓ Liens horodatés ajoutés à {title}"
-    },
-    "notice.collection.timestampError": {
-        "original": "{error} (\"{title}\")",
-        "translation": "{error} (« {title} »)"
-    },
-    "notice.collection.timestampsFailed": {
-        "original": "Note created but timestamps could not be added to \"{title}\"",
-        "translation": "Note créée, mais les horodatages n'ont pas pu être ajoutés à « {title} »"
-    },
-    "notice.collection.videoProcessed": {
-        "original": "✓ Processed video {current}/{total}",
-        "translation": "✓ Vidéo {current}/{total} traitée"
-    },
-    "notice.collection.videoSkipped": {
-        "original": "⚠️ Skipping video \"{title}\" - {error}",
-        "translation": "⚠️ Vidéo « {title} » ignorée – {error}"
-    },
-    "notice.collection.videoError": {
-        "original": "❌ Error processing video \"{title}\": {error}",
-        "translation": "❌ Erreur lors du traitement de la vidéo « {title} » : {error}"
-    },
-    "notice.collection.complete": {
-        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
-        "translation": "Traitement de la chaîne terminé – traitées : {processed}, ignorées : {skipped}, erreurs : {errors}"
-    },
     "notice.job.saveFailed": {
         "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
         "translation": "Impossible d'enregistrer la tâche : {error}. La vidéo est peut-être toujours en cours ; voyez « Afficher les tâches actives »"
@@ -1122,5 +1078,17 @@
     "common.transcript.unavailable": {
         "original": "No transcript is available for this video",
         "translation": "Aucune transcription n'est disponible pour cette vidéo"
+    },
+    "notice.collection.progress": {
+        "original": "Processing {name}: {done} of {total}",
+        "translation": "Traitement de {name} : {done} sur {total}"
+    },
+    "notice.collection.closedOnStart": {
+        "original": "Interrupted collections closed: {count}",
+        "translation": "Collections interrompues fermées : {count}"
+    },
+    "modal.jobs.cancelCollection": {
+        "original": "Stop collection",
+        "translation": "Arrêter la collection"
     }
 }

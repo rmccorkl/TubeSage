@@ -196,17 +196,6 @@
     "notice.collection.fetchingFrom.playlist": "재생목록에서 동영상 가져오는 중: {name}",
     "notice.collection.fetchingFrom.channel": "채널에서 동영상 가져오는 중: {name}",
     "notice.collection.videosToProcess": "처리할 동영상: {count}",
-    "notice.collection.processingVideo": "동영상 처리 중 {current}/{total}: {title}",
-    "notice.collection.skipNoTranscript": "동영상 {title} 건너뜀 – 스크립트 없음",
-    "notice.collection.addingTimestamps.playlist": "재생목록 동영상에 타임스탬프 링크 추가 중: {title}",
-    "notice.collection.addingTimestamps.channel": "채널 동영상에 타임스탬프 링크 추가 중: {title}",
-    "notice.collection.timestampsAdded": "✓ {title}에 타임스탬프 링크를 추가했습니다",
-    "notice.collection.timestampError": "{error} (“{title}”)",
-    "notice.collection.timestampsFailed": "노트는 만들었지만 “{title}”에 타임스탬프를 추가하지 못했습니다",
-    "notice.collection.videoProcessed": "✓ 동영상 {current}/{total} 처리 완료",
-    "notice.collection.videoSkipped": "⚠️ 동영상 “{title}” 건너뜀 – {error}",
-    "notice.collection.videoError": "❌ 동영상 “{title}” 처리 오류: {error}",
-    "notice.collection.complete": "채널 처리 완료 – 처리: {processed}, 건너뜀: {skipped}, 오류: {errors}",
     "notice.job.saveFailed": "작업을 저장하지 못했습니다: {error}. 동영상은 계속 처리 중일 수 있습니다. “활성 작업 표시”를 확인하세요",
     "notice.job.alreadyRunning": "이 동영상은 이미 처리 중입니다",
     "notice.job.cannotResume": "이 작업은 현재 상태로는 다시 시작할 수 없습니다. 상태를 확인하세요",
@@ -277,5 +266,8 @@
     "notice.recovery.several": "TubeSage: 중단된 작업 {count}개에 조치가 필요합니다",
     "common.validation.required": "{field} 항목을 입력하세요",
     "common.validation.genericError": "오류가 발생했습니다",
-    "common.transcript.unavailable": "이 동영상에는 스크립트가 없습니다"
+    "common.transcript.unavailable": "이 동영상에는 스크립트가 없습니다",
+    "notice.collection.progress": "{name} 처리 중: {done}/{total}",
+    "notice.collection.closedOnStart": "중단된 컬렉션을 닫았습니다: {count}",
+    "modal.jobs.cancelCollection": "컬렉션 중지"
 }
