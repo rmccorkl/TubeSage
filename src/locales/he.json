@@ -460,8 +460,8 @@
         "translation": "העיבוד בוטל"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "העיבוד הופסק; המשך אותו מתוך \"הצג משימות פעילות\""
+        "original": "Processing was interrupted",
+        "translation": "העיבוד הופסק"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "שגיאה: {error} (גם הערת ניפוי הבאגים לא נוצרה)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "לא ניתן לבדוק משימות שהופסקו: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "תקצירים קצרים ומהירים יותר (מדלג על קישורי חותמות זמן)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "משימות פעילות"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "אין משימות פעילות"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "לא ניתן לקרוא את רשימת המשימות: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "״התעלם״ מסיר משימה מהרשימה בלבד ואינו מוחק פתקים."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "בחר קובץ תבנית"
@@ -784,20 +760,12 @@
         "translation": "סרטונים לעיבוד: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "לא ניתן לשמור את המשימה: {error}. ייתכן שהסרטון עדיין מעובד; ראה \"הצג משימות פעילות\""
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "לא ניתן לשמור את המשימה: {error}. ייתכן שהסרטון עדיין מעובד"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "הסרטון הזה כבר בעיבוד"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "לא ניתן להמשיך את המשימה הזו במצבה; ראה את הסטטוס שלה"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "לא ניתן לסיים את המשימה הזו במצבה; ראה את הסטטוס שלה"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -830,10 +798,6 @@
     "modal.template.var.llmTags.desc": {
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - תגיות שנוצרו מספק ה-LLM ומהדגם"
-    },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "הצג משימות פעילות"
     },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
@@ -871,146 +835,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "רשימת המודלים של {provider} רועננה. מגבלות האסימונים מולאו אוטומטית עבור {count} מודלים."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "מאחזר תמליל"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "מסכם"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "יוצר פתק"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "הפתק נוצר"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "מוסיף קישורי חותמת זמן"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "מתרגם"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "הסתיים"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "ביטול"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "התעלם"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "פתח את הפתק"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "סיום ללא חותמות זמן"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "סיום ללא תרגום"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "המשך"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "המשך (ייתכן חיוב חוזר)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "פועל"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "מוכן להמשך"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "הסתיים"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "בוטל"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "נכשל"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "נכשל: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "תם הזמן. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "הופסק עם סגירת Obsidian; לא נוצר פתק"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "הופסק עם סגירת Obsidian; ייתכן שקיים פתק בנתיב {path}"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "הופסק עם סגירת Obsidian; הפתק נוצר ללא חותמות זמן"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "הופסק עם סגירת Obsidian; הפתק נוצר ללא תרגום"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "הופסק במהלך {stage}; ייתכן שכבר חויבת על הבקשה הקודמת"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "הופסק במהלך {stage}; לא ידוע אם חויבת על הבקשה הקודמת"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "יותר מדי ניסיונות עבור {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "כבר קיים פתק בנתיב היעד — שנה את שמו או מחק אותו, ואז המשך מתוך „הצג משימות פעילות“"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "לא ניתן היה לאשר אם הפתק בנתיב היעד שייך למשימה הזו"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "הפתק של המשימה הזו הועבר או נמחק"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "הפתק נערך במהלך העיבוד; חותמות הזמן דולגו"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater אינו זמין; הפעל אותו ולאחר מכן המשך"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "המשך יאחזר את התמליל מחדש דרך שירות בתשלום"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "לא ניתן היה לחשב את נתיב הפתק באופן עקבי (בדוק את הגדרות התיקייה והתאריך), ואז המשך"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "פתק התמליל נוצר בהצלחה"
@@ -1035,34 +859,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "הפתק נוצר ללא חותמות זמן וללא תרגום"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: משימת פתק 1 הופסקה עם סגירת Obsidian — {title}: לא נוצר פתק"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: משימת פתק 1 הופסקה עם סגירת Obsidian — {title}: ייתכן שקיים פתק בנתיב {path}"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: משימת פתק 1 הופסקה עם סגירת Obsidian — {title}: הפתק נוצר ללא חותמות זמן"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: משימת פתק 1 הופסקה עם סגירת Obsidian — {title}: הפתק נוצר ללא תרגום"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: {count} משימות פתק הופסקו עם סגירת Obsidian; העדכניות ביותר מופיעות תחת „הצג משימות פעילות“"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: משימה מופסקת 1 דורשת טיפול"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} משימות מופסקות דורשות טיפול"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "יש להזין {field}"
@@ -1078,14 +874,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "מעבד את {name}: {done} מתוך {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "אוספים שנקטעו נסגרו: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "עצור אוסף"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

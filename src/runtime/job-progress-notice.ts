@@ -178,3 +178,35 @@ export class JobProgressNotices {
     return true;
   }
 }
+
+type DoneEvent = Extract<JobEvent, { type: "done" }>;
+
+/**
+ * Pure: the Notice for a finished job. The two legacy texts are kept verbatim; a skipped translation is
+ * named by its cause. A timestamps pass skipped by the record's own flags (`user-choice` with nothing else
+ * skipped) stays silent, as it always was.
+ *
+ * It lives beside the progress notice because both are the single-video job's own wording: this is the
+ * sentence that closes the run the notice above was reporting. It arrived here when the recovery UI model
+ * that first hosted it was deleted with the jobs modal; it never had anything to do with recovery.
+ */
+export function doneNoticeText(event: DoneEvent): string {
+  const timestampsEdited = event.timestampsSkipped === "note-changed";
+  switch (event.translationSkipped) {
+    case undefined:
+      return timestampsEdited ? t("notice.note.done.timestampsEdited") : t("notice.note.done.created");
+    case "note-changed":
+      return timestampsEdited ? t("notice.note.done.bothEdited") : t("notice.note.done.translationEdited");
+    case "user-choice":
+      return event.timestampsSkipped === "user-choice"
+        ? t("notice.note.done.withoutBoth")
+        : t("notice.note.done.withoutTranslation");
+    case "timestamps-skipped":
+      // Only ever paired with timestampsSkipped: "user-choice" (#3 D2 legacy
+      // parity): the job's own flags skipped the timestamps pass, so a
+      // translation was never attempted either — same wording as skipping
+      // both by explicit choice, since the legacy modal showed nothing more
+      // specific for this case either.
+      return t("notice.note.done.withoutBoth");
+  }
+}

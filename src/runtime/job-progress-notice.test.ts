@@ -3,7 +3,7 @@ import { setLanguageResolver } from "../i18n";
 import { clearRuntimeLocales } from "../i18n/locales";
 import type { JobStage } from "../jobs/job-record";
 import type { JobEvent } from "../jobs/job-runner";
-import { JobProgressNotices, progressNoticeText } from "./job-progress-notice";
+import { JobProgressNotices, doneNoticeText, progressNoticeText } from "./job-progress-notice";
 import type { ProgressNoticeHandle } from "./job-progress-notice";
 
 /**
@@ -137,7 +137,7 @@ describe("JobProgressNotices", () => {
     { type: "done", id: "job-1", notePath: "Notes/a.md" },
     { type: "failed", id: "job-1", error: "boom" },
     { type: "cancelled", id: "job-1" },
-    { type: "interrupted", id: "job-1", prompt: { action: "nothing", why: "live" } },
+    { type: "interrupted", id: "job-1" },
   ];
 
   for (const terminal of terminals) {
@@ -206,5 +206,42 @@ describe("JobProgressNotices", () => {
     // Idempotent: a second unload pass must not hide a notice twice.
     notices.dismissAll();
     expect(created.map((notice) => notice.hidden)).toEqual([1, 1]);
+  });
+});
+
+// These three moved here verbatim from recovery-ui-model.test.ts when that
+// module was deleted with the jobs modal. `doneNoticeText` was never part of
+// the recovery surface: it is the sentence that closes an ordinary
+// single-video run, so it belongs beside the notice that reported it.
+describe("doneNoticeText", () => {
+  it("keeps the two legacy notices byte-for-byte when translation was not skipped", () => {
+    expect(doneNoticeText({ type: "done", id: "j", notePath: "V.md" })).toBe("Transcript note created successfully");
+    expect(doneNoticeText({ type: "done", id: "j", notePath: "V.md", timestampsSkipped: "user-choice" })).toBe(
+      "Transcript note created successfully",
+    );
+    expect(doneNoticeText({ type: "done", id: "j", notePath: "V.md", timestampsSkipped: "note-changed" })).toBe(
+      "Note created, but timestamps were skipped because the note was edited",
+    );
+  });
+
+  it("names a skipped translation (sentence case), by cause", () => {
+    expect(doneNoticeText({ type: "done", id: "j", notePath: "V.md", translationSkipped: "note-changed" })).toBe(
+      "Note created, but the translation was skipped because the note was edited",
+    );
+    expect(doneNoticeText({ type: "done", id: "j", notePath: "V.md", translationSkipped: "user-choice" })).toBe(
+      "Note created without translation",
+    );
+    expect(
+      doneNoticeText({ type: "done", id: "j", notePath: "V.md", timestampsSkipped: "note-changed", translationSkipped: "note-changed" }),
+    ).toBe("Note created, but timestamps and the translation were skipped because the note was edited");
+    expect(
+      doneNoticeText({ type: "done", id: "j", notePath: "V.md", timestampsSkipped: "user-choice", translationSkipped: "user-choice" }),
+    ).toBe("Note created without timestamps or translation");
+  });
+
+  it("a translation skipped because the timestamps pass itself was skipped (#3 D2 legacy parity) reads the same as skipping both by choice", () => {
+    expect(
+      doneNoticeText({ type: "done", id: "j", notePath: "V.md", timestampsSkipped: "user-choice", translationSkipped: "timestamps-skipped" }),
+    ).toBe("Note created without timestamps or translation");
   });
 });

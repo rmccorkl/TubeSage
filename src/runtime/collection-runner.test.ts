@@ -19,7 +19,6 @@ function harness(opts: { videos?: number; submit?: (v: CollectionVideo) => strin
   const deps = {
     generateId: () => `p-${++seq}`,
     now: () => 1000,
-    installationId: () => "inst-1",
     // Stands in for JobRunner.submit(): returns the id now responsible for the video.
     submitChild: vi.fn(async (v: CollectionVideo, _folder: string) => {
       const id = opts.submit ? opts.submit(v) : `job-${v.videoId}`;
@@ -38,7 +37,6 @@ function harness(opts: { videos?: number; submit?: (v: CollectionVideo) => strin
     isActive: (id: string) => active.has(id),
     getChild: (id: string) => records.get(id),
     saveCollection: vi.fn(async (record: CollectionJobRecord) => { stored.set(record.id, record); }),
-    listCollections: () => Array.from(stored.values()),
     notices: { start: vi.fn(), update: vi.fn(), finish: vi.fn() },
   };
   const runner = new CollectionRunner(deps);
@@ -128,33 +126,6 @@ describe("CollectionRunner cancel — stop scheduling, never strand a paid call"
   });
 });
 
-describe("CollectionRunner.closeAbandoned — a run dies with its app instance", () => {
-  it("closes a run this installation left running, and reports it", async () => {
-    const { runner, begin, deps } = harness({ videos: 3 });
-    await begin();
-    // Simulate a restart: the parent is still `running` in the store.
-    expect(await runner.closeAbandoned()).toBe(1);
-    const saved = deps.saveCollection.mock.calls;
-    expect(saved[saved.length - 1][0].status).toBe("closed");
-  });
-
-  it("does not restart any child", async () => {
-    const { runner, begin, deps } = harness({ videos: 3 });
-    await begin();
-    deps.submitChild.mockClear();
-    await runner.closeAbandoned();
-    expect(deps.submitChild).not.toHaveBeenCalled();
-  });
-
-  it("leaves another installation's run alone — it may be live on that device", async () => {
-    const { runner, begin, deps } = harness({ videos: 2 });
-    const parent = await begin();
-    deps.installationId = () => "a-different-install";
-    void parent;
-    expect(await runner.closeAbandoned()).toBe(0);
-  });
-});
-
 describe("CollectionRunner — a cancel landing mid-submit", () => {
   it("does not adopt a child submitted into an already-cancelled run", async () => {
     // The latent race: `startNext` awaits submitChild, and a cancel can land
@@ -171,7 +142,6 @@ describe("CollectionRunner — a cancel landing mid-submit", () => {
     const deps = {
       generateId: () => "p-1",
       now: () => 1000,
-      installationId: () => "inst-1",
       submitChild: vi.fn(async (v: CollectionVideo, _folder: string) => {
         // Cancel arrives while this submit is still in flight.
         await new Promise<void>((resolve) => { release = resolve; });
@@ -183,8 +153,7 @@ describe("CollectionRunner — a cancel landing mid-submit", () => {
       isActive: () => false,
       getChild: (id: string) => records.get(id),
       saveCollection: vi.fn(async (record: CollectionJobRecord) => { stored.set(record.id, record); }),
-      listCollections: () => Array.from(stored.values()),
-      notices: { start: vi.fn(), update: vi.fn(), finish: vi.fn() },
+        notices: { start: vi.fn(), update: vi.fn(), finish: vi.fn() },
     };
     runner = new CollectionRunner(deps);
 

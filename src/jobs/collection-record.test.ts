@@ -15,7 +15,6 @@ const base = {
   sourceName: "Stuff",
   contentType: "Playlist" as const,
   id: "p",
-  installationId: "inst-1",
   createdAt: 1_000,
 };
 const parentOf = (plannedCount: number, childIds: string[] = []) => ({
@@ -31,15 +30,11 @@ describe("planCollection — a thin parent; children come from submit()", () => 
     expect(parent.kind).toBe("collection");
   });
 
-  it("carries no paid-work or claim fields, so it can never bill or create a note", () => {
+  it("carries no paid-work or note fields, so it can never bill or create a note", () => {
     const parent = planCollection({ ...base, plannedCount: 2 });
-    for (const forbidden of ["stage", "attempts", "billing", "claimedNotePath", "claimedContentHash", "notePath"]) {
+    for (const forbidden of ["stage", "attempts", "billing", "targetNotePath", "notePath"]) {
       expect(parent, `parent must not carry ${forbidden}`).not.toHaveProperty(forbidden);
     }
-  });
-
-  it("stamps the owning installation, so the app-instance rule applies", () => {
-    expect(planCollection({ ...base, plannedCount: 1 }).installationId).toBe("inst-1");
   });
 });
 

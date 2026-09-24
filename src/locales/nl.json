@@ -460,8 +460,8 @@
         "translation": "Verwerking geannuleerd"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "De verwerking is onderbroken; hervat die via \"Actieve taken tonen\""
+        "original": "Processing was interrupted",
+        "translation": "De verwerking is onderbroken"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Fout: {error} (de debugnotitie kon ook niet worden gemaakt)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Kon niet controleren op onderbroken taken: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Voor kortere, snellere samenvattingen (slaat tijdstemplinks over)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Actieve taken"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Geen actieve taken"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Kan de takenlijst niet lezen: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "Verwerpen haalt een taak uit deze lijst; notities worden nooit verwijderd."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Sjabloonbestand kiezen"
@@ -784,20 +760,12 @@
         "translation": "Te verwerken video's: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Kan de taak niet opslaan: {error}. De video wordt mogelijk nog verwerkt; zie \"Actieve taken tonen\""
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Kan de taak niet opslaan: {error}. De video wordt mogelijk nog verwerkt"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Deze video wordt al verwerkt"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Deze taak kan zo niet worden hervat; zie de status"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Deze taak kan zo niet worden voltooid; zie de status"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Tags gegenereerd op basis van LLM-aanbieder en model"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Actieve taken tonen"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "Aanbieder ingesteld op {provider}. Uitvoerbudget: {tokens} tokens (maximale uitvoer min reserve)."
@@ -867,146 +831,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "Modellijst van {provider} vernieuwd. Tokenlimieten automatisch ingevuld voor {count} modellen."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Transcript ophalen"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Samenvatten"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Notitie aanmaken"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Notitie aangemaakt"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Tijdstiplinks toevoegen"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Vertalen"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Klaar"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Annuleren"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Verwijderen uit lijst"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Notitie openen"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Afronden zonder tijdstippen"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Afronden zonder vertaling"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Hervatten"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Hervatten (mogelijk opnieuw kosten)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Actief"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Klaar om verder te gaan"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Voltooid"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Geannuleerd"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Mislukt"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Mislukt: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Time-out. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Onderbroken toen Obsidian werd afgesloten; er is geen notitie aangemaakt"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Onderbroken toen Obsidian werd afgesloten; op {path} staat mogelijk een notitie"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Onderbroken toen Obsidian werd afgesloten; de notitie is aangemaakt zonder tijdstippen"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Onderbroken toen Obsidian werd afgesloten; de notitie is aangemaakt zonder vertaling"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Onderbroken tijdens {stage}; het vorige verzoek is mogelijk al in rekening gebracht"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Onderbroken tijdens {stage}; of het vorige verzoek is gefactureerd, is onbekend"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "Te veel pogingen voor {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "Op het doelpad staat al een notitie — hernoem of verwijder die en hervat daarna via Actieve taken tonen"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Kon niet bevestigen of de notitie op het doelpad bij deze taak hoort"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "De notitie van deze taak is verplaatst of verwijderd"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "De notitie is tijdens de verwerking bewerkt; de tijdstippen zijn overgeslagen"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater is niet beschikbaar; schakel het in en hervat daarna"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Bij hervatten wordt het transcript opnieuw opgehaald via een betaalde dienst"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Het notitiepad kon niet consistent worden berekend (controleer de map- en datuminstellingen), hervat daarna"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Transcriptnotitie is aangemaakt"
@@ -1031,34 +855,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Notitie aangemaakt zonder tijdstippen of vertaling"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 notitietaak is onderbroken toen Obsidian werd afgesloten — {title}: er is geen notitie aangemaakt"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 notitietaak is onderbroken toen Obsidian werd afgesloten — {title}: op {path} staat mogelijk een notitie"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 notitietaak is onderbroken toen Obsidian werd afgesloten — {title}: notitie aangemaakt zonder tijdstippen"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 notitietaak is onderbroken toen Obsidian werd afgesloten — {title}: notitie aangemaakt zonder vertaling"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: {count} notitietaken zijn onderbroken toen Obsidian werd afgesloten; de recentste staan onder Actieve taken tonen"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 onderbroken taak vraagt om aandacht"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} onderbroken taken vragen om aandacht"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Vul het veld {field} in"
@@ -1074,14 +870,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "Bezig met {name}: {done} van {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Onderbroken verzamelingen gesloten: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Verzameling stoppen"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

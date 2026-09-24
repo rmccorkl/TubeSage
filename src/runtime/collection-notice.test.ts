@@ -18,7 +18,7 @@ const setup = (n = 3) => {
   const parent = {
     ...planCollection({
       url: "u", folder: "f", sourceName: "Stuff", contentType: "Playlist",
-      installationId: "i", createdAt: 0, id: "p", plannedCount: n,
+      createdAt: 0, id: "p", plannedCount: n,
     }),
     childIds: Array.from({ length: n }, (_, i) => `c${i + 1}`),
   };
@@ -79,9 +79,8 @@ describe("dismissAll — unload must leave no surface behind", () => {
 
   it("says nothing on the way out", () => {
     // `finish` narrates a final count because the run ended. Unload is not an
-    // outcome: the persisted collection is untouched and the next cold start
-    // closes it, so writing a last message here would report a result that
-    // never happened.
+    // outcome — the run is simply going away with the plugin — so writing a
+    // last message here would report a result that never happened.
     const { notices, parent, messages } = setup(3);
     notices.start(parent, []);
     notices.dismissAll();
@@ -119,7 +118,7 @@ describe("dismissAll — unload must leave no surface behind", () => {
     const { notices, parent, hidden } = setup(2);
     notices.start(parent, []);
     notices.dismissAll();
-    notices.finish(parent, [child("c1", "done")], "closed");
+    notices.finish(parent, [child("c1", "done")], "cancelled");
     expect(hidden.count).toBe(1);
   });
 });

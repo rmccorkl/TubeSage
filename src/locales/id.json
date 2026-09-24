@@ -460,8 +460,8 @@
         "translation": "Pemrosesan dibatalkan"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "Pemrosesan terhenti; lanjutkan dari “Tampilkan pekerjaan aktif”"
+        "original": "Processing was interrupted",
+        "translation": "Pemrosesan terhenti"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Kesalahan: {error} (catatan debug juga gagal dibuat)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Tidak bisa memeriksa tugas yang terhenti: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Ringkasan lebih singkat dan cepat (melewati tautan stempel waktu)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Tugas aktif"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Tidak ada tugas aktif"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Tidak dapat membaca daftar tugas: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "Buang hanya menghapus tugas dari daftar ini; catatan tidak pernah dihapus."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Pilih berkas templat"
@@ -784,20 +760,12 @@
         "translation": "Video untuk diproses: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Tidak dapat menyimpan tugas: {error}. Video mungkin masih diproses; lihat “Tampilkan pekerjaan aktif”"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Tidak dapat menyimpan tugas: {error}. Video mungkin masih diproses"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Video ini sedang diproses"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Tugas ini tidak dapat dilanjutkan dalam keadaan ini; lihat statusnya"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Tugas ini tidak dapat diselesaikan dalam keadaan ini; lihat statusnya"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Tag yang dibuat dari penyedia dan model LLM"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Tampilkan pekerjaan aktif"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "Penyedia disetel ke {provider}. Anggaran keluaran: {tokens} token (keluaran maksimum dikurangi cadangan)."
@@ -863,146 +827,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "Daftar model {provider} disegarkan. Batas token diisi otomatis untuk {count} model."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Mengambil transkrip"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Meringkas"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Membuat catatan"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Catatan dibuat"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Menambahkan tautan stempel waktu"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Menerjemahkan"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Selesai"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Batalkan"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Buang"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Buka catatan"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Selesaikan tanpa stempel waktu"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Selesaikan tanpa terjemahan"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Lanjutkan"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Lanjutkan (mungkin ditagih ulang)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Berjalan"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Siap dilanjutkan"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Selesai"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Dibatalkan"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Gagal"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Gagal: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Waktu habis. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Terhenti saat Obsidian ditutup; tidak ada catatan yang dibuat"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Terhenti saat Obsidian ditutup; mungkin ada catatan di {path}"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Terhenti saat Obsidian ditutup; catatan dibuat tanpa stempel waktu"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Terhenti saat Obsidian ditutup; catatan dibuat tanpa terjemahan"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Terhenti saat {stage}; permintaan sebelumnya mungkin sudah ditagih"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Terhenti saat {stage}; tidak diketahui apakah permintaan sebelumnya ditagih"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "Terlalu banyak percobaan untuk {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "Sudah ada catatan di jalur tujuan — ubah namanya atau hapus, lalu lanjutkan dari “Tampilkan pekerjaan aktif”"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Tidak dapat memastikan apakah catatan di jalur tujuan milik pekerjaan ini"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "Catatan pekerjaan ini telah dipindahkan atau dihapus"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "Catatan disunting saat pemrosesan; stempel waktu dilewati"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater tidak tersedia; aktifkan, lalu lanjutkan"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Melanjutkan akan mengambil ulang transkrip lewat layanan berbayar"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Jalur catatan tidak dapat dihitung secara konsisten (periksa pengaturan folder dan tanggal), lalu lanjutkan"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Catatan transkrip berhasil dibuat"
@@ -1027,34 +851,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Catatan dibuat tanpa stempel waktu dan tanpa terjemahan"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 pekerjaan catatan terhenti saat Obsidian ditutup — {title}: tidak ada catatan yang dibuat"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 pekerjaan catatan terhenti saat Obsidian ditutup — {title}: mungkin ada catatan di {path}"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 pekerjaan catatan terhenti saat Obsidian ditutup — {title}: catatan dibuat tanpa stempel waktu"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 pekerjaan catatan terhenti saat Obsidian ditutup — {title}: catatan dibuat tanpa terjemahan"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: {count} pekerjaan catatan terhenti saat Obsidian ditutup; yang terbaru tercantum di “Tampilkan pekerjaan aktif”"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 pekerjaan yang terhenti perlu ditangani"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} pekerjaan yang terhenti perlu ditangani"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Isi kolom {field}"
@@ -1070,14 +866,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "Memproses {name}: {done} dari {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Koleksi terhenti yang ditutup: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Hentikan koleksi"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

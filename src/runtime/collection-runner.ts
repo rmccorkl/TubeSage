@@ -1,4 +1,4 @@
-import { planCancel, planColdStartClosure } from "../jobs/collection-policy";
+import { planCancel } from "../jobs/collection-policy";
 import { allSubmittedSettled, isTerminalCollection, planCollection } from "../jobs/collection-record";
 import type {
   CollectionContentType,
@@ -20,7 +20,6 @@ import type { NoteJobRecord } from "../jobs/job-record";
 export interface CollectionRunnerDeps {
   generateId(): string;
   now(): number;
-  installationId(): string;
   /**
    * Submit ONE video through `JobRunner.submit()` and return the id of the job
    * now responsible for it — a freshly started one, or an existing job for the
@@ -33,12 +32,10 @@ export interface CollectionRunnerDeps {
   isActive(id: string): boolean;
   getChild(id: string): NoteJobRecord | undefined;
   saveCollection(record: CollectionJobRecord): Promise<void>;
-  /** Every collection in the store, including ones a previous instance left. */
-  listCollections(): CollectionJobRecord[];
   notices: {
     start(parent: CollectionJobRecord, children: readonly NoteJobRecord[]): void;
     update(parent: CollectionJobRecord, children: readonly NoteJobRecord[]): void;
-    finish(parent: CollectionJobRecord, children: readonly NoteJobRecord[], status: "cancelled" | "closed" | "done"): void;
+    finish(parent: CollectionJobRecord, children: readonly NoteJobRecord[], status: "cancelled" | "done"): void;
   };
 }
 
@@ -66,7 +63,6 @@ export class CollectionRunner {
       contentType: input.contentType,
       plannedCount: input.videos.length,
       id: this.deps.generateId(),
-      installationId: this.deps.installationId(),
       createdAt: this.deps.now(),
     });
     this.parents.set(parent.id, parent);
@@ -179,30 +175,6 @@ export class CollectionRunner {
       if (parent.childIds.includes(childId)) return parentId;
     }
     return undefined;
-  }
-
-  /**
-   * Cold start: close every run this installation left behind.
-   *
-   * A run dies with the Obsidian instance that started it (#3), so a parent
-   * still marked `running` on startup belongs to an instance that is gone. It
-   * is closed and reported; children are NOT restarted — they are ordinary jobs
-   * and the runner's own cold-start pass has already closed them. Returns how
-   * many runs were closed, for the notice the rule requires.
-   *
-   * Reads from the STORE rather than from `parents`: the runs being closed
-   * belong to a previous process, so they were never in this one's memory.
-   */
-  async closeAbandoned(): Promise<number> {
-    const installationId = this.deps.installationId();
-    let closed = 0;
-    for (const parent of this.deps.listCollections()) {
-      const plan = planColdStartClosure(parent, this.childRecords(parent), installationId);
-      if (!plan.close) continue;
-      await this.deps.saveCollection({ ...parent, status: plan.parentStatus });
-      closed += 1;
-    }
-    return closed;
   }
 
   /**

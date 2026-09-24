@@ -460,8 +460,8 @@
         "translation": "Spracovanie zrušené"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "Spracovanie bolo prerušené; obnovte ho cez „Zobraziť aktívne úlohy“"
+        "original": "Processing was interrupted",
+        "translation": "Spracovanie bolo prerušené"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Chyba: {error} (ladiacu poznámku sa tiež nepodarilo vytvoriť)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Prerušené úlohy sa nepodarilo skontrolovať: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Kratšie a rýchlejšie zhrnutia (vynechá odkazy s časovými značkami)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Aktívne úlohy"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Žiadne aktívne úlohy"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Nedá sa načítať zoznam úloh: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "Zahodiť odstráni úlohu z tohto zoznamu; poznámky nikdy nemaže."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Vyberte súbor šablóny"
@@ -784,20 +760,12 @@
         "translation": "Videí na spracovanie: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Úlohu sa nepodarilo uložiť: {error}. Video sa možno stále spracúva; pozri „Zobraziť aktívne úlohy“"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Úlohu sa nepodarilo uložiť: {error}. Video sa možno stále spracúva"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Toto video sa už spracúva"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Túto úlohu nie je možné v tomto stave obnoviť; pozri jej stav"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Túto úlohu nie je možné v tomto stave dokončiť; pozri jej stav"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -830,10 +798,6 @@
     "modal.template.var.llmTags.desc": {
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Značky vygenerované z poskytovateľa a modelu LLM"
-    },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Zobraziť aktívne úlohy"
     },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
@@ -875,146 +839,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "Zoznam modelov {provider} bol obnovený. Limity tokenov doplnené automaticky: {count} modelov."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Načítava sa prepis"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Zhrnutie prebieha"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Vytvára sa poznámka"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Poznámka vytvorená"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Pridávajú sa odkazy s časovými značkami"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Prekladá sa"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Hotovo"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Zrušiť"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Zahodiť"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Otvoriť poznámku"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Dokončiť bez časových značiek"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Dokončiť bez prekladu"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Pokračovať"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Pokračovať (môže byť znova účtované)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Prebieha"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Pripravené pokračovať"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Dokončené"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Zrušené"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Zlyhalo"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Zlyhalo: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Vypršal časový limit. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Prerušené pri zatvorení Obsidian; nebola vytvorená žiadna poznámka"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Prerušené pri zatvorení Obsidian; v {path} môže existovať poznámka"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Prerušené pri zatvorení Obsidian; poznámka bola vytvorená bez časových značiek"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Prerušené pri zatvorení Obsidian; poznámka bola vytvorená bez prekladu"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Prerušené vo fáze {stage}; predchádzajúca požiadavka už mohla byť účtovaná"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Prerušené vo fáze {stage}; nie je známe, či bola predchádzajúca požiadavka účtovaná"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "Príliš veľa pokusov vo fáze {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "V cieľovej ceste už poznámka existuje — premenujte ju alebo odstráňte a potom pokračujte z Zobraziť aktívne úlohy"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Nepodarilo sa potvrdiť, či poznámka v cieľovej ceste patrí k tejto úlohe"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "Poznámka tejto úlohy bola presunutá alebo odstránená"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "Poznámka bola počas spracovania upravená; časové značky boli preskočené"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater nie je k dispozícii; zapnite ho a potom pokračujte"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Pokračovanie znova stiahne prepis cez platenú službu"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Cestu k poznámke sa nepodarilo určiť jednoznačne (skontrolujte nastavenia priečinka a dátumu) a potom pokračujte"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Poznámka s prepisom bola úspešne vytvorená"
@@ -1039,34 +863,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Poznámka vytvorená bez časových značiek a bez prekladu"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 úloha poznámky bola prerušená pri zatvorení Obsidian — {title}: nebola vytvorená žiadna poznámka"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 úloha poznámky bola prerušená pri zatvorení Obsidian — {title}: v {path} môže existovať poznámka"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 úloha poznámky bola prerušená pri zatvorení Obsidian — {title}: poznámka vytvorená bez časových značiek"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 úloha poznámky bola prerušená pri zatvorení Obsidian — {title}: poznámka vytvorená bez prekladu"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: pri zatvorení Obsidian bolo prerušených {count} úloh poznámok; najnovšie nájdete v Zobraziť aktívne úlohy"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 prerušená úloha vyžaduje pozornosť"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: pozornosť vyžaduje prerušených úloh: {count}"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Zadajte políčko {field}"
@@ -1082,14 +878,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "Spracúva sa {name}: {done} z {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Prerušené kolekcie zatvorené: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Zastaviť kolekciu"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

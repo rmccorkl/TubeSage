@@ -2,10 +2,9 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { createJobRecord, deriveNotePath, formatDatePrefix } from "../jobs/job-record";
 import type { NoteJobRecord, NotePathSettings } from "../jobs/job-record";
 import { JobStore } from "../jobs/job-store";
-import type { JobStoreIO } from "../jobs/job-store";
 import { NoteChangedError, PathDriftError, PermanentJobError } from "../jobs/job-runner";
 import type { JobEvent } from "../jobs/job-runner";
-import { createJobStages, createRunnerDeps, createRunnerVault } from "./job-adapters";
+import { MAX_CREATE_ATTEMPTS, createJobStages, createRunnerDeps } from "./job-adapters";
 import type { JobHost, JobHostSettings, RenderedNote, TimestampPassOptions, VaultLike } from "./job-adapters";
 import { sanitizeFilename } from "../utils/filename-sanitizer";
 import { NoCaptionsError } from "../utils/transcript-errors";
@@ -16,7 +15,6 @@ import { NoCaptionsError } from "../utils/transcript-errors";
 // the adapters are allowed to make.
 
 const NOW = new Date(2026, 8, 20, 12, 0, 0).getTime();
-const INSTALLATION = "install-test";
 // The normalizer injected into the adapters (main.ts passes Obsidian's
 // normalizePath). NFC is the part that matters here; the vault index is NFC.
 const nfc = (path: string): string => path.normalize("NFC");
@@ -32,6 +30,14 @@ interface FakeFile {
 class FakeVault implements VaultLike<FakeFile> {
   readonly files = new Map<string, string>();
   readonly created: Array<[string, string]> = [];
+  /**
+   * Paths `create` rejects as already existing although `getFile` cannot see them —
+   * Obsidian's public `getAbstractFileByPath` is case-SENSITIVE while a macOS/Windows
+   * filesystem is not, so a differently-cased neighbour collides only at create time.
+   */
+  readonly invisible = new Set<string>();
+  /** When set, `create` rejects with it instead (a failure that is NOT a collision). */
+  createError: Error | null = null;
 
   getFile(path: string): FakeFile | null {
     return this.files.has(path) ? { path } : null;
@@ -46,6 +52,12 @@ class FakeVault implements VaultLike<FakeFile> {
   }
 
   create(path: string, content: string): Promise<unknown> {
+    if (this.createError !== null) {
+      return Promise.reject(this.createError);
+    }
+    if (this.files.has(path) || this.invisible.has(path)) {
+      return Promise.reject(new Error("File already exists."));
+    }
     this.created.push([path, content]);
     this.files.set(path, content);
     return Promise.resolve({ path });
@@ -116,15 +128,6 @@ class FakeHost implements JobHost {
   }
 }
 
-class FakeIO implements JobStoreIO {
-  loadData(): Promise<unknown> {
-    return Promise.resolve(undefined);
-  }
-  saveData(): Promise<void> {
-    return Promise.resolve();
-  }
-}
-
 function record(overrides: Partial<NoteJobRecord> = {}): NoteJobRecord {
   const base = createJobRecord({
     id: "job-1",
@@ -133,7 +136,6 @@ function record(overrides: Partial<NoteJobRecord> = {}): NoteJobRecord {
     folder: "Notes",
     customTitle: "",
     useFastSummary: false,
-    transcriptBilling: "free",
     now: NOW,
   });
   const frozen: NoteJobRecord = { ...base, notePathSettings: FROZEN_SETTINGS };
@@ -291,12 +293,64 @@ describe("createJobStages — summary, render, create, timestamps", () => {
     const host = new FakeHost();
     const vault = new FakeVault();
     const stages = createJobStages(host, vault, nfc);
-    await stages.createNote("Notes/Sub/Video.md", "body");
+    expect(await stages.createNote("Notes/Sub/Video.md", "body")).toBe("Notes/Sub/Video.md");
     expect(host.ensured).toEqual(["Notes/Sub"]);
     expect(vault.created).toEqual([["Notes/Sub/Video.md", "body"]]);
     await stages.createNote("Root.md", "root body");
     expect(host.ensured).toEqual(["Notes/Sub"]); // no folder to ensure at the vault root
     expect(vault.files.get("Root.md")).toBe("root body");
+  });
+
+  it("createNote lands on the next free neighbour when the target is taken, and returns it", async () => {
+    const host = new FakeHost();
+    const vault = new FakeVault();
+    vault.files.set("Notes/Video.md", "the first run");
+    const stages = createJobStages(host, vault, nfc);
+    expect(await stages.createNote("Notes/Video.md", "the second run")).toBe("Notes/Video 1.md");
+    expect(await stages.createNote("Notes/Video.md", "the third run")).toBe("Notes/Video 2.md");
+    expect(vault.files.get("Notes/Video.md")).toBe("the first run"); // never overwritten
+    expect(vault.files.get("Notes/Video 1.md")).toBe("the second run");
+  });
+
+  it("createNote probes and creates the SAME normalized path for an NFD target", async () => {
+    const host = new FakeHost();
+    const vault = new FakeVault();
+    vault.files.set(nfc("Notes/한글.md"), "the first run");
+    const stages = createJobStages(host, vault, nfc);
+    const created = await stages.createNote("Notes/한글.md".normalize("NFD"), "the second run");
+    expect(created).toBe(nfc("Notes/한글 1.md"));
+    expect(vault.files.get(created)).toBe("the second run");
+  });
+
+  it("createNote survives a collision its probe could not see (case-insensitive filesystem)", async () => {
+    const host = new FakeHost();
+    const vault = new FakeVault();
+    // getFile says free, create still rejects: exactly the divergence between
+    // Obsidian's case-SENSITIVE public lookup and a case-insensitive filesystem.
+    vault.invisible.add("Notes/Video.md");
+    const stages = createJobStages(host, vault, nfc);
+    expect(await stages.createNote("Notes/Video.md", "body")).toBe("Notes/Video 1.md");
+    expect(vault.files.has("Notes/Video.md")).toBe(false);
+    expect(vault.files.get("Notes/Video 1.md")).toBe("body");
+  });
+
+  it("createNote reports an unresolvable collision as a failure, never as success", async () => {
+    const host = new FakeHost();
+    const vault = new FakeVault();
+    for (let n = 0; n < MAX_CREATE_ATTEMPTS; n++) {
+      vault.invisible.add(n === 0 ? "Notes/Video.md" : `Notes/Video ${n}.md`);
+    }
+    const stages = createJobStages(host, vault, nfc);
+    await expect(stages.createNote("Notes/Video.md", "body")).rejects.toThrow("File already exists.");
+    expect(vault.files.size).toBe(0);
+  });
+
+  it("createNote rethrows a non-collision failure immediately, without burning retries", async () => {
+    const host = new FakeHost();
+    const vault = new FakeVault();
+    vault.createError = new Error("EACCES: permission denied");
+    const stages = createJobStages(host, vault, nfc);
+    await expect(stages.createNote("Notes/Video.md", "body")).rejects.toThrow("EACCES: permission denied");
   });
 
   it("addTimestamps calls the host with the note path and url; a NoteChangedError propagates unchanged", async () => {
@@ -368,10 +422,9 @@ describe("createJobStages — translation (#3 final review residual)", () => {
 
   it("createRunnerDeps.translationSettings reads the LIVE host settings: undefined for en/US or absent, the pair otherwise", () => {
     const host = new FakeHost();
-    const deps = createRunnerDeps(host, new JobStore(new FakeIO(), () => ({})), () => undefined, {
+    const deps = createRunnerDeps(host, new JobStore(), () => undefined, {
       vault: new FakeVault(),
       normalizePath: nfc,
-      installationId: () => INSTALLATION,
     });
     expect(deps.translationSettings()).toBeUndefined();
     host.settings = { ...host.settings, translateLanguage: "en", translateCountry: "US" };
@@ -381,30 +434,17 @@ describe("createJobStages — translation (#3 final review residual)", () => {
   });
 });
 
-describe("createRunnerVault", () => {
-  it("exists/read answer false/undefined when getFile returns null, and the content otherwise", async () => {
-    const vault = new FakeVault();
-    vault.files.set(TARGET, "note body");
-    const runnerVault = createRunnerVault(vault);
-    expect(await runnerVault.exists(TARGET)).toBe(true);
-    expect(await runnerVault.read(TARGET)).toBe("note body");
-    expect(await runnerVault.exists("missing.md")).toBe(false);
-    expect(await runnerVault.read("missing.md")).toBeUndefined();
-  });
-});
-
 describe("createRunnerDeps", () => {
-  it("wires the store, live note-path settings, live transcript billing, ids and the injected clock/timers", () => {
+  it("wires the store, live note-path settings, ids and the injected clock/timers", () => {
     const host = new FakeHost();
     const vault = new FakeVault();
-    const store = new JobStore(new FakeIO(), () => ({}));
+    const store = new JobStore();
     const events: JobEvent[] = [];
     const timers: Array<[() => void, number]> = [];
     const cleared: unknown[] = [];
     const deps = createRunnerDeps(host, store, (event) => events.push(event), {
       vault,
       normalizePath: nfc,
-      installationId: () => INSTALLATION,
       now: () => NOW,
       setTimeout: (fn, ms) => {
         timers.push([fn, ms]);
@@ -424,10 +464,6 @@ describe("createRunnerDeps", () => {
     host.settings.prependDate = true;
     host.settings.dateFormat = "DD-MM-YYYY";
     expect(deps.notePathSettings()).toEqual({ prependDate: true, dateFormat: "DD-MM-YYYY" });
-    expect(deps.transcriptBilling()).toBe("free");
-    host.settings.supadataApiKey = "key";
-    expect(deps.transcriptBilling()).toBe("paid");
-    expect(deps.installationId()).toBe(INSTALLATION);
     expect(deps.normalizePath("a/한".normalize("NFD"))).toBe("a/한");
     expect(deps.setTimeout(() => undefined, 5)).toBe("handle");
     expect(timers).toHaveLength(1);
@@ -439,10 +475,9 @@ describe("createRunnerDeps", () => {
   });
 
   it("uses a real clock and unique ids by default", () => {
-    const deps = createRunnerDeps(new FakeHost(), new JobStore(new FakeIO(), () => ({})), () => undefined, {
+    const deps = createRunnerDeps(new FakeHost(), new JobStore(), () => undefined, {
       vault: new FakeVault(),
       normalizePath: nfc,
-      installationId: () => INSTALLATION,
     });
     const before = Date.now();
     expect(deps.now()).toBeGreaterThanOrEqual(before);
@@ -475,10 +510,9 @@ describe("createRunnerDeps — T6b: id fallback", () => {
   it("falls back to a time+random id when crypto.randomUUID is unavailable", () => {
     // A crypto double without randomUUID (older WebViews).
     vi.stubGlobal("crypto", {});
-    const deps = createRunnerDeps(new FakeHost(), new JobStore(new FakeIO(), () => ({})), () => undefined, {
+    const deps = createRunnerDeps(new FakeHost(), new JobStore(), () => undefined, {
       vault: new FakeVault(),
       normalizePath: nfc,
-      installationId: () => INSTALLATION,
     });
     const a = deps.generateId();
     const b = deps.generateId();
@@ -491,10 +525,9 @@ describe("createRunnerDeps — T6b: id fallback", () => {
 
   it("falls back the same way when there is no crypto global at all", () => {
     vi.stubGlobal("crypto", undefined);
-    const deps = createRunnerDeps(new FakeHost(), new JobStore(new FakeIO(), () => ({})), () => undefined, {
+    const deps = createRunnerDeps(new FakeHost(), new JobStore(), () => undefined, {
       vault: new FakeVault(),
       normalizePath: nfc,
-      installationId: () => INSTALLATION,
     });
     expect(deps.generateId()).toMatch(/^[0-9a-z]+-[0-9a-z]{8}$/);
   });

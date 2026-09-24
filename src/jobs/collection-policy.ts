@@ -1,10 +1,9 @@
-import { aggregateProgress } from "./collection-record";
-import type { CollectionJobRecord, CollectionProgress, CollectionStatus } from "./collection-record";
+import type { CollectionJobRecord, CollectionStatus } from "./collection-record";
 import type { NoteJobRecord } from "./job-record";
 
 // Pure decisions about a collection's lifetime. No Obsidian, no I/O, no clock:
-// the runtime applies what these return, which is what makes the two rules
-// below testable without standing up a runner.
+// the runtime applies what this returns, which is what makes the rule below
+// testable without standing up a runner.
 
 const FINISHED: ReadonlySet<NoteJobRecord["status"]> = new Set(["done", "failed", "cancelled"]);
 
@@ -25,8 +24,9 @@ export interface CancelPlan {
  * it would therefore leave the user billed with no note, which serves none of
  * the stated priorities (no duplicate notes, no double billing, honest status).
  * So it is left to reach its durable checkpoint, and only work that has not
- * started is cancelled. A user who wants that item gone can cancel it
- * individually; the per-item cancel already exists in the jobs modal.
+ * started is cancelled. There is no per-item cancel while a collection runs:
+ * the run reports through one notice, and that notice's stop control stops
+ * the run.
  *
  * `activeIds` is the runner's live set. It is an input rather than something
  * inferred from `status`, because `createJobRecord` stamps every child
@@ -53,31 +53,4 @@ export function planCancel(
     cancelIds.push(id);
   }
   return { cancelIds, leaveRunningIds, parentStatus: "cancelled" };
-}
-
-export interface ColdStartClosurePlan {
-  close: boolean;
-  parentStatus: CollectionStatus;
-  progress: CollectionProgress;
-}
-
-/**
- * A run dies with the Obsidian instance that started it (#3, the maintainer's
- * rule). On the next cold start this installation's unfinished collection is
- * CLOSED and reported, never silently resumed — and closing the parent must not
- * resurrect its children, which is why nothing here returns ids to restart.
- *
- * A collection owned by another installation is left alone: it may be live on
- * that device, and taking it over is exactly the duplicate-note risk #3 closed.
- */
-export function planColdStartClosure(
-  parent: CollectionJobRecord,
-  children: readonly NoteJobRecord[],
-  installationId: string,
-): ColdStartClosurePlan {
-  const progress = aggregateProgress(parent, children);
-  const ownedByThisInstall = parent.installationId === installationId;
-  const alreadyTerminal = parent.status !== "running";
-  const close = ownedByThisInstall && !alreadyTerminal;
-  return { close, parentStatus: close ? "closed" : parent.status, progress };
 }

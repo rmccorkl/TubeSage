@@ -215,8 +215,8 @@ export class YouTubeTranscriptExtractor {
                 throw error; // strict mode's permanent outcome: never reworded into a network error
             }
 
-            // Strict callers classify the rejection themselves and show it in a
-            // recovery UI, so the friendly text keeps the underlying detail.
+            // Strict callers classify the rejection themselves and surface it,
+            // so the friendly text keeps the underlying detail.
             const detail = options.strict ? ` (${errorMessage})` : '';
 
             if (errorMessage.includes('CORS') ||

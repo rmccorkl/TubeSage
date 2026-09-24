@@ -1,8 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import type { SettingDefinition, SettingDefinitionGroup, SettingDefinitionItem, SettingDefinitionPage } from "obsidian";
-import { JOBS_KEY, JobStore } from "../jobs/job-store";
-import type { JobStoreIO } from "../jobs/job-store";
-import { createJobRecord } from "../jobs/job-record";
+import { JOBS_KEY } from "../jobs/job-store";
+import { COLLECTIONS_KEY } from "../jobs/collection-record";
 import { settingsForPersist } from "../runtime/settings-persist";
 import { DEFAULT_SETTINGS } from "./settings-defaults";
 import type { YouTubeTranscriptSettings } from "./settings-defaults";
@@ -199,76 +198,58 @@ describe("buildSettingDefinitions — coverage of the legacy display() rows", ()
 
 // --- control save path (coordinator addendum A) --------------------------
 
-class FakeIO implements JobStoreIO {
-  calls: Record<string, unknown>[] = [];
-  loadData(): Promise<unknown> {
-    return Promise.resolve(undefined);
-  }
-  saveData(data: unknown): Promise<void> {
-    this.calls.push(JSON.parse(JSON.stringify(data)) as Record<string, unknown>);
-    return Promise.resolve();
-  }
-}
-
-/** A plugin double with the real persist path: JobStore + settingsForPersist. */
-async function makePluginDouble() {
+/** A plugin double with the real persist path: settingsForPersist -> saveData. */
+function makePluginDouble() {
   const settings = liveSettings({ selectedLLM: "anthropic" });
-  const io = new FakeIO();
-  const store = new JobStore(io, () => settingsForPersist(settings, DEFAULT_SETTINGS.apiKeys.ollama));
-  await store.upsert(
-    createJobRecord({
-      id: "job-1",
-      url: "https://youtu.be/abc123",
-      videoId: "abc123",
-      folder: "",
-      customTitle: "",
-      useFastSummary: false,
-      transcriptBilling: "free",
-      now: 1000,
-    }),
-    1000,
-  );
-  io.calls = [];
+  // A stale pair as an upgraded data.json still holds it: the composer must
+  // not write either key back out.
+  const stale = settings as unknown as Record<string, unknown>;
+  stale[JOBS_KEY] = [{ id: "stale" }];
+  stale[COLLECTIONS_KEY] = [{ id: "stale-collection" }];
+  const writes: Record<string, unknown>[] = [];
   const plugin = {
     settings,
     summarizerInits: 0,
     // Raw Plugin.saveData — the default PluginSettingTab.setControlValue calls
     // this directly; the override must never do so.
     saveData: vi.fn(() => Promise.resolve()),
-    saveSettings: vi.fn(async () => {
-      await store.flush();
+    // main.ts persist(): compose the live settings and write them once.
+    saveSettings: vi.fn(() => {
+      writes.push(JSON.parse(JSON.stringify(settingsForPersist(settings, DEFAULT_SETTINGS.apiKeys.ollama))) as Record<string, unknown>);
       plugin.summarizerInits++;
+      return Promise.resolve();
     }),
   };
   const host: SettingsHost = { ...hostSpies(), settings, defaults: DEFAULT_SETTINGS, saveSettings: plugin.saveSettings };
-  return { plugin, io, host };
+  return { plugin, writes, host };
 }
 
 describe("writeSettingValue / readSettingValue — the control accessors", () => {
   it("a control change makes exactly one saveSettings() call and zero direct saveData calls", async () => {
-    const { plugin, io, host } = await makePluginDouble();
+    const { plugin, writes, host } = makePluginDouble();
     await writeSettingValue(host, "translateLanguage", "fr");
     expect(plugin.settings.translateLanguage).toBe("fr");
     expect(plugin.saveSettings).toHaveBeenCalledTimes(1);
     expect(plugin.saveData).not.toHaveBeenCalled();
     expect(plugin.summarizerInits).toBe(1);
-    // The write went through the store's serialized writer exactly once.
-    expect(io.calls).toHaveLength(1);
+    // Exactly one payload reached data.json.
+    expect(writes).toHaveLength(1);
   });
 
-  it("the persisted payload never contains cloud keys and keeps the store's _jobs", async () => {
-    const { io, host } = await makePluginDouble();
+  it("the persisted payload never contains cloud keys, and never the reserved _jobs/_collections keys", async () => {
+    const { writes, host } = makePluginDouble();
     await writeSettingValue(host, "transcriptRootFolder", "Notes");
-    const payload = io.calls[0];
+    const payload = writes[0];
     expect(payload.transcriptRootFolder).toBe("Notes");
     expect(payload.apiKeys).toEqual({ ollama: DEFAULT_SETTINGS.apiKeys.ollama });
     const json = JSON.stringify(payload);
     for (const secret of ["sk-openai", "sk-ant", "g-key", "or-key"]) expect(json).not.toContain(secret);
-    expect(payload[JOBS_KEY]).toEqual([expect.objectContaining({ id: "job-1" })]);
+    expect(payload).not.toHaveProperty(JOBS_KEY);
+    expect(payload).not.toHaveProperty(COLLECTIONS_KEY);
   });
 
   it("reads and writes dot-notation paths through nested settings", async () => {
-    const { host, plugin } = await makePluginDouble();
+    const { host, plugin } = makePluginDouble();
     expect(readSettingValue(plugin.settings, "translateCountry")).toBe("US");
     expect(readSettingValue(plugin.settings, "apiKeys.ollama")).toBe(DEFAULT_SETTINGS.apiKeys.ollama);
     expect(readSettingValue(plugin.settings, "nope.missing")).toBeUndefined();

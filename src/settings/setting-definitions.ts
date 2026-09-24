@@ -70,8 +70,8 @@ type Render = SettingDefinitionRender['render'];
 //
 // The default setControlValue writes `this.plugin.settings[key]` and calls raw
 // `plugin.saveData(settings)`. That would (1) write the in-memory cloud API
-// keys into data.json, bypassing settingsForPersist, (2) bypass the JobStore's
-// serialized writer and clobber `_jobs`, and (3) skip initializeSummarizer().
+// keys into data.json, bypassing settingsForPersist, and (2) skip
+// initializeSummarizer().
 // These accessors are what the tab's overrides delegate to: same dot-notation
 // path walk as the official "custom settings storage" recipe, but the write
 // is persisted through saveSettings().

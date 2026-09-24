@@ -6,20 +6,16 @@ import type { NoteJobRecord } from "./job-record";
 //
 // WHY A THIN PARENT PLUS N ORDINARY SINGLE JOBS, rather than one job with N
 // items (#9): every invariant issue #3 established is per-NOTE, not per-run —
-// the stage machine, generation fencing, the two-phase claim (path + content
-// fingerprint persisted before `vault.create`), the frozen `targetNotePath`,
-// and the `attempts` ledger. A single record holding N items would have to
-// embed all of that N times, which is N jobs with extra steps but WITHOUT the
-// store's per-record serialized writes and without fencing operating per item.
+// the stage machine, generation fencing and the frozen `targetNotePath`. A
+// single record holding N items would have to embed all of that N times, which
+// is N jobs with extra steps but WITHOUT fencing operating per item.
 //
 // Each video is submitted through `JobRunner.submit()` like any other job, so a
 // child is not merely shaped like a single-video job — it IS one, and it
 // inherits `submit()`'s duplicate detection too. That guard matters here more
 // than anywhere: the same video appears in more than one playlist, and a
-// playlist gets re-run. The hard requirement that "per-item paid work must be
-// attributable so an interrupted collection cannot re-bill items already
-// completed" is then satisfied for free: each child owns its own `attempts`
-// ledger and `billing`.
+// playlist gets re-run. Paid work stays attributable per item for free: each
+// child is its own job record with its own stage and status.
 //
 // Because ids come back FROM `submit()`, `childIds` grows as the run proceeds
 // and cannot be the run's size. `plannedCount` carries that instead, so a
@@ -32,7 +28,7 @@ import type { NoteJobRecord } from "./job-record";
 /** Reserved key in `data.json`, a sibling of `_jobs`. */
 export const COLLECTIONS_KEY = "_collections";
 
-export type CollectionStatus = "running" | "cancelled" | "closed" | "done";
+export type CollectionStatus = "running" | "cancelled" | "done";
 export type CollectionContentType = "Channel" | "Playlist";
 
 export interface CollectionJobRecord {
@@ -50,7 +46,6 @@ export interface CollectionJobRecord {
   childIds: string[];
   createdAt: number;
   /** The installation that started this run; a run lives and dies with it (#3). */
-  installationId?: string;
   status: CollectionStatus;
   updatedAt: number;
 }
@@ -75,10 +70,10 @@ export interface CollectionProgress {
  * Settled FROM THE RUN'S POINT OF VIEW — which is not the same as a job being
  * terminal. `interrupted` is included: that child will not continue by itself
  * in this session, so a run that kept waiting for it would never finish and its
- * notice would never close. The child stays an ordinary recoverable job and can
- * be resumed on its own from the jobs modal; the collection simply stops
- * blocking on it. `aggregateProgress` still counts it as remaining, so the
- * closing message is honest about what was not done.
+ * notice would never close. Nothing resumes that child — a job lives and dies
+ * inside one run — so the collection simply stops blocking on it.
+ * `aggregateProgress` still counts it as remaining, so the closing message is
+ * honest about what was not done.
  */
 const SETTLED_FOR_RUN: ReadonlySet<NoteJobRecord["status"]> = new Set([
   "done",
@@ -103,7 +98,6 @@ export function planCollection(input: {
   contentType: CollectionContentType;
   plannedCount: number;
   id: string;
-  installationId?: string;
   createdAt: number;
 }): CollectionJobRecord {
   return {
@@ -117,7 +111,6 @@ export function planCollection(input: {
     plannedCount: input.plannedCount,
     childIds: [],
     createdAt: input.createdAt,
-    ...(input.installationId !== undefined ? { installationId: input.installationId } : {}),
     status: "running",
     updatedAt: input.createdAt,
   };

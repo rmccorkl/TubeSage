@@ -460,8 +460,8 @@
         "translation": "Przetwarzanie anulowane"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "Przetwarzanie zostało przerwane; wznów je przez „Pokaż aktywne zadania”"
+        "original": "Processing was interrupted",
+        "translation": "Przetwarzanie zostało przerwane"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Błąd: {error} (nie udało się też utworzyć notatki diagnostycznej)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Nie udało się sprawdzić przerwanych zadań: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Krótsze i szybsze podsumowania (pomija odnośniki ze znacznikami czasu)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Aktywne zadania"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Brak aktywnych zadań"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Nie można odczytać listy zadań: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "Odrzuć usuwa zadanie z tej listy; notatki nigdy nie są usuwane."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Wybierz plik szablonu"
@@ -784,20 +760,12 @@
         "translation": "Filmy do przetworzenia: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Nie udało się zapisać zadania: {error}. Film może być nadal przetwarzany; zobacz „Pokaż aktywne zadania”"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Nie udało się zapisać zadania: {error}. Film może być nadal przetwarzany"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Ten film jest już przetwarzany"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Tego zadania nie można wznowić w tym stanie; zobacz jego status"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Tego zadania nie można zakończyć w tym stanie; zobacz jego status"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -830,10 +798,6 @@
     "modal.template.var.llmTags.desc": {
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Tagi wygenerowane na podstawie dostawcy i modelu LLM"
-    },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Pokaż aktywne zadania"
     },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
@@ -875,146 +839,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "Odświeżono listę modeli {provider}. Limity tokenów uzupełniono automatycznie: {count} modelu."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Pobieranie transkrypcji"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Podsumowywanie"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Tworzenie notatki"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Notatka utworzona"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Dodawanie odnośników do znaczników czasu"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Tłumaczenie"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Gotowe"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Anuluj"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Odrzuć"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Otwórz notatkę"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Zakończ bez znaczników czasu"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Zakończ bez tłumaczenia"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Wznów"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Wznów (możliwa ponowna opłata)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "W toku"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Gotowe do wznowienia"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Zakończone"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Anulowane"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Niepowodzenie"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Niepowodzenie: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Przekroczono limit czasu. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Przerwane przy zamknięciu Obsidian; nie utworzono żadnej notatki"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Przerwane przy zamknięciu Obsidian; pod {path} może istnieć notatka"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Przerwane przy zamknięciu Obsidian; notatkę utworzono bez znaczników czasu"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Przerwane przy zamknięciu Obsidian; notatkę utworzono bez tłumaczenia"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Przerwane podczas etapu {stage}; poprzednie żądanie mogło już zostać opłacone"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Przerwane podczas etapu {stage}; nie wiadomo, czy poprzednie żądanie zostało opłacone"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "Zbyt wiele prób dla etapu {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "W ścieżce docelowej istnieje już notatka — zmień jej nazwę lub usuń ją, a potem wznów z Pokaż aktywne zadania"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Nie udało się potwierdzić, czy notatka w ścieżce docelowej należy do tego zadania"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "Notatka tego zadania została przeniesiona lub usunięta"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "Notatkę edytowano w trakcie przetwarzania; pominięto znaczniki czasu"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater jest niedostępny; włącz go, a potem wznów"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Wznowienie ponownie pobierze transkrypcję przez płatną usługę"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Ścieżki notatki nie udało się wyznaczyć jednoznacznie (sprawdź ustawienia folderu i daty), a potem wznów"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Notatka z transkrypcji została utworzona"
@@ -1039,34 +863,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Notatka utworzona bez znaczników czasu i bez tłumaczenia"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 zadanie notatki przerwano przy zamknięciu Obsidian — {title}: nie utworzono żadnej notatki"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 zadanie notatki przerwano przy zamknięciu Obsidian — {title}: pod {path} może istnieć notatka"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 zadanie notatki przerwano przy zamknięciu Obsidian — {title}: notatkę utworzono bez znaczników czasu"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 zadanie notatki przerwano przy zamknięciu Obsidian — {title}: notatkę utworzono bez tłumaczenia"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: przerwano {count} zadań notatek przy zamknięciu Obsidian; najnowsze są na liście Pokaż aktywne zadania"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 przerwane zadanie wymaga uwagi"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: uwagi wymaga przerwanych zadań: {count}"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Wypełnij pole {field}"
@@ -1082,14 +878,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "Przetwarzanie {name}: {done} z {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Zamknięte przerwane kolekcje: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Zatrzymaj kolekcję"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

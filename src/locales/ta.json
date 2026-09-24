@@ -460,8 +460,8 @@
         "translation": "செயலாக்கம் ரத்துசெய்யப்பட்டது"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "செயலாக்கம் தடைபட்டது; “செயலில் உள்ள பணிகளைக் காட்டு” இல் இருந்து தொடரவும்"
+        "original": "Processing was interrupted",
+        "translation": "செயலாக்கம் தடைபட்டது"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "பிழை: {error} (பிழைத்திருத்தக் குறிப்பையும் உருவாக்க முடியவில்லை)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "தடைபட்ட பணிகளைச் சரிபார்க்க முடியவில்லை: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "குறுகிய, விரைவான சுருக்கங்கள் (நேர முத்திரை இணைப்புகளைத் தவிர்க்கும்)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "செயலில் உள்ள பணிகள்"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "செயலில் பணிகள் இல்லை"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "பணிப் பட்டியலைப் படிக்க முடியவில்லை: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "“நிராகரி” இப்பட்டியலிலிருந்து பணியை மட்டும் நீக்கும்; குறிப்புகளை அழிக்காது."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "வார்ப்புரு கோப்பைத் தேர்ந்தெடுக்கவும்"
@@ -784,20 +760,12 @@
         "translation": "செயலாக்க வேண்டிய வீடியோக்கள்: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "பணியைச் சேமிக்க முடியவில்லை: {error}. வீடியோ இன்னும் செயலாக்கத்தில் இருக்கலாம்; “செயலில் உள்ள பணிகளைக் காட்டு” ஐப் பாருங்கள்"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "பணியைச் சேமிக்க முடியவில்லை: {error}. வீடியோ இன்னும் செயலாக்கத்தில் இருக்கலாம்"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "இந்த வீடியோ ஏற்கனவே செயலாக்கத்தில் உள்ளது"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "இந்தப் பணியை இந்நிலையில் தொடர முடியாது; அதன் நிலையைப் பாருங்கள்"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "இந்தப் பணியை இந்நிலையில் முடிக்க முடியாது; அதன் நிலையைப் பாருங்கள்"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - LLM வழங்குநர் மற்றும் மாதிரியிலிருந்து உருவாக்கப்பட்ட குறிச்சொற்கள்"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "செயலில் உள்ள பணிகளைக் காட்டு"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "வழங்குநர் {provider} என அமைக்கப்பட்டது. வெளியீட்டு வரம்பு: {tokens} டோக்கன்கள் (அதிகபட்ச வெளியீடு கழித்தல் ஒதுக்கீடு)."
@@ -867,146 +831,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "{provider} மாதிரிப் பட்டியல் புதுப்பிக்கப்பட்டது. {count} மாதிரிகளுக்கு டோக்கன் வரம்புகள் தானாக நிரப்பப்பட்டன."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "எழுத்துப்படி பெறப்படுகிறது"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "சுருக்கப்படுகிறது"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "குறிப்பு உருவாக்கப்படுகிறது"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "குறிப்பு உருவாக்கப்பட்டது"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "நேரமுத்திரை இணைப்புகள் சேர்க்கப்படுகின்றன"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "மொழிபெயர்க்கப்படுகிறது"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "முடிந்தது"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "ரத்துசெய்"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "நீக்கு"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "குறிப்பைத் திற"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "நேரமுத்திரைகள் இன்றி முடி"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "மொழிபெயர்ப்பு இன்றி முடி"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "தொடர்"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "தொடர் (மீண்டும் கட்டணம் ஆகலாம்)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "இயங்குகிறது"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "தொடரத் தயார்"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "நிறைவடைந்தது"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "ரத்துசெய்யப்பட்டது"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "தோல்வி"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "தோல்வி: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "நேரம் முடிந்தது. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Obsidian மூடப்பட்டபோது தடைபட்டது; எந்தக் குறிப்பும் உருவாக்கப்படவில்லை"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Obsidian மூடப்பட்டபோது தடைபட்டது; {path} இல் ஒரு குறிப்பு இருக்கலாம்"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Obsidian மூடப்பட்டபோது தடைபட்டது; குறிப்பு நேரமுத்திரைகள் இன்றி உருவாக்கப்பட்டது"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Obsidian மூடப்பட்டபோது தடைபட்டது; குறிப்பு மொழிபெயர்ப்பு இன்றி உருவாக்கப்பட்டது"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "{stage} போது தடைபட்டது; முந்தைய கோரிக்கைக்கு ஏற்கெனவே கட்டணம் ஆகியிருக்கலாம்"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "{stage} போது தடைபட்டது; முந்தைய கோரிக்கைக்குக் கட்டணம் ஆனதா என்பது தெரியவில்லை"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "{stage} முயற்சிகள் மிக அதிகம்"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "இலக்குப் பாதையில் ஏற்கெனவே ஒரு குறிப்பு உள்ளது — அதற்குப் பெயர் மாற்றவும் அல்லது நீக்கவும், பிறகு “செயலில் உள்ள பணிகளைக் காட்டு” இலிருந்து தொடரவும்"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "இலக்குப் பாதையில் உள்ள குறிப்பு இந்தப் பணிக்கு உரியதா என உறுதிப்படுத்த முடியவில்லை"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "இந்தப் பணியின் குறிப்பு நகர்த்தப்பட்டது அல்லது நீக்கப்பட்டது"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "செயலாக்கத்தின் போது குறிப்பு திருத்தப்பட்டது; நேரமுத்திரைகள் தவிர்க்கப்பட்டன"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater கிடைக்கவில்லை; அதை இயக்கிவிட்டுத் தொடரவும்"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "தொடர்ந்தால் கட்டணச் சேவை வழியாக எழுத்துப்படி மீண்டும் பெறப்படும்"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "குறிப்பின் பாதையை நிலையாகக் கணக்கிட முடியவில்லை (கோப்புறை மற்றும் தேதி அமைப்புகளைச் சரிபார்க்கவும்), பிறகு தொடரவும்"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "எழுத்துப்படி குறிப்பு வெற்றிகரமாக உருவாக்கப்பட்டது"
@@ -1031,34 +855,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "நேரமுத்திரைகளும் மொழிபெயர்ப்பும் இன்றி குறிப்பு உருவாக்கப்பட்டது"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: Obsidian மூடப்பட்டபோது 1 குறிப்புப் பணி தடைபட்டது — {title}: எந்தக் குறிப்பும் உருவாக்கப்படவில்லை"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: Obsidian மூடப்பட்டபோது 1 குறிப்புப் பணி தடைபட்டது — {title}: {path} இல் ஒரு குறிப்பு இருக்கலாம்"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: Obsidian மூடப்பட்டபோது 1 குறிப்புப் பணி தடைபட்டது — {title}: குறிப்பு நேரமுத்திரைகள் இன்றி உருவாக்கப்பட்டது"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: Obsidian மூடப்பட்டபோது 1 குறிப்புப் பணி தடைபட்டது — {title}: குறிப்பு மொழிபெயர்ப்பு இன்றி உருவாக்கப்பட்டது"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: Obsidian மூடப்பட்டபோது {count} குறிப்புப் பணிகள் தடைபட்டன; சமீபத்தியவை “செயலில் உள்ள பணிகளைக் காட்டு” இல் பட்டியலிடப்பட்டுள்ளன"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: தடைபட்ட 1 பணிக்குக் கவனம் தேவை"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: தடைபட்ட {count} பணிகளுக்குக் கவனம் தேவை"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "{field} புலத்தை நிரப்பவும்"
@@ -1074,14 +870,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "{name} செயலாக்கப்படுகிறது: {done}/{total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "தடைபட்ட தொகுப்புகள் மூடப்பட்டன: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "தொகுப்பை நிறுத்து"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

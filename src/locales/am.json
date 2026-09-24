@@ -460,8 +460,8 @@
         "translation": "ሂደቱ ተሰርዟል"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "ሂደቱ ተቋርጧል፤ ከ«ንቁ ሥራዎችን አሳይ» ይቀጥሉ"
+        "original": "Processing was interrupted",
+        "translation": "ሂደቱ ተቋርጧል"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "ስህተት፦ {error} (የማረሚያ ማስታወሻም አልተፈጠረም)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "የተቋረጡ ሥራዎችን ማረጋገጥ አልተቻለም፦ {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "አጭርና ፈጣን ማጠቃለያዎች (የጊዜ ማህተም አገናኞችን ይዘላል)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "ንቁ ሥራዎች"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "ንቁ ሥራዎች የሉም"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "የሥራ ዝርዝሩን ማንበብ አልተቻለም፦ {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "«አስወግድ» ሥራውን ከዝርዝሩ ብቻ ያስወግዳል፤ ማስታወሻዎችን አይሰርዝም።"
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "የአብነት ፋይል ይምረጡ"
@@ -784,20 +760,12 @@
         "translation": "የሚሠሩ ቪዲዮዎች፦ {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "ሥራውን ማስቀመጥ አልተቻለም፦ {error}። ቪዲዮው አሁንም እየተሠራ ሊሆን ይችላል፤ «ንቁ ሥራዎችን አሳይ» ይመልከቱ"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "ሥራውን ማስቀመጥ አልተቻለም፦ {error}። ቪዲዮው አሁንም እየተሠራ ሊሆን ይችላል"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "ይህ ቪዲዮ አስቀድሞ እየተሠራ ነው"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "ይህ ሥራ በዚህ ሁኔታ ሊቀጥል አይችልም፤ ሁኔታውን ይመልከቱ"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "ይህ ሥራ በዚህ ሁኔታ ሊጠናቀቅ አይችልም፤ ሁኔታውን ይመልከቱ"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - ከLLM አቅራቢና ሞዴል የተፈጠሩ መለያዎች"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "ንቁ ሥራዎችን አሳይ"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "አቅራቢው ወደ {provider} ተቀናብሯል። የውጤት በጀት፦ {tokens} ቶከኖች (ከፍተኛው ውጤት ሲቀነስ መጠባበቂያ)።"
@@ -867,146 +831,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "የ{provider} ሞዴል ዝርዝር ታድሷል። ለ{count} ሞዴሎች የቶከን ገደቦች በራስ-ሰር ተሞልተዋል።"
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "ግልባጭ በማምጣት ላይ"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "በማጠቃለል ላይ"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "ማስታወሻ በመፍጠር ላይ"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "ማስታወሻ ተፈጥሯል"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "የጊዜ ማህተም አገናኞችን በማከል ላይ"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "በመተርጎም ላይ"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "ተጠናቋል"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "ሰርዝ"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "አስወግድ"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "ማስታወሻ ክፈት"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "ያለ ጊዜ ማህተሞች ጨርስ"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "ያለ ትርጉም ጨርስ"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "ቀጥል"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "ቀጥል (እንደገና ሊከፈል ይችላል)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "በመካሄድ ላይ"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "ለመቀጠል ዝግጁ"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "ተጠናቅቋል"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "ተሰርዟል"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "አልተሳካም"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "አልተሳካም፦ {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "ጊዜው አልቋል። {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Obsidian ሲዘጋ ተቋርጧል፤ ምንም ማስታወሻ አልተፈጠረም"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Obsidian ሲዘጋ ተቋርጧል፤ በ{path} ማስታወሻ ሊኖር ይችላል"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Obsidian ሲዘጋ ተቋርጧል፤ ማስታወሻው ያለ ጊዜ ማህተሞች ተፈጥሯል"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Obsidian ሲዘጋ ተቋርጧል፤ ማስታወሻው ያለ ትርጉም ተፈጥሯል"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "በ{stage} ጊዜ ተቋርጧል፤ ቀዳሚው ጥያቄ አስቀድሞ ተከፍሎ ሊሆን ይችላል"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "በ{stage} ጊዜ ተቋርጧል፤ ቀዳሚው ጥያቄ መከፈሉ አይታወቅም"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "ለ{stage} በጣም ብዙ ሙከራዎች"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "በመድረሻው መንገድ ላይ ማስታወሻ አስቀድሞ አለ — ስሙን ይቀይሩ ወይም ያስወግዱት፣ ከዚያ ከ«ንቁ ሥራዎችን አሳይ» ይቀጥሉ"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "በመድረሻው መንገድ ያለው ማስታወሻ የዚህ ሥራ መሆኑን ማረጋገጥ አልተቻለም"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "የዚህ ሥራ ማስታወሻ ተዛውሯል ወይም ተሰርዟል"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "ማስታወሻው በሂደቱ ወቅት ተስተካክሏል፤ የጊዜ ማህተሞች ተዘለሉ"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater አይገኝም፤ ያንቁት፣ ከዚያ ይቀጥሉ"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "መቀጠል ግልባጩን በክፍያ አገልግሎት እንደገና ያመጣል"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "የማስታወሻው መንገድ በተመሳሳይ መንገድ ሊሰላ አልቻለም (የአቃፊና የቀን ቅንብሮችን ይፈትሹ)፣ ከዚያ ይቀጥሉ"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "የግልባጭ ማስታወሻ በተሳካ ሁኔታ ተፈጥሯል"
@@ -1031,34 +855,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "ማስታወሻው ያለ ጊዜ ማህተሞችና ያለ ትርጉም ተፈጥሯል"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: Obsidian ሲዘጋ 1 የማስታወሻ ሥራ ተቋርጧል — {title}፦ ምንም ማስታወሻ አልተፈጠረም"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: Obsidian ሲዘጋ 1 የማስታወሻ ሥራ ተቋርጧል — {title}፦ በ{path} ማስታወሻ ሊኖር ይችላል"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: Obsidian ሲዘጋ 1 የማስታወሻ ሥራ ተቋርጧል — {title}፦ ማስታወሻው ያለ ጊዜ ማህተሞች ተፈጥሯል"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: Obsidian ሲዘጋ 1 የማስታወሻ ሥራ ተቋርጧል — {title}፦ ማስታወሻው ያለ ትርጉም ተፈጥሯል"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: Obsidian ሲዘጋ {count} የማስታወሻ ሥራዎች ተቋርጠዋል፤ የቅርብ ጊዜዎቹ በ«ንቁ ሥራዎችን አሳይ» ውስጥ ተዘርዝረዋል"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 የተቋረጠ ሥራ ትኩረት ይፈልጋል"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} የተቋረጡ ሥራዎች ትኩረት ይፈልጋሉ"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "እባክዎ {field} ያስገቡ"
@@ -1074,14 +870,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "{name} በማስኬድ ላይ፦ {done}/{total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "የተቋረጡ ስብስቦች ተዘግተዋል፦ {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "ስብስቡን አቁም"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

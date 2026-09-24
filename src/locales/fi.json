@@ -460,8 +460,8 @@
         "translation": "Käsittely peruutettu"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "Käsittely keskeytyi; jatka sitä kohdasta ”Näytä aktiiviset työt”"
+        "original": "Processing was interrupted",
+        "translation": "Käsittely keskeytyi"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Virhe: {error} (myöskään vianmäärityksen muistiinpanoa ei voitu luoda)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Keskeytyneitä töitä ei voitu tarkistaa: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Lyhyempiä ja nopeampia tiivistelmiä (ohittaa aikaleimalinkit)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Aktiiviset työt"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Ei aktiivisia töitä"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Työlistaa ei voitu lukea: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "Hylkää poistaa työn tästä listasta; muistiinpanoja ei koskaan poisteta."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Valitse mallitiedosto"
@@ -784,20 +760,12 @@
         "translation": "Käsiteltäviä videoita: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Työtä ei voitu tallentaa: {error}. Videon käsittely voi jatkua; katso ”Näytä aktiiviset työt”"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Työtä ei voitu tallentaa: {error}. Videon käsittely voi jatkua"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Tätä videota käsitellään jo"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Tätä työtä ei voi jatkaa tällaisenaan; katso sen tila"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Tätä työtä ei voi viimeistellä tällaisenaan; katso sen tila"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - LLM-tarjoajasta ja mallista luodut tunnisteet"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Näytä aktiiviset työt"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "Palveluntarjoajaksi asetettiin {provider}. Tulostebudjetti: {tokens} tokenia (enimmäistuloste miinus varaus)."
@@ -867,146 +831,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "{provider}-malliluettelo päivitetty. Tokenrajat täytettiin automaattisesti {count} mallille."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Haetaan tekstitystä"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Tiivistetään"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Luodaan muistiinpanoa"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Muistiinpano luotu"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Lisätään aikaleimalinkkejä"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Käännetään"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Valmis"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Peruuta"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Hylkää"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Avaa muistiinpano"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Viimeistele ilman aikaleimoja"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Viimeistele ilman käännöstä"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Jatka"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Jatka (voi laskuttaa uudelleen)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Käynnissä"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Valmis jatkamaan"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Päättynyt"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Peruutettu"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Epäonnistui"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Epäonnistui: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Aikakatkaisu. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Keskeytyi, kun Obsidian suljettiin; muistiinpanoa ei luotu"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Keskeytyi, kun Obsidian suljettiin; polussa {path} voi olla muistiinpano"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Keskeytyi, kun Obsidian suljettiin; muistiinpano luotiin ilman aikaleimoja"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Keskeytyi, kun Obsidian suljettiin; muistiinpano luotiin ilman käännöstä"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Keskeytyi vaiheessa {stage}; edellisestä pyynnöstä on ehkä jo veloitettu"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Keskeytyi vaiheessa {stage}; ei tiedetä, veloitettiinko edellisestä pyynnöstä"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "Liian monta yritystä vaiheessa {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "Kohdepolussa on jo muistiinpano — nimeä se uudelleen tai poista se ja jatka sitten kohdasta Näytä aktiiviset työt"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Ei voitu varmistaa, kuuluuko kohdepolun muistiinpano tähän työhön"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "Tämän työn muistiinpano on siirretty tai poistettu"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "Muistiinpanoa muokattiin käsittelyn aikana; aikaleimat ohitettiin"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater ei ole käytettävissä; ota se käyttöön ja jatka sitten"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Jatkaminen hakee tekstityksen uudelleen maksullisesta palvelusta"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Muistiinpanon polkua ei voitu laskea johdonmukaisesti (tarkista kansio- ja päivämääräasetukset) ja jatka sitten"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Tekstitysmuistiinpano luotiin onnistuneesti"
@@ -1031,34 +855,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Muistiinpano luotiin ilman aikaleimoja ja käännöstä"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 muistiinpanotyö keskeytyi, kun Obsidian suljettiin — {title}: muistiinpanoa ei luotu"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 muistiinpanotyö keskeytyi, kun Obsidian suljettiin — {title}: polussa {path} voi olla muistiinpano"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 muistiinpanotyö keskeytyi, kun Obsidian suljettiin — {title}: muistiinpano luotiin ilman aikaleimoja"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 muistiinpanotyö keskeytyi, kun Obsidian suljettiin — {title}: muistiinpano luotiin ilman käännöstä"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: {count} muistiinpanotyötä keskeytyi, kun Obsidian suljettiin; uusimmat näkyvät kohdassa Näytä aktiiviset työt"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 keskeytynyt työ vaatii huomiota"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} keskeytynyttä työtä vaatii huomiota"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Täytä kenttä {field}"
@@ -1074,14 +870,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "Käsitellään {name}: {done}/{total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Keskeytyneet kokoelmat suljettu: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Pysäytä kokoelma"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

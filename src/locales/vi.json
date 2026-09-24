@@ -460,8 +460,8 @@
         "translation": "Đã huỷ xử lý"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "Quá trình xử lý bị gián đoạn; tiếp tục từ “Hiển thị tác vụ đang chạy”"
+        "original": "Processing was interrupted",
+        "translation": "Quá trình xử lý bị gián đoạn"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Lỗi: {error} (cũng không tạo được ghi chú gỡ lỗi)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Không kiểm tra được các tác vụ bị gián đoạn: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Tóm tắt ngắn và nhanh hơn (bỏ qua liên kết dấu thời gian)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Tác vụ đang chạy"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Không có tác vụ nào đang chạy"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Không đọc được danh sách tác vụ: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "“Bỏ” chỉ xoá tác vụ khỏi danh sách; không bao giờ xoá ghi chú."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Chọn tệp mẫu"
@@ -784,20 +760,12 @@
         "translation": "Video cần xử lý: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Không lưu được tác vụ: {error}. Video có thể vẫn đang xử lý; xem “Hiển thị tác vụ đang chạy”"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Không lưu được tác vụ: {error}. Video có thể vẫn đang xử lý"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Video này đang được xử lý"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Không thể tiếp tục tác vụ này ở trạng thái hiện tại; hãy xem trạng thái"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Không thể hoàn tất tác vụ này ở trạng thái hiện tại; hãy xem trạng thái"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Thẻ được tạo từ nhà cung cấp và mô hình LLM"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Hiển thị tác vụ đang chạy"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "Đã đặt nhà cung cấp thành {provider}. Ngân sách đầu ra: {tokens} token (đầu ra tối đa trừ phần dự trữ)."
@@ -863,146 +827,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "Đã làm mới danh sách mô hình {provider}. Đã tự động điền giới hạn token cho {count} mô hình."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Đang lấy bản chép lời"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Đang tóm tắt"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Đang tạo ghi chú"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Đã tạo ghi chú"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Đang thêm liên kết mốc thời gian"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Đang dịch"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Xong"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Hủy"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Bỏ"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Mở ghi chú"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Hoàn tất không có mốc thời gian"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Hoàn tất không dịch"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Tiếp tục"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Tiếp tục (có thể bị tính phí lại)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Đang chạy"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Sẵn sàng tiếp tục"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Đã kết thúc"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Đã hủy"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Thất bại"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Thất bại: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Đã hết thời gian chờ. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Bị gián đoạn khi Obsidian đóng; không có ghi chú nào được tạo"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Bị gián đoạn khi Obsidian đóng; có thể có một ghi chú tại {path}"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Bị gián đoạn khi Obsidian đóng; ghi chú đã được tạo nhưng không có mốc thời gian"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Bị gián đoạn khi Obsidian đóng; ghi chú đã được tạo nhưng chưa dịch"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Bị gián đoạn trong lúc {stage}; yêu cầu trước đó có thể đã bị tính phí"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Bị gián đoạn trong lúc {stage}; không rõ yêu cầu trước đó có bị tính phí hay không"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "Quá nhiều lần thử cho {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "Đã có ghi chú tại đường dẫn đích — hãy đổi tên hoặc xóa nó, rồi tiếp tục từ “Hiển thị tác vụ đang chạy”"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Không thể xác nhận ghi chú tại đường dẫn đích có thuộc về tác vụ này hay không"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "Ghi chú của tác vụ này đã bị di chuyển hoặc xóa"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "Ghi chú bị chỉnh sửa trong lúc xử lý; đã bỏ qua mốc thời gian"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater không khả dụng; hãy bật nó rồi tiếp tục"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Tiếp tục sẽ lấy lại bản chép lời qua dịch vụ có tính phí"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Không thể tính đường dẫn ghi chú một cách nhất quán (hãy kiểm tra cài đặt thư mục và ngày), rồi tiếp tục"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Đã tạo ghi chú bản chép lời"
@@ -1027,34 +851,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Đã tạo ghi chú mà không có mốc thời gian và không dịch"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 tác vụ ghi chú bị gián đoạn khi Obsidian đóng — {title}: không có ghi chú nào được tạo"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 tác vụ ghi chú bị gián đoạn khi Obsidian đóng — {title}: có thể có một ghi chú tại {path}"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 tác vụ ghi chú bị gián đoạn khi Obsidian đóng — {title}: ghi chú đã được tạo nhưng không có mốc thời gian"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 tác vụ ghi chú bị gián đoạn khi Obsidian đóng — {title}: ghi chú đã được tạo nhưng chưa dịch"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: {count} tác vụ ghi chú bị gián đoạn khi Obsidian đóng; những tác vụ gần đây nhất được liệt kê trong “Hiển thị tác vụ đang chạy”"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 tác vụ bị gián đoạn cần được xử lý"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} tác vụ bị gián đoạn cần được xử lý"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Hãy nhập {field}"
@@ -1070,14 +866,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "Đang xử lý {name}: {done}/{total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Đã đóng các bộ sưu tập bị gián đoạn: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Dừng bộ sưu tập"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

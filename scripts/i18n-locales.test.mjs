@@ -528,54 +528,6 @@ describe("every locale quotes its own accept-toggle label in the licence steps",
   });
 });
 
-describe("every sentence that names the plugin's command quotes its own locale's command name", () => {
-  // This block used to assert the opposite — that every locale left "Show
-  // active jobs" in English — and it was right to, because the command name
-  // itself was hardcoded English in main.ts. Now that the command is localised
-  // (`common.command.showActiveJobs`), English is exactly the wrong thing for a
-  // non-English locale to quote: it would name a command that locale's palette
-  // does not list. So the invariant is no longer "is English" but "matches the
-  // command this locale actually registers" — the same shape as the licence
-  // step quoting its own accept toggle, and enforced for the whole set by
-  // QUOTED_LABELS in i18n-lib.mjs.
-  //
-  // All four rows are swept, not only the ones that shipped quoting it: the
-  // two recovery-dialog rows used to hardcode the English name inside
-  // recovery-ui-model.ts, which is why they were invisible here before.
-  //
-  // `notice.progress.message` was a fifth and is gone: the progress notice now
-  // carries its own stop control, so it no longer names the command at all —
-  // which was the point of removing it. A row that does not mention the command
-  // has nothing for this invariant to check.
-  const QUOTING = [
-    "notice.job.interrupted",
-    "notice.job.saveFailed",
-    "modal.jobs.reason.noteCollision",
-    "notice.coldStart.several",
-  ];
-
-  it.each(SHIPPED)("%s quotes its own command name in every row that names it", (code) => {
-    const command = translationOf(code, "common.command.showActiveJobs");
-    expect(typeof command).toBe("string");
-    const wrong = QUOTING.filter((key) => !(translationOf(code, key) ?? "").includes(command));
-    expect(wrong, `${code} must quote "${command}"`).toEqual([]);
-  });
-
-  it("still leaves the command in English for the English locales", () => {
-    // The guard the old test carried, kept where it is actually true.
-    expect(en["common.command.showActiveJobs"]).toBe("Show active jobs");
-    expect(translationOf("en-GB", "common.command.showActiveJobs")).toBe("Show active jobs");
-    for (const key of QUOTING) expect(en[key]).toContain("Show active jobs");
-  });
-
-  it("actually localises the command, rather than shipping the English everywhere", () => {
-    // Without this the block above would pass a matrix in which every locale
-    // simply kept the English name — which is the state this batch replaced.
-    const localised = TRANSLATED.filter((code) => translationOf(code, "common.command.showActiveJobs") !== "Show active jobs");
-    expect(localised.length).toBeGreaterThanOrEqual(45);
-  });
-});
-
 describe("en-GB is the British spelling of en, and nothing else", () => {
   it("finds British-variant rows in the English to carry over", () => {
     expect(gbDeltaKeys.length).toBeGreaterThan(0);

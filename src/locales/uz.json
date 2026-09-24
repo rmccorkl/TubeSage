@@ -460,8 +460,8 @@
         "translation": "Qayta ishlash bekor qilindi"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "Qayta ishlash uzildi; uni “Faol ishlarni koʻrsatish” orqali davom ettiring"
+        "original": "Processing was interrupted",
+        "translation": "Qayta ishlash uzildi"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Xato: {error} (nosozlik yozuvi ham yaratilmadi)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Uzilgan vazifalarni tekshirib boʻlmadi: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Qisqaroq va tezroq xulosalar (vaqt belgisi havolalarini oʻtkazib yuboradi)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Faol vazifalar"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Faol vazifalar yoʻq"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Vazifalar roʻyxatini oʻqib boʻlmadi: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "“Bekor qilish” vazifani faqat roʻyxatdan olib tashlaydi; qaydnomalarni hech qachon oʻchirmaydi."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Andoza faylini tanlang"
@@ -784,20 +760,12 @@
         "translation": "Qayta ishlanadigan videolar: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Vazifani saqlab boʻlmadi: {error}. Video hamon qayta ishlanayotgan boʻlishi mumkin; “Faol ishlarni koʻrsatish” ni koʻring"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Vazifani saqlab boʻlmadi: {error}. Video hamon qayta ishlanayotgan boʻlishi mumkin"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Bu video allaqachon qayta ishlanmoqda"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Bu vazifani shu holatda davom ettirib boʻlmaydi; uning holatini koʻring"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Bu vazifani shu holatda tugatib boʻlmaydi; uning holatini koʻring"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - LLM provayderi va modelidan hosil qilingan teglar"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Faol ishlarni koʻrsatish"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "Taʼminotchi {provider} qilib belgilandi. Chiqish byudjeti: {tokens} token (maksimal chiqish minus zaxira)."
@@ -867,146 +831,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "{provider} modellar roʻyxati yangilandi. {count} model uchun token chegaralari avtomatik toʻldirildi."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Matn olinmoqda"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Xulosa qilinmoqda"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Qayd yaratilmoqda"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Qayd yaratildi"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Vaqt belgisi havolalari qoʻshilmoqda"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Tarjima qilinmoqda"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Tayyor"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Bekor qilish"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Tashlab yuborish"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Qaydni ochish"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Vaqt belgilarisiz yakunlash"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Tarjimasiz yakunlash"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Davom ettirish"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Davom ettirish (qayta hisoblanishi mumkin)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Bajarilmoqda"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Davom ettirishga tayyor"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Yakunlandi"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Bekor qilindi"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Muvaffaqiyatsiz"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Muvaffaqiyatsiz: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Vaqt tugadi. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Obsidian yopilganda uzildi; hech qanday qayd yaratilmadi"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Obsidian yopilganda uzildi; {path} manzilida qayd boʻlishi mumkin"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Obsidian yopilganda uzildi; qayd vaqt belgilarisiz yaratildi"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Obsidian yopilganda uzildi; qayd tarjimasiz yaratildi"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "{stage} paytida uzildi; oldingi soʻrov allaqachon hisoblangan boʻlishi mumkin"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "{stage} paytida uzildi; oldingi soʻrov hisoblanganmi, nomaʼlum"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "{stage} uchun urinishlar juda koʻp"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "Maqsad manzilda allaqachon qayd bor — uning nomini oʻzgartiring yoki oʻchiring, soʻng “Faol ishlarni koʻrsatish” orqali davom eting"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Maqsad manzildagi qayd shu ishga tegishlimi, tasdiqlab boʻlmadi"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "Bu ishning qaydi koʻchirilgan yoki oʻchirilgan"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "Qayd ishlov paytida tahrirlandi; vaqt belgilari oʻtkazib yuborildi"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater mavjud emas; uni yoqing, soʻng davom eting"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Davom ettirish matnni pullik xizmat orqali qaytadan oladi"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Qayd manzili izchil hisoblab boʻlmadi (jild va sana sozlamalarini tekshiring), soʻng davom eting"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Matn qaydi muvaffaqiyatli yaratildi"
@@ -1031,34 +855,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Qayd vaqt belgilarisiz va tarjimasiz yaratildi"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: Obsidian yopilganda 1 ta qayd ishi uzildi — {title}: hech qanday qayd yaratilmadi"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: Obsidian yopilganda 1 ta qayd ishi uzildi — {title}: {path} manzilida qayd boʻlishi mumkin"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: Obsidian yopilganda 1 ta qayd ishi uzildi — {title}: qayd vaqt belgilarisiz yaratildi"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: Obsidian yopilganda 1 ta qayd ishi uzildi — {title}: qayd tarjimasiz yaratildi"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: Obsidian yopilganda {count} ta qayd ishi uzildi; eng yangilari “Faol ishlarni koʻrsatish” roʻyxatida"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: uzilgan 1 ta ish eʼtibor talab qiladi"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: uzilgan {count} ta ish eʼtibor talab qiladi"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "{field} maydonini toʻldiring"
@@ -1074,14 +870,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "{name} qayta ishlanmoqda: {done}/{total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Uzilgan toʻplamlar yopildi: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Toʻplamni toʻxtatish"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

@@ -1,7 +1,8 @@
 import { PathDriftError, PermanentJobError } from "../jobs/job-runner";
-import type { JobEvent, JobStages, RunnerDeadlines, RunnerDeps, RunnerVault } from "../jobs/job-runner";
+import type { JobEvent, JobStages, RunnerDeadlines, RunnerDeps } from "../jobs/job-runner";
 import type { JobStore } from "../jobs/job-store";
-import { transcriptBillingRisk, translationSettingsFrom } from "../jobs/job-record";
+import { translationSettingsFrom } from "../jobs/job-record";
+import { nextFreePath } from "../jobs/free-path";
 import type { NoteJobRecord, NotePathSettings, PathNormalizer } from "../jobs/job-record";
 import { t } from "../i18n";
 import { NoCaptionsError } from "../utils/transcript-errors";
@@ -19,8 +20,8 @@ export type { TimestampPassOptions } from "./timestamp-pass-policy";
 // THE `t` IMPORT KEEPS THAT PROPERTY. `../i18n` imports only `./locales`,
 // which is static JSON, and reads the interface language through a resolver
 // main.ts installs at runtime — `getLanguage` is imported in main.ts and
-// nowhere else. `recovery-ui-model.ts` and `job-progress-notice.ts` in this
-// same directory import `t` this way already.
+// nowhere else. `job-progress-notice.ts` in this same directory imports `t`
+// this way already.
 
 /**
  * The marker youtube-transcript.ts embeds as the only segment when every extraction method failed but
@@ -95,8 +96,6 @@ export interface RunnerExtras<F = { path: string }> {
   vault: VaultLike<F>;
   /** Obsidian's `normalizePath` (main.ts) — the one normalizer every stored or compared note path goes through. */
   normalizePath: PathNormalizer;
-  /** This device+vault's stable id from per-vault localStorage (main.ts); never stored in data.json settings. */
-  installationId: () => string;
   deadlines?: Partial<RunnerDeadlines>;
   now?: () => number;
   setTimeout?: (fn: () => void, ms: number) => unknown;
@@ -123,6 +122,18 @@ function parentFolder(path: string): string {
   return slash === -1 ? "" : path.slice(0, slash);
 }
 
+/**
+ * How many times `createNote` may attempt a write before giving up. Every attempt past the
+ * first answers a collision the free-path probe could not see, which needs a differently-cased
+ * neighbour for each one — far rarer than this budget allows. Exhausting it rethrows.
+ */
+export const MAX_CREATE_ATTEMPTS = 8;
+
+/** Obsidian's Vault.create rejects with `new Error("File already exists.")`; a non-Error throw is not a collision. */
+function isAlreadyExistsError(error: unknown): boolean {
+  return error instanceof Error && error.message.toLowerCase().includes("already exists");
+}
+
 export function createJobStages<F>(host: JobHost, vault: VaultLike<F>, normalizePath: PathNormalizer): JobStages {
   return {
     async fetchTranscript(record: NoteJobRecord): Promise<{ transcript: string; title: string }> {
@@ -146,14 +157,13 @@ export function createJobStages<F>(host: JobHost, vault: VaultLike<F>, normalize
         // text from YouTube, an HTTP status or the extractor and must reach
         // the user verbatim.
         //
-        // Localised HERE rather than where it is displayed because there are
-        // TWO display boundaries — the live `notice.job.failed` notice
-        // (main.ts) and the recovery modal's `modal.jobs.status.failedWithError`
-        // (recovery-ui-model.ts) — and a sentinel branch in each is more
-        // machinery than one call. CONSEQUENCE: `fail()` persists this string
-        // as `lastError`, so a record keeps whichever language was current
-        // when the job failed; the live notice is always right, and the modal
-        // is right unless Obsidian's language changed in between.
+        // Localised HERE rather than where it is displayed, so that a
+        // sentinel branch is not needed at the display boundary. It was two
+        // boundaries until the jobs modal was deleted; the live
+        // `notice.job.failed` notice in main.ts is the only one left.
+        // CONSEQUENCE: `fail()` stores this string as `lastError`, so a record
+        // keeps whichever language was current when the job failed — which no
+        // longer shows anywhere, because a record dies with its run.
         throw new PermanentJobError(t("common.transcript.unavailable"));
       }
       const markerAt = transcript.indexOf(TRANSCRIPT_FAILED_MARKER);
@@ -216,12 +226,38 @@ export function createJobStages<F>(host: JobHost, vault: VaultLike<F>, normalize
       return rendered.content;
     },
 
-    async createNote(path: string, content: string): Promise<void> {
+    async createNote(path: string, content: string): Promise<string> {
       const folder = parentFolder(path);
       if (folder !== "") {
         await host.ensureFolder(folder);
       }
-      await vault.create(path, content);
+      // `vault.create` does not auto-version, so the free neighbour is picked
+      // here (nextFreePath, Obsidian's own " n" convention) and the path that
+      // actually received the content is returned — the caller records THAT,
+      // never the one it asked for.
+      //
+      // The retry exists because the probe can be wrong in ONE direction:
+      // `getFile` is Obsidian's case-SENSITIVE lookup, while macOS and Windows
+      // filesystems are not, so a differently-cased neighbour is invisible to
+      // the probe and collides only when `create` runs. A rejected candidate
+      // joins `collided` so the next pass walks past it. Anything that is not
+      // a collision, and a collision still unresolved after MAX_CREATE_ATTEMPTS
+      // writes, propagates: a create that threw is never reported as success.
+      const collided = new Set<string>();
+      let attempts = 0;
+      for (;;) {
+        const target = nextFreePath(path, (candidate) => collided.has(candidate) || vault.getFile(candidate) !== null, normalizePath);
+        try {
+          await vault.create(target, content);
+          return target;
+        } catch (error) {
+          attempts++;
+          if (attempts >= MAX_CREATE_ATTEMPTS || !isAlreadyExistsError(error)) {
+            throw error;
+          }
+          collided.add(target);
+        }
+      }
     },
 
     addTimestamps(record: NoteJobRecord, notePath: string): Promise<void> {
@@ -245,18 +281,6 @@ export function createJobStages<F>(host: JobHost, vault: VaultLike<F>, normalize
   };
 }
 
-export function createRunnerVault<F>(vault: VaultLike<F>): RunnerVault {
-  return {
-    exists(path: string): Promise<boolean> {
-      return Promise.resolve(vault.getFile(path) !== null);
-    },
-    read(path: string): Promise<string | undefined> {
-      const file = vault.getFile(path);
-      return file === null ? Promise.resolve(undefined) : vault.read(file);
-    },
-  };
-}
-
 export function createRunnerDeps<F>(
   host: JobHost,
   store: JobStore,
@@ -266,7 +290,6 @@ export function createRunnerDeps<F>(
   const deps: RunnerDeps = {
     store,
     stages: createJobStages(host, extras.vault, extras.normalizePath),
-    vault: createRunnerVault(extras.vault),
     now: extras.now ?? (() => Date.now()),
     // Lazy: `window` is only touched when the runner arms a timer, so the
     // deps can be built (and tested) outside a browser.
@@ -275,8 +298,6 @@ export function createRunnerDeps<F>(
     notePathSettings: () => ({ prependDate: host.settings.prependDate, dateFormat: host.settings.dateFormat }),
     translationSettings: () => translationSettingsFrom(host.settings),
     normalizePath: extras.normalizePath,
-    installationId: extras.installationId,
-    transcriptBilling: () => transcriptBillingRisk(host.settings),
     generateId: extras.generateId ?? generateOpaqueId,
     onEvent,
   };

@@ -460,8 +460,8 @@
         "translation": "Procesare anulată"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "Procesarea a fost întreruptă; reia-o din „Afișează sarcinile active”"
+        "original": "Processing was interrupted",
+        "translation": "Procesarea a fost întreruptă"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Eroare: {error} (nici notița de depanare nu a putut fi creată)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Sarcinile întrerupte nu au putut fi verificate: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Pentru rezumate mai scurte și mai rapide (omite linkurile cu marcaj de timp)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Sarcini active"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Nicio sarcină activă"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Lista de sarcini nu a putut fi citită: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "Renunță elimină o sarcină din listă; nu șterge niciodată notițe."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Selectează fișierul șablon"
@@ -784,20 +760,12 @@
         "translation": "Videoclipuri de procesat: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Sarcina nu a putut fi salvată: {error}. Videoclipul poate fi încă în procesare; vezi „Afișează sarcinile active”"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Sarcina nu a putut fi salvată: {error}. Videoclipul poate fi încă în procesare"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Acest videoclip este deja în procesare"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Această sarcină nu poate fi reluată așa; vezi starea ei"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Această sarcină nu poate fi finalizată așa; vezi starea ei"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -830,10 +798,6 @@
     "modal.template.var.llmTags.desc": {
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Etichete generate din furnizorul și modelul LLM"
-    },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Afișează sarcinile active"
     },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
@@ -871,146 +835,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "Lista de modele {provider} a fost reîmprospătată. Limite de tokenuri completate automat pentru {count} de modele."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Se preia transcrierea"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Se rezumă"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Se creează nota"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Notă creată"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Se adaugă legăturile cu marcaj temporal"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Se traduce"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Gata"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Anulează"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Renunță"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Deschide nota"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Finalizează fără marcaje temporale"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Finalizează fără traducere"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Reia"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Reia (se poate taxa din nou)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "În curs"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Gata de continuare"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Încheiat"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Anulat"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "A eșuat"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "A eșuat: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Timp expirat. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Întrerupt la închiderea Obsidian; nu a fost creată nicio notă"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Întrerupt la închiderea Obsidian; s-ar putea să existe o notă la {path}"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Întrerupt la închiderea Obsidian; nota a fost creată fără marcaje temporale"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Întrerupt la închiderea Obsidian; nota a fost creată fără traducere"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Întrerupt în timpul {stage}; cererea anterioară ar putea fi deja taxată"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Întrerupt în timpul {stage}; nu se știe dacă cererea anterioară a fost taxată"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "Prea multe încercări pentru {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "Există deja o notă la calea țintă — redenumește-o sau șterge-o, apoi reia din Afișează sarcinile active"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Nu s-a putut confirma dacă nota de la calea țintă aparține acestei sarcini"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "Nota acestei sarcini a fost mutată sau ștearsă"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "Nota a fost editată în timpul procesării; marcajele temporale au fost omise"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater nu este disponibil; activează-l, apoi reia"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Reluarea preia din nou transcrierea printr-un serviciu cu plată"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Calea notei nu a putut fi calculată consecvent (verifică setările de dosar și dată), apoi reia"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Nota transcrierii a fost creată cu succes"
@@ -1035,34 +859,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Notă creată fără marcaje temporale și fără traducere"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 sarcină de notă a fost întreruptă la închiderea Obsidian — {title}: nu a fost creată nicio notă"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 sarcină de notă a fost întreruptă la închiderea Obsidian — {title}: s-ar putea să existe o notă la {path}"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 sarcină de notă a fost întreruptă la închiderea Obsidian — {title}: notă creată fără marcaje temporale"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 sarcină de notă a fost întreruptă la închiderea Obsidian — {title}: notă creată fără traducere"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: {count} sarcini de notă au fost întrerupte la închiderea Obsidian; cele mai recente apar în Afișează sarcinile active"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 sarcină întreruptă necesită atenție"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} sarcini întrerupte necesită atenție"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Completează câmpul {field}"
@@ -1078,14 +874,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "Se procesează {name}: {done} din {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Colecții întrerupte închise: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Oprește colecția"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

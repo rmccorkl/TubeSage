@@ -5,7 +5,7 @@
  * imports only `./locales`, which is static JSON, and reads the interface
  * language through a resolver `main.ts` installs at runtime — `getLanguage`
  * is imported in main.ts and nowhere else. `src/settings/setting-definitions.ts`
- * and `src/runtime/recovery-ui-model.ts` both import `t` exactly this way to
+ * and `src/runtime/job-progress-notice.ts` both import `t` exactly this way to
  * stay unit-testable without an Obsidian runtime; this module follows them.
  */
 import { t } from '../i18n';

@@ -460,8 +460,8 @@
         "translation": "Asesfer yefsex"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "Asesfer yeḥbes; kemmel-it seg «Sken-d imahilen urmiden»"
+        "original": "Processing was interrupted",
+        "translation": "Asesfer yeḥbes"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Tuccḍa: {error} (ur tettwarna ara daɣen tzemmilt n usezreg)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Ur izmir ara ad isenqed imahilen yeḥbsen: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Igzulen wruzzinen imaynuten (yettuɣal ɣef izdayen n wakud)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Iwuriwen urmiden"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Ulac iwuriwen urmiden"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Ur izmir ara ad iɣer tabdart n iwuriwen: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "«Kkes» ikkes kan awuri seg tebdart-a; werǧin itekkes tizmilin."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Fren afaylu n tneɣruft"
@@ -784,20 +760,12 @@
         "translation": "Tividyutin ara yettusesfeḍen: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Ur nezmir ara ad nesekles awuri: {error}. Ahat tvidyut mazal tettusesfaḍ; wali «Sken-d imahilen urmiden»"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Ur nezmir ara ad nesekles awuri: {error}. Ahat tvidyut mazal tettusesfaḍ"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Tavidyut-a tettusesfaḍ yakan"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Awuri-a ur yezmir ara ad ikemmel akka; wali addad-is"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Awuri-a ur yezmir ara ad yemmed akka; wali addad-is"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Tibzimin i d-yeffɣen seg usemmaway d tmudemt n LLM"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Sken-d imahilen urmiden"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "Asaǧǧaw yettwasbadu ɣer {provider}. Tasmekta n tuffɣa: {tokens} n tokens (tuffɣa tafellayt nnger uḥraz)."
@@ -867,146 +831,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "Tabdart n tmudmin {provider} tettwasmiren. Tilisa n tokens ttwaččuren s wudem awurman i {count} n tmudmin."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Yettawi-d aserɣu"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Agzul iteddu"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Tazmilt tettwarna"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Tazmilt tettwarna"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Timerna n yiseɣwan n wakud"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Asuqqel iteddu"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Yemmed"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Sefsex"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Ḍeqqer"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Ldi tazmilt"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Fak war tikkalin n wakud"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Fak war asuqqel"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Kemmel"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Kemmel (yezmer ad yili wexlaṣ nniḍen)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Iteddu"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Yewjed ad ikemmel"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Yefra"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Yettwasefsex"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Yecceḍ"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Yecceḍ: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Yezri wakud. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Yeḥbes mi yemdel Obsidian; ulac tazmilt i yettwarnan"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Yeḥbes mi yemdel Obsidian; ahat tella tazmilt deg {path}"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Yeḥbes mi yemdel Obsidian; tazmilt tettwarna war tikkalin n wakud"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Yeḥbes mi yemdel Obsidian; tazmilt tettwarna war asuqqel"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Yeḥbes deg {stage}; ahat yettwaxlaṣ yakan usuter yezrin"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Yeḥbes deg {stage}; ur nessin ara ma yettwaxlaṣ usuter yezrin"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "Aṭas n yiɛraḍen i {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "Tella yakan tazmilt deg ubrid iswi — beddel isem-is neɣ kkes-itt, syen kemmel seg «Sken-d imahilen urmiden»"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Ur yezmir ara ad yesgezzi ma tazmilt n ubrid iswi n uxeddim-a"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "Tazmilt n uxeddim-a tettwasmutti neɣ tettwakkes"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "Tazmilt tettwaẓreg deg usesfer; tikkalin n wakud ttwasurfent"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater ulac-it; rmed-it syen kemmel"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Akemmel ad d-yawi aserɣu tikkelt nniḍen s useqdec n useqdac yettwaxelṣen"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Abrid n tzemmilt ur yezmir ara ad yettwasiḍen s wudem yemṣadan (senqed iɣewwaren n ukaram d uzemz), syen kemmel"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Tazmilt n userɣu tettwarna akken iwata"
@@ -1031,34 +855,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Tazmilt tettwarna war tikkalin n wakud war asuqqel"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 n uxeddim n tzemmilt yeḥbes mi yemdel Obsidian — {title}: ulac tazmilt i yettwarnan"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 n uxeddim n tzemmilt yeḥbes mi yemdel Obsidian — {title}: ahat tella tazmilt deg {path}"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 n uxeddim n tzemmilt yeḥbes mi yemdel Obsidian — {title}: tazmilt tettwarna war tikkalin n wakud"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 n uxeddim n tzemmilt yeḥbes mi yemdel Obsidian — {title}: tazmilt tettwarna war asuqqel"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: {count} n yixeddimen n tzemmilin ḥebsen mi yemdel Obsidian; wid imaynuten llan deg «Sken-d imahilen urmiden»"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 n uxeddim yeḥbes yesra lewsaya"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} n yixeddimen ḥebsen sran lewsaya"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Ttxil-k, sekcem {field}"
@@ -1074,14 +870,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "Asesfer n {name}: {done} seg {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Tigrumma yegzemen ttwamdlent: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Ḥbes tagrumma"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",
