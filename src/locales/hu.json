@@ -460,8 +460,8 @@
         "translation": "A feldolgozás megszakítva"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "A feldolgozás megszakadt; folytasd a „Aktív feladatok megjelenítése” paranccsal"
+        "original": "Processing was interrupted",
+        "translation": "A feldolgozás megszakadt"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Hiba: {error} (a hibakeresési jegyzet sem jött létre)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Nem sikerült ellenőrizni a megszakadt feladatokat: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Rövidebb, gyorsabb összefoglalók (kihagyja az időbélyeg-hivatkozásokat)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Aktív feladatok"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Nincs aktív feladat"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "A feladatlista nem olvasható: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "Az Elvetés kiveszi a feladatot a listából; jegyzetet soha nem töröl."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Válassz sablonfájlt"
@@ -784,20 +760,12 @@
         "translation": "Feldolgozandó videók: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "A feladat mentése nem sikerült: {error}. A videó feldolgozása még tarthat; lásd „Aktív feladatok megjelenítése”"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "A feladat mentése nem sikerült: {error}. A videó feldolgozása még tarthat"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Ez a videó már feldolgozás alatt áll"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Ez a feladat így nem folytatható; nézd meg az állapotát"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Ez a feladat így nem fejezhető be; nézd meg az állapotát"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Az LLM-szolgáltatóból és modellből képzett címkék"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Aktív feladatok megjelenítése"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "A szolgáltató {provider} lett. Kimeneti keret: {tokens} token (maximális kimenet mínusz a tartalék)."
@@ -867,146 +831,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "A(z) {provider} modelllista frissítve. A tokenkorlátok automatikusan kitöltve {count} modellhez."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Átirat letöltése"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Összefoglalás"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Jegyzet létrehozása"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Jegyzet létrehozva"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Időbélyeg-hivatkozások hozzáadása"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Fordítás"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Kész"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Mégse"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Elvetés"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Jegyzet megnyitása"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Befejezés időbélyegek nélkül"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Befejezés fordítás nélkül"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Folytatás"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Folytatás (újra felszámítható)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Fut"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Folytatható"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Befejeződött"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Megszakítva"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Sikertelen"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Sikertelen: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Időtúllépés. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Megszakadt az Obsidian bezárásakor; nem jött létre jegyzet"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Megszakadt az Obsidian bezárásakor; a(z) {path} helyen lehet egy jegyzet"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Megszakadt az Obsidian bezárásakor; a jegyzet időbélyegek nélkül jött létre"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Megszakadt az Obsidian bezárásakor; a jegyzet fordítás nélkül jött létre"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Megszakadt a(z) {stage} közben; az előző kérés már lehet, hogy ki lett számlázva"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Megszakadt a(z) {stage} közben; nem tudni, kiszámlázták-e az előző kérést"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "Túl sok próbálkozás a(z) {stage} során"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "A célútvonalon már van jegyzet — nevezze át vagy törölje, majd folytassa innen: Aktív feladatok megjelenítése"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Nem sikerült megerősíteni, hogy a célútvonalon lévő jegyzet ehhez a feladathoz tartozik-e"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "A feladathoz tartozó jegyzetet áthelyezték vagy törölték"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "A jegyzetet feldolgozás közben szerkesztették; az időbélyegek kimaradtak"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "A Templater nem érhető el; kapcsolja be, majd folytassa"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "A folytatás fizetős szolgáltatáson keresztül újra letölti az átiratot"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "A jegyzet útvonala nem volt egyértelműen kiszámítható (ellenőrizze a mappa- és dátumbeállításokat), majd folytassa"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Az átirat jegyzete létrejött"
@@ -1031,34 +855,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "A jegyzet időbélyegek és fordítás nélkül jött létre"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 jegyzetfeladat megszakadt az Obsidian bezárásakor — {title}: nem jött létre jegyzet"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 jegyzetfeladat megszakadt az Obsidian bezárásakor — {title}: a(z) {path} helyen lehet egy jegyzet"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 jegyzetfeladat megszakadt az Obsidian bezárásakor — {title}: a jegyzet időbélyegek nélkül jött létre"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 jegyzetfeladat megszakadt az Obsidian bezárásakor — {title}: a jegyzet fordítás nélkül jött létre"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: {count} jegyzetfeladat szakadt meg az Obsidian bezárásakor; a legutóbbiak itt láthatók: Aktív feladatok megjelenítése"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 megszakadt feladat figyelmet igényel"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} megszakadt feladat figyelmet igényel"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Add meg a(z) {field} mezőt"
@@ -1074,14 +870,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "{name} feldolgozása: {done}/{total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Lezárt megszakadt gyűjtemények: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Gyűjtemény leállítása"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

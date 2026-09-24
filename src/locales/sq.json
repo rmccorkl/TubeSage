@@ -460,8 +460,8 @@
         "translation": "Përpunimi u anulua"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "Përpunimi u ndërpre; vazhdojeni nga «Shfaq punët aktive»"
+        "original": "Processing was interrupted",
+        "translation": "Përpunimi u ndërpre"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Gabim: {error} (as shënimi i korrigjimit s'u krijua dot)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "S'u kontrolluan dot punët e ndërprera: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Përmbledhje më të shkurtra e më të shpejta (i kapërcen lidhjet me vulë kohore)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Punët aktive"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Nuk ka punë aktive"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Lista e punëve nuk u lexua dot: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "“Hidh” e heq punën vetëm nga kjo listë; nuk fshin kurrë shënime."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Zgidhni skedarin e modelit"
@@ -784,20 +760,12 @@
         "translation": "Video për t'u përpunuar: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Puna nuk u ruajt dot: {error}. Videoja mund të jetë ende në përpunim; shihni «Shfaq punët aktive»"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Puna nuk u ruajt dot: {error}. Videoja mund të jetë ende në përpunim"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Kjo video po përpunohet tashmë"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Kjo punë nuk mund të vazhdohet kështu; shihni gjendjen e saj"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Kjo punë nuk mund të përfundohet kështu; shihni gjendjen e saj"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Etiketa të krijuara nga ofruesi dhe modeli LLM"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Shfaq punët aktive"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "Ofruesi u vendos në {provider}. Buxheti i daljes: {tokens} token (dalja maksimale minus rezerva)."
@@ -867,146 +831,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "Lista e modeleve {provider} u rifreskua. Kufijtë e token-ëve u plotësuan automatikisht për {count} modele."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Po merret transkripti"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Po përmblidhet"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Po krijohet shënimi"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Shënimi u krijua"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Po shtohen lidhjet me vulë kohore"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Po përkthehet"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "U krye"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Anulo"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Hidhe"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Hap shënimin"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Përfundo pa vula kohore"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Përfundo pa përkthim"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Vazhdo"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Vazhdo (mund të tarifohet sërish)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Në ecuri"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Gati për të vazhduar"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Përfundoi"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "U anulua"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Dështoi"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Dështoi: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Koha skadoi. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "U ndërpre kur u mbyll Obsidian; nuk u krijua asnjë shënim"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "U ndërpre kur u mbyll Obsidian; mund të ketë një shënim te {path}"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "U ndërpre kur u mbyll Obsidian; shënimi u krijua pa vula kohore"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "U ndërpre kur u mbyll Obsidian; shënimi u krijua pa përkthim"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "U ndërpre gjatë {stage}; kërkesa e mëparshme mund të jetë tarifuar tashmë"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "U ndërpre gjatë {stage}; nuk dihet nëse kërkesa e mëparshme u tarifua"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "Shumë përpjekje për {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "Në shtegun e synuar ekziston tashmë një shënim — riemërtojeni ose hiqeni, pastaj vazhdoni nga “Shfaq punët aktive”"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Nuk u vërtetua dot nëse shënimi te shtegu i synuar i përket kësaj pune"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "Shënimi i kësaj pune u zhvendos ose u fshi"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "Shënimi u redaktua gjatë përpunimit; vulat kohore u anashkaluan"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater nuk është i disponueshëm; aktivizojeni, pastaj vazhdoni"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Vazhdimi do ta marrë sërish transkriptin përmes një shërbimi me pagesë"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Shtegu i shënimit nuk u llogarit dot në mënyrë të njëtrajtshme (kontrolloni cilësimet e dosjes dhe datës), pastaj vazhdoni"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Shënimi i transkriptit u krijua me sukses"
@@ -1031,34 +855,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Shënimi u krijua pa vula kohore dhe pa përkthim"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 punë shënimi u ndërpre kur u mbyll Obsidian — {title}: nuk u krijua asnjë shënim"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 punë shënimi u ndërpre kur u mbyll Obsidian — {title}: mund të ketë një shënim te {path}"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 punë shënimi u ndërpre kur u mbyll Obsidian — {title}: shënimi u krijua pa vula kohore"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 punë shënimi u ndërpre kur u mbyll Obsidian — {title}: shënimi u krijua pa përkthim"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: {count} punë shënimesh u ndërprenë kur u mbyll Obsidian; më të fundit janë te “Shfaq punët aktive”"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 punë e ndërprerë kërkon vëmendje"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} punë të ndërprera kërkojnë vëmendje"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Ju lutemi, plotësoni fushën {field}"
@@ -1074,14 +870,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "Po përpunohet {name}: {done} nga {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Koleksionet e ndërprera u mbyllën: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Ndalo koleksionin"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

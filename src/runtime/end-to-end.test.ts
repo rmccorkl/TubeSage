@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { JobRunner, NoteChangedError, PathDriftError, PermanentJobError } from "../jobs/job-runner";
-import type { JobEvent, RecoveryPrompt } from "../jobs/job-runner";
-import { JOBS_KEY, JobStore, hydrate } from "../jobs/job-store";
-import { createJobRecord, formatDatePrefix } from "../jobs/job-record";
-import type { NoteJobRecord, NotePathSettings } from "../jobs/job-record";
-import { createRunnerDeps } from "./job-adapters";
+import type { JobEvent } from "../jobs/job-runner";
+import { JOBS_KEY, JobStore } from "../jobs/job-store";
+import { COLLECTIONS_KEY } from "../jobs/collection-record";
+import { settingsForPersist } from "./settings-persist";
+import { formatDatePrefix } from "../jobs/job-record";
+import type { NotePathSettings } from "../jobs/job-record";
+import { createJobStages, createRunnerDeps } from "./job-adapters";
 import { CollectionRunner } from "./collection-runner";
 import { CollectionNotices } from "./collection-notice";
 import type { CollectionVideo } from "../jobs/collection-record";
@@ -29,7 +31,6 @@ import { NoCaptionsError } from "../utils/transcript-errors";
 // index; the normalizer injected below stays in place as a defense for paths
 // built or persisted before that fix (see the frozen NFD fixture below).
 
-const INSTALLATION = "install-e2e";
 
 // Pinned harness clock (#3 fix-wave D1): every assertion below hardcodes a
 // dated path (e.g. TARGET_PATH). Without an injected `now`
@@ -102,8 +103,6 @@ class ObsidianLikeVault implements VaultLike<{ path: string }> {
 class MainLikeHost implements JobHost {
   settings: JobHostSettings = { prependDate: true, dateFormat: "YYYY-MM-DD", scrapcreatorsApiKey: "", supadataApiKey: "" };
   title = "Video";
-  /** Optional per-url title, for runs where every item must land on its own path. */
-  titleFor: ((url: string) => string) | undefined = undefined;
   templaterAvailable = true;
   summarizeCalls = 0;
   timestampCalls = 0;
@@ -124,17 +123,11 @@ class MainLikeHost implements JobHost {
 
   constructor(private readonly vault: ObsidianLikeVault) {}
 
-  /**
-   * The real adapter passes `record.url` here, so a test can give each video
-   * its own title — which a collection needs, since otherwise every child
-   * derives the SAME note path and all but the first block on note-collision.
-   */
-  extractTranscriptStrict(url?: string): Promise<{ transcript: string; metadata: { title?: string } }> {
+  extractTranscriptStrict(_url?: string): Promise<{ transcript: string; metadata: { title?: string } }> {
     if (this.extractError !== null) {
       return Promise.reject(this.extractError);
     }
-    const title = url !== undefined && this.titleFor !== undefined ? this.titleFor(url) : this.title;
-    return Promise.resolve({ transcript: "[00:00:01] hello", metadata: { title } });
+    return Promise.resolve({ transcript: "[00:00:01] hello", metadata: { title: this.title } });
   }
 
   canRenderNote(): boolean {
@@ -212,34 +205,35 @@ interface Harness {
   store: JobStore;
   events: JobEvent[];
   runner: JobRunner;
-  /** Every payload the store handed to saveData (what data.json would hold). */
+  /** Every payload saveData received (what data.json would hold). */
   writes: unknown[];
+  /** main.ts persist(): compose the live settings and write them. */
+  persist: () => Promise<void>;
+  liveSettings: Record<string, unknown>;
 }
 
-function harness(options: { records?: NoteJobRecord[]; files?: Record<string, string>; onEvent?: (event: JobEvent) => void } = {}): Harness {
+function harness(options: { onEvent?: (event: JobEvent) => void } = {}): Harness {
   const vault = new ObsidianLikeVault();
-  for (const [path, content] of Object.entries(options.files ?? {})) {
-    vault.files.set(path, content);
-  }
   const host = new MainLikeHost(vault);
   const writes: unknown[] = [];
-  const store = new JobStore(
-    {
-      loadData: () => Promise.resolve(undefined),
-      saveData: (data) => {
-        writes.push(JSON.parse(JSON.stringify(data)));
-        return Promise.resolve();
-      },
-    },
-    () => ({}),
-  );
-  if (options.records !== undefined) {
-    // Through hydrate, exactly as main.ts loads data.json.
-    store.load(hydrate({ [JOBS_KEY]: options.records }).jobs);
-  }
+  // The ONE data.json writer, standing in for Obsidian's Plugin.saveData().
+  // Everything that could ever reach data.json has to come through here, so
+  // an empty `writes` is evidence that nothing was written at all.
+  const saveData = (data: unknown): Promise<void> => {
+    writes.push(JSON.parse(JSON.stringify(data)));
+    return Promise.resolve();
+  };
+  // Mirrors main.ts persist(): the live settings, composed through the real
+  // settingsForPersist, handed straight to saveData.
+  const liveSettings: Record<string, unknown> = {
+    selectedLLM: "openai",
+    apiKeys: { openai: "sk-e2e-secret", ollama: "http://box:11434" },
+  };
+  const persist = (): Promise<void> => saveData(settingsForPersist(liveSettings, "http://localhost:11434"));
+  const store = new JobStore();
   const events: JobEvent[] = [];
-  // Inert timers: no stage here ever times out and no heartbeat needs to
-  // fire, so nothing is left armed after a test (no globals, no cleanup).
+  // Inert timers: no stage here ever times out, so nothing is left armed
+  // after a test (no globals, no cleanup).
   const deps = createRunnerDeps(host, store, (event) => {
     events.push(event);
     // Lets a test observe events as the runner emits them, which is how the
@@ -248,13 +242,12 @@ function harness(options: { records?: NoteJobRecord[]; files?: Record<string, st
   }, {
     vault,
     normalizePath: obsidianNormalizePath,
-    installationId: () => INSTALLATION,
     setTimeout: () => 0,
     clearTimeout: () => undefined,
     now: () => HARNESS_NOW,
   });
   const runner = new JobRunner(deps);
-  return { vault, host, store, events, runner, writes };
+  return { vault, host, store, events, runner, writes, persist, liveSettings };
 }
 
 const HANGUL_TITLE = "안녕하세요 튜토리얼";
@@ -263,12 +256,28 @@ function submitInput(videoId: string) {
   return { url: `https://youtu.be/${videoId}`, videoId, folder: "Inbox", customTitle: "", useFastSummary: false, addTimestampLinks: true };
 }
 
-function askUser(prompt: RecoveryPrompt | undefined): Extract<RecoveryPrompt, { action: "ask-user" }> {
-  if (prompt === undefined || prompt.action !== "ask-user") {
-    throw new Error(`expected an ask-user prompt, got ${JSON.stringify(prompt)}`);
-  }
-  return prompt;
-}
+describe("end-to-end: nothing the job machinery does reaches data.json", () => {
+  it("a job runs to completion without a single write, and the settings writes around it never carry _jobs or _collections", async () => {
+    const h = harness();
+    // A stale reserved key, as an upgraded user's data.json still holds it:
+    // it must not round-trip back out through the settings composer.
+    h.liveSettings[JOBS_KEY] = [{ id: "stale" }];
+    h.liveSettings[COLLECTIONS_KEY] = [{ id: "stale-collection" }];
+
+    await h.runner.submit(submitInput("nw1"));
+    await h.persist(); // a setting saved while the job is in flight
+    await settle();
+    await h.persist(); // and once it has finished
+
+    expect(h.store.list()[0].status).toBe("done");
+    // Exactly the two settings saves: the runner and the store wrote nothing.
+    expect(h.writes).toHaveLength(2);
+    for (const payload of h.writes) {
+      expect(payload).not.toHaveProperty(JOBS_KEY);
+      expect(payload).not.toHaveProperty(COLLECTIONS_KEY);
+    }
+  });
+});
 
 describe("end-to-end: runner + adapters + store against Obsidian-like doubles (#3 C1)", () => {
   it("P0 an ASCII title completes with one note at the derived path", async () => {
@@ -297,7 +306,6 @@ describe("end-to-end: runner + adapters + store against Obsidian-like doubles (#
     expect(h.host.timestampCalls).toBe(1);
     expect(h.vault.created).toEqual([expected]);
     expect(record.targetNotePath).toBe(expected);
-    expect(record.claimedNotePath).toBe(expected);
     expect(record.notePath).toBe(expected);
     expect(h.vault.getFile(record.notePath ?? "")).not.toBeNull();
     expect(h.events.filter((e) => e.type === "failed" || e.type === "interrupted")).toEqual([]);
@@ -321,104 +329,28 @@ describe("end-to-end: runner + adapters + store against Obsidian-like doubles (#
     expect(h.events.filter((e) => e.type === "failed")).toEqual([]);
   });
 
-  it("P2b a genuine drift (target corrupted after the freeze) blocks with path-drift BEFORE any paid call", async () => {
-    const h = harness();
-    // Stop at the summary stage without paying: the template engine is
-    // unavailable on the first pass, so the target is frozen and the job is
-    // blocked with zero summary calls.
-    h.host.templaterAvailable = false;
-    const submitted = await h.runner.submit(submitInput("c1"));
-    await settle();
-    const id = (submitted as { id: string }).id;
-    let record = h.store.get(id);
-    expect(record?.blocked).toBe("templater-unavailable");
-    expect(record?.targetNotePath).toBe(TARGET_PATH);
-    // Corrupt the frozen target (what a bug, a hand edit or a sync merge could do).
-    record = h.store.get(id);
-    if (record === undefined) {
-      throw new Error("record missing");
-    }
-    record.targetNotePath = `Inbox/${HARNESS_DATE_PREFIX}Somewhere-else.md`;
-    await h.store.upsert(record, HARNESS_NOW);
-    h.host.templaterAvailable = true;
-    const resumed = await h.runner.resume(id, { confirmed: false });
-    expect(resumed.kind).toBe("resumed");
-    await settle();
-    record = h.store.get(id);
-    expect(record?.status).toBe("interrupted");
-    expect(record?.blocked).toBe("path-drift");
-    expect(h.host.summarizeCalls).toBe(0);
-    expect(h.vault.files.size).toBe(0);
-    const prompt = await h.runner.promptFor(id);
-    expect(askUser(prompt)).toMatchObject({ reason: "path-drift", stage: "summary" });
-  });
-
-  it("adapter drift: a rendered path that differs from the target is a PathDriftError (never PermanentJobError) and the runner blocks, not fails", async () => {
+  it("adapter drift: a rendered path that differs from the target is a PathDriftError, and the job fails without creating anything", async () => {
+    // The check survives #10; its outcome no longer does. There is no resume
+    // to be resumable at, so a drifted render is a plain failure — but still a
+    // DISTINCT error class from PermanentJobError, because the adapter must
+    // not be able to disguise "the settings moved" as "this video can never
+    // work".
     const h = harness();
     h.host.renderPathOverride = `Inbox/${HARNESS_DATE_PREFIX}Elsewhere.md`;
     const submitted = await h.runner.submit(submitInput("r1"));
     await settle();
     const id = (submitted as { id: string }).id;
     const record = h.store.get(id);
-    expect(record?.status).toBe("interrupted");
-    expect(record?.blocked).toBe("path-drift");
-    expect(h.events.filter((e) => e.type === "failed")).toEqual([]);
+    expect(record?.status).toBe("failed");
+    expect(record?.lastError ?? "").toMatch(/drift/i);
+    expect(h.events.filter((e) => e.type === "failed")).toHaveLength(1);
     expect(h.vault.files.size).toBe(0);
     expect(PathDriftError.prototype).not.toBeInstanceOf(PermanentJobError);
-  });
-
-  it("a hand-built interrupted/network fixture with an NFD notePath resumes at note-created (visibility pass) against an NFC index: no note-missing, no drift, paths persisted NFC", async () => {
-    // sanitizeFilename now returns NFC itself (#6), so this legacy-record
-    // fixture builds its NFD path explicitly rather than relying on the
-    // (now-fixed) sanitizer to have produced it.
-    const nfdPath = `Inbox/${HARNESS_DATE_PREFIX}${sanitizeFilename(HANGUL_TITLE)}.md`.normalize("NFD");
-    const nfcPath = nfdPath.normalize("NFC");
-    expect(nfdPath).not.toBe(nfcPath);
-    const base = createJobRecord({
-      id: "old-1",
-      url: "https://youtu.be/old1",
-      videoId: "old1",
-      folder: "Inbox",
-      customTitle: "",
-      useFastSummary: false,
-      addTimestampLinks: true,
-      installationId: INSTALLATION,
-      transcriptBilling: "free",
-      now: HARNESS_NOW,
-    });
-    const old: NoteJobRecord = {
-      ...base,
-      // Frozen before this fix: NFD everywhere, no notePathSettings. Not
-      // "app-restart" (#3 batch G item b closes that reason on hydrate): this
-      // fixture is exercising the in-process visibility pass, still live.
-      status: "interrupted",
-      interruption: "network",
-      stage: "note-created",
-      resolvedTitle: HANGUL_TITLE,
-      targetNotePath: nfdPath,
-      claimedNotePath: nfdPath,
-      notePath: nfdPath,
-      attempts: { transcript: 1, summary: 1, timestamps: 0, translation: 0 },
-    };
-    const h = harness({ records: [old], files: { [nfcPath]: "RENDERED" } });
-    const prompt = await h.runner.promptFor("old-1");
-    expect(prompt).toEqual({ action: "continue", fromStage: "timestamps" });
-    const prompts = await h.runner.recoverAll();
-    await settle();
-    expect(prompts).toEqual([]);
-    const record = h.store.get("old-1");
-    expect(record?.status).toBe("done");
-    expect(record?.notePath).toBe(nfcPath);
-    expect(record?.claimedNotePath).toBe(nfcPath);
-    expect(record?.targetNotePath).toBe(nfcPath);
-    expect(h.host.summarizeCalls).toBe(0);
-    expect(h.host.timestampCalls).toBe(1);
-    expect(h.vault.files.size).toBe(1);
   });
 });
 
 describe("end-to-end: timestamps-stage failures surface as recoverable on the runner path (#3 final review I1)", () => {
-  it("(a) a network Error from the strict timestamp pass → interrupted, in flight, paid-stage-in-flight with finish-without-timestamps, still found by video id, no done event", async () => {
+  it("(a) a network Error from the strict timestamp pass → interrupted, in flight, still found by video id, no done event", async () => {
     const h = harness();
     h.host.timestampsError = new Error("Error adding timestamp links: fetch failed");
     const submitted = await h.runner.submit(submitInput("t1"));
@@ -427,47 +359,32 @@ describe("end-to-end: timestamps-stage failures surface as recoverable on the ru
     const record = h.store.get(id);
     expect(record?.status).toBe("interrupted");
     expect(record?.stage).toBe("timestamps");
-    expect(record?.interruption).toBe("network");
     expect(record?.inFlight).toBe(true);
     expect(record?.lastError).toBe("Error adding timestamp links: fetch failed");
     expect(h.vault.files.size).toBe(1);
     expect(h.store.findByVideoId("t1")?.id).toBe(id);
     expect(h.events.filter((e) => e.type === "done")).toEqual([]);
-    const interrupted = h.events.find((e) => e.type === "interrupted");
-    expect(interrupted).toBeDefined();
-    if (interrupted === undefined || interrupted.type !== "interrupted") {
-      throw new Error("expected an interrupted event");
-    }
-    expect(askUser(interrupted.prompt)).toMatchObject({
-      reason: "paid-stage-in-flight",
-      stage: "timestamps",
-      canFinishWithoutTimestamps: true,
-    });
-    expect(askUser(await h.runner.promptFor(id))).toMatchObject({ reason: "paid-stage-in-flight", canFinishWithoutTimestamps: true });
+    // A transient failure is NOT a verdict that the video can never work: it
+    // surfaces as `interrupted`, never `failed`.
+    expect(h.events.filter((e) => e.type === "failed")).toEqual([]);
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id }]);
   });
 
-  it("(b) the strict pass is a single billed attempt: the host is called STRICT exactly once per attempt and attempts.timestamps counts it; finishing without timestamps then completes with no further call", async () => {
+  it("(b) the strict pass is a single billed attempt: the host is called STRICT exactly once", async () => {
     const h = harness();
     h.host.timestampsError = new Error("Error adding timestamp links: fetch failed");
-    const submitted = await h.runner.submit(submitInput("t2"));
+    await h.runner.submit(submitInput("t2"));
     await settle();
-    const id = (submitted as { id: string }).id;
     expect(h.host.timestampCalls).toBe(1);
     expect(h.host.timestampOptions).toEqual([{ strict: true }]);
-    expect(h.store.get(id)?.attempts.timestamps).toBe(1);
-    const resumed = await h.runner.resume(id, { confirmed: true, finishWithoutTimestamps: true });
-    expect(resumed.kind).toBe("resumed");
-    await settle();
-    const record = h.store.get(id);
-    expect(record?.status).toBe("done");
-    expect(h.host.timestampCalls).toBe(1);
+    // The failed pass is not retried behind the person's back.
     expect(h.host.summarizeCalls).toBe(1);
-    expect(h.events.filter((e) => e.type === "done")).toHaveLength(1);
+    expect(h.events.filter((e) => e.type === "done")).toEqual([]);
   });
 });
 
 describe("end-to-end: extraction failures are classified, never disguised (#3 final review I2)", () => {
-  it("(c) a transient extractor rejection → interrupted at transcript, resumable, still found by video id", async () => {
+  it("(c) a transient extractor rejection → interrupted at transcript, never failed, still found by video id", async () => {
     const h = harness();
     h.host.extractError = new Error(
       "Network error while fetching transcript. Please check your internet connection. (All transcript extraction methods failed (iOS player). Last error: fetch failed)",
@@ -478,17 +395,13 @@ describe("end-to-end: extraction failures are classified, never disguised (#3 fi
     const record = h.store.get(id);
     expect(record?.status).toBe("interrupted");
     expect(record?.stage).toBe("transcript");
-    expect(record?.interruption).toBe("network");
+    expect(record?.lastError ?? "").toMatch(/Network error/);
     expect(h.store.findByVideoId("x1")?.id).toBe(id);
+    // Transient, so never `failed` — and nothing paid was reached.
     expect(h.events.filter((e) => e.type === "failed")).toEqual([]);
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id }]);
     expect(h.host.summarizeCalls).toBe(0);
-    // A free transcript stage recovers unattended once the network is back.
-    h.host.extractError = null;
-    const prompts = await h.runner.recoverAll();
-    await settle();
-    expect(prompts).toEqual([]);
-    expect(h.store.get(id)?.status).toBe("done");
-    expect(h.host.summarizeCalls).toBe(1);
+    expect(h.vault.files.size).toBe(0);
   });
 
   it("(c′) a genuine NoCaptionsError → failed with the reason, terminal (not found by video id), no paid call", async () => {
@@ -507,7 +420,7 @@ describe("end-to-end: extraction failures are classified, never disguised (#3 fi
   });
 });
 
-describe("end-to-end: translation is a checkpointed paid stage — failures surface, resumes never re-bill timestamps (#3 final review residual)", () => {
+describe("end-to-end: translation is a checkpointed paid stage — failures surface, the timestamped note survives (#3 final review residual)", () => {
   function progressStages(events: JobEvent[]): string[] {
     return events.flatMap((e) => (e.type === "progress" ? [e.stage] : []));
   }
@@ -516,7 +429,7 @@ describe("end-to-end: translation is a checkpointed paid stage — failures surf
     h.host.settings = { ...h.host.settings, translateLanguage: "fr", translateCountry: "FR" };
   }
 
-  it("(a) a network Error from the strict translation → interrupted at translation, in flight, paid-stage-in-flight with finish offered, NO done event, the timestamped note on disk", async () => {
+  it("(a) a network Error from the strict translation → interrupted at translation, in flight, NO done event, the timestamped note on disk", async () => {
     const h = harness();
     translating(h);
     h.host.translateError = new Error("Translation error: fetch failed");
@@ -526,75 +439,16 @@ describe("end-to-end: translation is a checkpointed paid stage — failures surf
     const record = h.store.get(id);
     expect(record?.status).toBe("interrupted");
     expect(record?.stage).toBe("translation");
-    expect(record?.interruption).toBe("network");
     expect(record?.inFlight).toBe(true);
     expect(record?.lastError).toBe("Translation error: fetch failed");
     expect(record?.translation).toEqual({ language: "fr", country: "FR" });
-    expect(record?.attempts).toEqual({ transcript: 1, summary: 1, timestamps: 1, translation: 1 });
     expect(h.host.timestampCalls).toBe(1);
     expect(h.host.translateCalls).toEqual([[TARGET_PATH, "fr", "FR"]]);
     expect(h.vault.files.get(TARGET_PATH)).toBe("RENDERED\n[Watch]");
     expect(h.store.findByVideoId("tr1")?.id).toBe(id);
     expect(h.events.filter((e) => e.type === "done")).toEqual([]);
-    const interrupted = h.events.find((e) => e.type === "interrupted");
-    if (interrupted === undefined || interrupted.type !== "interrupted") {
-      throw new Error("expected an interrupted event");
-    }
-    expect(askUser(interrupted.prompt)).toMatchObject({
-      reason: "paid-stage-in-flight",
-      stage: "translation",
-      canFinishWithoutTimestamps: true,
-    });
-    expect(askUser(await h.runner.promptFor(id))).toMatchObject({ reason: "paid-stage-in-flight", stage: "translation", canFinishWithoutTimestamps: true });
-  });
-
-  it("(b) a confirmed resume re-runs ONLY the translation: exactly one more strict translation call, ZERO further timestamp passes, then done", async () => {
-    const h = harness();
-    translating(h);
-    h.host.translateError = new Error("Translation error: fetch failed");
-    const submitted = await h.runner.submit(submitInput("tr2"));
-    await settle();
-    const id = (submitted as { id: string }).id;
-    expect(h.host.timestampCalls).toBe(1);
-    expect(h.host.translateCalls).toHaveLength(1);
-    h.host.translateError = null;
-    // Live settings changed after the freeze must not leak into the resumed call.
-    h.host.settings = { ...h.host.settings, translateLanguage: "de", translateCountry: "DE" };
-    const resumed = await h.runner.resume(id, { confirmed: true });
-    expect(resumed.kind).toBe("resumed");
-    await settle();
-    const record = h.store.get(id);
-    expect(record?.status).toBe("done");
-    expect(record?.stage).toBe("done");
-    expect(record?.attempts).toEqual({ transcript: 1, summary: 1, timestamps: 1, translation: 2 });
-    expect(h.host.timestampCalls).toBe(1);
-    expect(h.host.summarizeCalls).toBe(1);
-    expect(h.host.translateCalls).toEqual([
-      [TARGET_PATH, "fr", "FR"],
-      [TARGET_PATH, "fr", "FR"],
-    ]);
-    expect(h.vault.files.get(TARGET_PATH)).toBe("RENDERED\n[Watch]\n[translated fr-FR]");
-    expect(h.events.filter((e) => e.type === "done")).toEqual([{ type: "done", id, notePath: TARGET_PATH }]);
-  });
-
-  it("(b′) finishing without translation at the translation stage → done with translationSkipped user-choice, no further call of any kind", async () => {
-    const h = harness();
-    translating(h);
-    h.host.translateError = new Error("Translation error: fetch failed");
-    const submitted = await h.runner.submit(submitInput("tr3"));
-    await settle();
-    const id = (submitted as { id: string }).id;
-    const resumed = await h.runner.resume(id, { confirmed: true, finishWithoutTimestamps: true });
-    expect(resumed.kind).toBe("resumed");
-    await settle();
-    expect(h.store.get(id)?.status).toBe("done");
-    expect(h.host.timestampCalls).toBe(1);
-    expect(h.host.translateCalls).toHaveLength(1);
-    expect(h.host.summarizeCalls).toBe(1);
-    expect(h.events.filter((e) => e.type === "done")).toEqual([
-      { type: "done", id, notePath: TARGET_PATH, translationSkipped: "user-choice" },
-    ]);
-    expect(h.vault.files.get(TARGET_PATH)).toBe("RENDERED\n[Watch]");
+    expect(h.events.filter((e) => e.type === "failed")).toEqual([]);
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id }]);
   });
 
   it("(c) no frozen translation (en/US): the stage sequence never includes translation, zero translation calls, nothing frozen on the record", async () => {
@@ -606,7 +460,6 @@ describe("end-to-end: translation is a checkpointed paid stage — failures surf
     expect(record?.status).toBe("done");
     expect(record?.translation).toBeUndefined();
     expect("translation" in (record ?? {})).toBe(false);
-    expect(record?.attempts).toEqual({ transcript: 1, summary: 1, timestamps: 1, translation: 0 });
     expect(progressStages(h.events)).toEqual(["transcript", "summary", "note-creating", "timestamps"]);
     expect(h.host.translateCalls).toEqual([]);
     expect(h.events.filter((e) => e.type === "done")).toEqual([{ type: "done", id, notePath: TARGET_PATH }]);
@@ -638,7 +491,6 @@ describe("end-to-end: translation is a checkpointed paid stage — failures surf
     expect(record?.status).toBe("done");
     expect(record?.translation).toBeUndefined();
     expect("translation" in (record ?? {})).toBe(false);
-    expect(record?.attempts).toEqual({ transcript: 1, summary: 1, timestamps: 0, translation: 0 });
     expect(h.host.timestampCalls).toBe(0);
     expect(h.host.translateCalls).toEqual([]);
     expect(progressStages(h.events)).toEqual(["transcript", "summary", "note-creating"]);
@@ -657,7 +509,6 @@ describe("end-to-end: translation is a checkpointed paid stage — failures surf
     expect(record?.status).toBe("done");
     expect(record?.translation).toBeUndefined();
     expect("translation" in (record ?? {})).toBe(false);
-    expect(record?.attempts).toEqual({ transcript: 1, summary: 1, timestamps: 0, translation: 0 });
     expect(h.host.timestampCalls).toBe(0);
     expect(h.host.translateCalls).toEqual([]);
     expect(progressStages(h.events)).toEqual(["transcript", "summary", "note-creating"]);
@@ -678,117 +529,6 @@ describe("end-to-end: translation is a checkpointed paid stage — failures surf
     expect(h.events.filter((e) => e.type === "done")).toEqual([
       { type: "done", id, notePath: TARGET_PATH, timestampsSkipped: "note-changed" },
     ]);
-  });
-
-  it("(g) a hand-built interrupted/network fixture at a clean translation checkpoint (timestamps written, translation not yet called) resumes at translation only (visibility pass)", async () => {
-    const record: NoteJobRecord = {
-      ...createJobRecord({
-        id: "ckpt-1",
-        url: "https://youtu.be/ck1",
-        videoId: "ck1",
-        folder: "Inbox",
-        customTitle: "",
-        useFastSummary: false,
-        addTimestampLinks: true,
-        installationId: INSTALLATION,
-        transcriptBilling: "free",
-        now: HARNESS_NOW,
-      }),
-      // Not "app-restart" (#3 batch G item b closes that reason on hydrate):
-      // this fixture exercises the in-process visibility pass, still live.
-      status: "interrupted",
-      interruption: "network",
-      stage: "translation",
-      inFlight: false,
-      resolvedTitle: "Video",
-      notePathSettings: { prependDate: true, dateFormat: "YYYY-MM-DD" },
-      targetNotePath: TARGET_PATH,
-      claimedNotePath: TARGET_PATH,
-      notePath: TARGET_PATH,
-      translation: { language: "fr", country: "FR" },
-      attempts: { transcript: 1, summary: 1, timestamps: 1, translation: 0 },
-    };
-    const h = harness({ records: [record], files: { [TARGET_PATH]: "RENDERED\n[Watch]" } });
-    expect(await h.runner.promptFor("ckpt-1")).toEqual({ action: "continue", fromStage: "translation" });
-    const prompts = await h.runner.recoverAll();
-    await settle();
-    expect(prompts).toEqual([]);
-    expect(h.store.get("ckpt-1")?.status).toBe("done");
-    expect(h.host.summarizeCalls).toBe(0);
-    expect(h.host.timestampCalls).toBe(0);
-    expect(h.host.translateCalls).toEqual([[TARGET_PATH, "fr", "FR"]]);
-    expect(h.store.get("ckpt-1")?.attempts).toEqual({ transcript: 1, summary: 1, timestamps: 1, translation: 1 });
-  });
-});
-
-describe("end-to-end: no resume path exists after a cold start (#3 batch E — a job dies with its instance)", () => {
-  // Pending = a call that never settles: the process dies with it in flight.
-  const pending = <T,>(): Promise<T> => new Promise<T>(() => undefined);
-
-  /** Runs the REAL pipeline up to the named crash window and returns what data.json held at that moment. */
-  async function crashWindowSnapshot(window: "summary" | "note-creating" | "timestamps" | "translation"): Promise<unknown> {
-    const source = harness();
-    if (window === "translation") {
-      source.host.settings = { ...source.host.settings, translateLanguage: "fr", translateCountry: "FR" };
-    }
-    switch (window) {
-      case "summary":
-        source.host.summarizeTranscript = () => pending();
-        break;
-      case "note-creating":
-        source.vault.create = () => pending();
-        break;
-      case "timestamps":
-        source.host.addSectionLinksToNote = () => pending();
-        break;
-      case "translation":
-        source.host.translateNoteStrict = () => pending();
-        break;
-    }
-    expect((await source.runner.submit(submitInput(`crash-${window}`))).kind).toBe("started");
-    await settle();
-    const snapshot = source.writes[source.writes.length - 1];
-    const record = (snapshot as Record<string, NoteJobRecord[]>)[JOBS_KEY][0];
-    expect(record).toMatchObject({ status: "running", inFlight: true, stage: window, installationId: INSTALLATION });
-    return snapshot;
-  }
-
-  it("every crash-window snapshot is closed on cold start; resume, finish-without-timestamps and the visibility pass then do nothing: zero stage calls, no writes beyond the closing", async () => {
-    for (const window of ["summary", "note-creating", "timestamps", "translation"] as const) {
-      const snapshot = await crashWindowSnapshot(window);
-      const persisted = hydrate(snapshot).jobs;
-      // The note is on disk for the windows past note creation (and, for
-      // window B, may have landed even though the record never learned it).
-      const files = window === "summary" ? {} : { [TARGET_PATH]: "RENDERED" };
-      const h = harness({ records: persisted, files });
-      const id = persisted[0].id;
-
-      expect(await h.runner.recoverAll({ coldStart: true }), window).toEqual([]);
-      await settle();
-      const closed = h.store.get(id);
-      expect(closed, window).toMatchObject({ status: "failed", interruption: "app-closed", inFlight: false, stage: window, generation: 1 });
-      expect(closed?.notePath, window).toBe(persisted[0].notePath);
-      expect(closed?.claimedNotePath, window).toBe(persisted[0].claimedNotePath);
-      expect(closed?.attempts, window).toEqual(persisted[0].attempts);
-      expect(h.writes, window).toHaveLength(1);
-      expect(h.runner.drainClosedOnColdStart().map((c) => c.record.id), window).toEqual([id]);
-
-      // No resume path: confirmed, finish-without, the visibility pass, the read-only prompt.
-      const terminal = { kind: "prompt", prompt: { action: "nothing", why: "terminal" } };
-      expect(await h.runner.resume(id, { confirmed: true }), window).toEqual(terminal);
-      expect(await h.runner.resume(id, { confirmed: true, finishWithoutTimestamps: true }), window).toEqual(terminal);
-      expect(await h.runner.recoverAll(), window).toEqual([]);
-      expect(await h.runner.promptFor(id), window).toEqual({ action: "nothing", why: "terminal" });
-      await settle();
-      expect(h.runner.isActive(id), window).toBe(false);
-      expect(h.host.summarizeCalls + h.host.timestampCalls + h.host.translateCalls.length, window).toBe(0);
-      expect(h.vault.created, window).toEqual([]);
-      expect(h.vault.files.size, window).toBe(Object.keys(files).length);
-      expect(h.writes, window).toHaveLength(1);
-      expect(h.events, window).toEqual([]);
-      // The closed job no longer claims its video: a fresh submit is a new job.
-      expect(h.store.findByVideoId(`crash-${window}`), window).toBeUndefined();
-    }
   });
 });
 
@@ -815,10 +555,11 @@ describe("C a collection runs every one of its videos, not just the first", () =
         pending.push(collection.handleJobEvent(event));
       },
     });
-    // Distinct titles: three videos must land on three paths. With one shared
-    // title they would collide, which is a real scenario in its own right (see
-    // the duplicate-title note in the report) but not what this test proves.
-    h.host.titleFor = (url) => `Video ${url.slice(-1)}`;
+    // Every child shares the host's one title, so all three derive the SAME
+    // note path. That used to need a per-url title here, because all but the
+    // first child blocked on note-collision; now each one steps to its own
+    // free neighbour, so the workaround is gone and the shared title is the
+    // harsher case rather than a broken one.
     // A REAL CollectionNotices, not a double: `finish()` is what releases the
     // owned child ids, and a double cannot show that. The notice handle is fake
     // only in that it records instead of drawing.
@@ -832,21 +573,18 @@ describe("C a collection runs every one of its videos, not just the first", () =
     collection = new CollectionRunner({
       generateId: () => `col-${Math.random().toString(36).slice(2)}`,
       now: () => HARNESS_NOW,
-      installationId: () => INSTALLATION,
       submitChild: async (video) => {
         const result = await h.runner.submit({
           url: video.url, videoId: video.videoId, folder: "Inbox",
           customTitle: "", useFastSummary: false, addTimestampLinks: true,
         });
         if (result.kind === "started" || result.kind === "already-running") return result.id;
-        if (result.kind === "recovery") return result.record.id;
         return undefined;
       },
       cancelChild: (id) => h.runner.cancel(id),
       isActive: (id) => h.runner.isActive(id),
       getChild: (id) => h.store.get(id),
       saveCollection: (record) => h.store.upsertCollection(record, HARNESS_NOW),
-      listCollections: () => h.store.listCollections(),
       notices,
     });
     const drain = async () => {
@@ -865,6 +603,13 @@ describe("C a collection runs every one of its videos, not just the first", () =
     expect(h.store.list()).toHaveLength(3);
     expect(h.store.list().every((r) => r.status === "done")).toBe(true);
     expect(h.vault.files.size).toBe(3);
+    // Three same-titled children, three notes: each steps past the one before
+    // it instead of blocking on the path the first one took.
+    expect(h.vault.created).toEqual([
+      TARGET_PATH,
+      `Inbox/${HARNESS_DATE_PREFIX}Video 1.md`,
+      `Inbox/${HARNESS_DATE_PREFIX}Video 2.md`,
+    ]);
     expect(h.host.summarizeCalls).toBe(3);
     expect(noticeState.hidden()).toBe(1);
   });
@@ -945,3 +690,61 @@ describe("C a collection runs every one of its videos, not just the first", () =
   });
 });
 
+
+describe("end-to-end: the create stage never overwrites — it steps to Obsidian's next free path", () => {
+  // Against the vault double that mirrors Obsidian's own refusal
+  // (`Vault.create` rejects with "File already exists.", it does not version),
+  // so this is the one place the stepping is observed rather than assumed.
+  function stages(vault: ObsidianLikeVault) {
+    return createJobStages(new MainLikeHost(vault), vault, obsidianNormalizePath);
+  }
+
+  it("a second and third note for the same derived path land on ' 1' and ' 2', with the first untouched", async () => {
+    const vault = new ObsidianLikeVault();
+    vault.files.set(TARGET_PATH, "the first run");
+    const created = stages(vault);
+    expect(await created.createNote(TARGET_PATH, "the second run")).toBe(`Inbox/${HARNESS_DATE_PREFIX}Video 1.md`);
+    expect(await created.createNote(TARGET_PATH, "the third run")).toBe(`Inbox/${HARNESS_DATE_PREFIX}Video 2.md`);
+    expect(vault.files.get(TARGET_PATH)).toBe("the first run");
+    expect(vault.files.get(`Inbox/${HARNESS_DATE_PREFIX}Video 1.md`)).toBe("the second run");
+    expect(vault.files.size).toBe(3);
+    // Two creates, in order, neither of them a second write to the same path.
+    expect(vault.created).toEqual([
+      `Inbox/${HARNESS_DATE_PREFIX}Video 1.md`,
+      `Inbox/${HARNESS_DATE_PREFIX}Video 2.md`,
+    ]);
+  });
+
+  it("the same URL submitted twice produces TWO notes: the second lands on the next free path", async () => {
+    // THE HEADLINE OF #10. Retrieval is atomic and the human is the loop: a
+    // second run of a URL is a second request, not a duplicate to refuse. The
+    // runner used to probe the target and block the job on `note-collision`
+    // before it spent anything; now nothing probes, and `createNote` steps to
+    // the free neighbour Obsidian's own UI would have picked.
+    const h = harness();
+    await h.runner.submit(submitInput("twice"));
+    await settle();
+    await h.runner.submit(submitInput("twice"));
+    await settle();
+
+    const suffixed = `Inbox/${HARNESS_DATE_PREFIX}Video 1.md`;
+    expect(h.store.list().map((record) => record.notePath)).toEqual([TARGET_PATH, suffixed]);
+    expect(h.store.list().map((record) => record.status)).toEqual(["done", "done"]);
+    expect(h.vault.created).toEqual([TARGET_PATH, suffixed]);
+    // Two separate summaries: the second run is a real run, not an adoption.
+    expect(h.host.summarizeCalls).toBe(2);
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([]);
+  });
+
+  it("an NFD Hangul target is probed, created and reported at the SAME NFC path", async () => {
+    const vault = new ObsidianLikeVault();
+    const target = `Inbox/${HARNESS_DATE_PREFIX}${sanitizeFilename(HANGUL_TITLE)}.md`.normalize("NFC");
+    vault.files.set(target, "the first run");
+    const suffixed = await stages(vault).createNote(target.normalize("NFD"), "the second run");
+    // The vault indexes NFC and its lookup is exact, so the reported path has
+    // to be the key the note actually landed under (#3 final review C1).
+    expect(suffixed).toBe(suffixed.normalize("NFC"));
+    expect(vault.created).toEqual([suffixed]);
+    expect(vault.getFile(suffixed)).not.toBeNull();
+  });
+});

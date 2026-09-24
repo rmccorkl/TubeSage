@@ -460,8 +460,8 @@
         "translation": "پردازش لغو شد"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "پردازش نیمه‌کاره ماند؛ آن را از «نمایش کارهای فعال» ادامه دهید"
+        "original": "Processing was interrupted",
+        "translation": "پردازش نیمه‌کاره ماند"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "خطا: {error} (یادداشت اشکال‌زدایی هم ساخته نشد)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "بررسی کارهای نیمه‌تمام ممکن نشد: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "خلاصه‌های کوتاه‌تر و سریع‌تر (پیوندهای زمانی را رد می‌کند)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "کارهای فعال"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "هیچ کار فعالی نیست"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "فهرست کارها خوانده نشد: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "«دور انداختن» فقط کار را از این فهرست برمی‌دارد و یادداشتی را حذف نمی‌کند."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "فایل الگو را انتخاب کنید"
@@ -784,20 +760,12 @@
         "translation": "ویدیوهای در انتظار پردازش: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "کار ذخیره نشد: {error}. شاید ویدیو هنوز در حال پردازش باشد؛ «نمایش کارهای فعال» را ببینید"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "کار ذخیره نشد: {error}. شاید ویدیو هنوز در حال پردازش باشد"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "این ویدیو هم‌اکنون در حال پردازش است"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "این کار در وضعیت کنونی ادامه‌پذیر نیست؛ وضعیتش را ببینید"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "این کار در وضعیت کنونی پایان‌پذیر نیست؛ وضعیتش را ببینید"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - برچسب‌هایی که از ارائه‌دهنده و مدل LLM ساخته می‌شوند"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "نمایش کارهای فعال"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "ارائه‌دهنده روی {provider} تنظیم شد. بودجهٔ خروجی: {tokens} توکن (بیشینهٔ خروجی منهای ذخیره)."
@@ -867,146 +831,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "فهرست مدل‌های {provider} تازه‌سازی شد. محدودیت توکن برای {count} مدل خودکار پر شد."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "دریافت متن پیاده‌شده"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "در حال خلاصه‌سازی"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "در حال ساخت یادداشت"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "یادداشت ساخته شد"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "افزودن پیوندهای زمانی"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "در حال ترجمه"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "انجام شد"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "لغو"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "دور انداختن"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "باز کردن یادداشت"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "پایان بدون زمان‌ها"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "پایان بدون ترجمه"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "ازسرگیری"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "ازسرگیری (ممکن است دوباره هزینه شود)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "در حال اجرا"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "آمادهٔ ادامه"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "پایان یافت"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "لغو شد"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "ناموفق"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "ناموفق: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "زمان به پایان رسید. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "هنگام بسته شدن Obsidian متوقف شد؛ هیچ یادداشتی ساخته نشد"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "هنگام بسته شدن Obsidian متوقف شد؛ ممکن است یادداشتی در {path} باشد"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "هنگام بسته شدن Obsidian متوقف شد؛ یادداشت بدون زمان‌ها ساخته شد"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "هنگام بسته شدن Obsidian متوقف شد؛ یادداشت بدون ترجمه ساخته شد"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "در مرحلهٔ {stage} متوقف شد؛ ممکن است درخواست قبلی قبلاً هزینه شده باشد"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "در مرحلهٔ {stage} متوقف شد؛ معلوم نیست درخواست قبلی هزینه شده است یا نه"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "تلاش‌های بیش از حد برای {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "در مسیر مقصد از پیش یادداشتی وجود دارد — نام آن را تغییر دهید یا حذفش کنید، سپس از «نمایش کارهای فعال» ادامه دهید"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "نمی‌توان تأیید کرد که یادداشت مسیر مقصد متعلق به این کار است"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "یادداشت این کار جابه‌جا یا حذف شده است"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "یادداشت حین پردازش ویرایش شد؛ زمان‌ها نادیده گرفته شدند"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater در دسترس نیست؛ آن را فعال کنید و سپس ادامه دهید"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "ازسرگیری، متن پیاده‌شده را دوباره از سرویسی پولی می‌گیرد"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "مسیر یادداشت به‌طور یکسان محاسبه نشد (تنظیمات پوشه و تاریخ را بررسی کنید)، سپس ادامه دهید"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "یادداشت متن پیاده‌شده با موفقیت ساخته شد"
@@ -1031,34 +855,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "یادداشت بدون زمان‌ها و بدون ترجمه ساخته شد"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: هنگام بسته شدن Obsidian، 1 کار یادداشت متوقف شد — {title}: هیچ یادداشتی ساخته نشد"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: هنگام بسته شدن Obsidian، 1 کار یادداشت متوقف شد — {title}: ممکن است یادداشتی در {path} باشد"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: هنگام بسته شدن Obsidian، 1 کار یادداشت متوقف شد — {title}: یادداشت بدون زمان‌ها ساخته شد"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: هنگام بسته شدن Obsidian، 1 کار یادداشت متوقف شد — {title}: یادداشت بدون ترجمه ساخته شد"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: هنگام بسته شدن Obsidian، {count} کار یادداشت متوقف شد؛ تازه‌ترین‌ها در «نمایش کارهای فعال» فهرست شده‌اند"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 کار متوقف‌شده نیاز به رسیدگی دارد"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} کار متوقف‌شده نیاز به رسیدگی دارد"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "لطفاً {field} را وارد کنید"
@@ -1074,14 +870,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "در حال پردازش {name}: {done} از {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "مجموعه‌های قطع‌شده بسته شد: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "توقف مجموعه"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

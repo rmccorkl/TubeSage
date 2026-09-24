@@ -279,24 +279,12 @@ function sameCounts(a, b) {
 
 export const QUOTED_LABELS = [
   { key: "license.required.step5", quotes: "settings.support.license.acceptLabel" },
-  // The same rule for the plugin's own command name. These four sentences tell
-  // the user to go and find `Show active jobs` in the command palette, and that
-  // command's NAME is now localised too (main.ts), so each locale's sentence has
-  // to carry that locale's command name. Before, they all carried the English
-  // one in all 51 columns, which was correct only because the command itself was
-  // English. Pinning the pair here is what stops the two drifting apart again:
-  // rename the command in one locale and the gate names the sentence that no
-  // longer quotes it.
-  //
-  // `notice.progress.message` was a fifth row and went with the key: the mobile
-  // progress notice now carries its own cancel and names no command. Its row is
-  // removed rather than left to sit — a pairing whose sentence does not exist
-  // matches nothing and passes in silence, so it would read as enforcement
-  // while enforcing nothing.
-  { key: "notice.job.interrupted", quotes: "common.command.showActiveJobs" },
-  { key: "notice.job.saveFailed", quotes: "common.command.showActiveJobs" },
-  { key: "modal.jobs.reason.noteCollision", quotes: "common.command.showActiveJobs" },
-  { key: "notice.coldStart.several", quotes: "common.command.showActiveJobs" },
+  // Four more rows pinned sentences that quoted `common.command.showActiveJobs`
+  // to that command's own name in each locale. The command is gone with the
+  // jobs modal, so its key is gone from the matrix, and a pairing whose
+  // `quotes` key does not exist matches nothing and passes in silence — it
+  // would read as enforcement while enforcing nothing. Removed rather than
+  // left to sit, exactly as `notice.progress.message`'s row was before them.
 ];
 
 export function checkLocales({ csvText, en, locales = {}, flat, keysUsedInCode, glossary = GLOSSARY }) {

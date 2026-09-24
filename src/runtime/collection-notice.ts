@@ -86,8 +86,8 @@ export class CollectionNotices {
   ): void {
     if (this.finished) return;
     this.finished = true;
-    // Last word before the notice goes, so a cancelled or closed run states
-    // what it actually completed rather than vanishing silently.
+    // Last word before the notice goes, so a cancelled run states what it
+    // actually completed rather than vanishing silently.
     this.handle?.setMessage(this.text(aggregateProgress(parent, children), parent));
     this.handle?.hide();
     this.handle = undefined;
@@ -100,12 +100,11 @@ export class CollectionNotices {
    * `window.setInterval` behind it, on mobile a notice nothing is left to drive
    * — either would outlive the plugin and only go on a restart.
    *
-   * Deliberately not `finish`: there is no terminal status to report here and
-   * the run's PERSISTED state is untouched, exactly as `JobRunner.stopAll`
-   * leaves its records for the next cold start to close. Marking the run
-   * finished is what stops a straggling event reopening a surface this plugin
-   * no longer drives. Idempotent, and named for its counterpart on
-   * `JobProgressNotices` even though a run has at most one notice.
+   * Deliberately not `finish`: there is no terminal status to report when the
+   * plugin is simply going away. Marking the run finished is what stops a
+   * straggling event reopening a surface this plugin no longer drives.
+   * Idempotent, and named for its counterpart on `JobProgressNotices` even
+   * though a run has at most one notice.
    */
   dismissAll(): void {
     this.finished = true;

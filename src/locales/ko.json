@@ -460,8 +460,8 @@
         "translation": "처리를 취소했습니다"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "처리가 중단되었습니다. “활성 작업 표시”에서 다시 시작하세요"
+        "original": "Processing was interrupted",
+        "translation": "처리가 중단되었습니다"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "오류: {error} (디버그 노트도 만들지 못했습니다)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "중단된 작업을 확인하지 못했습니다: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "더 짧고 빠른 요약 (타임스탬프 링크 생략)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "진행 중인 작업"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "진행 중인 작업이 없습니다"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "작업 목록을 읽을 수 없습니다: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "‘버리기’는 목록에서 작업만 제거하며 노트는 삭제하지 않습니다."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "템플릿 파일 선택"
@@ -784,20 +760,12 @@
         "translation": "처리할 동영상: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "작업을 저장하지 못했습니다: {error}. 동영상은 계속 처리 중일 수 있습니다. “활성 작업 표시”를 확인하세요"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "작업을 저장하지 못했습니다: {error}. 동영상은 계속 처리 중일 수 있습니다"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "이 동영상은 이미 처리 중입니다"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "이 작업은 현재 상태로는 다시 시작할 수 없습니다. 상태를 확인하세요"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "이 작업은 현재 상태로는 마칠 수 없습니다. 상태를 확인하세요"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - LLM 제공자와 모델에서 만들어진 태그"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "활성 작업 표시"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "공급자를 {provider}(으)로 설정했습니다. 출력 예산: {tokens} 토큰(최대 출력에서 예비분을 뺀 값)."
@@ -863,146 +827,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "{provider} 모델 목록을 새로 고쳤습니다. 모델 {count}개의 토큰 한도를 자동으로 채웠습니다."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "스크립트 가져오는 중"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "요약하는 중"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "노트 만드는 중"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "노트 생성됨"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "타임스탬프 링크 추가하는 중"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "번역하는 중"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "완료"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "취소"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "버리기"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "노트 열기"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "타임스탬프 없이 완료"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "번역 없이 완료"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "재개"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "재개(재청구될 수 있음)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "실행 중"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "계속할 수 있음"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "종료됨"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "취소됨"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "실패함"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "실패함: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "시간이 초과되었습니다. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Obsidian이 종료되면서 중단되었습니다. 노트는 생성되지 않았습니다"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Obsidian이 종료되면서 중단되었습니다. {path}에 노트가 있을 수 있습니다"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Obsidian이 종료되면서 중단되었습니다. 노트는 타임스탬프 없이 생성되었습니다"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Obsidian이 종료되면서 중단되었습니다. 노트는 번역 없이 생성되었습니다"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "{stage} 중에 중단되었습니다. 이전 요청에 이미 요금이 청구되었을 수 있습니다"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "{stage} 중에 중단되었습니다. 이전 요청의 청구 여부는 알 수 없습니다"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "{stage} 시도 횟수가 너무 많습니다"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "대상 경로에 이미 노트가 있습니다. 이름을 바꾸거나 삭제한 뒤 ‘활성 작업 표시’에서 재개하세요"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "대상 경로의 노트가 이 작업의 것인지 확인할 수 없었습니다"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "이 작업의 노트가 이동되었거나 삭제되었습니다"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "처리 중에 노트가 편집되어 타임스탬프를 건너뛰었습니다"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater를 사용할 수 없습니다. 활성화한 뒤 재개하세요"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "재개하면 유료 서비스로 스크립트를 다시 가져옵니다"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "노트 경로를 일관되게 계산할 수 없었습니다(폴더와 날짜 설정을 확인하세요). 그런 다음 재개하세요"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "스크립트 노트를 만들었습니다"
@@ -1027,34 +851,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "타임스탬프와 번역 없이 노트를 만들었습니다"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: Obsidian이 종료되면서 노트 작업 1개가 중단되었습니다 — {title}: 노트는 생성되지 않았습니다"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: Obsidian이 종료되면서 노트 작업 1개가 중단되었습니다 — {title}: {path}에 노트가 있을 수 있습니다"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: Obsidian이 종료되면서 노트 작업 1개가 중단되었습니다 — {title}: 노트는 타임스탬프 없이 생성되었습니다"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: Obsidian이 종료되면서 노트 작업 1개가 중단되었습니다 — {title}: 노트는 번역 없이 생성되었습니다"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: Obsidian이 종료되면서 노트 작업 {count}개가 중단되었습니다. 최근 항목은 ‘활성 작업 표시’에 표시됩니다"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 중단된 작업 1개에 조치가 필요합니다"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: 중단된 작업 {count}개에 조치가 필요합니다"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "{field} 항목을 입력하세요"
@@ -1070,14 +866,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "{name} 처리 중: {done}/{total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "중단된 컬렉션을 닫았습니다: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "컬렉션 중지"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

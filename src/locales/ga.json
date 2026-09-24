@@ -460,8 +460,8 @@
         "translation": "Cuireadh an phróiseáil ar ceal"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "Cuireadh isteach ar an bpróiseáil; lean ar aghaidh ó “Taispeáin jabanna gníomhacha”"
+        "original": "Processing was interrupted",
+        "translation": "Cuireadh isteach ar an bpróiseáil"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Earráid: {error} (níorbh fhéidir an nóta dífhabhtaithe a chruthú ach oiread)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Níorbh fhéidir seiceáil a dhéanamh ar phoist idirbhriste: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Achoimrí níos giorra agus níos tapúla (scipeálann naisc stampa ama)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Tascanna gníomhacha"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Níl aon tasc gníomhach ann"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Níorbh fhéidir liosta na dtascanna a léamh: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "Baineann Cuir i leataobh tasc den liosta seo; ní scriosann sé nótaí riamh."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Roghnaigh comhad teimpléid"
@@ -784,20 +760,12 @@
         "translation": "Físeáin le próiseáil: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Níorbh fhéidir an tasc a shábháil: {error}. D'fhéadfadh an físeán a bheith á phróiseáil fós; féach “Taispeáin jabanna gníomhacha”"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Níorbh fhéidir an tasc a shábháil: {error}. D'fhéadfadh an físeán a bheith á phróiseáil fós"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Tá an físeán seo á phróiseáil cheana"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Ní féidir an tasc seo a atosú mar atá; féach a stádas"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Ní féidir an tasc seo a chríochnú mar atá; féach a stádas"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -830,10 +798,6 @@
     "modal.template.var.llmTags.desc": {
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Clibeanna a ghintear ón soláthraí agus ón múnla LLM"
-    },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Taispeáin jabanna gníomhacha"
     },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
@@ -879,146 +843,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "Athnuadhadh liosta samhlacha {provider}. Líonadh teorainneacha comharthaí go huathoibríoch do {count} samhail."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Tras-scríbhinn á fáil"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Á achoimriú"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Nóta á chruthú"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Nóta cruthaithe"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Naisc ama á gcur leis"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Á aistriú"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Déanta"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Cealaigh"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Scrios ón liosta"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Oscail an nóta"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Críochnaigh gan stampaí ama"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Críochnaigh gan aistriúchán"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Lean ar aghaidh"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Lean ar aghaidh (féadfar billiú arís)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Ar siúl"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Réidh le leanúint ar aghaidh"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Críochnaithe"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Cealaithe"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Theip air"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Theip air: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Imithe thar am. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Cuireadh isteach air nuair a dúnadh Obsidian; níor cruthaíodh aon nóta"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Cuireadh isteach air nuair a dúnadh Obsidian; seans go bhfuil nóta ag {path}"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Cuireadh isteach air nuair a dúnadh Obsidian; cruthaíodh an nóta gan stampaí ama"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Cuireadh isteach air nuair a dúnadh Obsidian; cruthaíodh an nóta gan aistriúchán"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Cuireadh isteach air le linn {stage}; seans gur billeadh an t-iarratas roimhe seo cheana"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Cuireadh isteach air le linn {stage}; ní fios ar billeadh an t-iarratas roimhe seo"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "An iomarca iarrachtaí ar {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "Tá nóta ann cheana ag an gconair sprice — athainmnigh nó bain é, ansin lean ar aghaidh ó “Taispeáin jabanna gníomhacha”"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Níorbh fhéidir a dhearbhú an leis an jab seo an nóta atá ag an gconair sprice"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "Bogadh nó scriosadh nóta an jab seo"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "Cuireadh an nóta in eagar le linn na próiseála; fágadh na stampaí ama ar lár"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Níl Templater ar fáil; cumasaigh é, ansin lean ar aghaidh"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Má leantar ar aghaidh, gheofar an tras-scríbhinn arís trí sheirbhís íoctha"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Níorbh fhéidir conair an nóta a ríomh go comhsheasmhach (seiceáil socruithe an fhillteáin agus an dáta), ansin lean ar aghaidh"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Cruthaíodh nóta na tras-scríbhinne go rathúil"
@@ -1043,34 +867,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Cruthaíodh an nóta gan stampaí ama agus gan aistriúchán"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: cuireadh isteach ar 1 jab nóta nuair a dúnadh Obsidian — {title}: níor cruthaíodh aon nóta"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: cuireadh isteach ar 1 jab nóta nuair a dúnadh Obsidian — {title}: seans go bhfuil nóta ag {path}"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: cuireadh isteach ar 1 jab nóta nuair a dúnadh Obsidian — {title}: cruthaíodh an nóta gan stampaí ama"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: cuireadh isteach ar 1 jab nóta nuair a dúnadh Obsidian — {title}: cruthaíodh an nóta gan aistriúchán"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: cuireadh isteach ar {count} jab nóta nuair a dúnadh Obsidian; tá na cinn is déanaí liostaithe faoi “Taispeáin jabanna gníomhacha”"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: tá aird de dhíth ar 1 jab a cuireadh isteach air"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: tá aird de dhíth ar {count} jab a cuireadh isteach orthu"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Líon isteach an réimse {field}, le do thoil"
@@ -1086,14 +882,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "{name} á phróiseáil: {done} as {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Bailiúcháin a briseadh, dúnta: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Stop an bailiúchán"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

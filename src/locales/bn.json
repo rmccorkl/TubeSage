@@ -460,8 +460,8 @@
         "translation": "প্রক্রিয়াকরণ বাতিল করা হয়েছে"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "প্রক্রিয়াকরণ বাধাগ্রস্ত হয়েছে; “সক্রিয় কাজ দেখান” থেকে আবার শুরু করুন"
+        "original": "Processing was interrupted",
+        "translation": "প্রক্রিয়াকরণ বাধাগ্রস্ত হয়েছে"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "ত্রুটি: {error} (ডিবাগ নোটও তৈরি করা যায়নি)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "বাধাগ্রস্ত কাজ যাচাই করা যায়নি: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "আরও ছোট ও দ্রুত সারাংশ (টাইমস্ট্যাম্প লিঙ্ক বাদ দেয়)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "সক্রিয় কাজ"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "কোনো সক্রিয় কাজ নেই"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "কাজের তালিকা পড়া যায়নি: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "“বাতিল” শুধু এই তালিকা থেকে কাজ সরায়; নোট কখনও মোছে না।"
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "টেমপ্লেট ফাইল নির্বাচন করুন"
@@ -784,20 +760,12 @@
         "translation": "প্রক্রিয়া করার ভিডিও: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "কাজটি সংরক্ষণ করা যায়নি: {error}। ভিডিওটি এখনও প্রক্রিয়া হতে পারে; “সক্রিয় কাজ দেখান” দেখুন"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "কাজটি সংরক্ষণ করা যায়নি: {error}। ভিডিওটি এখনও প্রক্রিয়া হতে পারে"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "এই ভিডিওটি ইতিমধ্যে প্রক্রিয়া হচ্ছে"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "এই কাজটি বর্তমান অবস্থায় চালু করা যাবে না; এর স্ট্যাটাস দেখুন"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "এই কাজটি বর্তমান অবস্থায় শেষ করা যাবে না; এর স্ট্যাটাস দেখুন"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - LLM সরবরাহকারী ও মডেল থেকে তৈরি ট্যাগ"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "সক্রিয় কাজ দেখান"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "সরবরাহকারী {provider} নির্ধারণ করা হয়েছে। আউটপুট বাজেট: {tokens} টোকেন (সর্বোচ্চ আউটপুট বিয়োগ সংরক্ষিত অংশ)।"
@@ -867,146 +831,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "{provider} মডেল তালিকা রিফ্রেশ করা হয়েছে। {count} মডেলের টোকেন সীমা স্বয়ংক্রিয়ভাবে পূরণ হয়েছে।"
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "ট্রান্সক্রিপ্ট আনা হচ্ছে"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "সারাংশ তৈরি হচ্ছে"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "নোট তৈরি হচ্ছে"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "নোট তৈরি হয়েছে"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "টাইমস্ট্যাম্প লিঙ্ক যোগ করা হচ্ছে"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "অনুবাদ করা হচ্ছে"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "সম্পন্ন"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "বাতিল"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "বাদ দিন"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "নোট খুলুন"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "টাইমস্ট্যাম্প ছাড়াই শেষ করুন"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "অনুবাদ ছাড়াই শেষ করুন"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "পুনরায় শুরু"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "পুনরায় শুরু (আবার চার্জ হতে পারে)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "চলছে"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "চালিয়ে যাওয়ার জন্য প্রস্তুত"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "শেষ হয়েছে"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "বাতিল করা হয়েছে"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "ব্যর্থ"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "ব্যর্থ: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "সময় শেষ হয়েছে। {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Obsidian বন্ধ হওয়ায় বাধাপ্রাপ্ত; কোনো নোট তৈরি হয়নি"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Obsidian বন্ধ হওয়ায় বাধাপ্রাপ্ত; {path} এ একটি নোট থাকতে পারে"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Obsidian বন্ধ হওয়ায় বাধাপ্রাপ্ত; নোটটি টাইমস্ট্যাম্প ছাড়াই তৈরি হয়েছে"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Obsidian বন্ধ হওয়ায় বাধাপ্রাপ্ত; নোটটি অনুবাদ ছাড়াই তৈরি হয়েছে"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "{stage} চলাকালে বাধাপ্রাপ্ত; আগের অনুরোধের জন্য ইতিমধ্যে চার্জ হয়ে থাকতে পারে"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "{stage} চলাকালে বাধাপ্রাপ্ত; আগের অনুরোধে চার্জ হয়েছে কি না অজানা"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "{stage} এর জন্য অনেক বেশি চেষ্টা হয়েছে"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "লক্ষ্য পাথে ইতিমধ্যেই একটি নোট আছে — সেটির নাম বদলান বা মুছে ফেলুন, তারপর “সক্রিয় কাজ দেখান” থেকে চালিয়ে যান"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "লক্ষ্য পাথের নোটটি এই কাজের কি না তা নিশ্চিত করা যায়নি"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "এই কাজের নোটটি সরানো বা মুছে ফেলা হয়েছে"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "প্রক্রিয়াকরণের সময় নোটটি সম্পাদিত হয়েছে; টাইমস্ট্যাম্প বাদ দেওয়া হয়েছে"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater পাওয়া যাচ্ছে না; এটি সক্রিয় করে তারপর চালিয়ে যান"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "চালিয়ে গেলে একটি সশুল্ক পরিষেবা দিয়ে ট্রান্সক্রিপ্ট আবার আনা হবে"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "নোটের পাথ ধারাবাহিকভাবে নির্ণয় করা যায়নি (ফোল্ডার ও তারিখের সেটিং দেখুন), তারপর চালিয়ে যান"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "ট্রান্সক্রিপ্ট নোট সফলভাবে তৈরি হয়েছে"
@@ -1031,34 +855,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "টাইমস্ট্যাম্প ও অনুবাদ ছাড়াই নোট তৈরি হয়েছে"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: Obsidian বন্ধ হওয়ায় 1টি নোট কাজ বাধাপ্রাপ্ত হয়েছে — {title}: কোনো নোট তৈরি হয়নি"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: Obsidian বন্ধ হওয়ায় 1টি নোট কাজ বাধাপ্রাপ্ত হয়েছে — {title}: {path} এ একটি নোট থাকতে পারে"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: Obsidian বন্ধ হওয়ায় 1টি নোট কাজ বাধাপ্রাপ্ত হয়েছে — {title}: নোটটি টাইমস্ট্যাম্প ছাড়াই তৈরি হয়েছে"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: Obsidian বন্ধ হওয়ায় 1টি নোট কাজ বাধাপ্রাপ্ত হয়েছে — {title}: নোটটি অনুবাদ ছাড়াই তৈরি হয়েছে"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: Obsidian বন্ধ হওয়ায় {count}টি নোট কাজ বাধাপ্রাপ্ত হয়েছে; সাম্প্রতিকতমগুলো “সক্রিয় কাজ দেখান” এ তালিকাভুক্ত"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: বাধাপ্রাপ্ত 1টি কাজের দিকে নজর দেওয়া দরকার"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: বাধাপ্রাপ্ত {count}টি কাজের দিকে নজর দেওয়া দরকার"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "অনুগ্রহ করে {field} লিখুন"
@@ -1074,14 +870,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "{name} প্রক্রিয়া করা হচ্ছে: {done}/{total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "বাধাপ্রাপ্ত সংগ্রহ বন্ধ করা হয়েছে: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "সংগ্রহ বন্ধ করুন"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

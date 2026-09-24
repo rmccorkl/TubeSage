@@ -26,43 +26,32 @@ import {
 import type { Provider } from './src/utils/model-limits-registry';
 import { getEffectiveLimits, isModelSupported, upsertModel } from './src/utils/model-limits-registry';
 import { effectiveTitle, formatDatePrefix } from './src/jobs/job-record';
-import type { NotePathSettings, NoteJobRecord } from './src/jobs/job-record';
+import type { NotePathSettings } from './src/jobs/job-record';
 import { JobStore, hydrate } from './src/jobs/job-store';
-import { JobRunner, NoteChangedError, isTerminal } from './src/jobs/job-runner';
+import { JobRunner, NoteChangedError } from './src/jobs/job-runner';
 import type { JobEvent, SubmitInput, SubmitResult } from './src/jobs/job-runner';
 import { CollectionNotices } from './src/runtime/collection-notice';
 import { createProgressSurface } from './src/runtime/progress-surface';
 import { ProcessingSpinner } from './src/utils/processing-spinner';
 import { CollectionRunner } from './src/runtime/collection-runner';
-import { aggregateProgress } from './src/jobs/collection-record';
 import type { CollectionVideo } from './src/jobs/collection-record';
 import { writeIfUnchanged } from './src/runtime/guarded-write';
 import { createRunnerDeps, generateOpaqueId } from './src/runtime/job-adapters';
 import type { RenderedNote, VaultLike } from './src/runtime/job-adapters';
-import { settingsForPersist } from './src/runtime/settings-persist';
+import { SettingsWriter, settingsForPersist } from './src/runtime/settings-persist';
 import { DEFAULT_SETTINGS } from './src/settings/settings-defaults';
 import { buildSettingDefinitions, readSettingValue, writeSettingValue } from './src/settings/setting-definitions';
 import type { FetchedModelInfo, SettingsHost } from './src/settings/setting-definitions';
 import type { YouTubeTranscriptSettings } from './src/settings/settings-defaults';
 import { timestampPassFailure } from './src/runtime/timestamp-pass-policy';
 import type { TimestampPassOptions } from './src/runtime/timestamp-pass-policy';
-import { buildRecoveryRow, coldStartNoticeText, doneNoticeText, formatJobAge, recoveryNoticeText, shouldOpenRecoveryModal } from './src/runtime/recovery-ui-model';
-import { JobProgressNotices } from './src/runtime/job-progress-notice';
-import type { RecoveryAction, RecoveryRowModel, RecoveryTrigger } from './src/runtime/recovery-ui-model';
+import { JobProgressNotices, doneNoticeText } from './src/runtime/job-progress-notice';
 
 // Initialize logger here
 const logger = getLogger('PLUGIN');
 const transcriptLogger = getLogger('TRANSCRIPT');
 const llmLogger = getLogger('LLM');
 const i18nLogger = getLogger('I18N');
-
-// Per-vault localStorage key for this installation's id (spec I3). Vault-scoped
-// and device-local by construction (App.loadLocalStorage/saveLocalStorage,
-// public since 1.8.7): the device's own id is never a data.json setting, so a
-// synced data.json cannot make two devices share one id. Job records carry the
-// id of the installation that created (or took over) them, which is how a cold
-// start tells its own dead runs from another device's possibly-live ones.
-const INSTALLATION_ID_STORAGE_KEY = 'tubesage-installation-id';
 
 // Messages carried by NoteChangedError from the guarded note writes (F5). The
 // legacy catch (timestampError) handlers show them verbatim (the translation
@@ -89,20 +78,6 @@ interface FolderItem {
     path: string;
     name: string;
 }
-
-// Recovery entry points (spec §6). The visibility edge is best effort and
-// debounced so a burst of app-switch events runs one pass, not several.
-const VISIBILITY_RECOVERY_DEBOUNCE_MS = 2000;
-// How many finished jobs the recovery modal keeps listing for status visibility.
-const RECENT_TERMINAL_JOBS_SHOWN = 5;
-
-/** One row of the recovery modal: the pure UI model plus the epoch its age is computed from. */
-interface RecoveryRowEntry {
-    row: RecoveryRowModel;
-    updatedAt: number;
-}
-
-type JobEventListener = (event: JobEvent) => void;
 
 interface Closeable {
     close: () => void;
@@ -290,18 +265,27 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     settings: YouTubeTranscriptSettings;
     private summarizer: TranscriptSummarizer;
     private fileWatcher: Closeable | null = null;
-    // Owns every data.json write (settings AND job records) through one
-    // serialized writer; constructed in loadSettings() before any persist().
+    // This process's job records, in memory only: nothing here reaches
+    // data.json. Constructed in loadSettings().
     private jobStore: JobStore;
-    // The single-video modal submits to it; the recovery modal, the
-    // `show-active-jobs` command and the three recovery entry points
-    // (cold start, visibility edge, manual) act on it.
+    // The one serialized path to data.json. A field initializer, not built in
+    // loadSettings(), so it is ready before the first persist() whatever the
+    // load order; `compose` reads this.settings lazily, at write time.
+    private readonly settingsWriter = new SettingsWriter(
+        () => this.settingsForPersist(),
+        (payload) => this.saveData(payload),
+    );
+    // The single-video modal submits to it; the progress notice's own stop
+    // control cancels through it.
     jobRunner: JobRunner;
-    // Jobs submitted by THIS process: only these may auto-open their note on
-    // `done` (spec §5 F5 — recovered jobs never do).
+    // Ids added at submit and struck off by the job's terminal event, so the
+    // set tracks what is still outstanding rather than growing all session.
+    // Membership gates the auto-open on `done` (spec §5 F5). Since #10 every
+    // job is submitted here — nothing arrives from anywhere else — so the
+    // check no longer distinguishes anything; it is kept because the delete
+    // is what bounds the set, and a `done` for an id already struck off must
+    // not reopen a note.
     private readonly sessionJobIds = new Set<string>();
-    // Fan-out of runner events to UI subscribers (the recovery modal).
-    private readonly jobEventListeners = new Set<JobEventListener>();
     // The single progress surface for single-video jobs, on both platforms
     // (#7): one floating notice per job, created on its first `progress`
     // event and hidden on its terminal one. The submitting modal closes as
@@ -370,11 +354,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     // Public for the same reason `jobRunner` is: the create-note modal hands a
     // channel/playlist to it once the folder is chosen.
     collectionRunner: CollectionRunner | null = null;
-    // Cold start (onLayoutReady) must be the FIRST recovery pass; until it
-    // has run, visibility edges are ignored.
-    private layoutReady = false;
-    private visibilityRecoveryTimer: number | null = null;
-    private recoveryModal: JobRecoveryModal | null = null;
 
     // Replace the duplicated showNotice method with a wrapper that calls the shared utility
     showNotice(message: string, timeout: number = 5000): void {
@@ -418,10 +397,11 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             log: (message: string) => i18nLogger.warn(message),
         });
 
-        // loadSettings() must run first: it hydrates the job records out of
-        // data.json and builds the serialized store that every later
-        // persist() — including the legacy maxTokens migration write just
-        // below — goes through. Writing before that would drop `_jobs`.
+        // loadSettings() must run first: it reads data.json, builds
+        // `this.settings`, and creates the job store. Every later persist() —
+        // including the legacy maxTokens migration write just below — composes
+        // its payload from `this.settings`, so writing before that would save
+        // the defaults over the user's file.
         await this.loadSettings();
 
         this.jobRunner = new JobRunner(
@@ -431,7 +411,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 // every stored or compared note path goes through, the same one
                 // renderNoteContent applies to the rendered path.
                 normalizePath: (path) => obsidianNormalizePath(path),
-                installationId: () => this.installationId(),
             })
         );
 
@@ -441,7 +420,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         this.collectionRunner = new CollectionRunner({
             generateId: () => generateOpaqueId(),
             now: () => Date.now(),
-            installationId: () => this.installationId(),
             submitChild: async (video: CollectionVideo, folder: string) => {
                 const result = await this.submitJob({
                     url: video.url,
@@ -451,49 +429,19 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     useFastSummary: this.settings.useFastSummary,
                     addTimestampLinks: this.settings.addTimestampLinks,
                 });
-                // `recovery` hands back a record rather than a bare id: the
-                // video already has a job, which is the duplicate case this
-                // path exists to inherit rather than re-implement.
+                // `already-running` is the one duplicate case left: a child
+                // whose video is live in this process right now. Everything
+                // else starts its own job and gets its own note.
                 if (result.kind === 'started' || result.kind === 'already-running') return result.id;
-                if (result.kind === 'recovery') return result.record.id;
                 return undefined;
             },
             cancelChild: (id: string) => this.jobRunner.cancel(id),
             isActive: (id: string) => this.jobRunner.isActive(id),
             getChild: (id: string) => this.jobStore.get(id),
             saveCollection: (record) => this.jobStore.upsertCollection(record, Date.now()),
-            listCollections: () => this.jobStore.listCollections(),
             notices: this.collectionNotices,
         });
 
-        // Recovery entry points (spec §6). Cold start FIRST: onLayoutReady runs
-        // the pass that closes every job the previous process left unfinished
-        // (a job dies with its instance); `layoutReady` gates the visibility
-        // edge until then.
-        this.app.workspace.onLayoutReady(() => {
-            void this.recoverJobs('startup');
-        });
-        this.registerDomEvent(activeDocument, 'visibilitychange', () => {
-            if (activeDocument.visibilityState === 'visible') {
-                this.scheduleVisibilityRecovery();
-            }
-        });
-        this.addCommand({
-            id: 'show-active-jobs',
-            // Localised, and the rows that QUOTE it were retranslated in the
-            // same commit so that each locale's sentence names the command that
-            // locale's palette actually lists (notice.job.interrupted,
-            // notice.job.saveFailed, plus the two recovery-dialog rows that
-            // used to hardcode it). `QUOTED_LABELS` in scripts/i18n-lib.mjs
-            // now enforces that pairing the same way it enforces the licence
-            // step quoting its own accept toggle, so the two cannot drift
-            // apart again without the gate saying so.
-            name: t('common.command.showActiveJobs'),
-            callback: () => {
-                void this.recoverJobs('manual');
-            }
-        });
-        
         // Set appropriate max tokens based on current provider and model using registry
         const effectiveMaxTokens = this.getEffectiveMaxTokens();
         
@@ -577,14 +525,11 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     onunload() {
         logger.debug('Unloading youtube transcript plugin');
         
-        // Stop every runner timer and fence in-process runs; persisted
-        // status is untouched, the next cold start closes them (app-closed).
-        // (Optional chaining: onload may have failed before the runner existed.)
+        // Stop every runner timer and fence in-process runs, so a stage that
+        // settles after this applies no side effect. The records go with the
+        // process. (Optional chaining: onload may have failed before the
+        // runner existed.)
         this.jobRunner?.stopAll();
-        if (this.visibilityRecoveryTimer !== null) {
-            window.clearTimeout(this.visibilityRecoveryTimer);
-            this.visibilityRecoveryTimer = null;
-        }
         // No progress notice may outlive the plugin: a floating notice has no
         // owner once the events driving it have stopped.
         this.progressNotices.dismissAll();
@@ -592,11 +537,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // with a live interval behind it on desktop, and nothing is left to
         // drive it once the runners stop.
         this.collectionNotices.dismissAll();
-        // A stale recovery modal could still reach resume/cancel/discard
-        // (their store writes precede the runner's fence): close it.
-        this.recoveryModal?.close();
-        this.recoveryModal = null;
-        this.jobEventListeners.clear();
 
         // Clean up file watcher if it exists
         if (this.fileWatcher) {
@@ -672,24 +612,19 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         logger.debug('[SETTINGS DEBUG] Loaded data from storage:', loadedData);
         logger.debug('[SETTINGS DEBUG] DEFAULT_SETTINGS.selectedLLM:', DEFAULT_SETTINGS.selectedLLM);
 
-        // hydrate() splits the reserved `_jobs` key out of data.json; what is
-        // left is the settings payload (never carrying `_jobs`).
-        const { settings: hydratedSettings, jobs, dropped } = hydrate(loadedData);
+        // hydrate() splits the reserved `_jobs`/`_collections` keys out of
+        // data.json; what is left is the settings payload. The records
+        // themselves are not read: jobs are memory-only, so a leftover pair
+        // from an older version is dead weight and `hadReservedKeys` asks for
+        // the one-time cleanup write at the end of this method.
+        const { settings: hydratedSettings, hadReservedKeys } = hydrate(loadedData);
         const loadedSettings: Partial<YouTubeTranscriptSettings> = hydratedSettings;
 
         this.settings = { ...DEFAULT_SETTINGS, ...loadedSettings };
 
-        // The store must exist before the first persist() below (the two
-        // migrations in this method write, and so does onload's maxTokens
-        // migration): every settings write is a store flush from here on.
-        this.jobStore = new JobStore(
-            { loadData: () => this.loadData(), saveData: (data) => this.saveData(data) },
-            () => this.settingsForPersist()
-        );
-        this.jobStore.load(jobs);
-        if (dropped > 0) {
-            logger.warn(`[jobs] Dropped ${dropped} invalid job record(s) from data.json`);
-        }
+        // The store holds this process's job records and nothing else: it
+        // never reads or writes data.json.
+        this.jobStore = new JobStore();
         
         logger.debug('[SETTINGS DEBUG] Final settings.selectedLLM:', this.settings.selectedLLM);
         logger.debug('[SETTINGS DEBUG] All settings keys:', Object.keys(this.settings));
@@ -766,21 +701,42 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             await this.persist();
         }
         // ----------------------------------------------------------------------
+
+        // --- One-time `_jobs`/`_collections` cleanup --------------------------
+        // Versions up to 1.9.1 kept job records in data.json. They are
+        // memory-only now, so anything still in there is orphaned: drop it in
+        // one save rather than waiting for the user to happen to change a
+        // setting. persist() composes from `this.settings`, which hydrate()
+        // already stripped, so the write is simply the file without them.
+        if (hadReservedKeys) {
+            logger.info('[migration] Removing orphaned job records from data.json');
+            await this.persist();
+        }
+        // ----------------------------------------------------------------------
     }
 
     /**
      * The settings payload for data.json with cloud-provider API keys stripped out.
-     * Cloud keys live in Obsidian secret storage, never in data.json. The job
-     * store calls this at flush time and adds the `_jobs` key itself. The
-     * stripping is the pure, tested `settingsForPersist` (src/runtime).
+     * Cloud keys live in Obsidian secret storage, never in data.json, and the
+     * reserved `_jobs`/`_collections` keys never go back out. The stripping is
+     * the pure, tested `settingsForPersist` (src/runtime).
      */
     private settingsForPersist(): Record<string, unknown> {
         return settingsForPersist(this.settings, DEFAULT_SETTINGS.apiKeys.ollama);
     }
 
-    /** Persist settings (and job records) to data.json through the store's serialized writer. */
+    /**
+     * Write the settings to data.json. Since jobs became memory-only this is
+     * the plugin's only writer. It goes through SettingsWriter so that
+     * concurrent saves — persist() has several internal callers, saveSettings()
+     * eight more, and one of those is a fire-and-forget `void saveSettings()`
+     * — stay serialized: one write at a time, the rest collapsed into a single
+     * trailing write that composes its payload when it runs. Without that, two
+     * saves started close together can land in the opposite order and leave an
+     * older snapshot on disk.
+     */
     private async persist(): Promise<void> {
-        await this.jobStore.flush();
+        await this.settingsWriter.save();
     }
 
     // The three Vault calls the runner may make, with the TFile check kept
@@ -796,27 +752,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         };
     }
 
-    // The stable id of this device + vault, created once and kept in the
-    // vault's localStorage (never in data.json). Only this installation's
-    // jobs are listed, recovered or closed here; a synced record from another
-    // installation is ignored (it is that device's job).
-    private cachedInstallationId: string | null = null;
-
-    private installationId(): string {
-        if (this.cachedInstallationId !== null) {
-            return this.cachedInstallationId;
-        }
-        const stored: unknown = this.app.loadLocalStorage(INSTALLATION_ID_STORAGE_KEY);
-        if (typeof stored === 'string' && stored !== '') {
-            this.cachedInstallationId = stored;
-            return stored;
-        }
-        const generated = generateOpaqueId();
-        this.app.saveLocalStorage(INSTALLATION_ID_STORAGE_KEY, generated);
-        this.cachedInstallationId = generated;
-        return generated;
-    }
-
     /** Is the note template renderable right now: Templater loaded and the configured template file present. */
     canRenderNote(): boolean {
         if (getTemplaterPlugin(this.app) === null) {
@@ -826,7 +761,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         return templateFile instanceof TFile;
     }
 
-    // ---- jobs: submit, events, recovery ------------------------------------
+    // ---- jobs: submit and events -------------------------------------------
 
     /**
      * Submits a single-video job and remembers it as this session's, which is what allows its note to
@@ -841,37 +776,10 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         return result;
     }
 
-    /**
-     * The channel/playlist runs this installation currently has going, for the
-     * jobs modal's stop control. Another installation's run is not listed: it
-     * may be live on that device, exactly as for single jobs.
-     */
-    runningCollections(): { id: string; sourceName: string; done: number; total: number }[] {
-        const installation = this.installationId();
-        return this.jobStore.listCollections()
-            .filter((parent) => parent.status === 'running' && parent.installationId === installation)
-            .map((parent) => {
-                const children = parent.childIds
-                    .map((id) => this.jobStore.get(id))
-                    .filter((child): child is NoteJobRecord => child !== undefined);
-                const progress = aggregateProgress(parent, children);
-                return { id: parent.id, sourceName: parent.sourceName, done: progress.done, total: progress.total };
-            });
-    }
-
-    /** Subscribes to runner events; returns the unsubscribe function. */
-    subscribeToJobEvents(listener: JobEventListener): () => void {
-        this.jobEventListeners.add(listener);
-        return () => {
-            this.jobEventListeners.delete(listener);
-        };
-    }
-
-    // Runner events: the plugin's own policy first (the progress notice,
-    // completion notices, note opening, the debug note), then the UI
-    // subscribers. The progress notice is driven from ONE place — every
-    // event type reaches it, so a job's notice appears on its first progress
-    // event and is hidden by whichever terminal event ends it.
+    // Runner events: the progress notice, the completion notices, note
+    // opening and the debug note. The progress notice is driven from ONE
+    // place — every event type reaches it, so a job's notice appears on its
+    // first progress event and is hidden by whichever terminal event ends it.
     private onJobEvent(event: JobEvent): void {
         // A child of a live collection is reported by that run's single notice,
         // so its own per-job notice and per-job completion notices are
@@ -895,10 +803,9 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 if (!inCollection) {
                     this.showNotice(doneNoticeText(event), 5000);
                 }
-                // Auto-open ONLY for a job submitted in this session while the
-                // app is visible; a recovered job never opens its note (F5).
-                // Never for a collection child: a 40-video playlist would throw
-                // 40 notes open.
+                // Auto-open ONLY while the app is visible, and only for an id
+                // still outstanding (F5). Never for a collection child: a
+                // 40-video playlist would throw 40 notes open.
                 if (!inCollection && this.sessionJobIds.has(event.id) && activeDocument.visibilityState === 'visible') {
                     void this.openNote(event.notePath);
                 }
@@ -926,19 +833,10 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 if (!inCollection) { this.showNotice(t('notice.job.cancelled'), 3000); }
                 break;
             case 'interrupted':
-                logger.warn(`[jobs] ${event.id} interrupted`, event.prompt);
-                // From here on the job is a recovered one even if it was
-                // submitted in this session: a later resume must not auto-open.
+                logger.warn(`[jobs] ${event.id} interrupted`);
                 this.sessionJobIds.delete(event.id);
                 if (!inCollection) { this.showNotice(t('notice.job.interrupted'), 6000); }
                 break;
-        }
-        for (const listener of Array.from(this.jobEventListeners)) {
-            try {
-                listener(event);
-            } catch (error) {
-                logger.error('[jobs] event listener failed:', error);
-            }
         }
     }
 
@@ -981,120 +879,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             logger.error('Failed to create error note:', noteError);
             this.showNotice(t('notice.debugNote.failed', { error: message }), 5000);
         }
-    }
-
-    // Visibility edge (best effort, spec §6): debounced, and ignored until the
-    // cold-start pass has run so it can never be the first pass.
-    private scheduleVisibilityRecovery(): void {
-        if (!this.layoutReady) {
-            return;
-        }
-        if (this.visibilityRecoveryTimer !== null) {
-            window.clearTimeout(this.visibilityRecoveryTimer);
-        }
-        this.visibilityRecoveryTimer = window.setTimeout(() => {
-            this.visibilityRecoveryTimer = null;
-            void this.recoverJobs('visible');
-        }, VISIBILITY_RECOVERY_DEBOUNCE_MS);
-    }
-
-    /**
-     * One recovery pass. `startup` is the cold-start pass: the jobs the previous process left
-     * unfinished are closed (a job dies with its instance) and reported in ONE Notice, never a modal;
-     * the other triggers classify only. The Notice/modal policy is the pure `shouldOpenRecoveryModal`:
-     * a visibility edge never pops a modal over whatever the user was doing.
-     */
-    private async recoverJobs(trigger: RecoveryTrigger): Promise<void> {
-        let promptCount: number;
-        try {
-            const prompts = await this.jobRunner.recoverAll(trigger === 'startup' ? { coldStart: true } : {});
-            promptCount = prompts.length;
-        } catch (error) {
-            logger.error(`[jobs] Recovery pass (${trigger}) failed:`, error);
-            this.showNotice(t('notice.recovery.checkFailed', { error: getSafeErrorMessage(error) }), 6000);
-            return;
-        } finally {
-            // In `finally`, not after the try/catch: a pass that throws partway through still closes
-            // some records before it fails (closeOwnRuns persists each closure as it happens), and
-            // those closures deserve their Notice regardless (#3 batch G item 5).
-            if (trigger === 'startup') {
-                this.layoutReady = true;
-                const closedNotice = coldStartNoticeText(this.jobRunner.drainClosedOnColdStart());
-                if (closedNotice !== undefined) {
-                    this.showNotice(closedNotice, 8000);
-                }
-                // The same rule for collections (#9): a run dies with the
-                // instance that began it, so one left `running` by a killed
-                // instance is closed here and reported. Children are ordinary
-                // jobs and were already closed by the pass above — closing the
-                // parent must not, and does not, restart any of them.
-                void this.collectionRunner?.closeAbandoned().then((closed) => {
-                    if (closed > 0) {
-                        this.showNotice(t('notice.collection.closedOnStart', { count: closed }), 8000);
-                    }
-                }).catch((error: unknown) => {
-                    logger.error('[collections] cold-start closure failed:', error);
-                });
-            }
-        }
-        const notice = recoveryNoticeText(promptCount);
-        if (notice !== undefined) {
-            this.showNotice(notice, 8000);
-        }
-        if (shouldOpenRecoveryModal(trigger, promptCount)) {
-            this.openRecoveryModal();
-        }
-    }
-
-    /**
-     * Opens the recovery modal, or refreshes the one already open (startup + command must not stack
-     * two). `highlightId` marks and scrolls to one job's row (a submit that hit an existing job).
-     */
-    openRecoveryModal(highlightId?: string): void {
-        if (this.recoveryModal !== null) {
-            this.recoveryModal.highlight(highlightId);
-            void this.recoveryModal.refresh();
-            return;
-        }
-        const modal = new JobRecoveryModal(this.app, this, () => {
-            if (this.recoveryModal === modal) {
-                this.recoveryModal = null;
-            }
-        });
-        modal.highlight(highlightId);
-        this.recoveryModal = modal;
-        modal.open();
-    }
-
-    /**
-     * Rows for the recovery modal: every non-terminal record plus the most recent finished ones, each
-     * rendered from the pure UI model and the runner's read-only prompt. Wording and button sets are
-     * never derived here.
-     */
-    async recoveryRows(): Promise<RecoveryRowEntry[]> {
-        const records = this.jobStore.list();
-        const active = records.filter((record) => !isTerminal(record));
-        const recent = records
-            .filter((record) => isTerminal(record))
-            .sort((a, b) => b.updatedAt - a.updatedAt)
-            .slice(0, RECENT_TERMINAL_JOBS_SHOWN);
-        const entries: RecoveryRowEntry[] = [];
-        for (const record of [...active, ...recent]) {
-            const prompt = await this.jobRunner.promptFor(record.id);
-            if (prompt === undefined) {
-                continue; // discarded while we were probing
-            }
-            const noteExists =
-                record.notePath !== undefined && this.app.vault.getAbstractFileByPath(record.notePath) instanceof TFile;
-            // Wording only (#3 batch G item 7), never proof: a note-creating-window job never learned
-            // whether its claimed path landed, so this never gates Open note (noteExists does that).
-            const noteMayExist =
-                record.notePath === undefined &&
-                record.claimedNotePath !== undefined &&
-                this.app.vault.getAbstractFileByPath(record.claimedNotePath) instanceof TFile;
-            entries.push({ row: buildRecoveryRow(record, prompt, noteExists, noteMayExist), updatedAt: record.updatedAt });
-        }
-        return entries;
     }
 
     async saveSettings() {
@@ -3818,9 +3602,9 @@ class YouTubeTranscriptModal extends Modal {
             // Process each video
             // Hand the run to the job runner (#9). Each video is submitted as an
             // ordinary single-video job, so a collection inherits generation
-            // fencing, the two-phase claim, per-item billing attribution and
-            // cancellation unchanged rather than re-implementing any of them —
-            // and ONE floating notice reports the whole run.
+            // fencing, the frozen target note path and cancellation unchanged
+            // rather than re-implementing any of them — and ONE progress
+            // surface reports the whole run.
             const videos: CollectionVideo[] = [];
             for (const video of videosToProcess) {
                 const videoId = YouTubeTranscriptExtractor.extractVideoId(video.url);
@@ -3969,12 +3753,6 @@ class YouTubeTranscriptModal extends Modal {
                 this.isProcessing = false;
                 this.showNotice(t('notice.job.alreadyRunning'), 5000);
                 return;
-            case 'recovery':
-                // An interrupted job for this video already exists: it needs a
-                // decision, not a second job. Open the list on that record.
-                this.close();
-                this.plugin.openRecoveryModal(result.record.id);
-                return;
             case 'started':
                 break;
         }
@@ -3996,189 +3774,6 @@ class YouTubeTranscriptModal extends Modal {
         contentEl.empty();
     }
 
-}
-
-/**
- * Recovery surface (spec §6): lists every non-terminal job plus the most recent finished ones, each
- * row rendered VERBATIM from the pure UI model (`buildRecoveryRow`) — no wording or button set is
- * derived here. Buttons drive the runner's resume/cancel/discard (or open the note of a job that died
- * with a previous instance) and the list re-renders after each action and after every runner event.
- * Discard removes only the record; it never deletes notes.
- */
-class JobRecoveryModal extends Modal {
-    private unsubscribeJobEvents: (() => void) | null = null;
-    private renderSeq = 0;
-    private isOpen = false;
-    private highlightId: string | undefined;
-    private hasRendered = false;
-
-    constructor(app: App, private readonly plugin: YouTubeTranscriptPlugin, private readonly onClosed: () => void) {
-        super(app);
-    }
-
-    onOpen() {
-        this.isOpen = true;
-        this.setTitle(t('modal.jobs.title'));
-        this.unsubscribeJobEvents = this.plugin.subscribeToJobEvents(() => {
-            void this.refresh();
-        });
-        void this.refresh();
-    }
-
-    onClose() {
-        this.isOpen = false;
-        this.unsubscribeJobEvents?.();
-        this.unsubscribeJobEvents = null;
-        this.contentEl.empty();
-        this.onClosed();
-    }
-
-    /** The row to mark and scroll into view on the next render (undefined clears it). */
-    highlight(id: string | undefined): void {
-        this.highlightId = id;
-    }
-
-    /**
-     * Re-reads the store and re-renders. Overlapping calls resolve to the latest snapshot only. If the
-     * rows cannot be built, the previous render is kept (or the modal stays empty) and an error line
-     * is shown instead of a misleading "No active jobs".
-     */
-    async refresh(): Promise<void> {
-        const seq = ++this.renderSeq;
-        let entries: RecoveryRowEntry[];
-        try {
-            entries = await this.plugin.recoveryRows();
-        } catch (error) {
-            logger.error('[jobs] Could not build the recovery rows:', error);
-            if (seq === this.renderSeq && this.isOpen) {
-                this.renderError(getSafeErrorMessage(error));
-            }
-            return;
-        }
-        if (seq !== this.renderSeq || !this.isOpen) {
-            return; // superseded by a later refresh, or closed meanwhile
-        }
-        this.render(entries);
-    }
-
-    private renderError(message: string): void {
-        const { contentEl } = this;
-        if (!this.hasRendered) {
-            contentEl.empty();
-        }
-        contentEl.querySelector('.tubesage-jobs-error')?.remove();
-        contentEl.createDiv({ cls: ['tubesage-jobs-status', 'tubesage-jobs-error'], text: t('modal.jobs.loadError', { error: message }) });
-    }
-
-    private render(entries: RecoveryRowEntry[]): void {
-        const { contentEl } = this;
-        contentEl.empty();
-        this.hasRendered = true;
-        if (entries.length === 0) {
-            contentEl.createDiv({ cls: 'tubesage-jobs-empty', text: t('modal.jobs.empty') });
-            return;
-        }
-        const now = Date.now();
-        // A running channel/playlist gets one row of its own with a stop
-        // control: cancelling the RUN is not the same as cancelling one of its
-        // videos, and without this the cooperative-cancel policy had no way in.
-        for (const collection of this.plugin.runningCollections()) {
-            const runEl = contentEl.createDiv({ cls: 'tubesage-jobs-row' });
-            runEl.createDiv({ cls: 'tubesage-jobs-title', text: collection.sourceName });
-            runEl.createDiv({
-                cls: 'tubesage-jobs-status',
-                text: t('notice.collection.progress', {
-                    name: collection.sourceName,
-                    done: collection.done,
-                    total: collection.total,
-                }),
-            });
-            const runActions = runEl.createDiv({ cls: 'tubesage-jobs-actions' });
-            new ButtonComponent(runActions)
-                .setButtonText(t('modal.jobs.cancelCollection'))
-                .onClick(() => {
-                    void (async () => {
-                        await this.plugin.collectionRunner?.cancel(collection.id);
-                        await this.refresh();
-                    })();
-                });
-        }
-        const list = contentEl.createDiv({ cls: 'tubesage-jobs-list' });
-        let highlighted: HTMLElement | null = null;
-        for (const { row, updatedAt } of entries) {
-            const rowEl = list.createDiv({ cls: 'tubesage-jobs-row' });
-            if (row.id === this.highlightId) {
-                rowEl.addClass('tubesage-jobs-row-highlight');
-                highlighted = rowEl;
-            }
-            rowEl.createDiv({ cls: 'tubesage-jobs-title', text: row.title });
-            rowEl.createDiv({ cls: 'tubesage-jobs-meta', text: t('modal.jobs.meta', { stage: row.stageLabel, age: formatJobAge(updatedAt, now) }) });
-            rowEl.createDiv({ cls: 'tubesage-jobs-status', text: row.statusLine });
-            if (row.notePath !== undefined) {
-                rowEl.createDiv({ cls: 'tubesage-jobs-path', text: row.notePath });
-            }
-            const actionsEl = rowEl.createDiv({ cls: 'tubesage-jobs-actions' });
-            for (const action of row.actions) {
-                const button = new ButtonComponent(actionsEl)
-                    .setButtonText(action.label)
-                    .onClick(() => {
-                        void this.act(row, action);
-                    });
-                if (action.cta) {
-                    button.setCta();
-                }
-                if (action.warnsAboutBilling) {
-                    button.setDestructive().setCta();
-                }
-            }
-        }
-        contentEl.createDiv({
-            cls: 'tubesage-jobs-meta',
-            text: t('modal.jobs.discardHint'),
-        });
-        if (highlighted !== null) {
-            highlighted.scrollIntoView({ block: 'nearest' });
-        }
-    }
-
-    private async act(row: RecoveryRowModel, action: RecoveryAction): Promise<void> {
-        const runner = this.plugin.jobRunner;
-        const id = row.id;
-        try {
-            switch (action.id) {
-                case 'resume': {
-                    const result = await runner.resume(id, { confirmed: true });
-                    if (result.kind === 'prompt') {
-                        this.plugin.showNotice(t('notice.job.cannotResume'), 5000);
-                    }
-                    break;
-                }
-                case 'finish-without-timestamps': {
-                    const result = await runner.resume(id, { confirmed: true, finishWithoutTimestamps: true });
-                    if (result.kind === 'prompt') {
-                        this.plugin.showNotice(t('notice.job.cannotFinish'), 5000);
-                    }
-                    break;
-                }
-                case 'cancel':
-                    await runner.cancel(id);
-                    break;
-                case 'discard':
-                    await runner.discard(id);
-                    break;
-                case 'open-note':
-                    // Offered only when the model saw record.notePath and the file exists.
-                    if (row.notePath !== undefined) {
-                        await this.plugin.openNote(row.notePath);
-                    }
-                    break;
-            }
-        } catch (error) {
-            logger.error(`[jobs] ${action.id} failed for ${id}:`, error);
-            this.plugin.showNotice(t('notice.job.failed', { error: getSafeErrorMessage(error) }), 5000);
-        }
-        await this.refresh();
-    }
 }
 
 class YouTubeTranscriptSettingTab extends PluginSettingTab {

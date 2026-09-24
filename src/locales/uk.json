@@ -460,8 +460,8 @@
         "translation": "Обробку скасовано"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "Обробку перервано; відновіть її через «Показати активні завдання»"
+        "original": "Processing was interrupted",
+        "translation": "Обробку перервано"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Помилка: {error} (налагоджувальну нотатку теж не вдалося створити)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Не вдалося перевірити перервані завдання: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Коротші та швидші підсумки (без посилань із мітками часу)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Активні завдання"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Немає активних завдань"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Не вдалося прочитати список завдань: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "«Відкинути» прибирає завдання зі списку; нотатки не видаляються."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Виберіть файл шаблону"
@@ -784,20 +760,12 @@
         "translation": "Відео для обробки: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Не вдалося зберегти завдання: {error}. Відео, можливо, ще обробляється; див. «Показати активні завдання»"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Не вдалося зберегти завдання: {error}. Відео, можливо, ще обробляється; див"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Це відео вже обробляється"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Це завдання не можна відновити в такому стані; див. його статус"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Це завдання не можна завершити в такому стані; див. його статус"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -830,10 +798,6 @@
     "modal.template.var.llmTags.desc": {
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Теги, створені з постачальника й моделі LLM"
-    },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Показати активні завдання"
     },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
@@ -875,146 +839,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "Список моделей {provider} оновлено. Ліміти токенів заповнено автоматично: {count} моделі."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Отримання розшифровки"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Створення конспекту"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Створення нотатки"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Нотатку створено"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Додавання посилань на таймкоди"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Переклад"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Готово"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Скасувати"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Відкинути"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Відкрити нотатку"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Завершити без таймкодів"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Завершити без перекладу"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Продовжити"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Продовжити (можлива повторна оплата)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Виконується"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Можна продовжити"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Завершено"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Скасовано"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Помилка"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Помилка: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Перевищено час очікування. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Перервано під час закриття Obsidian; нотатку не створено"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Перервано під час закриття Obsidian; за шляхом {path} може бути нотатка"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Перервано під час закриття Obsidian; нотатку створено без таймкодів"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Перервано під час закриття Obsidian; нотатку створено без перекладу"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Перервано на етапі «{stage}»; попередній запит міг бути вже оплачений"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Перервано на етапі «{stage}»; невідомо, чи було оплачено попередній запит"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "Забагато спроб на етапі «{stage}»"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "За цільовим шляхом уже є нотатка — перейменуйте або видаліть її, потім продовжте з «Показати активні завдання»"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Не вдалося підтвердити, чи належить нотатка за цільовим шляхом цьому завданню"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "Нотатку цього завдання переміщено або видалено"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "Нотатку змінили під час обробки; таймкоди пропущено"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater недоступний; увімкніть його, потім продовжте"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Продовження повторно отримає розшифровку через платний сервіс"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Шлях до нотатки не вдалося обчислити однозначно (перевірте налаштування теки й дати), потім продовжте"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Нотатку з розшифровкою успішно створено"
@@ -1039,34 +863,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Нотатку створено без таймкодів і без перекладу"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 завдання нотатки перервано під час закриття Obsidian — {title}: нотатку не створено"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 завдання нотатки перервано під час закриття Obsidian — {title}: за шляхом {path} може бути нотатка"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 завдання нотатки перервано під час закриття Obsidian — {title}: нотатку створено без таймкодів"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 завдання нотатки перервано під час закриття Obsidian — {title}: нотатку створено без перекладу"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: під час закриття Obsidian перервано завдань нотаток — {count}; найновіші перелічені в «Показати активні завдання»"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 перерване завдання потребує уваги"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: уваги потребують перервані завдання — {count}"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Заповніть поле {field}"
@@ -1082,14 +878,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "Обробка {name}: {done} з {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Закрито перерваних колекцій: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Зупинити колекцію"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

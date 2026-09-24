@@ -460,8 +460,8 @@
         "translation": "Bearbetning avbruten"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "Bearbetningen avbröts; återuppta den via ”Visa aktiva jobb”"
+        "original": "Processing was interrupted",
+        "translation": "Bearbetningen avbröts"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Fel: {error} (felsökningsanteckningen kunde inte heller skapas)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Kunde inte söka efter avbrutna jobb: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Ger kortare, snabbare sammanfattningar (hoppar över tidsstämpellänkar)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Aktiva jobb"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Inga aktiva jobb"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Kunde inte läsa jobblistan: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "Kasta fjärnar ett jobb ur listan; anteckningar raderas aldrig."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Välj mallfil"
@@ -784,20 +760,12 @@
         "translation": "Videor att bearbeta: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Kunde inte spara jobbet: {error}. Videon kan fortfarande bearbetas; se ”Visa aktiva jobb”"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Kunde inte spara jobbet: {error}. Videon kan fortfarande bearbetas"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Den här videon bearbetas redan"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Det här jobbet kan inte återupptas som det är; se dess status"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Det här jobbet kan inte slutföras som det är; se dess status"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Taggar genererade utifrån LLM-leverantör och modell"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Visa aktiva jobb"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "Leverantör inställd på {provider}. Utdatabudget: {tokens} tokens (max utdata minus reserv)."
@@ -867,146 +831,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "{provider}-modellistan har uppdaterats. Tokengränser ifyllda automatiskt för {count} modeller."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Hämtar transkription"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Sammanfattar"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Skapar anteckning"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Anteckning skapad"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Lägger till tidsstämpellänkar"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Översätter"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Klar"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Avbryt"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Kasta"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Öppna anteckning"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Slutför utan tidsstämplar"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Slutför utan översättning"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Återuppta"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Återuppta (kan debiteras igen)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Pågår"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Redo att fortsätta"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Avslutad"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Avbruten"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Misslyckades"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Misslyckades: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Tidsgränsen överskreds. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Avbröts när Obsidian stängdes; ingen anteckning skapades"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Avbröts när Obsidian stängdes; det kan finnas en anteckning i {path}"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Avbröts när Obsidian stängdes; anteckningen skapades utan tidsstämplar"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Avbröts när Obsidian stängdes; anteckningen skapades utan översättning"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Avbröts under {stage}; den föregående begäran kan redan ha debiterats"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Avbröts under {stage}; det är okänt om den föregående begäran debiterades"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "För många försök för {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "Det finns redan en anteckning på målsökvägen — byt namn på den eller ta bort den och återuppta sedan från Visa aktiva jobb"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Kunde inte bekräfta om anteckningen på målsökvägen hör till det här jobbet"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "Anteckningen för det här jobbet har flyttats eller raderats"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "Anteckningen redigerades under bearbetningen; tidsstämplarna hoppades över"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater är inte tillgängligt; aktivera det och återuppta sedan"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Att återuppta hämtar transkriptionen på nytt via en betaltjänst"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Anteckningens sökväg kunde inte beräknas konsekvent (kontrollera mapp- och datuminställningarna) och återuppta sedan"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Transkriptionsanteckningen har skapats"
@@ -1031,34 +855,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Anteckning skapad utan tidsstämplar och utan översättning"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 anteckningsjobb avbröts när Obsidian stängdes — {title}: ingen anteckning skapades"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 anteckningsjobb avbröts när Obsidian stängdes — {title}: det kan finnas en anteckning i {path}"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 anteckningsjobb avbröts när Obsidian stängdes — {title}: anteckning skapad utan tidsstämplar"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 anteckningsjobb avbröts när Obsidian stängdes — {title}: anteckning skapad utan översättning"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: {count} anteckningsjobb avbröts när Obsidian stängdes; de senaste finns under Visa aktiva jobb"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 avbrutet jobb behöver åtgärdas"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} avbrutna jobb behöver åtgärdas"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Fyll i fältet {field}"
@@ -1074,14 +870,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "Bearbetar {name}: {done} av {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Avbrutna samlingar stängda: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Stoppa samling"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

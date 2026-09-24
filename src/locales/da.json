@@ -460,8 +460,8 @@
         "translation": "Behandling annulleret"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "Behandlingen blev afbrudt; genoptag den via \"Vis aktive job\""
+        "original": "Processing was interrupted",
+        "translation": "Behandlingen blev afbrudt"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Fejl: {error} (fejlfindingsnoten kunne heller ikke oprettes)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Kunne ikke tjekke for afbrudte job: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Giver kortere, hurtigere resuméer (springer tidsstempellinks over)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Aktive job"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Ingen aktive job"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Kunne ikke læse joblisten: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "Kassér fjerner et job fra denne liste; noter slettes aldrig."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Vælg skabelonfil"
@@ -784,20 +760,12 @@
         "translation": "Videoer til behandling: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Kunne ikke gemme jobbet: {error}. Videoen behandles muligvis stadig; se \"Vis aktive job\""
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Kunne ikke gemme jobbet: {error}. Videoen behandles muligvis stadig"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Denne video behandles allerede"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Dette job kan ikke genoptages som det er; se dets status"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Dette job kan ikke afsluttes som det er; se dets status"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Tags genereret ud fra LLM-udbyder og model"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Vis aktive job"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "Udbyder sat til {provider}. Outputbudget: {tokens} tokens (maks. output minus reserve)."
@@ -867,146 +831,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "{provider}-modellisten er opdateret. Tokengrænser udfyldt automatisk for {count} modeller."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Henter transskription"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Opsummerer"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Opretter note"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Note oprettet"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Tilføjer tidsstempellinks"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Oversætter"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Færdig"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Annullér"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Kassér"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Åbn note"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Afslut uden tidsstempler"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Afslut uden oversættelse"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Genoptag"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Genoptag (kan koste igen)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Kører"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Klar til at fortsætte"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Afsluttet"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Annulleret"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Mislykkedes"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Mislykkedes: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Tidsfristen udløb. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Afbrudt, da Obsidian blev lukket; der blev ikke oprettet nogen note"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Afbrudt, da Obsidian blev lukket; der findes muligvis en note i {path}"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Afbrudt, da Obsidian blev lukket; noten blev oprettet uden tidsstempler"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Afbrudt, da Obsidian blev lukket; noten blev oprettet uden oversættelse"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Afbrudt under {stage}; den forrige forespørgsel er muligvis allerede faktureret"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Afbrudt under {stage}; det vides ikke, om den forrige forespørgsel blev faktureret"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "For mange forsøg på {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "Der findes allerede en note på destinationsstien — omdøb eller fjern den, og genoptag derefter fra Vis aktive job"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Kunne ikke bekræfte, om noten på destinationsstien hører til dette job"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "Noten til dette job er flyttet eller slettet"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "Noten blev redigeret under behandlingen; tidsstemplerne blev sprunget over"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater er ikke tilgængelig; aktivér den, og genoptag derefter"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Genoptagelse henter transskriptionen igen via en betalt tjeneste"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Notens sti kunne ikke beregnes konsistent (tjek mappe- og datoindstillingerne), og genoptag derefter"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Transskriptionsnoten blev oprettet"
@@ -1031,34 +855,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Note oprettet uden tidsstempler og uden oversættelse"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 notejob blev afbrudt, da Obsidian blev lukket — {title}: der blev ikke oprettet nogen note"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 notejob blev afbrudt, da Obsidian blev lukket — {title}: der findes muligvis en note i {path}"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 notejob blev afbrudt, da Obsidian blev lukket — {title}: note oprettet uden tidsstempler"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 notejob blev afbrudt, da Obsidian blev lukket — {title}: note oprettet uden oversættelse"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: {count} notejob blev afbrudt, da Obsidian blev lukket; de nyeste står under Vis aktive job"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 afbrudt job kræver opmærksomhed"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} afbrudte job kræver opmærksomhed"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Udfyld feltet {field}"
@@ -1074,14 +870,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "Behandler {name}: {done} af {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Afbrudte samlinger lukket: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Stop samling"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

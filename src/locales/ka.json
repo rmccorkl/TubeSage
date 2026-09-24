@@ -460,8 +460,8 @@
         "translation": "დამუშავება გაუქმდა"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "დამუშავება შეწყდა; განაგრძეთ „აქტიური სამუშაოების ჩვენება“-იდან"
+        "original": "Processing was interrupted",
+        "translation": "დამუშავება შეწყდა"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "შეცდომა: {error} (გამართვის ჩანაწერის შექმნაც ვერ მოხერხდა)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "შეწყვეტილი დავალებების შემოწმება ვერ მოხერხდა: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "უფრო მოკლე და სწრაფი შეჯამებები (გამოტოვებს დროის ნიშნულების ბმულებს)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "აქტიური დავალებები"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "აქტიური დავალებები არ არის"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "დავალებების სიის წაკითხვა ვერ მოხერხდა: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "„მოცილება“ დავალებას მხოლოდ სიიდან შლის; შენიშვნებს არასოდეს შლის."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "შაბლონის ფაილის არჩევა"
@@ -784,20 +760,12 @@
         "translation": "დასამუშავებელი ვიდეოები: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "დავალების შენახვა ვერ მოხერხდა: {error}. ვიდეო შესაძლოა ჯერ კიდევ მუშავდებოდეს; იხილეთ „აქტიური სამუშაოების ჩვენება“"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "დავალების შენახვა ვერ მოხერხდა: {error}. ვიდეო შესაძლოა ჯერ კიდევ მუშავდებოდეს"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "ეს ვიდეო უკვე მუშავდება"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "ამ დავალების ამ მდგომარეობაში გაგრძელება შეუძლებელია; იხილეთ მისი სტატუსი"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "ამ დავალების ამ მდგომარეობაში დასრულება შეუძლებელია; იხილეთ მისი სტატუსი"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - LLM მომწოდებლისა და მოდელისგან შექმნილი ტეგები"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "აქტიური სამუშაოების ჩვენება"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "მომწოდებლად დაყენდა {provider}. გამოტანის ბიუჯეტი: {tokens} ტოკენი (მაქსიმალური გამოტანა მინუს რეზერვი)."
@@ -867,146 +831,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "{provider}-ის მოდელების სია განახლდა. ტოკენების ზღვრები ავტომატურად შეივსო {count} მოდელისთვის."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "ტრანსკრიპტის მიღება"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "შეჯამება"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "ჩანაწერის შექმნა"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "ჩანაწერი შეიქმნა"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "დროის ნიშნულების ბმულების დამატება"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "თარგმნა"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "დასრულდა"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "გაუქმება"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "მოცილება"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "ჩანაწერის გახსნა"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "დასრულება დროის ნიშნულების გარეშე"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "დასრულება თარგმანის გარეშე"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "გაგრძელება"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "გაგრძელება (შესაძლოა ხელახლა დაგერიცხოთ)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "მიმდინარეობს"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "მზადაა გასაგრძელებლად"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "დასრულებულია"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "გაუქმებულია"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "ვერ შესრულდა"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "ვერ შესრულდა: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "დრო ამოიწურა. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "შეწყდა Obsidian-ის დახურვისას; ჩანაწერი არ შექმნილა"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "შეწყდა Obsidian-ის დახურვისას; {path}-ზე შესაძლოა ჩანაწერი იყოს"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "შეწყდა Obsidian-ის დახურვისას; ჩანაწერი შეიქმნა დროის ნიშნულების გარეშე"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "შეწყდა Obsidian-ის დახურვისას; ჩანაწერი შეიქმნა თარგმანის გარეშე"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "შეწყდა {stage} დროს; წინა მოთხოვნა შესაძლოა უკვე ანაზღაურებული იყოს"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "შეწყდა {stage} დროს; უცნობია, ანაზღაურდა თუ არა წინა მოთხოვნა"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "ძალიან ბევრი მცდელობა {stage} ეტაპზე"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "სამიზნე გზაზე უკვე არსებობს ჩანაწერი — გადაარქვით სახელი ან წაშალეთ, შემდეგ გააგრძელეთ „აქტიური სამუშაოების ჩვენება“-დან"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "ვერ დადასტურდა, ეკუთვნის თუ არა სამიზნე გზაზე არსებული ჩანაწერი ამ დავალებას"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "ამ დავალების ჩანაწერი გადატანილია ან წაშლილია"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "ჩანაწერი დამუშავებისას შეიცვალა; დროის ნიშნულები გამოტოვებულია"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater მიუწვდომელია; ჩართეთ და შემდეგ გააგრძელეთ"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "გაგრძელება ტრანსკრიპტს ხელახლა ჩამოტვირთავს ფასიანი სერვისით"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "ჩანაწერის გზა ვერ გამოითვალა თანმიმდევრულად (შეამოწმეთ საქაღალდისა და თარიღის პარამეტრები), შემდეგ გააგრძელეთ"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "ტრანსკრიპტის ჩანაწერი წარმატებით შეიქმნა"
@@ -1031,34 +855,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "ჩანაწერი შეიქმნა დროის ნიშნულებისა და თარგმანის გარეშე"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: Obsidian-ის დახურვისას შეწყდა 1 ჩანაწერის დავალება — {title}: ჩანაწერი არ შექმნილა"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: Obsidian-ის დახურვისას შეწყდა 1 ჩანაწერის დავალება — {title}: {path}-ზე შესაძლოა ჩანაწერი იყოს"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: Obsidian-ის დახურვისას შეწყდა 1 ჩანაწერის დავალება — {title}: ჩანაწერი შეიქმნა დროის ნიშნულების გარეშე"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: Obsidian-ის დახურვისას შეწყდა 1 ჩანაწერის დავალება — {title}: ჩანაწერი შეიქმნა თარგმანის გარეშე"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: Obsidian-ის დახურვისას შეწყდა {count} ჩანაწერის დავალება; უახლესები ჩამოთვლილია „აქტიური სამუშაოების ჩვენება“-ში"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 შეწყვეტილი დავალება საჭიროებს ყურადღებას"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} შეწყვეტილი დავალება საჭიროებს ყურადღებას"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "გთხოვთ, შეავსოთ ველი {field}"
@@ -1074,14 +870,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "მიმდინარეობს {name}: {done} / {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "დახურულია შეწყვეტილი კოლექციები: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "კოლექციის შეჩერება"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

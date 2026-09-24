@@ -460,8 +460,8 @@
         "translation": "處理已取消"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "處理已中斷，可在「顯示進行中的工作」中繼續"
+        "original": "Processing was interrupted",
+        "translation": "處理已中斷"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "錯誤：{error}（偵錯筆記也無法建立）"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "無法檢查中斷的工作：{error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "產生更短更快的摘要（略過時間標記連結）"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "進行中的工作"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "沒有進行中的工作"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "無法讀取工作清單：{error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage}・{age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "「捨棄」只會從清單移除工作，不會刪除筆記。"
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "選擇範本檔案"
@@ -784,20 +760,12 @@
         "translation": "待處理的影片：{count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "無法儲存工作：{error}。影片可能仍在處理中，請查看「顯示進行中的工作」"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "無法儲存工作：{error}。影片可能仍在處理中"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "這部影片已在處理中"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "此工作無法以目前狀態繼續，請查看其狀態"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "此工作無法以目前狀態完成，請查看其狀態"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": "：依 LLM 供應商與模型產生的標籤"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "顯示進行中的工作"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "供應商已設為 {provider}。輸出預算：{tokens} 個權杖（最大輸出減去保留量）。"
@@ -863,146 +827,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "已重新整理 {provider} 的模型清單。已為 {count} 個模型自動填入權杖上限。"
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "正在取得逐字稿"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "正在摘要"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "正在建立筆記"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "筆記已建立"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "正在加入時間戳記連結"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "正在翻譯"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "完成"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "取消"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "捨棄"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "開啟筆記"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "完成但不加時間戳記"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "完成但不翻譯"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "繼續"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "繼續（可能重複計費）"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "執行中"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "可以繼續"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "已結束"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "已取消"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "已失敗"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "已失敗：{error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "已逾時。{status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Obsidian 關閉時中斷；未建立任何筆記"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Obsidian 關閉時中斷；{path} 可能存在一則筆記"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Obsidian 關閉時中斷；筆記已建立，但沒有時間戳記"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Obsidian 關閉時中斷；筆記已建立，但未翻譯"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "在{stage}時中斷；上一次請求可能已經計費"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "在{stage}時中斷；上一次請求是否計費並不清楚"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "{stage}的嘗試次數過多"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "目標路徑上已存在一則筆記 — 請重新命名或刪除它，然後從「顯示進行中的工作」繼續"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "無法確認目標路徑上的筆記是否屬於這項工作"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "這項工作的筆記已被移動或刪除"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "處理期間筆記被編輯過，已略過時間戳記"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater 無法使用；請先啟用它，然後繼續"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "繼續將透過付費服務重新取得逐字稿"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "無法穩定推算出筆記路徑（請檢查資料夾與日期設定），然後繼續"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "逐字稿筆記建立成功"
@@ -1027,34 +851,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "已建立筆記，未加時間戳記也未翻譯"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage：Obsidian 關閉時有 1 項筆記工作中斷 — {title}：未建立任何筆記"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage：Obsidian 關閉時有 1 項筆記工作中斷 — {title}：{path} 可能存在一則筆記"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage：Obsidian 關閉時有 1 項筆記工作中斷 — {title}：筆記已建立，但沒有時間戳記"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage：Obsidian 關閉時有 1 項筆記工作中斷 — {title}：筆記已建立，但未翻譯"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage：Obsidian 關閉時有 {count} 項筆記工作中斷；最近幾項列在「顯示進行中的工作」中"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage：有 1 項中斷的工作需要處理"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage：有 {count} 項中斷的工作需要處理"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "請輸入 {field}"
@@ -1070,14 +866,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "正在處理 {name}：{done}/{total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "已關閉中斷的合輯：{count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "停止合輯"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

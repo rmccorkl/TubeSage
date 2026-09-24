@@ -460,8 +460,8 @@
         "translation": "ยกเลิกการประมวลผลแล้ว"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "การประมวลผลถูกขัดจังหวะ ทำต่อได้จาก “แสดงงานที่กำลังทำ”"
+        "original": "Processing was interrupted",
+        "translation": "การประมวลผลถูกขัดจังหวะ"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "ข้อผิดพลาด: {error} (สร้างโน้ตดีบักไม่สำเร็จด้วย)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "ตรวจสอบงานที่ถูกขัดจังหวะไม่สำเร็จ: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "สรุปสั้นและเร็วขึ้น (ข้ามลิงก์ประทับเวลา)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "งานที่กำลังทำ"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "ไม่มีงานที่กำลังทำ"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "อ่านรายการงานไม่ได้: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "“ละทิ้ง” จะเอางานออกจากรายการเท่านั้น ไม่ลบโน้ต"
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "เลือกไฟล์เทมเพลต"
@@ -784,20 +760,12 @@
         "translation": "วิดีโอที่จะประมวลผล: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "บันทึกงานไม่ได้: {error} วิดีโออาจยังประมวลผลอยู่ ดูที่ “แสดงงานที่กำลังทำ”"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "บันทึกงานไม่ได้: {error} วิดีโออาจยังประมวลผลอยู่"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "วิดีโอนี้กำลังประมวลผลอยู่แล้ว"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "งานนี้ยังทำต่อในสภาพนี้ไม่ได้ ดูสถานะของงาน"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "งานนี้ยังทำให้เสร็จในสภาพนี้ไม่ได้ ดูสถานะของงาน"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - แท็กที่สร้างจากผู้ให้บริการและโมเดล LLM"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "แสดงงานที่กำลังทำ"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "ตั้งผู้ให้บริการเป็น {provider} แล้ว งบผลลัพธ์: {tokens} โทเค็น (ผลลัพธ์สูงสุดลบส่วนสำรอง)"
@@ -863,146 +827,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "รีเฟรชรายการโมเดลของ {provider} แล้ว เติมขีดจำกัดโทเค็นอัตโนมัติให้ {count} โมเดล"
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "กำลังดึงคำบรรยาย"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "กำลังสรุป"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "กำลังสร้างโน้ต"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "สร้างโน้ตแล้ว"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "กำลังเพิ่มลิงก์เวลา"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "กำลังแปล"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "เสร็จแล้ว"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "ยกเลิก"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "ทิ้ง"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "เปิดโน้ต"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "จบโดยไม่ใส่เวลา"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "จบโดยไม่แปล"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "ทำต่อ"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "ทำต่อ (อาจถูกเรียกเก็บเงินซ้ำ)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "กำลังทำงาน"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "พร้อมทำต่อ"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "สิ้นสุดแล้ว"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "ยกเลิกแล้ว"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "ล้มเหลว"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "ล้มเหลว: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "หมดเวลา {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "ถูกขัดจังหวะเมื่อปิด Obsidian ไม่มีการสร้างโน้ต"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "ถูกขัดจังหวะเมื่อปิด Obsidian อาจมีโน้ตอยู่ที่ {path}"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "ถูกขัดจังหวะเมื่อปิด Obsidian สร้างโน้ตแล้วแต่ไม่มีเวลากำกับ"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "ถูกขัดจังหวะเมื่อปิด Obsidian สร้างโน้ตแล้วแต่ยังไม่ได้แปล"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "ถูกขัดจังหวะระหว่าง{stage} คำขอก่อนหน้าอาจถูกเรียกเก็บเงินไปแล้ว"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "ถูกขัดจังหวะระหว่าง{stage} ไม่ทราบว่าคำขอก่อนหน้าถูกเรียกเก็บเงินหรือไม่"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "พยายาม{stage}หลายครั้งเกินไป"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "มีโน้ตอยู่ที่ปลายทางแล้ว — เปลี่ยนชื่อหรือลบออก แล้วทำต่อจาก “แสดงงานที่กำลังทำ”"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "ยืนยันไม่ได้ว่าโน้ตที่ปลายทางเป็นของงานนี้หรือไม่"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "โน้ตของงานนี้ถูกย้ายหรือลบไปแล้ว"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "โน้ตถูกแก้ไขระหว่างประมวลผล จึงข้ามการใส่เวลากำกับ"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "ใช้ Templater ไม่ได้ กรุณาเปิดใช้งานแล้วทำต่อ"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "การทำต่อจะดึงคำบรรยายใหม่ผ่านบริการแบบเสียเงิน"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "คำนวณเส้นทางของโน้ตได้ไม่คงที่ (ตรวจสอบการตั้งค่าโฟลเดอร์และวันที่) แล้วทำต่อ"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "สร้างโน้ตคำบรรยายสำเร็จ"
@@ -1027,34 +851,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "สร้างโน้ตแล้วโดยไม่ใส่เวลาและไม่แปล"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: มีงานโน้ต 1 งานถูกขัดจังหวะเมื่อปิด Obsidian — {title}: ไม่มีการสร้างโน้ต"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: มีงานโน้ต 1 งานถูกขัดจังหวะเมื่อปิด Obsidian — {title}: อาจมีโน้ตอยู่ที่ {path}"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: มีงานโน้ต 1 งานถูกขัดจังหวะเมื่อปิด Obsidian — {title}: สร้างโน้ตแล้วแต่ไม่มีเวลากำกับ"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: มีงานโน้ต 1 งานถูกขัดจังหวะเมื่อปิด Obsidian — {title}: สร้างโน้ตแล้วแต่ยังไม่ได้แปล"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: มีงานโน้ต {count} งานถูกขัดจังหวะเมื่อปิด Obsidian รายการล่าสุดอยู่ใน “แสดงงานที่กำลังทำ”"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: มีงานที่ถูกขัดจังหวะ 1 งานที่ต้องจัดการ"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: มีงานที่ถูกขัดจังหวะ {count} งานที่ต้องจัดการ"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "โปรดกรอก {field}"
@@ -1070,14 +866,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "กำลังประมวลผล {name}: {done}/{total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "ปิดคอลเลกชันที่หยุดกลางคัน: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "หยุดคอลเลกชัน"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

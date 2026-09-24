@@ -460,8 +460,8 @@
         "translation": "បានបោះបង់ដំណើរការ"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "ដំណើរការត្រូវបានរំខាន។ បន្តវាពី “បង្ហាញការងារសកម្ម”"
+        "original": "Processing was interrupted",
+        "translation": "ដំណើរការត្រូវបានរំខាន"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "កំហុស៖ {error} (ក៏មិនអាចបង្កើតកំណត់ត្រាបំបាត់កំហុសបានដែរ)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "មិនអាចពិនិត្យការងារដែលត្រូវបានរំខានបានទេ៖ {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "សង្ខេបខ្លីនិងលឿនជាង (រំលងតំណពេលវេលា)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "កិច្ចការកំពុងដំណើរការ"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "មិនមានកិច្ចការកំពុងដំណើរការទេ"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "មិនអាចអានបញ្ជីកិច្ចការបានទេ៖ {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "«បោះបង់» ដកកិច្ចការចេញពីបញ្ជីនេះប៉ុណ្ណោះ មិនលុបកំណត់ត្រាឡើយ។"
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "ជ្រើសរើសឯកសារគំរូ"
@@ -784,20 +760,12 @@
         "translation": "វីដេអូដែលត្រូវដំណើរការ៖ {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "មិនអាចរក្សាទុកកិច្ចការបានទេ៖ {error}។ វីដេអូអាចនៅកំពុងដំណើរការ សូមមើល “បង្ហាញការងារសកម្ម”"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "មិនអាចរក្សាទុកកិច្ចការបានទេ៖ {error}។ វីដេអូអាចនៅកំពុងដំណើរការ"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "វីដេអូនេះកំពុងដំណើរការរួចហើយ"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "កិច្ចការនេះមិនអាចបន្តក្នុងស្ថានភាពនេះបានទេ សូមមើលស្ថានភាពរបស់វា"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "កិច្ចការនេះមិនអាចបញ្ចប់ក្នុងស្ថានភាពនេះបានទេ សូមមើលស្ថានភាពរបស់វា"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - ស្លាកដែលបង្កើតពីអ្នកផ្តល់ និងម៉ូដែល LLM"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "បង្ហាញការងារសកម្ម"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "បានកំណត់អ្នកផ្ដល់សេវាជា {provider}។ ថវិកាលទ្ធផល៖ {tokens} ថូខឹន (លទ្ធផលអតិបរមាដកទុកបម្រុង)។"
@@ -863,146 +827,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "បានធ្វើឱ្យបញ្ជីម៉ូដែល {provider} ស្រស់។ បានបំពេញដែនកំណត់ថូខឹនដោយស្វ័យប្រវត្តិសម្រាប់ម៉ូដែល {count}។"
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "កំពុងទាញយកអត្ថបទ"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "កំពុងសង្ខេប"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "កំពុងបង្កើតកំណត់ត្រា"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "បានបង្កើតកំណត់ត្រា"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "កំពុងបន្ថែមតំណពេលវេលា"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "កំពុងបកប្រែ"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "រួចរាល់"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "បោះបង់"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "បោះចោល"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "បើកកំណត់ត្រា"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "បញ្ចប់ដោយគ្មានពេលវេលា"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "បញ្ចប់ដោយគ្មានការបកប្រែ"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "បន្ត"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "បន្ត (អាចគិតថ្លៃម្ដងទៀត)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "កំពុងដំណើរការ"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "រួចរាល់ដើម្បីបន្ត"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "បានបញ្ចប់"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "បានបោះបង់"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "បរាជ័យ"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "បរាជ័យ៖ {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "អស់ពេល។ {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "បានរំខានពេល Obsidian បិទ។ មិនបានបង្កើតកំណត់ត្រាទេ"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "បានរំខានពេល Obsidian បិទ។ អាចមានកំណត់ត្រានៅ {path}"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "បានរំខានពេល Obsidian បិទ។ កំណត់ត្រាត្រូវបានបង្កើតដោយគ្មានពេលវេលាកំណត់"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "បានរំខានពេល Obsidian បិទ។ កំណត់ត្រាត្រូវបានបង្កើតដោយគ្មានការបកប្រែ"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "បានរំខានពេល{stage}។ សំណើមុនប្រហែលជាត្រូវបានគិតថ្លៃរួចហើយ"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "បានរំខានពេល{stage}។ មិនដឹងថាសំណើមុនត្រូវបានគិតថ្លៃឬអត់"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "ការព្យាយាម{stage}ច្រើនពេកហើយ"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "មានកំណត់ត្រារួចហើយនៅផ្លូវគោលដៅ — សូមប្ដូរឈ្មោះ ឬលុបវា រួចបន្តពី «បង្ហាញការងារសកម្ម»"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "មិនអាចបញ្ជាក់បានថាកំណត់ត្រានៅផ្លូវគោលដៅជារបស់ការងារនេះឬអត់"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "កំណត់ត្រារបស់ការងារនេះត្រូវបានផ្លាស់ទី ឬលុបចោល"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "កំណត់ត្រាត្រូវបានកែពេលដំណើរការ។ បានរំលងពេលវេលាកំណត់"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater មិនអាចប្រើបានទេ។ សូមបើកវា រួចបន្ត"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "ការបន្តនឹងទាញយកអត្ថបទម្ដងទៀតតាមសេវាបង់ប្រាក់"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "មិនអាចគណនាផ្លូវកំណត់ត្រាឱ្យស៊ីគ្នាបានទេ (សូមពិនិត្យការកំណត់ថត និងកាលបរិច្ឆេទ) រួចបន្ត"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "បានបង្កើតកំណត់ត្រាអត្ថបទដោយជោគជ័យ"
@@ -1027,34 +851,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "បានបង្កើតកំណត់ត្រាដោយគ្មានពេលវេលាកំណត់ និងគ្មានការបកប្រែ"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage៖ ការងារកំណត់ត្រា 1 ត្រូវបានរំខានពេល Obsidian បិទ — {title}៖ មិនបានបង្កើតកំណត់ត្រាទេ"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage៖ ការងារកំណត់ត្រា 1 ត្រូវបានរំខានពេល Obsidian បិទ — {title}៖ អាចមានកំណត់ត្រានៅ {path}"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage៖ ការងារកំណត់ត្រា 1 ត្រូវបានរំខានពេល Obsidian បិទ — {title}៖ កំណត់ត្រាបានបង្កើតដោយគ្មានពេលវេលាកំណត់"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage៖ ការងារកំណត់ត្រា 1 ត្រូវបានរំខានពេល Obsidian បិទ — {title}៖ កំណត់ត្រាបានបង្កើតដោយគ្មានការបកប្រែ"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage៖ ការងារកំណត់ត្រា {count} ត្រូវបានរំខានពេល Obsidian បិទ។ ការងារថ្មីៗបំផុតមាននៅក្នុង «បង្ហាញការងារសកម្ម»"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage៖ ការងារដែលត្រូវបានរំខាន 1 ត្រូវការការដោះស្រាយ"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage៖ ការងារដែលត្រូវបានរំខាន {count} ត្រូវការការដោះស្រាយ"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "សូមបញ្ចូល {field}"
@@ -1070,14 +866,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "កំពុងដំណើរការ {name}៖ {done}/{total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "បានបិទបណ្តុំដែលបានរំខាន: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "បញ្ឈប់បណ្តុំ"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

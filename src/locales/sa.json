@@ -460,8 +460,8 @@
         "translation": "संसाधनं निरस्तम्"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "संसाधनं विच्छिन्नम्; “सक्रियकार्याणि दर्शय” इत्यस्मात् पुनः आरभताम्"
+        "original": "Processing was interrupted",
+        "translation": "संसाधनं विच्छिन्नम्"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "दोषः: {error} (दोषनिवारणटिप्पणम् अपि न निर्मितम्)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "विच्छिन्नकार्याणि परीक्षितुं न शक्यन्ते: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "ह्रस्वाः शीघ्राश्च सारांशाः (कालमुद्रासम्बन्धान् त्यजति)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "सक्रियकार्याणि"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "सक्रियकार्याणि न सन्ति"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "कार्यसूची पठितुं न शक्यते: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "“त्यागः” अस्याः सूचीतः कार्यं केवलं अपनयति; टिप्पण्यः कदापि न लुप्यन्ते।"
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "आदर्शसञ्चिकां चिनुत"
@@ -784,20 +760,12 @@
         "translation": "संसाधनीयानि चलचित्राणि: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "कार्यं रक्षितुं न शक्तम्: {error}। चलचित्रम् अद्यापि संसाध्यमानं स्यात्; “सक्रियकार्याणि दर्शय” इति पश्यतु"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "कार्यं रक्षितुं न शक्तम्: {error}। चलचित्रम् अद्यापि संसाध्यमानं स्यात्"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "इदं चलचित्रं पूर्वमेव संसाध्यते"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "इदं कार्यम् अस्मिन् स्थितौ पुनः आरब्धुं न शक्यते; तस्य स्थितिं पश्यतु"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "इदं कार्यम् अस्मिन् स्थितौ समापयितुं न शक्यते; तस्य स्थितिं पश्यतु"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -831,10 +799,6 @@
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - LLM प्रदातुः प्रतिरूपाच्च जाताः चिह्नानि"
     },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "सक्रियकार्याणि दर्शय"
-    },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
         "translation": "प्रदातृ {provider} इति नियोजितम्। निर्गमव्ययः — {tokens} टोकनानि (परमनिर्गमः न्यूनः संरक्षितांशः)।"
@@ -867,146 +831,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "{provider} इत्यस्य प्रतिरूपसूची नवीकृता। {count} प्रतिरूपाणां टोकनसीमाः स्वयमेव पूरिताः।"
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "लिखितरूपस्य आनयनम्"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "सारसंक्षेपणम्"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "टिप्पण्याः रचनम्"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "टिप्पणी रचिता"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "कालमुद्रासम्बन्धानां योजनम्"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "अनुवादः"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "समाप्तम्"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "निरस्यताम्"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "त्यज्यताम्"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "टिप्पणी उद्घाट्यताम्"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "कालमुद्राभिः विना समापनम्"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "अनुवादेन विना समापनम्"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "पुनरारभ्यताम्"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "पुनरारभ्यताम् (पुनः व्ययः सम्भवति)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "प्रचलति"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "अनुवर्तनाय सज्जम्"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "समापितम्"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "निरस्तम्"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "विफलम्"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "विफलम्: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "कालः अतीतः। {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Obsidian इत्यस्य पिधाने कार्यं विच्छिन्नम्; काचिदपि टिप्पणी न रचिता"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Obsidian इत्यस्य पिधाने कार्यं विच्छिन्नम्; {path} इत्यत्र टिप्पणी स्यात्"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Obsidian इत्यस्य पिधाने कार्यं विच्छिन्नम्; टिप्पणी कालमुद्राभिः विना रचिता"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Obsidian इत्यस्य पिधाने कार्यं विच्छिन्नम्; टिप्पणी अनुवादेन विना रचिता"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "{stage} इत्यस्मिन् काले विच्छिन्नम्; पूर्वप्रार्थनायाः व्ययः पूर्वमेव जातः स्यात्"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "{stage} इत्यस्मिन् काले विच्छिन्नम्; पूर्वप्रार्थनायाः व्ययः जातः न वा इति न ज्ञायते"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "{stage} इत्यस्य अतिबहवः प्रयत्नाः"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "लक्ष्यमार्गे टिप्पणी पूर्वमेव विद्यते — तस्याः नाम परिवर्तयतु अपसारयतु वा, ततः «सक्रियकार्याणि दर्शय» इत्यतः पुनरारभताम्"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "लक्ष्यमार्गस्थिता टिप्पणी अस्य कार्यस्य वा न वा इति निश्चेतुं न शक्यते"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "अस्य कार्यस्य टिप्पणी स्थानान्तरिता लोपिता वा"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "संस्करणकाले टिप्पणी परिवर्तिता; कालमुद्राः परित्यक्ताः"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater न उपलभ्यते; तत् सक्रियं कृत्वा पुनरारभताम्"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "पुनरारम्भे सशुल्कसेवया लिखितरूपं पुनः आनीयते"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "टिप्पण्याः मार्गः एकरूपेण गणयितुं न शक्यते (संचयिकायाः दिनाङ्कस्य च विन्यासान् पश्यतु), ततः पुनरारभताम्"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "लिखितरूपटिप्पणी सफलतया रचिता"
@@ -1031,34 +855,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "कालमुद्राभिः अनुवादेन च विना टिप्पणी रचिता"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: Obsidian इत्यस्य पिधाने 1 टिप्पणीकार्यं विच्छिन्नम् — {title}: काचिदपि टिप्पणी न रचिता"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: Obsidian इत्यस्य पिधाने 1 टिप्पणीकार्यं विच्छिन्नम् — {title}: {path} इत्यत्र टिप्पणी स्यात्"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: Obsidian इत्यस्य पिधाने 1 टिप्पणीकार्यं विच्छिन्नम् — {title}: टिप्पणी कालमुद्राभिः विना रचिता"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: Obsidian इत्यस्य पिधाने 1 टिप्पणीकार्यं विच्छिन्नम् — {title}: टिप्पणी अनुवादेन विना रचिता"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: Obsidian इत्यस्य पिधाने {count} टिप्पणीकार्याणि विच्छिन्नानि; नवीनतमानि «सक्रियकार्याणि दर्शय» इत्यत्र सूचितानि"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 विच्छिन्नं कार्यं ध्यानम् अपेक्षते"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} विच्छिन्नानि कार्याणि ध्यानम् अपेक्षन्ते"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "कृपया {field} इति क्षेत्रम् पूरयतु"
@@ -1074,14 +870,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "{name} संसाधनम्: {done}/{total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "विच्छिन्नसङ्ग्रहाः पिहिताः: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "सङ्ग्रहं विरमतु"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

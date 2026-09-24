@@ -460,8 +460,8 @@
         "translation": "Apstrāde atcelta"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "Apstrāde tika pārtraukta; atsāciet to no „Rādīt aktīvos darbus“"
+        "original": "Processing was interrupted",
+        "translation": "Apstrāde tika pārtraukta"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Kļūda: {error} (arī atkļūdošanas piezīmi neizdevās izveidot)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Neizdevās pārbaudīt pārtrauktos uzdevumus: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Īsāki un ātrāki kopsavilkumi (izlaiž laika zīmogu saites)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Aktīvie darbi"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Nav aktīvu darbu"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Neizdevās nolasīt darbu sarakstu: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "Atmest noņem darbu no šī saraksta; piezīmes nekad netiek dzēstas."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Izvēlieties veidnes failu"
@@ -784,20 +760,12 @@
         "translation": "Apstrādājamie videoklipi: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Neizdevās saglabāt darbu: {error}. Videoklips, iespējams, vēl tiek apstrādāts; skatiet „Rādīt aktīvos darbus“"
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Neizdevās saglabāt darbu: {error}. Videoklips, iespējams, vēl tiek apstrādāts"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Šis videoklips jau tiek apstrādāts"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Šo darbu šādā stāvoklī nevar atsākt; skatiet tā statusu"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Šo darbu šādā stāvoklī nevar pabeigt; skatiet tā statusu"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -830,10 +798,6 @@
     "modal.template.var.llmTags.desc": {
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Birkas, kas ģenerētas no LLM pakalpojuma un modeļa"
-    },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Rādīt aktīvos darbus"
     },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
@@ -871,146 +835,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "{provider} modeļu saraksts atsvaidzināts. Marķieru ierobežojumi aizpildīti automātiski {count} modeļiem."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Iegūst transkripciju"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Apkopo"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Veido piezīmi"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Piezīme izveidota"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Pievieno laikspiedolu saites"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Tulko"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Pabeigts"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Atcelt"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Atmest"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Atvērt piezīmi"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Pabeigt bez laikspiedoliem"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Pabeigt bez tulkojuma"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Atsākt"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Atsākt (var tikt iekasēts atkārtoti)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Darbojas"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Gatavs turpināt"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Pabeigts"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Atcelts"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Neizdevās"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Neizdevās: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Iestājās noildze. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Pārtraukts, aizverot Obsidian; piezīme netika izveidota"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Pārtraukts, aizverot Obsidian; ceļā {path} var būt piezīme"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Pārtraukts, aizverot Obsidian; piezīme tika izveidota bez laikspiedoliem"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Pārtraukts, aizverot Obsidian; piezīme tika izveidota bez tulkojuma"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Pārtraukts posmā {stage}; iepriekšējais pieprasījums, iespējams, jau ir apmaksāts"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Pārtraukts posmā {stage}; nav zināms, vai iepriekšējais pieprasījums tika apmaksāts"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "Pārāk daudz mēģinājumu posmam {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "Mērķa ceļā jau ir piezīme — pārdēvējiet vai noņemiet to un pēc tam atsāciet no Rādīt aktīvos darbus"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Neizdevās apstiprināt, vai piezīme mērķa ceļā pieder šim darbam"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "Šī darba piezīme ir pārvietota vai dzēsta"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "Piezīme tika rediģēta apstrādes laikā; laikspiedoli tika izlaisti"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "Templater nav pieejams; ieslēdziet to un pēc tam atsāciet"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Atsākšana no jauna iegūs transkripciju, izmantojot maksas pakalpojumu"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "Piezīmes ceļu neizdevās aprēķināt konsekventi (pārbaudiet mapes un datuma iestatījumus), pēc tam atsāciet"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Transkripcijas piezīme veiksmīgi izveidota"
@@ -1035,34 +859,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Piezīme izveidota bez laikspiedoliem un bez tulkojuma"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 piezīmes darbs tika pārtraukts, aizverot Obsidian — {title}: piezīme netika izveidota"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 piezīmes darbs tika pārtraukts, aizverot Obsidian — {title}: ceļā {path} var būt piezīme"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 piezīmes darbs tika pārtraukts, aizverot Obsidian — {title}: piezīme izveidota bez laikspiedoliem"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 piezīmes darbs tika pārtraukts, aizverot Obsidian — {title}: piezīme izveidota bez tulkojuma"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: aizverot Obsidian, tika pārtraukti {count} piezīmju darbi; jaunākie ir sarakstā Rādīt aktīvos darbus"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 pārtraukts darbs prasa uzmanību"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: uzmanību prasa {count} pārtraukti darbi"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Aizpildiet lauku {field}"
@@ -1078,14 +874,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "Apstrādā {name}: {done} no {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Slēgtas pārtrauktās kolekcijas: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Apturēt kolekciju"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",

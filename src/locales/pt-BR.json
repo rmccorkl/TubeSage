@@ -460,8 +460,8 @@
         "translation": "O processamento foi cancelado"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
-        "translation": "O processamento foi interrompido; retome-o em \"Mostrar trabalhos ativos\""
+        "original": "Processing was interrupted",
+        "translation": "O processamento foi interrompido"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
@@ -470,10 +470,6 @@
     "notice.debugNote.failed": {
         "original": "Error: {error} (Also failed to create debug note)",
         "translation": "Erro: {error} (a nota de depuração também não pôde ser criada)"
-    },
-    "notice.recovery.checkFailed": {
-        "original": "Could not check for interrupted jobs: {error}",
-        "translation": "Não foi possível conferir as tarefas interrompidas: {error}"
     },
     "notice.transcript.noTimestamps": {
         "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
@@ -651,26 +647,6 @@
         "original": "Enable for shorter, quicker summaries (skips timestamp links)",
         "translation": "Para resumos mais curtos e rápidos (pula os links com marcação de tempo)"
     },
-    "modal.jobs.title": {
-        "original": "Active jobs",
-        "translation": "Tarefas em andamento"
-    },
-    "modal.jobs.empty": {
-        "original": "No active jobs",
-        "translation": "Nenhuma tarefa em andamento"
-    },
-    "modal.jobs.loadError": {
-        "original": "Could not read the job list: {error}",
-        "translation": "Não foi possível ler a lista de tarefas: {error}"
-    },
-    "modal.jobs.meta": {
-        "original": "{stage} · {age}",
-        "translation": "{stage} · {age}"
-    },
-    "modal.jobs.discardHint": {
-        "original": "Discard removes a job from this list; it never deletes notes.",
-        "translation": "Descartar remove uma tarefa desta lista; nunca exclui notas."
-    },
     "modal.templatePicker.title": {
         "original": "Select template file",
         "translation": "Selecionar arquivo de modelo"
@@ -784,20 +760,12 @@
         "translation": "Vídeos para processar: {count}"
     },
     "notice.job.saveFailed": {
-        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
-        "translation": "Não foi possível salvar a tarefa: {error}. O vídeo pode continuar sendo processado; veja \"Mostrar trabalhos ativos\""
+        "original": "Could not save the job: {error}. The video may still be processing",
+        "translation": "Não foi possível salvar a tarefa: {error}. O vídeo pode continuar sendo processado"
     },
     "notice.job.alreadyRunning": {
         "original": "This video is already being processed",
         "translation": "Este vídeo já está sendo processado"
-    },
-    "notice.job.cannotResume": {
-        "original": "This job cannot be resumed as it is; see its status",
-        "translation": "Esta tarefa não pode ser retomada assim; veja o status dela"
-    },
-    "notice.job.cannotFinish": {
-        "original": "This job cannot be finished as it is; see its status",
-        "translation": "Esta tarefa não pode ser concluída assim; veja o status dela"
     },
     "common.command.extract": {
         "original": "Extract YouTube transcript",
@@ -830,10 +798,6 @@
     "modal.template.var.llmTags.desc": {
         "original": " - Tags generated from the LLM provider and model",
         "translation": " - Tags geradas a partir do provedor e do modelo de LLM"
-    },
-    "common.command.showActiveJobs": {
-        "original": "Show active jobs",
-        "translation": "Mostrar trabalhos ativos"
     },
     "notice.models.providerSet": {
         "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
@@ -871,146 +835,6 @@
         "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
         "translation": "Lista de modelos da {provider} atualizada. Limites de tokens preenchidos automaticamente para {count} modelos."
     },
-    "modal.jobs.stage.transcript": {
-        "original": "Fetching transcript",
-        "translation": "Obtendo a transcrição"
-    },
-    "modal.jobs.stage.summary": {
-        "original": "Summarizing",
-        "translation": "Resumindo"
-    },
-    "modal.jobs.stage.noteCreating": {
-        "original": "Creating note",
-        "translation": "Criando a nota"
-    },
-    "modal.jobs.stage.noteCreated": {
-        "original": "Note created",
-        "translation": "Nota criada"
-    },
-    "modal.jobs.stage.timestamps": {
-        "original": "Adding timestamp links",
-        "translation": "Adicionando links de marcação de tempo"
-    },
-    "modal.jobs.stage.translation": {
-        "original": "Translating",
-        "translation": "Traduzindo"
-    },
-    "modal.jobs.stage.done": {
-        "original": "Done",
-        "translation": "Concluído"
-    },
-    "modal.jobs.action.cancel": {
-        "original": "Cancel",
-        "translation": "Cancelar"
-    },
-    "modal.jobs.action.discard": {
-        "original": "Discard",
-        "translation": "Descartar"
-    },
-    "modal.jobs.action.openNote": {
-        "original": "Open note",
-        "translation": "Abrir a nota"
-    },
-    "modal.jobs.action.finishWithoutTimestamps": {
-        "original": "Finish without timestamps",
-        "translation": "Concluir sem marcações de tempo"
-    },
-    "modal.jobs.action.finishWithoutTranslation": {
-        "original": "Finish without translation",
-        "translation": "Concluir sem tradução"
-    },
-    "modal.jobs.action.resume": {
-        "original": "Resume",
-        "translation": "Retomar"
-    },
-    "modal.jobs.action.resumeMayRebill": {
-        "original": "Resume (may re-bill)",
-        "translation": "Retomar (pode gerar nova cobrança)"
-    },
-    "modal.jobs.status.running": {
-        "original": "Running",
-        "translation": "Em execução"
-    },
-    "modal.jobs.status.readyToContinue": {
-        "original": "Ready to continue",
-        "translation": "Pronto para continuar"
-    },
-    "modal.jobs.status.finished": {
-        "original": "Finished",
-        "translation": "Finalizado"
-    },
-    "modal.jobs.status.cancelled": {
-        "original": "Cancelled",
-        "translation": "Cancelado"
-    },
-    "modal.jobs.status.failed": {
-        "original": "Failed",
-        "translation": "Falhou"
-    },
-    "modal.jobs.status.failedWithError": {
-        "original": "Failed: {error}",
-        "translation": "Falhou: {error}"
-    },
-    "modal.jobs.status.timedOut": {
-        "original": "Timed out. {status}",
-        "translation": "Tempo esgotado. {status}"
-    },
-    "modal.jobs.closed.noNote": {
-        "original": "Interrupted when Obsidian closed; no note was created",
-        "translation": "Interrompido quando o Obsidian foi fechado; nenhuma nota foi criada"
-    },
-    "modal.jobs.closed.mayExist": {
-        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
-        "translation": "Interrompido quando o Obsidian foi fechado; pode haver uma nota em {path}"
-    },
-    "modal.jobs.closed.withoutTimestamps": {
-        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
-        "translation": "Interrompido quando o Obsidian foi fechado; a nota foi criada sem marcações de tempo"
-    },
-    "modal.jobs.closed.withoutTranslation": {
-        "original": "Interrupted when Obsidian closed; the note was created without translation",
-        "translation": "Interrompido quando o Obsidian foi fechado; a nota foi criada sem tradução"
-    },
-    "modal.jobs.reason.paidStageInFlight": {
-        "original": "Interrupted during {stage}; the previous request may already have been billed",
-        "translation": "Interrompido durante {stage}; a solicitação anterior pode já ter sido cobrada"
-    },
-    "modal.jobs.reason.unknownBilling": {
-        "original": "Interrupted during {stage}; billing for the previous request is unknown",
-        "translation": "Interrompido durante {stage}; não se sabe se a solicitação anterior foi cobrada"
-    },
-    "modal.jobs.reason.attemptsExhausted": {
-        "original": "Too many attempts for {stage}",
-        "translation": "Tentativas demais para {stage}"
-    },
-    "modal.jobs.reason.noteCollision": {
-        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
-        "translation": "Já existe uma nota no caminho de destino — renomeie-a ou remova-a e depois retome em Mostrar trabalhos ativos"
-    },
-    "modal.jobs.reason.claimUnresolved": {
-        "original": "Could not confirm whether the note at the target path belongs to this job",
-        "translation": "Não foi possível confirmar se a nota no caminho de destino pertence a este trabalho"
-    },
-    "modal.jobs.reason.noteMissing": {
-        "original": "The note for this job was moved or deleted",
-        "translation": "A nota deste trabalho foi movida ou excluída"
-    },
-    "modal.jobs.reason.noteChanged": {
-        "original": "The note was edited during processing; timestamps were skipped",
-        "translation": "A nota foi editada durante o processamento; as marcações de tempo foram ignoradas"
-    },
-    "modal.jobs.reason.templaterUnavailable": {
-        "original": "Templater is not available; enable it, then resume",
-        "translation": "O Templater não está disponível; ative-o e depois retome"
-    },
-    "modal.jobs.reason.paidRefetch": {
-        "original": "Resuming re-fetches the transcript through a paid service",
-        "translation": "Retomar busca a transcrição novamente por um serviço pago"
-    },
-    "modal.jobs.reason.pathDrift": {
-        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
-        "translation": "O caminho da nota não pôde ser calculado de forma consistente (confira as configurações de pasta e data) e depois retome"
-    },
     "notice.note.done.created": {
         "original": "Transcript note created successfully",
         "translation": "Nota da transcrição criada com sucesso"
@@ -1035,34 +859,6 @@
         "original": "Note created without timestamps or translation",
         "translation": "Nota criada sem marcações de tempo nem tradução"
     },
-    "notice.coldStart.single.noNote": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
-        "translation": "TubeSage: 1 trabalho de nota foi interrompido quando o Obsidian foi fechado — {title}: nenhuma nota foi criada"
-    },
-    "notice.coldStart.single.mayExist": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
-        "translation": "TubeSage: 1 trabalho de nota foi interrompido quando o Obsidian foi fechado — {title}: pode haver uma nota em {path}"
-    },
-    "notice.coldStart.single.withoutTimestamps": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
-        "translation": "TubeSage: 1 trabalho de nota foi interrompido quando o Obsidian foi fechado — {title}: nota criada sem marcações de tempo"
-    },
-    "notice.coldStart.single.withoutTranslation": {
-        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
-        "translation": "TubeSage: 1 trabalho de nota foi interrompido quando o Obsidian foi fechado — {title}: nota criada sem tradução"
-    },
-    "notice.coldStart.several": {
-        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
-        "translation": "TubeSage: {count} trabalhos de nota foram interrompidos quando o Obsidian foi fechado; os mais recentes estão em Mostrar trabalhos ativos"
-    },
-    "notice.recovery.single": {
-        "original": "TubeSage: 1 interrupted job needs attention",
-        "translation": "TubeSage: 1 trabalho interrompido precisa de atenção"
-    },
-    "notice.recovery.several": {
-        "original": "TubeSage: {count} interrupted jobs need attention",
-        "translation": "TubeSage: {count} trabalhos interrompidos precisam de atenção"
-    },
     "common.validation.required": {
         "original": "Please enter a {field}",
         "translation": "Informe o campo {field}"
@@ -1078,14 +874,6 @@
     "notice.collection.progress": {
         "original": "Processing {name}: {done} of {total}",
         "translation": "Processando {name}: {done} de {total}"
-    },
-    "notice.collection.closedOnStart": {
-        "original": "Interrupted collections closed: {count}",
-        "translation": "Coleções interrompidas fechadas: {count}"
-    },
-    "modal.jobs.cancelCollection": {
-        "original": "Stop collection",
-        "translation": "Parar coleção"
     },
     "notice.progress.tapToCancel": {
         "original": "Tap to cancel",
