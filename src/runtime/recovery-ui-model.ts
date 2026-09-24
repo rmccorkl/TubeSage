@@ -3,7 +3,27 @@
 // and the prompt the runner/planner already classified. Reviewers required
 // this split so the modal itself can stay a thin renderer over
 // `buildRecoveryRow` (Task 6a brief, #3).
+//
+// PURITY IS UNAFFECTED BY THE i18n IMPORT. `src/runtime/*` and `src/jobs/*`
+// must never pull a VALUE out of `obsidian` (the package ships types only, so
+// such an import breaks every unit test in this tree). `../i18n` does not: it
+// imports `./locales`, which is static JSON, and reads the interface language
+// through a resolver `main.ts` installs at runtime with `setLanguageResolver`
+// — `getLanguage` is imported in main.ts and nowhere else. `job-progress-
+// notice.ts` in this same directory has imported `t` exactly this way since
+// the progress notice was localised; this module follows it.
+//
+// WHY WHOLE SENTENCES RATHER THAN ASSEMBLED ONES. This module used to build
+// its English in code: a `note` PARAMETER was threaded in so a caller could
+// supply the article ("the note" in the modal row, "note" in the notice), and
+// a ternary spliced the word "translation" or "timestamps" into the middle of
+// a clause. Both are English grammar encoded as an API. No other language is
+// obliged to place an article, inflect that noun, or put the clause where
+// English puts it — so the record's state now SELECTS a whole translated
+// sentence, and the only composition left is parameter substitution (see
+// src/i18n/index.ts).
 
+import { t } from "../i18n";
 import { effectiveTitle, type JobStage, type NoteJobRecord } from "../jobs/job-record";
 import type { ClosedOnColdStart, JobEvent, RecoveryPrompt } from "../jobs/job-runner";
 
@@ -11,9 +31,14 @@ export type RecoveryActionId = "resume" | "finish-without-timestamps" | "cancel"
 
 export interface RecoveryAction {
   id: RecoveryActionId;
-  /** Button label, sentence case (ESLint obsidianmd/ui/sentence-case applies to UI strings). */
+  /** Button label, already translated. Sentence case is a Latin-script rule; see src/i18n/script.ts. */
   label: string;
-  /** True when the action may re-bill a previous request; the label must then contain "may re-bill". */
+  /**
+   * True when the action may re-bill a previous request. The English label
+   * then reads "Resume (may re-bill)", but the warning is carried by this
+   * FLAG, not by matching words inside the label: the label is translated and
+   * no locale is obliged to spell the caveat the way English does.
+   */
   warnsAboutBilling: boolean;
   /** Call-to-action styling hint for the primary action. */
   cta: boolean;
@@ -28,15 +53,32 @@ export interface RecoveryRowModel {
   actions: RecoveryAction[];
 }
 
-const STAGE_LABELS: Record<JobStage, string> = {
-  transcript: "Fetching transcript",
-  summary: "Summarizing",
-  "note-creating": "Creating note",
-  "note-created": "Note created",
-  timestamps: "Adding timestamp links",
-  translation: "Translating",
-  done: "Done",
-};
+/**
+ * The modal's own label for a stage. Deliberately NOT the progress notice's
+ * `notice.progress.stage.*` family: four of the five overlapping stages say
+ * something different there ("Summarizing transcript", "Adding timestamps",
+ * "Translating note"), and the modal additionally needs `note-created` and
+ * `done`, which the runner never emits as progress. Each key is written out
+ * literally because the i18n usage gate scans for exactly that shape.
+ */
+function stageLabel(stage: JobStage): string {
+  switch (stage) {
+    case "transcript":
+      return t("modal.jobs.stage.transcript");
+    case "summary":
+      return t("modal.jobs.stage.summary");
+    case "note-creating":
+      return t("modal.jobs.stage.noteCreating");
+    case "note-created":
+      return t("modal.jobs.stage.noteCreated");
+    case "timestamps":
+      return t("modal.jobs.stage.timestamps");
+    case "translation":
+      return t("modal.jobs.stage.translation");
+    case "done":
+      return t("modal.jobs.stage.done");
+  }
+}
 
 // The runner's checkpoint stage (`record.stage`) and the prompt's own stage
 // (e.g. planner rule 5 asks about "summary" while the record checkpoint is
@@ -52,19 +94,28 @@ function resolveStage(record: NoteJobRecord, prompt: RecoveryPrompt): JobStage {
   return record.stage;
 }
 
+/** What a job closed with its instance left behind. */
+type ClosedOutcome = "no-note" | "may-exist" | "without-timestamps" | "without-translation";
+
 /**
- * What a job closed with its instance left behind, from `notePath` (set only after vault.create), the
- * stage it reached, and — only when `notePath` is still unset — a one-time vault probe of the claimed
- * path (#3 batch G item 7): the note-creating crash window can land a note the record never learned about.
+ * Decide that outcome from `notePath` (set only after vault.create), the stage
+ * the job reached, and — only when `notePath` is still unset — a one-time vault
+ * probe of the claimed path (#3 batch G item 7): the note-creating crash window
+ * can land a note the record never learned about.
+ *
+ * Returns an OUTCOME ID, never a phrase. That is what lets the two places which
+ * report it — the modal's status line and the cold-start notice — each render a
+ * complete sentence of their own. They are not one sentence with two prefixes:
+ * one is a bare status, the other names the job and carries its title.
  */
-function closedOutcome(record: NoteJobRecord, noteMayExist = false, note = "note"): string {
+function closedOutcome(record: NoteJobRecord, noteMayExist: boolean): ClosedOutcome {
   if (record.notePath !== undefined) {
-    return `${note} was created without ${record.stage === "translation" ? "translation" : "timestamps"}`;
+    return record.stage === "translation" ? "without-translation" : "without-timestamps";
   }
   if (noteMayExist && record.claimedNotePath !== undefined) {
-    return `a note may exist at ${record.claimedNotePath}`;
+    return "may-exist";
   }
-  return "no note was created";
+  return "no-note";
 }
 
 function isClosedWithInstance(record: NoteJobRecord): boolean {
@@ -73,34 +124,71 @@ function isClosedWithInstance(record: NoteJobRecord): boolean {
 
 function terminalStatusLine(record: NoteJobRecord, noteMayExist: boolean): string {
   if (isClosedWithInstance(record)) {
-    // Honest about the cause: `lastError` (kept as evidence) is not why the job ended.
-    return `Interrupted when Obsidian closed; ${closedOutcome(record, noteMayExist, "the note")}`;
+    // Honest about the cause: `lastError` (kept as evidence) is not why the job
+    // ended. One whole sentence per outcome — the cause and what it left behind
+    // are a single clause in English and need not be two anywhere else.
+    switch (closedOutcome(record, noteMayExist)) {
+      case "without-translation":
+        return t("modal.jobs.closed.withoutTranslation");
+      case "without-timestamps":
+        return t("modal.jobs.closed.withoutTimestamps");
+      case "may-exist":
+        // `claimedNotePath` is always defined when this branch is reached (see
+        // closedOutcome); the fallback exists only to satisfy the compiler.
+        return t("modal.jobs.closed.mayExist", { path: record.claimedNotePath ?? "" });
+      case "no-note":
+        return t("modal.jobs.closed.noNote");
+    }
   }
   switch (record.status) {
     case "failed":
-      return record.lastError !== undefined ? `Failed: ${record.lastError}` : "Failed";
+      // `lastError` is THIRD-PARTY text — the model provider's, YouTube's or
+      // Obsidian's own message, in whatever language it arrived in. It is
+      // substituted verbatim and never translated or re-cased.
+      return record.lastError !== undefined
+        ? t("modal.jobs.status.failedWithError", { error: record.lastError })
+        : t("modal.jobs.status.failed");
     case "cancelled":
-      return "Cancelled";
+      return t("modal.jobs.status.cancelled");
     case "done":
     case "running":
     case "interrupted":
-      return "Finished";
+      return t("modal.jobs.status.finished");
   }
 }
 
-const cancelAction: RecoveryAction = { id: "cancel", label: "Cancel", warnsAboutBilling: false, cta: false };
-const discardAction: RecoveryAction = { id: "discard", label: "Discard", warnsAboutBilling: false, cta: false };
+// The action constants became factories when the labels became translated: a
+// module-level object would have frozen whichever language was current when
+// this file was first imported, and `t()` is deliberately re-read per lookup
+// (src/i18n/index.ts) because Obsidian's 1.13 API has no language-change event.
+function cancelAction(): RecoveryAction {
+  return { id: "cancel", label: t("modal.jobs.action.cancel"), warnsAboutBilling: false, cta: false };
+}
+
+function discardAction(): RecoveryAction {
+  return { id: "discard", label: t("modal.jobs.action.discard"), warnsAboutBilling: false, cta: false };
+}
+
 // An explicit click only (a recovered job never auto-opens its note, F5);
 // offered on a job closed with its instance when its note exists.
-const openNoteAction: RecoveryAction = { id: "open-note", label: "Open note", warnsAboutBilling: false, cta: false };
+function openNoteAction(): RecoveryAction {
+  return { id: "open-note", label: t("modal.jobs.action.openNote"), warnsAboutBilling: false, cta: false };
+}
+
 // One action id ("finish now, no further LLM call" — job-runner.ts
 // ResumeOptions.finishWithoutTimestamps); the label names the pass that is
 // still pending at the row's stage. At `translation` the timestamps pass is
-// already on disk, so only the translation is what gets skipped.
+// already on disk, so only the translation is what gets skipped. TWO WHOLE
+// LABELS rather than one with the noun spliced in: which word a language uses
+// for the skipped pass, how it inflects and where in the phrase it sits are
+// not English's to decide.
 function finishAction(stage: JobStage): RecoveryAction {
   return {
     id: "finish-without-timestamps",
-    label: stage === "translation" ? "Finish without translation" : "Finish without timestamps",
+    label:
+      stage === "translation"
+        ? t("modal.jobs.action.finishWithoutTranslation")
+        : t("modal.jobs.action.finishWithoutTimestamps"),
     warnsAboutBilling: false,
     cta: false,
   };
@@ -109,7 +197,7 @@ function finishAction(stage: JobStage): RecoveryAction {
 function resumeAction(warnsAboutBilling: boolean): RecoveryAction {
   return {
     id: "resume",
-    label: warnsAboutBilling ? "Resume (may re-bill)" : "Resume",
+    label: warnsAboutBilling ? t("modal.jobs.action.resumeMayRebill") : t("modal.jobs.action.resume"),
     warnsAboutBilling,
     cta: false,
   };
@@ -117,7 +205,10 @@ function resumeAction(warnsAboutBilling: boolean): RecoveryAction {
 
 type AskUserPrompt = Extract<RecoveryPrompt, { action: "ask-user" }>;
 
-function describeAskUser(prompt: AskUserPrompt, stageLabel: string): { statusLine: string; actions: RecoveryAction[] } {
+function describeAskUser(
+  prompt: AskUserPrompt,
+  stageLabelText: string,
+): { statusLine: string; actions: RecoveryAction[] } {
   const canFinish = prompt.canFinishWithoutTimestamps;
   const finish = finishAction(prompt.stage);
   const reason = prompt.reason;
@@ -126,16 +217,16 @@ function describeAskUser(prompt: AskUserPrompt, stageLabel: string): { statusLin
 
   switch (reason) {
     case "paid-stage-in-flight":
-      statusLine = `Interrupted during ${stageLabel}; the previous request may already have been billed`;
-      actions = [resumeAction(true), ...(canFinish ? [finish] : []), discardAction];
+      statusLine = t("modal.jobs.reason.paidStageInFlight", { stage: stageLabelText });
+      actions = [resumeAction(true), ...(canFinish ? [finish] : []), discardAction()];
       break;
     case "unknown-billing-in-flight":
-      statusLine = `Interrupted during ${stageLabel}; billing for the previous request is unknown`;
-      actions = [resumeAction(true), ...(canFinish ? [finish] : []), discardAction];
+      statusLine = t("modal.jobs.reason.unknownBilling", { stage: stageLabelText });
+      actions = [resumeAction(true), ...(canFinish ? [finish] : []), discardAction()];
       break;
     case "attempts-exhausted":
-      statusLine = `Too many attempts for ${stageLabel}`;
-      actions = [...(canFinish ? [finish] : []), discardAction];
+      statusLine = t("modal.jobs.reason.attemptsExhausted", { stage: stageLabelText });
+      actions = [...(canFinish ? [finish] : []), discardAction()];
       break;
     case "note-collision":
       // Ruling (T6b brief #1): resume IS offered, with the billing warning —
@@ -145,34 +236,39 @@ function describeAskUser(prompt: AskUserPrompt, stageLabel: string): { statusLin
       // resume against a note that is still there re-blocks before any
       // paid call (runner precheck), so the warning is about the re-run
       // that follows once the path is free.
-      statusLine = "A note already exists at the target path — rename or remove it, then resume from Show active jobs";
-      actions = [resumeAction(true), discardAction];
+      //
+      // This row QUOTES the plugin's own command by name. It used to hardcode
+      // the English "Show active jobs"; now each locale's row carries that
+      // locale's own command name (common.command.showActiveJobs), and the
+      // pairing is enforced by QUOTED_LABELS in scripts/i18n-lib.mjs.
+      statusLine = t("modal.jobs.reason.noteCollision");
+      actions = [resumeAction(true), discardAction()];
       break;
     case "claim-unresolved":
-      statusLine = "Could not confirm whether the note at the target path belongs to this job";
-      actions = [discardAction];
+      statusLine = t("modal.jobs.reason.claimUnresolved");
+      actions = [discardAction()];
       break;
     case "note-missing":
-      statusLine = "The note for this job was moved or deleted";
-      actions = [resumeAction(true), discardAction];
+      statusLine = t("modal.jobs.reason.noteMissing");
+      actions = [resumeAction(true), discardAction()];
       break;
     case "note-changed":
-      statusLine = "The note was edited during processing; timestamps were skipped";
-      actions = [discardAction];
+      statusLine = t("modal.jobs.reason.noteChanged");
+      actions = [discardAction()];
       break;
     case "templater-unavailable":
-      statusLine = "Templater is not available; enable it, then resume";
-      actions = [resumeAction(false), discardAction];
+      statusLine = t("modal.jobs.reason.templaterUnavailable");
+      actions = [resumeAction(false), discardAction()];
       break;
     case "paid-refetch-required":
-      statusLine = "Resuming re-fetches the transcript through a paid service";
-      actions = [resumeAction(true), ...(canFinish ? [finish] : []), discardAction];
+      statusLine = t("modal.jobs.reason.paidRefetch");
+      actions = [resumeAction(true), ...(canFinish ? [finish] : []), discardAction()];
       break;
     case "path-drift":
       // Re-entry is at "summary" (job-runner.ts REGENERATE_REASONS), a paid
       // re-run, so the resume carries the billing warning.
-      statusLine = "The note path could not be computed consistently (check folder and date settings), then resume";
-      actions = [resumeAction(true), discardAction];
+      statusLine = t("modal.jobs.reason.pathDrift");
+      actions = [resumeAction(true), discardAction()];
       break;
     default: {
       const exhaustive: never = reason;
@@ -181,7 +277,9 @@ function describeAskUser(prompt: AskUserPrompt, stageLabel: string): { statusLin
   }
 
   if (prompt.interruption === "timeout") {
-    statusLine = `Timed out. ${statusLine}`;
+    // Substitution, not concatenation: a language that leads with the status
+    // and trails the qualifier can order the row however it needs to.
+    statusLine = t("modal.jobs.status.timedOut", { status: statusLine });
   }
 
   return { statusLine, actions };
@@ -190,26 +288,31 @@ function describeAskUser(prompt: AskUserPrompt, stageLabel: string): { statusLin
 function describePrompt(
   record: NoteJobRecord,
   prompt: RecoveryPrompt,
-  stageLabel: string,
+  stageLabelText: string,
   noteExists: boolean,
   noteMayExist: boolean,
 ): { statusLine: string; actions: RecoveryAction[] } {
   switch (prompt.action) {
     case "nothing":
       if (prompt.why === "live") {
-        return { statusLine: "Running", actions: [cancelAction] };
+        return { statusLine: t("modal.jobs.status.running"), actions: [cancelAction()] };
       }
       return {
         statusLine: terminalStatusLine(record, noteMayExist),
         actions:
-          isClosedWithInstance(record) && record.notePath !== undefined && noteExists ? [openNoteAction, discardAction] : [discardAction],
+          isClosedWithInstance(record) && record.notePath !== undefined && noteExists
+            ? [openNoteAction(), discardAction()]
+            : [discardAction()],
       };
     case "continue":
     case "auto-resume":
     case "adopt-note":
-      return { statusLine: "Ready to continue", actions: [resumeAction(false), discardAction] };
+      return {
+        statusLine: t("modal.jobs.status.readyToContinue"),
+        actions: [resumeAction(false), discardAction()],
+      };
     case "ask-user":
-      return describeAskUser(prompt, stageLabel);
+      return describeAskUser(prompt, stageLabelText);
   }
 }
 
@@ -230,15 +333,15 @@ export function buildRecoveryRow(
   noteMayExist = false,
 ): RecoveryRowModel {
   const stage = resolveStage(record, prompt);
-  const stageLabel = STAGE_LABELS[stage];
-  const { statusLine, actions } = describePrompt(record, prompt, stageLabel, noteExists, noteMayExist);
+  const stageLabelText = stageLabel(stage);
+  const { statusLine, actions } = describePrompt(record, prompt, stageLabelText, noteExists, noteMayExist);
   const title = effectiveTitle(record) ?? record.url;
   const notePath = record.notePath ?? record.claimedNotePath;
 
   return {
     id: record.id,
     title,
-    stageLabel,
+    stageLabel: stageLabelText,
     statusLine,
     ...(notePath !== undefined ? { notePath } : {}),
     actions: withCta(actions),
@@ -256,24 +359,20 @@ export function doneNoticeText(event: DoneEvent): string {
   const timestampsEdited = event.timestampsSkipped === "note-changed";
   switch (event.translationSkipped) {
     case undefined:
-      return timestampsEdited
-        ? "Note created, but timestamps were skipped because the note was edited"
-        : "Transcript note created successfully";
+      return timestampsEdited ? t("notice.note.done.timestampsEdited") : t("notice.note.done.created");
     case "note-changed":
-      return timestampsEdited
-        ? "Note created, but timestamps and the translation were skipped because the note was edited"
-        : "Note created, but the translation was skipped because the note was edited";
+      return timestampsEdited ? t("notice.note.done.bothEdited") : t("notice.note.done.translationEdited");
     case "user-choice":
       return event.timestampsSkipped === "user-choice"
-        ? "Note created without timestamps or translation"
-        : "Note created without translation";
+        ? t("notice.note.done.withoutBoth")
+        : t("notice.note.done.withoutTranslation");
     case "timestamps-skipped":
       // Only ever paired with timestampsSkipped: "user-choice" (#3 D2 legacy
       // parity): the job's own flags skipped the timestamps pass, so a
       // translation was never attempted either — same wording as skipping
       // both by explicit choice, since the legacy modal showed nothing more
       // specific for this case either.
-      return "Note created without timestamps or translation";
+      return t("notice.note.done.withoutBoth");
   }
 }
 
@@ -282,6 +381,11 @@ export function doneNoticeText(event: DoneEvent): string {
  * started it); undefined when none. One job is named with what it left behind; more point to the list —
  * worded so it stays true even when more were closed than the modal's recent-terminal cap shows (#3 batch
  * G item 2), instead of promising a full list that may only show the most recent few.
+ *
+ * The one-job and many-job forms are two different STATEMENTS, not one sentence in two numbers: the first
+ * names the job and says what is on disk, the second gives a count and points at the list. So this branch
+ * is content rather than grammar, and the many-job row is written to read correctly for any count from two
+ * upwards — which is why it is an ordinary key and not a `tPlural` family.
  */
 export function coldStartNoticeText(closed: readonly ClosedOnColdStart[]): string | undefined {
   if (closed.length === 0) {
@@ -290,9 +394,19 @@ export function coldStartNoticeText(closed: readonly ClosedOnColdStart[]): strin
   if (closed.length === 1) {
     const { record, noteMayExist } = closed[0];
     const title = effectiveTitle(record) ?? record.url;
-    return `TubeSage: 1 note job was interrupted when Obsidian closed — ${title}: ${closedOutcome(record, noteMayExist)}`;
+    switch (closedOutcome(record, noteMayExist)) {
+      case "without-translation":
+        return t("notice.coldStart.single.withoutTranslation", { title });
+      case "without-timestamps":
+        return t("notice.coldStart.single.withoutTimestamps", { title });
+      case "may-exist":
+        // Always defined when this branch is reached; see closedOutcome.
+        return t("notice.coldStart.single.mayExist", { title, path: record.claimedNotePath ?? "" });
+      case "no-note":
+        return t("notice.coldStart.single.noNote", { title });
+    }
   }
-  return `TubeSage: ${closed.length} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs`;
+  return t("notice.coldStart.several", { count: closed.length });
 }
 
 export type RecoveryTrigger = "startup" | "visible" | "manual";
@@ -319,14 +433,21 @@ export function recoveryNoticeText(promptCount: number): string | undefined {
     return undefined;
   }
   if (promptCount === 1) {
-    return "TubeSage: 1 interrupted job needs attention";
+    return t("notice.recovery.single");
   }
-  return `TubeSage: ${promptCount} interrupted jobs need attention`;
+  return t("notice.recovery.several", { count: promptCount });
 }
 
 /**
  * Pure: a coarse relative age for the modal's meta line, from two epochs the caller already holds
  * (`record.updatedAt`, `now`). Clock skew (a future updatedAt) reads as "just now".
+ *
+ * DELIBERATELY STILL ENGLISH, and the only text in this module that is. A relative age is not a sentence
+ * to translate but a quantity to FORMAT: the four forms below are four counted strings — a `tPlural`
+ * family each, 24 matrix rows — and `Intl.RelativeTimeFormat` already produces all four correctly in every
+ * locale from the platform's own CLDR data. Hand-authoring in the matrix what the platform holds would be
+ * the wrong fix, so this is left for a follow-up that replaces the function rather than translating it.
+ * `modal.jobs.meta`'s shipped context note already records that `{age}` arrives English.
  */
 export function formatJobAge(updatedAt: number, now: number): string {
   const elapsed = Math.max(0, now - updatedAt);

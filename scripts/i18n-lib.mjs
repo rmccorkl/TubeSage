@@ -110,6 +110,52 @@ export function parseCsv(text) {
  * translation }`, mirroring Obsidian's own `original=`/`translation=` pairs so
  * a drifted English original is detectable.
  */
+/**
+ * Plural rows, and which locale is entitled to which of them.
+ *
+ * A counted string is authored as one matrix row per CLDR category —
+ * `<base>.one`, `<base>.few`, … — because the categories a sentence needs are a
+ * property of the LANGUAGE, not of the string: English has two, Polish four,
+ * Arabic six, Japanese one. A locale is therefore required to carry exactly the
+ * rows its own grammar uses and no others, which is why the usual
+ * "every locale carries every English key" rule cannot apply to these rows.
+ *
+ * `other` is the one category CLDR guarantees every language has, so it is
+ * always required and is the runtime's within-locale fallback.
+ */
+const PLURAL_CATEGORIES = ["zero", "one", "two", "few", "many", "other"];
+const PLURAL_KEY = new RegExp(`^(.*)\\.(${PLURAL_CATEGORIES.join("|")})$`);
+
+export function pluralRowOf(key) {
+  const m = PLURAL_KEY.exec(key);
+  return m === null ? null : { base: m[1], category: m[2] };
+}
+
+const categoryCache = new Map();
+function categoriesFor(code) {
+  if (!categoryCache.has(code)) {
+    let set;
+    try {
+      set = new Set(new Intl.PluralRules(code).resolvedOptions().pluralCategories);
+    } catch {
+      set = new Set(["one", "other"]);
+    }
+    categoryCache.set(code, set);
+  }
+  return categoryCache.get(code);
+}
+
+/**
+ * Does `code` carry `key`? True for every ordinary row; for a plural row, true
+ * only when that category is one this language actually uses.
+ */
+export function localeNeedsKey(code, key) {
+  const row = pluralRowOf(key);
+  if (row === null) return true;
+  if (row.category === "other") return true;
+  return categoriesFor(code).has(row.category);
+}
+
 export function buildLocales(csvText) {
   const { header, rows } = parseCsv(csvText);
   if (header[0] !== "key" || header[1] !== "context" || header[2] !== "en") {
@@ -124,9 +170,12 @@ export function buildLocales(csvText) {
     const key = row[0];
     if (key === "") throw new Error("i18n matrix has a row with an empty key");
     if (key in en) throw new Error(`i18n matrix has a duplicate key: ${key}`);
-    en[key] = row[2];
     context[key] = row[1];
+    // English is a language like any other here: it carries `one`/`other` and
+    // must NOT carry `few`, so the same entitlement test gates the en column.
+    if (localeNeedsKey("en", key)) en[key] = row[2];
     languages.forEach((code, index) => {
+      if (!localeNeedsKey(code, key)) return;
       locales[code][key] = { original: row[2], translation: row[3 + index] };
     });
   }
@@ -154,12 +203,21 @@ export function flattenTranslations(entries) {
 // `(?<![\w$.])` keeps `parseInt(`, `format(`, `.at(` and `obj.t(` out: only a
 // free-standing `t(` call is a translation lookup.
 const T_CALL = /(?<![\w$.])t\(\s*['"]([^'"]+)['"]/g;
+// `tPlural('base', count)` names a key FAMILY: the rows in the matrix are
+// `base.one`, `base.other`, … and none of them is ever written literally in the
+// code. Without this the orphan scan cannot see a counted string at all, and
+// every plural row reads as "en.json has a key no code uses".
+const T_PLURAL_CALL = /(?<![\w$.])tPlural\(\s*['"]([^'"]+)['"]/g;
 
-/** Collect every key the given sources pass to `t()`. */
+/** Collect every key the given sources pass to `t()`, and every plural base. */
 export function scanKeysUsedInCode(sources) {
   const keys = new Set();
   for (const { text } of sources) {
     for (const match of text.matchAll(T_CALL)) keys.add(match[1]);
+    // A plural call names the FAMILY (`n.videos`), never a row. Recording the
+    // base rather than expanding it to six categories is what keeps English
+    // from being told it is "missing" the four categories it does not use.
+    for (const match of text.matchAll(T_PLURAL_CALL)) keys.add(match[1]);
   }
   return keys;
 }
@@ -221,6 +279,19 @@ function sameCounts(a, b) {
 
 export const QUOTED_LABELS = [
   { key: "license.required.step5", quotes: "settings.support.license.acceptLabel" },
+  // The same rule for the plugin's own command name. These five sentences tell
+  // the user to go and find `Show active jobs` in the command palette, and that
+  // command's NAME is now localised too (main.ts), so each locale's sentence has
+  // to carry that locale's command name. Before, all five carried the English
+  // one in all 51 columns, which was correct only because the command itself was
+  // English. Pinning the pair here is what stops the two drifting apart again:
+  // rename the command in one locale and the gate names the sentence that no
+  // longer quotes it.
+  { key: "notice.progress.message", quotes: "common.command.showActiveJobs" },
+  { key: "notice.job.interrupted", quotes: "common.command.showActiveJobs" },
+  { key: "notice.job.saveFailed", quotes: "common.command.showActiveJobs" },
+  { key: "modal.jobs.reason.noteCollision", quotes: "common.command.showActiveJobs" },
+  { key: "notice.coldStart.several", quotes: "common.command.showActiveJobs" },
 ];
 
 export function checkLocales({ csvText, en, locales = {}, flat, keysUsedInCode, glossary = GLOSSARY }) {
@@ -241,7 +312,18 @@ export function checkLocales({ csvText, en, locales = {}, flat, keysUsedInCode, 
     for (const key of enKeys) {
       const entry = entries[key];
       if (entry === undefined) {
+        // A plural row this language does not use is absent on purpose.
+        if (!localeNeedsKey(code, key)) continue;
         add({ code: "missing-in-locale", locale: code, key, message: `${code}.json is missing ${key}` });
+        continue;
+      }
+      if (!localeNeedsKey(code, key)) {
+        add({
+          code: "plural-category-not-used",
+          locale: code,
+          key,
+          message: `${code}.json carries ${key}, but ${code} does not use the "${pluralRowOf(key)?.category}" plural category`,
+        });
         continue;
       }
       if (entry.original !== en[key]) {
@@ -276,9 +358,14 @@ export function checkLocales({ csvText, en, locales = {}, flat, keysUsedInCode, 
       }
     }
     for (const key of Object.keys(entries)) {
-      if (!(key in en)) {
-        add({ code: "orphan-in-locale", locale: code, key, message: `${code}.json has ${key}, which en.json does not` });
-      }
+      if (key in en) continue;
+      // Polish carries `few`/`many`; English has neither, and that is correct.
+      // Such a row is legitimate when its FAMILY exists in English and this
+      // language actually uses the category.
+      const row = pluralRowOf(key);
+      const familyInEn = row !== null && `${row.base}.other` in en;
+      if (familyInEn && localeNeedsKey(code, key)) continue;
+      add({ code: "orphan-in-locale", locale: code, key, message: `${code}.json has ${key}, which en.json does not` });
     }
   }
 
@@ -334,10 +421,17 @@ export function checkLocales({ csvText, en, locales = {}, flat, keysUsedInCode, 
 
   if (keysUsedInCode !== undefined) {
     for (const key of keysUsedInCode) {
-      if (!(key in en)) add({ code: "missing-key-used-in-code", key, message: `code calls t("${key}") but en.json has no such key` });
+      // A plural base is satisfied by its `other` row, the one category CLDR
+      // guarantees every language — and therefore English — has.
+      if (key in en || `${key}.other` in en) continue;
+      add({ code: "missing-key-used-in-code", key, message: `code calls t("${key}") but en.json has no such key` });
     }
     for (const key of enKeys) {
-      if (!keysUsedInCode.has(key)) add({ code: "orphan-key-in-en", key, message: `en.json has ${key}, which no code uses` });
+      if (keysUsedInCode.has(key)) continue;
+      // `tPlural('n.videos', …)` uses `n.videos.one` and `n.videos.other` alike.
+      const row = pluralRowOf(key);
+      if (row !== null && keysUsedInCode.has(row.base)) continue;
+      add({ code: "orphan-key-in-en", key, message: `en.json has ${key}, which no code uses` });
     }
   }
 

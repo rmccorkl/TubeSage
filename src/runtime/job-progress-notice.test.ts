@@ -84,9 +84,13 @@ describe("progressNoticeText", () => {
     const text = progressNoticeText("transcript");
     expect(text).not.toContain("Fetching transcript");
     expect(text).toContain("Transkript");
-    // The command name stays English on purpose: the command itself is not
-    // translated, so a translated label could not be found in the palette.
-    expect(text).toContain("Show active jobs");
+    // The command name is translated too, so this row quotes the GERMAN one:
+    // the palette lists the command under the interface language, and quoting
+    // the English name here would send a German reader looking for an entry
+    // that is not there. The pairing is enforced across all 51 columns by
+    // QUOTED_LABELS in scripts/i18n-lib.mjs.
+    expect(text).toContain("Aktive Aufträge anzeigen");
+    expect(text).not.toContain("Show active jobs");
   });
 });
 

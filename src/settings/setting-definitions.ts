@@ -22,7 +22,7 @@ import type {
     TextComponent,
     ToggleComponent,
 } from 'obsidian';
-import { t } from '../i18n';
+import { t, tPlural } from '../i18n';
 import { getLogger, LogLevel, setGlobalLogLevel } from '../utils/logger';
 import { getEffectiveLimits, isModelSupported } from '../utils/model-limits-registry';
 import type { YouTubeTranscriptSettings } from './settings-defaults';
@@ -566,7 +566,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                         host.settings.maxTokens = effectiveMaxTokens;
 
                         // Show notice with effective token limit
-                        host.showNotice(`Provider set to ${value}. Output budget: ${effectiveMaxTokens} tokens (max output minus reserve).`, 3000);
+                        host.showNotice(t('notice.models.providerSet', { provider: value, tokens: effectiveMaxTokens }), 3000);
 
                         // Update settings
                         await host.saveSettings();
@@ -1129,7 +1129,7 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
                             void (async () => {
                                 if (value !== 'custom') {
                                     await host.saveSettings();
-                                    host.showNotice(`Model changed to ${value}. Output budget: ${host.settings.maxTokens} tokens (max output minus reserve).`, 3000);
+                                    host.showNotice(t('notice.models.modelChanged', { model: value, tokens: host.settings.maxTokens }), 3000);
                                 } else {
                                     // Custom model selected - initialize custom model limits if they don't exist
                                     const currentModel = host.settings.selectedModels[provider];
@@ -1169,7 +1169,12 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
                                 void (async () => {
                                 const apiKey = host.settings.apiKeys[provider];
                                 if (provider !== 'openrouter' && (!apiKey || apiKey.trim() === '')) {
-                                    host.showNotice(`${displayName} API key is required to refresh models.`, 5000);
+                                    // Reuses the notice the per-provider fetchers already
+                                    // show for this very condition (main.ts:2898 and its
+                                    // siblings): this guard is the same "refresh asked for,
+                                    // no key saved" case, caught one step earlier. A second
+                                    // key would have been a near-duplicate in 51 locales.
+                                    host.showNotice(t('notice.models.apiKeyMissing', { provider: displayName }), 5000);
                                     return;
                                 }
 
@@ -1204,9 +1209,21 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
                                     host.settings.maxTokens = host.getEffectiveMaxTokens();
                                     await host.saveSettings();
 
+                                    // Two WHOLE sentences chosen by the condition, never one
+                                    // with a clause appended: a translation cannot put the
+                                    // extra information where its own grammar wants it if the
+                                    // code has already decided the join. The counted half goes
+                                    // through `tPlural`, so the form follows the reader's
+                                    // language (`{count} model` / `{count} models` is English's
+                                    // two-way split; Polish has four, Arabic six, Japanese one)
+                                    // rather than English's. `{count}` is supplied by tPlural.
                                     const limitedCount = fetchedModels.filter(m => m.contextK).length;
-                                    const limitMsg = limitedCount > 0 ? ` Token limits auto-populated for ${limitedCount} models.` : '';
-                                    host.showNotice(`${displayName} model list refreshed.${limitMsg}`, 4000);
+                                    host.showNotice(
+                                        limitedCount > 0
+                                            ? tPlural('notice.models.refreshedWithLimits', limitedCount, { provider: displayName })
+                                            : t('notice.models.refreshed', { provider: displayName }),
+                                        4000,
+                                    );
 
                                     // Re-render the whole settings panel. The fetch
                                     // handlers have already upserted limits into
@@ -1215,7 +1232,7 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
                                     // dropdown picks up the fresh model list automatically.
                                     host.update();
                                 } else {
-                                    host.showNotice(`Could not refresh ${displayName} models. Using existing list.`, 4000);
+                                    host.showNotice(t('notice.models.refreshFailed', { provider: displayName }), 4000);
                                 }
                                 })();
                             });

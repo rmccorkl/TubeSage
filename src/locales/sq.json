@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — anulojeni nga «Show active jobs»"
+        "translation": "{stage} — anulojeni nga «Shfaq punët aktive»"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,673 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "Po përpunohet videoja"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Shtojca e transkripteve Youtube: s'ka çelës API të konfiguruar për {provider}. Shtoni çelësin tuaj API te cilësimet e shtojcës."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "Gabim: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "Përpunimi u anulua"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "Përpunimi u ndërpre; vazhdojeni nga «Shfaq punët aktive»"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "U krijua një shënim gabimi me të dhëna korrigjimi: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "Gabim: {error} (as shënimi i korrigjimit s'u krijua dot)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "S'u kontrolluan dot punët e ndërprera: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "Kujdes: s'u gjetën vula kohore në transkript. Vulat kohore duhen për përpunimin."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "Gabim: shtojca Templater është e nevojshme, por s'është instaluar ose aktivizuar"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "Shënimi u krijua: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "Gabim gjatë krijimit të shënimit: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Shtojca e transkripteve Youtube kërkon shtojcën Templater. Instalojeni dhe aktivizojeni."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "Po merren të dhënat e koleksionit..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "Po merret lista e luajtjes me ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "Po merren videot e listës së luajtjes..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "Po merren videot e listës së luajtjes (vazhdim)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "U arrit kufiri i sigurisë prej {limit} videosh. Do të përpunohen {limit} videot e para."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "Po merren videot e kanalit..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "Po merren videot e kanalit (vazhdim)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "U gjet {title}: {count} video"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "Po shtohen lidhjet e vulave kohore me LLM..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "Po riprovohet me kufi më të ulët tokenësh..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "S'u shtuan dot lidhjet e vulave kohore: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "U shtuan lidhje vulash kohore në {count} tituj seksionesh"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "Po përkthehet përmbajtja në {locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "Gabim: skedari s'u gjet: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "Gabim përkthimi: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "S'u përkthye dot përmbajtja (përgjigje e zbrazët nga LLM)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "Përmbajtja u përkthye në {locale}"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "Mungon çelësi API i {provider}. S'merren dot modelet."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "Po merren modelet e {provider}..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "Nuk u morën modelet e {provider}: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "Modelet e {provider} u përditësuan!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "Modelet e {provider} s'u lexuan dot nga përgjigja e API-t."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "Gabim gjatë marrjes së modeleve të {provider}: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "Po përpunohet seksioni {current} nga {total}..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "U shtuan {count} lidhje vulash kohore me përpunim në pjesë"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Nxjerrësi i transkripteve Youtube është gati"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "Përpuno"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "Lëreni bosh për të përdorur titullin e YouTube"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "Adresë YouTube e pavlefshme. Mbështeten vetëm adresat e videos, listës së luajtjes dhe kanalit."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: krijo një shënim nga transkripti i YouTube"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "URL-ja e YouTube"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "U zbulua një URL kanali ose liste luajtjeje YouTube"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "U zbulua një URL videoje YouTube"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "Sa video doni të përpunoni? Kufiri maksimal është 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "Të gjitha videot"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "Numër i kufizuar:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "Titull i personalizuar për shënimin (opsional)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "Modaliteti i përmbledhjes së shpejtë"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "Përmbledhje më të shkurtra e më të shpejta (i kapërcen lidhjet me vulë kohore)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "Punët aktive"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "Nuk ka punë aktive"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "Lista e punëve nuk u lexua dot: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "“Hidh” e heq punën vetëm nga kjo listë; nuk fshin kurrë shënime."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "Zgidhni skedarin e modelit"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "Nuk u gjetën skedarë modeli në dosjen «{folder}». Sigurohuni që dosja e modeleve është caktuar saktë te cilësimet e Templater."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "Shkruani për të kërkuar modele…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "Nuk u gjetën modele përkatëse."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "Zgidhni vendndodhjen e dosjes"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "Nuk ka nëndosje te {folder}"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "Nëndosje të gjetura: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "Filtro dosjet…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "Nuk ka dosje përkatëse"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Dokumentimi i shtojcës Tubesage për transkripte YouTube"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "Skedari readme nuk u ngarkua dot. Kontrolloni që readme.md ndodhet në dosjen e shtojcës."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "Model shembull: kopjojeni te dosja e modeleve e caktuar në Templater"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "Kopjo modelin"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "U kopjua"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "Kopjimi dështoi"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "Ky është modeli shembull i Templater për shënimet e transkripteve YouTube. Mund ta përshtatni sipas nevojave tuaja."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "Variablat e disponueshme të modelit:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "Skedari i modelit nuk u ngarkua dot. Kontrolloni që ndodhet në dosjen e shtojcës ose te dosja e modeleve e kasafortës."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "Po merret emri i listës së luajtjes…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "U gjet lista e luajtjes: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "Fillon përpunimi i listës së luajtjes YouTube: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "Fillon përpunimi i kanalit YouTube: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "U krijua dosja e listës së luajtjes: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "U krijua dosja e kanalit: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "Po merren videot nga lista e luajtjes: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "Po merren videot nga kanali: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "Video për t'u përpunuar: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "Po përpunohet videoja {current}/{total}: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "Videoja {title} u anashkalua – nuk ka transkript"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "Po shtohen lidhje me vulë kohore te videoja e listës: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "Po shtohen lidhje me vulë kohore te videoja e kanalit: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ U shtuan lidhje me vulë kohore te {title}"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} («{title}»)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "Shënimi u krijua, por vulat kohore nuk u shtuan dot te «{title}»"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ U përpunua videoja {current}/{total}"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ Videoja «{title}» u anashkalua – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ Gabim gjatë përpunimit të videos «{title}»: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "Përpunimi i kanalit përfundoi – të përpunuara: {processed}, të anashkaluara: {skipped}, gabime: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "Puna nuk u ruajt dot: {error}. Videoja mund të jetë ende në përpunim; shihni «Shfaq punët aktive»"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "Kjo video po përpunohet tashmë"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "Kjo punë nuk mund të vazhdohet kështu; shihni gjendjen e saj"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "Kjo punë nuk mund të përfundohet kështu; shihni gjendjen e saj"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "Nxirr transkriptin e YouTube"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Titulli i videos Youtube"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - URL-ja e videos Youtube"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - Transkripti i plotë me vula kohore"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - Përmbledhja e videos e krijuar nga LLM"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - Ofruesi i LLM i përdorur (p.sh. openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - Modeli konkret i përdorur (p.sh. gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - Etiketa të krijuara nga ofruesi dhe modeli LLM"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "Shfaq punët aktive"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Ofruesi u vendos në {provider}. Buxheti i daljes: {tokens} token (dalja maksimale minus rezerva)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Modeli u ndryshua në {model}. Buxheti i daljes: {tokens} token (dalja maksimale minus rezerva)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "Lista e modeleve {provider} u rifreskua."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "Modelet e {provider} nuk u rifreskuan dot. Do të përdoret lista ekzistuese."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "Nuk u gjet asnjë video në këtë listë luajtjeje"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "Nuk u gjet asnjë video në këtë kanal"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "Lista e modeleve {provider} u rifreskua. Kufijtë e token-ëve u plotësuan automatikisht për {count} model."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "Lista e modeleve {provider} u rifreskua. Kufijtë e token-ëve u plotësuan automatikisht për {count} modele."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Po merret transkripti"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "Po përmblidhet"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Po krijohet shënimi"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "Shënimi u krijua"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "Po shtohen lidhjet me vulë kohore"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "Po përkthehet"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "U krye"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "Anulo"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "Hidhe"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "Hap shënimin"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "Përfundo pa vula kohore"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "Përfundo pa përkthim"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "Vazhdo"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "Vazhdo (mund të tarifohet sërish)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "Në ecuri"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "Gati për të vazhduar"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "Përfundoi"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "U anulua"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "Dështoi"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "Dështoi: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "Koha skadoi. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "U ndërpre kur u mbyll Obsidian; nuk u krijua asnjë shënim"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "U ndërpre kur u mbyll Obsidian; mund të ketë një shënim te {path}"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "U ndërpre kur u mbyll Obsidian; shënimi u krijua pa vula kohore"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "U ndërpre kur u mbyll Obsidian; shënimi u krijua pa përkthim"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "U ndërpre gjatë {stage}; kërkesa e mëparshme mund të jetë tarifuar tashmë"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "U ndërpre gjatë {stage}; nuk dihet nëse kërkesa e mëparshme u tarifua"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "Shumë përpjekje për {stage}"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "Në shtegun e synuar ekziston tashmë një shënim — riemërtojeni ose hiqeni, pastaj vazhdoni nga “Shfaq punët aktive”"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "Nuk u vërtetua dot nëse shënimi te shtegu i synuar i përket kësaj pune"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "Shënimi i kësaj pune u zhvendos ose u fshi"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "Shënimi u redaktua gjatë përpunimit; vulat kohore u anashkaluan"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater nuk është i disponueshëm; aktivizojeni, pastaj vazhdoni"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "Vazhdimi do ta marrë sërish transkriptin përmes një shërbimi me pagesë"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "Shtegu i shënimit nuk u llogarit dot në mënyrë të njëtrajtshme (kontrolloni cilësimet e dosjes dhe datës), pastaj vazhdoni"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "Shënimi i transkriptit u krijua me sukses"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "Shënimi u krijua, por vulat kohore u anashkaluan sepse shënimi u redaktua"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "Shënimi u krijua, por përkthimi u anashkalua sepse shënimi u redaktua"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "Shënimi u krijua, por vulat kohore dhe përkthimi u anashkaluan sepse shënimi u redaktua"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "Shënimi u krijua pa përkthim"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "Shënimi u krijua pa vula kohore dhe pa përkthim"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: 1 punë shënimi u ndërpre kur u mbyll Obsidian — {title}: nuk u krijua asnjë shënim"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: 1 punë shënimi u ndërpre kur u mbyll Obsidian — {title}: mund të ketë një shënim te {path}"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: 1 punë shënimi u ndërpre kur u mbyll Obsidian — {title}: shënimi u krijua pa vula kohore"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: 1 punë shënimi u ndërpre kur u mbyll Obsidian — {title}: shënimi u krijua pa përkthim"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: {count} punë shënimesh u ndërprenë kur u mbyll Obsidian; më të fundit janë te “Shfaq punët aktive”"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 punë e ndërprerë kërkon vëmendje"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: {count} punë të ndërprera kërkojnë vëmendje"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "Ju lutemi, plotësoni fushën {field}"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "Ndodhi një gabim"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "Nuk ka transkript për këtë video"
     }
 }

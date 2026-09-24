@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — atcelt no „Show active jobs“"
+        "translation": "{stage} — atcelt no „Rādīt aktīvos darbus“"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,677 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "Video apstrāde"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Youtube transkriptu spraudnis: pakalpojumam {provider} nav iestatīta API atslēga. Pievienojiet savu API atslēgu spraudņa iestatījumos."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "Kļūda: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "Apstrāde atcelta"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "Apstrāde tika pārtraukta; atsāciet to no „Rādīt aktīvos darbus“"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "Izveidota kļūdas piezīme ar atkļūdošanas informāciju: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "Kļūda: {error} (arī atkļūdošanas piezīmi neizdevās izveidot)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "Neizdevās pārbaudīt pārtrauktos uzdevumus: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "Brīdinājums: transkriptā nav atrastas laika atzīmes. Laika atzīmes ir nepieciešamas apstrādei."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "Kļūda: nepieciešams spraudnis Templater, taču tas nav instalēts vai ieslēgts"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "Piezīme izveidota: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "Kļūda, veidojot piezīmi: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Youtube transkriptu spraudnim nepieciešams spraudnis Templater. Instalējiet un ieslēdziet to."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "Kolekcijas informācijas iegūšana..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "Atskaņošanas saraksta iegūšana, ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "Atskaņošanas saraksta video iegūšana..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "Atskaņošanas saraksta video iegūšana (turpinājums)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "Sasniegts drošības ierobežojums — {limit} video. Tiks apstrādāti pirmie {limit} video."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "Kanāla video iegūšana..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "Kanāla video iegūšana (turpinājums)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "Atrasts {title}, video skaits: {count}"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "Laika atzīmju saišu pievienošana ar LLM..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "Atkārtots mēģinājums ar mazāku marķieru ierobežojumu..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "Neizdevās pievienot laika atzīmju saites: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "Pievienotas laika atzīmju saites, virsrakstu skaits: {count}"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "Satura tulkošana uz {locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "Kļūda: fails nav atrasts: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "Tulkošanas kļūda: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "Neizdevās iztulkot saturu (tukša atbilde no LLM)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "Saturs iztulkots uz {locale}"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "Trūkst {provider} API atslēgas. Modeļus nevar iegūt."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "{provider} modeļu iegūšana..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "Neizdevās iegūt {provider} modeļus: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "{provider} modeļi atjaunināti!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "Neizdevās nolasīt {provider} modeļus no API atbildes."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "Kļūda, iegūstot {provider} modeļus: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "Apstrādā {current}. sadaļu no {total}..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "Pievienotas laika atzīmju saites, apstrādājot pa daļām, skaits: {count}"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Youtube transkriptu ieguvējs ir gatavs"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "Apstrādāt"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "Atstājiet tukšu, lai izmantotu YouTube nosaukumu"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "Nederīga YouTube adrese. Atbalstītas tiek tikai video, atskaņošanas saraksta un kanāla adreses."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: izveidot piezīmi no YouTube atšifrējuma"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "YouTube saite"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "Atpazīts YouTube kanāla vai atskaņošanas saraksta URL"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "Atpazīts YouTube videoklipa URL"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "Cik videoklipus apstrādāt? Stingrais ierobežojums ir 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "Visi videoklipi"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "Ierobežots skaits:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "Pielāgots piezīmes nosaukums (neobligāti)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "Ātrā kopsavilkuma režīms"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "Īsāki un ātrāki kopsavilkumi (izlaiž laika zīmogu saites)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "Aktīvie darbi"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "Nav aktīvu darbu"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "Neizdevās nolasīt darbu sarakstu: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "Atmest noņem darbu no šī saraksta; piezīmes nekad netiek dzēstas."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "Izvēlieties veidnes failu"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "Mapē “{folder}” nav atrasts neviens veidnes fails. Pārbaudiet, vai veidņu mape ir pareizi norādīta Templater iestatījumos."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "Rakstiet, lai meklētu veidnes…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "Nav atbilstošu veidņu."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "Izvēlieties mapes atrašanās vietu"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "Mapē {folder} nav apakšmapju"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "Atrastas apakšmapes: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "Filtrēt mapes…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "Nav atbilstošu mapju"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Tubesage YouTube atšifrējumu spraudņa dokumentācija"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "Neizdevās ielādēt readme failu. Pārbaudiet, vai readme.md ir spraudņa mapē."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "Veidnes paraugs: kopējiet to veidņu mapē, kas norādīta Templater iestatījumos"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "Kopēt veidni"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "Nokopēts"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "Neizdevās nokopēt"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "Šis ir Templater paraugveidne YouTube atšifrējumu piezīmēm. Jūs varat to pielāgot savām vajadzībām."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "Pieejamie veidnes mainīgie:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "Neizdevās ielādēt veidnes failu. Pārbaudiet, vai tas ir spraudņa mapē vai glabātavas veidņu mapē."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "Tiek iegūts atskaņošanas saraksta nosaukums…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "Atrasts atskaņošanas saraksts: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "Sākas YouTube atskaņošanas saraksta apstrāde: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "Sākas YouTube kanāla apstrāde: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "Izveidota atskaņošanas saraksta mape: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "Izveidota kanāla mape: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "Tiek ielādēti atskaņošanas saraksta videoklipi: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "Tiek ielādēti kanāla videoklipi: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "Apstrādājamie videoklipi: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "Tiek apstrādāts videoklips {current}/{total}: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "Videoklips {title} izlaists – nav atšifrējuma"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "Atskaņošanas saraksta videoklipam tiek pievienotas laika saites: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "Kanāla videoklipam tiek pievienotas laika saites: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ Laika saites pievienotas: {title}"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} („{title}“)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "Piezīme izveidota, bet laika zīmogus neizdevās pievienot „{title}“"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ Apstrādāts videoklips {current}/{total}"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ Videoklips „{title}“ izlaists – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ Kļūda, apstrādājot videoklipu „{title}“: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "Kanāla apstrāde pabeigta – apstrādāti: {processed}, izlaisti: {skipped}, kļūdas: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "Neizdevās saglabāt darbu: {error}. Videoklips, iespējams, vēl tiek apstrādāts; skatiet „Rādīt aktīvos darbus“"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "Šis videoklips jau tiek apstrādāts"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "Šo darbu šādā stāvoklī nevar atsākt; skatiet tā statusu"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "Šo darbu šādā stāvoklī nevar pabeigt; skatiet tā statusu"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "Iegūt YouTube atšifrējumu"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Youtube videoklipa nosaukums"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - Youtube videoklipa saite"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - Pilns atšifrējums ar laika zīmogiem"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - LLM ģenerētais videoklipa kopsavilkums"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - Izmantotais LLM pakalpojums (piem., openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - Konkrētais izmantotais modelis (piem., gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - Birkas, kas ģenerētas no LLM pakalpojuma un modeļa"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "Rādīt aktīvos darbus"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Pakalpojums iestatīts uz {provider}. Izvades budžets: {tokens} marķieri (maksimālā izvade mīnus rezerve)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Modelis nomainīts uz {model}. Izvades budžets: {tokens} marķieri (maksimālā izvade mīnus rezerve)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "{provider} modeļu saraksts atsvaidzināts."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "Neizdevās atsvaidzināt {provider} modeļus. Tiek izmantots esošais saraksts."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "Šajā atskaņošanas sarakstā netika atrasts neviens video"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "Šajā kanālā netika atrasts neviens video"
+    },
+    "notice.models.refreshedWithLimits.zero": {
+        "original": "",
+        "translation": "{provider} modeļu saraksts atsvaidzināts. Marķieru ierobežojumi aizpildīti automātiski {count} modeļu."
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "{provider} modeļu saraksts atsvaidzināts. Marķieru ierobežojumi aizpildīti automātiski {count} modelim."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "{provider} modeļu saraksts atsvaidzināts. Marķieru ierobežojumi aizpildīti automātiski {count} modeļiem."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Iegūst transkripciju"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "Apkopo"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Veido piezīmi"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "Piezīme izveidota"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "Pievieno laikspiedolu saites"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "Tulko"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "Pabeigts"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "Atcelt"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "Atmest"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "Atvērt piezīmi"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "Pabeigt bez laikspiedoliem"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "Pabeigt bez tulkojuma"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "Atsākt"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "Atsākt (var tikt iekasēts atkārtoti)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "Darbojas"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "Gatavs turpināt"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "Pabeigts"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "Atcelts"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "Neizdevās"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "Neizdevās: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "Iestājās noildze. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Pārtraukts, aizverot Obsidian; piezīme netika izveidota"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Pārtraukts, aizverot Obsidian; ceļā {path} var būt piezīme"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Pārtraukts, aizverot Obsidian; piezīme tika izveidota bez laikspiedoliem"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Pārtraukts, aizverot Obsidian; piezīme tika izveidota bez tulkojuma"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "Pārtraukts posmā {stage}; iepriekšējais pieprasījums, iespējams, jau ir apmaksāts"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "Pārtraukts posmā {stage}; nav zināms, vai iepriekšējais pieprasījums tika apmaksāts"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "Pārāk daudz mēģinājumu posmam {stage}"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "Mērķa ceļā jau ir piezīme — pārdēvējiet vai noņemiet to un pēc tam atsāciet no Rādīt aktīvos darbus"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "Neizdevās apstiprināt, vai piezīme mērķa ceļā pieder šim darbam"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "Šī darba piezīme ir pārvietota vai dzēsta"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "Piezīme tika rediģēta apstrādes laikā; laikspiedoli tika izlaisti"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater nav pieejams; ieslēdziet to un pēc tam atsāciet"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "Atsākšana no jauna iegūs transkripciju, izmantojot maksas pakalpojumu"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "Piezīmes ceļu neizdevās aprēķināt konsekventi (pārbaudiet mapes un datuma iestatījumus), pēc tam atsāciet"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "Transkripcijas piezīme veiksmīgi izveidota"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "Piezīme izveidota, bet laikspiedoli tika izlaisti, jo piezīme tika rediģēta"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "Piezīme izveidota, bet tulkojums tika izlaists, jo piezīme tika rediģēta"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "Piezīme izveidota, bet laikspiedoli un tulkojums tika izlaisti, jo piezīme tika rediģēta"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "Piezīme izveidota bez tulkojuma"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "Piezīme izveidota bez laikspiedoliem un bez tulkojuma"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: 1 piezīmes darbs tika pārtraukts, aizverot Obsidian — {title}: piezīme netika izveidota"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: 1 piezīmes darbs tika pārtraukts, aizverot Obsidian — {title}: ceļā {path} var būt piezīme"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: 1 piezīmes darbs tika pārtraukts, aizverot Obsidian — {title}: piezīme izveidota bez laikspiedoliem"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: 1 piezīmes darbs tika pārtraukts, aizverot Obsidian — {title}: piezīme izveidota bez tulkojuma"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: aizverot Obsidian, tika pārtraukti {count} piezīmju darbi; jaunākie ir sarakstā Rādīt aktīvos darbus"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 pārtraukts darbs prasa uzmanību"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: uzmanību prasa {count} pārtraukti darbi"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "Aizpildiet lauku {field}"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "Radās kļūda"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "Šim videoklipam nav atšifrējuma"
     }
 }

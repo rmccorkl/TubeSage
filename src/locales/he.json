@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — ביטול מתוך \"Show active jobs\""
+        "translation": "{stage} — ביטול מתוך \"הצג משימות פעילות\""
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,677 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "מעבד סרטון"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "תוסף תמלילי Youtube: לא הוגדר מפתח API עבור {provider}. הוסף את מפתח ה-API בהגדרות התוסף."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "שגיאה: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "העיבוד בוטל"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "העיבוד הופסק; המשך אותו מתוך \"הצג משימות פעילות\""
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "נוצרה הערת שגיאה עם מידע לניפוי באגים: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "שגיאה: {error} (גם הערת ניפוי הבאגים לא נוצרה)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "לא ניתן לבדוק משימות שהופסקו: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "אזהרה: לא נמצאו חותמות זמן בתמליל. חותמות זמן נדרשות לעיבוד."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "שגיאה: התוסף Templater נדרש אך אינו מותקן או מופעל"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "נוצרה הערה: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "שגיאה ביצירת ההערה: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "תוסף תמלילי Youtube דורש את התוסף Templater. התקן והפעל אותו."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "מאחזר מידע על האוסף..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "מאחזר רשימת השמעה עם מזהה: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "מאחזר סרטונים מרשימת ההשמעה..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "מאחזר סרטונים מרשימת ההשמעה (המשך)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "הגעת למגבלת הבטיחות של {limit} סרטונים. יעובדו {limit} הסרטונים הראשונים."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "מאחזר סרטונים מהערוץ..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "מאחזר סרטונים מהערוץ (המשך)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "נמצא {title}: {count} סרטונים"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "מוסיף קישורי חותמות זמן באמצעות LLM..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "מנסה שוב עם מגבלת טוקנים נמוכה יותר..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "לא ניתן היה להוסיף קישורי חותמות זמן: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "קישורי חותמות זמן נוספו לכותרות, המספר: {count}"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "מתרגם את התוכן ל-{locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "שגיאה: הקובץ לא נמצא: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "שגיאת תרגום: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "לא ניתן היה לתרגם את התוכן (תשובה ריקה מה-LLM)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "התוכן תורגם ל-{locale}"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "חסר מפתח API עבור {provider}. לא ניתן לאחזר את המודלים."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "מאחזר את המודלים של {provider}..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "אחזור המודלים של {provider} נכשל: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "המודלים של {provider} עודכנו!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "לא ניתן היה לקרוא את המודלים של {provider} מתשובת ה-API."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "שגיאה באחזור המודלים של {provider}: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "מעבד את החלק {current} מתוך {total}..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "קישורי חותמות זמן נוספו בעיבוד במקטעים, המספר: {count}"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "מחלץ תמלילי Youtube מוכן"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "עבד"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "השאר ריק כדי להשתמש בכותרת מ-YouTube"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "כתובת YouTube אינה תקינה. נתמכות רק כתובות של סרטון, פלייליסט וערוץ."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: יצירת פתק מתמליל YouTube"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "כתובת YouTube"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "זוהתה כתובת של ערוץ או פלייליסט ב-YouTube"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "זוהתה כתובת של סרטון ב-YouTube"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "כמה סרטונים לעבד? המגבלה המרבית היא 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "כל הסרטונים"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "מספר מוגבל:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "כותרת מותאמת לפתק (רשות)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "מצב תקציר מהיר"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "תקצירים קצרים ומהירים יותר (מדלג על קישורי חותמות זמן)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "משימות פעילות"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "אין משימות פעילות"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "לא ניתן לקרוא את רשימת המשימות: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "״התעלם״ מסיר משימה מהרשימה בלבד ואינו מוחק פתקים."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "בחר קובץ תבנית"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "לא נמצאו קובצי תבנית בתיקייה ״{folder}״. ודא שתיקיית התבניות מוגדרת נכון בהגדרות Templater."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "הקלד כדי לחפש תבניות…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "לא נמצאו תבניות תואמות."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "בחר מיקום תיקייה"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "אין תיקיות משנה תחת {folder}"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "תיקיות משנה שנמצאו: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "סינון תיקיות…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "לא נמצאו תיקיות תואמות"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "תיעוד התוסף Tubesage לתמלילי YouTube"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "לא ניתן לטעון את קובץ readme. ודא ש-readme.md קיים בתיקיית התוסף."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "תבנית לדוגמה: העתק אותה לתיקיית התבניות שהוגדרה ב-Templater"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "העתק תבנית"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "הועתק"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "ההעתקה נכשלה"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "זו תבנית Templater לדוגמה המשמשת לפתקי תמלילי YouTube. אפשר להתאים אותה לצרכים שלך."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "משתני תבנית זמינים:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "לא ניתן לטעון את קובץ התבנית. ודא שהוא קיים בתיקיית התוסף או בתיקיית התבניות של הכספת."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "מאחזר את שם הפלייליסט…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "נמצא פלייליסט: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "מתחיל לעבד פלייליסט של YouTube: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "מתחיל לעבד ערוץ YouTube: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "נוצרה תיקיית פלייליסט: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "נוצרה תיקיית ערוץ: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "מאחזר סרטונים מהפלייליסט: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "מאחזר סרטונים מהערוץ: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "סרטונים לעיבוד: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "מעבד סרטון {current}/{total}: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "מדלג על הסרטון {title} – אין תמליל"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "מוסיף קישורי חותמות זמן לסרטון מהפלייליסט: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "מוסיף קישורי חותמות זמן לסרטון מהערוץ: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ נוספו קישורי חותמות זמן ל-{title}"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} (\"{title}\")"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "הפתק נוצר, אך לא ניתן היה להוסיף חותמות זמן ל-\"{title}\""
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ עובד סרטון {current}/{total}"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ מדלג על הסרטון \"{title}\" – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ שגיאה בעיבוד הסרטון \"{title}\": {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "עיבוד הערוץ הושלם – עובדו: {processed}, דולגו: {skipped}, שגיאות: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "לא ניתן לשמור את המשימה: {error}. ייתכן שהסרטון עדיין מעובד; ראה \"הצג משימות פעילות\""
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "הסרטון הזה כבר בעיבוד"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "לא ניתן להמשיך את המשימה הזו במצבה; ראה את הסטטוס שלה"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "לא ניתן לסיים את המשימה הזו במצבה; ראה את הסטטוס שלה"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "חילוץ תמליל YouTube"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - כותרת הסרטון ב-Youtube"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - כתובת הסרטון ב-Youtube"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - התמליל המלא עם חותמות זמן"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - תקציר הסרטון שנוצר על ידי ה-LLM"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - ספק ה-LLM שבו נעשה שימוש (למשל openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - הדגם המסוים שבו נעשה שימוש (למשל gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - תגיות שנוצרו מספק ה-LLM ומהדגם"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "הצג משימות פעילות"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "הספק הוגדר ל-{provider}. תקציב הפלט: {tokens} אסימונים (הפלט המרבי פחות השמורה)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "המודל שונה ל-{model}. תקציב הפלט: {tokens} אסימונים (הפלט המרבי פחות השמורה)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "רשימת המודלים של {provider} רועננה."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "לא ניתן לרענן את המודלים של {provider}. נעשה שימוש ברשימה הקיימת."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "לא נמצאו סרטונים ברשימת ההשמעה הזו"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "לא נמצאו סרטונים בערוץ הזה"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "רשימת המודלים של {provider} רועננה. מגבלות האסימונים מולאו אוטומטית עבור {count} מודל."
+    },
+    "notice.models.refreshedWithLimits.two": {
+        "original": "",
+        "translation": "רשימת המודלים של {provider} רועננה. מגבלות האסימונים מולאו אוטומטית עבור {count} מודלים."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "רשימת המודלים של {provider} רועננה. מגבלות האסימונים מולאו אוטומטית עבור {count} מודלים."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "מאחזר תמליל"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "מסכם"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "יוצר פתק"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "הפתק נוצר"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "מוסיף קישורי חותמת זמן"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "מתרגם"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "הסתיים"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "ביטול"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "התעלם"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "פתח את הפתק"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "סיום ללא חותמות זמן"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "סיום ללא תרגום"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "המשך"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "המשך (ייתכן חיוב חוזר)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "פועל"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "מוכן להמשך"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "הסתיים"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "בוטל"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "נכשל"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "נכשל: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "תם הזמן. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "הופסק עם סגירת Obsidian; לא נוצר פתק"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "הופסק עם סגירת Obsidian; ייתכן שקיים פתק בנתיב {path}"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "הופסק עם סגירת Obsidian; הפתק נוצר ללא חותמות זמן"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "הופסק עם סגירת Obsidian; הפתק נוצר ללא תרגום"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "הופסק במהלך {stage}; ייתכן שכבר חויבת על הבקשה הקודמת"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "הופסק במהלך {stage}; לא ידוע אם חויבת על הבקשה הקודמת"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "יותר מדי ניסיונות עבור {stage}"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "כבר קיים פתק בנתיב היעד — שנה את שמו או מחק אותו, ואז המשך מתוך „הצג משימות פעילות“"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "לא ניתן היה לאשר אם הפתק בנתיב היעד שייך למשימה הזו"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "הפתק של המשימה הזו הועבר או נמחק"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "הפתק נערך במהלך העיבוד; חותמות הזמן דולגו"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater אינו זמין; הפעל אותו ולאחר מכן המשך"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "המשך יאחזר את התמליל מחדש דרך שירות בתשלום"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "לא ניתן היה לחשב את נתיב הפתק באופן עקבי (בדוק את הגדרות התיקייה והתאריך), ואז המשך"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "פתק התמליל נוצר בהצלחה"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "הפתק נוצר, אך חותמות הזמן דולגו מפני שהפתק נערך"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "הפתק נוצר, אך התרגום דולג מפני שהפתק נערך"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "הפתק נוצר, אך חותמות הזמן והתרגום דולגו מפני שהפתק נערך"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "הפתק נוצר ללא תרגום"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "הפתק נוצר ללא חותמות זמן וללא תרגום"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: משימת פתק 1 הופסקה עם סגירת Obsidian — {title}: לא נוצר פתק"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: משימת פתק 1 הופסקה עם סגירת Obsidian — {title}: ייתכן שקיים פתק בנתיב {path}"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: משימת פתק 1 הופסקה עם סגירת Obsidian — {title}: הפתק נוצר ללא חותמות זמן"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: משימת פתק 1 הופסקה עם סגירת Obsidian — {title}: הפתק נוצר ללא תרגום"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: {count} משימות פתק הופסקו עם סגירת Obsidian; העדכניות ביותר מופיעות תחת „הצג משימות פעילות“"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: משימה מופסקת 1 דורשת טיפול"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: {count} משימות מופסקות דורשות טיפול"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "יש להזין {field}"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "אירעה שגיאה"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "אין תמליל זמין לסרטון זה"
     }
 }

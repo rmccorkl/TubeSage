@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage}（「Show active jobs」で中止できます）"
+        "translation": "{stage}（「実行中のジョブを表示」で中止できます）"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,669 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "動画を処理中"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Youtube 文字起こしプラグイン: {provider} の API キーが設定されていません。プラグインの設定で API キーを追加してください。"
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "エラー: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "処理を中止しました"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "処理が中断されました。「実行中のジョブを表示」から再開してください"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "デバッグ情報付きのエラーノートを作成しました: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "エラー: {error}（デバッグノートも作成できませんでした）"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "中断されたジョブを確認できませんでした: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "警告: 字幕にタイムスタンプが見つかりません。処理にはタイムスタンプが必要です。"
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "エラー: Templater プラグインが必要ですが、インストールまたは有効化されていません"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "ノートを作成しました: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "ノートの作成でエラーが発生しました: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Youtube 文字起こしプラグインには Templater プラグインが必要です。インストールして有効にしてください。"
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "コレクション情報を取得中…"
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "プレイリストを取得中、ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "プレイリストの動画を取得中…"
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "プレイリストの動画を取得中（続き）…"
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "安全上限の {limit} 件に達しました。最初の {limit} 件を処理します。"
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "チャンネルの動画を取得中…"
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "チャンネルの動画を取得中（続き）…"
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "{title} が見つかりました: 動画 {count} 件"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "LLM でタイムスタンプリンクを追加中…"
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "トークン上限を下げて再試行中…"
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "タイムスタンプリンクを追加できませんでした: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "{count} 件の見出しにタイムスタンプリンクを追加しました"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "コンテンツを {locale} に翻訳中…"
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "エラー: ファイルが見つかりません: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "翻訳エラー: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "コンテンツを翻訳できませんでした（LLM からの応答が空です）"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "コンテンツを {locale} に翻訳しました"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "{provider} の API キーがありません。モデルを取得できません。"
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "{provider} のモデルを取得中…"
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "{provider} のモデルを取得できませんでした: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "{provider} のモデルを更新しました!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "API の応答から {provider} のモデルを読み取れませんでした。"
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "{provider} のモデル取得中にエラーが発生しました: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "セクション {current}/{total} を処理中…"
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "分割処理でタイムスタンプリンクを {count} 件追加しました"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Youtube 文字起こし抽出ツールの準備ができました"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "処理"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "空欄にすると YouTube のタイトルを使用します"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "有効な YouTube の URL ではありません。動画・再生リスト・チャンネルの URL のみ対応しています。"
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: YouTube の文字起こしからノートを作成"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "YouTube の URL"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "YouTube のチャンネルまたは再生リストの URL を検出しました"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "YouTube 動画の URL を検出しました"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "何本の動画を処理しますか？上限は 50 本です。"
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "すべての動画"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "本数を指定："
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "ノートのタイトル（任意）"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "簡易要約モード"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "短く速い要約になります（タイムスタンプリンクは省略）"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "実行中のジョブ"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "実行中のジョブはありません"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "ジョブ一覧を読み取れませんでした: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage}・{age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "「破棄」は一覧から項目を削除するだけで、ノートは削除しません。"
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "テンプレートファイルを選択"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "フォルダー「{folder}」にテンプレートファイルがありません。Templater の設定でテンプレートフォルダーが正しいか確認してください。"
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "入力してテンプレートを検索…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "一致するテンプレートはありません。"
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "保存先フォルダーを選択"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "{folder} にサブフォルダーはありません"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "見つかったサブフォルダー: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "フォルダーを絞り込み…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "一致するフォルダーはありません"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}．{title}："
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Tubesage YouTube 文字起こしプラグインのドキュメント"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "readme ファイルを読み込めませんでした。プラグインのフォルダーに readme.md があるか確認してください。"
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "サンプルテンプレート: コピーして Templater で指定したテンプレートフォルダーに置いてください"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "テンプレートをコピー"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "コピーしました"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "コピーできませんでした"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "YouTube 文字起こしノート用の Templater サンプルテンプレートです。自分の用途に合わせて変更できます。"
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "使用できるテンプレート変数:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "テンプレートファイルを読み込めませんでした。プラグインのフォルダーか保管庫のテンプレートフォルダーにあるか確認してください。"
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "再生リスト名を取得中…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "再生リストを検出: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "YouTube の再生リストの処理を開始: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "YouTube チャンネルの処理を開始: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "再生リストのフォルダーを作成: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "チャンネルのフォルダーを作成: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "再生リストの動画を取得中: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "チャンネルの動画を取得中: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "処理する動画: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "動画 {current}/{total} を処理中: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "動画 {title} をスキップ – 文字起こしがありません"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "再生リストの動画にタイムスタンプリンクを追加中: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "チャンネルの動画にタイムスタンプリンクを追加中: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ {title} にタイムスタンプリンクを追加しました"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error}（「{title}」）"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "ノートは作成しましたが、「{title}」にタイムスタンプを追加できませんでした"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ 動画 {current}/{total} を処理しました"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ 動画「{title}」をスキップ – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ 動画「{title}」の処理でエラー: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "チャンネルの処理が完了 – 処理: {processed}、スキップ: {skipped}、エラー: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "ジョブを保存できませんでした: {error}。動画の処理は続いている可能性があります。「実行中のジョブを表示」を確認してください"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "この動画はすでに処理中です"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "このジョブはこのままでは再開できません。状態を確認してください"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "このジョブはこのままでは完了できません。状態を確認してください"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "YouTube の文字起こしを抽出"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": "：Youtube 動画のタイトル"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": "：Youtube 動画の URL"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": "：タイムスタンプ付きの全文文字起こし"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": "：LLM が生成した動画の要約"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": "：使用した LLM プロバイダー（例: openai、anthropic）"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": "：使用した具体的なモデル（例: gpt-4、claude-3-opus）"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": "：LLM のプロバイダーとモデルから生成されるタグ"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "実行中のジョブを表示"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "プロバイダーを {provider} に設定しました。出力予算: {tokens} トークン（最大出力からリザーブを引いた値）。"
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "モデルを {model} に変更しました。出力予算: {tokens} トークン（最大出力からリザーブを引いた値）。"
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "{provider} のモデル一覧を更新しました。"
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "{provider} のモデルを更新できませんでした。既存の一覧をそのまま使用します。"
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "この再生リストに動画が見つかりません"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "このチャンネルに動画が見つかりません"
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "{provider} のモデル一覧を更新しました。{count} 件のモデルにトークン上限を自動設定しました。"
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "文字起こしを取得中"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "要約中"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "ノートを作成中"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "ノートを作成しました"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "タイムスタンプのリンクを追加中"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "翻訳中"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "完了"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "中止"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "破棄"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "ノートを開く"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "タイムスタンプなしで完了"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "翻訳なしで完了"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "再開"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "再開（再課金の可能性）"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "実行中"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "再開できます"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "終了"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "中止されました"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "失敗しました"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "失敗しました: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "タイムアウトしました。{status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Obsidian の終了時に中断されました。ノートは作成されていません"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Obsidian の終了時に中断されました。{path} にノートが存在する可能性があります"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Obsidian の終了時に中断されました。ノートはタイムスタンプなしで作成されました"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Obsidian の終了時に中断されました。ノートは翻訳なしで作成されました"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "{stage} の途中で中断されました。前回のリクエストはすでに課金されている可能性があります"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "{stage} の途中で中断されました。前回のリクエストの課金状況は不明です"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "{stage} の試行回数が多すぎます"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "保存先のパスにすでにノートがあります。名前を変更するか削除してから「実行中のジョブを表示」で再開してください"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "保存先のパスにあるノートがこのジョブのものかどうか確認できませんでした"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "このジョブのノートは移動または削除されました"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "処理中にノートが編集されたため、タイムスタンプをスキップしました"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater が利用できません。有効にしてから再開してください"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "再開すると、有料サービスで文字起こしを再取得します"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "ノートのパスを一貫して決定できませんでした（フォルダーと日付の設定を確認してください）。その後、再開してください"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "文字起こしノートを作成しました"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "ノートを作成しましたが、ノートが編集されたためタイムスタンプをスキップしました"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "ノートを作成しましたが、ノートが編集されたため翻訳をスキップしました"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "ノートを作成しましたが、ノートが編集されたためタイムスタンプと翻訳をスキップしました"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "翻訳なしでノートを作成しました"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "タイムスタンプと翻訳なしでノートを作成しました"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: Obsidian の終了時にノートのジョブ 1 件が中断されました — {title}: ノートは作成されていません"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: Obsidian の終了時にノートのジョブ 1 件が中断されました — {title}: {path} にノートが存在する可能性があります"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: Obsidian の終了時にノートのジョブ 1 件が中断されました — {title}: ノートはタイムスタンプなしで作成されました"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: Obsidian の終了時にノートのジョブ 1 件が中断されました — {title}: ノートは翻訳なしで作成されました"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: Obsidian の終了時にノートのジョブ {count} 件が中断されました。最近のものは「実行中のジョブを表示」に表示されます"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 中断されたジョブが 1 件、対応を待っています"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: 中断されたジョブが {count} 件、対応を待っています"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "{field} を入力してください"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "エラーが発生しました"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "この動画には文字起こしがありません"
     }
 }

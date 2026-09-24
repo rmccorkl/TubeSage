@@ -3,6 +3,7 @@ import type { JobEvent, JobStages, RunnerDeadlines, RunnerDeps, RunnerVault } fr
 import type { JobStore } from "../jobs/job-store";
 import { transcriptBillingRisk, translationSettingsFrom } from "../jobs/job-record";
 import type { NoteJobRecord, NotePathSettings, PathNormalizer } from "../jobs/job-record";
+import { t } from "../i18n";
 import { NoCaptionsError } from "../utils/transcript-errors";
 import type { TimestampPassOptions } from "./timestamp-pass-policy";
 
@@ -14,6 +15,12 @@ export type { TimestampPassOptions } from "./timestamp-pass-policy";
 // with doubles. The plugin class satisfies JobHost as-is; VaultLike is the
 // three Vault calls the runner is allowed to make, with the `instanceof
 // TFile` check living in main.ts's `getFile`.
+//
+// THE `t` IMPORT KEEPS THAT PROPERTY. `../i18n` imports only `./locales`,
+// which is static JSON, and reads the interface language through a resolver
+// main.ts installs at runtime — `getLanguage` is imported in main.ts and
+// nowhere else. `recovery-ui-model.ts` and `job-progress-notice.ts` in this
+// same directory import `t` this way already.
 
 /**
  * The marker youtube-transcript.ts embeds as the only segment when every extraction method failed but
@@ -134,7 +141,20 @@ export function createJobStages<F>(host: JobHost, vault: VaultLike<F>, normalize
         throw error;
       }
       if (isBlank(transcript)) {
-        throw new PermanentJobError("No transcript is available for this video");
+        // TubeSage's own sentence, not the extractor's, so it is translated —
+        // unlike the two PermanentJobError messages around it, which carry
+        // text from YouTube, an HTTP status or the extractor and must reach
+        // the user verbatim.
+        //
+        // Localised HERE rather than where it is displayed because there are
+        // TWO display boundaries — the live `notice.job.failed` notice
+        // (main.ts) and the recovery modal's `modal.jobs.status.failedWithError`
+        // (recovery-ui-model.ts) — and a sentinel branch in each is more
+        // machinery than one call. CONSEQUENCE: `fail()` persists this string
+        // as `lastError`, so a record keeps whichever language was current
+        // when the job failed; the live notice is always right, and the modal
+        // is right unless Obsidian's language changed in between.
+        throw new PermanentJobError(t("common.transcript.unavailable"));
       }
       const markerAt = transcript.indexOf(TRANSCRIPT_FAILED_MARKER);
       if (markerAt !== -1) {

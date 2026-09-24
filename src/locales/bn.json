@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — “Show active jobs” থেকে বাতিল করুন"
+        "translation": "{stage} — “সক্রিয় কাজ দেখান” থেকে বাতিল করুন"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,673 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "ভিডিও প্রক্রিয়া হচ্ছে"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Youtube প্রতিলিপি প্লাগইন: {provider}-এর জন্য কোনো API কী সেট করা নেই। প্লাগইন সেটিংসে আপনার API কী যোগ করুন।"
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "ত্রুটি: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "প্রক্রিয়াকরণ বাতিল করা হয়েছে"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "প্রক্রিয়াকরণ বাধাগ্রস্ত হয়েছে; “সক্রিয় কাজ দেখান” থেকে আবার শুরু করুন"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "ডিবাগ তথ্যসহ ত্রুটির নোট তৈরি হয়েছে: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "ত্রুটি: {error} (ডিবাগ নোটও তৈরি করা যায়নি)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "বাধাগ্রস্ত কাজ যাচাই করা যায়নি: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "সতর্কতা: প্রতিলিপিতে কোনো টাইমস্ট্যাম্প পাওয়া যায়নি। প্রক্রিয়াকরণের জন্য টাইমস্ট্যাম্প দরকার।"
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "ত্রুটি: Templater প্লাগইন দরকার, কিন্তু সেটি ইনস্টল বা চালু করা নেই"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "নোট তৈরি হয়েছে: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "নোট তৈরিতে ত্রুটি: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Youtube প্রতিলিপি প্লাগইনের জন্য Templater প্লাগইন দরকার। এটি ইনস্টল করে চালু করুন।"
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "সংগ্রহের তথ্য আনা হচ্ছে..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "প্লেলিস্ট আনা হচ্ছে, ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "প্লেলিস্টের ভিডিও আনা হচ্ছে..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "প্লেলিস্টের ভিডিও আনা হচ্ছে (চলমান)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "{limit}টি ভিডিওর নিরাপত্তা সীমায় পৌঁছেছে। প্রথম {limit}টি ভিডিও প্রক্রিয়া করা হবে।"
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "চ্যানেলের ভিডিও আনা হচ্ছে..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "চ্যানেলের ভিডিও আনা হচ্ছে (চলমান)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "{title} পাওয়া গেছে: ভিডিও {count}টি"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "LLM দিয়ে টাইমস্ট্যাম্প লিংক যোগ হচ্ছে..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "কম টোকেন সীমা নিয়ে আবার চেষ্টা হচ্ছে..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "টাইমস্ট্যাম্প লিংক যোগ করা যায়নি: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "সেকশন শিরোনামে টাইমস্ট্যাম্প লিংক যোগ হয়েছে, সংখ্যা: {count}"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "বিষয়বস্তু {locale}-এ অনুবাদ হচ্ছে..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "ত্রুটি: ফাইল পাওয়া যায়নি: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "অনুবাদে ত্রুটি: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "বিষয়বস্তু অনুবাদ করা যায়নি (LLM থেকে ফাঁকা উত্তর)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "বিষয়বস্তু {locale}-এ অনুবাদ হয়েছে"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "{provider}-এর API কী নেই। মডেল আনা যাচ্ছে না।"
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "{provider} মডেল আনা হচ্ছে..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "{provider} মডেল আনা যায়নি: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "{provider} মডেল আপডেট হয়েছে!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "API প্রতিক্রিয়া থেকে {provider} মডেল পড়া যায়নি।"
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "{provider} মডেল আনার সময় ত্রুটি: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "{total}-এর মধ্যে {current} নম্বর অংশ প্রক্রিয়া হচ্ছে..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "খণ্ড খণ্ড প্রক্রিয়াকরণে টাইমস্ট্যাম্প লিংক যোগ হয়েছে, সংখ্যা: {count}"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Youtube প্রতিলিপি নিষ্কাশক প্রস্তুত"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "প্রক্রিয়া করুন"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "YouTube শিরোনাম ব্যবহার করতে খালি রাখুন"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "বৈধ YouTube ঠিকানা নয়। শুধু ভিডিও, প্লেলিস্ট ও চ্যানেলের ঠিকানা সমর্থিত।"
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: YouTube প্রতিলিপি থেকে নোট তৈরি করুন"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "YouTube ঠিকানা"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "YouTube চ্যানেল বা প্লেলিস্ট URL শনাক্ত হয়েছে"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "YouTube ভিডিও URL শনাক্ত হয়েছে"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "কতগুলি ভিডিও প্রক্রিয়া করতে চান? সর্বোচ্চ সীমা 50।"
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "সব ভিডিও"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "নির্দিষ্ট সংখ্যা:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "কাস্টম নোটের শিরোনাম (ঐচ্ছিক)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "দ্রুত সারাংশ মোড"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "আরও ছোট ও দ্রুত সারাংশ (টাইমস্ট্যাম্প লিঙ্ক বাদ দেয়)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "সক্রিয় কাজ"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "কোনো সক্রিয় কাজ নেই"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "কাজের তালিকা পড়া যায়নি: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "“বাতিল” শুধু এই তালিকা থেকে কাজ সরায়; নোট কখনও মোছে না।"
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "টেমপ্লেট ফাইল নির্বাচন করুন"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "“{folder}” ফোল্ডারে কোনো টেমপ্লেট ফাইল নেই। Templater সেটিংসে টেমপ্লেট ফোল্ডার ঠিক আছে কি না দেখুন।"
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "টেমপ্লেট খুঁজতে টাইপ করুন…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "মিলে যায় এমন টেমপ্লেট নেই।"
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "ফোল্ডারের অবস্থান নির্বাচন করুন"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "{folder} এর মধ্যে কোনো সাবফোল্ডার নেই"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "পাওয়া সাবফোল্ডার: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "ফোল্ডার ফিল্টার…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "মিলে যায় এমন ফোল্ডার নেই"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Tubesage YouTube প্রতিলিপি প্লাগইনের নথি"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "readme ফাইল লোড করা যায়নি। প্লাগইন ফোল্ডারে readme.md আছে কি না দেখুন।"
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "উদাহরণ টেমপ্লেট: Templater-এ নির্ধারিত টেমপ্লেট ফোল্ডারে কপি করুন"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "টেমপ্লেট কপি করুন"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "কপি হয়েছে"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "কপি করা যায়নি"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "এটি YouTube প্রতিলিপি নোটের জন্য ব্যবহৃত Templater উদাহরণ টেমপ্লেট। নিজের প্রয়োজনমতো এটি বদলে নিতে পারেন।"
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "উপলব্ধ টেমপ্লেট ভেরিয়েবল:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "টেমপ্লেট ফাইল লোড করা যায়নি। প্লাগইন ফোল্ডারে বা ভল্টের টেমপ্লেট ফোল্ডারে আছে কি না দেখুন।"
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "প্লেলিস্টের নাম আনা হচ্ছে…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "প্লেলিস্ট পাওয়া গেছে: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "YouTube প্লেলিস্ট প্রক্রিয়াকরণ শুরু: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "YouTube চ্যানেল প্রক্রিয়াকরণ শুরু: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "প্লেলিস্ট ফোল্ডার তৈরি হয়েছে: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "চ্যানেল ফোল্ডার তৈরি হয়েছে: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "প্লেলিস্ট থেকে ভিডিও আনা হচ্ছে: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "চ্যানেল থেকে ভিডিও আনা হচ্ছে: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "প্রক্রিয়া করার ভিডিও: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "ভিডিও {current}/{total} প্রক্রিয়া করা হচ্ছে: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "ভিডিও {title} বাদ দেওয়া হল – প্রতিলিপি নেই"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "প্লেলিস্টের ভিডিওতে টাইমস্ট্যাম্প লিঙ্ক যোগ করা হচ্ছে: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "চ্যানেলের ভিডিওতে টাইমস্ট্যাম্প লিঙ্ক যোগ করা হচ্ছে: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ {title}-এ টাইমস্ট্যাম্প লিঙ্ক যোগ হয়েছে"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} (“{title}”)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "নোট তৈরি হয়েছে, তবে “{title}”-এ টাইমস্ট্যাম্প যোগ করা যায়নি"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ ভিডিও {current}/{total} প্রক্রিয়া হয়েছে"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ ভিডিও “{title}” বাদ দেওয়া হল – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ ভিডিও “{title}” প্রক্রিয়াকরণে ত্রুটি: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "চ্যানেল প্রক্রিয়াকরণ শেষ – প্রক্রিয়া হয়েছে: {processed}, বাদ পড়েছে: {skipped}, ত্রুটি: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "কাজটি সংরক্ষণ করা যায়নি: {error}। ভিডিওটি এখনও প্রক্রিয়া হতে পারে; “সক্রিয় কাজ দেখান” দেখুন"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "এই ভিডিওটি ইতিমধ্যে প্রক্রিয়া হচ্ছে"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "এই কাজটি বর্তমান অবস্থায় চালু করা যাবে না; এর স্ট্যাটাস দেখুন"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "এই কাজটি বর্তমান অবস্থায় শেষ করা যাবে না; এর স্ট্যাটাস দেখুন"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "YouTube প্রতিলিপি বের করুন"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Youtube ভিডিওর শিরোনাম"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - Youtube ভিডিওর ঠিকানা"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - টাইমস্ট্যাম্পসহ সম্পূর্ণ প্রতিলিপি"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - LLM-এর তৈরি ভিডিওর সারাংশ"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - ব্যবহৃত LLM সরবরাহকারী (যেমন openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - ব্যবহৃত নির্দিষ্ট মডেল (যেমন gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - LLM সরবরাহকারী ও মডেল থেকে তৈরি ট্যাগ"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "সক্রিয় কাজ দেখান"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "সরবরাহকারী {provider} নির্ধারণ করা হয়েছে। আউটপুট বাজেট: {tokens} টোকেন (সর্বোচ্চ আউটপুট বিয়োগ সংরক্ষিত অংশ)।"
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "মডেল {model} এ পরিবর্তন করা হয়েছে। আউটপুট বাজেট: {tokens} টোকেন (সর্বোচ্চ আউটপুট বিয়োগ সংরক্ষিত অংশ)।"
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "{provider} মডেল তালিকা রিফ্রেশ করা হয়েছে।"
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "{provider} মডেল রিফ্রেশ করা যায়নি। বিদ্যমান তালিকাই ব্যবহার করা হবে।"
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "এই প্লেলিস্টে কোনো ভিডিও পাওয়া যায়নি"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "এই চ্যানেলে কোনো ভিডিও পাওয়া যায়নি"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "{provider} মডেল তালিকা রিফ্রেশ করা হয়েছে। {count} মডেলের টোকেন সীমা স্বয়ংক্রিয়ভাবে পূরণ হয়েছে।"
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "{provider} মডেল তালিকা রিফ্রেশ করা হয়েছে। {count} মডেলের টোকেন সীমা স্বয়ংক্রিয়ভাবে পূরণ হয়েছে।"
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "ট্রান্সক্রিপ্ট আনা হচ্ছে"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "সারাংশ তৈরি হচ্ছে"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "নোট তৈরি হচ্ছে"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "নোট তৈরি হয়েছে"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "টাইমস্ট্যাম্প লিঙ্ক যোগ করা হচ্ছে"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "অনুবাদ করা হচ্ছে"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "সম্পন্ন"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "বাতিল"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "বাদ দিন"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "নোট খুলুন"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "টাইমস্ট্যাম্প ছাড়াই শেষ করুন"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "অনুবাদ ছাড়াই শেষ করুন"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "পুনরায় শুরু"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "পুনরায় শুরু (আবার চার্জ হতে পারে)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "চলছে"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "চালিয়ে যাওয়ার জন্য প্রস্তুত"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "শেষ হয়েছে"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "বাতিল করা হয়েছে"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "ব্যর্থ"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "ব্যর্থ: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "সময় শেষ হয়েছে। {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Obsidian বন্ধ হওয়ায় বাধাপ্রাপ্ত; কোনো নোট তৈরি হয়নি"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Obsidian বন্ধ হওয়ায় বাধাপ্রাপ্ত; {path} এ একটি নোট থাকতে পারে"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Obsidian বন্ধ হওয়ায় বাধাপ্রাপ্ত; নোটটি টাইমস্ট্যাম্প ছাড়াই তৈরি হয়েছে"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Obsidian বন্ধ হওয়ায় বাধাপ্রাপ্ত; নোটটি অনুবাদ ছাড়াই তৈরি হয়েছে"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "{stage} চলাকালে বাধাপ্রাপ্ত; আগের অনুরোধের জন্য ইতিমধ্যে চার্জ হয়ে থাকতে পারে"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "{stage} চলাকালে বাধাপ্রাপ্ত; আগের অনুরোধে চার্জ হয়েছে কি না অজানা"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "{stage} এর জন্য অনেক বেশি চেষ্টা হয়েছে"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "লক্ষ্য পাথে ইতিমধ্যেই একটি নোট আছে — সেটির নাম বদলান বা মুছে ফেলুন, তারপর “সক্রিয় কাজ দেখান” থেকে চালিয়ে যান"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "লক্ষ্য পাথের নোটটি এই কাজের কি না তা নিশ্চিত করা যায়নি"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "এই কাজের নোটটি সরানো বা মুছে ফেলা হয়েছে"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "প্রক্রিয়াকরণের সময় নোটটি সম্পাদিত হয়েছে; টাইমস্ট্যাম্প বাদ দেওয়া হয়েছে"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater পাওয়া যাচ্ছে না; এটি সক্রিয় করে তারপর চালিয়ে যান"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "চালিয়ে গেলে একটি সশুল্ক পরিষেবা দিয়ে ট্রান্সক্রিপ্ট আবার আনা হবে"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "নোটের পাথ ধারাবাহিকভাবে নির্ণয় করা যায়নি (ফোল্ডার ও তারিখের সেটিং দেখুন), তারপর চালিয়ে যান"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "ট্রান্সক্রিপ্ট নোট সফলভাবে তৈরি হয়েছে"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "নোট তৈরি হয়েছে, তবে নোটটি সম্পাদিত হওয়ায় টাইমস্ট্যাম্প বাদ দেওয়া হয়েছে"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "নোট তৈরি হয়েছে, তবে নোটটি সম্পাদিত হওয়ায় অনুবাদ বাদ দেওয়া হয়েছে"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "নোট তৈরি হয়েছে, তবে নোটটি সম্পাদিত হওয়ায় টাইমস্ট্যাম্প ও অনুবাদ বাদ দেওয়া হয়েছে"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "অনুবাদ ছাড়াই নোট তৈরি হয়েছে"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "টাইমস্ট্যাম্প ও অনুবাদ ছাড়াই নোট তৈরি হয়েছে"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: Obsidian বন্ধ হওয়ায় 1টি নোট কাজ বাধাপ্রাপ্ত হয়েছে — {title}: কোনো নোট তৈরি হয়নি"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: Obsidian বন্ধ হওয়ায় 1টি নোট কাজ বাধাপ্রাপ্ত হয়েছে — {title}: {path} এ একটি নোট থাকতে পারে"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: Obsidian বন্ধ হওয়ায় 1টি নোট কাজ বাধাপ্রাপ্ত হয়েছে — {title}: নোটটি টাইমস্ট্যাম্প ছাড়াই তৈরি হয়েছে"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: Obsidian বন্ধ হওয়ায় 1টি নোট কাজ বাধাপ্রাপ্ত হয়েছে — {title}: নোটটি অনুবাদ ছাড়াই তৈরি হয়েছে"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: Obsidian বন্ধ হওয়ায় {count}টি নোট কাজ বাধাপ্রাপ্ত হয়েছে; সাম্প্রতিকতমগুলো “সক্রিয় কাজ দেখান” এ তালিকাভুক্ত"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: বাধাপ্রাপ্ত 1টি কাজের দিকে নজর দেওয়া দরকার"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: বাধাপ্রাপ্ত {count}টি কাজের দিকে নজর দেওয়া দরকার"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "অনুগ্রহ করে {field} লিখুন"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "একটি ত্রুটি ঘটেছে"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "এই ভিডিওর জন্য কোনো প্রতিলিপি নেই"
     }
 }

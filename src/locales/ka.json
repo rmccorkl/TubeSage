@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — გაუქმება „Show active jobs“-იდან"
+        "translation": "{stage} — გაუქმება „აქტიური სამუშაოების ჩვენება“-იდან"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,673 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "ვიდეოს დამუშავება"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Youtube-ის ტრანსკრიპტების მოდული: {provider}-ისთვის API გასაღები არ არის მითითებული. დაამატეთ თქვენი API გასაღები მოდულის პარამეტრებში."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "შეცდომა: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "დამუშავება გაუქმდა"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "დამუშავება შეწყდა; განაგრძეთ „აქტიური სამუშაოების ჩვენება“-იდან"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "შეიქმნა შეცდომის ჩანაწერი გამართვის ინფორმაციით: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "შეცდომა: {error} (გამართვის ჩანაწერის შექმნაც ვერ მოხერხდა)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "შეწყვეტილი დავალებების შემოწმება ვერ მოხერხდა: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "გაფრთხილება: ტრანსკრიპტში დროის ნიშნულები ვერ მოიძებნა. დამუშავებისთვის ისინი აუცილებელია."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "შეცდომა: საჭიროა მოდული Templater, მაგრამ ის დაყენებული ან ჩართული არ არის"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "ჩანაწერი შეიქმნა: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "შეცდომა ჩანაწერის შექმნისას: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Youtube-ის ტრანსკრიპტების მოდულს სჭირდება მოდული Templater. დააყენეთ და ჩართეთ იგი."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "კოლექციის ინფორმაციის მიღება..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "დასაკრავი სიის მიღება, ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "დასაკრავი სიის ვიდეოების მიღება..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "დასაკრავი სიის ვიდეოების მიღება (გაგრძელება)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "მიღწეულია უსაფრთხოების ზღვარი — {limit} ვიდეო. დამუშავდება პირველი {limit} ვიდეო."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "არხის ვიდეოების მიღება..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "არხის ვიდეოების მიღება (გაგრძელება)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "ნაპოვნია {title}: ვიდეოები — {count}"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "დროის ნიშნულების ბმულების დამატება LLM-ით..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "ხელახალი მცდელობა ტოკენების ნაკლები ზღვრით..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "დროის ნიშნულების ბმულების დამატება ვერ მოხერხდა: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "დროის ნიშნულების ბმულები დაემატა სათაურებს, რაოდენობა: {count}"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "შიგთავსის თარგმნა ენაზე {locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "შეცდომა: ფაილი ვერ მოიძებნა: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "თარგმნის შეცდომა: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "შიგთავსის თარგმნა ვერ მოხერხდა (ცარიელი პასუხი LLM-ისგან)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "შიგთავსი ითარგმნა ენაზე {locale}"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "{provider}-ის API გასაღები არ არის. მოდელების მიღება ვერ ხერხდება."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "{provider} მოდელების მიღება..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "{provider} მოდელების მიღება ვერ მოხერხდა: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "{provider} მოდელები განახლდა!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "API-ის პასუხიდან {provider} მოდელების წაკითხვა ვერ მოხერხდა."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "შეცდომა {provider} მოდელების მიღებისას: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "მუშავდება სექცია {current} / {total}..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "დროის ნიშნულების ბმულები დაემატა ნაწილობრივი დამუშავებით, რაოდენობა: {count}"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Youtube-ის ტრანსკრიპტების ამომღები მზადაა"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "დამუშავება"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "დატოვეთ ცარიელი YouTube-ის სათაურის გამოსაყენებლად"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "არასწორი YouTube-ის მისამართი. მხარდაჭერილია მხოლოდ ვიდეოს, დასაკრავი სიის და არხის მისამართები."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: შენიშვნის შექმნა YouTube-ის ტრანსკრიპტიდან"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "YouTube-ის URL"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "აღმოჩენილია YouTube-ის არხის ან დასაკრავი სიის URL"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "აღმოჩენილია YouTube-ის ვიდეოს URL"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "რამდენი ვიდეო დამუშავდეს? მაქსიმალური ზღვარია 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "ყველა ვიდეო"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "შეზღუდული რაოდენობა:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "შენიშვნის საკუთარი სათაური (არასავალდებულო)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "სწრაფი შეჯამების რეჟიმი"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "უფრო მოკლე და სწრაფი შეჯამებები (გამოტოვებს დროის ნიშნულების ბმულებს)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "აქტიური დავალებები"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "აქტიური დავალებები არ არის"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "დავალებების სიის წაკითხვა ვერ მოხერხდა: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "„მოცილება“ დავალებას მხოლოდ სიიდან შლის; შენიშვნებს არასოდეს შლის."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "შაბლონის ფაილის არჩევა"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "საქაღალდეში „{folder}“ შაბლონის ფაილები ვერ მოიძებნა. შეამოწმეთ, სწორად არის თუ არა მითითებული შაბლონების საქაღალდე Templater-ის პარამეტრებში."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "აკრიფეთ შაბლონების მოსაძებნად…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "შესაბამისი შაბლონები ვერ მოიძებნა."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "საქაღალდის ადგილის არჩევა"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "{folder}-ში ქვესაქაღალდეები არ არის"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "ნაპოვნი ქვესაქაღალდეები: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "საქაღალდეების გაფილტვრა…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "შესაბამისი საქაღალდეები არ არის"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Tubesage YouTube ტრანსკრიპტების დანამატის დოკუმენტაცია"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "readme ფაილის ჩატვირთვა ვერ მოხერხდა. შეამოწმეთ, არის თუ არა readme.md დანამატის საქაღალდეში."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "ნიმუშის შაბლონი: დააკოპირეთ Templater-ში მითითებულ შაბლონების საქაღალდეში"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "შაბლონის კოპირება"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "დაკოპირდა"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "კოპირება ვერ მოხერხდა"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "ეს არის Templater-ის ნიმუშის შაბლონი YouTube-ის ტრანსკრიპტების შენიშვნებისთვის. შეგიძლიათ მოირგოთ საკუთარ საჭიროებებს."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "ხელმისაწვდომი შაბლონის ცვლადები:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "შაბლონის ფაილის ჩატვირთვა ვერ მოხერხდა. შეამოწმეთ, არის თუ არა ის დანამატის საქაღალდეში ან საცავის შაბლონების საქაღალდეში."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "მიმდინარეობს დასაკრავი სიის სახელის მიღება…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "ნაპოვნია დასაკრავი სია: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "იწყება YouTube-ის დასაკრავი სიის დამუშავება: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "იწყება YouTube-ის არხის დამუშავება: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "შეიქმნა დასაკრავი სიის საქაღალდე: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "შეიქმნა არხის საქაღალდე: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "მიმდინარეობს ვიდეოების მიღება დასაკრავი სიიდან: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "მიმდინარეობს ვიდეოების მიღება არხიდან: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "დასამუშავებელი ვიდეოები: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "მიმდინარეობს ვიდეოს {current}/{total} დამუშავება: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "ვიდეო {title} გამოტოვებულია – ტრანსკრიპტი არ არის"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "მიმდინარეობს დროის ნიშნულების ბმულების დამატება დასაკრავი სიის ვიდეოსთვის: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "მიმდინარეობს დროის ნიშნულების ბმულების დამატება არხის ვიდეოსთვის: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ დროის ნიშნულების ბმულები დაემატა: {title}"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} („{title}“)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "შენიშვნა შეიქმნა, მაგრამ დროის ნიშნულების დამატება „{title}“-ში ვერ მოხერხდა"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ დამუშავდა ვიდეო {current}/{total}"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ ვიდეო „{title}“ გამოტოვებულია – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ შეცდომა ვიდეოს „{title}“ დამუშავებისას: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "არხის დამუშავება დასრულდა – დამუშავდა: {processed}, გამოტოვდა: {skipped}, შეცდომები: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "დავალების შენახვა ვერ მოხერხდა: {error}. ვიდეო შესაძლოა ჯერ კიდევ მუშავდებოდეს; იხილეთ „აქტიური სამუშაოების ჩვენება“"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "ეს ვიდეო უკვე მუშავდება"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "ამ დავალების ამ მდგომარეობაში გაგრძელება შეუძლებელია; იხილეთ მისი სტატუსი"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "ამ დავალების ამ მდგომარეობაში დასრულება შეუძლებელია; იხილეთ მისი სტატუსი"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "YouTube-ის ტრანსკრიპტის ამოღება"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Youtube-ის ვიდეოს სათაური"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - Youtube-ის ვიდეოს URL"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - სრული ტრანსკრიპტი დროის ნიშნულებით"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - LLM-ის მიერ შექმნილი ვიდეოს შეჯამება"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - გამოყენებული LLM მომწოდებელი (მაგ. openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - გამოყენებული კონკრეტული მოდელი (მაგ. gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - LLM მომწოდებლისა და მოდელისგან შექმნილი ტეგები"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "აქტიური სამუშაოების ჩვენება"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "მომწოდებლად დაყენდა {provider}. გამოტანის ბიუჯეტი: {tokens} ტოკენი (მაქსიმალური გამოტანა მინუს რეზერვი)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "მოდელი შეიცვალა {model}-ით. გამოტანის ბიუჯეტი: {tokens} ტოკენი (მაქსიმალური გამოტანა მინუს რეზერვი)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "{provider}-ის მოდელების სია განახლდა."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "{provider}-ის მოდელების განახლება ვერ მოხერხდა. გამოიყენება არსებული სია."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "ამ დასაკრავ სიაში ვიდეო ვერ მოიძებნა"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "ამ არხზე ვიდეო ვერ მოიძებნა"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "{provider}-ის მოდელების სია განახლდა. ტოკენების ზღვრები ავტომატურად შეივსო {count} მოდელისთვის."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "{provider}-ის მოდელების სია განახლდა. ტოკენების ზღვრები ავტომატურად შეივსო {count} მოდელისთვის."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "ტრანსკრიპტის მიღება"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "შეჯამება"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "ჩანაწერის შექმნა"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "ჩანაწერი შეიქმნა"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "დროის ნიშნულების ბმულების დამატება"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "თარგმნა"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "დასრულდა"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "გაუქმება"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "მოცილება"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "ჩანაწერის გახსნა"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "დასრულება დროის ნიშნულების გარეშე"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "დასრულება თარგმანის გარეშე"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "გაგრძელება"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "გაგრძელება (შესაძლოა ხელახლა დაგერიცხოთ)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "მიმდინარეობს"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "მზადაა გასაგრძელებლად"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "დასრულებულია"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "გაუქმებულია"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "ვერ შესრულდა"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "ვერ შესრულდა: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "დრო ამოიწურა. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "შეწყდა Obsidian-ის დახურვისას; ჩანაწერი არ შექმნილა"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "შეწყდა Obsidian-ის დახურვისას; {path}-ზე შესაძლოა ჩანაწერი იყოს"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "შეწყდა Obsidian-ის დახურვისას; ჩანაწერი შეიქმნა დროის ნიშნულების გარეშე"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "შეწყდა Obsidian-ის დახურვისას; ჩანაწერი შეიქმნა თარგმანის გარეშე"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "შეწყდა {stage} დროს; წინა მოთხოვნა შესაძლოა უკვე ანაზღაურებული იყოს"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "შეწყდა {stage} დროს; უცნობია, ანაზღაურდა თუ არა წინა მოთხოვნა"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "ძალიან ბევრი მცდელობა {stage} ეტაპზე"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "სამიზნე გზაზე უკვე არსებობს ჩანაწერი — გადაარქვით სახელი ან წაშალეთ, შემდეგ გააგრძელეთ „აქტიური სამუშაოების ჩვენება“-დან"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "ვერ დადასტურდა, ეკუთვნის თუ არა სამიზნე გზაზე არსებული ჩანაწერი ამ დავალებას"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "ამ დავალების ჩანაწერი გადატანილია ან წაშლილია"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "ჩანაწერი დამუშავებისას შეიცვალა; დროის ნიშნულები გამოტოვებულია"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater მიუწვდომელია; ჩართეთ და შემდეგ გააგრძელეთ"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "გაგრძელება ტრანსკრიპტს ხელახლა ჩამოტვირთავს ფასიანი სერვისით"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "ჩანაწერის გზა ვერ გამოითვალა თანმიმდევრულად (შეამოწმეთ საქაღალდისა და თარიღის პარამეტრები), შემდეგ გააგრძელეთ"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "ტრანსკრიპტის ჩანაწერი წარმატებით შეიქმნა"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "ჩანაწერი შეიქმნა, მაგრამ დროის ნიშნულები გამოტოვდა, რადგან ჩანაწერი შეიცვალა"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "ჩანაწერი შეიქმნა, მაგრამ თარგმანი გამოტოვდა, რადგან ჩანაწერი შეიცვალა"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "ჩანაწერი შეიქმნა, მაგრამ დროის ნიშნულები და თარგმანი გამოტოვდა, რადგან ჩანაწერი შეიცვალა"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "ჩანაწერი შეიქმნა თარგმანის გარეშე"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "ჩანაწერი შეიქმნა დროის ნიშნულებისა და თარგმანის გარეშე"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: Obsidian-ის დახურვისას შეწყდა 1 ჩანაწერის დავალება — {title}: ჩანაწერი არ შექმნილა"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: Obsidian-ის დახურვისას შეწყდა 1 ჩანაწერის დავალება — {title}: {path}-ზე შესაძლოა ჩანაწერი იყოს"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: Obsidian-ის დახურვისას შეწყდა 1 ჩანაწერის დავალება — {title}: ჩანაწერი შეიქმნა დროის ნიშნულების გარეშე"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: Obsidian-ის დახურვისას შეწყდა 1 ჩანაწერის დავალება — {title}: ჩანაწერი შეიქმნა თარგმანის გარეშე"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: Obsidian-ის დახურვისას შეწყდა {count} ჩანაწერის დავალება; უახლესები ჩამოთვლილია „აქტიური სამუშაოების ჩვენება“-ში"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 შეწყვეტილი დავალება საჭიროებს ყურადღებას"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: {count} შეწყვეტილი დავალება საჭიროებს ყურადღებას"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "გთხოვთ, შეავსოთ ველი {field}"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "მოხდა შეცდომა"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "ამ ვიდეოსთვის ტრანსკრიპტი არ არის"
     }
 }

@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — avbryt via «Show active jobs»"
+        "translation": "{stage} — avbryt via «Vis aktive jobber»"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,673 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "Behandler video"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Youtube-transkripsjonstillegg: ingen API-nøkkel er satt opp for {provider}. Legg til API-nøkkelen din i innstillingene for tillegget."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "Feil: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "Behandling avbrutt"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "Behandlingen ble avbrutt; gjenoppta den via «Vis aktive jobber»"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "Feilnotat med feilsøkingsinformasjon opprettet: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "Feil: {error} (feilsøkingsnotatet kunne heller ikke opprettes)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "Kunne ikke se etter avbrutte jobber: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "Advarsel: fant ingen tidsstempler i transkripsjonen. Tidsstempler er nødvendige for behandlingen."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "Feil: Templater-tillegget kreves, men er ikke installert eller aktivert"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "Notat opprettet: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "Feil ved oppretting av notatet: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "Youtube-transkripsjonstillegget krever Templater-tillegget. Installer og aktiver det."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "Henter informasjon om samlingen..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "Henter spillelisten med ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "Henter videoene i spillelisten..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "Henter videoene i spillelisten (fortsettelse)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "Sikkerhetsgrensen på {limit} videoer er nådd. De første {limit} videoene behandles."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "Henter videoene i kanalen..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "Henter videoene i kanalen (fortsettelse)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "Fant {title}: {count} videoer"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "Legger til tidsstempellenker med LLM..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "Prøver på nytt med lavere tokengrense..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "Tidsstempellenkene kunne ikke legges til: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "Tidsstempellenker lagt til {count} avsnittsoverskrifter"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "Oversetter innholdet til {locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "Feil: fant ikke filen: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "Oversettelsesfeil: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "Innholdet kunne ikke oversettes (tomt svar fra LLM)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "Innholdet ble oversatt til {locale}"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "API-nøkkelen for {provider} mangler. Modellene kan ikke hentes."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "Henter modeller fra {provider}..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "Modellene fra {provider} kunne ikke hentes: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "Modellene fra {provider} er oppdatert!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "Modellene fra {provider} kunne ikke leses i API-svaret."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "Feil ved henting av modellene fra {provider}: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "Behandler avsnitt {current} av {total}..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "La til {count} tidsstempellenker med oppdelt behandling"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "Youtube-transkripsjonsuttrekkeren er klar"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "Behandle"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "La feltet stå tomt for å bruke YouTube-tittelen"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "Ikke en gyldig YouTube-URL. Bare URL-er til video, spilleliste og kanal støttes."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: lag notat fra en YouTube-transkripsjon"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "YouTube-URL"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "YouTube-kanal- eller spillelisteadresse oppdaget"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "YouTube-videoadresse oppdaget"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "Hvor mange videoer vil du behandle? Den harde grensen er 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "Alle videoer"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "Begrenset antall:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "Egen notattittel (valgfritt)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "Rask sammendragsmodus"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "Gir kortere, raskere sammendrag (hopper over tidsstempellenker)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "Aktive jobber"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "Ingen aktive jobber"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "Kunne ikke lese jobblisten: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "Forkast fjerner en jobb fra denne listen; notater slettes aldri."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "Velg malfil"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "Fant ingen malfiler i mappen «{folder}». Kontroller at malmappen er riktig satt opp i Templater-innstillingene."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "Skriv for å søke i maler …"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "Ingen samsvarende maler."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "Velg mappeplassering"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "Ingen undermapper under {folder}"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "Undermapper funnet: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "Filtrer mapper …"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "Ingen samsvarende mapper"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Dokumentasjon for Tubesage YouTube-transkripsjonstillegget"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "Kunne ikke laste readme-filen. Kontroller at readme.md finnes i tilleggsmappen."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "Eksempelmal: kopier den til malmappen som er angitt i Templater"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "Kopier mal"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "Kopiert"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "Kopiering mislyktes"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "Dette er Templater-eksempelmalen som brukes til YouTube-transkripsjonsnotater. Du kan tilpasse den til dine behov."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "Tilgjengelige malvariabler:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "Kunne ikke laste malfilen. Kontroller at den finnes i tilleggsmappen eller i hvelvets malmappe."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "Henter spillelistens navn …"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "Spilleliste funnet: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "Behandler YouTube-spilleliste: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "Behandler YouTube-kanal: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "Spillelistemappe opprettet: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "Kanalmappe opprettet: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "Henter videoer fra spillelisten: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "Henter videoer fra kanalen: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "Videoer som skal behandles: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "Behandler video {current}/{total}: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "Hopper over video {title} – ingen transkripsjon"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "Legger til tidsstempellenker i spillelistevideoen: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "Legger til tidsstempellenker i kanalvideoen: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ Tidsstempellenker lagt til i {title}"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} («{title}»)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "Notatet ble opprettet, men tidsstempler kunne ikke legges til i «{title}»"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ Video {current}/{total} behandlet"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ Hopper over video «{title}» – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ Feil ved behandling av video «{title}»: {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "Behandling av kanal fullført – behandlet: {processed}, hoppet over: {skipped}, feil: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "Kunne ikke lagre jobben: {error}. Videoen behandles kanskje fortsatt; se «Vis aktive jobber»"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "Denne videoen behandles allerede"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "Denne jobben kan ikke gjenopptas slik den er; se statusen"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "Denne jobben kan ikke fullføres slik den er; se statusen"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "Hent ut YouTube-transkripsjon"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - Tittelen på Youtube-videoen"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - URL-en til Youtube-videoen"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - Hele transkripsjonen med tidsstempler"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - Sammendraget av videoen generert av LLM-en"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - LLM-leverandøren som ble brukt (f.eks. openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - Den konkrete modellen som ble brukt (f.eks. gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - Tagger generert ut fra LLM-leverandør og modell"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "Vis aktive jobber"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Leverandør satt til {provider}. Utdatabudsjett: {tokens} tokens (maks. utdata minus reserve)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Modell endret til {model}. Utdatabudsjett: {tokens} tokens (maks. utdata minus reserve)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "{provider}-modellisten er oppdatert."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "{provider}-modellene kunne ikke oppdateres. Den eksisterende listen beholdes."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "Fant ingen videoer i denne spillelisten"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "Fant ingen videoer på denne kanalen"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "{provider}-modellisten er oppdatert. Tokengrenser fylt ut automatisk for {count} modell."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "{provider}-modellisten er oppdatert. Tokengrenser fylt ut automatisk for {count} modeller."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Henter transkripsjon"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "Oppsummerer"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Oppretter notat"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "Notat opprettet"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "Legger til tidsstempellenker"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "Oversetter"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "Ferdig"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "Avbryt"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "Forkast"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "Åpne notat"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "Fullfør uten tidsstempler"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "Fullfør uten oversettelse"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "Gjenoppta"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "Gjenoppta (kan koste på nytt)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "Kjører"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "Klar til å fortsette"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "Avsluttet"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "Avbrutt"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "Mislyktes"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "Mislyktes: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "Tidsavbrudd. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Avbrutt da Obsidian ble lukket; det ble ikke opprettet noe notat"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Avbrutt da Obsidian ble lukket; det finnes kanskje et notat i {path}"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Avbrutt da Obsidian ble lukket; notatet ble opprettet uten tidsstempler"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Avbrutt da Obsidian ble lukket; notatet ble opprettet uten oversettelse"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "Avbrutt under {stage}; den forrige forespørselen kan allerede være fakturert"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "Avbrutt under {stage}; det er ukjent om den forrige forespørselen ble fakturert"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "For mange forsøk på {stage}"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "Det finnes allerede et notat på målstien — gi det nytt navn eller fjern det, og gjenoppta deretter fra Vis aktive jobber"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "Kunne ikke bekrefte om notatet på målstien hører til denne jobben"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "Notatet for denne jobben er flyttet eller slettet"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "Notatet ble redigert under behandlingen; tidsstemplene ble hoppet over"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater er ikke tilgjengelig; aktiver den, og gjenoppta deretter"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "Å gjenoppta henter transkripsjonen på nytt via en betalt tjeneste"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "Notatstien kunne ikke beregnes konsistent (sjekk mappe- og datoinnstillingene), og gjenoppta deretter"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "Transkripsjonsnotatet ble opprettet"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "Notatet ble opprettet, men tidsstemplene ble hoppet over fordi notatet ble redigert"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "Notatet ble opprettet, men oversettelsen ble hoppet over fordi notatet ble redigert"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "Notatet ble opprettet, men tidsstemplene og oversettelsen ble hoppet over fordi notatet ble redigert"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "Notat opprettet uten oversettelse"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "Notat opprettet uten tidsstempler og uten oversettelse"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: 1 notatjobb ble avbrutt da Obsidian ble lukket — {title}: det ble ikke opprettet noe notat"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: 1 notatjobb ble avbrutt da Obsidian ble lukket — {title}: det finnes kanskje et notat i {path}"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: 1 notatjobb ble avbrutt da Obsidian ble lukket — {title}: notat opprettet uten tidsstempler"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: 1 notatjobb ble avbrutt da Obsidian ble lukket — {title}: notat opprettet uten oversettelse"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: {count} notatjobber ble avbrutt da Obsidian ble lukket; de nyeste står under Vis aktive jobber"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 avbrutt jobb trenger oppmerksomhet"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: {count} avbrutte jobber trenger oppmerksomhet"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "Fyll ut feltet {field}"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "Det oppstod en feil"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "Ingen transkripsjon er tilgjengelig for denne videoen"
     }
 }

@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — cancele em \"Show active jobs\""
+        "translation": "{stage} — cancele em \"Mostrar trabalhos ativos\""
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,677 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "Processando o vídeo"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "Plugin de transcrição do Youtube: não há chave de API configurada para {provider}. Adicione sua chave de API nas configurações do plugin."
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "Erro: {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "O processamento foi cancelado"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "O processamento foi interrompido; retome-o em \"Mostrar trabalhos ativos\""
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "Nota de erro criada com informações de depuração: {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "Erro: {error} (a nota de depuração também não pôde ser criada)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "Não foi possível conferir as tarefas interrompidas: {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "Aviso: nenhuma marcação de tempo foi encontrada na transcrição. As marcações de tempo são necessárias para o processamento."
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "Erro: o plugin Templater é necessário, mas não está instalado nem habilitado"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "A nota foi criada: {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "Houve um erro ao criar a nota: {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "O plugin de transcrição do Youtube precisa do plugin Templater. Instale e habilite o Templater."
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "Buscando as informações da coleção..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "Buscando a playlist com o ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "Buscando os vídeos da playlist..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "Buscando os vídeos da playlist (continuação)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "O limite de segurança de {limit} vídeos foi atingido. Serão processados os primeiros {limit} vídeos."
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "Buscando os vídeos do canal..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "Buscando os vídeos do canal (continuação)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "{title} encontrado: {count} vídeos"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "Adicionando os links de marcação de tempo com o LLM..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "Tentando de novo com um limite de tokens menor..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "Não foi possível adicionar os links de marcação de tempo: {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "Links de marcação de tempo adicionados a {count} títulos de seção"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "Traduzindo o conteúdo para {locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "Erro: arquivo não encontrado: {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "Erro na tradução: {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "Não foi possível traduzir o conteúdo (o LLM devolveu uma resposta vazia)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "O conteúdo foi traduzido para {locale}"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "Falta a chave de API de {provider}. Não é possível buscar os modelos."
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "Buscando os modelos {provider}..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "Não foi possível buscar os modelos {provider}: {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "Modelos {provider} atualizados!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "Não foi possível interpretar os modelos {provider} na resposta da API."
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "Erro ao buscar os modelos {provider}: {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "Processando a seção {current} de {total}..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "Adicionados {count} links de marcação de tempo com o processamento em blocos"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "O extrator de transcrições do Youtube está pronto"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "Processar"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "Deixe em branco para usar o título do YouTube"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "URL do YouTube inválida. Só há suporte para URLs de vídeo, playlist e canal."
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage: criar nota a partir da transcrição do YouTube"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "URL do YouTube"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "URL de canal ou playlist do YouTube detectada"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "URL de vídeo do YouTube detectada"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "Quantos vídeos você quer processar? O limite máximo é 50."
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "Todos os vídeos"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "Quantidade limitada:"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "Título personalizado para a nota (opcional)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "Modo de resumo rápido"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "Para resumos mais curtos e rápidos (pula os links com marcação de tempo)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "Tarefas em andamento"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "Nenhuma tarefa em andamento"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "Não foi possível ler a lista de tarefas: {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "Descartar remove uma tarefa desta lista; nunca exclui notas."
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "Selecionar arquivo de modelo"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "Nenhum arquivo de modelo encontrado na pasta «{folder}». Verifique se a pasta de modelos está configurada corretamente nas configurações do Templater."
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "Digite para buscar modelos…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "Nenhum modelo correspondente."
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "Selecionar o local da pasta"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "Nenhuma subpasta em {folder}"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "Subpastas localizadas: {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "Filtrar pastas…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "Nenhuma pasta correspondente"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}: "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "Documentação do plugin de transcrição do YouTube Tubesage"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "Não foi possível carregar o arquivo readme. Verifique se readme.md existe na pasta do plugin."
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "Modelo de exemplo: copie para a pasta de modelos definida no Templater"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "Copiar modelo"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "Copiado"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "Falha ao copiar"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "Este é o modelo Templater de exemplo usado nas notas de transcrição do YouTube. Você pode adaptá-lo às suas necessidades."
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "Variáveis de modelo disponíveis:"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "Não foi possível carregar o arquivo de modelo. Verifique se ele existe na pasta do plugin ou na pasta de modelos do cofre."
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "Obtendo o nome da playlist…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "Playlist encontrada: {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "Iniciando o processamento da playlist do YouTube: {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "Iniciando o processamento do canal do YouTube: {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "Pasta da playlist criada: {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "Pasta do canal criada: {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "Buscando os vídeos da playlist: {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "Buscando os vídeos do canal: {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "Vídeos para processar: {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "Processando o vídeo {current}/{total}: {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "Vídeo {title} pulado – sem transcrição disponível"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "Adicionando links de tempo ao vídeo da playlist: {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "Adicionando links de tempo ao vídeo do canal: {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ Links de tempo adicionados a {title}"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} (\"{title}\")"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "Nota criada, mas não foi possível adicionar marcações de tempo a \"{title}\""
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ Vídeo {current}/{total} processado"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ Vídeo \"{title}\" pulado – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ Erro ao processar o vídeo \"{title}\": {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "Processamento do canal concluído – processados: {processed}, pulados: {skipped}, erros: {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "Não foi possível salvar a tarefa: {error}. O vídeo pode continuar sendo processado; veja \"Mostrar trabalhos ativos\""
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "Este vídeo já está sendo processado"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "Esta tarefa não pode ser retomada assim; veja o status dela"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "Esta tarefa não pode ser concluída assim; veja o status dela"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "Extrair transcrição do YouTube"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - O título do vídeo do Youtube"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - A URL do vídeo do Youtube"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - A transcrição completa com marcações de tempo"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - O resumo do vídeo gerado pelo LLM"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - O provedor de LLM usado (ex.: openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - O modelo específico usado (ex.: gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - Tags geradas a partir do provedor e do modelo de LLM"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "Mostrar trabalhos ativos"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Provedor definido como {provider}. Orçamento de saída: {tokens} tokens (saída máxima menos a reserva)."
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "Modelo alterado para {model}. Orçamento de saída: {tokens} tokens (saída máxima menos a reserva)."
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "Lista de modelos da {provider} atualizada."
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "Não foi possível atualizar os modelos da {provider}. A lista existente será mantida."
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "Nenhum vídeo encontrado nesta playlist"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "Nenhum vídeo encontrado neste canal"
+    },
+    "notice.models.refreshedWithLimits.one": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} model.",
+        "translation": "Lista de modelos da {provider} atualizada. Limites de tokens preenchidos automaticamente para {count} modelo."
+    },
+    "notice.models.refreshedWithLimits.many": {
+        "original": "",
+        "translation": "Lista de modelos da {provider} atualizada. Limites de tokens preenchidos automaticamente para {count} modelos."
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "Lista de modelos da {provider} atualizada. Limites de tokens preenchidos automaticamente para {count} modelos."
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "Obtendo a transcrição"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "Resumindo"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "Criando a nota"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "Nota criada"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "Adicionando links de marcação de tempo"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "Traduzindo"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "Concluído"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "Cancelar"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "Descartar"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "Abrir a nota"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "Concluir sem marcações de tempo"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "Concluir sem tradução"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "Retomar"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "Retomar (pode gerar nova cobrança)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "Em execução"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "Pronto para continuar"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "Finalizado"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "Cancelado"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "Falhou"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "Falhou: {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "Tempo esgotado. {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "Interrompido quando o Obsidian foi fechado; nenhuma nota foi criada"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "Interrompido quando o Obsidian foi fechado; pode haver uma nota em {path}"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "Interrompido quando o Obsidian foi fechado; a nota foi criada sem marcações de tempo"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "Interrompido quando o Obsidian foi fechado; a nota foi criada sem tradução"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "Interrompido durante {stage}; a solicitação anterior pode já ter sido cobrada"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "Interrompido durante {stage}; não se sabe se a solicitação anterior foi cobrada"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "Tentativas demais para {stage}"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "Já existe uma nota no caminho de destino — renomeie-a ou remova-a e depois retome em Mostrar trabalhos ativos"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "Não foi possível confirmar se a nota no caminho de destino pertence a este trabalho"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "A nota deste trabalho foi movida ou excluída"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "A nota foi editada durante o processamento; as marcações de tempo foram ignoradas"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "O Templater não está disponível; ative-o e depois retome"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "Retomar busca a transcrição novamente por um serviço pago"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "O caminho da nota não pôde ser calculado de forma consistente (confira as configurações de pasta e data) e depois retome"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "Nota da transcrição criada com sucesso"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "Nota criada, mas as marcações de tempo foram ignoradas porque a nota foi editada"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "Nota criada, mas a tradução foi ignorada porque a nota foi editada"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "Nota criada, mas as marcações de tempo e a tradução foram ignoradas porque a nota foi editada"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "Nota criada sem tradução"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "Nota criada sem marcações de tempo nem tradução"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage: 1 trabalho de nota foi interrompido quando o Obsidian foi fechado — {title}: nenhuma nota foi criada"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage: 1 trabalho de nota foi interrompido quando o Obsidian foi fechado — {title}: pode haver uma nota em {path}"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage: 1 trabalho de nota foi interrompido quando o Obsidian foi fechado — {title}: nota criada sem marcações de tempo"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage: 1 trabalho de nota foi interrompido quando o Obsidian foi fechado — {title}: nota criada sem tradução"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage: {count} trabalhos de nota foram interrompidos quando o Obsidian foi fechado; os mais recentes estão em Mostrar trabalhos ativos"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage: 1 trabalho interrompido precisa de atenção"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage: {count} trabalhos interrompidos precisam de atenção"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "Informe o campo {field}"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "Ocorreu um erro"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "Nenhuma transcrição disponível para este vídeo"
     }
 }

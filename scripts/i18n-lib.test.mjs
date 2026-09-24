@@ -8,7 +8,9 @@ import {
   checkLocales,
   flattenTranslations,
   formatCsv,
+  localeNeedsKey,
   parseCsv,
+  pluralRowOf,
   scanKeysUsedInCode,
 } from "./i18n-lib.mjs";
 
@@ -117,6 +119,77 @@ function check(overrides = {}) {
     ...overrides,
   });
 }
+
+
+describe("a counted string survives the whole pipeline, not just the runtime", () => {
+  // This exists because the runtime half was built and unit-tested against
+  // synthetic in-memory tables, and shipped UNUSABLE: nothing had ever carried
+  // a plural row through parse -> build -> check, so two tooling gaps went
+  // unseen — the key scanner could not see a `tPlural(` call, and the locale
+  // sweeps demanded English's categories from every language. A mechanism is
+  // not built until the pipeline that feeds it has run a real row through.
+  //
+  // Languages chosen for what they prove: `ja` has ONE category, `pl` has four,
+  // `en` two. So `ja` must legitimately LACK `.one`, and `pl` must legitimately
+  // CARRY `.few`, which English itself does not have.
+  const PLURAL_CSV = formatCsv(
+    ["key", "context", "en", "ja", "pl"],
+    [
+      ["n.videos.one", "Counted: one", "{count} video", "", "{count} film"],
+      ["n.videos.few", "Counted: few (pl)", "", "", "{count} filmy"],
+      ["n.videos.many", "Counted: many (pl)", "", "", "{count} filmów"],
+      ["n.videos.other", "Counted: other", "{count} videos", "{count} 本の動画", "{count} filmu"],
+    ],
+  );
+
+  it("splits a key into its family and category, and leaves ordinary keys alone", () => {
+    expect(pluralRowOf("n.videos.few")).toEqual({ base: "n.videos", category: "few" });
+    expect(pluralRowOf("settings.a.name")).toBeNull();
+  });
+
+  it("entitles each language to its own categories and no others", () => {
+    expect(localeNeedsKey("ja", "n.videos.one")).toBe(false);
+    expect(localeNeedsKey("ja", "n.videos.other")).toBe(true);
+    expect(localeNeedsKey("pl", "n.videos.few")).toBe(true);
+    expect(localeNeedsKey("en", "n.videos.few")).toBe(false);
+    expect(localeNeedsKey("ja", "settings.a.name")).toBe(true);
+  });
+
+  it("builds each locale with exactly the rows its grammar uses", () => {
+    const { en, locales } = buildLocales(PLURAL_CSV);
+    expect(Object.keys(en).sort()).toEqual(["n.videos.one", "n.videos.other"]);
+    expect(Object.keys(locales.ja).sort()).toEqual(["n.videos.other"]);
+    expect(Object.keys(locales.pl).sort()).toEqual([
+      "n.videos.few", "n.videos.many", "n.videos.one", "n.videos.other",
+    ]);
+  });
+
+  it("passes the gate with no missing, orphan or empty-translation problems", () => {
+    const { en, locales } = buildLocales(PLURAL_CSV);
+    const problems = checkLocales({
+      csvText: PLURAL_CSV,
+      en,
+      locales,
+      keysUsedInCode: scanKeysUsedInCode([{ text: "tPlural('n.videos', count)" }]),
+    });
+    expect(problems).toEqual([]);
+  });
+
+  it("still reports a locale carrying a category its grammar does not have", () => {
+    const { en, locales } = buildLocales(PLURAL_CSV);
+    locales.ja["n.videos.one"] = { original: "{count} video", translation: "まちがい" };
+    const problems = checkLocales({ csvText: PLURAL_CSV, en, locales, keysUsedInCode: new Set() });
+    expect(problems.map((p) => p.code)).toContain("plural-category-not-used");
+  });
+
+  it("sees a tPlural() call, so a counted key is never reported as an orphan", () => {
+    const keys = scanKeysUsedInCode([{ text: "showNotice(tPlural('n.videos', videos.length))" }]);
+    // The FAMILY is recorded, not a row: the matrix owns which categories exist.
+    expect(keys.has("n.videos")).toBe(true);
+    // And an ordinary t() call is unaffected.
+    expect(scanKeysUsedInCode([{ text: "t('settings.a.name')" }]).has("settings.a.name")).toBe(true);
+  });
+});
 
 describe("checkLocales — the i18n:check gate", () => {
   it("passes a consistent matrix, en.json, locale and code", () => {

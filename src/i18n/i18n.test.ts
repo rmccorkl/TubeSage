@@ -5,9 +5,12 @@ import {
     normalizeLanguageCode,
     resolveLocaleChain,
     setLanguageResolver,
+    PLURAL_CATEGORIES,
+    pluralCategory,
     substitute,
     t,
     translate,
+    translatePlural,
 } from "./index";
 import type { LocaleTable } from "./index";
 import { LOCALES, clearRuntimeLocales, installRuntimeLocale } from "./locales";
@@ -160,6 +163,84 @@ describe("t — the shipped helper", () => {
     });
 });
 
+
+describe("plural selection follows the language, not the number", () => {
+    // A hand-rolled `count === 1 ? a : b` is correct in English and wrong in
+    // most of the 51. These assertions are CLDR's answers, not preferences.
+    it("gives each language the categories its own grammar uses", () => {
+        expect(pluralCategory("en", 1)).toBe("one");
+        expect(pluralCategory("en", 0)).toBe("other");
+        expect(pluralCategory("en", 2)).toBe("other");
+        // Japanese has exactly one category: every count takes it.
+        for (const n of [0, 1, 2, 5, 11, 100]) expect(pluralCategory("ja", n)).toBe("other");
+        // French counts 0 and 1 together as `one`, which English does not.
+        expect(pluralCategory("fr", 0)).toBe("one");
+        expect(pluralCategory("fr", 1)).toBe("one");
+        // Polish: 2-4 are `few`, 5+ `many` — the case a two-form string breaks.
+        expect(pluralCategory("pl", 1)).toBe("one");
+        expect(pluralCategory("pl", 3)).toBe("few");
+        expect(pluralCategory("pl", 7)).toBe("many");
+        // Arabic uses all six.
+        expect(pluralCategory("ar", 0)).toBe("zero");
+        expect(pluralCategory("ar", 1)).toBe("one");
+        expect(pluralCategory("ar", 2)).toBe("two");
+        expect(pluralCategory("ar", 3)).toBe("few");
+        expect(pluralCategory("ar", 11)).toBe("many");
+    });
+
+    it("falls back to a two-form split for a code ICU cannot construct", () => {
+        // Not a real language tag; ICU throws rather than guessing.
+        expect(pluralCategory("!!not-a-tag!!", 1)).toBe("one");
+        expect(pluralCategory("!!not-a-tag!!", 4)).toBe("other");
+    });
+
+    const PLURAL_TABLE: LocaleTable = {
+        en: { "n.videos.one": "{count} video", "n.videos.other": "{count} videos" },
+        ja: { "n.videos.other": "{count} 本の動画" },
+        pl: {
+            "n.videos.one": "{count} film",
+            "n.videos.few": "{count} filmy",
+            "n.videos.many": "{count} filmów",
+            "n.videos.other": "{count} filmu",
+        },
+    };
+
+    it("supplies {count} without the caller passing it twice", () => {
+        expect(translatePlural(PLURAL_TABLE, "en", "n.videos", 1)).toBe("1 video");
+        expect(translatePlural(PLURAL_TABLE, "en", "n.videos", 3)).toBe("3 videos");
+    });
+
+    it("uses a one-category language's only form for every count", () => {
+        expect(translatePlural(PLURAL_TABLE, "ja", "n.videos", 1)).toBe("1 本の動画");
+        expect(translatePlural(PLURAL_TABLE, "ja", "n.videos", 9)).toBe("9 本の動画");
+    });
+
+    it("picks few and many apart in a four-category language", () => {
+        expect(translatePlural(PLURAL_TABLE, "pl", "n.videos", 1)).toBe("1 film");
+        expect(translatePlural(PLURAL_TABLE, "pl", "n.videos", 3)).toBe("3 filmy");
+        expect(translatePlural(PLURAL_TABLE, "pl", "n.videos", 7)).toBe("7 filmów");
+    });
+
+    it("recomputes the category for the locale that actually answers", () => {
+        // The sharp case. `de` has no entry, so the user reads ENGLISH — and
+        // the form must be English's. Asking German's rules would be asking the
+        // wrong language about the sentence actually on screen. With count 1
+        // both happen to agree, so this asserts the case where the requested
+        // language has only ONE category and English has two.
+        expect(translatePlural(PLURAL_TABLE, "de", "n.videos", 1)).toBe("1 video");
+        expect(translatePlural(PLURAL_TABLE, "de", "n.videos", 5)).toBe("5 videos");
+    });
+
+    it("falls back within a locale to `other` when its category row is absent", () => {
+        const sparse: LocaleTable = { en: { "n.x.other": "{count} x" } };
+        expect(translatePlural(sparse, "en", "n.x", 1)).toBe("1 x");
+    });
+
+    it("yields the key, never a raw undefined, when nothing has it", () => {
+        expect(translatePlural(PLURAL_TABLE, "en", "n.missing", 2)).toBe("n.missing");
+    });
+});
+
 describe("the locale table", () => {
     it("ships en as the base locale", () => {
         expect(Object.keys(LOCALES)).toContain(BASE_LOCALE);
@@ -242,11 +323,50 @@ describe("the locale table", () => {
         expect(LOCALES.en).toBe(EN);
     });
 
-    it("gives every bundled locale the full key set of en", () => {
+    it("gives every bundled locale the full key set of en, plus its own plural categories", () => {
         // `zh` IS Simplified Chinese in Obsidian's table; Traditional is `zh-TW`.
-        const enKeys = Object.keys(LOCALES.en).sort();
+        //
+        // NOT a plain equality against en any more, and it must not be: a
+        // counted string is authored as one row per CLDR category and each
+        // locale carries exactly the categories its own grammar uses. French
+        // legitimately holds `…refreshedWithLimits.many`, a row English does
+        // not have; Japanese legitimately holds neither `.one` nor `.many`.
+        // So the expected set is every ORDINARY en key, plus — for each family
+        // English carries — the rows this locale's own categories entitle it to.
+        const split = (key: string): { base: string; category: string } | null => {
+            const match = new RegExp(`^(.*)\\.(${PLURAL_CATEGORIES.join('|')})$`).exec(key);
+            return match === null ? null : { base: match[1], category: match[2] };
+        };
+        // Which categories each locale is entitled to is asserted against CLDR
+        // in scripts/i18n-locales.test.mjs, and deliberately NOT re-derived
+        // here: this table is keyed by Obsidian's language codes, and one of
+        // them (`kh`) is an ALIAS for another (`km`). `Intl.PluralRules("kh")`
+        // does not know that — `kh` is a country code, so ICU silently answers
+        // with the default locale's categories and would demand a `.one` row
+        // that Khmer correctly does not have. So this asserts the structural
+        // invariant instead, which holds for an alias as much as for a locale.
+        const enKeys = Object.keys(LOCALES.en);
+        const ordinary = enKeys.filter((key) => split(key) === null);
+        const families = new Set(
+            enKeys.map((key) => split(key)?.base).filter((base): base is string => base !== undefined),
+        );
+        // A family must exist, or this test quietly degrades to the old
+        // "every locale has exactly en's keys" equality.
+        expect(families.size).toBeGreaterThan(0);
+
         for (const code of Object.keys(LOCALES)) {
-            expect(Object.keys(LOCALES[code]).sort(), `${code} key set`).toEqual(enKeys);
+            const keys = Object.keys(LOCALES[code]);
+            const present = new Set(keys);
+            expect(ordinary.filter((key) => !present.has(key)), `${code} is missing ordinary keys`).toEqual([]);
+            // `other` is the one category CLDR guarantees every language, and
+            // is the runtime's within-locale fallback, so it is never optional.
+            expect([...families].filter((base) => !present.has(`${base}.other`)), `${code} is missing an "other" row`).toEqual([]);
+            const extra = keys.filter((key) => {
+                if (present.has(key) && ordinary.includes(key)) return false;
+                const row = split(key);
+                return row === null || !families.has(row.base);
+            });
+            expect(extra, `${code} carries keys en.json knows nothing about`).toEqual([]);
         }
     });
 });
@@ -302,11 +422,14 @@ describe("the shipped en.json", () => {
 
     it("namespaces every key by area", () => {
         // The areas, in the order they arrived: the settings tab and the
-        // licence dialog (#4 phase 1), shared words used by both, and the
-        // floating job notices (#7). A new area belongs in this list
-        // deliberately — the point is that a key cannot be coined outside one.
+        // licence dialog (#4 phase 1), shared words used by both, the
+        // floating job notices (#7), and the chrome of the plugin's own
+        // dialogs — button labels, field placeholders, inline validation —
+        // which is neither a setting nor a notice and arrived with the
+        // create-note modal. A new area belongs in this list deliberately —
+        // the point is that a key cannot be coined outside one.
         for (const [key] of EN_ENTRIES) {
-            expect(key, `${key} is not namespaced`).toMatch(/^(settings|license|common|notice)\.[A-Za-z0-9.]+$/);
+            expect(key, `${key} is not namespaced`).toMatch(/^(settings|license|common|notice|modal)\.[A-Za-z0-9.]+$/);
         }
     });
 

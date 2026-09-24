@@ -425,7 +425,7 @@
     },
     "notice.progress.message": {
         "original": "{stage} — cancel from \"Show active jobs\"",
-        "translation": "{stage} — បោះបង់ពី “Show active jobs”"
+        "translation": "{stage} — បោះបង់ពី “បង្ហាញការងារសកម្ម”"
     },
     "notice.progress.stage.transcript": {
         "original": "Fetching transcript",
@@ -450,5 +450,669 @@
     "notice.progress.stage.working": {
         "original": "Processing video",
         "translation": "កំពុងដំណើរការវីដេអូ"
+    },
+    "notice.apiKey.missing": {
+        "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
+        "translation": "កម្មវិធីជំនួយប្រតិចារិក Youtube៖ មិនទាន់មានសោ API សម្រាប់ {provider} ទេ។ សូមបញ្ចូលសោ API របស់អ្នកក្នុងការកំណត់កម្មវិធីជំនួយ។"
+    },
+    "notice.job.failed": {
+        "original": "Error: {error}",
+        "translation": "កំហុស៖ {error}"
+    },
+    "notice.job.cancelled": {
+        "original": "Processing cancelled",
+        "translation": "បានបោះបង់ដំណើរការ"
+    },
+    "notice.job.interrupted": {
+        "original": "Processing was interrupted; resume it from \"Show active jobs\"",
+        "translation": "ដំណើរការត្រូវបានរំខាន។ បន្តវាពី “បង្ហាញការងារសកម្ម”"
+    },
+    "notice.debugNote.created": {
+        "original": "Error note created with debug information: {file}",
+        "translation": "បានបង្កើតកំណត់ត្រាកំហុសជាមួយព័ត៌មានបំបាត់កំហុស៖ {file}"
+    },
+    "notice.debugNote.failed": {
+        "original": "Error: {error} (Also failed to create debug note)",
+        "translation": "កំហុស៖ {error} (ក៏មិនអាចបង្កើតកំណត់ត្រាបំបាត់កំហុសបានដែរ)"
+    },
+    "notice.recovery.checkFailed": {
+        "original": "Could not check for interrupted jobs: {error}",
+        "translation": "មិនអាចពិនិត្យការងារដែលត្រូវបានរំខានបានទេ៖ {error}"
+    },
+    "notice.transcript.noTimestamps": {
+        "original": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",
+        "translation": "ការព្រមាន៖ រកមិនឃើញត្រាពេលវេលាក្នុងប្រតិចារិកទេ។ ត្រាពេលវេលាចាំបាច់សម្រាប់ដំណើរការ។"
+    },
+    "notice.templater.required": {
+        "original": "Error: Templater plugin is required but not installed or enabled",
+        "translation": "កំហុស៖ ត្រូវការកម្មវិធីជំនួយ Templater ប៉ុន្តែមិនទាន់ដំឡើង ឬបើកដំណើរការ"
+    },
+    "notice.note.created": {
+        "original": "Created note: {name}",
+        "translation": "បានបង្កើតកំណត់ត្រា៖ {name}"
+    },
+    "notice.note.createFailed": {
+        "original": "Error creating note: {error}",
+        "translation": "កំហុសពេលបង្កើតកំណត់ត្រា៖ {error}"
+    },
+    "notice.templater.missing": {
+        "original": "Youtube transcript plugin requires the Templater plugin. Please install and enable it.",
+        "translation": "កម្មវិធីជំនួយប្រតិចារិក Youtube ត្រូវការកម្មវិធីជំនួយ Templater។ សូមដំឡើង និងបើកដំណើរការវា។"
+    },
+    "notice.collection.fetchingInfo": {
+        "original": "Fetching collection information...",
+        "translation": "កំពុងទាញព័ត៌មានការប្រមូលផ្ដុំ..."
+    },
+    "notice.collection.fetchingPlaylist": {
+        "original": "Fetching playlist with ID: {id}",
+        "translation": "កំពុងទាញបញ្ជីចាក់ ID: {id}"
+    },
+    "notice.collection.fetchingPlaylistVideos": {
+        "original": "Fetching playlist videos...",
+        "translation": "កំពុងទាញវីដេអូក្នុងបញ្ជីចាក់..."
+    },
+    "notice.collection.fetchingPlaylistVideosMore": {
+        "original": "Fetching playlist videos (continued)...",
+        "translation": "កំពុងទាញវីដេអូក្នុងបញ្ជីចាក់ (បន្ត)..."
+    },
+    "notice.collection.safetyLimit": {
+        "original": "Reached safety limit of {limit} videos. Processing the first {limit} videos.",
+        "translation": "បានដល់កម្រិតសុវត្ថិភាព {limit} វីដេអូ។ នឹងដំណើរការវីដេអូ {limit} ដំបូង។"
+    },
+    "notice.collection.fetchingChannelVideos": {
+        "original": "Fetching channel videos...",
+        "translation": "កំពុងទាញវីដេអូក្នុងឆានែល..."
+    },
+    "notice.collection.fetchingChannelVideosMore": {
+        "original": "Fetching channel videos (continued)...",
+        "translation": "កំពុងទាញវីដេអូក្នុងឆានែល (បន្ត)..."
+    },
+    "notice.collection.found": {
+        "original": "Found {title}: {count} videos",
+        "translation": "រកឃើញ {title}៖ វីដេអូ {count}"
+    },
+    "notice.timestamps.adding": {
+        "original": "Adding timestamp links with LLM...",
+        "translation": "កំពុងបន្ថែមតំណត្រាពេលវេលាដោយប្រើ LLM..."
+    },
+    "notice.timestamps.retrying": {
+        "original": "Retrying with reduced token limit...",
+        "translation": "កំពុងព្យាយាមម្ដងទៀតដោយបន្ថយដែនកំណត់តូខឹន..."
+    },
+    "notice.timestamps.failed": {
+        "original": "Failed to add timestamp links: {error}",
+        "translation": "មិនអាចបន្ថែមតំណត្រាពេលវេលាបានទេ៖ {error}"
+    },
+    "notice.timestamps.added": {
+        "original": "Added timestamp links to {count} section headings",
+        "translation": "បានបន្ថែមតំណត្រាពេលវេលាទៅចំណងជើងផ្នែក {count}"
+    },
+    "notice.translate.starting": {
+        "original": "Translating content to {locale}...",
+        "translation": "កំពុងបកប្រែខ្លឹមសារទៅជា {locale}..."
+    },
+    "notice.file.notFound": {
+        "original": "Error: File not found: {path}",
+        "translation": "កំហុស៖ រកមិនឃើញឯកសារ៖ {path}"
+    },
+    "notice.translate.failed": {
+        "original": "Translation error: {error}",
+        "translation": "កំហុសក្នុងការបកប្រែ៖ {error}"
+    },
+    "notice.translate.emptyResponse": {
+        "original": "Failed to translate content (empty response from LLM)",
+        "translation": "មិនអាចបកប្រែខ្លឹមសារបានទេ (ការឆ្លើយតបទទេពី LLM)"
+    },
+    "notice.translate.done": {
+        "original": "Successfully translated content to {locale}",
+        "translation": "បានបកប្រែខ្លឹមសារទៅជា {locale} ដោយជោគជ័យ"
+    },
+    "notice.models.apiKeyMissing": {
+        "original": "{provider} API key is missing. Cannot fetch models.",
+        "translation": "គ្មានសោ API របស់ {provider} ទេ។ មិនអាចទាញម៉ូដែលបានទេ។"
+    },
+    "notice.models.fetching": {
+        "original": "Fetching {provider} models...",
+        "translation": "កំពុងទាញម៉ូដែលរបស់ {provider}..."
+    },
+    "notice.models.fetchFailed": {
+        "original": "Failed to fetch {provider} models: {error}",
+        "translation": "ទាញម៉ូដែលរបស់ {provider} មិនបានសម្រេច៖ {error}"
+    },
+    "notice.models.updated": {
+        "original": "{provider} models updated!",
+        "translation": "បានធ្វើបច្ចុប្បន្នភាពម៉ូដែលរបស់ {provider}!"
+    },
+    "notice.models.parseFailed": {
+        "original": "Could not parse {provider} models from API response.",
+        "translation": "មិនអាចអានម៉ូដែលរបស់ {provider} ពីការឆ្លើយតប API បានទេ។"
+    },
+    "notice.models.error": {
+        "original": "Error fetching {provider} models: {error}",
+        "translation": "កំហុសពេលទាញម៉ូដែលរបស់ {provider}៖ {error}"
+    },
+    "notice.timestamps.chunkProgress": {
+        "original": "Processing section {current} of {total}...",
+        "translation": "កំពុងដំណើរការផ្នែកទី {current} ក្នុងចំណោម {total}..."
+    },
+    "notice.timestamps.addedChunked": {
+        "original": "Added {count} timestamp links using chunked processing",
+        "translation": "បានបន្ថែមតំណត្រាពេលវេលា {count} ដោយដំណើរការជាផ្នែកៗ"
+    },
+    "notice.extractor.ready": {
+        "original": "Youtube transcript extractor ready",
+        "translation": "កម្មវិធីទាញយកប្រតិចារិក Youtube រួចរាល់"
+    },
+    "modal.create.processButton": {
+        "original": "Process",
+        "translation": "ដំណើរការ"
+    },
+    "modal.create.titlePlaceholder": {
+        "original": "Leave empty to use YouTube title",
+        "translation": "ទុកឱ្យទទេ ដើម្បីប្រើចំណងជើង YouTube"
+    },
+    "modal.create.urlInvalid": {
+        "original": "Not a valid YouTube URL. Only video, playlist, and channel urls are supported.",
+        "translation": "មិនមែនជា URL YouTube ត្រឹមត្រូវទេ។ គាំទ្រតែ URL វីដេអូ បញ្ជីចាក់ និងឆានែលប៉ុណ្ណោះ។"
+    },
+    "modal.create.title": {
+        "original": "Tubesage: create note from YouTube transcript",
+        "translation": "Tubesage៖ បង្កើតកំណត់ត្រាពីអត្ថបទ YouTube"
+    },
+    "modal.create.urlLabel": {
+        "original": "YouTube URL",
+        "translation": "URL របស់ YouTube"
+    },
+    "modal.create.urlPlaylist": {
+        "original": "YouTube channel or playlist URL detected",
+        "translation": "បានរកឃើញ URL ឆានែល ឬបញ្ជីចាក់របស់ YouTube"
+    },
+    "modal.create.urlVideo": {
+        "original": "YouTube video URL detected",
+        "translation": "បានរកឃើញ URL វីដេអូរបស់ YouTube"
+    },
+    "modal.create.videoCountPrompt": {
+        "original": "How many videos would you like to process? Max hard limit is 50.",
+        "translation": "តើអ្នកចង់ដំណើរការវីដេអូប៉ុន្មាន? ដែនកំណត់អតិបរមាគឺ 50។"
+    },
+    "modal.create.allVideos": {
+        "original": "All videos",
+        "translation": "វីដេអូទាំងអស់"
+    },
+    "modal.create.limitedNumber": {
+        "original": "Limited number:",
+        "translation": "ចំនួនកំណត់៖"
+    },
+    "modal.create.titleLabel": {
+        "original": "Custom note title (optional)",
+        "translation": "ចំណងជើងកំណត់ត្រាផ្ទាល់ខ្លួន (ស្រេចចិត្ត)"
+    },
+    "modal.create.fastMode": {
+        "original": "Fast summary mode",
+        "translation": "របៀបសង្ខេបរហ័ស"
+    },
+    "modal.create.fastModeDesc": {
+        "original": "Enable for shorter, quicker summaries (skips timestamp links)",
+        "translation": "សង្ខេបខ្លីនិងលឿនជាង (រំលងតំណពេលវេលា)"
+    },
+    "modal.jobs.title": {
+        "original": "Active jobs",
+        "translation": "កិច្ចការកំពុងដំណើរការ"
+    },
+    "modal.jobs.empty": {
+        "original": "No active jobs",
+        "translation": "មិនមានកិច្ចការកំពុងដំណើរការទេ"
+    },
+    "modal.jobs.loadError": {
+        "original": "Could not read the job list: {error}",
+        "translation": "មិនអាចអានបញ្ជីកិច្ចការបានទេ៖ {error}"
+    },
+    "modal.jobs.meta": {
+        "original": "{stage} · {age}",
+        "translation": "{stage} · {age}"
+    },
+    "modal.jobs.discardHint": {
+        "original": "Discard removes a job from this list; it never deletes notes.",
+        "translation": "«បោះបង់» ដកកិច្ចការចេញពីបញ្ជីនេះប៉ុណ្ណោះ មិនលុបកំណត់ត្រាឡើយ។"
+    },
+    "modal.templatePicker.title": {
+        "original": "Select template file",
+        "translation": "ជ្រើសរើសឯកសារគំរូ"
+    },
+    "modal.templatePicker.empty": {
+        "original": "No template files found in \"{folder}\" folder. Make sure your template folder is correctly configured in Templater settings.",
+        "translation": "រកមិនឃើញឯកសារគំរូក្នុងថត “{folder}” ទេ។ សូមពិនិត្យថាថតគំរូត្រូវបានកំណត់ត្រឹមត្រូវក្នុងការកំណត់ Templater។"
+    },
+    "modal.templatePicker.searchPlaceholder": {
+        "original": "Type to search templates...",
+        "translation": "វាយបញ្ចូលដើម្បីស្វែងរកគំរូ…"
+    },
+    "modal.templatePicker.noMatches": {
+        "original": "No matching templates found.",
+        "translation": "រកមិនឃើញគំរូដែលត្រូវគ្នាទេ។"
+    },
+    "modal.folderPicker.title": {
+        "original": "Select folder location",
+        "translation": "ជ្រើសរើសទីតាំងថត"
+    },
+    "modal.folderPicker.empty": {
+        "original": "No subfolders found under {folder}",
+        "translation": "មិនមានថតរងក្នុង {folder} ទេ"
+    },
+    "modal.folderPicker.found": {
+        "original": "Subfolders found: {count}",
+        "translation": "ថតរងដែលរកឃើញ៖ {count}"
+    },
+    "modal.folderPicker.searchPlaceholder": {
+        "original": "Filter folders...",
+        "translation": "ត្រងថត…"
+    },
+    "modal.folderPicker.noMatches": {
+        "original": "No matching folders",
+        "translation": "រកមិនឃើញថតដែលត្រូវគ្នាទេ"
+    },
+    "modal.license.listItem": {
+        "original": "{number}. {title}: ",
+        "translation": "{number}. {title}៖ "
+    },
+    "modal.readme.title": {
+        "original": "Tubesage YouTube transcript plugin documentation",
+        "translation": "ឯកសារកម្មវិធីជំនួយ Tubesage សម្រាប់អត្ថបទ YouTube"
+    },
+    "modal.readme.loadError": {
+        "original": "Could not load readme file. Please check that readme.md exists in your plugin directory.",
+        "translation": "មិនអាចផ្ទុកឯកសារ readme បានទេ។ សូមពិនិត្យថា readme.md មានក្នុងថតកម្មវិធីជំនួយ។"
+    },
+    "modal.template.title": {
+        "original": "Example template: copy and place in your templater plugin specified template directory",
+        "translation": "គំរូឧទាហរណ៍៖ ចម្លងទៅថតគំរូដែលបានកំណត់ក្នុង Templater"
+    },
+    "modal.template.copy": {
+        "original": "Copy template",
+        "translation": "ចម្លងគំរូ"
+    },
+    "modal.template.copied": {
+        "original": "Copied",
+        "translation": "បានចម្លង"
+    },
+    "modal.template.copyFailed": {
+        "original": "Failed to copy",
+        "translation": "ចម្លងមិនបាន"
+    },
+    "modal.template.explanation": {
+        "original": "This is the example templater plugin template used for YouTube transcript notes. You can customize this template for your own needs.",
+        "translation": "នេះគឺជាគំរូឧទាហរណ៍របស់ Templater សម្រាប់កំណត់ត្រាអត្ថបទ YouTube។ អ្នកអាចកែតាមតម្រូវការរបស់អ្នក។"
+    },
+    "modal.template.variablesHeading": {
+        "original": "Available template variables:",
+        "translation": "អថេរគំរូដែលមាន៖"
+    },
+    "modal.template.loadError": {
+        "original": "Could not load template file. Please check that the template exists in your plugin directory or vault templates folder.",
+        "translation": "មិនអាចផ្ទុកឯកសារគំរូបានទេ។ សូមពិនិត្យថាវាមានក្នុងថតកម្មវិធីជំនួយ ឬថតគំរូរបស់ឃ្លាំង។"
+    },
+    "notice.collection.extractingName": {
+        "original": "Extracting playlist name...",
+        "translation": "កំពុងទាញយកឈ្មោះបញ្ជីចាក់…"
+    },
+    "notice.collection.playlistFound": {
+        "original": "Found playlist: {name}",
+        "translation": "រកឃើញបញ្ជីចាក់៖ {name}"
+    },
+    "notice.collection.start.playlist": {
+        "original": "Starting to process YouTube playlist: {name}",
+        "translation": "ចាប់ផ្តើមដំណើរការបញ្ជីចាក់ YouTube៖ {name}"
+    },
+    "notice.collection.start.channel": {
+        "original": "Starting to process YouTube channel: {name}",
+        "translation": "ចាប់ផ្តើមដំណើរការឆានែល YouTube៖ {name}"
+    },
+    "notice.collection.folderCreated.playlist": {
+        "original": "Created playlist folder: {path}",
+        "translation": "បានបង្កើតថតបញ្ជីចាក់៖ {path}"
+    },
+    "notice.collection.folderCreated.channel": {
+        "original": "Created channel folder: {path}",
+        "translation": "បានបង្កើតថតឆានែល៖ {path}"
+    },
+    "notice.collection.fetchingFrom.playlist": {
+        "original": "Fetching videos from playlist: {name}",
+        "translation": "កំពុងទាញយកវីដេអូពីបញ្ជីចាក់៖ {name}"
+    },
+    "notice.collection.fetchingFrom.channel": {
+        "original": "Fetching videos from channel: {name}",
+        "translation": "កំពុងទាញយកវីដេអូពីឆានែល៖ {name}"
+    },
+    "notice.collection.videosToProcess": {
+        "original": "Found {count} videos to process",
+        "translation": "វីដេអូដែលត្រូវដំណើរការ៖ {count}"
+    },
+    "notice.collection.processingVideo": {
+        "original": "Processing video {current}/{total}: {title}",
+        "translation": "កំពុងដំណើរការវីដេអូ {current}/{total}៖ {title}"
+    },
+    "notice.collection.skipNoTranscript": {
+        "original": "Skipping video {title} - No transcript available",
+        "translation": "រំលងវីដេអូ {title} – មិនមានអត្ថបទ"
+    },
+    "notice.collection.addingTimestamps.playlist": {
+        "original": "Adding timestamp links to playlist video: {title}",
+        "translation": "កំពុងបន្ថែមតំណពេលវេលាទៅវីដេអូក្នុងបញ្ជីចាក់៖ {title}"
+    },
+    "notice.collection.addingTimestamps.channel": {
+        "original": "Adding timestamp links to channel video: {title}",
+        "translation": "កំពុងបន្ថែមតំណពេលវេលាទៅវីដេអូក្នុងឆានែល៖ {title}"
+    },
+    "notice.collection.timestampsAdded": {
+        "original": "✓ Timestamp links added to {title}",
+        "translation": "✓ បានបន្ថែមតំណពេលវេលាទៅ {title}"
+    },
+    "notice.collection.timestampError": {
+        "original": "{error} (\"{title}\")",
+        "translation": "{error} (“{title}”)"
+    },
+    "notice.collection.timestampsFailed": {
+        "original": "Note created but timestamps could not be added to \"{title}\"",
+        "translation": "បានបង្កើតកំណត់ត្រា ប៉ុន្តែមិនអាចបន្ថែមពេលវេលាទៅ “{title}” បានទេ"
+    },
+    "notice.collection.videoProcessed": {
+        "original": "✓ Processed video {current}/{total}",
+        "translation": "✓ បានដំណើរការវីដេអូ {current}/{total}"
+    },
+    "notice.collection.videoSkipped": {
+        "original": "⚠️ Skipping video \"{title}\" - {error}",
+        "translation": "⚠️ រំលងវីដេអូ “{title}” – {error}"
+    },
+    "notice.collection.videoError": {
+        "original": "❌ Error processing video \"{title}\": {error}",
+        "translation": "❌ កំហុសពេលដំណើរការវីដេអូ “{title}”៖ {error}"
+    },
+    "notice.collection.complete": {
+        "original": "Channel processing complete: {processed} processed, {skipped} skipped, {errors} errors",
+        "translation": "ដំណើរការឆានែលបានបញ្ចប់ – បានដំណើរការ៖ {processed} រំលង៖ {skipped} កំហុស៖ {errors}"
+    },
+    "notice.job.saveFailed": {
+        "original": "Could not save the job: {error}. The video may still be processing; check \"Show active jobs\"",
+        "translation": "មិនអាចរក្សាទុកកិច្ចការបានទេ៖ {error}។ វីដេអូអាចនៅកំពុងដំណើរការ សូមមើល “បង្ហាញការងារសកម្ម”"
+    },
+    "notice.job.alreadyRunning": {
+        "original": "This video is already being processed",
+        "translation": "វីដេអូនេះកំពុងដំណើរការរួចហើយ"
+    },
+    "notice.job.cannotResume": {
+        "original": "This job cannot be resumed as it is; see its status",
+        "translation": "កិច្ចការនេះមិនអាចបន្តក្នុងស្ថានភាពនេះបានទេ សូមមើលស្ថានភាពរបស់វា"
+    },
+    "notice.job.cannotFinish": {
+        "original": "This job cannot be finished as it is; see its status",
+        "translation": "កិច្ចការនេះមិនអាចបញ្ចប់ក្នុងស្ថានភាពនេះបានទេ សូមមើលស្ថានភាពរបស់វា"
+    },
+    "common.command.extract": {
+        "original": "Extract YouTube transcript",
+        "translation": "ទាញយកអត្ថបទ YouTube"
+    },
+    "modal.template.var.title.desc": {
+        "original": " - The title of the Youtube video",
+        "translation": " - ចំណងជើងវីដេអូ Youtube"
+    },
+    "modal.template.var.videoUrl.desc": {
+        "original": " - The URL of the Youtube video",
+        "translation": " - URL វីដេអូ Youtube"
+    },
+    "modal.template.var.transcript.desc": {
+        "original": " - The full transcript with timestamps",
+        "translation": " - អត្ថបទពេញលេញជាមួយពេលវេលា"
+    },
+    "modal.template.var.summary.desc": {
+        "original": " - The LLM-generated summary of the video",
+        "translation": " - សង្ខេបវីដេអូដែលបង្កើតដោយ LLM"
+    },
+    "modal.template.var.llmProvider.desc": {
+        "original": " - The LLM provider used (e.g., openai, anthropic)",
+        "translation": " - អ្នកផ្តល់ LLM ដែលបានប្រើ (ឧ. openai, anthropic)"
+    },
+    "modal.template.var.llmModel.desc": {
+        "original": " - The specific model used (e.g., gpt-4, claude-3-opus)",
+        "translation": " - ម៉ូដែលជាក់លាក់ដែលបានប្រើ (ឧ. gpt-4, claude-3-opus)"
+    },
+    "modal.template.var.llmTags.desc": {
+        "original": " - Tags generated from the LLM provider and model",
+        "translation": " - ស្លាកដែលបង្កើតពីអ្នកផ្តល់ និងម៉ូដែល LLM"
+    },
+    "common.command.showActiveJobs": {
+        "original": "Show active jobs",
+        "translation": "បង្ហាញការងារសកម្ម"
+    },
+    "notice.models.providerSet": {
+        "original": "Provider set to {provider}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "បានកំណត់អ្នកផ្ដល់សេវាជា {provider}។ ថវិកាលទ្ធផល៖ {tokens} ថូខឹន (លទ្ធផលអតិបរមាដកទុកបម្រុង)។"
+    },
+    "notice.models.modelChanged": {
+        "original": "Model changed to {model}. Output budget: {tokens} tokens (max output minus reserve).",
+        "translation": "បានប្ដូរម៉ូដែលទៅជា {model}។ ថវិកាលទ្ធផល៖ {tokens} ថូខឹន (លទ្ធផលអតិបរមាដកទុកបម្រុង)។"
+    },
+    "notice.models.refreshed": {
+        "original": "{provider} model list refreshed.",
+        "translation": "បានធ្វើឱ្យបញ្ជីម៉ូដែល {provider} ស្រស់។"
+    },
+    "notice.models.refreshFailed": {
+        "original": "Could not refresh {provider} models. Using existing list.",
+        "translation": "មិនអាចធ្វើឱ្យម៉ូដែល {provider} ស្រស់បានទេ។ នឹងប្រើបញ្ជីដែលមានស្រាប់។"
+    },
+    "notice.collection.noVideos.playlist": {
+        "original": "No videos found in this playlist",
+        "translation": "រកមិនឃើញវីដេអូក្នុងបញ្ជីចាក់នេះទេ"
+    },
+    "notice.collection.noVideos.channel": {
+        "original": "No videos found in this channel",
+        "translation": "រកមិនឃើញវីដេអូក្នុងឆានែលនេះទេ"
+    },
+    "notice.models.refreshedWithLimits.other": {
+        "original": "{provider} model list refreshed. Token limits auto-populated for {count} models.",
+        "translation": "បានធ្វើឱ្យបញ្ជីម៉ូដែល {provider} ស្រស់។ បានបំពេញដែនកំណត់ថូខឹនដោយស្វ័យប្រវត្តិសម្រាប់ម៉ូដែល {count}។"
+    },
+    "modal.jobs.stage.transcript": {
+        "original": "Fetching transcript",
+        "translation": "កំពុងទាញយកអត្ថបទ"
+    },
+    "modal.jobs.stage.summary": {
+        "original": "Summarizing",
+        "translation": "កំពុងសង្ខេប"
+    },
+    "modal.jobs.stage.noteCreating": {
+        "original": "Creating note",
+        "translation": "កំពុងបង្កើតកំណត់ត្រា"
+    },
+    "modal.jobs.stage.noteCreated": {
+        "original": "Note created",
+        "translation": "បានបង្កើតកំណត់ត្រា"
+    },
+    "modal.jobs.stage.timestamps": {
+        "original": "Adding timestamp links",
+        "translation": "កំពុងបន្ថែមតំណពេលវេលា"
+    },
+    "modal.jobs.stage.translation": {
+        "original": "Translating",
+        "translation": "កំពុងបកប្រែ"
+    },
+    "modal.jobs.stage.done": {
+        "original": "Done",
+        "translation": "រួចរាល់"
+    },
+    "modal.jobs.action.cancel": {
+        "original": "Cancel",
+        "translation": "បោះបង់"
+    },
+    "modal.jobs.action.discard": {
+        "original": "Discard",
+        "translation": "បោះចោល"
+    },
+    "modal.jobs.action.openNote": {
+        "original": "Open note",
+        "translation": "បើកកំណត់ត្រា"
+    },
+    "modal.jobs.action.finishWithoutTimestamps": {
+        "original": "Finish without timestamps",
+        "translation": "បញ្ចប់ដោយគ្មានពេលវេលា"
+    },
+    "modal.jobs.action.finishWithoutTranslation": {
+        "original": "Finish without translation",
+        "translation": "បញ្ចប់ដោយគ្មានការបកប្រែ"
+    },
+    "modal.jobs.action.resume": {
+        "original": "Resume",
+        "translation": "បន្ត"
+    },
+    "modal.jobs.action.resumeMayRebill": {
+        "original": "Resume (may re-bill)",
+        "translation": "បន្ត (អាចគិតថ្លៃម្ដងទៀត)"
+    },
+    "modal.jobs.status.running": {
+        "original": "Running",
+        "translation": "កំពុងដំណើរការ"
+    },
+    "modal.jobs.status.readyToContinue": {
+        "original": "Ready to continue",
+        "translation": "រួចរាល់ដើម្បីបន្ត"
+    },
+    "modal.jobs.status.finished": {
+        "original": "Finished",
+        "translation": "បានបញ្ចប់"
+    },
+    "modal.jobs.status.cancelled": {
+        "original": "Cancelled",
+        "translation": "បានបោះបង់"
+    },
+    "modal.jobs.status.failed": {
+        "original": "Failed",
+        "translation": "បរាជ័យ"
+    },
+    "modal.jobs.status.failedWithError": {
+        "original": "Failed: {error}",
+        "translation": "បរាជ័យ៖ {error}"
+    },
+    "modal.jobs.status.timedOut": {
+        "original": "Timed out. {status}",
+        "translation": "អស់ពេល។ {status}"
+    },
+    "modal.jobs.closed.noNote": {
+        "original": "Interrupted when Obsidian closed; no note was created",
+        "translation": "បានរំខានពេល Obsidian បិទ។ មិនបានបង្កើតកំណត់ត្រាទេ"
+    },
+    "modal.jobs.closed.mayExist": {
+        "original": "Interrupted when Obsidian closed; a note may exist at {path}",
+        "translation": "បានរំខានពេល Obsidian បិទ។ អាចមានកំណត់ត្រានៅ {path}"
+    },
+    "modal.jobs.closed.withoutTimestamps": {
+        "original": "Interrupted when Obsidian closed; the note was created without timestamps",
+        "translation": "បានរំខានពេល Obsidian បិទ។ កំណត់ត្រាត្រូវបានបង្កើតដោយគ្មានពេលវេលាកំណត់"
+    },
+    "modal.jobs.closed.withoutTranslation": {
+        "original": "Interrupted when Obsidian closed; the note was created without translation",
+        "translation": "បានរំខានពេល Obsidian បិទ។ កំណត់ត្រាត្រូវបានបង្កើតដោយគ្មានការបកប្រែ"
+    },
+    "modal.jobs.reason.paidStageInFlight": {
+        "original": "Interrupted during {stage}; the previous request may already have been billed",
+        "translation": "បានរំខានពេល{stage}។ សំណើមុនប្រហែលជាត្រូវបានគិតថ្លៃរួចហើយ"
+    },
+    "modal.jobs.reason.unknownBilling": {
+        "original": "Interrupted during {stage}; billing for the previous request is unknown",
+        "translation": "បានរំខានពេល{stage}។ មិនដឹងថាសំណើមុនត្រូវបានគិតថ្លៃឬអត់"
+    },
+    "modal.jobs.reason.attemptsExhausted": {
+        "original": "Too many attempts for {stage}",
+        "translation": "ការព្យាយាម{stage}ច្រើនពេកហើយ"
+    },
+    "modal.jobs.reason.noteCollision": {
+        "original": "A note already exists at the target path — rename or remove it, then resume from Show active jobs",
+        "translation": "មានកំណត់ត្រារួចហើយនៅផ្លូវគោលដៅ — សូមប្ដូរឈ្មោះ ឬលុបវា រួចបន្តពី «បង្ហាញការងារសកម្ម»"
+    },
+    "modal.jobs.reason.claimUnresolved": {
+        "original": "Could not confirm whether the note at the target path belongs to this job",
+        "translation": "មិនអាចបញ្ជាក់បានថាកំណត់ត្រានៅផ្លូវគោលដៅជារបស់ការងារនេះឬអត់"
+    },
+    "modal.jobs.reason.noteMissing": {
+        "original": "The note for this job was moved or deleted",
+        "translation": "កំណត់ត្រារបស់ការងារនេះត្រូវបានផ្លាស់ទី ឬលុបចោល"
+    },
+    "modal.jobs.reason.noteChanged": {
+        "original": "The note was edited during processing; timestamps were skipped",
+        "translation": "កំណត់ត្រាត្រូវបានកែពេលដំណើរការ។ បានរំលងពេលវេលាកំណត់"
+    },
+    "modal.jobs.reason.templaterUnavailable": {
+        "original": "Templater is not available; enable it, then resume",
+        "translation": "Templater មិនអាចប្រើបានទេ។ សូមបើកវា រួចបន្ត"
+    },
+    "modal.jobs.reason.paidRefetch": {
+        "original": "Resuming re-fetches the transcript through a paid service",
+        "translation": "ការបន្តនឹងទាញយកអត្ថបទម្ដងទៀតតាមសេវាបង់ប្រាក់"
+    },
+    "modal.jobs.reason.pathDrift": {
+        "original": "The note path could not be computed consistently (check folder and date settings), then resume",
+        "translation": "មិនអាចគណនាផ្លូវកំណត់ត្រាឱ្យស៊ីគ្នាបានទេ (សូមពិនិត្យការកំណត់ថត និងកាលបរិច្ឆេទ) រួចបន្ត"
+    },
+    "notice.note.done.created": {
+        "original": "Transcript note created successfully",
+        "translation": "បានបង្កើតកំណត់ត្រាអត្ថបទដោយជោគជ័យ"
+    },
+    "notice.note.done.timestampsEdited": {
+        "original": "Note created, but timestamps were skipped because the note was edited",
+        "translation": "បានបង្កើតកំណត់ត្រា ប៉ុន្តែបានរំលងពេលវេលាកំណត់ ព្រោះកំណត់ត្រាត្រូវបានកែ"
+    },
+    "notice.note.done.translationEdited": {
+        "original": "Note created, but the translation was skipped because the note was edited",
+        "translation": "បានបង្កើតកំណត់ត្រា ប៉ុន្តែបានរំលងការបកប្រែ ព្រោះកំណត់ត្រាត្រូវបានកែ"
+    },
+    "notice.note.done.bothEdited": {
+        "original": "Note created, but timestamps and the translation were skipped because the note was edited",
+        "translation": "បានបង្កើតកំណត់ត្រា ប៉ុន្តែបានរំលងពេលវេលាកំណត់ និងការបកប្រែ ព្រោះកំណត់ត្រាត្រូវបានកែ"
+    },
+    "notice.note.done.withoutTranslation": {
+        "original": "Note created without translation",
+        "translation": "បានបង្កើតកំណត់ត្រាដោយគ្មានការបកប្រែ"
+    },
+    "notice.note.done.withoutBoth": {
+        "original": "Note created without timestamps or translation",
+        "translation": "បានបង្កើតកំណត់ត្រាដោយគ្មានពេលវេលាកំណត់ និងគ្មានការបកប្រែ"
+    },
+    "notice.coldStart.single.noNote": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: no note was created",
+        "translation": "TubeSage៖ ការងារកំណត់ត្រា 1 ត្រូវបានរំខានពេល Obsidian បិទ — {title}៖ មិនបានបង្កើតកំណត់ត្រាទេ"
+    },
+    "notice.coldStart.single.mayExist": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: a note may exist at {path}",
+        "translation": "TubeSage៖ ការងារកំណត់ត្រា 1 ត្រូវបានរំខានពេល Obsidian បិទ — {title}៖ អាចមានកំណត់ត្រានៅ {path}"
+    },
+    "notice.coldStart.single.withoutTimestamps": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without timestamps",
+        "translation": "TubeSage៖ ការងារកំណត់ត្រា 1 ត្រូវបានរំខានពេល Obsidian បិទ — {title}៖ កំណត់ត្រាបានបង្កើតដោយគ្មានពេលវេលាកំណត់"
+    },
+    "notice.coldStart.single.withoutTranslation": {
+        "original": "TubeSage: 1 note job was interrupted when Obsidian closed — {title}: note was created without translation",
+        "translation": "TubeSage៖ ការងារកំណត់ត្រា 1 ត្រូវបានរំខានពេល Obsidian បិទ — {title}៖ កំណត់ត្រាបានបង្កើតដោយគ្មានការបកប្រែ"
+    },
+    "notice.coldStart.several": {
+        "original": "TubeSage: {count} note jobs were interrupted when Obsidian closed; the most recent are listed under Show active jobs",
+        "translation": "TubeSage៖ ការងារកំណត់ត្រា {count} ត្រូវបានរំខានពេល Obsidian បិទ។ ការងារថ្មីៗបំផុតមាននៅក្នុង «បង្ហាញការងារសកម្ម»"
+    },
+    "notice.recovery.single": {
+        "original": "TubeSage: 1 interrupted job needs attention",
+        "translation": "TubeSage៖ ការងារដែលត្រូវបានរំខាន 1 ត្រូវការការដោះស្រាយ"
+    },
+    "notice.recovery.several": {
+        "original": "TubeSage: {count} interrupted jobs need attention",
+        "translation": "TubeSage៖ ការងារដែលត្រូវបានរំខាន {count} ត្រូវការការដោះស្រាយ"
+    },
+    "common.validation.required": {
+        "original": "Please enter a {field}",
+        "translation": "សូមបញ្ចូល {field}"
+    },
+    "common.validation.genericError": {
+        "original": "An error occurred",
+        "translation": "មានកំហុសកើតឡើង"
+    },
+    "common.transcript.unavailable": {
+        "original": "No transcript is available for this video",
+        "translation": "មិនមានប្រតិចារិកសម្រាប់វីដេអូនេះទេ"
     }
 }

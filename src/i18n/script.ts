@@ -41,6 +41,12 @@ const BRANDS: ReadonlySet<string> = new Set([
     'TubeSage',
     'Tubesage',
     'YouTube',
+    // The mangled spelling, listed for the same reason `Tubesage` is: the
+    // maintainer ruled that the existing mis-capitalisations stay, so a
+    // `.name`/`.heading`/`.label`/`.title` row carrying `Youtube` must not be
+    // read as a Title Case word and reported as a sentence-case violation.
+    // Listing it does NOT re-case it — this set only exempts, never rewrites.
+    'Youtube',
 ]);
 
 export type SentenceCaseStatus = 'ok' | 'violation' | 'skipped';
