@@ -4,7 +4,8 @@
     "main.ts",
     "esbuild.config.mjs",
     "eslint.config.mjs",
-    "eslint-rules/**/*.mjs"
+    "eslint-rules/**/*.mjs",
+    "scripts/**/*.test.mjs"
   ],
   "ignorePatterns": [
     "dist/**",

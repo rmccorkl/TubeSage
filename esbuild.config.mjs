@@ -1,6 +1,11 @@
 import esbuild from "esbuild";
 import process from "process";
 import { builtinModules } from "module";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { rigGuardPlugin } from "./scripts/rig-guard.mjs";
+
+const repoRoot = dirname(fileURLToPath(import.meta.url));
 
 const banner =
 `/*
@@ -70,7 +75,7 @@ const context = await esbuild.context({
         '.css': 'text',
         '.wasm': 'file'
     },
-    plugins: [stubLangchainTiktoken],
+    plugins: [rigGuardPlugin(repoRoot), stubLangchainTiktoken],
 });
 
 if (prod) {
