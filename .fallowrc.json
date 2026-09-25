@@ -5,7 +5,15 @@
     "esbuild.config.mjs",
     "eslint.config.mjs",
     "eslint-rules/**/*.mjs",
-    "scripts/rig-containment.test.mjs"
+    "scripts/rig-containment.test.mjs",
+    "rig/jev-timestamps/cli.mjs",
+    "rig/jev-timestamps/test/billing.test.mjs",
+    "rig/jev-timestamps/test/cli.test.mjs",
+    "rig/jev-timestamps/test/client.test.mjs",
+    "rig/jev-timestamps/test/env.test.mjs",
+    "rig/jev-timestamps/test/recorder.test.mjs",
+    "rig/jev-timestamps/test/shape.test.mjs",
+    "rig/jev-timestamps/test/stage0.test.mjs"
   ],
   "ignorePatterns": [
     "dist/**",
