@@ -5,7 +5,7 @@
     "esbuild.config.mjs",
     "eslint.config.mjs",
     "eslint-rules/**/*.mjs",
-    "scripts/**/*.test.mjs"
+    "scripts/rig-containment.test.mjs"
   ],
   "ignorePatterns": [
     "dist/**",

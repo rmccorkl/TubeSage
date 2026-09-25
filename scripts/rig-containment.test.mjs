@@ -131,9 +131,12 @@ describe("esbuild.config.mjs wires the guard in", () => {
         expect(configText).toMatch(/import\s*\{\s*rigGuardPlugin\s*\}\s*from\s*["']\.\/scripts\/rig-guard\.mjs["']/);
     });
 
-    it("calls rigGuardPlugin(...) inside the plugins list", () => {
+    it("calls rigGuardPlugin(...) as the FIRST entry in the plugins list", () => {
+        // Not just "is present" — the brief requires it first, before
+        // stubLangchainTiktoken, so a rig-bound file is rejected before any
+        // other plugin's onLoad gets a chance to transform it away.
         const pluginsMatch = configText.match(/plugins:\s*\[([^\]]*)\]/);
         expect(pluginsMatch, "esbuild.config.mjs has no plugins: [...] array").not.toBeNull();
-        expect(pluginsMatch[1]).toMatch(/rigGuardPlugin\(/);
+        expect(pluginsMatch[1].trim()).toMatch(/^rigGuardPlugin\(/);
     });
 });
