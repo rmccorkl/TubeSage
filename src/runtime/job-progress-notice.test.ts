@@ -157,6 +157,35 @@ describe("JobProgressNotices", () => {
     });
   }
 
+  it("hides the notice when the run ends with no outcome at all (#14)", () => {
+    // The exit paths that emit none of the four terminal events: a silent
+    // guard() failure in the runner. The surface must still go — its lifetime
+    // belongs to the run's liveness, not to an outcome that may never arrive.
+    const { created, create } = spyFactory();
+    const notices = new JobProgressNotices(create);
+
+    notices.handle(progress("job-1", "timestamps"));
+    notices.handle({ type: "run-ended", id: "job-1" });
+
+    expect(created[0].hidden).toBe(1);
+    expect(notices.activeCount()).toBe(0);
+  });
+
+  it("is idempotent: run-ended after a terminal event hides nothing a second time", () => {
+    // `run-ended` follows EVERY run, the ones that reported an outcome
+    // included, so the ordinary path is terminal-then-run-ended.
+    const { created, create } = spyFactory();
+    const notices = new JobProgressNotices(create);
+
+    notices.handle(progress("job-1", "transcript"));
+    notices.handle({ type: "done", id: "job-1", notePath: "Notes/a.md" });
+    notices.handle({ type: "run-ended", id: "job-1" });
+
+    expect(created).toHaveLength(1);
+    expect(created[0].hidden).toBe(1);
+    expect(notices.activeCount()).toBe(0);
+  });
+
   it("creates nothing for a job that reaches a terminal event without progress", () => {
     const { created, create } = spyFactory();
     const notices = new JobProgressNotices(create);

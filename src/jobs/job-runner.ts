@@ -97,7 +97,22 @@ export type JobEvent =
    */
   | { type: "interrupted"; id: string }
   | { type: "failed"; id: string; error: string }
-  | { type: "cancelled"; id: string };
+  | { type: "cancelled"; id: string }
+  /**
+   * The run loop has exited. The ONE signal every exit path produces (#14),
+   * including the silent ones: `guard()` returns undefined whenever the
+   * record's generation has moved, its status is no longer `running` or the
+   * plugin is unloading, and every caller then returns without emitting
+   * anything. A surface driven only by outcomes floats for ever on those
+   * paths.
+   *
+   * It is deliberately NOT an outcome. A run that exited because it was
+   * superseded is not "done", and nothing here may narrate it as one: the
+   * event says the run is over and no more, so a consumer's only honest
+   * response is to stop waiting on it. It follows the terminal event when
+   * there was one, so every consumer must treat it as idempotent.
+   */
+  | { type: "run-ended"; id: string };
 
 export interface RunnerDeps {
   store: JobStore;
@@ -266,6 +281,17 @@ export class JobRunner {
       // Only this run's own entry.
       if (this.active.get(id)?.gen === gen) {
         this.active.delete(id);
+      }
+      // #14: the one signal that cannot be missed. `.finally()` runs on every
+      // exit path — the terminal ones, the silent guard() failures, and a
+      // throw — so the surface's lifetime can be tied to the run's liveness
+      // instead of to four outcomes any one of which a path may skip.
+      //
+      // Not after stopAll: unload fences every late completion precisely so
+      // nothing reaches a torn-down plugin, and it sweeps the surfaces itself
+      // (JobProgressNotices.dismissAll).
+      if (!this.stopped) {
+        this.deps.onEvent({ type: "run-ended", id });
       }
     });
   }
