@@ -124,7 +124,13 @@ function createApiError(error: unknown, apiName: string): Error {
             return new Error(`[${apiName}] Input too long for model's context window.`);
             
         case ErrorCategory.Timeout:
-            return new Error(`[${apiName}] The request timed out — the transcript is likely too large for the model to process in one pass. Try a shorter video, reduce max tokens, or switch to a model with a longer generation timeout.`);
+            // The plugin no longer imposes a clock of its own on a generative
+            // pass (#13), so a timeout reaching here came from the network or
+            // the provider. The old wording blamed the model's "generation
+            // timeout" for what was usually the runner's own 600 s stage
+            // budget, which sent people to change a setting that could not
+            // have caused it.
+            return new Error(`[${apiName}] The request timed out before the service replied. Check your connection and try again; a very long transcript can also push a provider past its own limit.`);
             
         case ErrorCategory.NotFound:
             return new Error(`[${apiName}] Resource not found. Please check the request parameters.`);
