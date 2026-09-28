@@ -95,20 +95,27 @@ export class JobProgressNotices {
 
   /**
    * Applies one runner event. `progress` creates the job's notice the first
-   * time and updates it in place afterwards; every terminal event hides it
-   * and forgets the job, which is what keeps the map from growing across a
-   * session. A terminal event for a job that never reported progress (or for
-   * another installation's job) is a no-op.
+   * time and updates it in place afterwards; every terminal event — and
+   * `run-ended`, which arrives however the run exited (#14) — hides it and
+   * forgets the job, which is what keeps the map from growing across a
+   * session. An event for a job that never reported progress (or for another
+   * installation's job) is a no-op.
    */
   handle(event: JobEvent): void {
     switch (event.type) {
       case "progress":
         this.show(event.id, progressNoticeText(event.stage));
         break;
+      // `run-ended` is what makes the surface's lifetime the RUN's lifetime
+      // (#14): the four outcomes below can all be missed on a silent exit,
+      // and a notice with no timer and no self-dismissal then floats until
+      // the app restarts. It also follows every one of them, so `dismiss`
+      // being a no-op for a job already forgotten is what makes that safe.
       case "done":
       case "failed":
       case "cancelled":
       case "interrupted":
+      case "run-ended":
         this.dismiss(event.id);
         break;
     }

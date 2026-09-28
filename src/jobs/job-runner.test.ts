@@ -4,6 +4,8 @@ import type { NoteJobRecord } from "./job-record";
 import { JobStore } from "./job-store";
 import { DEFAULT_DEADLINES, JobRunner, NoteChangedError, PathDriftError, PermanentJobError } from "./job-runner";
 import type { JobEvent, JobStages, RunnerDeps, SubmitInput } from "./job-runner";
+import { JobProgressNotices } from "../runtime/job-progress-notice";
+import type { ProgressNoticeHandle } from "../runtime/job-progress-notice";
 
 const NOW = new Date(2026, 8, 20, 12, 0, 0).getTime();
 // #13: the 600 s stage budget that used to kill a live LLM call. It is gone
@@ -260,6 +262,8 @@ interface Harness {
 interface HarnessOptions {
   /** Live translation settings the transcript stage freezes (undefined = en/US, nothing frozen). */
   translation?: { language: string; country: string };
+  /** A real consumer wired to the live event stream (the surface-lifetime invariant, #14). */
+  onEvent?: (event: JobEvent) => void;
 }
 
 function makeHarness(options: HarnessOptions = {}): Harness {
@@ -282,6 +286,7 @@ function makeHarness(options: HarnessOptions = {}): Harness {
     generateId: () => `job-${++ids}`,
     onEvent: (event) => {
       events.push(event);
+      options.onEvent?.(event);
     },
   };
   const runner = new JobRunner(deps);
@@ -995,5 +1000,197 @@ describe("JobRunner — #13: no wall-clock deadline on the paid LLM stages", () 
     expect(h.stages.translate.count).toBe(0);
     expect(h.events.filter((e) => e.type === "done")).toEqual([]);
     expect(h.store.get("job-1")?.status).toBe("cancelled");
+  });
+});
+
+describe("JobRunner — #14: a run that ends says so, on every exit path", () => {
+  /** Every event that tells a consumer the job is over. */
+  const isTerminalEvent = (e: JobEvent): boolean =>
+    e.type === "done" || e.type === "failed" || e.type === "cancelled" || e.type === "interrupted";
+
+  it("14a. a run that exits through a silent guard() failure still reports that its run ended", async () => {
+    const h = makeHarness();
+    h.stages.stamps.manual = true;
+    await h.runner.submit(SUBMIT);
+    await flush();
+    expect(h.stages.stamps.count).toBe(1);
+
+    // Supersede the record under the live run: its generation moves on, which
+    // is precisely what guard() re-reads after every await. No cancel, so no
+    // cancelled event — this is the exit path that emits nothing at all.
+    const superseded = h.store.get("job-1");
+    if (superseded === undefined) {
+      throw new Error("the job's record went missing");
+    }
+    superseded.generation += 1;
+    await h.store.upsert(superseded, h.clock.now);
+
+    h.stages.stamps.resolveLast(undefined);
+    await flush();
+
+    // No outcome is invented: the record was superseded, so this run is not
+    // done, failed, cancelled or interrupted, and must not claim to be.
+    expect(h.events.filter(isTerminalEvent)).toEqual([]);
+    // But the run IS over, and it says so exactly once.
+    expect(h.events.filter((e) => e.type === "run-ended")).toEqual([{ type: "run-ended", id: "job-1" }]);
+    expect(h.runner.isActive("job-1")).toBe(false);
+  });
+});
+
+// The invariant that must outlive #14's specific bug: NO run, ending by ANY
+// path, may leave a progress surface behind. It is asserted against the real
+// JobProgressNotices rather than a hand-rolled stand-in, because the thing
+// being proven is the wiring between the two — the runner's events and the
+// surface's lifetime — and a stand-in would only prove the test's own idea of
+// it. (main.ts does this wiring in `onJobEvent`.)
+describe("JobRunner + JobProgressNotices — no exit path leaves a live surface (#14)", () => {
+  class SurfaceDouble implements ProgressNoticeHandle {
+    hidden = 0;
+    constructor(public message: string) {}
+    setMessage(message: string): void {
+      this.message = message;
+    }
+    hide(): void {
+      this.hidden += 1;
+    }
+  }
+
+  function wired(options: HarnessOptions = {}): { h: Harness; notices: JobProgressNotices; surfaces: SurfaceDouble[] } {
+    const surfaces: SurfaceDouble[] = [];
+    const notices = new JobProgressNotices((message) => {
+      const surface = new SurfaceDouble(message);
+      surfaces.push(surface);
+      return surface;
+    });
+    const h = makeHarness({ ...options, onEvent: (event) => { notices.handle(event); } });
+    return { h, notices, surfaces };
+  }
+
+  /** Every way a run can end, each one driven to its real exit. */
+  const exits: { name: string; drive: (w: ReturnType<typeof wired>) => Promise<void> }[] = [
+    {
+      name: "done",
+      drive: async ({ h }) => {
+        await h.runner.submit(SUBMIT);
+        await flush();
+      },
+    },
+    {
+      name: "done with the timestamps pass skipped by the record's own flags",
+      drive: async ({ h }) => {
+        await h.runner.submit({ ...SUBMIT, useFastSummary: true });
+        await flush();
+      },
+    },
+    {
+      name: "done with the note edited under the timestamps pass",
+      drive: async ({ h }) => {
+        h.stages.stamps.failWith = new NoteChangedError("note changed");
+        await h.runner.submit(SUBMIT);
+        await flush();
+      },
+    },
+    {
+      name: "failed (a permanent verdict)",
+      drive: async ({ h }) => {
+        h.stages.fetch.failWith = new PermanentJobError("no captions");
+        await h.runner.submit(SUBMIT);
+        await flush();
+      },
+    },
+    {
+      name: "failed (the template engine went away)",
+      drive: async ({ h }) => {
+        h.stages.templaterAvailable = false;
+        await h.runner.submit(SUBMIT);
+        await flush();
+      },
+    },
+    {
+      name: "interrupted (a transient error)",
+      drive: async ({ h }) => {
+        h.stages.summ.failWith = new Error("socket hang up");
+        await h.runner.submit(SUBMIT);
+        await flush();
+      },
+    },
+    {
+      name: "interrupted (the transcript deadline, the one that is left)",
+      drive: async ({ h }) => {
+        await submitUntilTranscriptPending(h);
+        await timeOutTranscript(h);
+      },
+    },
+    {
+      name: "cancelled mid-LLM-call",
+      drive: async ({ h }) => {
+        h.stages.stamps.manual = true;
+        await h.runner.submit(SUBMIT);
+        await flush();
+        await h.runner.cancel("job-1");
+        h.stages.stamps.resolveLast(undefined);
+        await flush();
+      },
+    },
+    {
+      name: "a silent guard() failure: the record is superseded under the run",
+      drive: async ({ h }) => {
+        h.stages.stamps.manual = true;
+        await h.runner.submit(SUBMIT);
+        await flush();
+        const record = h.store.get("job-1");
+        if (record === undefined) {
+          throw new Error("the job's record went missing");
+        }
+        record.generation += 1;
+        await h.store.upsert(record, h.clock.now);
+        h.stages.stamps.resolveLast(undefined);
+        await flush();
+      },
+    },
+    {
+      name: "a store rejection escaping the stage functions",
+      drive: async ({ h }) => {
+        h.store.failEvery = (record) => record.stage === "timestamps";
+        await h.runner.submit(SUBMIT);
+        await flush();
+      },
+    },
+  ];
+
+  for (const exit of exits) {
+    it(`leaves no surface behind when a run ends by: ${exit.name}`, async () => {
+      const w = wired();
+      await exit.drive(w);
+
+      expect(w.h.runner.isActive("job-1")).toBe(false);
+      expect(w.notices.activeCount()).toBe(0);
+      // Whatever was opened was closed exactly once.
+      for (const surface of w.surfaces) {
+        expect(surface.hidden).toBe(1);
+      }
+    });
+  }
+
+  it("leaves no surface behind when the plugin unloads mid-run", async () => {
+    // Unload is the one exit that emits nothing by design — a fenced run must
+    // not reach a torn-down plugin — so the sweep is the host's, exactly as
+    // main.ts's onunload does it (stopAll, then dismissAll).
+    const w = wired();
+    w.h.stages.stamps.manual = true;
+    await w.h.runner.submit(SUBMIT);
+    await flush();
+    expect(w.notices.activeCount()).toBe(1);
+
+    w.h.runner.stopAll();
+    w.notices.dismissAll();
+    w.h.stages.stamps.resolveLast(undefined);
+    await flush();
+
+    expect(w.notices.activeCount()).toBe(0);
+    expect(w.surfaces.every((surface) => surface.hidden === 1)).toBe(true);
+    // And the fenced late completion emitted nothing at all, so nothing could
+    // have re-opened one.
+    expect(w.h.events.filter((e) => e.type !== "progress")).toEqual([]);
   });
 });
