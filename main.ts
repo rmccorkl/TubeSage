@@ -2211,6 +2211,20 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             if (validateEnhancedContent(enhancedNote, contentWithoutFrontmatter, headings, videoId)) {
                 // Update the note file with the LLM-enhanced content — only if
                 // it still reads exactly as it did before the LLM call (F5).
+                //
+                // KNOWN GAP (#13, not fixed here): this write carries no
+                // GENERATION fence. `writeIfUnchanged` only asks whether the
+                // note moved; it does not ask whether the job that ordered the
+                // pass is still the live one. JobRunner.guard() fences the
+                // runner's own side effects and cannot reach a write the host
+                // performs inside this method, so a pass abandoned by a cancel
+                // can still land its note afterwards. Removing the runner's
+                // 600 s stage budget (#13) removed the common trigger — the
+                // runner declaring `interrupted` while these calls were still
+                // running — but a cancel remains one. Fixing it means carrying
+                // the record's generation into this pass and re-checking it
+                // here; that belongs with the other timestamp-pass defects in
+                // #12 §1, not in #13's deadline change.
                 const file = this.app.vault.getAbstractFileByPath(filePath);
                 if (file instanceof TFile) {
                     if (!(await writeIfUnchanged(this.app.vault, file, originalContent, enhancedNote))) {
@@ -2655,6 +2669,12 @@ ${contentWithoutFrontmatter}
             if (linkCount > 0) {
                 // Update the note file with the combined content — only if it
                 // still reads exactly as it did before the LLM calls (F5).
+                //
+                // KNOWN GAP (#13, not fixed here): no generation fence, exactly
+                // as in addTimestampLinksSinglePass above — see the note there.
+                // This path is the one the issue names (main.ts:2661): the
+                // chunk loop is where a long pass spends its time, so it is
+                // where an abandoned run is most likely to still be working.
                 const file = this.app.vault.getAbstractFileByPath(filePath);
                 if (file instanceof TFile) {
                     if (!(await writeIfUnchanged(this.app.vault, file, originalContent, combinedNote))) {

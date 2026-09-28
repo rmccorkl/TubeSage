@@ -454,12 +454,12 @@ describe("createRunnerDeps", () => {
         cleared.push(handle);
       },
       generateId: () => "fixed-id",
-      deadlines: { llmMs: 1234 },
+      deadlines: { transcriptMs: 1234 },
     });
     expect(deps.store).toBe(store);
     expect(deps.now()).toBe(NOW);
     expect(deps.generateId()).toBe("fixed-id");
-    expect(deps.deadlines).toEqual({ llmMs: 1234 });
+    expect(deps.deadlines).toEqual({ transcriptMs: 1234 });
     expect(deps.notePathSettings()).toEqual({ prependDate: false, dateFormat: "YYYY-MM-DD" });
     host.settings.prependDate = true;
     host.settings.dateFormat = "DD-MM-YYYY";
