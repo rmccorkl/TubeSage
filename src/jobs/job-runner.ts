@@ -755,14 +755,7 @@ export class JobRunner {
   // has already made fail) and applies nothing.
   private race<T>(id: string, gen: number, call: Promise<T>, ms: number | undefined): Promise<Settled<T>> {
     if (ms === undefined) {
-      // #13: no deadline, so no timer and no "timeout" outcome — the call is
-      // simply awaited. What stops a cancelled or superseded job acting on it
-      // is the guard the caller re-runs after this await, which is where it
-      // always was; the timer never did that job.
-      return call.then(
-        (value): Settled<T> => ({ kind: "ok", value }),
-        (error: unknown): Settled<T> => ({ kind: "error", error }),
-      );
+      return this.settle(call);
     }
     return new Promise<Settled<T>>((resolve) => {
       let settled = false;
@@ -795,6 +788,20 @@ export class JobRunner {
         (error: unknown) => accept({ kind: "error", error }),
       );
     });
+  }
+
+  /**
+   * Awaits a stage call that has no deadline against it (#13): no timer, and
+   * so no "timeout" outcome. What stops a cancelled or superseded job acting
+   * on the result is the guard the caller re-runs after this await, which is
+   * where it always was; the timer never did that job.
+   */
+  private async settle<T>(call: Promise<T>): Promise<Settled<T>> {
+    try {
+      return { kind: "ok", value: await call };
+    } catch (error) {
+      return { kind: "error", error };
+    }
   }
 
   private clearDeadlines(run: ActiveRun): void {
