@@ -105,8 +105,13 @@ describe("obsidianFetch — the per-request budget (#15)", () => {
     const message = requestTimeoutMessage(REQUEST_TIMEOUT_MS);
     expect(message).toContain("TubeSage stopped waiting");
     expect(message).toContain("per-request limit");
-    expect(message).toContain("nothing was written");
     expect(message).not.toContain("generation timeout");
+    // It must NOT promise that nothing was written (#15 review F8): that is
+    // true on every path reachable today, and false on the non-strict legacy
+    // branch, which writes a partially linked note. The guarantee is pinned
+    // where it is conditioned — timestamp-pass-policy.test.ts — not asserted
+    // in a sentence shown beside every failure.
+    expect(message).not.toContain("nothing was written");
 
     // error-utils classifies on the wording, so the message has to come out
     // the other side unchanged rather than being replaced by generic advice.
