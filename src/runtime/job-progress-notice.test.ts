@@ -186,6 +186,46 @@ describe("JobProgressNotices", () => {
     expect(notices.activeCount()).toBe(0);
   });
 
+  describe("a job the host reports as a collection child", () => {
+    // main.ts suppresses a child's own surface: a collection is reported by
+    // its single run notice, not by one notice per video. That gate used to
+    // live in the host (`if (!inCollection)`), where nothing could test it;
+    // it lives here now, which is the only reason the hole below is visible.
+    it("opens no surface of its own", () => {
+      const { created, create } = spyFactory();
+      const notices = new JobProgressNotices(create);
+
+      notices.handle(progress("job-1", "transcript"), true);
+      notices.handle({ type: "done", id: "job-1", notePath: "Notes/a.md" }, true);
+
+      expect(created).toHaveLength(0);
+      expect(notices.activeCount()).toBe(0);
+    });
+
+    it("still loses its surface when it was ADOPTED with one already open (#14 F2)", () => {
+      // The hole the invariant missed. A standalone job runs with its own
+      // notice; the user then starts a playlist containing that video, and
+      // `submitChild` adopts the live job (main.ts:425). From that moment
+      // `owns(A)` is true, so BOTH its done and its run-ended were filtered
+      // out, and the open notice floated until unload.
+      const { created, create } = spyFactory();
+      const notices = new JobProgressNotices(create);
+
+      // Running alone: its own surface is up.
+      notices.handle(progress("job-1", "timestamps"));
+      expect(notices.activeCount()).toBe(1);
+
+      // Adopted mid-run. The outcome stays suppressed — the collection's
+      // notice is the one that narrates it — but the run ending is not about
+      // narration, it is about the surface.
+      notices.handle({ type: "done", id: "job-1", notePath: "Notes/a.md" }, true);
+      notices.handle({ type: "run-ended", id: "job-1" }, true);
+
+      expect(created[0].hidden).toBe(1);
+      expect(notices.activeCount()).toBe(0);
+    });
+  });
+
   it("creates nothing for a job that reaches a terminal event without progress", () => {
     const { created, create } = spyFactory();
     const notices = new JobProgressNotices(create);

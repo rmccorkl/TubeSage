@@ -776,9 +776,11 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // suppressed. Logging, the debug note and the UI subscribers below are
         // unaffected — only the notice surface changes.
         const inCollection = this.collectionRunner?.owns(event.id) ?? false;
-        if (!inCollection) {
-            this.progressNotices.handle(event);
-        }
+        // The suppression policy lives in JobProgressNotices, not here: this
+        // used to be `if (!inCollection)`, which also swallowed `run-ended`
+        // for a standalone job a collection had adopted mid-run, leaving its
+        // notice up for ever (#14 F2).
+        this.progressNotices.handle(event, inCollection);
         // ADVANCE THE RUN. Without this a collection submits its first video
         // and stops: every module was green while a 3-video playlist produced
         // one note and a notice that never closed. The routing itself lives in
