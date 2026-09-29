@@ -1221,6 +1221,11 @@ describe("JobRunner + JobProgressNotices — no exit path leaves a live surface 
     await flush();
     expect(w.notices.activeCount()).toBe(1);
 
+    // Everything said before the unload is legitimate — by this point the
+    // note has been created and announced (#20). The claim below is about
+    // what the FENCED run says afterwards, so the line is drawn here.
+    const beforeUnload = w.h.events.length;
+
     w.h.runner.stopAll();
     w.notices.dismissAll();
     w.h.stages.stamps.resolveLast(undefined);
@@ -1230,6 +1235,64 @@ describe("JobRunner + JobProgressNotices — no exit path leaves a live surface 
     expect(w.surfaces.every((surface) => surface.hidden === 1)).toBe(true);
     // And the fenced late completion emitted nothing at all, so nothing could
     // have re-opened one.
-    expect(w.h.events.filter((e) => e.type !== "progress")).toEqual([]);
+    expect(w.h.events.slice(beforeUnload)).toEqual([]);
+  });
+});
+
+describe("JobRunner — #20: the host is told a note exists as soon as it does", () => {
+  it("20a. announces the note when the create returns, with its path, before the timestamps pass", async () => {
+    // The gap #20 closes: the record moves to `note-created` here, but
+    // nothing said so, and only `note-creating` was ever emitted — carrying
+    // no path. The host could not know the note existed until `done`, which
+    // is after the timestamps pass and the translation.
+    const h = makeHarness();
+    h.stages.stamps.manual = true;
+    await h.runner.submit(SUBMIT);
+    await flush();
+
+    // The job is sitting in the timestamps pass, nowhere near done.
+    expect(h.stages.stamps.count).toBe(1);
+    expect(h.events.filter((e) => e.type === "done")).toEqual([]);
+
+    expect(h.events.filter((e) => e.type === "note-created")).toEqual([
+      { type: "note-created", id: "job-1", notePath: TARGET_PATH },
+    ]);
+
+    // And it arrives BEFORE the pass that rewrites the note, which is the
+    // whole point: the user watches the timestamps land in an open note.
+    const order = h.events.map((e) => (e.type === "progress" ? `progress:${e.stage}` : e.type));
+    expect(order.indexOf("note-created")).toBeGreaterThan(-1);
+    expect(order.indexOf("note-created")).toBeLessThan(order.indexOf("progress:timestamps"));
+  });
+
+  it("20b. carries the path the create RESOLVED with, never the one it asked for", async () => {
+    // The adapter steps past an occupied path to a free neighbour, and the
+    // host opens what this event carries: the wrong path here would open
+    // someone else's note.
+    const h = makeHarness();
+    h.stages.create.manual = true;
+    await h.runner.submit(SUBMIT);
+    await flush();
+    const landed = "Video-Title 1.md";
+    h.stages.create.resolveLast(landed);
+    await flush();
+
+    expect(h.events.filter((e) => e.type === "note-created")).toEqual([
+      { type: "note-created", id: "job-1", notePath: landed },
+    ]);
+  });
+
+  it("20c. says nothing when the job was cancelled while the create was in flight", async () => {
+    // A late create is fenced like every other side effect: the note may
+    // exist, but this run no longer owns the job, so it does not announce it.
+    const h = makeHarness();
+    h.stages.create.manual = true;
+    await h.runner.submit(SUBMIT);
+    await flush();
+    await h.runner.cancel("job-1");
+    h.stages.create.resolveLast(TARGET_PATH);
+    await flush();
+
+    expect(h.events.filter((e) => e.type === "note-created")).toEqual([]);
   });
 });

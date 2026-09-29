@@ -47,6 +47,7 @@ import type { YouTubeTranscriptSettings } from './src/settings/settings-defaults
 import { chunkFailureAction, timestampPassFailure } from './src/runtime/timestamp-pass-policy';
 import type { TimestampPassOptions } from './src/runtime/timestamp-pass-policy';
 import { JobProgressNotices, doneNoticeText } from './src/runtime/job-progress-notice';
+import { NoteAutoOpen } from './src/runtime/note-auto-open';
 import { readmeText } from './src/bundled';
 import { exampleTemplateView } from './src/runtime/example-template-view';
 import { licenseView } from './src/runtime/license-view';
@@ -271,12 +272,17 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     jobRunner: JobRunner;
     // Ids added at submit and struck off by the job's terminal event, so the
     // set tracks what is still outstanding rather than growing all session.
-    // Membership gates the auto-open on `done` (spec §5 F5). Since #10 every
-    // job is submitted here — nothing arrives from anywhere else — so the
-    // check no longer distinguishes anything; it is kept because the delete
-    // is what bounds the set, and a `done` for an id already struck off must
-    // not reopen a note.
+    // Membership gates the auto-open (spec §5 F5). Since #10 every job is
+    // submitted here — nothing arrives from anywhere else — so the check no
+    // longer distinguishes anything; it is kept because the delete is what
+    // bounds the set, and an event for an id already struck off must not
+    // open a note.
     private readonly sessionJobIds = new Set<string>();
+    // WHEN a new note is shown (#20). The conditions live here because only
+    // the host knows them; the decision lives in the class because main.ts
+    // has no test harness and the two-tabs-for-one-note failure is invisible
+    // to inspection.
+    private readonly noteAutoOpen = new NoteAutoOpen();
     // The single progress surface for single-video jobs, on both platforms
     // (#7): one floating notice per job, created on its first `progress`
     // event and hidden on its terminal one. The submitting modal closes as
@@ -798,21 +804,41 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // one note and a notice that never closed. The routing itself lives in
         // CollectionRunner.handleJobEvent, where it is covered by tests.
         void this.collectionRunner?.handleJobEvent(event);
+        // SHOW THE NOTE (#20). Every event goes through the policy, which
+        // answers with a path exactly once per job: at `note-created`, the
+        // moment the note exists and the summary is in it — restoring the
+        // legacy behaviour, where the note took focus straight away and the
+        // timestamps pass then rewrote it underneath. `done` is kept only as
+        // a fallback for a note that could not be opened at creation because
+        // the window was hidden, and is a no-op otherwise: `openNote` calls
+        // getLeaf(true), which builds a NEW leaf every time, so opening
+        // twice would leave one note in two tabs.
+        //
+        // It also closes the case where a job ends `failed`, `cancelled` or
+        // `interrupted` after its note was created: the note is already open
+        // by then, instead of sitting in the vault unopened and unmentioned.
+        const noteToOpen = this.noteAutoOpen.handle(event, {
+            inCollection,
+            inSession: this.sessionJobIds.has(event.id),
+            visible: activeDocument.visibilityState === 'visible',
+        });
+        if (noteToOpen !== undefined) {
+            void this.openNote(noteToOpen);
+        }
         switch (event.type) {
             case 'progress':
                 logger.debug(`[jobs] ${event.id} ${event.stage}: ${event.message}`);
+                break;
+            case 'note-created':
+                logger.info(`[jobs] ${event.id} note created: ${event.notePath}`);
                 break;
             case 'done':
                 logger.info(`[jobs] ${event.id} done: ${event.notePath}`);
                 if (!inCollection) {
                     this.showNotice(doneNoticeText(event), 5000);
                 }
-                // Auto-open ONLY while the app is visible, and only for an id
-                // still outstanding (F5). Never for a collection child: a
-                // 40-video playlist would throw 40 notes open.
-                if (!inCollection && this.sessionJobIds.has(event.id) && activeDocument.visibilityState === 'visible') {
-                    void this.openNote(event.notePath);
-                }
+                // The auto-open that used to live here is now above, for
+                // every event, through NoteAutoOpen (#20).
                 this.sessionJobIds.delete(event.id);
                 break;
             case 'failed':

@@ -226,6 +226,20 @@ describe("JobProgressNotices", () => {
     });
   });
 
+  it("does not touch the surface when a note is created (#20)", () => {
+    // `note-created` is not progress and not an outcome: the job carries on
+    // and its notice carries on with it, saying whatever stage it is at.
+    const { created, create } = spyFactory();
+    const notices = new JobProgressNotices(create);
+
+    notices.handle(progress("job-1", "timestamps"));
+    notices.handle({ type: "note-created", id: "job-1", notePath: "Notes/a.md" });
+
+    expect(created).toHaveLength(1);
+    expect(created[0].hidden).toBe(0);
+    expect(notices.activeCount()).toBe(1);
+  });
+
   it("creates nothing for a job that reaches a terminal event without progress", () => {
     const { created, create } = spyFactory();
     const notices = new JobProgressNotices(create);

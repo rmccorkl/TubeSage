@@ -50,6 +50,32 @@ function harness(opts: { videos?: number; submit?: (v: CollectionVideo) => strin
   return { runner, deps, begin, submitted, cancelled, settle };
 }
 
+describe("CollectionRunner — a child's note-created advances nothing (#20)", () => {
+  it("does not move the queue on, because the child is still working", () => {
+    // `note-created` arrives mid-run, long before the child settles. Routed
+    // into onChildSettled it would start the next video while this one was
+    // still in its timestamps pass — two paid runs at once, which is the one
+    // thing this class exists to prevent.
+    const { runner, begin, submitted } = harness({ videos: 3 });
+    return begin().then(async () => {
+      expect(submitted).toEqual(["job-v1"]);
+      await runner.handleJobEvent({ type: "note-created", id: "job-v1" });
+      expect(submitted).toEqual(["job-v1"]);
+    });
+  });
+
+  it("still claims the event as the collection's, so no child opens its own note", () => {
+    // The return value is what main.ts reads to suppress a child's per-job
+    // surface — and now also what keeps a 40-video playlist from throwing 40
+    // notes open.
+    const { runner, begin } = harness({ videos: 2 });
+    return begin().then(async () => {
+      expect(await runner.handleJobEvent({ type: "note-created", id: "job-v1" })).toBe(true);
+      expect(await runner.handleJobEvent({ type: "note-created", id: "not-a-child" })).toBe(false);
+    });
+  });
+});
+
 describe("CollectionRunner — the run-ended signal must not advance a run twice (#14)", () => {
   it("a child's done followed by its run-ended advances the queue exactly once", async () => {
     // `run-ended` now follows EVERY run, the ones that reported an outcome
