@@ -5,6 +5,8 @@ import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { getLogger } from "../utils/logger";
 import { getSafeErrorMessage } from "../utils/error-utils";
 import { getLangChainConfiguration } from "./langchain-fetcher";
+import { llmCallTimingMessage } from "./call-timing";
+import type { LlmCallOutcome } from "./call-timing";
 import { obsidianFetch } from "../utils/fetch-shim";
 
 const logger = getLogger('LANGCHAIN');
@@ -88,6 +90,25 @@ export class LangChainClient {
    * Generate a completion using the appropriate LangChain model
    */
   async generateCompletion(systemPrompt: string, userPrompt: string): Promise<string> {
+    // Per-call timing for EVERY provider path (#16). The shim times one HTTP
+    // request, but OpenAI and OpenRouter never reach it (#19) — and they are
+    // the paths whose latency most needs measuring. Wrapped around the
+    // invocation, all five are equal: the two ChatOpenAI paths, ChatOllama,
+    // the Anthropic direct call and GeminiClient. A `finally`, so a call that
+    // gave up at the budget is timed exactly like one that answered.
+    const startedAt = Date.now();
+    let outcome: LlmCallOutcome = "error";
+    try {
+      const completion = await this.runCompletion(systemPrompt, userPrompt);
+      outcome = "ok";
+      return completion;
+    } finally {
+      logger.debug(llmCallTimingMessage(this.provider, this.model, Date.now() - startedAt, outcome));
+    }
+  }
+
+  /** The provider switch itself. Timed by generateCompletion, which is what everything calls. */
+  private async runCompletion(systemPrompt: string, userPrompt: string): Promise<string> {
     try {
       // Common configuration with our custom fetcher
       const config = getLangChainConfiguration({
