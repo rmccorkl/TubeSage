@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "ሲነቃ የማረሚያ መረጃ ወደ ኮንሶል ከመመዝገብ ይልቅ ተሰብስቦ እንደ ድብቅ የጥሪ ብሎክ ወደ ማስታወሻዎች ይጨመራል።"
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "የጥያቄ ጊዜ ገደብ (ሚሊሰከንድ)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "ከመተው በፊት ወደ አቅራቢው የሚላከውን አንድ ጥያቄ የሚጠበቅበት ጊዜ በሚሊሰከንድ። ነባሪ 600000 (10 ደቂቃ)። የማረሚያ መዝገብ ሲነቃ የእያንዳንዱ ጥሪ ጊዜ ይመዘገባል።"
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "የTubesage YouTube ግልባጭ ተሰኪ ፈቃድ"

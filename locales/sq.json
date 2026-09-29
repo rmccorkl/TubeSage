@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Aktivizo regjistrimin e diagnostikimit",
     "settings.advanced.debugLogging.desc": "Aktivizoni regjistra të hollësishëm diagnostikimi. Kur aktivizohet, të dhënat e diagnostikimit i shtohen çdo shënimi si kuti e fshehur për zgjidhje problemesh.",
     "settings.advanced.debugLogging.infoTooltip": "Kur aktivizohet, të dhënat e diagnostikimit mblidhen dhe u shtohen shënimeve si kuti e fshehur, në vend që të shkruhen në konsolë.",
+    "settings.advanced.requestTimeout.name": "Afati i kërkesës (ms)",
+    "settings.advanced.requestTimeout.desc": "Sa gjatë të pritet një kërkesë e vetme te ofruesi para se të dorëzohet, në milisekonda. Parazgjedhje 600000 (10 minuta). Me regjistrimin e diagnostikimit të ndezur, kohëzgjatja e çdo thirrjeje regjistrohet.",
     "license.modal.title": "Licenca e shtojcës Tubesage për transkriptet e YouTube",
     "license.required.title": "Kërkohet pranimi i licencës",
     "license.required.message": "Duhet të pranoni licencën e shtojcës përpara se ta përdorni këtë veçori.",

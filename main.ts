@@ -5,6 +5,7 @@ import { YouTubeTranscriptExtractor, TranscriptSegment } from './src/youtube-tra
 import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
 import { handleApiError, getSafeErrorMessage } from './src/utils/error-utils';
+import { DEFAULT_REQUEST_TIMEOUT_MS, setRequestBudgetMs } from './src/utils/request-budget';
 import { getLogger, LogLevel, setGlobalLogLevel, clearLogs, getLogsForCallout } from './src/utils/logger';
 import { normalizePath, ensureFolder, joinPaths, sanitizePathComponent, collectUnder } from './src/utils/path-utils';
 import { validateRequired, validateYouTubeUrl, ValidationResult, displayValidationResult } from './src/utils/form-utils';
@@ -445,6 +446,17 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             }
         }
         
+        // The per-request budget the shim applies (#19). Pushed in rather than
+        // read out: request-budget.ts imports neither settings nor `obsidian`,
+        // which is what lets the seam-level suites use the real thing. A
+        // stored value out of range (an older file, a hand-edited data.json)
+        // is refused there and the default stays in force, so the setting is
+        // put back to what is actually being applied.
+        if (!setRequestBudgetMs(Number(this.settings.requestTimeoutMs))) {
+            this.settings.requestTimeoutMs = DEFAULT_REQUEST_TIMEOUT_MS;
+            setRequestBudgetMs(DEFAULT_REQUEST_TIMEOUT_MS);
+        }
+
         // Set log level based on settings
         if (this.settings.debugLogging) {
             setGlobalLogLevel(LogLevel.DEBUG);

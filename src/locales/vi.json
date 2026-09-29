@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "Khi bật, thông tin gỡ lỗi sẽ được thu thập và thêm vào ghi chú dưới dạng callout ẩn thay vì ghi ra console."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "Thời gian chờ yêu cầu (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "Thời gian chờ một yêu cầu đến nhà cung cấp trước khi bỏ cuộc, tính bằng mili giây. Mặc định 600000 (10 phút). Khi bật nhật ký gỡ lỗi, thời gian của mỗi lệnh gọi được ghi lại."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Giấy phép plugin bản chép lời YouTube Tubesage"

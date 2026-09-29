@@ -12,7 +12,7 @@
  * a whole pass — and it is a starting value chosen to be obviously generous
  * rather than a measured one (#15: tune it from real runs).
  *
- * There is no setting behind it.
+ * It is the DEFAULT. Since #19 the effective value is a setting; see below.
  *
  * WHAT IT ACTUALLY COVERS — three of the five provider paths, not five
  * (#15 review; corrected from the claim made when this landed). The bound
@@ -34,7 +34,46 @@
  * shapes and the mobile transport on the most-used path, so it is not a
  * change to make in passing.
  */
-export const REQUEST_TIMEOUT_MS = 600_000;
+export const DEFAULT_REQUEST_TIMEOUT_MS = 600_000;
+
+/**
+ * The floor a configured budget may not go under. A handful of milliseconds
+ * would fail every request before it started, and from the user's side that
+ * is indistinguishable from the plugin being broken — so a value below this
+ * is refused rather than applied.
+ */
+export const MIN_REQUEST_TIMEOUT_MS = 1_000;
+
+// The effective budget for this session. Module state rather than a
+// parameter because the shim is a free function every provider and the
+// transcript extractor call, with no plugin object to carry a setting
+// through, and threading one through all of them to deliver one number would
+// be worse than this.
+//
+// The host pushes the value in (main.ts, on load and whenever the setting
+// changes); nothing here reads settings or imports `obsidian`. That is load
+// bearing, not incidental: this module's tests use the real message and the
+// real numbers, and the seam-level suites — which cannot load `obsidian` at
+// all — import it directly.
+let currentBudgetMs: number = DEFAULT_REQUEST_TIMEOUT_MS;
+
+/**
+ * Applies a budget from the host. Returns false, changing nothing, when the
+ * value is not a number a request could survive: a settings field is a text
+ * box, and "", "abc" and 5 all arrive here eventually.
+ */
+export function setRequestBudgetMs(ms: number): boolean {
+  if (!Number.isFinite(ms) || ms < MIN_REQUEST_TIMEOUT_MS) {
+    return false;
+  }
+  currentBudgetMs = ms;
+  return true;
+}
+
+/** The budget in force right now. Read per request, so a settings change applies to the next call. */
+export function requestBudgetMs(): number {
+  return currentBudgetMs;
+}
 
 /**
  * What the shim says when it gives up. It names US as the one who stopped

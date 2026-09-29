@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Debug-Protokollierung aktivieren",
     "settings.advanced.debugLogging.desc": "Ausführliche Debug-Protokolle aktivieren. Debug-Informationen werden dann jeder Notiz als ausgeblendetes Callout zur Fehlersuche angehängt.",
     "settings.advanced.debugLogging.infoTooltip": "Aktiviert werden Debug-Informationen gesammelt und den Notizen als ausgeblendetes Callout hinzugefügt, statt in der Konsole protokolliert zu werden.",
+    "settings.advanced.requestTimeout.name": "Zeitlimit für Anfragen (ms)",
+    "settings.advanced.requestTimeout.desc": "Wie lange auf eine einzelne Anfrage an den Anbieter gewartet wird, bevor abgebrochen wird, in Millisekunden. Standard 600000 (10 Minuten). Bei aktivierter Debug-Protokollierung wird die Dauer jedes Aufrufs aufgezeichnet.",
     "license.modal.title": "Lizenz des Tubesage YouTube-Transkript-Plugins",
     "license.required.title": "Zustimmung zur Lizenz erforderlich",
     "license.required.message": "Du musst die Plugin-Lizenz akzeptieren, bevor du diese Funktion nutzen kannst.",

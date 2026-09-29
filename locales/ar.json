@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "تفعيل تسجيل التصحيح",
     "settings.advanced.debugLogging.desc": "تفعيل سجلات تصحيح مفصّلة. عند التفعيل، تُضاف معلومات التصحيح إلى كل ملاحظة كمربّع تنبيه مخفي لاستكشاف الأخطاء.",
     "settings.advanced.debugLogging.infoTooltip": "عند التفعيل، تُجمَع معلومات التصحيح وتُضاف إلى الملاحظات كمربّع تنبيه مخفي بدلًا من تسجيلها في وحدة التحكم.",
+    "settings.advanced.requestTimeout.name": "مهلة الطلب (مللي ثانية)",
+    "settings.advanced.requestTimeout.desc": "مدة انتظار طلب واحد إلى المزوّد قبل التوقف، بالميلي ثانية. الافتراضي 600000 (10 دقائق). عند تفعيل سجل التصحيح، تُسجَّل مدة كل استدعاء.",
     "license.modal.title": "ترخيص إضافة Tubesage لنصوص YouTube",
     "license.required.title": "الموافقة على الترخيص مطلوبة",
     "license.required.message": "يجب قبول ترخيص الإضافة قبل استخدام هذه الميزة.",

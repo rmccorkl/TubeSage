@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "有効にすると、デバッグ情報はコンソールに出力されるのではなく、折りたたまれたコールアウトとしてノートに追加されます。"
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "リクエストのタイムアウト (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "プロバイダーへの 1 回のリクエストを諦めるまでの待機時間（ミリ秒）。既定値は 600000（10 分）。デバッグログを有効にすると、各呼び出しの所要時間が記録されます。"
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube 文字起こしプラグインのライセンス"

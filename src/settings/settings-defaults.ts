@@ -1,3 +1,5 @@
+import { DEFAULT_REQUEST_TIMEOUT_MS } from "../utils/request-budget";
+
 // The plugin settings shape and its defaults. Pure and Obsidian-free so the
 // declarative settings-tab builder (setting-definitions.ts) and its tests can
 // load them without a runtime `obsidian` module. Moved verbatim from main.ts
@@ -59,6 +61,12 @@ export interface YouTubeTranscriptSettings {
     
     // Debug settings
     debugLogging: boolean;
+    /**
+     * How long ONE provider request may go unanswered before the shim stops
+     * waiting (#19). Since every provider path now routes through the shim,
+     * this is the only bound on a wedged request — see request-budget.ts.
+     */
+    requestTimeoutMs: number;
     
     // License settings
     licenseAccepted: boolean;
@@ -225,6 +233,9 @@ EXACTLY HOW TO DO THIS:
     prependDate: true,
     addTimestampLinks: true,
     debugLogging: false,
+    // Ten minutes for ONE request. Deliberately not raised: what used to
+    // punish long notes was a budget spanning a whole pass, which is gone.
+    requestTimeoutMs: DEFAULT_REQUEST_TIMEOUT_MS,
     
     // License settings
     licenseAccepted: false,

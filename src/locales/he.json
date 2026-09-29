@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "כשמופעל, מידע הניפוי ייאסף ויתווסף להערות כקטע קריאה מוסתר במקום להירשם במסוף."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "פסק זמן לבקשה (אלפיות שנייה)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "כמה זמן להמתין לבקשה בודדת לספק לפני ויתור, באלפיות שנייה. ברירת מחדל 600000 (10 דקות). כאשר יומן ניפוי השגיאות פעיל, משך כל קריאה נרשם."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "רישיון התוסף Tubesage לתמלילי YouTube"

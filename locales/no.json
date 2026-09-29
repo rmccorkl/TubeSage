@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Slå på feilsøkingslogg",
     "settings.advanced.debugLogging.desc": "Slå på detaljert feilsøkingslogg. Feilsøkingsinformasjon blir da lagt til hvert notat som et skjult callout, til feilsøking.",
     "settings.advanced.debugLogging.infoTooltip": "Når det er på, samles feilsøkingsinformasjon inn og legges til notatene som et skjult callout i stedet for å skrives til konsollen.",
+    "settings.advanced.requestTimeout.name": "Tidsavbrudd for forespørsel (ms)",
+    "settings.advanced.requestTimeout.desc": "Hvor lenge det ventes på én forespørsel til leverandøren før den gis opp, i millisekunder. Standard 600000 (10 minutter). Med feilsøkingslogg på registreres varigheten for hvert kall.",
     "license.modal.title": "Lisens for YouTube-transkripsjonstillegget Tubesage",
     "license.required.title": "Lisensen må godtas",
     "license.required.message": "Du må godta lisensen til tillegget før du bruker denne funksjonen.",

@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "Ticki yermed, talɣut n useɣti ad d-tettwajmeɛ ad ternu ɣer tzemmilin d tanaḍt tuffirt, deg umkan n uɣmis ɣer tdiwennit."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "Akud n usuter (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "Acḥal ara nerǧu asuter yiwen ɣer usaǧǧaw uqbel ad nefk afus, s milliseconds. Amezwer 600000 (10 tesdatin). Ticki aɣmis n usellek yermed, akud n yal tiɣri ad yettwasekles."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Turagt n usiɣzef n yiḍrisen YouTube Tubesage"

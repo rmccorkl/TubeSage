@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "デバッグログを有効にする",
     "settings.advanced.debugLogging.desc": "詳細なデバッグログを有効にします。有効にすると、トラブルシューティング用のデバッグ情報が折りたたまれたコールアウトとして各ノートに追記されます。",
     "settings.advanced.debugLogging.infoTooltip": "有効にすると、デバッグ情報はコンソールに出力されるのではなく、折りたたまれたコールアウトとしてノートに追加されます。",
+    "settings.advanced.requestTimeout.name": "リクエストのタイムアウト (ms)",
+    "settings.advanced.requestTimeout.desc": "プロバイダーへの 1 回のリクエストを諦めるまでの待機時間（ミリ秒）。既定値は 600000（10 分）。デバッグログを有効にすると、各呼び出しの所要時間が記録されます。",
     "license.modal.title": "Tubesage YouTube 文字起こしプラグインのライセンス",
     "license.required.title": "ライセンスへの同意が必要です",
     "license.required.message": "この機能を使う前に、プラグインのライセンスに同意する必要があります。",

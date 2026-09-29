@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "När det är på samlas felsökningsinformation in och läggs till i anteckningarna som en dold callout i stället för att skrivas till konsolen."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "Tidsgräns för begäran (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "Hur länge en enskild begäran till leverantören inväntas innan den ges upp, i millisekunder. Standard 600000 (10 minuter). Med felsökningsloggning på registreras varje anrops varaktighet."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Licens för YouTube-transkriptionstillägget Tubesage"

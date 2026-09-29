@@ -7,7 +7,11 @@ vi.mock("obsidian", () => ({ requestUrl }));
 
 import { handleApiError } from "./error-utils";
 import { obsidianFetch } from "./fetch-shim";
-import { REQUEST_TIMEOUT_MS, requestTimeoutMessage } from "./request-budget";
+import {
+  DEFAULT_REQUEST_TIMEOUT_MS,
+  requestTimeoutMessage,
+  setRequestBudgetMs,
+} from "./request-budget";
 
 const URL_UNDER_TEST = "https://api.example.com/v1/chat/completions";
 
@@ -47,6 +51,9 @@ beforeEach(() => {
 afterEach(() => {
   vi.useRealTimers();
   vi.unstubAllGlobals();
+  // Module state: a test that changes the budget must not change it for the
+  // next one.
+  setRequestBudgetMs(DEFAULT_REQUEST_TIMEOUT_MS);
 });
 
 describe("obsidianFetch — the per-request budget (#15)", () => {
@@ -56,7 +63,7 @@ describe("obsidianFetch — the per-request budget (#15)", () => {
 
     // One tick short of the budget it is still waiting: a slow provider is
     // not a wedged one.
-    await vi.advanceTimersByTimeAsync(REQUEST_TIMEOUT_MS - 1);
+    await vi.advanceTimersByTimeAsync(DEFAULT_REQUEST_TIMEOUT_MS - 1);
     expect(call.outcome()).toBe("pending");
 
     await vi.advanceTimersByTimeAsync(1);
@@ -64,7 +71,7 @@ describe("obsidianFetch — the per-request budget (#15)", () => {
   });
 
   it("is ten minutes per request by default, and says so as a named export", () => {
-    expect(REQUEST_TIMEOUT_MS).toBe(600_000);
+    expect(DEFAULT_REQUEST_TIMEOUT_MS).toBe(600_000);
   });
 
   it("lets a request that answers just inside the budget through, and leaves no timer armed", async () => {
@@ -72,7 +79,7 @@ describe("obsidianFetch — the per-request budget (#15)", () => {
     requestUrl.mockReturnValue(new Promise((resolve) => { settle = resolve; }));
     const call = track();
 
-    await vi.advanceTimersByTimeAsync(REQUEST_TIMEOUT_MS - 1);
+    await vi.advanceTimersByTimeAsync(DEFAULT_REQUEST_TIMEOUT_MS - 1);
     settle({ status: 200, text: "{}", headers: {} });
     await vi.advanceTimersByTimeAsync(0);
 
@@ -85,7 +92,7 @@ describe("obsidianFetch — the per-request budget (#15)", () => {
   it("gives each request its own budget, so a pass of three calls gets three of them", async () => {
     // The point of #15 over a stage ceiling: a 12-chunk note should be allowed
     // twelve times as long as a 1-chunk note, not squeezed into one budget.
-    const nearBudget = REQUEST_TIMEOUT_MS - 1;
+    const nearBudget = DEFAULT_REQUEST_TIMEOUT_MS - 1;
     let answered = 0;
     requestUrl.mockImplementation(() => new Promise((resolve) => {
       window.setTimeout(() => { answered += 1; resolve({ status: 200, text: "{}", headers: {} }); }, nearBudget);
@@ -99,14 +106,14 @@ describe("obsidianFetch — the per-request budget (#15)", () => {
 
     expect(answered).toBe(3);
     // Three near-budget calls in a row: well past a single 600 s ceiling.
-    expect(Date.now()).toBeGreaterThan(REQUEST_TIMEOUT_MS * 2);
+    expect(Date.now()).toBeGreaterThan(DEFAULT_REQUEST_TIMEOUT_MS * 2);
     expect(vi.getTimerCount()).toBe(0);
   });
 
   it("blames the client, not the model, and survives the error formatter intact", async () => {
     // A user reading this must not be sent to change a model setting: nothing
     // ran out at the provider's end, WE stopped waiting.
-    const message = requestTimeoutMessage(REQUEST_TIMEOUT_MS);
+    const message = requestTimeoutMessage(DEFAULT_REQUEST_TIMEOUT_MS);
     expect(message).toContain("TubeSage stopped waiting");
     expect(message).toContain("per-request limit");
     expect(message).not.toContain("generation timeout");
@@ -185,7 +192,7 @@ describe("obsidianFetch — abort signals (#19 part 4)", () => {
     const afterAbort = call.outcome();
 
     settle({ status: 200, text: "{}", headers: {} });
-    await vi.advanceTimersByTimeAsync(REQUEST_TIMEOUT_MS);
+    await vi.advanceTimersByTimeAsync(DEFAULT_REQUEST_TIMEOUT_MS);
 
     expect(call.outcome()).toBe(afterAbort);
     expect(call.outcome()).toMatch(/^rejected: /);
@@ -198,5 +205,31 @@ describe("obsidianFetch — abort signals (#19 part 4)", () => {
     await vi.advanceTimersByTimeAsync(0);
     expect(call.outcome()).toBe("resolved 200");
     expect(vi.getTimerCount()).toBe(0);
+  });
+});
+
+describe("obsidianFetch — the budget is the configured one (#19 part 3)", () => {
+  it("gives up at the budget the host set, not at the compiled-in default", async () => {
+    // The setting exists so a slow model can be accommodated deliberately. It
+    // is read per request, so changing it applies to the next call rather
+    // than at the next restart.
+    setRequestBudgetMs(5_000);
+    requestUrl.mockReturnValue(neverSettles());
+    const call = track();
+
+    await vi.advanceTimersByTimeAsync(4_999);
+    expect(call.outcome()).toBe("pending");
+
+    await vi.advanceTimersByTimeAsync(1);
+    expect(call.outcome()).toMatch(/^rejected: /);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it("says the budget it actually applied, not the default, when it gives up", async () => {
+    setRequestBudgetMs(5_000);
+    requestUrl.mockReturnValue(neverSettles());
+    const call = track();
+    await vi.advanceTimersByTimeAsync(5_000);
+    expect(call.outcome()).toContain("after 5 s");
   });
 });

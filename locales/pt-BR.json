@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Ativar o log de depuração",
     "settings.advanced.debugLogging.desc": "Ativar logs de depuração detalhados. As informações de depuração passam a ser anexadas a cada nota como um callout oculto, para solução de problemas.",
     "settings.advanced.debugLogging.infoTooltip": "Quando ativado, as informações de depuração são coletadas e adicionadas às notas como um callout oculto, em vez de serem gravadas no console.",
+    "settings.advanced.requestTimeout.name": "Tempo limite da requisição (ms)",
+    "settings.advanced.requestTimeout.desc": "Quanto tempo esperar por uma única requisição ao provedor antes de desistir, em milissegundos. Padrão 600000 (10 minutos). Com o log de depuração ativado, a duração de cada chamada é registrada.",
     "license.modal.title": "Licença do plugin de transcrição do YouTube Tubesage",
     "license.required.title": "É preciso aceitar a licença",
     "license.required.message": "Você precisa aceitar a licença do plugin antes de usar este recurso.",

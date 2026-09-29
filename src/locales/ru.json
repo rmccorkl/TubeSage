@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "Если включено, отладочные сведения собираются и добавляются в заметки скрытым блоком callout, а не выводятся в консоль."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "Тайм-аут запроса (мс)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "Сколько ждать один запрос к провайдеру, прежде чем прекратить ожидание, в миллисекундах. По умолчанию 600000 (10 минут). При включённом журнале отладки записывается длительность каждого вызова."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Лицензия плагина Tubesage для транскриптов YouTube"

@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "Bekapcsolva a hibakeresési információ a jegyzetekbe kerül rejtett callout blokként, nem a konzolba."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "Kérés időkorlátja (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "Mennyi ideig vár egyetlen kérésre a szolgáltatótól, mielőtt feladja, ezredmásodpercben. Alapértelmezett 600000 (10 perc). Bekapcsolt hibakeresési naplózás mellett minden hívás időtartama rögzítésre kerül."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "A Tubesage YouTube-átirat bővítmény licence"

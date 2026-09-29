@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Hidupkan log nyahpepijat",
     "settings.advanced.debugLogging.desc": "Hidupkan log nyahpepijat yang terperinci. Apabila dihidupkan, maklumat nyahpepijat dilampirkan pada setiap nota sebagai callout tersembunyi bagi menyelesaikan masalah.",
     "settings.advanced.debugLogging.infoTooltip": "Apabila dihidupkan, maklumat nyahpepijat dikumpulkan dan ditambah pada nota sebagai callout tersembunyi, bukan dicatatkan ke konsol.",
+    "settings.advanced.requestTimeout.name": "Had masa permintaan (ms)",
+    "settings.advanced.requestTimeout.desc": "Berapa lama menunggu satu permintaan kepada penyedia sebelum berputus asa, dalam milisaat. Lalai 600000 (10 minit). Dengan log nyahpepijat dihidupkan, tempoh setiap panggilan direkodkan.",
     "license.modal.title": "Lesen pemalam transkrip YouTube Tubesage",
     "license.required.title": "Penerimaan lesen diperlukan",
     "license.required.message": "Anda mesti menerima lesen pemalam sebelum menggunakan ciri ini.",

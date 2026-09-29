@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "فعال‌کردن ثبت اشکال‌زدایی",
     "settings.advanced.debugLogging.desc": "ثبت گزارش‌های مفصل اشکال‌زدایی. وقتی فعال باشد، اطلاعات اشکال‌زدایی به‌صورت کال‌اوت پنهان به هر یادداشت افزوده می‌شود.",
     "settings.advanced.debugLogging.infoTooltip": "وقتی فعال باشد، اطلاعات اشکال‌زدایی گردآوری و به‌صورت کال‌اوت پنهان به یادداشت‌ها افزوده می‌شود، به‌جای ثبت در کنسول.",
+    "settings.advanced.requestTimeout.name": "مهلت درخواست (میلی‌ثانیه)",
+    "settings.advanced.requestTimeout.desc": "مدت انتظار برای یک درخواست به ارائه‌دهنده پیش از انصراف، به میلی‌ثانیه. پیش‌فرض 600000 (10 دقیقه). با فعال بودن گزارش اشکال‌زدایی، مدت هر فراخوانی ثبت می‌شود.",
     "license.modal.title": "مجوز افزونهٔ Tubesage برای رونوشت YouTube",
     "license.required.title": "پذیرش مجوز لازم است",
     "license.required.message": "پیش از استفاده از این قابلیت باید مجوز افزونه را بپذیرید.",

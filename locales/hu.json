@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Hibakeresési naplózás bekapcsolása",
     "settings.advanced.debugLogging.desc": "Részletes hibakeresési naplók bekapcsolása. Az információ rejtett callout blokként kerül minden jegyzet végére a hibaelhárításhoz.",
     "settings.advanced.debugLogging.infoTooltip": "Bekapcsolva a hibakeresési információ a jegyzetekbe kerül rejtett callout blokként, nem a konzolba.",
+    "settings.advanced.requestTimeout.name": "Kérés időkorlátja (ms)",
+    "settings.advanced.requestTimeout.desc": "Mennyi ideig vár egyetlen kérésre a szolgáltatótól, mielőtt feladja, ezredmásodpercben. Alapértelmezett 600000 (10 perc). Bekapcsolt hibakeresési naplózás mellett minden hívás időtartama rögzítésre kerül.",
     "license.modal.title": "A Tubesage YouTube-átirat bővítmény licence",
     "license.required.title": "Licencelfogadás szükséges",
     "license.required.message": "A funkció használata előtt el kell fogadnod a bővítmény licencét.",

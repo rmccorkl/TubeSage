@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Slå fejlfindingslog til",
     "settings.advanced.debugLogging.desc": "Slå detaljeret fejlfindingslog til. Fejlfindingsoplysninger føjes så til hver note som en skjult callout til fejlfinding.",
     "settings.advanced.debugLogging.infoTooltip": "Når det er slået til, indsamles fejlfindingsoplysninger og føjes til noterne som en skjult callout i stedet for at blive skrevet til konsollen.",
+    "settings.advanced.requestTimeout.name": "Timeout for anmodning (ms)",
+    "settings.advanced.requestTimeout.desc": "Hvor længe der ventes på en enkelt anmodning til udbyderen, før den opgives, i millisekunder. Standard 600000 (10 minutter). Med fejlfindingslog slået til registreres varigheden af hvert kald.",
     "license.modal.title": "Licens til Tubesage YouTube-transskriptionsplugin",
     "license.required.title": "Licensen skal accepteres",
     "license.required.message": "Du skal acceptere plugin'ets licens, før du kan bruge denne funktion.",
