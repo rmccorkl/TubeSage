@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Укључи дневник за отклањање грешака",
     "settings.advanced.debugLogging.desc": "Укључи детаљне дневнике за отклањање грешака. Подаци се додају уз сваку белешку као скривени callout.",
     "settings.advanced.debugLogging.infoTooltip": "Када је укључено, подаци за отклањање грешака се прикупљају и додају у белешке као скривени callout уместо у конзолу.",
+    "settings.advanced.requestTimeout.name": "Временско ограничење захтева (ms)",
+    "settings.advanced.requestTimeout.desc": "Колико се чека на један захтев ка добављачу пре одустајања, у милисекундама. Подразумевано 600000 (10 минута). Уз укључен дневник отклањања грешака бележи се трајање сваког позива.",
     "license.modal.title": "Лиценца додатка Tubesage за транскрипте са YouTube",
     "license.required.title": "Потребно је прихватање лиценце",
     "license.required.message": "Пре коришћења ове могућности морате прихватити лиценцу додатка.",

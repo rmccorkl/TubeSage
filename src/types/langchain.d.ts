@@ -18,6 +18,11 @@ declare module '@langchain/core/runnables' {
 
 declare module '@langchain/openai' {
     import { BaseMessageLike } from '@langchain/core/messages';
+    // Deliberately partial, and worth knowing why that matters: a spread
+    // skips excess-property checking, so the transport this plugin passes
+    // through `configuration` was invisible to the compiler for as long as it
+    // was being dropped (#19). The two fields that carry it and the request
+    // budget are named here so at least they are checked.
     export class ChatOpenAI {
         constructor(config: {
             modelName?: string;
@@ -25,6 +30,10 @@ declare module '@langchain/openai' {
             maxTokens?: number;
             apiKey?: string;
             maxRetries?: number;
+            /** Per-request budget handed to the OpenAI SDK; ours, not its default (#19). */
+            timeout?: number;
+            /** Where ChatOpenAI actually reads `fetch` from — see getOpenAiConfiguration. */
+            configuration?: Record<string, unknown>;
         });
         invoke(messages: BaseMessageLike[]): Promise<unknown>;
     }

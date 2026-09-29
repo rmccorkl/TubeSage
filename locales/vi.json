@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Bật nhật ký gỡ lỗi",
     "settings.advanced.debugLogging.desc": "Bật nhật ký gỡ lỗi chi tiết. Khi bật, thông tin gỡ lỗi sẽ được đính kèm vào từng ghi chú dưới dạng callout ẩn để khắc phục sự cố.",
     "settings.advanced.debugLogging.infoTooltip": "Khi bật, thông tin gỡ lỗi sẽ được thu thập và thêm vào ghi chú dưới dạng callout ẩn thay vì ghi ra console.",
+    "settings.advanced.requestTimeout.name": "Thời gian chờ yêu cầu (ms)",
+    "settings.advanced.requestTimeout.desc": "Thời gian chờ một yêu cầu đến nhà cung cấp trước khi bỏ cuộc, tính bằng mili giây. Mặc định 600000 (10 phút). Khi bật nhật ký gỡ lỗi, thời gian của mỗi lệnh gọi được ghi lại.",
     "license.modal.title": "Giấy phép plugin bản chép lời YouTube Tubesage",
     "license.required.title": "Cần chấp nhận giấy phép",
     "license.required.message": "Bạn phải chấp nhận giấy phép của plugin trước khi dùng tính năng này.",

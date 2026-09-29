@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Włącz dziennik diagnostyczny",
     "settings.advanced.debugLogging.desc": "Włącz szczegółowe dzienniki diagnostyczne. Informacje zostaną dołączone do każdej notatki jako ukryty callout do rozwiązywania problemów.",
     "settings.advanced.debugLogging.infoTooltip": "Gdy włączone, informacje diagnostyczne trafią do notatek jako ukryty callout zamiast do konsoli.",
+    "settings.advanced.requestTimeout.name": "Limit czasu żądania (ms)",
+    "settings.advanced.requestTimeout.desc": "Jak długo czekać na pojedyncze żądanie do dostawcy przed rezygnacją, w milisekundach. Domyślnie 600000 (10 minut). Przy włączonym dzienniku debugowania zapisywany jest czas każdego wywołania.",
     "license.modal.title": "Licencja wtyczki Tubesage do transkrypcji YouTube",
     "license.required.title": "Wymagana akceptacja licencji",
     "license.required.message": "Przed użyciem tej funkcji musisz zaakceptować licencję wtyczki.",

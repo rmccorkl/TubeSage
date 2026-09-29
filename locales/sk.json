@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Zapnúť ladiaci protokol",
     "settings.advanced.debugLogging.desc": "Zapnúť podrobné ladiace protokoly. Informácie sa pripoja ku každej poznámke ako skrytý callout na riešenie problémov.",
     "settings.advanced.debugLogging.infoTooltip": "Ak je zapnuté, ladiace informácie sa zhromaždia a pridajú do poznámok ako skrytý callout namiesto zápisu do konzoly.",
+    "settings.advanced.requestTimeout.name": "Časový limit požiadavky (ms)",
+    "settings.advanced.requestTimeout.desc": "Ako dlho čakať na jednu požiadavku na poskytovateľa, kým to vzdá, v milisekundách. Predvolené 600000 (10 minút). So zapnutým ladiacim protokolom sa zaznamenáva trvanie každého volania.",
     "license.modal.title": "Licencia doplnku Tubesage na prepisy z YouTube",
     "license.required.title": "Vyžaduje sa prijatie licencie",
     "license.required.message": "Pred použitím tejto funkcie musíte prijať licenciu doplnku.",

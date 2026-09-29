@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "เมื่อเปิดใช้งาน ข้อมูลดีบักจะถูกเก็บและเพิ่มลงในโน้ตเป็นคอลเอาต์ที่ซ่อนไว้ แทนที่จะบันทึกลงคอนโซล"
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "เวลารอคำขอ (มิลลิวินาที)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "ระยะเวลารอคำขอเดียวไปยังผู้ให้บริการก่อนจะยอมแพ้ หน่วยเป็นมิลลิวินาที ค่าเริ่มต้น 600000 (10 นาที) เมื่อเปิดบันทึกการแก้จุดบกพร่อง ระบบจะบันทึกเวลาที่ใช้ของแต่ละการเรียก"
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "สัญญาอนุญาตปลั๊กอินคำบรรยาย YouTube ของ Tubesage"

@@ -4,8 +4,9 @@ import { GeminiClient } from "./gemini-client";
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { getLogger } from "../utils/logger";
 import { getSafeErrorMessage } from "../utils/error-utils";
-import { getLangChainConfiguration } from "./langchain-fetcher";
+import { getLangChainConfiguration, getOpenAiConfiguration } from "./langchain-fetcher";
 import { llmCallTimingMessage } from "./call-timing";
+import { requestBudgetMs } from "../utils/request-budget";
 import type { LlmCallOutcome } from "./call-timing";
 import { obsidianFetch } from "../utils/fetch-shim";
 
@@ -46,6 +47,101 @@ const isReasoningModel = (model: string): boolean => {
   return false;
 };
 
+
+/** What either ChatOpenAI-backed provider needs to build its model. */
+export interface OpenAiModelOptions {
+  apiKey: string;
+  model: string;
+  temperature: number;
+  maxTokens: number;
+}
+
+/**
+ * The OpenAI model, built exactly as the provider switch builds it.
+ *
+ * Exported so a test can construct it and inspect the client it produces.
+ * That is not ceremony: the transport reaches the OpenAI SDK as one property
+ * on a nested object, and a dependency quietly dropping it is invisible to
+ * inspection — it is what happened before #19. Only an assertion on the
+ * built client catches the regression.
+ */
+export function buildOpenAIModel(options: OpenAiModelOptions): ChatOpenAI {
+  // Special handling for GPT-5 temperature restrictions
+  let effectiveTemperature = options.temperature;
+  if (options.model === 'gpt-5') {
+    effectiveTemperature = 1; // GPT-5 only supports temperature=1
+    logger.debug(`GPT-5 detected: forcing temperature to 1 (was ${options.temperature})`);
+  }
+
+  const useMaxCompletionTokens = isReasoningModel(options.model);
+  if (useMaxCompletionTokens) {
+    logger.debug(`Reasoning model detected; using maxCompletionTokens to comply with OpenAI o-series requirements.`);
+  }
+
+  // OpenAI: use maxCompletionTokens for o-series, fall back to maxTokens otherwise
+  return new ChatOpenAI({
+    // `configuration`, not the top level: see getOpenAiConfiguration, which
+    // also records who owns the request timeout now (#19).
+    ...getOpenAiConfiguration({ apiKey: options.apiKey }),
+    // The SDK gets OUR budget, not its own ten-minute default (#19 F1).
+    // openai@5.12.2 implements a timeout by aborting the signal it hands to
+    // fetch, and since the shim started honouring signals that abort lands —
+    // so leaving this unset silently capped the setting at 600 s no matter
+    // what the user configured. Read here, per call, so it tracks the
+    // setting. Never 0: openai reads 0 as "abort immediately", not "no
+    // limit".
+    timeout: requestBudgetMs(),
+    modelName: options.model,
+    ...(useMaxCompletionTokens
+      ? { maxCompletionTokens: options.maxTokens }
+      : { maxTokens: options.maxTokens }),
+    temperature: effectiveTemperature,
+    // LangChain's AsyncCaller otherwise retries up to 6x on any non-4xx error, silently
+    // re-billing a completion the provider may already have served; the job runner owns
+    // retries explicitly.
+    maxRetries: 0
+  });
+}
+
+/**
+ * The OpenRouter model: the same OpenAI SDK pointed at OpenRouter's base URL,
+ * carrying the two attribution headers OpenRouter asks for. Exported for the
+ * same reason as buildOpenAIModel, plus one of its own — the baseURL and
+ * headers travel on the same nested object as the transport, so one test can
+ * hold all three to their promises.
+ */
+export function buildOpenRouterModel(options: OpenAiModelOptions): ChatOpenAI {
+  return new ChatOpenAI({
+    // The shim travels in `configuration` alongside the baseURL and the two
+    // attribution headers (#19); see getOpenAiConfiguration for the timeout
+    // ownership that comes with it.
+    ...getOpenAiConfiguration({
+      apiKey: options.apiKey,
+      configuration: {
+        baseURL: 'https://openrouter.ai/api/v1',
+        defaultHeaders: {
+          'HTTP-Referer': 'https://github.com/rmccorkl/TubeSage',
+          'X-Title': 'TubeSage'
+        }
+      }
+    }),
+    // The SDK gets OUR budget, not its own ten-minute default (#19 F1).
+    // openai@5.12.2 implements a timeout by aborting the signal it hands to
+    // fetch, and since the shim started honouring signals that abort lands —
+    // so leaving this unset silently capped the setting at 600 s no matter
+    // what the user configured. Read here, per call, so it tracks the
+    // setting. Never 0: openai reads 0 as "abort immediately", not "no
+    // limit".
+    timeout: requestBudgetMs(),
+    modelName: options.model,
+    maxTokens: options.maxTokens,
+    temperature: options.temperature,
+    // LangChain's AsyncCaller otherwise retries up to 6x on any non-4xx error, silently
+    // re-billing a completion the provider may already have served; the job runner owns
+    // retries explicitly.
+    maxRetries: 0
+  });
+}
 
 /**
  * A unified client for multiple LLM providers using LangChain
@@ -124,31 +220,11 @@ export class LangChainClient {
       switch (this.provider) {
         case 'openai': {
           logger.debug(`Using OpenAI with model ${this.model}`);
-          
-          // Special handling for GPT-5 temperature restrictions
-          let effectiveTemperature = this.temperature;
-          if (this.model === 'gpt-5') {
-            effectiveTemperature = 1; // GPT-5 only supports temperature=1
-            logger.debug(`GPT-5 detected: forcing temperature to 1 (was ${this.temperature})`);
-          }
-          
-          const useMaxCompletionTokens = isReasoningModel(this.model);
-          if (useMaxCompletionTokens) {
-            logger.debug(`Reasoning model detected; using maxCompletionTokens to comply with OpenAI o-series requirements.`);
-          }
-          
-          // OpenAI: use maxCompletionTokens for o-series, fall back to maxTokens otherwise
-          const model = new ChatOpenAI({
-            ...config,
-            modelName: this.model,
-            ...(useMaxCompletionTokens
-              ? { maxCompletionTokens: this.maxTokens }
-              : { maxTokens: this.maxTokens }),
-            temperature: effectiveTemperature,
-            // LangChain's AsyncCaller otherwise retries up to 6x on any non-4xx error, silently
-            // re-billing a completion the provider may already have served; the job runner owns
-            // retries explicitly.
-            maxRetries: 0
+          const model = buildOpenAIModel({
+            apiKey: this.apiKey,
+            model: this.model,
+            temperature: this.temperature,
+            maxTokens: this.maxTokens,
           });
           
           // TODO: Revisit this type casting when LangChain's type definitions are more stable
@@ -300,40 +376,11 @@ export class LangChainClient {
 
         case 'openrouter': {
           logger.debug(`Using OpenRouter with model ${this.model}`);
-          // OpenRouter exposes an OpenAI-compatible API, so it reuses
-          // ChatOpenAI with a baseURL override.
-          //
-          // This comment used to say the obsidianFetch shim "continues to
-          // handle cross-platform HTTP" here. It does not (#15 review, #19):
-          // getLangChainConfiguration puts `fetch` at the top level and
-          // ChatOpenAI only spreads `configuration`, so this path — like the
-          // plain OpenAI one — runs on the OpenAI SDK's own transport, under
-          // its own 600 000 ms default rather than the shim's budget. The
-          // `configuration` keys below DO arrive, which is why the baseURL
-          // and headers work and the wrong conclusion was easy to draw.
-          // OpenRouter recommends HTTP-Referer and X-Title headers for attribution.
-          // Route the OpenAI SDK at OpenRouter's base URL. We add `configuration`
-          // via getLangChainConfiguration's loosely-typed options bag so it spreads
-          // alongside `apiKey` and `fetch` (the obsidianFetch shim).
-          const routerConfig = getLangChainConfiguration({
+          const model = buildOpenRouterModel({
             apiKey: this.apiKey,
-            configuration: {
-              baseURL: 'https://openrouter.ai/api/v1',
-              defaultHeaders: {
-                'HTTP-Referer': 'https://github.com/rmccorkl/TubeSage',
-                'X-Title': 'TubeSage'
-              }
-            }
-          });
-          const model = new ChatOpenAI({
-            ...routerConfig,
-            modelName: this.model,
-            maxTokens: this.maxTokens,
+            model: this.model,
             temperature: this.temperature,
-            // LangChain's AsyncCaller otherwise retries up to 6x on any non-4xx error, silently
-            // re-billing a completion the provider may already have served; the job runner owns
-            // retries explicitly.
-            maxRetries: 0
+            maxTokens: this.maxTokens,
           });
 
           const response = await model.invoke(messages);

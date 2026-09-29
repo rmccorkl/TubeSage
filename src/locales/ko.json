@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "켜면 디버그 정보가 콘솔에 출력되는 대신 숨김 콜아웃으로 노트에 추가됩니다."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "요청 제한 시간 (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "공급자에 대한 단일 요청을 포기하기까지 기다리는 시간(밀리초). 기본값 600000(10분). 디버그 로깅을 켜면 각 호출의 소요 시간이 기록됩니다."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube 자막 플러그인 라이선스"

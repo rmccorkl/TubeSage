@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Cumasaigh logáil dhífhabhtaithe",
     "settings.advanced.debugLogging.desc": "Cumasaigh logaí mionsonraithe dífhabhtaithe. Nuair atá sé cumasaithe, cuirfear eolas dífhabhtaithe le gach nóta mar bhosca folaithe le haghaidh fabhtcheartaithe.",
     "settings.advanced.debugLogging.infoTooltip": "Nuair atá sé cumasaithe, baileofar eolas dífhabhtaithe agus cuirfear leis na nótaí é mar bhosca folaithe in ionad é a logáil chuig an gconsól.",
+    "settings.advanced.requestTimeout.name": "Teorainn ama iarratais (ms)",
+    "settings.advanced.requestTimeout.desc": "Cé chomh fada is a fhanfar le hiarratas amháin ar an soláthraí sula dtabharfar suas, i milleasoicindí. Réamhshocrú 600000 (10 nóiméad). Nuair a bhíonn logáil dhífhabhtaithe ann, taifeadtar fad gach glao.",
     "license.modal.title": "Ceadúnas bhreiseán tras-scríbhinní YouTube Tubesage",
     "license.required.title": "Glacadh leis an gceadúnas riachtanach",
     "license.required.message": "Caithfidh tú glacadh le ceadúnas an bhreiseáin sula n-úsáideann tú an ghné seo.",

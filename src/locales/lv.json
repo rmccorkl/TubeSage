@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "Kad ieslēgts, atkļūdošanas informācija tiek savākta un pievienota piezīmēm kā slēpts callout, nevis izvadīta konsolē."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "Pieprasījuma noildze (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "Cik ilgi gaidīt vienu pieprasījumu pakalpojuma sniedzējam, pirms padoties, milisekundēs. Noklusējums 600000 (10 minūtes). Ar ieslēgtu atkļūdošanas žurnālu tiek reģistrēts katra izsaukuma ilgums."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube transkriptu spraudņa licence"

@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "Je-li zapnuto, ladicí informace se shromáždí a přidají do poznámek jako skrytý callout místo zápisu do konzole."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "Časový limit požadavku (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "Jak dlouho čekat na jeden požadavek na poskytovatele, než to vzdá, v milisekundách. Výchozí 600000 (10 minut). Se zapnutým ladicím protokolem se zaznamenává doba každého volání."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Licence pluginu Tubesage pro přepisy z YouTube"

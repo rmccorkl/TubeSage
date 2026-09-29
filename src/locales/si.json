@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "සක්‍රිය විට, දෝෂ තොරතුරු කොන්සෝලයට ලොග කරනවා වෙනුවට සැඟවුණු කෝල්අවුට් එකක් ලෙස සටහන්වලට එක් කෙරේ."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "ඉල්ලීම් කාල සීමාව (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "සැපයුම්කරුට යවන එක් ඉල්ලීමක් අත්හැරීමට පෙර රැඳී සිටින කාලය, මිලි තත්පරවලින්. පෙරනිමිය 600000 (මිනිත්තු 10). දෝෂ නිරාකරණ ලොග සක්‍රිය විට, එක් එක් ඇමතුමේ කාලය සටහන් වේ."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube පිටපත් ප්ලගින බලපත්‍රය"

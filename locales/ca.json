@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Activa el registre de depuració",
     "settings.advanced.debugLogging.desc": "Activa registres de depuració detallats. La informació de depuració s'afegirà a cada nota com a callout ocult, per al diagnòstic.",
     "settings.advanced.debugLogging.infoTooltip": "Quan s'activa, la informació de depuració es recull i s'afegeix a les notes com a callout ocult en lloc d'escriure's a la consola.",
+    "settings.advanced.requestTimeout.name": "Temps d'espera de la sol·licitud (ms)",
+    "settings.advanced.requestTimeout.desc": "Quant temps esperar una única sol·licitud al proveïdor abans de desistir, en mil·lisegons. Valor predeterminat 600000 (10 minuts). Amb el registre de depuració activat, es registra la durada de cada crida.",
     "license.modal.title": "Llicència del plugin de transcripció de YouTube Tubesage",
     "license.required.title": "Cal acceptar la llicència",
     "license.required.message": "Has d'acceptar la llicència del plugin abans d'utilitzar aquesta funció.",

@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Ieslēgt atkļūdošanas žurnālu",
     "settings.advanced.debugLogging.desc": "Ieslēgt detalizētus atkļūdošanas žurnālus. Informācija tiks pievienota katrai piezīmei kā slēpts callout problēmu novēršanai.",
     "settings.advanced.debugLogging.infoTooltip": "Kad ieslēgts, atkļūdošanas informācija tiek savākta un pievienota piezīmēm kā slēpts callout, nevis izvadīta konsolē.",
+    "settings.advanced.requestTimeout.name": "Pieprasījuma noildze (ms)",
+    "settings.advanced.requestTimeout.desc": "Cik ilgi gaidīt vienu pieprasījumu pakalpojuma sniedzējam, pirms padoties, milisekundēs. Noklusējums 600000 (10 minūtes). Ar ieslēgtu atkļūdošanas žurnālu tiek reģistrēts katra izsaukuma ilgums.",
     "license.modal.title": "Tubesage YouTube transkriptu spraudņa licence",
     "license.required.title": "Nepieciešama licences pieņemšana",
     "license.required.message": "Pirms šīs funkcijas lietošanas ir jāpieņem spraudņa licence.",

@@ -83,20 +83,64 @@ function createLangChainFetcher() {
 }
 
 /**
+ * The ChatOpenAI-shaped configuration: the shim goes INSIDE `configuration`.
+ *
+ * ChatOpenAI builds its client from
+ * `{apiKey, organization, dangerouslyAllowBrowser, ...fields.configuration}`
+ * (@langchain/openai@0.6.17 chat_models.cjs:625-630), so this is the only
+ * position a `fetch` survives from. The top-level shape below is what
+ * ChatOllama reads (@langchain/ollama chat_models.cjs:545); the two are
+ * genuinely different and neither works in the other's place, which is how
+ * OpenAI and OpenRouter spent several releases silently on globalThis.fetch.
+ *
+ * WHO OWNS THE REQUEST TIMEOUT, now that this is wired (#19 part 2 — read
+ * this before assuming two bounds apply):
+ *
+ *   `openai@5.12.2` implements its timeout ONLY by aborting the signal it
+ *   hands to fetch (client.js:324-332): it calls `controller.abort()` and
+ *   waits for the fetch implementation to react. The shim honours `signal`
+ *   now (#19 part 4), so that abort does land — but `requestUrl` cannot be
+ *   cancelled, so what it achieves is that WE stop waiting while the request
+ *   runs on unattended. The SDK's DEFAULT_TIMEOUT is no longer a stop on the
+ *   wire; it is one more way for us to give up, and it was the only thing
+ *   bounding these two paths before #19.
+ *
+ *   So the budget is OURS to choose, on all five provider paths: the
+ *   request-budget setting (request-budget.ts) is the one number, in one
+ *   place. It is not the only clock on these two, and pretending otherwise
+ *   is what made the setting inert above ten minutes for a while (#19 F1):
+ *   the SDK arms its own abort at whatever `timeout` it was given, so the
+ *   builders hand it `requestBudgetMs()` and the two are ALIGNED ON PURPOSE.
+ *   Leave `timeout` unset and the SDK's 600 s default silently caps whatever
+ *   the user configured.
+ *
+ *   Being armed first, the SDK's timer is the one that fires when they are
+ *   equal — so on these two paths a request at the budget ends with openai's
+ *   "Request timed out." rather than the shim's message. On the other three
+ *   the shim's own budget is genuinely the only bound, and the setting has
+ *   no upper limit: a very large value there really does mean "wait
+ *   indefinitely", with nothing underneath to catch a wedged request.
+ */
+export function getOpenAiConfiguration(
+  options: { apiKey: string; configuration?: Record<string, unknown> },
+): { apiKey: string; configuration: Record<string, unknown> } {
+  return {
+    apiKey: options.apiKey,
+    configuration: {
+      ...options.configuration,
+      fetch: createLangChainFetcher(),
+    },
+  };
+}
+
+/**
  * Configuration object for LangChain models that includes our custom fetcher.
  *
- * WHICH MODELS ACTUALLY TAKE IT: `fetch` is returned at the TOP level, which
- * ChatOllama reads (@langchain/ollama chat_models.cjs:545) and ChatOpenAI
- * does not — it builds its client from
- * `{apiKey, organization, dangerouslyAllowBrowser, ...fields.configuration}`
- * (@langchain/openai@0.6.17 chat_models.cjs:625-630), so a top-level `fetch`
- * never reaches the OpenAI SDK and both the OpenAI and OpenRouter paths run
- * on the SDK's own transport. They are not unbounded — `openai@5.12.2`
- * applies its own DEFAULT_TIMEOUT of 600000 ms with `maxRetries: 0` — but
- * they are not on the shim, so they get neither obsidianFetch's mobile
- * transport nor its budget (#15, #19). Moving them means putting `fetch`
- * inside `configuration`, which changes headers, error shapes and the mobile
- * path for the most-used provider: #19, not a change to make in passing.
+ * WHICH MODELS TAKE THIS SHAPE: `fetch` is returned at the TOP level, which
+ * is what ChatOllama reads (@langchain/ollama chat_models.cjs:545). ChatOpenAI
+ * does NOT read it there, and used to be handed this shape — which is how
+ * OpenAI and OpenRouter ran on globalThis.fetch until #19. Those two now use
+ * `getOpenAiConfiguration` above; anything ChatOpenAI-backed must.
  */
 export function getLangChainConfiguration(options: Record<string, unknown> = {}) {
   return {

@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "ჩართვისას გამართვის ინფორმაცია შეგროვდება და ჩანაწერებს დაემატება დამალული ბლოკის სახით, კონსოლში ჩაწერის ნაცვლად."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "მოთხოვნის ვადა (მწმ)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "რამდენ ხანს დაელოდოს პროვაიდერთან ერთ მოთხოვნას დანებებამდე, მილიწამებში. ნაგულისხმევი 600000 (10 წუთი). გამართვის ჟურნალის ჩართვისას თითოეული გამოძახების ხანგრძლივობა ჩაიწერება."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube ტრანსკრიპტების მოდულის ლიცენზია"

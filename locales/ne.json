@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "डिबग लगिङ सक्षम गर्नुहोस्",
     "settings.advanced.debugLogging.desc": "विस्तृत डिबग लग सक्षम गर्नुहोस्। सक्षम हुँदा समस्या समाधानका लागि डिबग जानकारी प्रत्येक नोटमा लुकेको कलआउटका रूपमा थपिन्छ।",
     "settings.advanced.debugLogging.infoTooltip": "सक्षम हुँदा डिबग जानकारी कन्सोलमा नलेखी सङ्कलन गरेर नोटमा लुकेको कलआउटका रूपमा थपिन्छ।",
+    "settings.advanced.requestTimeout.name": "अनुरोधको समयसीमा (मिलिसेकेन्ड)",
+    "settings.advanced.requestTimeout.desc": "प्रदायकलाई गरिएको एउटा अनुरोध छोड्नुअघि कति समय पर्खने, मिलिसेकेन्डमा। पूर्वनिर्धारित 600000 (10 मिनेट)। डिबग लगिङ सक्रिय हुँदा प्रत्येक कलको अवधि अभिलेख गरिन्छ।",
     "license.modal.title": "Tubesage YouTube प्रतिलिपि प्लगइनको इजाजतपत्र",
     "license.required.title": "इजाजतपत्र स्वीकार आवश्यक",
     "license.required.message": "यो सुविधा प्रयोग गर्नुअघि तपाईंले प्लगइनको इजाजतपत्र स्वीकार गर्नुपर्छ।",

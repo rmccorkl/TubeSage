@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Aktifkan log debug",
     "settings.advanced.debugLogging.desc": "Aktifkan log debug yang rinci. Saat aktif, keterangan debug ditempelkan pada tiap catatan sebagai callout tersembunyi untuk penelusuran masalah.",
     "settings.advanced.debugLogging.infoTooltip": "Saat aktif, keterangan debug dikumpulkan dan ditambahkan ke catatan sebagai callout tersembunyi, bukan dicetak ke konsol.",
+    "settings.advanced.requestTimeout.name": "Batas waktu permintaan (ms)",
+    "settings.advanced.requestTimeout.desc": "Berapa lama menunggu satu permintaan ke penyedia sebelum menyerah, dalam milidetik. Bawaan 600000 (10 menit). Dengan log debug aktif, durasi setiap panggilan dicatat.",
     "license.modal.title": "Lisensi plugin transkrip YouTube Tubesage",
     "license.required.title": "Perlu menerima lisensi",
     "license.required.message": "Anda harus menerima lisensi plugin sebelum memakai fitur ini.",

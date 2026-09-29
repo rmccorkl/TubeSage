@@ -1,3 +1,5 @@
+import { DEFAULT_REQUEST_TIMEOUT_MS } from "../utils/request-budget";
+
 // The plugin settings shape and its defaults. Pure and Obsidian-free so the
 // declarative settings-tab builder (setting-definitions.ts) and its tests can
 // load them without a runtime `obsidian` module. Moved verbatim from main.ts
@@ -59,6 +61,16 @@ export interface YouTubeTranscriptSettings {
     
     // Debug settings
     debugLogging: boolean;
+    /**
+     * How long ONE provider request may go unanswered before the shim stops
+     * waiting (#19). Every provider path routes through the shim, so this is
+     * the bound that applies everywhere — and on OpenAI and OpenRouter the
+     * same number is handed to the OpenAI SDK, whose own clock would
+     * otherwise cap it at ten minutes (#19 F1). There is no upper limit here:
+     * on the three shim-only paths a very large value means no effective
+     * bound at all. See request-budget.ts.
+     */
+    requestTimeoutMs: number;
     
     // License settings
     licenseAccepted: boolean;
@@ -225,6 +237,9 @@ EXACTLY HOW TO DO THIS:
     prependDate: true,
     addTimestampLinks: true,
     debugLogging: false,
+    // Ten minutes for ONE request. Deliberately not raised: what used to
+    // punish long notes was a budget spanning a whole pass, which is gone.
+    requestTimeoutMs: DEFAULT_REQUEST_TIMEOUT_MS,
     
     // License settings
     licenseAccepted: false,
