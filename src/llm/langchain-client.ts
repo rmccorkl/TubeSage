@@ -6,6 +6,7 @@ import { getLogger } from "../utils/logger";
 import { getSafeErrorMessage } from "../utils/error-utils";
 import { getLangChainConfiguration, getOpenAiConfiguration } from "./langchain-fetcher";
 import { llmCallTimingMessage } from "./call-timing";
+import { requestBudgetMs } from "../utils/request-budget";
 import type { LlmCallOutcome } from "./call-timing";
 import { obsidianFetch } from "../utils/fetch-shim";
 
@@ -82,6 +83,14 @@ export function buildOpenAIModel(options: OpenAiModelOptions): ChatOpenAI {
     // `configuration`, not the top level: see getOpenAiConfiguration, which
     // also records who owns the request timeout now (#19).
     ...getOpenAiConfiguration({ apiKey: options.apiKey }),
+    // The SDK gets OUR budget, not its own ten-minute default (#19 F1).
+    // openai@5.12.2 implements a timeout by aborting the signal it hands to
+    // fetch, and since the shim started honouring signals that abort lands —
+    // so leaving this unset silently capped the setting at 600 s no matter
+    // what the user configured. Read here, per call, so it tracks the
+    // setting. Never 0: openai reads 0 as "abort immediately", not "no
+    // limit".
+    timeout: requestBudgetMs(),
     modelName: options.model,
     ...(useMaxCompletionTokens
       ? { maxCompletionTokens: options.maxTokens }
@@ -116,6 +125,14 @@ export function buildOpenRouterModel(options: OpenAiModelOptions): ChatOpenAI {
         }
       }
     }),
+    // The SDK gets OUR budget, not its own ten-minute default (#19 F1).
+    // openai@5.12.2 implements a timeout by aborting the signal it hands to
+    // fetch, and since the shim started honouring signals that abort lands —
+    // so leaving this unset silently capped the setting at 600 s no matter
+    // what the user configured. Read here, per call, so it tracks the
+    // setting. Never 0: openai reads 0 as "abort immediately", not "no
+    // limit".
+    timeout: requestBudgetMs(),
     modelName: options.model,
     maxTokens: options.maxTokens,
     temperature: options.temperature,

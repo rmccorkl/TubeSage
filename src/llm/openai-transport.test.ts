@@ -9,6 +9,7 @@ import type { ChatOpenAI } from "@langchain/openai";
 /** What the OpenAI SDK stores as its transport; named here to keep `globalThis` out of the file. */
 type FetchLike = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 import { buildOpenAIModel, buildOpenRouterModel } from "./langchain-client";
+import { DEFAULT_REQUEST_TIMEOUT_MS, setRequestBudgetMs } from "../utils/request-budget";
 
 /**
  * The OpenAI client ChatOpenAI actually builds.
@@ -89,4 +90,62 @@ describe("the ChatOpenAI paths run on OUR transport (#19)", () => {
     expect(configured.defaultHeaders?.["HTTP-Referer"]).toBe("https://github.com/rmccorkl/TubeSage");
     expect(configured.defaultHeaders?.["X-Title"]).toBe("TubeSage");
   });
+});
+
+describe("the configured budget is the one that applies, not the SDK's ten minutes (#19 F1)", () => {
+  // The interaction between parts 3 and 4 of #19. The SDK implements its
+  // timeout by aborting the signal it hands to fetch; part 4 taught the shim
+  // to honour signals, so from that commit the SDK's DEFAULT_TIMEOUT of
+  // 600000 ms — which these builders never overrode — started landing. A user
+  // who reads the new per-call timings, raises the budget to twenty minutes
+  // exactly as #19 intends, and still loses the request at ten, with a
+  // message that is not ours and explains nothing.
+  const RAISED_BUDGET_MS = 30 * 60_000;
+  const SDK_DEFAULT_MS = 600_000;
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    // The shim arms its own budget on `window` timers; on node there is no
+    // window, so it is pointed at the globals vitest has faked.
+    // eslint-disable-next-line obsidianmd/no-global-this, obsidianmd/prefer-active-doc -- no window exists on node; this is what creates one
+    vi.stubGlobal("window", globalThis);
+    setRequestBudgetMs(RAISED_BUDGET_MS);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+    setRequestBudgetMs(DEFAULT_REQUEST_TIMEOUT_MS);
+  });
+
+  for (const [name, build] of [
+    ["OpenAI", buildOpenAIModel],
+    ["OpenRouter", buildOpenRouterModel],
+  ] as const) {
+    it(`${name}: a request outlives the SDK's default and is bounded at the configured budget`, async () => {
+      requestUrl.mockReturnValue(new Promise(() => undefined));
+      let outcome = "pending";
+      void build(MODEL_OPTIONS).invoke(["hello"]).then(
+        () => { outcome = "resolved"; },
+        (error: unknown) => { outcome = `rejected: ${error instanceof Error ? error.message : String(error)}`; },
+      );
+
+      // Past the SDK's own ten minutes: the user asked for thirty.
+      await vi.advanceTimersByTimeAsync(SDK_DEFAULT_MS + 1);
+      expect(outcome).toBe("pending");
+
+      // And bounded at the budget that was actually configured.
+      //
+      // WHICH clock ends it, since both are now set to the same number: the
+      // SDK's, because it arms its abort just before handing the request to
+      // our fetch. So the message the user sees at the budget is openai's
+      // "Request timed out.", not the shim's "TubeSage stopped waiting…".
+      // Both are honest about what happened; only ours names the configured
+      // limit. Pinned here so that if anyone gives the SDK a grace period to
+      // change which one wins, they change this deliberately.
+      await vi.advanceTimersByTimeAsync(RAISED_BUDGET_MS);
+      expect(outcome).toMatch(/^rejected: /);
+      expect(outcome).toMatch(/timed out|stopped waiting/i);
+    });
+  }
 });
