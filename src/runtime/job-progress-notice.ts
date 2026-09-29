@@ -101,7 +101,21 @@ export class JobProgressNotices {
    * session. An event for a job that never reported progress (or for another
    * installation's job) is a no-op.
    */
-  handle(event: JobEvent): void {
+  handle(event: JobEvent, inCollection = false): void {
+    // Whether a job belongs to a live collection is the HOST's knowledge
+    // (`CollectionRunner.owns`), but what to do about it is this class's
+    // policy, and it lives here so a test can see it — main.ts has no
+    // harness. A child is reported by its collection's single run notice,
+    // never by one of its own.
+    //
+    // `run-ended` is the exception, and it matters (#14 F2): a standalone job
+    // already showing its own notice can be ADOPTED by a collection started
+    // later (main.ts submitChild). From that moment every event for it reads
+    // as a child's, so the open surface would never be told anything again.
+    // A genuine child has no notice, which makes the dismiss a no-op there.
+    if (inCollection && event.type !== "run-ended") {
+      return;
+    }
     switch (event.type) {
       case "progress":
         this.show(event.id, progressNoticeText(event.stage));

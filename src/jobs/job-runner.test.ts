@@ -1055,14 +1055,22 @@ describe("JobRunner + JobProgressNotices — no exit path leaves a live surface 
     }
   }
 
-  function wired(options: HarnessOptions = {}): { h: Harness; notices: JobProgressNotices; surfaces: SurfaceDouble[] } {
+  /**
+   * `owns` mirrors main.ts's `collectionRunner.owns(event.id)` — the host
+   * tells the notices whether a job is a collection child, and the notices
+   * decide what that means. Default false: an ordinary standalone job.
+   */
+  function wired(
+    options: HarnessOptions = {},
+    owns: () => boolean = () => false,
+  ): { h: Harness; notices: JobProgressNotices; surfaces: SurfaceDouble[] } {
     const surfaces: SurfaceDouble[] = [];
     const notices = new JobProgressNotices((message) => {
       const surface = new SurfaceDouble(message);
       surfaces.push(surface);
       return surface;
     });
-    const h = makeHarness({ ...options, onEvent: (event) => { notices.handle(event); } });
+    const h = makeHarness({ ...options, onEvent: (event) => { notices.handle(event, owns()); } });
     return { h, notices, surfaces };
   }
 
@@ -1171,6 +1179,37 @@ describe("JobRunner + JobProgressNotices — no exit path leaves a live surface 
       }
     });
   }
+
+  it("leaves no surface behind when a collection ADOPTS the running job mid-flight (#14 F2)", async () => {
+    // Wired as the host wires it. A standalone job is showing its own notice
+    // when the user starts a playlist containing that video; submitChild
+    // adopts the live job, and from that moment the host reports every one of
+    // its events as a collection child's. The outcome is suppressed — the
+    // collection's notice narrates it — so the run ending is the only thing
+    // left that can close the surface this job already opened.
+    let adopted = false;
+    const w = wired({}, () => adopted);
+    w.h.stages.stamps.manual = true;
+    await w.h.runner.submit(SUBMIT);
+    await flush();
+    expect(w.notices.activeCount()).toBe(1);
+
+    adopted = true;
+    w.h.stages.stamps.resolveLast(undefined);
+    await flush();
+
+    expect(w.h.events.filter((e) => e.type === "done")).toHaveLength(1);
+    expect(w.notices.activeCount()).toBe(0);
+    expect(w.surfaces.every((surface) => surface.hidden === 1)).toBe(true);
+  });
+
+  it("opens no surface at all for a job that was a collection child throughout", async () => {
+    const w = wired({}, () => true);
+    await w.h.runner.submit(SUBMIT);
+    await flush();
+    expect(w.surfaces).toHaveLength(0);
+    expect(w.notices.activeCount()).toBe(0);
+  });
 
   it("leaves no surface behind when the plugin unloads mid-run", async () => {
     // Unload is the one exit that emits nothing by design — a fenced run must
