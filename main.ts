@@ -2223,9 +2223,13 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 // can still land its note afterwards. Removing the runner's
                 // 600 s stage budget (#13) removed the common trigger — the
                 // runner declaring `interrupted` while these calls were still
-                // running — but a cancel remains one. Fixing it means carrying
-                // the record's generation into this pass and re-checking it
-                // here; that belongs with the other timestamp-pass defects in
+                // running — but two remain: a cancel, and UNLOAD. `stopAll()`
+                // fences the runner's own side effects and clears its timers;
+                // it does not stop this loop, which goes on to call
+                // `this.app.vault` and write into a vault the plugin has
+                // already been torn down from. Fixing it means carrying the
+                // record's generation into this pass and re-checking it here;
+                // that belongs with the other timestamp-pass defects in
                 // #12 §1, not in #13's deadline change.
                 const file = this.app.vault.getAbstractFileByPath(filePath);
                 if (file instanceof TFile) {
@@ -2673,10 +2677,13 @@ ${contentWithoutFrontmatter}
                 // still reads exactly as it did before the LLM calls (F5).
                 //
                 // KNOWN GAP (#13, not fixed here): no generation fence, exactly
-                // as in addTimestampLinksSinglePass above — see the note there.
+                // as in addTimestampLinksSinglePass above — see the note there
+                // for the surviving triggers, a cancel and unload alike.
                 // This path is the one the issue names (main.ts:2661): the
                 // chunk loop is where a long pass spends its time, so it is
-                // where an abandoned run is most likely to still be working.
+                // where an abandoned run is most likely to still be working —
+                // and where an unload is most likely to land mid-loop, since
+                // nothing stops it once the runner has been fenced.
                 const file = this.app.vault.getAbstractFileByPath(filePath);
                 if (file instanceof TFile) {
                     if (!(await writeIfUnchanged(this.app.vault, file, originalContent, combinedNote))) {
