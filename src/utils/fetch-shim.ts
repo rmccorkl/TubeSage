@@ -99,7 +99,18 @@ const normalizeHeaders = (headers?: HeadersInit): Record<string, string> => {
  * NOT safe at stage level, which is why #13 removed the budget there rather
  * than moving it.
  *
- * Timers come from `window`, as everywhere else in this plugin.
+ * Timers come from `window`, as everywhere else in this plugin, and this one
+ * is NOT registered with the plugin (#15 review F7). On unload with requests
+ * in flight, each leaves its timer armed for up to the rest of its budget —
+ * one per in-flight request, ten minutes at worst. That is deliberate rather
+ * than overlooked: the shim is a free function every provider and the
+ * transcript extractor call, with no Plugin handle to `registerInterval`
+ * with, and threading one through all of them to reclaim a bounded,
+ * self-clearing timer would cost more than it saves. When such a timer does
+ * fire it rejects into the abandoned call's own catch — which still exists,
+ * so it is handled, not an unhandled rejection — and the runner is fenced by
+ * then (`stopAll`), so nothing it says can reach a record, a surface or a
+ * vault write. What it cannot do is outlive the process.
  */
 async function requestWithBudget(options: RequestUrlOptions): Promise<RequestUrlResponse> {
   const startedAt = Date.now();

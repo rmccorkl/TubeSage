@@ -83,7 +83,20 @@ function createLangChainFetcher() {
 }
 
 /**
- * Configuration object for LangChain models that includes our custom fetcher
+ * Configuration object for LangChain models that includes our custom fetcher.
+ *
+ * WHICH MODELS ACTUALLY TAKE IT: `fetch` is returned at the TOP level, which
+ * ChatOllama reads (@langchain/ollama chat_models.cjs:545) and ChatOpenAI
+ * does not — it builds its client from
+ * `{apiKey, organization, dangerouslyAllowBrowser, ...fields.configuration}`
+ * (@langchain/openai@0.6.17 chat_models.cjs:625-630), so a top-level `fetch`
+ * never reaches the OpenAI SDK and both the OpenAI and OpenRouter paths run
+ * on the SDK's own transport. They are not unbounded — `openai@5.12.2`
+ * applies its own DEFAULT_TIMEOUT of 600000 ms with `maxRetries: 0` — but
+ * they are not on the shim, so they get neither obsidianFetch's mobile
+ * transport nor its budget (#15, #19). Moving them means putting `fetch`
+ * inside `configuration`, which changes headers, error shapes and the mobile
+ * path for the most-used provider: #19, not a change to make in passing.
  */
 export function getLangChainConfiguration(options: Record<string, unknown> = {}) {
   return {

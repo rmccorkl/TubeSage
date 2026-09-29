@@ -300,9 +300,17 @@ export class LangChainClient {
 
         case 'openrouter': {
           logger.debug(`Using OpenRouter with model ${this.model}`);
-          // OpenRouter exposes an OpenAI-compatible API. Reuse ChatOpenAI with a
-          // baseURL override so the obsidianFetch shim (injected by
-          // getLangChainConfiguration) continues to handle cross-platform HTTP.
+          // OpenRouter exposes an OpenAI-compatible API, so it reuses
+          // ChatOpenAI with a baseURL override.
+          //
+          // This comment used to say the obsidianFetch shim "continues to
+          // handle cross-platform HTTP" here. It does not (#15 review, #19):
+          // getLangChainConfiguration puts `fetch` at the top level and
+          // ChatOpenAI only spreads `configuration`, so this path — like the
+          // plain OpenAI one — runs on the OpenAI SDK's own transport, under
+          // its own 600 000 ms default rather than the shim's budget. The
+          // `configuration` keys below DO arrive, which is why the baseURL
+          // and headers work and the wrong conclusion was easy to draw.
           // OpenRouter recommends HTTP-Referer and X-Title headers for attribution.
           // Route the OpenAI SDK at OpenRouter's base URL. We add `configuration`
           // via getLangChainConfiguration's loosely-typed options bag so it spreads
