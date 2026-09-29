@@ -384,14 +384,19 @@ describe("end-to-end: timestamps-stage failures surface as recoverable on the ru
   });
 });
 
-describe("end-to-end: a request the shim gave up on leaves the note alone (#15)", () => {
-  it("a per-request timeout inside the timestamps pass writes NOTHING to the note, and the job says interrupted", async () => {
-    // The property #15 was chosen FOR. A stage-level budget abandoned the
-    // whole pass, which ends in an unfenced vault write (main.ts:2661) — that
-    // is how a note gained its timestamps minutes after the job reported
-    // itself interrupted. A request-level bound abandons one chunk call: the
-    // pass rejects BEFORE its write, so the note is left exactly as the
-    // create stage left it.
+describe("end-to-end: a rejecting timestamps pass leaves the note as the create stage left it", () => {
+  it("the RUNNER writes nothing of its own when the pass rejects, whatever the pass rejected with", async () => {
+    // NAMED HONESTLY (#15 review F6). This drives the host double, so what it
+    // proves is the runner's half: a rejected timestamps stage adds nothing
+    // to the note and reports interrupted. That was already true before #15,
+    // and this test passes against the unbounded shim — it is NOT a pin of
+    // "a timed-out request leaves no note written".
+    //
+    // The pass's own half — that one abandoned chunk call ends the pass
+    // BEFORE `writeIfUnchanged` — is main.ts code, which cannot be loaded
+    // here. Its decision is extracted and pinned in
+    // timestamp-pass-policy.test.ts ("chunkFailureAction"), which is the test
+    // that fails if someone makes a failed chunk carry on.
     const h = harness();
     // The real message the shim raises, not an approximation of it.
     h.host.timestampsError = new Error(requestTimeoutMessage(REQUEST_TIMEOUT_MS));
