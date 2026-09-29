@@ -105,11 +105,21 @@ function createLangChainFetcher() {
  *   wire; it is one more way for us to give up, and it was the only thing
  *   bounding these two paths before #19.
  *
- *   The effective bound on every one of the five provider paths is now OURS:
- *   `REQUEST_TIMEOUT_MS` / the request-budget setting (request-budget.ts).
- *   One number, one place — which is the point — but it means that raising
- *   the budget raises it for real, with nothing else underneath to catch a
- *   wedged request. Do not assume the SDK is still holding a net.
+ *   So the budget is OURS to choose, on all five provider paths: the
+ *   request-budget setting (request-budget.ts) is the one number, in one
+ *   place. It is not the only clock on these two, and pretending otherwise
+ *   is what made the setting inert above ten minutes for a while (#19 F1):
+ *   the SDK arms its own abort at whatever `timeout` it was given, so the
+ *   builders hand it `requestBudgetMs()` and the two are ALIGNED ON PURPOSE.
+ *   Leave `timeout` unset and the SDK's 600 s default silently caps whatever
+ *   the user configured.
+ *
+ *   Being armed first, the SDK's timer is the one that fires when they are
+ *   equal — so on these two paths a request at the budget ends with openai's
+ *   "Request timed out." rather than the shim's message. On the other three
+ *   the shim's own budget is genuinely the only bound, and the setting has
+ *   no upper limit: a very large value there really does mean "wait
+ *   indefinitely", with nothing underneath to catch a wedged request.
  */
 export function getOpenAiConfiguration(
   options: { apiKey: string; configuration?: Record<string, unknown> },

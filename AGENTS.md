@@ -94,7 +94,7 @@ The plugin uses a comprehensive settings system (`YouTubeTranscriptPluginSetting
      - `getOpenAiConfiguration()` puts it inside `configuration` — required by `ChatOpenAI` (OpenAI, OpenRouter), which builds its client from `{apiKey, organization, dangerouslyAllowBrowser, ...fields.configuration}`
      - `getLangChainConfiguration()` puts it at the top level — which is what `ChatOllama` reads
    - Anthropic and Google (`GeminiClient`) call `obsidianFetch` directly. The claim that Google "doesn't support custom fetch" is obsolete: `ChatGoogleGenerativeAI` ignores an injected fetch, which is why Gemini bypasses LangChain and calls the shim itself — it was OpenAI and OpenRouter, not Google, that were off the shim until #19.
-   - The shim owns the per-request budget and honours `signal`; it is the only bound on a wedged request, since the OpenAI SDK's own timeout only aborts a signal (see `src/llm/langchain-fetcher.ts`)
+   - The shim owns the per-request budget and honours `signal`. Because it honours signals, the OpenAI SDK's own timeout now lands — so `buildOpenAIModel` / `buildOpenRouterModel` must pass `timeout: requestBudgetMs()`, or the SDK's 600 s default silently caps whatever the user configured (#19 F1). The two clocks are aligned deliberately; on the other three paths the shim's budget is the only one, and the setting has no upper limit
    - Never use standard fetch directly - always prefer the shim where possible
 
 3. **YouTube Scraping Method**: ALWAYS use the existing transcript extraction in `src/youtube-transcript.ts`
