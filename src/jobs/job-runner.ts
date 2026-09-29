@@ -100,11 +100,26 @@ export type JobEvent =
   | { type: "cancelled"; id: string }
   /**
    * The run loop has exited. The ONE signal every exit path produces (#14),
-   * including the silent ones: `guard()` returns undefined whenever the
-   * record's generation has moved, its status is no longer `running` or the
+   * the silent ones included: `guard()` returns undefined whenever the
+   * record's generation has moved, its status is no longer `running`, or the
    * plugin is unloading, and every caller then returns without emitting
-   * anything. A surface driven only by outcomes floats for ever on those
-   * paths.
+   * anything.
+   *
+   * WHAT THIS IS AND IS NOT FOR, accurately (#14 review F3). A silent exit
+   * carrying no terminal event is **not reachable in production today**:
+   * status and generation are mutated in exactly six places, all in this
+   * file, and every one of them emits — cancel emits `cancelled` (:270),
+   * the run-loop catch `failed` (:312), interrupt `interrupted` (:715),
+   * fail `failed` (:724), finish `done` (:736) — while unload is fenced and
+   * swept separately by JobProgressNotices.dismissAll. Reaching that exit
+   * takes a record mutated from outside the runner, which is what the test
+   * does. So this event is a HARDENING of the invariant "a run that is over
+   * leaves no live surface", not a fix for an observed silent leak, and the
+   * mobile symptom that prompted #14 is fixed by #13's deadline removal.
+   *
+   * It does close one surface that genuinely floats today, though not by
+   * that route: a standalone job adopted mid-run by a collection, whose
+   * outcome the host suppresses (#14 F2, JobProgressNotices.handle).
    *
    * It is deliberately NOT an outcome. A run that exited because it was
    * superseded is not "done", and nothing here may narrate it as one: the
@@ -285,7 +300,9 @@ export class JobRunner {
       // #14: the one signal that cannot be missed. `.finally()` runs on every
       // exit path — the terminal ones, the silent guard() failures, and a
       // throw — so the surface's lifetime can be tied to the run's liveness
-      // instead of to four outcomes any one of which a path may skip.
+      // instead of to four outcomes any one of which a path may skip. No
+      // in-runner path reaches a silent exit today (see the JobEvent doc):
+      // this keeps the invariant true rather than repairing an observed leak.
       //
       // Not after stopAll: unload fences every late completion precisely so
       // nothing reaches a torn-down plugin, and it sweeps the surfaces itself

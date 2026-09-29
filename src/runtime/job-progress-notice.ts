@@ -121,10 +121,13 @@ export class JobProgressNotices {
         this.show(event.id, progressNoticeText(event.stage));
         break;
       // `run-ended` is what makes the surface's lifetime the RUN's lifetime
-      // (#14): the four outcomes below can all be missed on a silent exit,
-      // and a notice with no timer and no self-dismissal then floats until
-      // the app restarts. It also follows every one of them, so `dismiss`
-      // being a no-op for a job already forgotten is what makes that safe.
+      // (#14). Two different things hang on it, and only one of them is a
+      // live bug: a silent runner exit emitting none of the four outcomes is
+      // NOT reachable in production today (job-runner.ts, JobEvent), so that
+      // half is hardening; the adopted collection child above IS reachable,
+      // and this is what closes its notice. It also follows every terminal
+      // event, so `dismiss` being a no-op for a job already forgotten is
+      // what makes that safe.
       case "done":
       case "failed":
       case "cancelled":
