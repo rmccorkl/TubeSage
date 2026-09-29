@@ -15,13 +15,17 @@ const URL_UNDER_TEST = "https://api.example.com/v1/chat/completions";
 const neverSettles = (): Promise<never> => new Promise<never>(() => undefined);
 
 /** Runs the shim and reports what became of it, without ever awaiting a hang. */
-function track(): { outcome: () => string } {
+function track(init: RequestInit = {}): { outcome: () => string; error: () => unknown } {
   let outcome = "pending";
-  void obsidianFetch(URL_UNDER_TEST, { method: "POST", body: "{}" }).then(
+  let error: unknown;
+  void obsidianFetch(URL_UNDER_TEST, { method: "POST", body: "{}", ...init }).then(
     (response) => { outcome = `resolved ${response.status}`; },
-    (error: unknown) => { outcome = `rejected: ${error instanceof Error ? error.message : String(error)}`; },
+    (reason: unknown) => {
+      error = reason;
+      outcome = `rejected: ${reason instanceof Error ? reason.message : String(reason)}`;
+    },
   );
-  return { outcome: () => outcome };
+  return { outcome: () => outcome, error: () => error };
 }
 
 beforeEach(() => {
@@ -117,5 +121,82 @@ describe("obsidianFetch — the per-request budget (#15)", () => {
     // the other side unchanged rather than being replaced by generic advice.
     vi.spyOn(console, "error").mockImplementation(() => undefined);
     expect(handleApiError(new Error(message), "OpenAI").message).toBe(`[OpenAI] ${message}`);
+  });
+});
+
+describe("obsidianFetch — abort signals (#19 part 4)", () => {
+  it("rejects when the signal aborts, while the underlying requestUrl is still dangling", async () => {
+    // The shim used to accept a signal and ignore it. That is what made the
+    // OpenAI SDK's timeout a dead letter the moment #19 wired it up: the SDK
+    // implements its timeout ONLY by aborting the signal it hands to fetch
+    // (openai@5.12.2 client.js:324-332).
+    requestUrl.mockReturnValue(neverSettles());
+    const controller = new AbortController();
+    const call = track({ signal: controller.signal });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(call.outcome()).toBe("pending");
+
+    controller.abort();
+    await vi.advanceTimersByTimeAsync(0);
+
+    expect(call.outcome()).toMatch(/^rejected: /);
+    // Nothing is left armed: the budget's timer goes with the abort, or a
+    // long-abandoned request would still fire one ten minutes later.
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it("names the rejection AbortError, which is how callers tell an abort from a failure", async () => {
+    // openai@5.12.2 classifies by `err.name === 'AbortError'`
+    // (internal/errors.js isAbortError) and only then reports its own
+    // APIConnectionTimeoutError. Any other name and a timeout surfaces to the
+    // user as an unexplained connection failure.
+    requestUrl.mockReturnValue(neverSettles());
+    const controller = new AbortController();
+    const call = track({ signal: controller.signal });
+    controller.abort();
+    await vi.advanceTimersByTimeAsync(0);
+
+    const error = call.error();
+    expect(error).toBeInstanceOf(Error);
+    expect((error as Error).name).toBe("AbortError");
+  });
+
+  it("does not send a request whose signal has already aborted", async () => {
+    const controller = new AbortController();
+    controller.abort();
+    const call = track({ signal: controller.signal });
+    await vi.advanceTimersByTimeAsync(0);
+
+    expect(call.outcome()).toMatch(/^rejected: /);
+    expect(requestUrl).not.toHaveBeenCalled();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it("an aborted request's late reply reaches nothing", async () => {
+    // `requestUrl` cannot be cancelled, so the request really does run on.
+    // The rule is the same one the budget already follows: we stop waiting,
+    // and whatever arrives afterwards changes nothing and goes unheard.
+    let settle: (value: unknown) => void = () => undefined;
+    requestUrl.mockReturnValue(new Promise((resolve) => { settle = resolve; }));
+    const controller = new AbortController();
+    const call = track({ signal: controller.signal });
+    controller.abort();
+    await vi.advanceTimersByTimeAsync(0);
+    const afterAbort = call.outcome();
+
+    settle({ status: 200, text: "{}", headers: {} });
+    await vi.advanceTimersByTimeAsync(REQUEST_TIMEOUT_MS);
+
+    expect(call.outcome()).toBe(afterAbort);
+    expect(call.outcome()).toMatch(/^rejected: /);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it("leaves an ordinary request alone when no signal is passed", async () => {
+    requestUrl.mockResolvedValue({ status: 200, text: "{}", headers: {} });
+    const call = track();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(call.outcome()).toBe("resolved 200");
+    expect(vi.getTimerCount()).toBe(0);
   });
 });
