@@ -89,8 +89,12 @@ The plugin uses a comprehensive settings system (`YouTubeTranscriptPluginSetting
 
 2. **HTTP Abstraction Layer**: Use `obsidianFetch` from `src/utils/fetch-shim.ts` for cross-platform compatibility
    - This is critical for cross-platform compatibility (desktop and mobile)
-   - Apply via `getLangChainConfiguration()` for providers that support custom fetch (OpenAI, Anthropic, Ollama)
-   - Some providers (Google) don't support custom fetch in constructor - use their default HTTP mechanism
+   - **Every provider path goes through the shim (#19). There are no exceptions left.**
+   - The two LangChain shapes are NOT interchangeable, and a `fetch` in the wrong one is dropped in silence:
+     - `getOpenAiConfiguration()` puts it inside `configuration` — required by `ChatOpenAI` (OpenAI, OpenRouter), which builds its client from `{apiKey, organization, dangerouslyAllowBrowser, ...fields.configuration}`
+     - `getLangChainConfiguration()` puts it at the top level — which is what `ChatOllama` reads
+   - Anthropic and Google (`GeminiClient`) call `obsidianFetch` directly. The claim that Google "doesn't support custom fetch" is obsolete: `ChatGoogleGenerativeAI` ignores an injected fetch, which is why Gemini bypasses LangChain and calls the shim itself — it was OpenAI and OpenRouter, not Google, that were off the shim until #19.
+   - The shim owns the per-request budget and honours `signal`; it is the only bound on a wedged request, since the OpenAI SDK's own timeout only aborts a signal (see `src/llm/langchain-fetcher.ts`)
    - Never use standard fetch directly - always prefer the shim where possible
 
 3. **YouTube Scraping Method**: ALWAYS use the existing transcript extraction in `src/youtube-transcript.ts`
