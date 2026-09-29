@@ -50,6 +50,36 @@ function harness(opts: { videos?: number; submit?: (v: CollectionVideo) => strin
   return { runner, deps, begin, submitted, cancelled, settle };
 }
 
+describe("CollectionRunner — the run-ended signal must not advance a run twice (#14)", () => {
+  it("a child's done followed by its run-ended advances the queue exactly once", async () => {
+    // `run-ended` now follows EVERY run, the ones that reported an outcome
+    // included (#14). Were it routed into onChildSettled as well, a 3-video
+    // playlist would advance twice per child and skip videos. This class is
+    // deliberately left alone by #14; the test pins that.
+    const { runner, begin, submitted, settle } = harness({ videos: 3 });
+    const parent = await begin();
+    settle("job-v1");
+
+    await runner.handleJobEvent({ type: "done", id: "job-v1" });
+    expect(submitted).toEqual(["job-v1", "job-v2"]);
+
+    await runner.handleJobEvent({ type: "run-ended", id: "job-v1" });
+    expect(submitted).toEqual(["job-v1", "job-v2"]);
+    expect(parent.id).toBeDefined();
+  });
+
+  it("still claims the event as the collection's, so the child's own notice stays suppressed", async () => {
+    // handleJobEvent's return value is what main.ts reads to suppress a
+    // child's per-job surface. A child's run-ended must answer the same way
+    // its other events do, or the last event of a collection child would be
+    // routed to a per-job notice that should never exist.
+    const { runner, begin } = harness({ videos: 2 });
+    await begin();
+    expect(await runner.handleJobEvent({ type: "run-ended", id: "job-v1" })).toBe(true);
+    expect(await runner.handleJobEvent({ type: "run-ended", id: "not-a-child" })).toBe(false);
+  });
+});
+
 describe("CollectionRunner — one item at a time, so a run cannot fan out paid calls", () => {
   it("submits only the first video on begin", async () => {
     const { begin, submitted } = harness();

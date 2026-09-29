@@ -5,6 +5,8 @@ import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { getLogger } from "../utils/logger";
 import { getSafeErrorMessage } from "../utils/error-utils";
 import { getLangChainConfiguration } from "./langchain-fetcher";
+import { llmCallTimingMessage } from "./call-timing";
+import type { LlmCallOutcome } from "./call-timing";
 import { obsidianFetch } from "../utils/fetch-shim";
 
 const logger = getLogger('LANGCHAIN');
@@ -88,6 +90,25 @@ export class LangChainClient {
    * Generate a completion using the appropriate LangChain model
    */
   async generateCompletion(systemPrompt: string, userPrompt: string): Promise<string> {
+    // Per-call timing for EVERY provider path (#16). The shim times one HTTP
+    // request, but OpenAI and OpenRouter never reach it (#19) — and they are
+    // the paths whose latency most needs measuring. Wrapped around the
+    // invocation, all five are equal: the two ChatOpenAI paths, ChatOllama,
+    // the Anthropic direct call and GeminiClient. A `finally`, so a call that
+    // gave up at the budget is timed exactly like one that answered.
+    const startedAt = Date.now();
+    let outcome: LlmCallOutcome = "error";
+    try {
+      const completion = await this.runCompletion(systemPrompt, userPrompt);
+      outcome = "ok";
+      return completion;
+    } finally {
+      logger.debug(llmCallTimingMessage(this.provider, this.model, Date.now() - startedAt, outcome));
+    }
+  }
+
+  /** The provider switch itself. Timed by generateCompletion, which is what everything calls. */
+  private async runCompletion(systemPrompt: string, userPrompt: string): Promise<string> {
     try {
       // Common configuration with our custom fetcher
       const config = getLangChainConfiguration({
@@ -279,9 +300,17 @@ export class LangChainClient {
 
         case 'openrouter': {
           logger.debug(`Using OpenRouter with model ${this.model}`);
-          // OpenRouter exposes an OpenAI-compatible API. Reuse ChatOpenAI with a
-          // baseURL override so the obsidianFetch shim (injected by
-          // getLangChainConfiguration) continues to handle cross-platform HTTP.
+          // OpenRouter exposes an OpenAI-compatible API, so it reuses
+          // ChatOpenAI with a baseURL override.
+          //
+          // This comment used to say the obsidianFetch shim "continues to
+          // handle cross-platform HTTP" here. It does not (#15 review, #19):
+          // getLangChainConfiguration puts `fetch` at the top level and
+          // ChatOpenAI only spreads `configuration`, so this path — like the
+          // plain OpenAI one — runs on the OpenAI SDK's own transport, under
+          // its own 600 000 ms default rather than the shim's budget. The
+          // `configuration` keys below DO arrive, which is why the baseURL
+          // and headers work and the wrong conclusion was easy to draw.
           // OpenRouter recommends HTTP-Referer and X-Title headers for attribution.
           // Route the OpenAI SDK at OpenRouter's base URL. We add `configuration`
           // via getLangChainConfiguration's loosely-typed options bag so it spreads
