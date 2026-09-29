@@ -98,10 +98,12 @@ function createLangChainFetcher() {
  *
  *   `openai@5.12.2` implements its timeout ONLY by aborting the signal it
  *   hands to fetch (client.js:324-332): it calls `controller.abort()` and
- *   waits for the fetch implementation to react. As of this commit the shim
- *   does not read `signal` at all, so that abort fires into nothing and the
- *   SDK's DEFAULT_TIMEOUT of 600000 ms is a dead letter on these two paths.
- *   It was the only thing bounding them before this change.
+ *   waits for the fetch implementation to react. The shim honours `signal`
+ *   now (#19 part 4), so that abort does land — but `requestUrl` cannot be
+ *   cancelled, so what it achieves is that WE stop waiting while the request
+ *   runs on unattended. The SDK's DEFAULT_TIMEOUT is no longer a stop on the
+ *   wire; it is one more way for us to give up, and it was the only thing
+ *   bounding these two paths before #19.
  *
  *   The effective bound on every one of the five provider paths is now OURS:
  *   `REQUEST_TIMEOUT_MS` / the request-budget setting (request-budget.ts).
