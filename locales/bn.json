@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "ডিবাগ লগিং সক্রিয় করুন",
     "settings.advanced.debugLogging.desc": "বিশদ ডিবাগ লগ সক্রিয় করুন। সক্রিয় থাকলে সমস্যা সমাধানের জন্য ডিবাগ তথ্য প্রতিটি নোটে লুকানো কলআউট হিসেবে যোগ হবে।",
     "settings.advanced.debugLogging.infoTooltip": "সক্রিয় থাকলে ডিবাগ তথ্য কনসোলে না লিখে সংগ্রহ করে নোটে লুকানো কলআউট হিসেবে যোগ করা হবে।",
+    "settings.advanced.requestTimeout.name": "অনুরোধের সময়সীমা (মিলিসেকেন্ড)",
+    "settings.advanced.requestTimeout.desc": "প্রদানকারীর কাছে একটি অনুরোধের জন্য হাল ছাড়ার আগে কত সময় অপেক্ষা করা হবে, মিলিসেকেন্ডে। ডিফল্ট 600000 (10 মিনিট)। ডিবাগ লগিং চালু থাকলে প্রতিটি কলের সময় রেকর্ড করা হয়।",
     "license.modal.title": "Tubesage YouTube প্রতিলিপি প্লাগইনের লাইসেন্স",
     "license.required.title": "লাইসেন্স গ্রহণ আবশ্যক",
     "license.required.message": "এই সুবিধা ব্যবহারের আগে আপনাকে প্লাগইনের লাইসেন্স গ্রহণ করতে হবে।",

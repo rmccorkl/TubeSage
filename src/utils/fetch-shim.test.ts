@@ -7,7 +7,11 @@ vi.mock("obsidian", () => ({ requestUrl }));
 
 import { handleApiError } from "./error-utils";
 import { obsidianFetch } from "./fetch-shim";
-import { REQUEST_TIMEOUT_MS, requestTimeoutMessage } from "./request-budget";
+import {
+  DEFAULT_REQUEST_TIMEOUT_MS,
+  requestTimeoutMessage,
+  setRequestBudgetMs,
+} from "./request-budget";
 
 const URL_UNDER_TEST = "https://api.example.com/v1/chat/completions";
 
@@ -15,13 +19,17 @@ const URL_UNDER_TEST = "https://api.example.com/v1/chat/completions";
 const neverSettles = (): Promise<never> => new Promise<never>(() => undefined);
 
 /** Runs the shim and reports what became of it, without ever awaiting a hang. */
-function track(): { outcome: () => string } {
+function track(init: RequestInit = {}): { outcome: () => string; error: () => unknown } {
   let outcome = "pending";
-  void obsidianFetch(URL_UNDER_TEST, { method: "POST", body: "{}" }).then(
+  let error: unknown;
+  void obsidianFetch(URL_UNDER_TEST, { method: "POST", body: "{}", ...init }).then(
     (response) => { outcome = `resolved ${response.status}`; },
-    (error: unknown) => { outcome = `rejected: ${error instanceof Error ? error.message : String(error)}`; },
+    (reason: unknown) => {
+      error = reason;
+      outcome = `rejected: ${reason instanceof Error ? reason.message : String(reason)}`;
+    },
   );
-  return { outcome: () => outcome };
+  return { outcome: () => outcome, error: () => error };
 }
 
 beforeEach(() => {
@@ -43,6 +51,9 @@ beforeEach(() => {
 afterEach(() => {
   vi.useRealTimers();
   vi.unstubAllGlobals();
+  // Module state: a test that changes the budget must not change it for the
+  // next one.
+  setRequestBudgetMs(DEFAULT_REQUEST_TIMEOUT_MS);
 });
 
 describe("obsidianFetch — the per-request budget (#15)", () => {
@@ -52,7 +63,7 @@ describe("obsidianFetch — the per-request budget (#15)", () => {
 
     // One tick short of the budget it is still waiting: a slow provider is
     // not a wedged one.
-    await vi.advanceTimersByTimeAsync(REQUEST_TIMEOUT_MS - 1);
+    await vi.advanceTimersByTimeAsync(DEFAULT_REQUEST_TIMEOUT_MS - 1);
     expect(call.outcome()).toBe("pending");
 
     await vi.advanceTimersByTimeAsync(1);
@@ -60,7 +71,7 @@ describe("obsidianFetch — the per-request budget (#15)", () => {
   });
 
   it("is ten minutes per request by default, and says so as a named export", () => {
-    expect(REQUEST_TIMEOUT_MS).toBe(600_000);
+    expect(DEFAULT_REQUEST_TIMEOUT_MS).toBe(600_000);
   });
 
   it("lets a request that answers just inside the budget through, and leaves no timer armed", async () => {
@@ -68,7 +79,7 @@ describe("obsidianFetch — the per-request budget (#15)", () => {
     requestUrl.mockReturnValue(new Promise((resolve) => { settle = resolve; }));
     const call = track();
 
-    await vi.advanceTimersByTimeAsync(REQUEST_TIMEOUT_MS - 1);
+    await vi.advanceTimersByTimeAsync(DEFAULT_REQUEST_TIMEOUT_MS - 1);
     settle({ status: 200, text: "{}", headers: {} });
     await vi.advanceTimersByTimeAsync(0);
 
@@ -81,7 +92,7 @@ describe("obsidianFetch — the per-request budget (#15)", () => {
   it("gives each request its own budget, so a pass of three calls gets three of them", async () => {
     // The point of #15 over a stage ceiling: a 12-chunk note should be allowed
     // twelve times as long as a 1-chunk note, not squeezed into one budget.
-    const nearBudget = REQUEST_TIMEOUT_MS - 1;
+    const nearBudget = DEFAULT_REQUEST_TIMEOUT_MS - 1;
     let answered = 0;
     requestUrl.mockImplementation(() => new Promise((resolve) => {
       window.setTimeout(() => { answered += 1; resolve({ status: 200, text: "{}", headers: {} }); }, nearBudget);
@@ -95,14 +106,14 @@ describe("obsidianFetch — the per-request budget (#15)", () => {
 
     expect(answered).toBe(3);
     // Three near-budget calls in a row: well past a single 600 s ceiling.
-    expect(Date.now()).toBeGreaterThan(REQUEST_TIMEOUT_MS * 2);
+    expect(Date.now()).toBeGreaterThan(DEFAULT_REQUEST_TIMEOUT_MS * 2);
     expect(vi.getTimerCount()).toBe(0);
   });
 
   it("blames the client, not the model, and survives the error formatter intact", async () => {
     // A user reading this must not be sent to change a model setting: nothing
     // ran out at the provider's end, WE stopped waiting.
-    const message = requestTimeoutMessage(REQUEST_TIMEOUT_MS);
+    const message = requestTimeoutMessage(DEFAULT_REQUEST_TIMEOUT_MS);
     expect(message).toContain("TubeSage stopped waiting");
     expect(message).toContain("per-request limit");
     expect(message).not.toContain("generation timeout");
@@ -117,5 +128,108 @@ describe("obsidianFetch — the per-request budget (#15)", () => {
     // the other side unchanged rather than being replaced by generic advice.
     vi.spyOn(console, "error").mockImplementation(() => undefined);
     expect(handleApiError(new Error(message), "OpenAI").message).toBe(`[OpenAI] ${message}`);
+  });
+});
+
+describe("obsidianFetch — abort signals (#19 part 4)", () => {
+  it("rejects when the signal aborts, while the underlying requestUrl is still dangling", async () => {
+    // The shim used to accept a signal and ignore it. That is what made the
+    // OpenAI SDK's timeout a dead letter the moment #19 wired it up: the SDK
+    // implements its timeout ONLY by aborting the signal it hands to fetch
+    // (openai@5.12.2 client.js:324-332).
+    requestUrl.mockReturnValue(neverSettles());
+    const controller = new AbortController();
+    const call = track({ signal: controller.signal });
+    await vi.advanceTimersByTimeAsync(0);
+    expect(call.outcome()).toBe("pending");
+
+    controller.abort();
+    await vi.advanceTimersByTimeAsync(0);
+
+    expect(call.outcome()).toMatch(/^rejected: /);
+    // Nothing is left armed: the budget's timer goes with the abort, or a
+    // long-abandoned request would still fire one ten minutes later.
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it("names the rejection AbortError, which is how callers tell an abort from a failure", async () => {
+    // openai@5.12.2 classifies by `err.name === 'AbortError'`
+    // (internal/errors.js isAbortError) and only then reports its own
+    // APIConnectionTimeoutError. Any other name and a timeout surfaces to the
+    // user as an unexplained connection failure.
+    requestUrl.mockReturnValue(neverSettles());
+    const controller = new AbortController();
+    const call = track({ signal: controller.signal });
+    controller.abort();
+    await vi.advanceTimersByTimeAsync(0);
+
+    const error = call.error();
+    expect(error).toBeInstanceOf(Error);
+    expect((error as Error).name).toBe("AbortError");
+  });
+
+  it("does not send a request whose signal has already aborted", async () => {
+    const controller = new AbortController();
+    controller.abort();
+    const call = track({ signal: controller.signal });
+    await vi.advanceTimersByTimeAsync(0);
+
+    expect(call.outcome()).toMatch(/^rejected: /);
+    expect(requestUrl).not.toHaveBeenCalled();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it("an aborted request's late reply reaches nothing", async () => {
+    // `requestUrl` cannot be cancelled, so the request really does run on.
+    // The rule is the same one the budget already follows: we stop waiting,
+    // and whatever arrives afterwards changes nothing and goes unheard.
+    let settle: (value: unknown) => void = () => undefined;
+    requestUrl.mockReturnValue(new Promise((resolve) => { settle = resolve; }));
+    const controller = new AbortController();
+    const call = track({ signal: controller.signal });
+    controller.abort();
+    await vi.advanceTimersByTimeAsync(0);
+    const afterAbort = call.outcome();
+
+    settle({ status: 200, text: "{}", headers: {} });
+    await vi.advanceTimersByTimeAsync(DEFAULT_REQUEST_TIMEOUT_MS);
+
+    expect(call.outcome()).toBe(afterAbort);
+    expect(call.outcome()).toMatch(/^rejected: /);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it("leaves an ordinary request alone when no signal is passed", async () => {
+    requestUrl.mockResolvedValue({ status: 200, text: "{}", headers: {} });
+    const call = track();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(call.outcome()).toBe("resolved 200");
+    expect(vi.getTimerCount()).toBe(0);
+  });
+});
+
+describe("obsidianFetch — the budget is the configured one (#19 part 3)", () => {
+  it("gives up at the budget the host set, not at the compiled-in default", async () => {
+    // The setting exists so a slow model can be accommodated deliberately. It
+    // is read per request, so changing it applies to the next call rather
+    // than at the next restart.
+    setRequestBudgetMs(5_000);
+    requestUrl.mockReturnValue(neverSettles());
+    const call = track();
+
+    await vi.advanceTimersByTimeAsync(4_999);
+    expect(call.outcome()).toBe("pending");
+
+    await vi.advanceTimersByTimeAsync(1);
+    expect(call.outcome()).toMatch(/^rejected: /);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it("says the budget it actually applied, not the default, when it gives up", async () => {
+    setRequestBudgetMs(5_000);
+    requestUrl.mockReturnValue(neverSettles());
+    const call = track();
+    await vi.advanceTimersByTimeAsync(5_000);
+    expect(call.outcome()).toContain("after 5 s");
   });
 });

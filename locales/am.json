@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "የማረሚያ መዝገብን አንቃ",
     "settings.advanced.debugLogging.desc": "ዝርዝር የማረሚያ መዝገቦችን ያንቁ። ሲነቃ የማረሚያ መረጃ ለችግር መፍቻ እንደ ድብቅ የጥሪ ብሎክ በእያንዳንዱ ማስታወሻ ላይ ይጨመራል።",
     "settings.advanced.debugLogging.infoTooltip": "ሲነቃ የማረሚያ መረጃ ወደ ኮንሶል ከመመዝገብ ይልቅ ተሰብስቦ እንደ ድብቅ የጥሪ ብሎክ ወደ ማስታወሻዎች ይጨመራል።",
+    "settings.advanced.requestTimeout.name": "የጥያቄ ጊዜ ገደብ (ሚሊሰከንድ)",
+    "settings.advanced.requestTimeout.desc": "ከመተው በፊት ወደ አቅራቢው የሚላከውን አንድ ጥያቄ የሚጠበቅበት ጊዜ በሚሊሰከንድ። ነባሪ 600000 (10 ደቂቃ)። የማረሚያ መዝገብ ሲነቃ የእያንዳንዱ ጥሪ ጊዜ ይመዘገባል።",
     "license.modal.title": "የTubesage YouTube ግልባጭ ተሰኪ ፈቃድ",
     "license.required.title": "የፈቃድ ተቀባይነት ያስፈልጋል",
     "license.required.message": "ይህን ባህሪ ከመጠቀምዎ በፊት የተሰኪውን ፈቃድ መቀበል አለብዎት።",

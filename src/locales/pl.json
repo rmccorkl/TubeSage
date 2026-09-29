@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "Gdy włączone, informacje diagnostyczne trafią do notatek jako ukryty callout zamiast do konsoli."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "Limit czasu żądania (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "Jak długo czekać na pojedyncze żądanie do dostawcy przed rezygnacją, w milisekundach. Domyślnie 600000 (10 minut). Przy włączonym dzienniku debugowania zapisywany jest czas każdego wywołania."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Licencja wtyczki Tubesage do transkrypcji YouTube"

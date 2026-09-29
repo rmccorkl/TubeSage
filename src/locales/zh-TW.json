@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "啟用後，偵錯資訊會以摺疊的標註區塊加入筆記，而不是輸出到主控台。"
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "請求逾時 (毫秒)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "放棄前等待單一服務商請求的時間（毫秒）。預設 600000（10 分鐘）。啟用偵錯記錄後，會記錄每次呼叫的耗時。"
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube 逐字稿外掛授權條款"

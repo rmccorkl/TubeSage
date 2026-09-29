@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Ota virheenkorjausloki käyttöön",
     "settings.advanced.debugLogging.desc": "Ota yksityiskohtainen virheenkorjausloki käyttöön. Virheenkorjaustiedot lisätään tällöin jokaiseen muistiinpanoon piilotettuna callout-lohkona vianmääritystä varten.",
     "settings.advanced.debugLogging.infoTooltip": "Käytössä virheenkorjaustiedot kerätään ja lisätään muistiinpanoihin piilotettuna callout-lohkona sen sijaan, että ne kirjattaisiin konsoliin.",
+    "settings.advanced.requestTimeout.name": "Pyynnön aikakatkaisu (ms)",
+    "settings.advanced.requestTimeout.desc": "Kuinka kauan yhtä pyyntöä palveluntarjoajalle odotetaan ennen luovuttamista, millisekunteina. Oletus 600000 (10 minuuttia). Kun virheenkorjausloki on käytössä, kunkin kutsun kesto tallennetaan.",
     "license.modal.title": "Tubesage-YouTube-litterointilaajennuksen lisenssi",
     "license.required.title": "Lisenssin hyväksyntä vaaditaan",
     "license.required.message": "Sinun on hyväksyttävä laajennuksen lisenssi ennen tämän toiminnon käyttöä.",

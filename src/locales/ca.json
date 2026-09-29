@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "Quan s'activa, la informació de depuració es recull i s'afegeix a les notes com a callout ocult en lloc d'escriure's a la consola."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "Temps d'espera de la sol·licitud (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "Quant temps esperar una única sol·licitud al proveïdor abans de desistir, en mil·lisegons. Valor predeterminat 600000 (10 minuts). Amb el registre de depuració activat, es registra la durada de cada crida."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Llicència del plugin de transcripció de YouTube Tubesage"

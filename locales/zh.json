@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "启用调试日志",
     "settings.advanced.debugLogging.desc": "启用详细的调试日志。启用后，调试信息会以折叠的标注块形式附加到每条笔记，便于排查问题。",
     "settings.advanced.debugLogging.infoTooltip": "启用后，调试信息会以折叠的标注块形式添加到笔记中，而不是输出到控制台。",
+    "settings.advanced.requestTimeout.name": "请求超时 (毫秒)",
+    "settings.advanced.requestTimeout.desc": "放弃前等待单个服务商请求的时长（毫秒）。默认 600000（10 分钟）。启用调试日志后，会记录每次调用的耗时。",
     "license.modal.title": "Tubesage YouTube 转录插件许可协议",
     "license.required.title": "需要接受许可协议",
     "license.required.message": "使用此功能前，必须先接受插件的许可协议。",

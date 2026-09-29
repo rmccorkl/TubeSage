@@ -1,7 +1,7 @@
 import { requestUrl } from "obsidian";
 import { getSafeErrorMessage } from "./error-utils";
 import { getLogger } from "./logger";
-import { REQUEST_TIMEOUT_MS, requestTimeoutMessage } from "./request-budget";
+import { requestBudgetMs, requestTimeoutMessage } from "./request-budget";
 
 // Get logger for fetch shim
 const logger = getLogger('FETCH');
@@ -88,6 +88,23 @@ const normalizeHeaders = (headers?: HeadersInit): Record<string, string> => {
 };
 
 /**
+ * The rejection an aborted request produces.
+ *
+ * `name` is "AbortError" because that is the only thing callers look at:
+ * `openai@5.12.2` classifies by `err.name === 'AbortError'`
+ * (internal/errors.js, isAbortError) and reports its own
+ * APIConnectionTimeoutError only then — any other name and a timeout reaches
+ * the user as an unexplained connection failure. A plain Error rather than a
+ * DOMException, which is not guaranteed to exist in every runtime this
+ * plugin is loaded into.
+ */
+function abortError(): Error {
+  const error = new Error("The request was aborted before it completed.");
+  error.name = "AbortError";
+  return error;
+}
+
+/**
  * `requestUrl`, bounded (#15). It REJECTS while the underlying call dangles,
  * because `requestUrl` cannot be aborted: on desktop it resolves over a
  * one-shot Electron IPC channel with no renderer-side cancel, so the best
@@ -98,6 +115,15 @@ const normalizeHeaders = (headers?: HeadersInit): Record<string, string> => {
  * before it reaches its vault write, and the late reply reaches nothing. It is
  * NOT safe at stage level, which is why #13 removed the budget there rather
  * than moving it.
+ *
+ * It also honours `signal` (#19 part 4). The shim used to accept one and
+ * ignore it, which made it a dishonest `fetch` implementation and, once the
+ * ChatOpenAI paths were wired through here, turned the OpenAI SDK's own
+ * timeout into a dead letter — that SDK implements its timeout purely by
+ * aborting the signal it hands to fetch. An abort is handled the same way
+ * the budget is: reject, and let the uncancellable `requestUrl` run on
+ * unheard. Whichever of the two fires first ends the wait; both firing is
+ * harmless.
  *
  * Timers come from `window`, as everywhere else in this plugin, and this one
  * is NOT registered with the plugin (#15 review F7). On unload with requests
@@ -112,19 +138,35 @@ const normalizeHeaders = (headers?: HeadersInit): Record<string, string> => {
  * then (`stopAll`), so nothing it says can reach a record, a surface or a
  * vault write. What it cannot do is outlive the process.
  */
-async function requestWithBudget(options: RequestUrlOptions): Promise<RequestUrlResponse> {
+async function requestWithBudget(options: RequestUrlOptions, signal?: AbortSignal | null): Promise<RequestUrlResponse> {
   const startedAt = Date.now();
   let timer: number | undefined;
+  let onAbort: (() => void) | undefined;
   try {
+    // A caller that has already given up gets nothing sent on its behalf,
+    // which is what `fetch` does and what the SDK's retry paths assume.
+    if (signal?.aborted === true) {
+      throw abortError();
+    }
+    // Read per request, so a budget changed in settings applies to the next
+    // call rather than at the next restart.
+    const budgetMs = requestBudgetMs();
     return await Promise.race([
       requestUrl(options),
       new Promise<never>((_resolve, reject) => {
         timer = window.setTimeout(() => {
-          reject(new Error(requestTimeoutMessage(REQUEST_TIMEOUT_MS)));
-        }, REQUEST_TIMEOUT_MS);
+          reject(new Error(requestTimeoutMessage(budgetMs)));
+        }, budgetMs);
+        if (signal !== undefined && signal !== null) {
+          onAbort = (): void => { reject(abortError()); };
+          signal.addEventListener("abort", onAbort);
+        }
       }),
     ]);
   } finally {
+    if (signal !== undefined && signal !== null && onAbort !== undefined) {
+      signal.removeEventListener("abort", onAbort);
+    }
     // Whichever side won, the timer goes: a settled request must not leave one
     // armed for the rest of the budget.
     if (timer !== undefined) {
@@ -250,7 +292,7 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
       logger.debug('About to call requestUrl...');
       logger.debug(`URL length: ${options.url.length} characters`);
       logger.debug(`URL starts with: ${redactUrlForLog(options.url).substring(0, 100)}...`);
-      res = await requestWithBudget(options);
+      res = await requestWithBudget(options, init?.signal);
       logger.debug(`requestUrl completed - Status: ${res?.status}, HasText: ${!!res?.text}`);
     } catch (requestError) {
       const requestErrorMessage = getSafeErrorMessage(requestError);

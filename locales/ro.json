@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Activează jurnalizarea de depanare",
     "settings.advanced.debugLogging.desc": "Activează jurnale de depanare detaliate. Informațiile de depanare vor fi adăugate la fiecare notiță ca un callout ascuns, pentru diagnosticare.",
     "settings.advanced.debugLogging.infoTooltip": "Când este activ, informațiile de depanare sunt colectate și adăugate la notițe ca un callout ascuns, în loc să fie scrise în consolă.",
+    "settings.advanced.requestTimeout.name": "Timp de așteptare pentru cerere (ms)",
+    "settings.advanced.requestTimeout.desc": "Cât se așteaptă o singură cerere către furnizor înainte de a renunța, în milisecunde. Implicit 600000 (10 minute). Cu jurnalizarea de depanare activată, se înregistrează durata fiecărui apel.",
     "license.modal.title": "Licența pluginului de transcriere YouTube Tubesage",
     "license.required.title": "Este necesară acceptarea licenței",
     "license.required.message": "Trebuie să accepți licența pluginului înainte de a folosi această funcție.",

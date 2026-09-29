@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "Када је укључено, подаци за отклањање грешака се прикупљају и додају у белешке као скривени callout уместо у конзолу."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "Временско ограничење захтева (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "Колико се чека на један захтев ка добављачу пре одустајања, у милисекундама. Подразумевано 600000 (10 минута). Уз укључен дневник отклањања грешака бележи се трајање сваког позива."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Лиценца додатка Tubesage за транскрипте са YouTube"

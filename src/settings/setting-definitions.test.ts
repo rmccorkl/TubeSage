@@ -118,11 +118,39 @@ function isSentenceCase(name: string): boolean {
   });
 }
 
+/**
+ * Rows added deliberately AFTER the legacy migration, by name.
+ *
+ * The fixture is a snapshot of the imperative display() this builder
+ * replaced, and it pins that migration — it is not a promise that the
+ * settings tab never gains a row again. Rather than loosening "nothing else"
+ * into nothing at all, a genuinely new row is listed here: the legacy rows
+ * still have to appear exactly once and in order, and anything that is
+ * neither a legacy row nor one of these still fails.
+ */
+const POST_LEGACY_ROWS: string[] = [
+  // #19: the per-request budget, which became a setting once every provider
+  // path routed through the shim and it was the only bound left.
+  "Request timeout (ms)",
+];
+
 describe("buildSettingDefinitions — coverage of the legacy display() rows", () => {
   it.each(PROVIDERS)("with %s selected: every legacy row appears exactly once, in render order, and nothing else", (provider) => {
     const { host } = makeHost({ selectedLLM: provider });
     const { ordered } = walk(buildSettingDefinitions(host));
-    expect(ordered).toEqual(legacyRowsFor(provider).map((r) => r.name));
+    expect(ordered.filter((name) => !POST_LEGACY_ROWS.includes(name))).toEqual(
+      legacyRowsFor(provider).map((r) => r.name),
+    );
+  });
+
+  it.each(PROVIDERS)("with %s selected: every post-legacy row appears exactly once", (provider) => {
+    // So the list above cannot quietly rot into a list of rows that are no
+    // longer there, which would turn the filter into a licence to add rows.
+    const { host } = makeHost({ selectedLLM: provider });
+    const { ordered } = walk(buildSettingDefinitions(host));
+    for (const name of POST_LEGACY_ROWS) {
+      expect(ordered.filter((row) => row === name), `"${name}" must appear exactly once`).toHaveLength(1);
+    }
   });
 
   it("legacy heading rows become group headings or non-searchable heading rows (never a control)", () => {
