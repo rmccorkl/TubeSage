@@ -291,6 +291,12 @@ describe("end-to-end: runner + adapters + store against Obsidian-like doubles (#
     expect(record.notePath).toBe(TARGET_PATH);
     expect(h.vault.getFile(record.notePath ?? "")).not.toBeNull();
     expect(h.host.summarizeCalls).toBe(1);
+    // Through the real adapter, the path the host is handed to open (#20) is
+    // the path the note actually landed on — the adapter resolves it, so a
+    // copy of the requested target would not be the same string.
+    expect(h.events.filter((e) => e.type === "note-created")).toEqual([
+      { type: "note-created", id: record.id, notePath: TARGET_PATH },
+    ]);
   });
 
   it("P1 a Hangul title completes: exactly one note at the NFC path, every stored path finds it, one paid summary", async () => {

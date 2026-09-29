@@ -88,6 +88,23 @@ export type SkipReason = "note-changed" | "user-choice" | "timestamps-skipped";
 
 export type JobEvent =
   | { type: "progress"; id: string; stage: JobStage; message: string }
+  /**
+   * The note exists, at `notePath` (#20). Emitted the moment the create
+   * returns, which is what lets the host show it immediately — the legacy
+   * behaviour, where the note appeared as soon as the summary was in it and
+   * the timestamps pass then rewrote it underneath. Before this there was no
+   * event carrying a path until `done`, so a note could not be shown until
+   * after every remaining paid pass, and a job that ended any other way left
+   * one in the vault that nothing ever mentioned.
+   *
+   * NOT terminal and not an outcome: the job continues. The path is the one
+   * the create RESOLVED with, which is the target unless the adapter stepped
+   * past an occupied path to a free neighbour.
+   *
+   * Presentation-free, like every event here: it reports that a note exists
+   * and where. Whether to open it is the host's decision (note-auto-open.ts).
+   */
+  | { type: "note-created"; id: string; notePath: string }
   | { type: "done"; id: string; notePath: string; timestampsSkipped?: SkipReason; translationSkipped?: SkipReason }
   /**
    * The run stopped without finishing and without a verdict that the video can never work: a timeout,
@@ -541,6 +558,15 @@ export class JobRunner {
     record.stage = "note-created";
     this.clearFlight(record);
     await this.deps.store.upsert(record, now);
+    // Re-read before announcing it (#20): the await above is a window a
+    // cancel lands in, and telling the host to open a note is a side effect
+    // like any other — a run that no longer owns the job announces nothing.
+    // Failing here also ends the loop, which is what the timestamps stage
+    // would have done on its own first guard.
+    if (this.guard(id, gen) === undefined) {
+      return undefined;
+    }
+    this.deps.onEvent({ type: "note-created", id, notePath: created.value });
     return "timestamps";
   }
 
