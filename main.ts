@@ -43,7 +43,7 @@ import { DEFAULT_SETTINGS } from './src/settings/settings-defaults';
 import { buildSettingDefinitions, readSettingValue, writeSettingValue } from './src/settings/setting-definitions';
 import type { FetchedModelInfo, SettingsHost } from './src/settings/setting-definitions';
 import type { YouTubeTranscriptSettings } from './src/settings/settings-defaults';
-import { timestampPassFailure } from './src/runtime/timestamp-pass-policy';
+import { chunkFailureAction, timestampPassFailure } from './src/runtime/timestamp-pass-policy';
 import type { TimestampPassOptions } from './src/runtime/timestamp-pass-policy';
 import { JobProgressNotices, doneNoticeText } from './src/runtime/job-progress-notice';
 import { readmeText } from './src/bundled';
@@ -2630,10 +2630,14 @@ ${contentWithoutFrontmatter}
                 } catch (e) {
                     logger.error(`[addTimestampLinksInChunks] Error processing chunk ${i+1}:`, e);
                     
-                    // Strict: a failed chunk fails the pass (no partial write).
-                    const failure = timestampPassFailure(options, `Error processing chunk ${i+1}: ${getSafeErrorMessage(e)}`, e);
-                    if (failure.kind === "throw") {
-                        throw failure.error;
+                    // Strict: a failed chunk fails the pass, BEFORE the write
+                    // below — no partial timestamps behind an abandoned
+                    // request. That rule is what the per-request budget rests
+                    // on (#15), so it lives in timestamp-pass-policy.ts where
+                    // a test can defend it; this line only applies it.
+                    const action = chunkFailureAction(options, i + 1, e);
+                    if (action.kind === "fail-pass") {
+                        throw action.error;
                     }
                     
                     if (this.settings.debugLogging) {
