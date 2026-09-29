@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "הפעלת רישום ניפוי שגיאות",
     "settings.advanced.debugLogging.desc": "הפעלת יומני ניפוי מפורטים. כשמופעל, מידע הניפוי יתווסף לכל הערה כקטע קריאה מוסתר לצורך פתרון בעיות.",
     "settings.advanced.debugLogging.infoTooltip": "כשמופעל, מידע הניפוי ייאסף ויתווסף להערות כקטע קריאה מוסתר במקום להירשם במסוף.",
+    "settings.advanced.requestTimeout.name": "פסק זמן לבקשה (אלפיות שנייה)",
+    "settings.advanced.requestTimeout.desc": "כמה זמן להמתין לבקשה בודדת לספק לפני ויתור, באלפיות שנייה. ברירת מחדל 600000 (10 דקות). כאשר יומן ניפוי השגיאות פעיל, משך כל קריאה נרשם.",
     "license.modal.title": "רישיון התוסף Tubesage לתמלילי YouTube",
     "license.required.title": "נדרש אישור רישיון",
     "license.required.message": "עליך לאשר את רישיון התוסף לפני השימוש בתכונה הזו.",

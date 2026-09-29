@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "දෝෂ නිරාකරණ ලොග සක්‍රිය කරන්න",
     "settings.advanced.debugLogging.desc": "විස්තරාත්මක දෝෂ නිරාකරණ ලොග සක්‍රිය කරයි. සක්‍රිය විට, ගැටලු විසඳීම සඳහා දෝෂ තොරතුරු සැඟවුණු කෝල්අවුට් එකක් ලෙස සෑම සටහනකටම එක් වේ.",
     "settings.advanced.debugLogging.infoTooltip": "සක්‍රිය විට, දෝෂ තොරතුරු කොන්සෝලයට ලොග කරනවා වෙනුවට සැඟවුණු කෝල්අවුට් එකක් ලෙස සටහන්වලට එක් කෙරේ.",
+    "settings.advanced.requestTimeout.name": "ඉල්ලීම් කාල සීමාව (ms)",
+    "settings.advanced.requestTimeout.desc": "සැපයුම්කරුට යවන එක් ඉල්ලීමක් අත්හැරීමට පෙර රැඳී සිටින කාලය, මිලි තත්පරවලින්. පෙරනිමිය 600000 (මිනිත්තු 10). දෝෂ නිරාකරණ ලොග සක්‍රිය විට, එක් එක් ඇමතුමේ කාලය සටහන් වේ.",
     "license.modal.title": "Tubesage YouTube පිටපත් ප්ලගින බලපත්‍රය",
     "license.required.title": "බලපත්‍රය පිළිගැනීම අවශ්‍යයි",
     "license.required.message": "මෙම විශේෂාංගය භාවිත කිරීමට පෙර ඔබ ප්ලගින බලපත්‍රය පිළිගත යුතුය.",

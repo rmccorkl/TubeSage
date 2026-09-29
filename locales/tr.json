@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Hata ayıklama günlüğünü etkinleştir",
     "settings.advanced.debugLogging.desc": "Ayrıntılı hata ayıklama günlüklerini etkinleştirin. Etkinken hata ayıklama bilgileri sorun giderme için her nota gizli bir çağrı kutusu olarak eklenir.",
     "settings.advanced.debugLogging.infoTooltip": "Etkinken hata ayıklama bilgileri konsola yazılmak yerine toplanır ve notlara gizli bir çağrı kutusu olarak eklenir.",
+    "settings.advanced.requestTimeout.name": "İstek zaman aşımı (ms)",
+    "settings.advanced.requestTimeout.desc": "Sağlayıcıya yapılan tek bir isteğin vazgeçilmeden önce ne kadar bekleneceği, milisaniye cinsinden. Varsayılan 600000 (10 dakika). Hata ayıklama günlüğü açıkken her çağrının süresi kaydedilir.",
     "license.modal.title": "Tubesage YouTube transkript eklentisi lisansı",
     "license.required.title": "Lisans kabulü gerekli",
     "license.required.message": "Bu özelliği kullanmadan önce eklenti lisansını kabul etmelisiniz.",

@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Slå på felsökningsloggen",
     "settings.advanced.debugLogging.desc": "Slå på detaljerad felsökningslogg. Felsökningsinformation läggs då till i varje anteckning som en dold callout, för felsökning.",
     "settings.advanced.debugLogging.infoTooltip": "När det är på samlas felsökningsinformation in och läggs till i anteckningarna som en dold callout i stället för att skrivas till konsolen.",
+    "settings.advanced.requestTimeout.name": "Tidsgräns för begäran (ms)",
+    "settings.advanced.requestTimeout.desc": "Hur länge en enskild begäran till leverantören inväntas innan den ges upp, i millisekunder. Standard 600000 (10 minuter). Med felsökningsloggning på registreras varje anrops varaktighet.",
     "license.modal.title": "Licens för YouTube-transkriptionstillägget Tubesage",
     "license.required.title": "Licensen måste godkännas",
     "license.required.message": "Du måste godkänna tilläggets licens innan du använder den här funktionen.",

@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Activer la journalisation de débogage",
     "settings.advanced.debugLogging.desc": "Activer des journaux de débogage détaillés. Les informations de débogage seront alors ajoutées à chaque note sous forme de callout masqué, pour le dépannage.",
     "settings.advanced.debugLogging.infoTooltip": "Activé, les informations de débogage sont collectées et ajoutées aux notes sous forme de callout masqué, au lieu d'être écrites dans la console.",
+    "settings.advanced.requestTimeout.name": "Délai d'attente des requêtes (ms)",
+    "settings.advanced.requestTimeout.desc": "Durée d'attente d'une seule requête au fournisseur avant d'abandonner, en millisecondes. Par défaut 600000 (10 minutes). Avec la journalisation de débogage activée, la durée de chaque appel est enregistrée.",
     "license.modal.title": "Licence du plugin de transcription YouTube Tubesage",
     "license.required.title": "Acceptation de la licence requise",
     "license.required.message": "Vous devez accepter la licence du plugin avant d'utiliser cette fonctionnalité.",

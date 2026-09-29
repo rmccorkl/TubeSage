@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "Când este activ, informațiile de depanare sunt colectate și adăugate la notițe ca un callout ascuns, în loc să fie scrise în consolă."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "Timp de așteptare pentru cerere (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "Cât se așteaptă o singură cerere către furnizor înainte de a renunța, în milisecunde. Implicit 600000 (10 minute). Cu jurnalizarea de depanare activată, se înregistrează durata fiecărui apel."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Licența pluginului de transcriere YouTube Tubesage"

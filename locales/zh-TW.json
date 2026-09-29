@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "啟用偵錯記錄",
     "settings.advanced.debugLogging.desc": "啟用詳細的偵錯記錄。啟用後，偵錯資訊會以摺疊的標註區塊附加到每則筆記，方便排除問題。",
     "settings.advanced.debugLogging.infoTooltip": "啟用後，偵錯資訊會以摺疊的標註區塊加入筆記，而不是輸出到主控台。",
+    "settings.advanced.requestTimeout.name": "請求逾時 (毫秒)",
+    "settings.advanced.requestTimeout.desc": "放棄前等待單一服務商請求的時間（毫秒）。預設 600000（10 分鐘）。啟用偵錯記錄後，會記錄每次呼叫的耗時。",
     "license.modal.title": "Tubesage YouTube 逐字稿外掛授權條款",
     "license.required.title": "必須接受授權條款",
     "license.required.message": "使用這項功能前，必須先接受外掛的授權條款。",

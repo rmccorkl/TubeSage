@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Debuglogboek inschakelen",
     "settings.advanced.debugLogging.desc": "Gedetailleerde debuglogboeken inschakelen. Debuginformatie wordt dan als verborgen callout aan elke notitie toegevoegd, voor probleemoplossing.",
     "settings.advanced.debugLogging.infoTooltip": "Indien ingeschakeld wordt debuginformatie verzameld en als verborgen callout aan notities toegevoegd in plaats van naar de console geschreven.",
+    "settings.advanced.requestTimeout.name": "Time-out voor verzoeken (ms)",
+    "settings.advanced.requestTimeout.desc": "Hoelang op één verzoek aan de aanbieder wordt gewacht voordat het wordt opgegeven, in milliseconden. Standaard 600000 (10 minuten). Met debuglogboek aan wordt de duur van elke aanroep vastgelegd.",
     "license.modal.title": "Licentie van de Tubesage YouTube-transcriptieplug-in",
     "license.required.title": "Licentie moet worden geaccepteerd",
     "license.required.message": "Je moet de licentie van de plug-in accepteren voordat je deze functie gebruikt.",

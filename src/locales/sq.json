@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "Kur aktivizohet, të dhënat e diagnostikimit mblidhen dhe u shtohen shënimeve si kuti e fshehur, në vend që të shkruhen në konsolë."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "Afati i kërkesës (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "Sa gjatë të pritet një kërkesë e vetme te ofruesi para se të dorëzohet, në milisekonda. Parazgjedhje 600000 (10 minuta). Me regjistrimin e diagnostikimit të ndezur, kohëzgjatja e çdo thirrjeje regjistrohet."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Licenca e shtojcës Tubesage për transkriptet e YouTube"

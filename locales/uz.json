@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Nosozlik jurnalini yoqish",
     "settings.advanced.debugLogging.desc": "Batafsil nosozlik jurnallarini yoqing. Yoqilganda nosozlik maʼlumotlari har bir yozuvga yashirin blok sifatida qoʻshiladi.",
     "settings.advanced.debugLogging.infoTooltip": "Yoqilganda nosozlik maʼlumotlari konsolga yozilish oʻrniga toʻplanadi va yozuvlarga yashirin blok sifatida qoʻshiladi.",
+    "settings.advanced.requestTimeout.name": "Soʻrov kutish vaqti (ms)",
+    "settings.advanced.requestTimeout.desc": "Taʼminotchiga yuborilgan bitta soʻrovni toʻxtatishdan oldin qancha kutish, millisekundlarda. Standart 600000 (10 daqiqa). Nosozliklarni tuzatish jurnali yoqilganda har bir chaqiruv davomiyligi qayd etiladi.",
     "license.modal.title": "Tubesage YouTube transkript plagini litsenziyasi",
     "license.required.title": "Litsenziyani qabul qilish zarur",
     "license.required.message": "Bu imkoniyatdan foydalanishdan oldin plagin litsenziyasini qabul qilishingiz kerak.",

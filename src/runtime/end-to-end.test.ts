@@ -13,7 +13,7 @@ import type { CollectionVideo } from "../jobs/collection-record";
 import type { JobHost, JobHostSettings, RenderedNote, TimestampPassOptions, VaultLike } from "./job-adapters";
 import { sanitizeFilename } from "../utils/filename-sanitizer";
 import { NoCaptionsError } from "../utils/transcript-errors";
-import { REQUEST_TIMEOUT_MS, requestTimeoutMessage } from "../utils/request-budget";
+import { DEFAULT_REQUEST_TIMEOUT_MS, requestTimeoutMessage } from "../utils/request-budget";
 
 // Seam-level tests (#3 final review C1): the REAL JobRunner + REAL adapters +
 // REAL JobStore, driven through a host double that mirrors main.ts and a
@@ -399,7 +399,7 @@ describe("end-to-end: a rejecting timestamps pass leaves the note as the create 
     // that fails if someone makes a failed chunk carry on.
     const h = harness();
     // The real message the shim raises, not an approximation of it.
-    h.host.timestampsError = new Error(requestTimeoutMessage(REQUEST_TIMEOUT_MS));
+    h.host.timestampsError = new Error(requestTimeoutMessage(DEFAULT_REQUEST_TIMEOUT_MS));
     const submitted = await h.runner.submit(submitInput("t-timeout"));
     await settle();
     const id = (submitted as { id: string }).id;

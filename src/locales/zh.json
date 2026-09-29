@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "启用后，调试信息会以折叠的标注块形式添加到笔记中，而不是输出到控制台。"
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "请求超时 (毫秒)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "放弃前等待单个服务商请求的时长（毫秒）。默认 600000（10 分钟）。启用调试日志后，会记录每次调用的耗时。"
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Tubesage YouTube 转录插件许可协议"

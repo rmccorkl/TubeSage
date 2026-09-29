@@ -1,7 +1,7 @@
 import { requestUrl } from "obsidian";
 import { getSafeErrorMessage } from "./error-utils";
 import { getLogger } from "./logger";
-import { REQUEST_TIMEOUT_MS, requestTimeoutMessage } from "./request-budget";
+import { requestBudgetMs, requestTimeoutMessage } from "./request-budget";
 
 // Get logger for fetch shim
 const logger = getLogger('FETCH');
@@ -148,12 +148,15 @@ async function requestWithBudget(options: RequestUrlOptions, signal?: AbortSigna
     if (signal?.aborted === true) {
       throw abortError();
     }
+    // Read per request, so a budget changed in settings applies to the next
+    // call rather than at the next restart.
+    const budgetMs = requestBudgetMs();
     return await Promise.race([
       requestUrl(options),
       new Promise<never>((_resolve, reject) => {
         timer = window.setTimeout(() => {
-          reject(new Error(requestTimeoutMessage(REQUEST_TIMEOUT_MS)));
-        }, REQUEST_TIMEOUT_MS);
+          reject(new Error(requestTimeoutMessage(budgetMs)));
+        }, budgetMs);
         if (signal !== undefined && signal !== null) {
           onAbort = (): void => { reject(abortError()); };
           signal.addEventListener("abort", onAbort);

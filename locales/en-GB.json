@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Enable debug logging",
     "settings.advanced.debugLogging.desc": "Enable detailed debug logs. When enabled, debug information will be appended to each note as a hidden callout for troubleshooting.",
     "settings.advanced.debugLogging.infoTooltip": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
+    "settings.advanced.requestTimeout.name": "Request timeout (ms)",
+    "settings.advanced.requestTimeout.desc": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
     "license.modal.title": "Tubesage YouTube transcript plugin licence",
     "license.required.title": "Licence acceptance required",
     "license.required.message": "You must accept the plugin licence before using this feature.",

@@ -93,6 +93,8 @@
     "settings.advanced.debugLogging.name": "Уключыць журнал адладкі",
     "settings.advanced.debugLogging.desc": "Уключыць падрабязныя журналы адладкі. Звесткі будуць дадавацца да кожнай нататкі схаваным блокам callout для ліквідацыі непаладак.",
     "settings.advanced.debugLogging.infoTooltip": "Калі ўключана, звесткі адладкі збіраюцца і дадаюцца ў нататкі схаваным блокам callout, а не выводзяцца ў кансоль.",
+    "settings.advanced.requestTimeout.name": "Тайм-аўт запыту (мс)",
+    "settings.advanced.requestTimeout.desc": "Колькі чакаць адзін запыт да пастаўшчыка, перш чым спыніць чаканне, у мілісекундах. Па змаўчанні 600000 (10 хвілін). Пры ўключаным журнале адладкі запісваецца працягласць кожнага выкліку.",
     "license.modal.title": "Ліцэнзія плагіна Tubesage для транскрыптаў YouTube",
     "license.required.title": "Патрабуецца прыняцце ліцэнзіі",
     "license.required.message": "Перад выкарыстаннем гэтай функцыі трэба прыняць ліцэнзію плагіна.",

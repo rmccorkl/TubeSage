@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "عند التفعيل، تُجمَع معلومات التصحيح وتُضاف إلى الملاحظات كمربّع تنبيه مخفي بدلًا من تسجيلها في وحدة التحكم."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "مهلة الطلب (مللي ثانية)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "مدة انتظار طلب واحد إلى المزوّد قبل التوقف، بالميلي ثانية. الافتراضي 600000 (10 دقائق). عند تفعيل سجل التصحيح، تُسجَّل مدة كل استدعاء."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "ترخيص إضافة Tubesage لنصوص YouTube"

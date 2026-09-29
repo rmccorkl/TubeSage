@@ -11,6 +11,7 @@
 // the tab's setControlValue override (which routes through saveSettings, never
 // raw saveData). Every other row is a `render` definition and saves itself
 // exactly as before.
+import { DEFAULT_REQUEST_TIMEOUT_MS, setRequestBudgetMs } from "../utils/request-budget";
 import type {
     DropdownComponent,
     ExtraButtonComponent,
@@ -886,6 +887,38 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                             .setIcon('info')
                             .setTooltip(t('settings.advanced.debugLogging.infoTooltip'));
                     });
+                }),
+            },
+            {
+                // The per-request budget (#19). `render` rather than a bound
+                // control, for the same reason the row above uses one: the
+                // value needs validating before it means anything, and
+                // applying it is a side effect this row owns.
+                //
+                // An out-of-range entry is simply not applied — not snapped
+                // back — because onChange fires per keystroke, and rewriting
+                // the field while someone is still typing "600000" would be
+                // worse than briefly showing a number not yet in force. The
+                // placeholder carries the default.
+                name: t('settings.advanced.requestTimeout.name'),
+                desc: t('settings.advanced.requestTimeout.desc'),
+                render: gated((setting) => {
+                    setting.addText(text => text
+                        .setPlaceholder(String(DEFAULT_REQUEST_TIMEOUT_MS))
+                        .setValue(String(host.settings.requestTimeoutMs))
+                        .onChange((value: string) => {
+                            void (async () => {
+                                const parsed = Number(value.trim());
+                                // setRequestBudgetMs owns the range: below its
+                                // floor every request fails before it starts,
+                                // which reads as a broken plugin.
+                                if (value.trim() === '' || !setRequestBudgetMs(parsed)) {
+                                    return;
+                                }
+                                host.settings.requestTimeoutMs = parsed;
+                                await host.saveSettings();
+                            })();
+                        }));
                 }),
             },
         ],

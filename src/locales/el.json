@@ -375,6 +375,14 @@
         "original": "When enabled, debug information will be collected and added to notes as a hidden callout instead of being logged to the console.",
         "translation": "Όταν είναι ενεργό, οι πληροφορίες εντοπισμού σφαλμάτων συλλέγονται και προστίθενται στις σημειώσεις ως κρυφό πλαίσιο αντί να καταγράφονται στην κονσόλα."
     },
+    "settings.advanced.requestTimeout.name": {
+        "original": "Request timeout (ms)",
+        "translation": "Χρονικό όριο αιτήματος (ms)"
+    },
+    "settings.advanced.requestTimeout.desc": {
+        "original": "How long to wait for a single provider request before giving up, in milliseconds. Default 600000 (10 minutes). With debug logging on, each call's elapsed time is recorded.",
+        "translation": "Πόση ώρα αναμονής για ένα αίτημα προς τον πάροχο πριν εγκαταλειφθεί, σε χιλιοστά του δευτερολέπτου. Προεπιλογή 600000 (10 λεπτά). Με ενεργή την καταγραφή εντοπισμού σφαλμάτων, καταγράφεται η διάρκεια κάθε κλήσης."
+    },
     "license.modal.title": {
         "original": "Tubesage YouTube transcript plugin license",
         "translation": "Άδεια του πρόσθετου απομαγνητοφώνησης YouTube Tubesage"
