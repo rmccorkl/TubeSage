@@ -63,8 +63,12 @@ export interface YouTubeTranscriptSettings {
     debugLogging: boolean;
     /**
      * How long ONE provider request may go unanswered before the shim stops
-     * waiting (#19). Since every provider path now routes through the shim,
-     * this is the only bound on a wedged request — see request-budget.ts.
+     * waiting (#19). Every provider path routes through the shim, so this is
+     * the bound that applies everywhere — and on OpenAI and OpenRouter the
+     * same number is handed to the OpenAI SDK, whose own clock would
+     * otherwise cap it at ten minutes (#19 F1). There is no upper limit here:
+     * on the three shim-only paths a very large value means no effective
+     * bound at all. See request-budget.ts.
      */
     requestTimeoutMs: number;
     

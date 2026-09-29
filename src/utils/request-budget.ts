@@ -14,25 +14,24 @@
  *
  * It is the DEFAULT. Since #19 the effective value is a setting; see below.
  *
- * WHAT IT ACTUALLY COVERS — three of the five provider paths, not five
- * (#15 review; corrected from the claim made when this landed). The bound
- * applies wherever a request goes through `obsidianFetch`: Ollama through
- * ChatOllama (which reads a top-level `fetch`, @langchain/ollama
- * chat_models.cjs:545), the Anthropic direct call, GeminiClient, and every
- * direct call in the plugin — transcript extraction, the playlist and
- * channel APIs, the Ollama client.
+ * WHAT IT COVERS — every provider path, since #19. The bound applies
+ * wherever a request goes through `obsidianFetch`, and they all do now:
+ * OpenAI and OpenRouter through ChatOpenAI's `configuration.fetch`
+ * (getOpenAiConfiguration), Ollama through ChatOllama's top-level `fetch`,
+ * the Anthropic direct call, GeminiClient, and every direct call in the
+ * plugin — transcript extraction, the playlist and channel APIs, the model
+ * lists. `requestUrl` is imported in one file and there is no bare `fetch(`
+ * in `src/` or `main.ts`.
  *
- * OpenAI and OpenRouter do NOT reach it. `getLangChainConfiguration` returns
- * `fetch` at the top level, and ChatOpenAI builds its client from
- * `{apiKey, organization, dangerouslyAllowBrowser, ...fields.configuration}`
- * (@langchain/openai@0.6.17 chat_models.cjs:625-630), so a top-level `fetch`
- * is dropped on the floor. Those two are bounded instead by the OpenAI SDK's
- * own clock: `openai@5.12.2` defaults to `DEFAULT_TIMEOUT` = 600000 ms
- * (client.js:100 and :497) and LangChain passes `maxRetries: 0`
- * (chat_models.cjs:697) — the same ten minutes per request, owned by someone
- * else. #19 tracks moving them onto the shim; it changes headers, error
- * shapes and the mobile transport on the most-used path, so it is not a
- * change to make in passing.
+ * On the two ChatOpenAI paths this number is ALSO handed to the OpenAI SDK
+ * as its `timeout`, because `openai@5.12.2` implements a timeout by aborting
+ * the signal it hands to fetch and the shim honours signals: left unset, the
+ * SDK's own DEFAULT_TIMEOUT of 600000 ms (client.js:100, :497) would cap
+ * whatever is configured here (#19 F1). The two are deliberately the same
+ * number. The SDK's timer, armed first, is the one that fires on those
+ * paths; on the other three this budget is the only bound there is, and the
+ * setting has no upper limit — a very large value really does mean no
+ * effective bound.
  */
 export const DEFAULT_REQUEST_TIMEOUT_MS = 600_000;
 
