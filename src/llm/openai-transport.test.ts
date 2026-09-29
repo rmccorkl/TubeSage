@@ -36,10 +36,15 @@ const MODEL_OPTIONS = { apiKey: "sk-test-key", model: "gpt-4o", temperature: 0.2
 beforeEach(() => {
   requestUrl.mockReset();
   requestUrl.mockResolvedValue({ status: 200, text: "{}", headers: {} });
+  // The shim arms its budget on `window` timers; this suite runs on node,
+  // where there is no window at all.
+  // eslint-disable-next-line obsidianmd/no-global-this, obsidianmd/prefer-active-doc -- no window exists on node; this is what creates one
+  vi.stubGlobal("window", globalThis);
 });
 
 afterEach(() => {
   vi.restoreAllMocks();
+  vi.unstubAllGlobals();
 });
 
 describe("the ChatOpenAI paths run on OUR transport (#19)", () => {
@@ -76,6 +81,51 @@ describe("the ChatOpenAI paths run on OUR transport (#19)", () => {
     });
   }
 
+  it("OpenRouter's attribution headers survive as far as requestUrl, which is where they count (#19 F4)", async () => {
+    // The configured value (asserted below) is one step BEFORE the risky
+    // part. Between there and the wire, openai-node turns the headers into a
+    // `Headers` instance and the shim's normalizeHeaders folds that back into
+    // a plain record — and iterating a Headers yields LOWERCASED names, so
+    // what reaches requestUrl is `http-referer`, not `HTTP-Referer`. That is
+    // correct on the wire (header names are case-insensitive) and invisible
+    // at the clientConfig layer, which is exactly why this assertion is worth
+    // having. The capture, and the three things below that make it work, come
+    // from the reviewer's probe rather than being rediscovered here.
+    requestUrl.mockResolvedValue({
+      status: 200,
+      // Both of these are load bearing: without the content type openai-node
+      // hands LangChain raw text instead of a parsed object, and without
+      // `usage` the same path fails — either way with a TypeError deep in
+      // chat_models that reads like a shim bug and is not one.
+      headers: { "content-type": "application/json" },
+      text: JSON.stringify({
+        id: "chatcmpl-test",
+        object: "chat.completion",
+        created: 0,
+        model: "gpt-4o",
+        choices: [{ index: 0, message: { role: "assistant", content: "ok" }, finish_reason: "stop" }],
+        usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 },
+      }),
+    });
+
+    await buildOpenRouterModel(MODEL_OPTIONS).invoke(["hello"]);
+
+    const sent = requestUrl.mock.calls[0][0] as {
+      url: string;
+      headers: Record<string, string>;
+      throw?: boolean;
+    };
+    expect(sent.url).toBe("https://openrouter.ai/api/v1/chat/completions");
+    expect(sent.headers["http-referer"]).toBe("https://github.com/rmccorkl/TubeSage");
+    expect(sent.headers["x-title"]).toBe("TubeSage");
+    // Pinned in the same breath because the SDK's typed errors depend on it:
+    // `throw: false` is what makes requestUrl RETURN a 4xx/5xx response
+    // instead of throwing, which is how a 429 becomes a RateLimitError rather
+    // than an unrecognisable failure. Cheap to assert, and it catches anyone
+    // tidying it away.
+    expect(sent.throw).toBe(false);
+  });
+
   it("OpenRouter keeps its baseURL and both attribution headers while moving onto the shim", () => {
     // The baseURL and the headers travel on the same nested object as the
     // transport, so they are the things most likely to be lost while moving
@@ -105,16 +155,11 @@ describe("the configured budget is the one that applies, not the SDK's ten minut
 
   beforeEach(() => {
     vi.useFakeTimers();
-    // The shim arms its own budget on `window` timers; on node there is no
-    // window, so it is pointed at the globals vitest has faked.
-    // eslint-disable-next-line obsidianmd/no-global-this, obsidianmd/prefer-active-doc -- no window exists on node; this is what creates one
-    vi.stubGlobal("window", globalThis);
     setRequestBudgetMs(RAISED_BUDGET_MS);
   });
 
   afterEach(() => {
     vi.useRealTimers();
-    vi.unstubAllGlobals();
     setRequestBudgetMs(DEFAULT_REQUEST_TIMEOUT_MS);
   });
 
