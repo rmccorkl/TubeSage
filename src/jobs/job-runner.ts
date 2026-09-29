@@ -57,12 +57,26 @@ export interface JobStages {
   translateNote(record: NoteJobRecord, notePath: string): Promise<void>;
 }
 
+/**
+ * The stage budgets that remain. There is deliberately no LLM budget (#13):
+ * a generative pass that is still streaming is not a hung call, nothing here
+ * can abort one — `race` has no AbortController and the provider has no
+ * cancel path — so a deadline on it could only discard work the user has
+ * already paid for while the call carried on and wrote the note anyway.
+ * What is left guards the two calls we CAN reason about: a bounded HTTP
+ * fetch, and a local vault write.
+ *
+ * A cancel does not depend on any of this. The generation fence (`guard`) is
+ * what ends a cancelled job, and it is independent of every timer here.
+ */
 export interface RunnerDeadlines {
   transcriptMs: number;
-  llmMs: number;
   vaultMs: number;
 }
-export const DEFAULT_DEADLINES: RunnerDeadlines = { transcriptMs: 90_000, llmMs: 600_000, vaultMs: 30_000 };
+export const DEFAULT_DEADLINES: RunnerDeadlines = { transcriptMs: 90_000, vaultMs: 30_000 };
+
+/** Passed where a stage deliberately runs on no clock at all (#13): the three paid LLM stages. */
+const NO_DEADLINE = undefined;
 
 /**
  * `timestamps-skipped` (#3 D2 legacy parity): the job's own flags (fast summary /
@@ -83,7 +97,37 @@ export type JobEvent =
    */
   | { type: "interrupted"; id: string }
   | { type: "failed"; id: string; error: string }
-  | { type: "cancelled"; id: string };
+  | { type: "cancelled"; id: string }
+  /**
+   * The run loop has exited. The ONE signal every exit path produces (#14),
+   * the silent ones included: `guard()` returns undefined whenever the
+   * record's generation has moved, its status is no longer `running`, or the
+   * plugin is unloading, and every caller then returns without emitting
+   * anything.
+   *
+   * WHAT THIS IS AND IS NOT FOR, accurately (#14 review F3). A silent exit
+   * carrying no terminal event is **not reachable in production today**:
+   * status and generation are mutated in exactly six places, all in this
+   * file, and every one of them emits — cancel emits `cancelled` (:270),
+   * the run-loop catch `failed` (:312), interrupt `interrupted` (:715),
+   * fail `failed` (:724), finish `done` (:736) — while unload is fenced and
+   * swept separately by JobProgressNotices.dismissAll. Reaching that exit
+   * takes a record mutated from outside the runner, which is what the test
+   * does. So this event is a HARDENING of the invariant "a run that is over
+   * leaves no live surface", not a fix for an observed silent leak, and the
+   * mobile symptom that prompted #14 is fixed by #13's deadline removal.
+   *
+   * It does close one surface that genuinely floats today, though not by
+   * that route: a standalone job adopted mid-run by a collection, whose
+   * outcome the host suppresses (#14 F2, JobProgressNotices.handle).
+   *
+   * It is deliberately NOT an outcome. A run that exited because it was
+   * superseded is not "done", and nothing here may narrate it as one: the
+   * event says the run is over and no more, so a consumer's only honest
+   * response is to stop waiting on it. It follows the terminal event when
+   * there was one, so every consumer must treat it as idempotent.
+   */
+  | { type: "run-ended"; id: string };
 
 export interface RunnerDeps {
   store: JobStore;
@@ -174,7 +218,6 @@ export class JobRunner {
   constructor(private readonly deps: RunnerDeps) {
     this.deadlines = {
       transcriptMs: deps.deadlines?.transcriptMs ?? DEFAULT_DEADLINES.transcriptMs,
-      llmMs: deps.deadlines?.llmMs ?? DEFAULT_DEADLINES.llmMs,
       vaultMs: deps.deadlines?.vaultMs ?? DEFAULT_DEADLINES.vaultMs,
     };
   }
@@ -253,6 +296,19 @@ export class JobRunner {
       // Only this run's own entry.
       if (this.active.get(id)?.gen === gen) {
         this.active.delete(id);
+      }
+      // #14: the one signal that cannot be missed. `.finally()` runs on every
+      // exit path — the terminal ones, the silent guard() failures, and a
+      // throw — so the surface's lifetime can be tied to the run's liveness
+      // instead of to four outcomes any one of which a path may skip. No
+      // in-runner path reaches a silent exit today (see the JobEvent doc):
+      // this keeps the invariant true rather than repairing an observed leak.
+      //
+      // Not after stopAll: unload fences every late completion precisely so
+      // nothing reaches a torn-down plugin, and it sweeps the surfaces itself
+      // (JobProgressNotices.dismissAll).
+      if (!this.stopped) {
+        this.deps.onEvent({ type: "run-ended", id });
       }
     });
   }
@@ -410,11 +466,11 @@ export class JobRunner {
       await this.fail(record, "no transcript");
       return undefined;
     }
-    record = await this.preCall(id, gen, "summary", this.deadlines.llmMs);
+    record = await this.preCall(id, gen, "summary", NO_DEADLINE);
     if (record === undefined) {
       return undefined;
     }
-    const summarized = await this.race(id, gen, this.deps.stages.summarize(record, transcript.text), this.deadlines.llmMs);
+    const summarized = await this.race(id, gen, this.deps.stages.summarize(record, transcript.text), NO_DEADLINE);
     record = this.guard(id, gen);
     if (record === undefined) {
       return undefined;
@@ -509,11 +565,11 @@ export class JobRunner {
       ctx.timestampsSkipped = "user-choice";
       return this.afterTimestamps(record, ctx);
     }
-    record = await this.preCall(id, gen, "timestamps", this.deadlines.llmMs);
+    record = await this.preCall(id, gen, "timestamps", NO_DEADLINE);
     if (record === undefined) {
       return undefined;
     }
-    const settled = await this.race(id, gen, this.deps.stages.addTimestamps(record, notePath), this.deadlines.llmMs);
+    const settled = await this.race(id, gen, this.deps.stages.addTimestamps(record, notePath), NO_DEADLINE);
     record = this.guard(id, gen);
     if (record === undefined) {
       return undefined;
@@ -585,11 +641,11 @@ export class JobRunner {
       await this.finish(record, { timestampsSkipped: ctx.timestampsSkipped, translationSkipped });
       return undefined;
     }
-    record = await this.preCall(id, gen, "translation", this.deadlines.llmMs);
+    record = await this.preCall(id, gen, "translation", NO_DEADLINE);
     if (record === undefined) {
       return undefined;
     }
-    const settled = await this.race(id, gen, this.deps.stages.translateNote(record, notePath), this.deadlines.llmMs);
+    const settled = await this.race(id, gen, this.deps.stages.translateNote(record, notePath), NO_DEADLINE);
     record = this.guard(id, gen);
     if (record === undefined) {
       return undefined;
@@ -621,7 +677,7 @@ export class JobRunner {
     id: string,
     gen: number,
     stage: CalledStage,
-    deadlineMs: number,
+    deadlineMs: number | undefined,
     keepStage = false,
   ): Promise<NoteJobRecord | undefined> {
     let record = this.guard(id, gen);
@@ -634,7 +690,13 @@ export class JobRunner {
     }
     record.inFlight = true;
     record.inFlightSince = now;
-    record.deadlineAt = now + deadlineMs;
+    if (deadlineMs === undefined) {
+      // #13: a stage with no deadline carries no deadlineAt, so the field
+      // keeps meaning "a timer is armed against this call".
+      delete record.deadlineAt;
+    } else {
+      record.deadlineAt = now + deadlineMs;
+    }
     await this.deps.store.upsert(record, now);
     record = this.guard(id, gen);
     if (record === undefined) {
@@ -703,11 +765,15 @@ export class JobRunner {
 
   // ---- deadline race -------------------------------------------------------
 
-  // Races a stage promise against deps.setTimeout. The settle handler is
+  // Races a stage promise against deps.setTimeout, or — with NO_DEADLINE —
+  // simply awaits it. The settle handler is
   // attached at creation so a late rejection never goes unhandled; after a
   // timeout it only re-runs the guard (which the timeout's own status change
   // has already made fail) and applies nothing.
-  private race<T>(id: string, gen: number, call: Promise<T>, ms: number): Promise<Settled<T>> {
+  private race<T>(id: string, gen: number, call: Promise<T>, ms: number | undefined): Promise<Settled<T>> {
+    if (ms === undefined) {
+      return this.settle(call);
+    }
     return new Promise<Settled<T>>((resolve) => {
       let settled = false;
       // Tracked on the run so cancel (stopRun) and unload (stopAll) can
@@ -739,6 +805,20 @@ export class JobRunner {
         (error: unknown) => accept({ kind: "error", error }),
       );
     });
+  }
+
+  /**
+   * Awaits a stage call that has no deadline against it (#13): no timer, and
+   * so no "timeout" outcome. What stops a cancelled or superseded job acting
+   * on the result is the guard the caller re-runs after this await, which is
+   * where it always was; the timer never did that job.
+   */
+  private async settle<T>(call: Promise<T>): Promise<Settled<T>> {
+    try {
+      return { kind: "ok", value: await call };
+    } catch (error) {
+      return { kind: "error", error };
+    }
   }
 
   private clearDeadlines(run: ActiveRun): void {

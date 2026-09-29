@@ -4,8 +4,15 @@ import type { NoteJobRecord } from "./job-record";
 import { JobStore } from "./job-store";
 import { DEFAULT_DEADLINES, JobRunner, NoteChangedError, PathDriftError, PermanentJobError } from "./job-runner";
 import type { JobEvent, JobStages, RunnerDeps, SubmitInput } from "./job-runner";
+import { JobProgressNotices } from "../runtime/job-progress-notice";
+import type { ProgressNoticeHandle } from "../runtime/job-progress-notice";
 
 const NOW = new Date(2026, 8, 20, 12, 0, 0).getTime();
+// #13: the 600 s stage budget that used to kill a live LLM call. It is gone
+// from the runner, so the tests name it themselves — what they assert is that
+// this much wall clock passing changes nothing for a paid stage. It also
+// serves as "much longer than any deadline the runner still has".
+const OLD_LLM_BUDGET_MS = 600_000;
 // This harness's installation (spec I3): stamped on every record submit
 // creates, which is all the id is used for now.
 
@@ -255,6 +262,8 @@ interface Harness {
 interface HarnessOptions {
   /** Live translation settings the transcript stage freezes (undefined = en/US, nothing frozen). */
   translation?: { language: string; country: string };
+  /** A real consumer wired to the live event stream (the surface-lifetime invariant, #14). */
+  onEvent?: (event: JobEvent) => void;
 }
 
 function makeHarness(options: HarnessOptions = {}): Harness {
@@ -277,6 +286,7 @@ function makeHarness(options: HarnessOptions = {}): Harness {
     generateId: () => `job-${++ids}`,
     onEvent: (event) => {
       events.push(event);
+      options.onEvent?.(event);
     },
   };
   const runner = new JobRunner(deps);
@@ -323,9 +333,36 @@ async function submitUntilSummaryPending(h: Harness): Promise<string> {
   return (result as { id: string }).id;
 }
 
-/** Times out the pending summarize call (advances past llmMs). */
-async function timeOutSummary(h: Harness): Promise<void> {
-  await h.clock.advance(DEFAULT_DEADLINES.llmMs);
+/**
+ * Stops the pending summarize call the only way a paid stage can be stopped
+ * now (#13): the call itself fails. It used to be a deadline the runner armed
+ * against it — that budget is gone, so the vehicle is a transient rejection,
+ * which leaves the same record shape (`interrupted`, still in flight) through
+ * the same `settleFailure` path.
+ */
+async function interruptSummary(h: Harness): Promise<void> {
+  const pending = h.stages.summ.pending[h.stages.summ.pending.length - 1];
+  expect(pending).toBeDefined();
+  pending.reject(new Error("socket hang up"));
+  await flush();
+  const record = lastRecord(h);
+  expect(record.status).toBe("interrupted");
+  expect(record.inFlight).toBe(true);
+}
+
+/** Submits and runs until `fetchTranscript` is pending (manual). */
+async function submitUntilTranscriptPending(h: Harness): Promise<string> {
+  h.stages.fetch.manual = true;
+  const result = await h.runner.submit(SUBMIT);
+  expect(result.kind).toBe("started");
+  await flush();
+  expect(h.stages.fetch.pending.length).toBe(1);
+  return (result as { id: string }).id;
+}
+
+/** Times out the pending transcript fetch: a bounded HTTP call, which KEEPS its deadline (#13). */
+async function timeOutTranscript(h: Harness): Promise<void> {
+  await h.clock.advance(DEFAULT_DEADLINES.transcriptMs);
   const record = lastRecord(h);
   expect(record.status).toBe("interrupted");
   expect(record.inFlight).toBe(true);
@@ -357,11 +394,18 @@ describe("JobRunner — happy path", () => {
     expect(contentGiven).toBe(renderedContent());
     expect(h.vault.files.get(TARGET_PATH)).toBe(renderedContent());
 
-    // Every in-flight checkpoint carried a deadline and an attempt bump.
-    for (const record of persistedRecords(h).filter((r) => r.inFlight)) {
-      expect(record.deadlineAt).toBeGreaterThan(NOW);
+    // Every in-flight checkpoint was stamped; only the ones the runner still
+    // arms a timer against carry a deadline (#13). `deadlineAt` means "a timer
+    // is armed against this call", so the paid stages leave it unset.
+    const inFlight = persistedRecords(h).filter((r) => r.inFlight);
+    for (const record of inFlight) {
       expect(record.inFlightSince).toBe(NOW);
     }
+    const dated = new Map(inFlight.map((r) => [r.stage, r.deadlineAt]));
+    expect(dated.get("transcript")).toBe(NOW + DEFAULT_DEADLINES.transcriptMs);
+    expect(dated.get("note-creating")).toBe(NOW + DEFAULT_DEADLINES.vaultMs);
+    expect(dated.get("summary")).toBeUndefined();
+    expect(dated.get("timestamps")).toBeUndefined();
 
     const final = lastRecord(h);
     expect(final.stage).toBe("done");
@@ -415,17 +459,21 @@ describe("JobRunner — happy path", () => {
 
 describe("JobRunner — generation fence", () => {
   it("5. a completion that lands after the deadline timeout applies no side effect", async () => {
+    // At the TRANSCRIPT stage: the paid stages no longer carry a deadline at
+    // all (#13), so the only timeout the runner can still produce is this one
+    // — a bounded HTTP fetch — and the fence it needs is the same one.
     const h = makeHarness();
-    await submitUntilSummaryPending(h);
-    await timeOutSummary(h);
+    await submitUntilTranscriptPending(h);
+    await timeOutTranscript(h);
     const writesAtTimeout = h.io.calls.length;
     expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id: "job-1" }]);
     expect(h.runner.isActive("job-1")).toBe(false);
 
-    h.stages.summ.resolveLast(SUMMARY_BODY);
+    h.stages.fetch.resolveLast({ transcript: TRANSCRIPT_BODY, title: VIDEO_TITLE });
     await flush();
-    await h.clock.advance(DEFAULT_DEADLINES.llmMs);
+    await h.clock.advance(OLD_LLM_BUDGET_MS);
 
+    expect(h.stages.summ.count).toBe(0);
     expect(h.stages.render.count).toBe(0);
     expect(h.stages.create.count).toBe(0);
     expect(h.io.calls.length).toBe(writesAtTimeout);
@@ -447,7 +495,7 @@ describe("JobRunner — generation fence", () => {
 
     h.stages.summ.resolveLast(SUMMARY_BODY);
     await flush();
-    await h.clock.advance(DEFAULT_DEADLINES.llmMs);
+    await h.clock.advance(OLD_LLM_BUDGET_MS);
 
     expect(h.stages.render.count).toBe(0);
     expect(h.stages.create.count).toBe(0);
@@ -467,7 +515,7 @@ describe("JobRunner — submit", () => {
 
     // Once that run has stopped, the person asking again is asking again: the
     // job that died is not offered back to them, a new one starts (#10).
-    await timeOutSummary(h);
+    await interruptSummary(h);
     // The second run is an ordinary one: let its summarize resolve.
     h.stages.summ.manual = false;
     const again = await h.runner.submit(SUBMIT);
@@ -567,17 +615,19 @@ describe("JobRunner — timer hygiene", () => {
   // they are re-expressed against the deadline timers, which stay: a cancelled
   // or unloaded run leaves NO timer behind and writes nothing afterwards.
   it("a cancelled run leaves no timer behind: nothing fires, and nothing is written, ever again", async () => {
+    // Driven at the transcript stage, which is where a deadline still exists
+    // to be left behind (#13): the paid stages arm none.
     const h = makeHarness();
-    const id = await submitUntilSummaryPending(h);
-    // A live run has its stage deadline armed.
+    const id = await submitUntilTranscriptPending(h);
+    // A live transcript fetch has its stage deadline armed.
     expect(h.clock.pendingCount()).toBe(1);
     await h.runner.cancel(id);
     await flush();
     const writes = h.io.calls.length;
     // cancel (stopRun) disarmed the dangling call's deadline (T6 review #2).
     expect(h.clock.pendingCount()).toBe(0);
-    // Advance well past what the summary's own deadline would have been.
-    await h.clock.advance(3 * DEFAULT_DEADLINES.llmMs);
+    // Advance well past what that deadline would have been.
+    await h.clock.advance(OLD_LLM_BUDGET_MS);
     expect(h.io.calls.length).toBe(writes);
     expect(h.clock.pendingCount()).toBe(0);
     expect(h.events.filter((e) => e.type === "interrupted")).toEqual([]);
@@ -703,11 +753,15 @@ describe("JobRunner — T6 review: addTimestampLinks, deadline timers", () => {
     expect(h.stages.stamps.count).toBe(1);
   });
 
-  it("cancel during a pending summary clears the deadline timer too (stopRun leaves no timers)", async () => {
+  it("cancel during a pending summary ends it at once, with no timer involved either way (#13)", async () => {
     const h = makeHarness();
     const id = await submitUntilSummaryPending(h);
+    // Nothing was armed against the paid call to begin with (#13), and the
+    // cancel is instant regardless: the fence, not a timer, is what ends it.
+    expect(h.clock.pendingCount()).toBe(0);
     await h.runner.cancel(id);
     await flush();
+    expect(h.store.get(id)?.status).toBe("cancelled");
     expect(h.clock.pendingCount()).toBe(0);
     const writes = h.io.calls.length;
     // The dangling call settling later still applies nothing.
@@ -744,7 +798,7 @@ describe("JobRunner — T6b: stopAll, fast summary", () => {
     expect(h.io.calls.length).toBe(writesBefore);
     expect(h.events.filter((e) => e.type !== "progress")).toEqual([]);
     // And nothing fires later: no timer survived stopAll to write anything.
-    await h.clock.advance(3 * DEFAULT_DEADLINES.llmMs);
+    await h.clock.advance(OLD_LLM_BUDGET_MS);
     expect(h.io.calls.length).toBe(writesBefore);
     expect(h.clock.pendingCount()).toBe(0);
   });
@@ -824,27 +878,358 @@ describe("JobRunner — translation stage (#3 final review residual)", () => {
       "translation/in", // pre-translate checkpoint: the stage is marked in flight before the call
       "done/out",
     ]);
-    expect(records[8].deadlineAt).toBe(NOW + DEFAULT_DEADLINES.llmMs);
+    // The paid translation checkpoint is stamped in flight but armed against
+    // nothing (#13).
+    expect(records[8].inFlight).toBe(true);
+    expect(records[8].deadlineAt).toBeUndefined();
     expect(h.stages.stamps.count).toBe(1);
     expect(h.stages.translate.calls).toEqual([[expect.objectContaining({ translation: FR }), TARGET_PATH]]);
     expect(h.events.filter((e) => e.type === "progress").map((e) => (e.type === "progress" ? e.message : ""))).toContain("Translating note");
     expect(h.events.filter((e) => e.type === "done")).toEqual([{ type: "done", id: "job-1", notePath: TARGET_PATH }]);
   });
 
-  it("a translation timeout leaves the stage in flight on its own budget, and the late completion applies nothing", async () => {
+  it("a translation that FAILS still interrupts at its own checkpoint, and the late completion applies nothing", async () => {
+    // Was "a translation timeout leaves the stage in flight on its own
+    // budget". There is no translation budget any more (#13 — see 13c), so
+    // the vehicle is the other half of settleFailure: the call rejects. What
+    // the test still holds is the checkpoint and the fence.
     const h = makeHarness({ translation: FR });
     h.stages.translate.manual = true;
     await h.runner.submit(SUBMIT);
     await flush();
     expect(h.stages.translate.count).toBe(1);
-    await h.clock.advance(DEFAULT_DEADLINES.llmMs + 1);
-    const record = lastRecord(h);
-    expect(record).toMatchObject({ stage: "translation", status: "interrupted", inFlight: true });
-    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id: "job-1" }]);
-    // The late completion applies nothing (generation fence).
-    h.stages.translate.resolveLast(undefined);
+    h.stages.translate.pending[0].reject(new Error("socket hang up"));
     await flush();
+    const record = lastRecord(h);
+    expect(record).toMatchObject({ stage: "translation", status: "interrupted", inFlight: true, lastError: "socket hang up" });
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id: "job-1" }]);
+    // A second, late arrival applies nothing (generation fence).
+    await h.clock.advance(OLD_LLM_BUDGET_MS);
     expect(lastRecord(h).status).toBe("interrupted");
     expect(h.events.filter((e) => e.type === "done")).toEqual([]);
+  });
+});
+
+describe("JobRunner — #13: no wall-clock deadline on the paid LLM stages", () => {
+  it("13a. a timestamps call that outlives the old 600 s budget still completes, and the job reports done", async () => {
+    const h = makeHarness();
+    h.stages.stamps.manual = true;
+    await h.runner.submit(SUBMIT);
+    await flush();
+    expect(h.stages.stamps.count).toBe(1);
+    // Nothing is armed against the pass, so nothing can fire against it.
+    expect(h.clock.pendingCount()).toBe(0);
+    expect(h.store.get("job-1")?.deadlineAt).toBeUndefined();
+
+    // An hour on the clock: ten times the budget that used to end this job.
+    await h.clock.advance(6 * OLD_LLM_BUDGET_MS);
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([]);
+    expect(h.store.get("job-1")?.status).toBe("running");
+
+    // The call returns when it returns, and the job finishes normally.
+    h.stages.stamps.resolveLast(undefined);
+    await flush();
+    expect(h.store.get("job-1")).toMatchObject({ stage: "done", status: "done", notePath: TARGET_PATH });
+    expect(h.events.filter((e) => e.type === "done")).toEqual([{ type: "done", id: "job-1", notePath: TARGET_PATH }]);
+  });
+
+  it("13b. a summary call that outlives the old 600 s budget still completes, and the note is still created", async () => {
+    const h = makeHarness();
+    await submitUntilSummaryPending(h);
+    expect(h.clock.pendingCount()).toBe(0);
+    expect(h.store.get("job-1")?.deadlineAt).toBeUndefined();
+
+    await h.clock.advance(6 * OLD_LLM_BUDGET_MS);
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([]);
+    expect(h.store.get("job-1")?.status).toBe("running");
+
+    h.stages.summ.resolveLast(SUMMARY_BODY);
+    await flush();
+    expect(h.vault.files.get(TARGET_PATH)).toBe(renderedContent());
+    expect(h.store.get("job-1")).toMatchObject({ stage: "done", status: "done" });
+  });
+
+  it("13c. a translation call that outlives the old 600 s budget still completes, and the job reports done", async () => {
+    const h = makeHarness({ translation: { language: "fr", country: "FR" } });
+    h.stages.translate.manual = true;
+    await h.runner.submit(SUBMIT);
+    await flush();
+    expect(h.stages.translate.count).toBe(1);
+    expect(h.clock.pendingCount()).toBe(0);
+    expect(h.store.get("job-1")?.deadlineAt).toBeUndefined();
+
+    await h.clock.advance(6 * OLD_LLM_BUDGET_MS);
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([]);
+    expect(h.store.get("job-1")).toMatchObject({ stage: "translation", status: "running" });
+
+    h.stages.translate.resolveLast(undefined);
+    await flush();
+    expect(h.store.get("job-1")).toMatchObject({ stage: "done", status: "done" });
+    expect(h.events.filter((e) => e.type === "done")).toEqual([{ type: "done", id: "job-1", notePath: TARGET_PATH }]);
+  });
+
+  it("13d. cancel still ends a job INSTANTLY mid-timestamps-call, with no deadline left to do it", async () => {
+    // The guard rail on #13: removing the budget must not weaken cancel. The
+    // fence, not the clock, is what stops a cancelled job — so a cancel lands
+    // at once even though the paid call is still out there and nothing is
+    // armed against it.
+    const h = makeHarness();
+    h.stages.stamps.manual = true;
+    await h.runner.submit(SUBMIT);
+    await flush();
+    expect(h.stages.stamps.count).toBe(1);
+    expect(h.clock.pendingCount()).toBe(0);
+
+    await h.runner.cancel("job-1");
+
+    // Instant: the cancelled record and its event are there before anything
+    // else is awaited, and long before the LLM call returns.
+    expect(h.store.get("job-1")).toMatchObject({ status: "cancelled", generation: 2 });
+    expect(h.events.filter((e) => e.type === "cancelled")).toEqual([{ type: "cancelled", id: "job-1" }]);
+    expect(h.runner.isActive("job-1")).toBe(false);
+
+    // Counted after the cancel's own upsert: what must not move from here is
+    // anything the abandoned pass does.
+    const writesAtCancel = h.io.calls.length;
+
+    // The abandoned pass returning later applies nothing: no done, no write.
+    h.stages.stamps.resolveLast(undefined);
+    await flush();
+    await h.clock.advance(6 * OLD_LLM_BUDGET_MS);
+    expect(h.io.calls.length).toBe(writesAtCancel);
+    expect(h.stages.translate.count).toBe(0);
+    expect(h.events.filter((e) => e.type === "done")).toEqual([]);
+    expect(h.store.get("job-1")?.status).toBe("cancelled");
+  });
+});
+
+describe("JobRunner — #14: a run that ends says so, on every exit path", () => {
+  /** Every event that tells a consumer the job is over. */
+  const isTerminalEvent = (e: JobEvent): boolean =>
+    e.type === "done" || e.type === "failed" || e.type === "cancelled" || e.type === "interrupted";
+
+  it("14a. a run that exits through a silent guard() failure still reports that its run ended", async () => {
+    const h = makeHarness();
+    h.stages.stamps.manual = true;
+    await h.runner.submit(SUBMIT);
+    await flush();
+    expect(h.stages.stamps.count).toBe(1);
+
+    // Supersede the record under the live run: its generation moves on, which
+    // is precisely what guard() re-reads after every await. No cancel, so no
+    // cancelled event — this is the exit path that emits nothing at all.
+    const superseded = h.store.get("job-1");
+    if (superseded === undefined) {
+      throw new Error("the job's record went missing");
+    }
+    superseded.generation += 1;
+    await h.store.upsert(superseded, h.clock.now);
+
+    h.stages.stamps.resolveLast(undefined);
+    await flush();
+
+    // No outcome is invented: the record was superseded, so this run is not
+    // done, failed, cancelled or interrupted, and must not claim to be.
+    expect(h.events.filter(isTerminalEvent)).toEqual([]);
+    // But the run IS over, and it says so exactly once.
+    expect(h.events.filter((e) => e.type === "run-ended")).toEqual([{ type: "run-ended", id: "job-1" }]);
+    expect(h.runner.isActive("job-1")).toBe(false);
+  });
+});
+
+// The invariant that must outlive #14's specific bug: NO run, ending by ANY
+// path, may leave a progress surface behind. It is asserted against the real
+// JobProgressNotices rather than a hand-rolled stand-in, because the thing
+// being proven is the wiring between the two — the runner's events and the
+// surface's lifetime — and a stand-in would only prove the test's own idea of
+// it. (main.ts does this wiring in `onJobEvent`.)
+describe("JobRunner + JobProgressNotices — no exit path leaves a live surface (#14)", () => {
+  class SurfaceDouble implements ProgressNoticeHandle {
+    hidden = 0;
+    constructor(public message: string) {}
+    setMessage(message: string): void {
+      this.message = message;
+    }
+    hide(): void {
+      this.hidden += 1;
+    }
+  }
+
+  /**
+   * `owns` mirrors main.ts's `collectionRunner.owns(event.id)` — the host
+   * tells the notices whether a job is a collection child, and the notices
+   * decide what that means. Default false: an ordinary standalone job.
+   */
+  function wired(
+    options: HarnessOptions = {},
+    owns: () => boolean = () => false,
+  ): { h: Harness; notices: JobProgressNotices; surfaces: SurfaceDouble[] } {
+    const surfaces: SurfaceDouble[] = [];
+    const notices = new JobProgressNotices((message) => {
+      const surface = new SurfaceDouble(message);
+      surfaces.push(surface);
+      return surface;
+    });
+    const h = makeHarness({ ...options, onEvent: (event) => { notices.handle(event, owns()); } });
+    return { h, notices, surfaces };
+  }
+
+  /** Every way a run can end, each one driven to its real exit. */
+  const exits: { name: string; drive: (w: ReturnType<typeof wired>) => Promise<void> }[] = [
+    {
+      name: "done",
+      drive: async ({ h }) => {
+        await h.runner.submit(SUBMIT);
+        await flush();
+      },
+    },
+    {
+      name: "done with the timestamps pass skipped by the record's own flags",
+      drive: async ({ h }) => {
+        await h.runner.submit({ ...SUBMIT, useFastSummary: true });
+        await flush();
+      },
+    },
+    {
+      name: "done with the note edited under the timestamps pass",
+      drive: async ({ h }) => {
+        h.stages.stamps.failWith = new NoteChangedError("note changed");
+        await h.runner.submit(SUBMIT);
+        await flush();
+      },
+    },
+    {
+      name: "failed (a permanent verdict)",
+      drive: async ({ h }) => {
+        h.stages.fetch.failWith = new PermanentJobError("no captions");
+        await h.runner.submit(SUBMIT);
+        await flush();
+      },
+    },
+    {
+      name: "failed (the template engine went away)",
+      drive: async ({ h }) => {
+        h.stages.templaterAvailable = false;
+        await h.runner.submit(SUBMIT);
+        await flush();
+      },
+    },
+    {
+      name: "interrupted (a transient error)",
+      drive: async ({ h }) => {
+        h.stages.summ.failWith = new Error("socket hang up");
+        await h.runner.submit(SUBMIT);
+        await flush();
+      },
+    },
+    {
+      name: "interrupted (the transcript deadline, the one that is left)",
+      drive: async ({ h }) => {
+        await submitUntilTranscriptPending(h);
+        await timeOutTranscript(h);
+      },
+    },
+    {
+      name: "cancelled mid-LLM-call",
+      drive: async ({ h }) => {
+        h.stages.stamps.manual = true;
+        await h.runner.submit(SUBMIT);
+        await flush();
+        await h.runner.cancel("job-1");
+        h.stages.stamps.resolveLast(undefined);
+        await flush();
+      },
+    },
+    {
+      name: "a silent guard() failure: the record is superseded under the run",
+      drive: async ({ h }) => {
+        h.stages.stamps.manual = true;
+        await h.runner.submit(SUBMIT);
+        await flush();
+        const record = h.store.get("job-1");
+        if (record === undefined) {
+          throw new Error("the job's record went missing");
+        }
+        record.generation += 1;
+        await h.store.upsert(record, h.clock.now);
+        h.stages.stamps.resolveLast(undefined);
+        await flush();
+      },
+    },
+    {
+      name: "a store rejection escaping the stage functions",
+      drive: async ({ h }) => {
+        h.store.failEvery = (record) => record.stage === "timestamps";
+        await h.runner.submit(SUBMIT);
+        await flush();
+      },
+    },
+  ];
+
+  for (const exit of exits) {
+    it(`leaves no surface behind when a run ends by: ${exit.name}`, async () => {
+      const w = wired();
+      await exit.drive(w);
+
+      expect(w.h.runner.isActive("job-1")).toBe(false);
+      expect(w.notices.activeCount()).toBe(0);
+      // Whatever was opened was closed exactly once.
+      for (const surface of w.surfaces) {
+        expect(surface.hidden).toBe(1);
+      }
+    });
+  }
+
+  it("leaves no surface behind when a collection ADOPTS the running job mid-flight (#14 F2)", async () => {
+    // Wired as the host wires it. A standalone job is showing its own notice
+    // when the user starts a playlist containing that video; submitChild
+    // adopts the live job, and from that moment the host reports every one of
+    // its events as a collection child's. The outcome is suppressed — the
+    // collection's notice narrates it — so the run ending is the only thing
+    // left that can close the surface this job already opened.
+    let adopted = false;
+    const w = wired({}, () => adopted);
+    w.h.stages.stamps.manual = true;
+    await w.h.runner.submit(SUBMIT);
+    await flush();
+    expect(w.notices.activeCount()).toBe(1);
+
+    adopted = true;
+    w.h.stages.stamps.resolveLast(undefined);
+    await flush();
+
+    expect(w.h.events.filter((e) => e.type === "done")).toHaveLength(1);
+    expect(w.notices.activeCount()).toBe(0);
+    expect(w.surfaces.every((surface) => surface.hidden === 1)).toBe(true);
+  });
+
+  it("opens no surface at all for a job that was a collection child throughout", async () => {
+    const w = wired({}, () => true);
+    await w.h.runner.submit(SUBMIT);
+    await flush();
+    expect(w.surfaces).toHaveLength(0);
+    expect(w.notices.activeCount()).toBe(0);
+  });
+
+  it("leaves no surface behind when the plugin unloads mid-run", async () => {
+    // Unload is the one exit that emits nothing by design — a fenced run must
+    // not reach a torn-down plugin — so the sweep is the host's, exactly as
+    // main.ts's onunload does it (stopAll, then dismissAll).
+    const w = wired();
+    w.h.stages.stamps.manual = true;
+    await w.h.runner.submit(SUBMIT);
+    await flush();
+    expect(w.notices.activeCount()).toBe(1);
+
+    w.h.runner.stopAll();
+    w.notices.dismissAll();
+    w.h.stages.stamps.resolveLast(undefined);
+    await flush();
+
+    expect(w.notices.activeCount()).toBe(0);
+    expect(w.surfaces.every((surface) => surface.hidden === 1)).toBe(true);
+    // And the fenced late completion emitted nothing at all, so nothing could
+    // have re-opened one.
+    expect(w.h.events.filter((e) => e.type !== "progress")).toEqual([]);
   });
 });

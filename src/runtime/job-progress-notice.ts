@@ -95,20 +95,44 @@ export class JobProgressNotices {
 
   /**
    * Applies one runner event. `progress` creates the job's notice the first
-   * time and updates it in place afterwards; every terminal event hides it
-   * and forgets the job, which is what keeps the map from growing across a
-   * session. A terminal event for a job that never reported progress (or for
-   * another installation's job) is a no-op.
+   * time and updates it in place afterwards; every terminal event — and
+   * `run-ended`, which arrives however the run exited (#14) — hides it and
+   * forgets the job, which is what keeps the map from growing across a
+   * session. An event for a job that never reported progress (or for another
+   * installation's job) is a no-op.
    */
-  handle(event: JobEvent): void {
+  handle(event: JobEvent, inCollection = false): void {
+    // Whether a job belongs to a live collection is the HOST's knowledge
+    // (`CollectionRunner.owns`), but what to do about it is this class's
+    // policy, and it lives here so a test can see it — main.ts has no
+    // harness. A child is reported by its collection's single run notice,
+    // never by one of its own.
+    //
+    // `run-ended` is the exception, and it matters (#14 F2): a standalone job
+    // already showing its own notice can be ADOPTED by a collection started
+    // later (main.ts submitChild). From that moment every event for it reads
+    // as a child's, so the open surface would never be told anything again.
+    // A genuine child has no notice, which makes the dismiss a no-op there.
+    if (inCollection && event.type !== "run-ended") {
+      return;
+    }
     switch (event.type) {
       case "progress":
         this.show(event.id, progressNoticeText(event.stage));
         break;
+      // `run-ended` is what makes the surface's lifetime the RUN's lifetime
+      // (#14). Two different things hang on it, and only one of them is a
+      // live bug: a silent runner exit emitting none of the four outcomes is
+      // NOT reachable in production today (job-runner.ts, JobEvent), so that
+      // half is hardening; the adopted collection child above IS reachable,
+      // and this is what closes its notice. It also follows every terminal
+      // event, so `dismiss` being a no-op for a job already forgotten is
+      // what makes that safe.
       case "done":
       case "failed":
       case "cancelled":
       case "interrupted":
+      case "run-ended":
         this.dismiss(event.id);
         break;
     }

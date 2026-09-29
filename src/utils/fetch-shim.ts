@@ -1,6 +1,7 @@
 import { requestUrl } from "obsidian";
 import { getSafeErrorMessage } from "./error-utils";
 import { getLogger } from "./logger";
+import { REQUEST_TIMEOUT_MS, requestTimeoutMessage } from "./request-budget";
 
 // Get logger for fetch shim
 const logger = getLogger('FETCH');
@@ -85,6 +86,56 @@ const normalizeHeaders = (headers?: HeadersInit): Record<string, string> => {
     return acc;
   }, {});
 };
+
+/**
+ * `requestUrl`, bounded (#15). It REJECTS while the underlying call dangles,
+ * because `requestUrl` cannot be aborted: on desktop it resolves over a
+ * one-shot Electron IPC channel with no renderer-side cancel, so the best
+ * available is to stop waiting for it.
+ *
+ * That is safe here only because the abandoned work is one request whose
+ * result nobody is left awaiting — the caller's catch runs, the pass rejects
+ * before it reaches its vault write, and the late reply reaches nothing. It is
+ * NOT safe at stage level, which is why #13 removed the budget there rather
+ * than moving it.
+ *
+ * Timers come from `window`, as everywhere else in this plugin, and this one
+ * is NOT registered with the plugin (#15 review F7). On unload with requests
+ * in flight, each leaves its timer armed for up to the rest of its budget —
+ * one per in-flight request, ten minutes at worst. That is deliberate rather
+ * than overlooked: the shim is a free function every provider and the
+ * transcript extractor call, with no Plugin handle to `registerInterval`
+ * with, and threading one through all of them to reclaim a bounded,
+ * self-clearing timer would cost more than it saves. When such a timer does
+ * fire it rejects into the abandoned call's own catch — which still exists,
+ * so it is handled, not an unhandled rejection — and the runner is fenced by
+ * then (`stopAll`), so nothing it says can reach a record, a surface or a
+ * vault write. What it cannot do is outlive the process.
+ */
+async function requestWithBudget(options: RequestUrlOptions): Promise<RequestUrlResponse> {
+  const startedAt = Date.now();
+  let timer: number | undefined;
+  try {
+    return await Promise.race([
+      requestUrl(options),
+      new Promise<never>((_resolve, reject) => {
+        timer = window.setTimeout(() => {
+          reject(new Error(requestTimeoutMessage(REQUEST_TIMEOUT_MS)));
+        }, REQUEST_TIMEOUT_MS);
+      }),
+    ]);
+  } finally {
+    // Whichever side won, the timer goes: a settled request must not leave one
+    // armed for the rest of the budget.
+    if (timer !== undefined) {
+      window.clearTimeout(timer);
+    }
+    // Per-call timing, under debugLogging like every other line here. There is
+    // no timing data anywhere in this repo, and the budget above should be
+    // tuned from real runs rather than guessed at twice.
+    logger.debug(`Request to ${redactUrlForLog(options.url)} took ${Date.now() - startedAt} ms`);
+  }
+}
 
 /**
  * A fetch API implementation that uses Obsidian's requestUrl method.
@@ -199,7 +250,7 @@ export async function obsidianFetch(input: RequestInfo, init?: RequestInit): Pro
       logger.debug('About to call requestUrl...');
       logger.debug(`URL length: ${options.url.length} characters`);
       logger.debug(`URL starts with: ${redactUrlForLog(options.url).substring(0, 100)}...`);
-      res = await requestUrl(options);
+      res = await requestWithBudget(options);
       logger.debug(`requestUrl completed - Status: ${res?.status}, HasText: ${!!res?.text}`);
     } catch (requestError) {
       const requestErrorMessage = getSafeErrorMessage(requestError);

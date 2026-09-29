@@ -13,6 +13,7 @@ import type { CollectionVideo } from "../jobs/collection-record";
 import type { JobHost, JobHostSettings, RenderedNote, TimestampPassOptions, VaultLike } from "./job-adapters";
 import { sanitizeFilename } from "../utils/filename-sanitizer";
 import { NoCaptionsError } from "../utils/transcript-errors";
+import { REQUEST_TIMEOUT_MS, requestTimeoutMessage } from "../utils/request-budget";
 
 // Seam-level tests (#3 final review C1): the REAL JobRunner + REAL adapters +
 // REAL JobStore, driven through a host double that mirrors main.ts and a
@@ -379,6 +380,41 @@ describe("end-to-end: timestamps-stage failures surface as recoverable on the ru
     expect(h.host.timestampOptions).toEqual([{ strict: true }]);
     // The failed pass is not retried behind the person's back.
     expect(h.host.summarizeCalls).toBe(1);
+    expect(h.events.filter((e) => e.type === "done")).toEqual([]);
+  });
+});
+
+describe("end-to-end: a rejecting timestamps pass leaves the note as the create stage left it", () => {
+  it("the RUNNER writes nothing of its own when the pass rejects, whatever the pass rejected with", async () => {
+    // NAMED HONESTLY (#15 review F6). This drives the host double, so what it
+    // proves is the runner's half: a rejected timestamps stage adds nothing
+    // to the note and reports interrupted. That was already true before #15,
+    // and this test passes against the unbounded shim — it is NOT a pin of
+    // "a timed-out request leaves no note written".
+    //
+    // The pass's own half — that one abandoned chunk call ends the pass
+    // BEFORE `writeIfUnchanged` — is main.ts code, which cannot be loaded
+    // here. Its decision is extracted and pinned in
+    // timestamp-pass-policy.test.ts ("chunkFailureAction"), which is the test
+    // that fails if someone makes a failed chunk carry on.
+    const h = harness();
+    // The real message the shim raises, not an approximation of it.
+    h.host.timestampsError = new Error(requestTimeoutMessage(REQUEST_TIMEOUT_MS));
+    const submitted = await h.runner.submit(submitInput("t-timeout"));
+    await settle();
+    const id = (submitted as { id: string }).id;
+
+    const record = h.store.get(id);
+    expect(record?.status).toBe("interrupted");
+    expect(record?.stage).toBe("timestamps");
+    expect(record?.lastError).toContain("TubeSage stopped waiting");
+
+    // One note, holding exactly what the create stage wrote. The timestamps
+    // pass appends "[Watch]" when it writes; its absence IS the property.
+    expect(h.vault.files.size).toBe(1);
+    const notePath = record?.notePath ?? "";
+    expect(h.vault.files.get(notePath)).toBe("RENDERED");
+    expect(h.vault.files.get(notePath)).not.toContain("[Watch]");
     expect(h.events.filter((e) => e.type === "done")).toEqual([]);
   });
 });
