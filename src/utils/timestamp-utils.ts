@@ -87,7 +87,7 @@ export function reconstructDocument(frontmatter: string, enhancedContent: string
 export function validateEnhancedContent(
     enhancedContent: string,
     originalContent: string,
-    _headings: string[],
+    headings: string[],
     videoId: string
 ): boolean {
     // Check if response has proper Markdown formatting
@@ -95,13 +95,24 @@ export function validateEnhancedContent(
         logger.error("LLM response doesn't contain any markdown headings");
         return false;
     }
-    
-    // Validate that the modified content hasn't lost significant content
-    if (enhancedContent.length < originalContent.length * 0.9) {
+
+    // Validate that the modified content hasn't lost significant content.
+    // Both sides are measured without the markers/links the pass adds, so
+    // the links themselves cannot make up for lost text.
+    if (withoutAddedLinks(enhancedContent).length < withoutAddedLinks(originalContent).length * 0.9) {
         logger.error("LLM output is suspiciously short, might have lost content");
         return false;
     }
-    
+
+    // Every heading the LLM was given must still be there (it may have
+    // gained a marker or a Watch link)
+    const returnedHeadings = new Set(headingTexts(enhancedContent).map(withoutAddedLinks));
+    const missingHeadings = headings.filter((heading) => !returnedHeadings.has(withoutAddedLinks(heading)));
+    if (missingHeadings.length > 0) {
+        logger.error(`LLM output is missing ${missingHeadings.length} of ${headings.length} headings`);
+        return false;
+    }
+
     // Verify the output has timestamp links in headings (after conversion from TimeIndex markers)
     const timestampLinkPattern = new RegExp(`^#+\\s+.*?\\[Watch\\]\\(https://www\\.youtube\\.com/watch\\?v=${videoId}&t=\\d+\\)`, 'm');
     const hasLinks = timestampLinkPattern.test(enhancedContent);
@@ -138,19 +149,57 @@ export function buildSinglePassNote(
     const { frontmatter: extractedFrontmatter, contentWithoutFrontmatter: extractedContent } = extractDocumentComponents(note);
     const convertedContent = convertTimeIndexToWatchUrls(extractedContent, videoId);
     note = reconstructDocument(extractedFrontmatter, convertedContent);
-    return { note, valid: validateEnhancedContent(note, originalBody, headings, videoId) };
+    // Body against body: the rebuilt note's frontmatter carries the whole
+    // transcript, so measuring the note would make the length guard
+    // unfailable (#21).
+    return { note, valid: validateEnhancedContent(convertedContent, originalBody, headings, videoId) };
 }
 
 /**
  * Whether the chunked pass may use the LLM's response for one chunk. When it
  * may not, main.ts keeps the chunk's original text.
  *
+ * The response must keep the chunk's length (same tolerance as the single
+ * pass), still contain every heading the chunk was sent with, carry markers
+ * only on heading lines, and link at least one heading.
+ *
  * @param processedChunk The LLM's response for the chunk
- * @param _originalChunk The chunk text that was sent to the LLM
+ * @param originalChunk The chunk text that was sent to the LLM
  * @param videoId The YouTube video ID
  */
-export function isChunkAcceptable(processedChunk: string, _originalChunk: string, videoId: string): boolean {
-    return hasTimestampLinks(processedChunk, videoId);
+export function isChunkAcceptable(processedChunk: string, originalChunk: string, videoId: string): boolean {
+    if (!hasMarkersOnlyOnHeadingLines(processedChunk)) {
+        logger.warn("Chunk has TimeIndex markers outside heading lines");
+        return false;
+    }
+    const converted = convertTimeIndexToWatchUrls(processedChunk, videoId);
+    return validateEnhancedContent(converted, originalChunk, headingTexts(originalChunk), videoId);
+}
+
+const TIME_INDEX_MARKER = /\[TimeIndex:\d+\]/;
+const HEADING_LINE = /^#{1,6}\s/;
+
+function hasMarkersOnlyOnHeadingLines(content: string): boolean {
+    return content.split('\n').every((line) => !TIME_INDEX_MARKER.test(line) || HEADING_LINE.test(line));
+}
+
+/** The text of every markdown heading, extracted the same way main.ts does before the pass. */
+function headingTexts(content: string): string[] {
+    const texts: string[] = [];
+    const headingRegex = /^(#{1,6})\s+(.+)$/gm;
+    let match;
+    while ((match = headingRegex.exec(content)) !== null) {
+        texts.push(match[2].trim());
+    }
+    return texts;
+}
+
+/** The text with the TimeIndex markers and Watch links the pass adds removed. */
+function withoutAddedLinks(text: string): string {
+    return text
+        .replace(/\s*\[TimeIndex:\d+\]/g, '')
+        .replace(/\s*\[Watch\]\(https:\/\/www\.youtube\.com\/watch\?v=[^)\s]*\)/g, '')
+        .trim();
 }
 
 /**
@@ -292,45 +341,6 @@ export function countTimestampLinks(content: string): number {
  */
 export function hasProperHeading(chunk: string): boolean {
     return !!chunk.match(/^#+\s+\d+(?:\.\d+)?\.?\s+/m);
-}
-
-/**
- * Check if a chunk has valid TimeIndex markers
- * 
- * @param chunk The content chunk
- * @param videoId The YouTube video ID (kept for compatibility but not used)
- * @returns Whether the chunk has valid TimeIndex markers
- */
-export function hasTimestampLinks(chunk: string, videoId: string): boolean {
-    const timeIndexPattern = /\[TimeIndex:\d+\]/;
-    const hasTimeIndex = timeIndexPattern.test(chunk);
-    
-    if (!hasTimeIndex) {
-        // Log the first few hundred characters to see what's coming back
-        logger.debug(`No TimeIndex markers found in chunk. First 200 chars: ${chunk.substring(0, 200)}...`);
-        
-        // Check if we have any headings with proper format
-        const headings = chunk.match(/^#+\s+\d+(?:\.\d+)?\.?\s+/gm);
-        if (headings) {
-            logger.debug(`Found ${headings.length} numbered headings but no TimeIndex markers`);
-        } else {
-            logger.debug(`No numbered headings found in chunk`);
-        }
-        
-        // Also check for Watch URLs in headings (after conversion from TimeIndex)
-        const timestampLinkPattern = new RegExp(`^#+\\s+.*?\\[Watch\\]\\(https://www\\.youtube\\.com/watch\\?v=${videoId}&t=\\d+\\)`, 'm');
-        const hasWatchLinks = timestampLinkPattern.test(chunk);
-        if (hasWatchLinks) {
-            const links = chunk.match(/^#+\s+.*?\[Watch\]\([^)]+\)/gm);
-            logger.debug(`Found ${links ? links.length : 0} Watch links in headings (converted from TimeIndex)`);
-            return true;
-        }
-    } else {
-        const markers = chunk.match(/\[TimeIndex:\d+\]/g);
-        logger.debug(`Found ${markers ? markers.length : 0} TimeIndex markers in chunk`);
-    }
-    
-    return hasTimeIndex;
 }
 
 /**

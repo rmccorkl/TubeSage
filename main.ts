@@ -2632,14 +2632,15 @@ ${contentWithoutFrontmatter}
                     }
                     
                     if (processedChunk) {
-                        // Validate processed chunk has timestamp link
-                        const hasLink = isChunkAcceptable(processedChunk, chunk, videoId);
+                        // Validate the processed chunk against the chunk that was sent
+                        // (length kept, every heading present, markers only on headings)
+                        const accepted = isChunkAcceptable(processedChunk, chunk, videoId);
                         
-                        // Log link validation result if debug is enabled
+                        // Log the validation result if debug is enabled
                         if (this.settings.debugLogging) {
-                            llmLogger.debug(`CHUNK ${i+1} has timestamp links: ${hasLink}`);
+                            llmLogger.debug(`CHUNK ${i+1} passed validation: ${accepted}`);
                             
-                            if (hasLink) {
+                            if (accepted) {
                                 const linkCount = countTimestampLinks(processedChunk);
                                 llmLogger.debug(`CHUNK ${i+1} contains ${linkCount} timestamp links`);
                             }
@@ -2648,10 +2649,10 @@ ${contentWithoutFrontmatter}
                         // Ensure chunk ends with a newline to prevent wrapping
                         let finalChunk = ensureTrailingNewline(processedChunk);
                         
-                        if (hasLink) {
+                        if (accepted) {
                             processedChunks.push(finalChunk);
                         } else {
-                            logger.warn("[addTimestampLinksInChunks] No timestamp link added to chunk", i+1);
+                            logger.warn("[addTimestampLinksInChunks] Chunk failed validation, keeping its original text:", i+1);
                             // Push original chunk with newline
                             processedChunks.push(ensureTrailingNewline(chunk));
                         }
