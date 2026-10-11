@@ -34,7 +34,7 @@ describe("readKey", () => {
     expect(result.message).toContain("OPENROUTER_API_KEY_JEV");
     expect(result.message).toContain("OPENROUTER_API_KEY_JEV, OPENROUTER_API_KEY.");
     expect(result.message).toContain("--env-file");
-    expect(result.message).not.toContain("1Password");
+    expect(result.message).toContain("--op-token-file");
   });
 
   it("reads the key from env-file variables when the environment has none", () => {

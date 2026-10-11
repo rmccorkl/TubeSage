@@ -1,9 +1,9 @@
-import { mkdtempSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { run } from "../cli.mjs";
-import { createFakeRes, makeRequestFn } from "./fakes.mjs";
+import { createFakeRes, fakeSpawn, makeRequestFn } from "./fakes.mjs";
 
 const KEY_ENV = "OPENROUTER_API_KEY_JEV";
 const FAKE_KEY = "sk-test-FAKE-KEY-0123456789";
@@ -46,11 +46,15 @@ async function runAnsweredLive(argv, deps, requestFn) {
   const pending = run(argv, deps);
   await Promise.resolve();
   await Promise.resolve();
+  answerLive(requestFn);
+  return pending;
+}
+
+function answerLive(requestFn) {
   const res = createFakeRes({ statusCode: 200 });
   requestFn.emitResponse(res);
   res.emit("data", Buffer.from(JSON.stringify({ model: "typesafe/jev-1.13-20260917" })));
   res.emit("end");
-  return pending;
 }
 
 describe("cli run(): usage", () => {
@@ -248,7 +252,7 @@ describe("cli run(): --env-file", () => {
     const deps = baseDeps();
     const code = await run(["stage0", "--dry-run", "--env-file"], deps);
     expect(code).toBe(1);
-    expect(deps.stderr.text()).toContain("--env-file needs a path");
+    expect(deps.stderr.text()).toContain("--env-file needs a value");
   });
 
   it("emits no value from the file when no accepted key is in it", async () => {
@@ -301,5 +305,57 @@ describe("cli run(): --env-file", () => {
 
     expect(requestFn.calls[0].headers.Authorization).toBe(`Bearer ${FAKE_KEY}`);
     expect(deps.stdout.text()).toContain("using key from OPENROUTER_API_KEY (environment)");
+  });
+});
+
+describe("cli run(): 1Password key resolution", () => {
+  const OP_TOKEN = "ops_FAKE-CLI-SERVICE-ACCOUNT-TOKEN-0123";
+  const OP_KEY = "sk-or-v1-FAKE-CLI-KEY-FROM-1PASSWORD-4567";
+
+  function homeWithToken() {
+    const home = mkdtempSync(join(tmpdir(), "jev-rig-cli-home-"));
+    const dir = join(home, ".hermes", "profiles", "tvmacro-bot");
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(join(dir, ".env"), "OP_SERVICE_ACCOUNT_TOKEN=\"" + OP_TOKEN + "\"\n");
+    return home;
+  }
+
+  it.each(["stage0", "stage1", "stage2"])("%s --dry-run never runs op, even with no credential at all", async (stage) => {
+    const spawn = fakeSpawn({ stdout: OP_KEY });
+    const deps = baseDeps({ spawn, home: homeWithToken() });
+    expect(await run([stage, "--dry-run"], deps)).toBe(0);
+    expect(spawn.calls).toHaveLength(0);
+  });
+
+  it("with no key in the environment, reads it from 1Password and leaks neither secret", async () => {
+    const spawn = fakeSpawn({ stdout: OP_KEY + "\n" });
+    const requestFn = makeRequestFn();
+    const deps = baseDeps({ spawn, home: homeWithToken(), requestFn });
+
+    // The key is resolved (op runs) before the request is placed, so wait for it.
+    const pending = run(["stage0", "--yes"], deps);
+    await vi.waitFor(() => expect(requestFn.calls).toHaveLength(1));
+    answerLive(requestFn);
+    expect(await pending).toBe(0);
+
+    expect(requestFn.calls[0].headers.Authorization).toBe("Bearer " + OP_KEY);
+    expect(deps.stdout.text()).toContain("using key from op://HermesAutomationVault/OpenRouter API Key/API_Key_JevOpenrouter (1Password");
+    const everything =
+      deps.stdout.text() + deps.stderr.text() + readOnlyRunFile(deps.baseDir, "exchanges.jsonl") + readOnlyRunFile(deps.baseDir, "run.json");
+    expect(everything).not.toContain(OP_KEY);
+    expect(everything).not.toContain(OP_TOKEN);
+  });
+
+  it("an op failure exits 1 before any request and prints only names, the reference and the exit code", async () => {
+    const spawn = fakeSpawn({ exitCode: 1, stdout: OP_KEY, stderr: "[ERROR] 403 Service Account Deleted " + OP_TOKEN });
+    const deps = baseDeps({ spawn, home: homeWithToken() });
+
+    expect(await run(["stage1", "--yes"], deps)).toBe(1);
+    expect(deps.requestFn.calls).toHaveLength(0);
+    const output = deps.stdout.text() + deps.stderr.text();
+    expect(output).toContain("(op exit 1)");
+    expect(output).not.toContain(OP_KEY);
+    expect(output).not.toContain(OP_TOKEN);
+    expect(output).not.toContain("Service Account Deleted");
   });
 });

@@ -10,20 +10,17 @@ and `scripts/rig-containment.test.mjs` checks that on every `npm test`.
 
 ## Run it (maintainer)
 
-Use the OpenRouter key you already have. You don't need a new key, and you
-don't need 1Password.
+No setup and no pasted one-liner. On this machine the rig finds its own
+key through the Hermes service-account token (see below).
 
 ```sh
-# 1. Preview. No key needed, no network call.
-node rig/jev-timestamps/cli.mjs stage0 --dry-run
+# 1. Preview. No key needed, no network call, op is never run.
+node rig/jev-timestamps/cli.mjs stage1 --dry-run
 
-# 2a. Live run, with the standard variable already in your shell:
-node rig/jev-timestamps/cli.mjs stage0 --yes     # 1 request,      ~$0.000016
-node rig/jev-timestamps/cli.mjs stage1 --yes     # up to 5 (cap 10), ~$0.00025
-node rig/jev-timestamps/cli.mjs stage2 --yes     # up to 60,       ~$0.001-0.002
-
-# 2b. Or, with no setup at all, point at a .env that already holds the key:
-node rig/jev-timestamps/cli.mjs stage1 --yes --env-file /path/to/project/.env
+# 2. Live run:
+node rig/jev-timestamps/cli.mjs stage0 --yes     # 1 request,         ~$0.000016
+node rig/jev-timestamps/cli.mjs stage1 --yes     # up to 5 (cap 10),  ~$0.00008-0.00025
+node rig/jev-timestamps/cli.mjs stage2 --yes     # up to 60,          ~$0.001-0.002
 ```
 
 Every dry run and every refusal ends with the exact `--yes` command to run.
@@ -33,12 +30,40 @@ a total wall-clock deadline).
 
 ### Where the key comes from
 
-The rig uses the first of these names that is set:
+First hit wins:
 
-1. `OPENROUTER_API_KEY_JEV` (still accepted, so existing setups keep working)
-2. `OPENROUTER_API_KEY` (the standard name; the normal path)
+1. **Environment:** `OPENROUTER_API_KEY_JEV`, then `OPENROUTER_API_KEY`.
+2. **`--env-file PATH`:** the same two names, read from an existing dotenv
+   file (details below).
+3. **1Password, the Hermes method:**
+   - The rig takes a service-account token from `OP_SERVICE_ACCOUNT_TOKEN` if
+     it is set. Otherwise it reads that line from a dotenv token file:
+     `--op-token-file PATH`, default `~/.hermes/profiles/tvmacro-bot/.env`.
+   - It runs `op read <reference>`. The default reference is
+     `op://HermesAutomationVault/OpenRouter API Key/API_Key_JevOpenrouter`;
+     `--op-ref op://...` overrides it.
+   - The token goes **only** into that one child process's environment map.
+     It is never on the command line (argv is visible in `ps`), never in the
+     rig's own environment, and never on disk.
+   - `op`'s stdout is the key.
 
 It never falls back to another provider's key, such as `OPENAI_API_KEY`.
+
+Failures say what to do, naming only variables, paths, the `op://`
+reference and `op`'s exit code:
+
+| failure | message |
+|---|---|
+| `op` not installed | `the op CLI is not on PATH` |
+| token file missing | `--op-token-file: cannot read <path> (ENOENT)` |
+| token file without the token line | `<path> has no OP_SERVICE_ACCOUNT_TOKEN line` |
+| reference not found | `reference not found: <ref> (op exit N)` |
+| any other `op` failure | `op read <ref> failed (op exit N)`, with a hint that the token is probably invalid, deleted or cannot see the vault |
+
+When the token came from your shell, the last message adds that an inherited
+`OP_SERVICE_ACCOUNT_TOKEN` can be a stale one: unset it so the token file is
+used. "Reference not found" is a best guess from `op`'s error output, which
+is not a documented format. `op`'s output itself is never printed.
 
 `--env-file PATH` reads simple `KEY=VALUE` lines from an existing file. It
 skips blank lines and `#` comments and strips surrounding quotes. Other lines
@@ -54,9 +79,11 @@ path stops it before the rig starts: `node: <path>: not found` (or
 path. A readable file is passed through untouched; Node does not load it.
 The rig parses it as described above.
 
-The rig only ever prints variable **names** and the file path: never a
-value, never a prefix of one, in errors or in saved runs. On success it
-prints `using key from <NAME> (environment | --env-file PATH)`.
+The rig only ever prints variable **names**, file paths, `op://` references
+and `op`'s exit code. It never prints a key or token, or any prefix of one,
+in errors or in saved runs. On success it prints which source was used:
+`using key from <NAME> (environment | --env-file PATH)`, or
+`using key from op://… (1Password, service-account token from …)`.
 
 ## Stages
 

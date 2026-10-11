@@ -4,7 +4,7 @@
 // ever called, matching the order of operations in the task brief exactly.
 import { realpathSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { assertNoEnvProxy, loadEnvFile, readKey } from "./lib/env.mjs";
+import { assertNoEnvProxy, loadEnvFile, resolveKey } from "./lib/env.mjs";
 import { createClient } from "./lib/client.mjs";
 import { createRecorder } from "./lib/recorder.mjs";
 import { estimatePlan, formatEstimate, decideGate } from "./lib/billing.mjs";
@@ -13,7 +13,7 @@ import { planStage1Bodies, runStage1, STAGE1_MAX_REQUESTS } from "./stages/stage
 import { planStage2Bodies, runStage2, STAGE2_MAX_REQUESTS } from "./stages/stage2.mjs";
 import { ENDPOINT, USER_AGENT, DEFAULT_TIMEOUT_MS } from "./lib/constants.mjs";
 
-const USAGE = "Usage: node rig/jev-timestamps/cli.mjs <stage0|stage1|stage2> [--dry-run | --yes] [--samples N] [--timeout-ms N] [--env-file PATH]";
+const USAGE = "Usage: node rig/jev-timestamps/cli.mjs <stage0|stage1|stage2> [--dry-run | --yes] [--samples N] [--timeout-ms N] [--env-file PATH] [--op-token-file PATH] [--op-ref op://...]";
 
 // Each stage: the bodies its estimate is priced on (an upper bound where the
 // stage can stop early), a note printed with the estimate, and the runner.
@@ -31,8 +31,15 @@ const STAGES = {
   },
 };
 
+// The exact command to spend, carrying over any credential flags given.
 function spendCommand(opts) {
-  return `node rig/jev-timestamps/cli.mjs ${opts.stage} --yes${opts.envFile ? ` --env-file ${opts.envFile}` : ""}`;
+  const flags = [
+    ["--env-file", opts.envFile],
+    ["--op-token-file", opts.opTokenFile],
+    ["--op-ref", opts.opRef],
+  ].filter(([, value]) => value);
+  const extra = flags.map(([flag, value]) => ` ${flag} ${JSON.stringify(value)}`).join("");
+  return `node rig/jev-timestamps/cli.mjs ${opts.stage} --yes${extra}`;
 }
 
 function parsePositiveInt(text, label, errors) {
@@ -67,16 +74,20 @@ const FLAG_HANDLERS = {
     if (value !== undefined) opts.timeoutMs = value;
     return 1;
   },
-  "--env-file": (opts, rest, i, errors) => {
-    const path = rest[i + 1];
-    if (!path || path.startsWith("--")) {
-      errors.push("--env-file needs a path");
-      return 0;
-    }
-    opts.envFile = path;
-    return 1;
-  },
+  "--env-file": (opts, rest, i, errors) => takeValue(opts, "envFile", "--env-file", rest[i + 1], errors),
+  "--op-token-file": (opts, rest, i, errors) => takeValue(opts, "opTokenFile", "--op-token-file", rest[i + 1], errors),
+  "--op-ref": (opts, rest, i, errors) => takeValue(opts, "opRef", "--op-ref", rest[i + 1], errors),
 };
+
+// A flag that takes the next token as its value. Returns how many extra tokens it consumed.
+function takeValue(opts, field, flag, value, errors) {
+  if (!value || value.startsWith("--")) {
+    errors.push(`${flag} needs a value`);
+    return 0;
+  }
+  opts[field] = value;
+  return 1;
+}
 
 function parseArgs(argv) {
   const [stage, ...rest] = argv;
@@ -123,14 +134,24 @@ function runDryRun({ bodies, stage, now, baseDir, stdout, command }) {
   return 0;
 }
 
-async function runGo({ stage, env, fileVars, envFile, requestFn, timeoutMs, now, baseDir, stdout, stderr }) {
-  const keyResult = readKey(env, fileVars, envFile);
+// Where the key came from: a variable NAME or an op:// reference, never any part of a value.
+function keySourceText(keyResult, envFile) {
+  const where = {
+    environment: "environment",
+    "env-file": `--env-file ${envFile}`,
+    "1password": `1Password, service-account token from ${keyResult.tokenSource}`,
+  };
+  return `using key from ${keyResult.name} (${where[keyResult.source]})`;
+}
+
+async function runGo({ stage, env, fileVars, envFile, op, spawn, home, requestFn, timeoutMs, now, baseDir, stdout, stderr }) {
+  stdout.write("Resolving the OpenRouter key...\n");
+  const keyResult = await resolveKey({ env, fileVars, envFile, op, deps: { spawn, home } });
   if (!keyResult.ok) {
     stderr.write(`${keyResult.message}\n`);
     return 1;
   }
-  // The variable NAME and where it came from — never any part of its value.
-  stdout.write(`using key from ${keyResult.name} (${keyResult.source === "env-file" ? `--env-file ${envFile}` : "environment"})\n`);
+  stdout.write(`${keySourceText(keyResult, envFile)}\n`);
 
   const client = createClient({ key: keyResult.key, requestFn, timeoutMs, env });
   const recorder = createRecorder({ baseDir, stage, now, key: keyResult.key });
@@ -219,6 +240,8 @@ function preflight(opts, env, execArgv, stderr) {
  * @param {{ write: (chunk: string) => unknown }} [deps.stdout]
  * @param {{ write: (chunk: string) => unknown }} [deps.stderr]
  * @param {string[]} [deps.execArgv]
+ * @param {typeof import("node:child_process").spawn} [deps.spawn] - runs `op read` (injected in tests)
+ * @param {string} [deps.home] - home directory for the default --op-token-file
  * @returns {Promise<number>} the process exit code.
  */
 export async function run(argv = process.argv.slice(2), deps = {}) {
@@ -230,6 +253,8 @@ export async function run(argv = process.argv.slice(2), deps = {}) {
     stdout = process.stdout,
     stderr = process.stderr,
     execArgv = process.execArgv,
+    spawn,
+    home,
   } = deps;
 
   const resolved = resolveArgsOrExit(argv, stdout, stderr);
@@ -254,7 +279,7 @@ export async function run(argv = process.argv.slice(2), deps = {}) {
     stdout,
     command,
     dryRunArgs: { bodies, stage: opts.stage, now, baseDir, stdout, command },
-    goArgs: { stage: opts.stage, env, fileVars: checked.fileVars, envFile: opts.envFile, requestFn, timeoutMs: opts.timeoutMs, now, baseDir, stdout, stderr },
+    goArgs: { stage: opts.stage, env, fileVars: checked.fileVars, envFile: opts.envFile, op: { ref: opts.opRef, tokenFile: opts.opTokenFile }, spawn, home, requestFn, timeoutMs: opts.timeoutMs, now, baseDir, stdout, stderr },
   });
 }
 

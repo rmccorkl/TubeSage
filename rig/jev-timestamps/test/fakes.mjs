@@ -64,3 +64,33 @@ export function makeRequestFn({ reusedSocket = false } = {}) {
 
   return requestFn;
 }
+
+/**
+ * A fake child_process.spawn standing in for `op`. Each call records
+ * (command, args, options, child) on `.calls`, then plays the given outcome:
+ * stdout/stderr data and a close with `exitCode`, a spawn error, or nothing
+ * at all (`hang`).
+ */
+export function fakeSpawn({ exitCode = 0, stdout = "", stderr = "", errorCode, hang = false } = {}) {
+  const calls = [];
+  const spawn = (command, args, options) => {
+    const child = new EventEmitter();
+    child.stdout = new EventEmitter();
+    child.stderr = new EventEmitter();
+    child.kill = () => {
+      child.killed = true;
+    };
+    calls.push({ command, args, options, child });
+    if (!hang) {
+      setImmediate(() => {
+        if (errorCode) return child.emit("error", Object.assign(new Error(`spawn op ${errorCode}`), { code: errorCode }));
+        if (stdout) child.stdout.emit("data", Buffer.from(stdout));
+        if (stderr) child.stderr.emit("data", Buffer.from(stderr));
+        child.emit("close", exitCode);
+      });
+    }
+    return child;
+  };
+  spawn.calls = calls;
+  return spawn;
+}
