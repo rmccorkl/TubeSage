@@ -359,6 +359,23 @@ export function convertTimestampToSeconds(timestamp: string): number {
     }
 }
 
+/** Transcript character budget for the single timestamp pass. */
+export const SINGLE_PASS_TRANSCRIPT_BUDGET = 10000;
+/** Transcript character budget per chunk call on mobile. */
+export const MOBILE_CHUNK_TRANSCRIPT_BUDGET = 5000;
+
+/**
+ * The transcript as shown to the timestamp pass, within a character budget.
+ *
+ * @param transcript The transcript from the note's frontmatter
+ * @param budget The character budget
+ * @param truncationNotice Appended when the transcript had to be cut
+ */
+export function fitTranscriptToBudget(transcript: string, budget: number, truncationNotice: string): string {
+    if (transcript.length <= budget) return transcript;
+    return transcript.substring(0, budget) + "\n" + truncationNotice;
+}
+
 /**
  * Converts TimeIndex markers to Watch URLs ONLY in markdown headings
  * 

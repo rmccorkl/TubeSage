@@ -22,6 +22,9 @@ import {
     hasProperHeading,
     buildSinglePassNote,
     isChunkAcceptable,
+    fitTranscriptToBudget,
+    SINGLE_PASS_TRANSCRIPT_BUDGET,
+    MOBILE_CHUNK_TRANSCRIPT_BUDGET,
     convertTimestampToSeconds,
     convertTimeIndexToWatchUrls
 } from './src/utils/timestamp-utils';
@@ -2011,15 +2014,11 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             }
             
             // Truncate transcript for very large transcripts to avoid token overflow
-            let processedTranscript = transcript;
-            if (transcript && transcript.length > 10000) {
-                // For very large transcripts, truncate to a reasonable size
-                processedTranscript = transcript.substring(0, 10000) + 
-                    "\n[Transcript truncated to prevent token overflow]";
-                
-                if (this.settings.debugLogging) {
-                    llmLogger.debug(`[addTimestampLinksSinglePass] Truncated transcript from ${transcript.length} to 10000 characters`);
-                }
+            const processedTranscript = transcript
+                ? fitTranscriptToBudget(transcript, SINGLE_PASS_TRANSCRIPT_BUDGET, "[Transcript truncated to prevent token overflow]")
+                : transcript;
+            if (this.settings.debugLogging && processedTranscript !== transcript) {
+                llmLogger.debug(`[addTimestampLinksSinglePass] Fitted transcript from ${transcript.length} to ${processedTranscript.length} characters`);
             }
             
             // Debug the timestamp config being passed
@@ -2550,11 +2549,11 @@ ${contentWithoutFrontmatter}
                 // Construct reference section with clear instructions not to include in output
                 // Reduce transcript size on mobile to prevent token overflow
                 let transcriptContent = "";
-                if (Platform.isMobile && transcript.length > 5000) {
-                    // On mobile with large transcripts, keep only a portion to save tokens
-                    transcriptContent = transcript.substring(0, 5000) + "\n[Transcript truncated for mobile processing]";
+                if (Platform.isMobile && transcript.length > MOBILE_CHUNK_TRANSCRIPT_BUDGET) {
+                    // On mobile with large transcripts, fit the transcript to a budget to save tokens
+                    transcriptContent = fitTranscriptToBudget(transcript, MOBILE_CHUNK_TRANSCRIPT_BUDGET, "[Transcript truncated for mobile processing]");
                     if (this.settings.debugLogging) {
-                        llmLogger.debug(`Truncated transcript on mobile from ${transcript.length} to 5000 characters`);
+                        llmLogger.debug(`Fitted transcript on mobile from ${transcript.length} to ${transcriptContent.length} characters`);
                     }
                 } else {
                     transcriptContent = transcript.length > 0 ? 
