@@ -20,7 +20,8 @@ import {
     countTimestampLinks,
     ensureTrailingNewline,
     hasProperHeading,
-    hasTimestampLinks,
+    buildSinglePassNote,
+    isChunkAcceptable,
     convertTimestampToSeconds,
     convertTimeIndexToWatchUrls
 } from './src/utils/timestamp-utils';
@@ -2239,16 +2240,10 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 return null;
             }
             
-            // Reconstruct the document with original frontmatter and enhanced content
-            let enhancedNote = reconstructDocument(frontmatter, enhancedContent);
-            
-            // Convert TimeIndex markers to Watch URLs ONLY in content, preserving frontmatter transcript
-            const { frontmatter: extractedFrontmatter, contentWithoutFrontmatter: extractedContent } = extractDocumentComponents(enhancedNote);
-            const convertedContent = convertTimeIndexToWatchUrls(extractedContent, videoId);
-            enhancedNote = reconstructDocument(extractedFrontmatter, convertedContent);
-            
-            // Validate the final enhanced note with Watch URLs
-            if (validateEnhancedContent(enhancedNote, contentWithoutFrontmatter, headings, videoId)) {
+            // Rebuild the note (original frontmatter + enhanced body, TimeIndex
+            // markers converted to Watch URLs in the body only) and validate it
+            const { note: enhancedNote, valid } = buildSinglePassNote(frontmatter, enhancedContent, contentWithoutFrontmatter, headings, videoId);
+            if (valid) {
                 // Update the note file with the LLM-enhanced content — only if
                 // it still reads exactly as it did before the LLM call (F5).
                 //
@@ -2637,14 +2632,15 @@ ${contentWithoutFrontmatter}
                     }
                     
                     if (processedChunk) {
-                        // Validate processed chunk has timestamp link
-                        const hasLink = hasTimestampLinks(processedChunk, videoId);
+                        // Validate the processed chunk against the chunk that was sent
+                        // (length kept, every heading present, markers only on headings)
+                        const accepted = isChunkAcceptable(processedChunk, chunk, videoId);
                         
-                        // Log link validation result if debug is enabled
+                        // Log the validation result if debug is enabled
                         if (this.settings.debugLogging) {
-                            llmLogger.debug(`CHUNK ${i+1} has timestamp links: ${hasLink}`);
+                            llmLogger.debug(`CHUNK ${i+1} passed validation: ${accepted}`);
                             
-                            if (hasLink) {
+                            if (accepted) {
                                 const linkCount = countTimestampLinks(processedChunk);
                                 llmLogger.debug(`CHUNK ${i+1} contains ${linkCount} timestamp links`);
                             }
@@ -2653,10 +2649,10 @@ ${contentWithoutFrontmatter}
                         // Ensure chunk ends with a newline to prevent wrapping
                         let finalChunk = ensureTrailingNewline(processedChunk);
                         
-                        if (hasLink) {
+                        if (accepted) {
                             processedChunks.push(finalChunk);
                         } else {
-                            logger.warn("[addTimestampLinksInChunks] No timestamp link added to chunk", i+1);
+                            logger.warn("[addTimestampLinksInChunks] Chunk failed validation, keeping its original text:", i+1);
                             // Push original chunk with newline
                             processedChunks.push(ensureTrailingNewline(chunk));
                         }
