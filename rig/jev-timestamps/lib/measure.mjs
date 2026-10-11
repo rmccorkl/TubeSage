@@ -19,6 +19,20 @@ export function percentile(values, p) {
   return sorted[Math.max(0, Math.ceil((p / 100) * sorted.length) - 1)];
 }
 
+/** Runs `worker` over `items` with at most `limit` in flight; results keep the input order. */
+export async function runPool(items, limit, worker) {
+  const results = new Array(items.length);
+  let next = 0;
+  async function lane() {
+    while (next < items.length) {
+      const index = next++;
+      results[index] = await worker(items[index], index);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, lane));
+  return results;
+}
+
 /** usage.cost from a parsed body, or null. */
 export function costOf(json) {
   const cost = json?.usage?.cost;
