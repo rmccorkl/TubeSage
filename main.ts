@@ -23,6 +23,8 @@ import {
     buildSinglePassNote,
     isChunkAcceptable,
     fitTranscriptToBudget,
+    offeredTimeIndices,
+    dropUnofferedTimeIndices,
     SINGLE_PASS_TRANSCRIPT_BUDGET,
     MOBILE_CHUNK_TRANSCRIPT_BUDGET,
     convertTimestampToSeconds,
@@ -2014,9 +2016,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             }
             
             // Truncate transcript for very large transcripts to avoid token overflow
-            const processedTranscript = transcript
-                ? fitTranscriptToBudget(transcript, SINGLE_PASS_TRANSCRIPT_BUDGET, "[Transcript truncated to prevent token overflow]")
-                : transcript;
+            // Fitted, not cut: every segment's timestamp stays choosable (#23)
+            const processedTranscript = transcript ? fitTranscriptToBudget(transcript, SINGLE_PASS_TRANSCRIPT_BUDGET) : transcript;
             if (this.settings.debugLogging && processedTranscript !== transcript) {
                 llmLogger.debug(`[addTimestampLinksSinglePass] Fitted transcript from ${transcript.length} to ${processedTranscript.length} characters`);
             }
@@ -2241,7 +2242,9 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             
             // Rebuild the note (original frontmatter + enhanced body, TimeIndex
             // markers converted to Watch URLs in the body only) and validate it
-            const { note: enhancedNote, valid } = buildSinglePassNote(frontmatter, enhancedContent, contentWithoutFrontmatter, headings, videoId);
+            // A TimeIndex the model was never shown is dropped, not linked (#23)
+            const offered = offeredTimeIndices(processedTranscript || "");
+            const { note: enhancedNote, valid } = buildSinglePassNote(frontmatter, enhancedContent, contentWithoutFrontmatter, headings, videoId, offered);
             if (valid) {
                 // Update the note file with the LLM-enhanced content — only if
                 // it still reads exactly as it did before the LLM call (F5).
@@ -2550,8 +2553,9 @@ ${contentWithoutFrontmatter}
                 // Reduce transcript size on mobile to prevent token overflow
                 let transcriptContent = "";
                 if (Platform.isMobile && transcript.length > MOBILE_CHUNK_TRANSCRIPT_BUDGET) {
-                    // On mobile with large transcripts, fit the transcript to a budget to save tokens
-                    transcriptContent = fitTranscriptToBudget(transcript, MOBILE_CHUNK_TRANSCRIPT_BUDGET, "[Transcript truncated for mobile processing]");
+                    // On mobile with large transcripts, fit the transcript to a budget to save
+                    // tokens: every segment's timestamp kept, its text shortened (#23)
+                    transcriptContent = fitTranscriptToBudget(transcript, MOBILE_CHUNK_TRANSCRIPT_BUDGET);
                     if (this.settings.debugLogging) {
                         llmLogger.debug(`Fitted transcript on mobile from ${transcript.length} to ${transcriptContent.length} characters`);
                     }
@@ -2633,20 +2637,23 @@ ${contentWithoutFrontmatter}
                     if (processedChunk) {
                         // Validate the processed chunk against the chunk that was sent
                         // (length kept, every heading present, markers only on headings)
-                        const accepted = isChunkAcceptable(processedChunk, chunk, videoId);
+                        // A TimeIndex the model was never shown is dropped first (#23), so a
+                        // chunk left with no valid marker fails validation and keeps its text
+                        const cleanedChunk = dropUnofferedTimeIndices(processedChunk, offeredTimeIndices(transcriptContent));
+                        const accepted = isChunkAcceptable(cleanedChunk, chunk, videoId);
                         
                         // Log the validation result if debug is enabled
                         if (this.settings.debugLogging) {
                             llmLogger.debug(`CHUNK ${i+1} passed validation: ${accepted}`);
                             
                             if (accepted) {
-                                const linkCount = countTimestampLinks(processedChunk);
+                                const linkCount = countTimestampLinks(cleanedChunk);
                                 llmLogger.debug(`CHUNK ${i+1} contains ${linkCount} timestamp links`);
                             }
                         }
                         
                         // Ensure chunk ends with a newline to prevent wrapping
-                        let finalChunk = ensureTrailingNewline(processedChunk);
+                        let finalChunk = ensureTrailingNewline(cleanedChunk);
                         
                         if (accepted) {
                             processedChunks.push(finalChunk);

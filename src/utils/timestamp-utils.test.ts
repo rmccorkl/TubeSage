@@ -4,9 +4,14 @@ import {
     convertTimeIndexToWatchUrls,
     countTimestampLinks,
     createOptimizedChunks,
+    dropUnofferedTimeIndices,
     extractDocumentComponents,
+    fitTranscriptToBudget,
     hasProperHeading,
     isChunkAcceptable,
+    MOBILE_CHUNK_TRANSCRIPT_BUDGET,
+    offeredTimeIndices,
+    SINGLE_PASS_TRANSCRIPT_BUDGET,
     reconstructDocument,
     validateEnhancedContent,
 } from "./timestamp-utils";
@@ -159,5 +164,103 @@ describe("isChunkAcceptable (#21 defect 2)", () => {
 
     it("rejects a chunk with no marker at all", () => {
         expect(isChunkAcceptable(chunk, chunk, VIDEO_ID)).toBe(false);
+    });
+});
+
+// Regression for #23: the transcript was cut to its first N characters, so on
+// a 21-minute video only the first ~4 segment timestamps reached the model and
+// every link landed in the first 3 minutes. Synthetic, same shape as the real
+// failing note: 21 one-minute segments, ~28,000 characters, as extracted from
+// the frontmatter (first line unindented, the rest indented four spaces).
+function longTranscript(segments = 21, sentencesPerSegment = 42): string {
+    return Array.from(
+        { length: segments },
+        (_, m) => `[${pad(Math.floor(m / 60))}:${pad(m % 60)}:00] [TimeIndex:${m * 60}] ${`talking about minute ${m} topic. `.repeat(sentencesPerSegment)}`,
+    ).join("\n    ");
+}
+
+function choosableTimeIndices(transcript: string): number[] {
+    return [...transcript.matchAll(/\[TimeIndex:(\d+)\]/g)].map((match) => Number(match[1]));
+}
+
+const ALL_21 = Array.from({ length: 21 }, (_, m) => m * 60);
+
+describe("fitTranscriptToBudget (#23)", () => {
+    const transcript = longTranscript();
+
+    it("the synthetic transcript has the failing note's shape", () => {
+        expect(transcript.length).toBeGreaterThan(26_000);
+        expect(transcript.length).toBeLessThan(30_000);
+        expect(choosableTimeIndices(transcript)).toEqual(ALL_21);
+    });
+
+    it("documents the bug: cutting to the first 5,000 characters leaves only 4 of 21 timestamps", () => {
+        expect(choosableTimeIndices(transcript.substring(0, MOBILE_CHUNK_TRANSCRIPT_BUDGET))).toEqual([0, 60, 120, 180]);
+    });
+
+    it("keeps all 21 timestamps choosable within the 5,000-character mobile budget", () => {
+        const fitted = fitTranscriptToBudget(transcript, MOBILE_CHUNK_TRANSCRIPT_BUDGET);
+        expect(choosableTimeIndices(fitted)).toEqual(ALL_21);
+        expect(fitted.length).toBeLessThanOrEqual(MOBILE_CHUNK_TRANSCRIPT_BUDGET);
+    });
+
+    it("keeps all 21 timestamps choosable within the 10,000-character single-pass budget", () => {
+        const fitted = fitTranscriptToBudget(transcript, SINGLE_PASS_TRANSCRIPT_BUDGET);
+        expect(choosableTimeIndices(fitted)).toEqual(ALL_21);
+        expect(fitted.length).toBeLessThanOrEqual(SINGLE_PASS_TRANSCRIPT_BUDGET);
+    });
+
+    it("spends the budget on every segment's text, not just the opening ones", () => {
+        const fitted = fitTranscriptToBudget(transcript, MOBILE_CHUNK_TRANSCRIPT_BUDGET);
+        for (const minute of [0, 10, 20]) expect(fitted).toContain(`talking about minute ${minute} topic`);
+    });
+
+    it("returns a transcript within budget unchanged, and is deterministic", () => {
+        const short = longTranscript(3);
+        expect(fitTranscriptToBudget(short, MOBILE_CHUNK_TRANSCRIPT_BUDGET)).toBe(short);
+        expect(fitTranscriptToBudget(transcript, 5000)).toBe(fitTranscriptToBudget(transcript, 5000));
+    });
+
+    it("on a very long video, merges into coarser buckets that still span the whole video", () => {
+        const fiveHours = longTranscript(300);
+        const fitted = fitTranscriptToBudget(fiveHours, MOBILE_CHUNK_TRANSCRIPT_BUDGET);
+        const offered = choosableTimeIndices(fitted);
+        expect(fitted.length).toBeLessThanOrEqual(MOBILE_CHUNK_TRANSCRIPT_BUDGET);
+        expect(offered[0]).toBe(0);
+        expect(offered[offered.length - 1]).toBeGreaterThanOrEqual(290 * 60);
+        expect(offered.length).toBeGreaterThan(20);
+    });
+});
+
+describe("a TimeIndex the model was never offered is not written into the note (#23)", () => {
+    // Called inside each test (not at describe time) so a missing function fails tests, not the whole file.
+    const offeredSample = () => offeredTimeIndices("[00:00:00] [TimeIndex:0] intro\n    [00:01:00] [TimeIndex:60] next");
+
+    it("reads the offered values from the transcript shown to the model", () => {
+        expect(offeredSample()).toEqual(new Set([0, 60]));
+        expect(offeredTimeIndices("No transcript available")).toBeNull();
+    });
+
+    it("single pass: an unoffered value is dropped, an offered one is linked", () => {
+        const body = `## 1. Intro\n\n${"Intro body. ".repeat(20)}\n\n## 2. Next\n\n${"Next body. ".repeat(20)}`;
+        const response = body.replace("## 1. Intro", "## 1. Intro [TimeIndex:999]").replace("## 2. Next", "## 2. Next [TimeIndex:60]");
+        const { note } = buildSinglePassNote("---\na: 1\n---", response, body, ["1. Intro", "2. Next"], VIDEO_ID, offeredSample());
+        expect(note).not.toContain("t=999");
+        expect(note).not.toContain("[TimeIndex:999]");
+        expect(note).toContain(`## 1. Intro\n`);
+        expect(note).toContain(`## 2. Next ${watchUrl(60)}`);
+    });
+
+    it("chunked path: unoffered markers are removed before the chunk is checked, so a chunk with none valid keeps its original text", () => {
+        const chunk = `## 1. Intro\n\n${"Intro body. ".repeat(20)}\n`;
+        const offered = offeredSample();
+        const cleaned = dropUnofferedTimeIndices(chunk.replace("## 1. Intro", "## 1. Intro [TimeIndex:999]"), offered);
+        expect(cleaned).not.toContain("[TimeIndex:999]");
+        expect(isChunkAcceptable(cleaned, chunk, VIDEO_ID)).toBe(false);
+        expect(dropUnofferedTimeIndices("## 1. Intro [TimeIndex:60]", offered)).toBe("## 1. Intro [TimeIndex:60]");
+    });
+
+    it("filters nothing when the transcript offered no timestamps at all", () => {
+        expect(dropUnofferedTimeIndices("## 1. Intro [TimeIndex:999]", null)).toBe("## 1. Intro [TimeIndex:999]");
     });
 });

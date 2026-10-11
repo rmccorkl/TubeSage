@@ -137,15 +137,17 @@ export function validateEnhancedContent(
  * @param originalBody The body that was sent to the LLM
  * @param headings The headings of the original note
  * @param videoId The YouTube video ID
+ * @param offered The TimeIndex values the model was shown; any other value is dropped (#23)
  */
 export function buildSinglePassNote(
     frontmatter: string,
     enhancedContent: string,
     originalBody: string,
     headings: string[],
-    videoId: string
+    videoId: string,
+    offered: Set<number> | null = null
 ): { note: string; valid: boolean } {
-    let note = reconstructDocument(frontmatter, enhancedContent);
+    let note = reconstructDocument(frontmatter, dropUnofferedTimeIndices(enhancedContent, offered));
     const { frontmatter: extractedFrontmatter, contentWithoutFrontmatter: extractedContent } = extractDocumentComponents(note);
     const convertedContent = convertTimeIndexToWatchUrls(extractedContent, videoId);
     note = reconstructDocument(extractedFrontmatter, convertedContent);
@@ -364,16 +366,128 @@ export const SINGLE_PASS_TRANSCRIPT_BUDGET = 10000;
 /** Transcript character budget per chunk call on mobile. */
 export const MOBILE_CHUNK_TRANSCRIPT_BUDGET = 5000;
 
+// One formatTranscriptForYaml line: "[HH:MM:SS] [TimeIndex:N] text" (TimeIndex
+// absent on older notes). Group 1 is the timestamp prefix, group 2 the text.
+const TRANSCRIPT_LINE = /^\s*(\[\d{1,2}:\d{2}:\d{2}\]\s*(?:\[TimeIndex:\d+\]\s*)?)(.*)$/;
+const CONDENSED_NOTICE = "[Transcript condensed to fit: every timestamp kept, segment text shortened]";
+const TRUNCATED_NOTICE = "[Transcript truncated to fit]";
+// Below this much text per segment, segments are merged into coarser buckets instead.
+const MIN_SEGMENT_TEXT = 40;
+
+interface TranscriptEntry {
+    prefix: string;
+    text: string;
+}
+
+function parseTranscriptEntries(transcript: string): TranscriptEntry[] {
+    const entries: TranscriptEntry[] = [];
+    for (const line of transcript.split('\n')) {
+        const match = TRANSCRIPT_LINE.exec(line);
+        if (match) {
+            entries.push({ prefix: `${match[1].replace(/\s+/g, ' ').trim()} `, text: match[2].trim() });
+        } else if (entries.length > 0 && line.trim()) {
+            entries[entries.length - 1].text += ` ${line.trim()}`;
+        }
+    }
+    return entries;
+}
+
+/** Consecutive entries merged k at a time: the group keeps its first timestamp. */
+function mergeEntries(entries: TranscriptEntry[], k: number): TranscriptEntry[] {
+    const merged: TranscriptEntry[] = [];
+    for (let i = 0; i < entries.length; i += k) {
+        const group = entries.slice(i, i + k);
+        merged.push({ prefix: group[0].prefix, text: group.map((entry) => entry.text).join(' ') });
+    }
+    return merged;
+}
+
+/** Characters taken by the timestamps and line breaks alone. */
+function fixedLength(entries: TranscriptEntry[]): number {
+    return entries.reduce((sum, entry) => sum + entry.prefix.length, 0) + entries.length - 1;
+}
+
+/** The smallest merge factor leaving at least MIN_SEGMENT_TEXT characters of text per line. */
+function chooseMergeFactor(entries: TranscriptEntry[], available: number): number {
+    let k = 1;
+    while (k < entries.length) {
+        const merged = mergeEntries(entries, k);
+        if (fixedLength(merged) + merged.length * MIN_SEGMENT_TEXT <= available) break;
+        k++;
+    }
+    return k;
+}
+
+/** The largest per-line text cap c with sum(min(length, c)) <= budget (short lines donate what they do not use). */
+function textCap(lengths: number[], budget: number): number {
+    let [low, high] = [0, Math.max(0, ...lengths)];
+    while (low < high) {
+        const mid = Math.ceil((low + high) / 2);
+        const used = lengths.reduce((sum, length) => sum + Math.min(length, mid), 0);
+        if (used <= budget) low = mid;
+        else high = mid - 1;
+    }
+    return low;
+}
+
+/** The text cut to at most `cap` characters, at a word boundary where one is near, marked with an ellipsis. */
+function shorten(text: string, cap: number): string {
+    if (text.length <= cap) return text;
+    if (cap <= 1) return '';
+    const cut = text.slice(0, cap - 1);
+    const space = cut.lastIndexOf(' ');
+    return `${space > cap * 0.6 ? cut.slice(0, space) : cut}…`;
+}
+
 /**
- * The transcript as shown to the timestamp pass, within a character budget.
+ * The transcript as shown to the timestamp pass, within a character budget,
+ * WITHOUT losing coverage (#23). Cutting the transcript to its first N
+ * characters hid everything after the opening minutes, so every link landed
+ * there. Instead every segment's timestamp is kept and the budget is spent
+ * on segment text: each segment's text is shortened to an equal cap (short
+ * segments give their unused share to the rest). Only if even the
+ * timestamps cannot fit with a little text each are consecutive segments
+ * merged into coarser buckets, which still span the whole video.
+ * Deterministic, and never longer than `budget`.
  *
  * @param transcript The transcript from the note's frontmatter
  * @param budget The character budget
- * @param truncationNotice Appended when the transcript had to be cut
  */
-export function fitTranscriptToBudget(transcript: string, budget: number, truncationNotice: string): string {
+export function fitTranscriptToBudget(transcript: string, budget: number): string {
     if (transcript.length <= budget) return transcript;
-    return transcript.substring(0, budget) + "\n" + truncationNotice;
+    const entries = parseTranscriptEntries(transcript);
+    if (entries.length === 0) {
+        // Not a timestamped transcript: nothing to preserve, so cut it.
+        return `${transcript.slice(0, Math.max(0, budget - TRUNCATED_NOTICE.length - 1))}\n${TRUNCATED_NOTICE}`;
+    }
+    const available = budget - CONDENSED_NOTICE.length - 1;
+    const lines = mergeEntries(entries, chooseMergeFactor(entries, available));
+    const cap = textCap(lines.map((line) => line.text.length), Math.max(0, available - fixedLength(lines)));
+    return [...lines.map((line) => line.prefix + shorten(line.text, cap)), CONDENSED_NOTICE].join('\n');
+}
+
+/**
+ * The TimeIndex values the model was actually offered: every [TimeIndex:N]
+ * in the transcript it was shown or, for older notes without them, each
+ * line's [HH:MM:SS] in seconds. Null when it was offered no timestamps at all.
+ */
+export function offeredTimeIndices(transcriptShown: string): Set<number> | null {
+    const indexed = [...transcriptShown.matchAll(/\[TimeIndex:(\d+)\]/g)].map((match) => Number(match[1]));
+    if (indexed.length > 0) return new Set(indexed);
+    const clocks = [...transcriptShown.matchAll(/^\s*\[(\d{1,2}):(\d{2}):(\d{2})\]/gm)].map(
+        (match) => Number(match[1]) * 3600 + Number(match[2]) * 60 + Number(match[3])
+    );
+    return clocks.length > 0 ? new Set(clocks) : null;
+}
+
+/**
+ * Removes every [TimeIndex:N] marker whose N was never offered, so a value
+ * the model made up is not written into the note (#23). With no offered set
+ * (no timestamps were shown) nothing is filtered.
+ */
+export function dropUnofferedTimeIndices(content: string, offered: Set<number> | null): string {
+    if (!offered) return content;
+    return content.replace(/ ?\[TimeIndex:(\d+)\]/g, (marker, seconds: string) => (offered.has(Number(seconds)) ? marker : ''));
 }
 
 /**
