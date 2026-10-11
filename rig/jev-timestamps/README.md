@@ -21,6 +21,10 @@ node rig/jev-timestamps/cli.mjs stage1 --dry-run
 node rig/jev-timestamps/cli.mjs stage0 --yes     # 1 request,         ~$0.000016
 node rig/jev-timestamps/cli.mjs stage1 --yes     # up to 5 (cap 10),  ~$0.00008-0.00025
 node rig/jev-timestamps/cli.mjs stage2 --yes     # up to 60,          ~$0.001-0.002
+
+# Stage 3: one real note. Copy it into fixtures/ first (gitignored).
+node rig/jev-timestamps/cli.mjs stage3 --dry-run --note rig/jev-timestamps/fixtures/<note>.md   # plan + arm B, no request
+node rig/jev-timestamps/cli.mjs stage3 --yes --note rig/jev-timestamps/fixtures/<note>.md
 ```
 
 Every dry run and every refusal ends with the exact `--yes` command to run.
@@ -92,7 +96,20 @@ in errors or in saved runs. On success it prints which source was used:
 | 0 liveness | **built** | One request with a 3-way `choice` question (`pertains` / `does_not_pertain` / `insufficient_evidence`). Prints the status, a classified kind, timings (connect, TLS, TTFB, total), response size, the body's *shape* (no upstream text), the returned `model` and whether it equals the pin, and `usage.cost`. It ends with a verdict: `LIVE`, `LIVE-PIN-CHANGED`, `MODEL-GONE`, `AUTH`, `CREDITS`, `ENV-BLOCKED` (DNS/TLS/refused/blocked: your network, not OpenRouter) or `OTHER`. Exits 0 only on `LIVE`. |
 | 1 contract | **built** | Two single-question requests (cold, then warm), then the **multi-question probe**: the same shared `state` with N = 2, 5, then 20 entries in the `questions` map, stopping at the first N that fails (at most 5 requests; cap 10). Each response is checked against the contract observed live in stage 0: model equals the pin, answer keys equal the question ids, criteria keys exactly as sent, probabilities in [0,1] summing to 1 ± 0.01, choice among the criteria, confidence in [0,1], `usage.cost` present. Unknown top-level keys (`id`, `provider`) are tolerated and listed. For each request it prints connect / TLS / TTFB / total, socketReused, size, cost, and how many answers matched the fixture's expected choice. Verdicts: `Contract: OK / DIFFERS` and `MULTI-QUESTION: SUPPORTED up to N=… / accepted up to N=…; failed at N=…`. Exits 0 when the single-question contract holds. |
 | 2 keep-alive + concurrency | **built** | **A.** 6 sequential requests on one keep-alive agent, with socketReused and timings for each, then `KEEP-ALIVE: REUSED / PARTIAL / NOT REUSED`. **B.** Concurrency 1 (4 sequential requests), 5, 10, 25 (one wave each): median and p95 total, reused sockets, 429s. **C.** A 429 is retried with backoff (Retry-After, else 1 s then 2 s; at most 3 attempts). A request still rate-limited after that stops the climb; `SAFE CONCURRENCY CEILING` is the highest level where every request succeeded. A hard budget of 60 requests covers every attempt. |
-| 3–5 | **not built** | Ground truth, scoring arms A–D, adversarial. Out of scope for now. |
+| 3 one real note | **built** | `--note PATH`. Parses the note: transcript segments from the frontmatter, numbered sections (`## 1.`, `### 1.1.` …) with their body text, and the **current pass's** link on each heading (`[Watch](…&t=N)`). **Round 1** asks every (segment, section) cell `pertains / does_not_pertain / insufficient_evidence`, 20 questions per request at concurrency 10. Each request carries only the segments and sections it asks about, tiled to send the least text. Then three assignments: **arm B**, local TF-IDF similarity with no API (eligible at cosine ≥ 0.10, a heuristic); **arm C**, the maintainer design: a section with several "pertains" candidates runs a pairwise knockout (k−1 comparisons, weakest first so the strongest meet last; one comparison per section per round, all sections' comparisons of a round batched together), then a monotonic repair over the candidates with the winner strongly preferred; **arm D**, round-1 P(pertains) ≥ 0.5 straight into the monotonic assignment. Every arm links each section to at most one segment, never reuses a segment, never runs time backwards, and leaves a section with no eligible cell **unlinked**. Output: one row per section (heading, current, B, C, D, round-1 p/confidence), agreement with the current pass (exact and within ±1 segment), unlinked counts, requests, wall-clock and `usage.cost`. Hard cap 200 requests: a note needing more round-1 requests is refused before any spend, and a knockout that runs out is marked `*`. `--dry-run` prints the plan and the arm B table with no request and no key. |
+| 4–5 | **not built** | Scoring against hand-labelled ground truth, adversarial. Out of scope for now. |
+
+### Stage 3 privacy
+
+A note is personal content.
+
+- Stage 3 prints section **headings, clock times and numbers only**. It never
+  prints transcript or body text.
+- Put input notes in `rig/jev-timestamps/fixtures/`. That directory is
+  gitignored, so a real note is never committed.
+- The note's text is sent to the API, which is the point of the stage. It is
+  also kept in the request records under `runs/`, which is gitignored.
+- Each run's `run.json` holds headings and segment numbers only.
 
 The stage 1 and 2 fixture (`lib/cells.mjs`) is 20 synthetic segments across 5
 note sections, each question with an obvious expected answer. It checks that

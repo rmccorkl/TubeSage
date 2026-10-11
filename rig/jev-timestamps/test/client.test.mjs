@@ -99,6 +99,23 @@ describe("createClient: request shape", () => {
     // (elapsed 20), response callback=40 (elapsed 30), end=50 (elapsed 40).
     expect(result.timings).toEqual({ connectMs: 10, tlsMs: 20, ttfbMs: 30, totalMs: 40 });
   });
+
+  it("adds no listeners to an already-connected (reused keep-alive) socket", async () => {
+    // Stage 2's MaxListenersExceededWarning: connect/secureConnect never fire
+    // again on a reused socket, so one-shot listeners added to it leak.
+    const requestFn = makeRequestFn({ reusedSocket: true });
+    requestFn.socket.connecting = false;
+    const client = createClient({ key: FAKE_KEY, requestFn, env: {} });
+
+    const pending = client.post(SOME_BODY);
+    requestFn.req.emit("socket", requestFn.socket);
+    expect(requestFn.socket.listenerCount("connect")).toBe(0);
+    expect(requestFn.socket.listenerCount("secureConnect")).toBe(0);
+    const res = createFakeRes({ statusCode: 200 });
+    requestFn.emitResponse(res);
+    emit(res, ["{}"]);
+    expect((await pending).timings.connectMs).toBeNull();
+  });
 });
 
 describe("createClient: status -> kind mapping", () => {

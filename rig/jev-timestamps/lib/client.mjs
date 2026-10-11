@@ -166,6 +166,11 @@ function handleResponse(state, res) {
 
 function attachSocketTimers(state, req) {
   req.on("socket", (socket) => {
+    // A reused keep-alive socket is already connected: connect/secureConnect
+    // will never fire on it again, so one-shot listeners added here would
+    // never be removed and would pile up two per reused request (stage 2's
+    // MaxListenersExceededWarning). Its connect/tls timings stay null.
+    if (socket.connecting === false) return;
     socket.once("connect", () => {
       state.connectMs = state.elapsed();
     });

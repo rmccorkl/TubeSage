@@ -11,29 +11,50 @@ import { estimatePlan, formatEstimate, decideGate } from "./lib/billing.mjs";
 import { buildStage0Body, runStage0 } from "./stages/stage0.mjs";
 import { planStage1Bodies, runStage1, STAGE1_MAX_REQUESTS } from "./stages/stage1.mjs";
 import { planStage2Bodies, runStage2, STAGE2_MAX_REQUESTS } from "./stages/stage2.mjs";
+import { loadNote, planStage3Bodies, previewStage3, runStage3, STAGE3_MAX_REQUESTS } from "./stages/stage3.mjs";
 import { ENDPOINT, USER_AGENT, DEFAULT_TIMEOUT_MS } from "./lib/constants.mjs";
 
-const USAGE = "Usage: node rig/jev-timestamps/cli.mjs <stage0|stage1|stage2> [--dry-run | --yes] [--samples N] [--timeout-ms N] [--env-file PATH] [--op-token-file PATH] [--op-ref op://...]";
+const USAGE = "Usage: node rig/jev-timestamps/cli.mjs <stage0|stage1|stage2|stage3> [--dry-run | --yes] [--note PATH] [--samples N] [--timeout-ms N] [--env-file PATH] [--op-token-file PATH] [--op-ref op://...]";
 
-// Each stage: the bodies its estimate is priced on (an upper bound where the
-// stage can stop early), a note printed with the estimate, and the runner.
+// Each stage: plan(opts) -> the bodies its estimate is priced on (an upper
+// bound where the stage can stop early; throws with a printable message when
+// it cannot plan), note(bodies) printed with the estimate, an optional
+// no-network preview for --dry-run, and the runner.
 const STAGES = {
-  stage0: { plan: () => [buildStage0Body()], note: "One liveness request.", run: runStage0 },
+  stage0: { plan: () => [buildStage0Body()], note: () => "One liveness request.", run: runStage0 },
   stage1: {
     plan: planStage1Bodies,
-    note: `Upper bound (cap ${STAGE1_MAX_REQUESTS}): 2 single-question requests, then the multi-question probe at N=2, 5, 20, stopping at the first N that fails.`,
+    note: () => `Upper bound (cap ${STAGE1_MAX_REQUESTS}): 2 single-question requests, then the multi-question probe at N=2, 5, 20, stopping at the first N that fails.`,
     run: runStage1,
   },
   stage2: {
     plan: planStage2Bodies,
-    note: `Upper bound: a hard budget of ${STAGE2_MAX_REQUESTS} requests, retries included (6 keep-alive + 4 + 5 + 10 + 25 concurrency = 50, the rest for 429 retries).`,
+    note: () => `Upper bound: a hard budget of ${STAGE2_MAX_REQUESTS} requests, retries included (6 keep-alive + 4 + 5 + 10 + 25 concurrency = 50, the rest for 429 retries).`,
     run: runStage2,
   },
+  stage3: {
+    plan: planStage3FromOpts,
+    note: (bodies) =>
+      `Round 1: ${bodies.length} requests (up to 20 questions each, concurrency 10); the estimate above prices round 1. ` +
+      `Round 2 (arm C knockout) adds at most ${STAGE3_MAX_REQUESTS - bodies.length} more: hard cap ${STAGE3_MAX_REQUESTS} requests in total.`,
+    preview: (opts, stdout) => previewStage3(loadNote(opts.note), stdout),
+    run: runStage3,
+  },
 };
+
+function planStage3FromOpts(opts) {
+  if (!opts.note) throw new Error("stage3 needs --note PATH (keep real notes in rig/jev-timestamps/fixtures/, which is gitignored).");
+  const bodies = planStage3Bodies(loadNote(opts.note));
+  if (bodies.length > STAGE3_MAX_REQUESTS) {
+    throw new Error(`stage3: this note needs ${bodies.length} round-1 requests, over the ${STAGE3_MAX_REQUESTS}-request cap.`);
+  }
+  return bodies;
+}
 
 // The exact command to spend, carrying over any credential flags given.
 function spendCommand(opts) {
   const flags = [
+    ["--note", opts.note],
     ["--env-file", opts.envFile],
     ["--op-token-file", opts.opTokenFile],
     ["--op-ref", opts.opRef],
@@ -74,6 +95,7 @@ const FLAG_HANDLERS = {
     if (value !== undefined) opts.timeoutMs = value;
     return 1;
   },
+  "--note": (opts, rest, i, errors) => takeValue(opts, "note", "--note", rest[i + 1], errors),
   "--env-file": (opts, rest, i, errors) => takeValue(opts, "envFile", "--env-file", rest[i + 1], errors),
   "--op-token-file": (opts, rest, i, errors) => takeValue(opts, "opTokenFile", "--op-token-file", rest[i + 1], errors),
   "--op-ref": (opts, rest, i, errors) => takeValue(opts, "opRef", "--op-ref", rest[i + 1], errors),
@@ -122,7 +144,7 @@ function buildPlannedExchange(body) {
 }
 
 // Full bodies go to the run directory; the console gets one line per request.
-function runDryRun({ bodies, stage, now, baseDir, stdout, command }) {
+function runDryRun({ bodies, stage, now, baseDir, stdout, command, preview }) {
   const recorder = createRecorder({ baseDir, stage, now, key: null });
   bodies.forEach((body, index) => {
     recorder.record(buildPlannedExchange(body));
@@ -130,7 +152,9 @@ function runDryRun({ bodies, stage, now, baseDir, stdout, command }) {
     stdout.write(`planned request: #${index + 1} questions=${Object.keys(body.questions).length} bytes=${bytes}\n`);
   });
   recorder.writeRun({ stage, dryRun: true, requests: bodies.length });
-  stdout.write(`Planned bodies written to ${recorder.runDir}\nTo spend, run: ${command}\n`);
+  stdout.write(`Planned bodies written to ${recorder.runDir}\n`);
+  preview();
+  stdout.write(`To spend, run: ${command}\n`);
   return 0;
 }
 
@@ -144,7 +168,7 @@ function keySourceText(keyResult, envFile) {
   return `using key from ${keyResult.name} (${where[keyResult.source]})`;
 }
 
-async function runGo({ stage, env, fileVars, envFile, op, spawn, home, requestFn, timeoutMs, now, baseDir, stdout, stderr }) {
+async function runGo({ stage, opts, env, fileVars, envFile, op, spawn, home, requestFn, timeoutMs, now, baseDir, stdout, stderr }) {
   stdout.write("Resolving the OpenRouter key...\n");
   const keyResult = await resolveKey({ env, fileVars, envFile, op, deps: { spawn, home } });
   if (!keyResult.ok) {
@@ -155,7 +179,7 @@ async function runGo({ stage, env, fileVars, envFile, op, spawn, home, requestFn
 
   const client = createClient({ key: keyResult.key, requestFn, timeoutMs, env });
   const recorder = createRecorder({ baseDir, stage, now, key: keyResult.key });
-  const { exitCode } = await STAGES[stage].run({ client, recorder, stdout, key: keyResult.key });
+  const { exitCode } = await STAGES[stage].run({ client, recorder, stdout, key: keyResult.key, opts });
   return exitCode;
 }
 
@@ -219,15 +243,26 @@ function loadEnvFileOrExit(envFile, stderr) {
 }
 
 // Everything between the parsed args and the spend gate that can still
-// short-circuit with a plain exit code: the proxy tripwire and an unreadable
-// --env-file. Returns `{ exit }` or `{ fileVars }`.
+// short-circuit with a plain exit code: the proxy tripwire, an unreadable
+// --env-file, and a stage that cannot plan. Returns `{ exit }` or
+// `{ fileVars, bodies }`.
 function preflight(opts, env, execArgv, stderr) {
   const proxyCheck = tryOrMessage(() => assertNoEnvProxy(env, execArgv));
   if (!proxyCheck.ok) {
     stderr.write(`${proxyCheck.message}\n`);
     return { exit: 1 };
   }
-  return loadEnvFileOrExit(opts.envFile, stderr);
+  const envFile = loadEnvFileOrExit(opts.envFile, stderr);
+  if (envFile.exit !== undefined) return envFile;
+  return { ...envFile, ...planOrExit(opts, stderr) };
+}
+
+// The stage's planned bodies, or an exit when it cannot plan (e.g. no --note).
+function planOrExit(opts, stderr) {
+  const planned = tryOrMessage(() => STAGES[opts.stage].plan(opts));
+  if (planned.ok) return { bodies: planned.value };
+  stderr.write(`${planned.message}\n`);
+  return { exit: 1 };
 }
 
 /**
@@ -265,8 +300,8 @@ export async function run(argv = process.argv.slice(2), deps = {}) {
   if (checked.exit !== undefined) return checked.exit;
 
   const stage = STAGES[opts.stage];
-  const bodies = stage.plan();
-  stdout.write(`${formatEstimate(estimatePlan(bodies))}\n${stage.note}\n`);
+  const { bodies } = checked;
+  stdout.write(`${formatEstimate(estimatePlan(bodies))}\n${stage.note(bodies)}\n`);
 
   const gateCheck = tryOrMessage(() => decideGate({ dryRun: opts.dryRun, yes: opts.yes }));
   if (!gateCheck.ok) {
@@ -278,8 +313,8 @@ export async function run(argv = process.argv.slice(2), deps = {}) {
   return dispatchGate(gateCheck.value, {
     stdout,
     command,
-    dryRunArgs: { bodies, stage: opts.stage, now, baseDir, stdout, command },
-    goArgs: { stage: opts.stage, env, fileVars: checked.fileVars, envFile: opts.envFile, op: { ref: opts.opRef, tokenFile: opts.opTokenFile }, spawn, home, requestFn, timeoutMs: opts.timeoutMs, now, baseDir, stdout, stderr },
+    dryRunArgs: { bodies, stage: opts.stage, now, baseDir, stdout, command, preview: () => stage.preview?.(opts, stdout) },
+    goArgs: { stage: opts.stage, opts, env, fileVars: checked.fileVars, envFile: opts.envFile, op: { ref: opts.opRef, tokenFile: opts.opTokenFile }, spawn, home, requestFn, timeoutMs: opts.timeoutMs, now, baseDir, stdout, stderr },
   });
 }
 

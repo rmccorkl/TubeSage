@@ -15,7 +15,8 @@
     "rig/jev-timestamps/test/shape.test.mjs",
     "rig/jev-timestamps/test/stage0.test.mjs",
     "rig/jev-timestamps/test/stages.test.mjs",
-    "rig/jev-timestamps/test/onepassword.test.mjs"
+    "rig/jev-timestamps/test/onepassword.test.mjs",
+    "rig/jev-timestamps/test/stage3.test.mjs"
   ],
   "ignorePatterns": [
     "dist/**",
