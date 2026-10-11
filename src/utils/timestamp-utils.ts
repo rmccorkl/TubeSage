@@ -111,8 +111,46 @@ export function validateEnhancedContent(
         logger.debug("Enhanced content sample:", enhancedContent.substring(0, 500));
         return false;
     }
-    
+
     return true;
+}
+
+/**
+ * The single-pass result: the note to write (the original frontmatter plus the
+ * LLM's body, with heading TimeIndex markers converted to Watch links) and
+ * whether it passed validation. Lives here rather than in main.ts so the
+ * check can be unit-tested.
+ *
+ * @param frontmatter The original note's frontmatter
+ * @param enhancedContent The LLM's response (the note body with markers)
+ * @param originalBody The body that was sent to the LLM
+ * @param headings The headings of the original note
+ * @param videoId The YouTube video ID
+ */
+export function buildSinglePassNote(
+    frontmatter: string,
+    enhancedContent: string,
+    originalBody: string,
+    headings: string[],
+    videoId: string
+): { note: string; valid: boolean } {
+    let note = reconstructDocument(frontmatter, enhancedContent);
+    const { frontmatter: extractedFrontmatter, contentWithoutFrontmatter: extractedContent } = extractDocumentComponents(note);
+    const convertedContent = convertTimeIndexToWatchUrls(extractedContent, videoId);
+    note = reconstructDocument(extractedFrontmatter, convertedContent);
+    return { note, valid: validateEnhancedContent(note, originalBody, headings, videoId) };
+}
+
+/**
+ * Whether the chunked pass may use the LLM's response for one chunk. When it
+ * may not, main.ts keeps the chunk's original text.
+ *
+ * @param processedChunk The LLM's response for the chunk
+ * @param _originalChunk The chunk text that was sent to the LLM
+ * @param videoId The YouTube video ID
+ */
+export function isChunkAcceptable(processedChunk: string, _originalChunk: string, videoId: string): boolean {
+    return hasTimestampLinks(processedChunk, videoId);
 }
 
 /**
