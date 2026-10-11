@@ -135,13 +135,24 @@ describe("cli run(): refuse makes zero requestFn calls and writes nothing", () =
   });
 });
 
-describe("cli run(): stage1 stub", () => {
-  it("prints not built yet and exits 1, before any body/estimate work", async () => {
+describe("cli run(): stages 1 and 2 are priced on their upper bound and spend nothing without --yes", () => {
+  it.each([
+    ["stage1", 5],
+    ["stage2", 60],
+  ])("%s --dry-run plans %i requests, prints the --yes command, and makes no request", async (stage, requests) => {
     const deps = baseDeps();
-    const code = await run(["stage1"], deps);
-    expect(code).toBe(1);
-    expect(deps.stdout.text()).toContain("not built yet");
+    const code = await run([stage, "--dry-run"], deps);
+    expect(code).toBe(0);
+    expect(deps.stdout.text()).toContain(`Planned requests: ${requests}\n`);
+    expect(deps.stdout.text()).toContain(`To spend, run: node rig/jev-timestamps/cli.mjs ${stage} --yes`);
     expect(deps.requestFn.calls).toHaveLength(0);
+  });
+
+  it("refuses stage2 without --yes and writes nothing", async () => {
+    const deps = baseDeps();
+    expect(await run(["stage2"], deps)).toBe(2);
+    expect(deps.requestFn.calls).toHaveLength(0);
+    expect(runsDirEntries(deps.baseDir)).toHaveLength(0);
   });
 });
 

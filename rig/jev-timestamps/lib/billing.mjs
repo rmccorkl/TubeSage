@@ -1,6 +1,6 @@
 // Cost estimation and the spend gate. Nothing here makes a request; it only
 // computes numbers to print BEFORE any request is allowed to happen.
-import { RATE_USD_PER_M_INPUT, RECORDED_USD_PER_REQUEST } from "./constants.mjs";
+import { OBSERVED_REQUEST_OVERHEAD_TOKENS, RATE_USD_PER_M_INPUT, RECORDED_USD_PER_REQUEST } from "./constants.mjs";
 
 function utf8Bytes(str) {
   return Buffer.byteLength(str, "utf8");
@@ -20,7 +20,8 @@ export function estimateBody(body) {
  */
 export function estimatePlan(bodies) {
   const requests = bodies.length;
-  const inputTokensEst = bodies.reduce((sum, body) => sum + estimateBody(body), 0);
+  // Each request also carries the endpoint's own observed overhead.
+  const inputTokensEst = bodies.reduce((sum, body) => sum + estimateBody(body) + OBSERVED_REQUEST_OVERHEAD_TOKENS, 0);
   return {
     requests,
     inputTokensEst,

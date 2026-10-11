@@ -17,13 +17,16 @@ don't need 1Password.
 # 1. Preview. No key needed, no network call.
 node rig/jev-timestamps/cli.mjs stage0 --dry-run
 
-# 2a. Live liveness check (one billable request, ~$0.00002), with the
-#     standard variable already in your shell:
-node rig/jev-timestamps/cli.mjs stage0 --yes
+# 2a. Live run, with the standard variable already in your shell:
+node rig/jev-timestamps/cli.mjs stage0 --yes     # 1 request,      ~$0.000016
+node rig/jev-timestamps/cli.mjs stage1 --yes     # up to 5 (cap 10), ~$0.00025
+node rig/jev-timestamps/cli.mjs stage2 --yes     # up to 60,       ~$0.001-0.002
 
 # 2b. Or, with no setup at all, point at a .env that already holds the key:
-node rig/jev-timestamps/cli.mjs stage0 --yes --env-file /path/to/project/.env
+node rig/jev-timestamps/cli.mjs stage1 --yes --env-file /path/to/project/.env
 ```
+
+Every dry run and every refusal ends with the exact `--yes` command to run.
 
 Run from the repo root. Optional flag: `--timeout-ms N` (default 30000,
 a total wall-clock deadline).
@@ -60,14 +63,24 @@ prints `using key from <NAME> (environment | --env-file PATH)`.
 | stage | status | what it does |
 |---|---|---|
 | 0 liveness | **built** | One request with a 3-way `choice` question (`pertains` / `does_not_pertain` / `insufficient_evidence`). Prints the status, a classified kind, timings (connect, TLS, TTFB, total), response size, the body's *shape* (no upstream text), the returned `model` and whether it equals the pin, and `usage.cost`. It ends with a verdict: `LIVE`, `LIVE-PIN-CHANGED`, `MODEL-GONE`, `AUTH`, `CREDITS`, `ENV-BLOCKED` (DNS/TLS/refused/blocked: your network, not OpenRouter) or `OTHER`. Exits 0 only on `LIVE`. |
-| 1 contract | **not built** | `stage1` currently prints "not built yet" and exits 1. Planned: check a real response against the wire format in issue #12 (model equals the pin, answer keys, criteria keys, probabilities summing to 1 ± 0.01, confidence in [0,1], `usage.cost`), measure cold and warm latency over a few requests, and probe once whether `questions` accepts more than one entry. |
-| 2–5 | **not built** | Concurrency ceiling, comparator stability, ground truth, scoring arms A–D, adversarial. Not started, pending stage 0/1 results. |
+| 1 contract | **built** | Two single-question requests (cold, then warm), then the **multi-question probe**: the same shared `state` with N = 2, 5, then 20 entries in the `questions` map, stopping at the first N that fails (at most 5 requests; cap 10). Each response is checked against the contract observed live in stage 0: model equals the pin, answer keys equal the question ids, criteria keys exactly as sent, probabilities in [0,1] summing to 1 ± 0.01, choice among the criteria, confidence in [0,1], `usage.cost` present. Unknown top-level keys (`id`, `provider`) are tolerated and listed. For each request it prints connect / TLS / TTFB / total, socketReused, size, cost, and how many answers matched the fixture's expected choice. Verdicts: `Contract: OK / DIFFERS` and `MULTI-QUESTION: SUPPORTED up to N=… / accepted up to N=…; failed at N=…`. Exits 0 when the single-question contract holds. |
+| 2 keep-alive + concurrency | **built** | **A.** 6 sequential requests on one keep-alive agent, with socketReused and timings for each, then `KEEP-ALIVE: REUSED / PARTIAL / NOT REUSED`. **B.** Concurrency 1 (4 sequential requests), 5, 10, 25 (one wave each): median and p95 total, reused sockets, 429s. **C.** A 429 is retried with backoff (Retry-After, else 1 s then 2 s; at most 3 attempts). A request still rate-limited after that stops the climb; `SAFE CONCURRENCY CEILING` is the highest level where every request succeeded. A hard budget of 60 requests covers every attempt. |
+| 3–5 | **not built** | Ground truth, scoring arms A–D, adversarial. Out of scope for now. |
+
+The stage 1 and 2 fixture (`lib/cells.mjs`) is 20 synthetic segments across 5
+note sections, each question with an obvious expected answer. It checks that
+answers are sane, and catches a reply that gives every question the same
+answer. It is **not** ground truth for real notes.
 
 ## Billing safety
 
-- Every stage prints the request count and estimated cost **before** anything
-  is spent. Two figures: tokens × $0.042/M, and requests × $0.00002 (the
-  recorded average).
+- Every stage prints the request count (an upper bound when it can stop
+  early) and estimated cost **before** anything is spent. Two figures:
+  tokens × $0.042/M, and requests × $0.000016044. Both come from stage 0's
+  live request, which billed 382 input tokens × $0.042/M; output tokens were
+  not billed. Each request's token estimate adds the ~269 tokens the endpoint
+  added on top of that request's own text. That is one observation, and it
+  may grow with the number of questions.
 - With no flag it refuses (exit 2). `--dry-run` records and prints the planned
   requests with no network call and no key (exit 0). `--yes` is required to
   spend. Passing both flags is an error.
