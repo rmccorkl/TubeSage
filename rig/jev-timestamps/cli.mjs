@@ -11,10 +11,10 @@ import { estimatePlan, formatEstimate, decideGate } from "./lib/billing.mjs";
 import { buildStage0Body, runStage0 } from "./stages/stage0.mjs";
 import { planStage1Bodies, runStage1, STAGE1_MAX_REQUESTS } from "./stages/stage1.mjs";
 import { planStage2Bodies, runStage2, STAGE2_MAX_REQUESTS } from "./stages/stage2.mjs";
-import { loadNote, planStage3Bodies, previewStage3, runStage3, STAGE3_MAX_REQUESTS } from "./stages/stage3.mjs";
+import { fixedBodies, planStage3, previewStage3, runStage3, STAGE3_MAX_REQUESTS_PER_NOTE } from "./stages/stage3.mjs";
 import { ENDPOINT, USER_AGENT, DEFAULT_TIMEOUT_MS } from "./lib/constants.mjs";
 
-const USAGE = "Usage: node rig/jev-timestamps/cli.mjs <stage0|stage1|stage2|stage3> [--dry-run | --yes] [--note PATH] [--samples N] [--timeout-ms N] [--env-file PATH] [--op-token-file PATH] [--op-ref op://...]";
+const USAGE = "Usage: node rig/jev-timestamps/cli.mjs <stage0|stage1|stage2|stage3> [--dry-run | --yes] [--note PATH]... [--decoy-note PATH] [--shuffle-segments] [--seed N] [--samples N] [--timeout-ms N] [--env-file PATH] [--op-token-file PATH] [--op-ref op://...]";
 
 // Each stage: plan(opts) -> the bodies its estimate is priced on (an upper
 // bound where the stage can stop early; throws with a printable message when
@@ -33,33 +33,26 @@ const STAGES = {
     run: runStage2,
   },
   stage3: {
-    plan: planStage3FromOpts,
+    plan: (opts) => planStage3(opts).plans.flatMap(fixedBodies),
     note: (bodies) =>
-      `Round 1: ${bodies.length} requests (up to 20 questions each, concurrency 10); the estimate above prices round 1. ` +
-      `Round 2 (arm C knockout) adds at most ${STAGE3_MAX_REQUESTS - bodies.length} more: hard cap ${STAGE3_MAX_REQUESTS} requests in total.`,
-    preview: (opts, stdout) => previewStage3(loadNote(opts.note), stdout),
+      `Priced above: ${bodies.length} requests (round 1 + decoy + shuffle, every note; up to 20 questions each, concurrency 10). ` +
+      `Arm C's knockout adds more per note, within a hard cap of ${STAGE3_MAX_REQUESTS_PER_NOTE} requests per note.`,
+    preview: previewStage3,
     run: runStage3,
   },
 };
 
-function planStage3FromOpts(opts) {
-  if (!opts.note) throw new Error("stage3 needs --note PATH (keep real notes in rig/jev-timestamps/fixtures/, which is gitignored).");
-  const bodies = planStage3Bodies(loadNote(opts.note));
-  if (bodies.length > STAGE3_MAX_REQUESTS) {
-    throw new Error(`stage3: this note needs ${bodies.length} round-1 requests, over the ${STAGE3_MAX_REQUESTS}-request cap.`);
-  }
-  return bodies;
-}
-
 // The exact command to spend, carrying over any credential flags given.
 function spendCommand(opts) {
   const flags = [
-    ["--note", opts.note],
+    ...(opts.notes ?? []).map((note) => ["--note", note]),
+    ["--decoy-note", opts.decoyNote],
+    ["--seed", opts.seed],
     ["--env-file", opts.envFile],
     ["--op-token-file", opts.opTokenFile],
     ["--op-ref", opts.opRef],
   ].filter(([, value]) => value);
-  const extra = flags.map(([flag, value]) => ` ${flag} ${JSON.stringify(value)}`).join("");
+  const extra = flags.map(([flag, value]) => ` ${flag} ${JSON.stringify(value)}`).join("") + (opts.shuffleSegments ? " --shuffle-segments" : "");
   return `node rig/jev-timestamps/cli.mjs ${opts.stage} --yes${extra}`;
 }
 
@@ -95,7 +88,16 @@ const FLAG_HANDLERS = {
     if (value !== undefined) opts.timeoutMs = value;
     return 1;
   },
-  "--note": (opts, rest, i, errors) => takeValue(opts, "note", "--note", rest[i + 1], errors),
+  "--note": (opts, rest, i, errors) => appendValue(opts, "notes", "--note", rest[i + 1], errors),
+  "--decoy-note": (opts, rest, i, errors) => takeValue(opts, "decoyNote", "--decoy-note", rest[i + 1], errors),
+  "--shuffle-segments": (opts) => {
+    opts.shuffleSegments = true;
+  },
+  "--seed": (opts, rest, i, errors) => {
+    const value = parsePositiveInt(rest[i + 1], "--seed", errors);
+    if (value !== undefined) opts.seed = value;
+    return 1;
+  },
   "--env-file": (opts, rest, i, errors) => takeValue(opts, "envFile", "--env-file", rest[i + 1], errors),
   "--op-token-file": (opts, rest, i, errors) => takeValue(opts, "opTokenFile", "--op-token-file", rest[i + 1], errors),
   "--op-ref": (opts, rest, i, errors) => takeValue(opts, "opRef", "--op-ref", rest[i + 1], errors),
@@ -109,6 +111,14 @@ function takeValue(opts, field, flag, value, errors) {
   }
   opts[field] = value;
   return 1;
+}
+
+// A repeatable flag: each occurrence adds one value to a list.
+function appendValue(opts, field, flag, value, errors) {
+  const list = opts[field] ?? [];
+  const consumed = takeValue(opts, field, flag, value, errors);
+  opts[field] = consumed ? [...list, value] : list;
+  return consumed;
 }
 
 function parseArgs(argv) {

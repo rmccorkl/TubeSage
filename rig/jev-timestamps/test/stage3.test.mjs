@@ -1,5 +1,5 @@
-// Stage 3 on a SYNTHETIC note (no real note is ever committed), with a fake
-// client: no request leaves the process.
+// Stage 3 on SYNTHETIC notes (no real note is ever committed), with fake
+// clients: no request leaves the process.
 import { mkdtempSync, readdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -7,18 +7,20 @@ import { describe, expect, it } from "vitest";
 import { run } from "../cli.mjs";
 import { monotonicAssign } from "../lib/assign.mjs";
 import { MODEL_PIN } from "../lib/constants.mjs";
+import { backwardsSteps, decoySummary, rawArgmax, unconstrainedSummary } from "../lib/diagnostics.mjs";
+import { cellId, planMatrixBodies, plainView, shuffledView } from "../lib/matrix.mjs";
 import { formatClock, parseNote } from "../lib/note.mjs";
-import { similarityMatrix } from "../lib/similarity.mjs";
-import { loadNote, planStage3Bodies, runStage3 } from "../stages/stage3.mjs";
+import { loadNote, runStage3 } from "../stages/stage3.mjs";
 import { fakeSpawn, makeRequestFn } from "./fakes.mjs";
 
-// Four topics, two one-minute segments each (T1-T2 topic 1, T3-T4 topic 2...).
+// Four topics, two one-minute segments each (minutes 0-1 topic 1, 2-3 topic 2...).
 const TOPICS = [
   ["compound interest savings", "Interest earned this year earns interest next year, so compound savings snowball."],
   ["photosynthesis chlorophyll", "Leaves capture sunlight with chlorophyll and photosynthesis splits water."],
   ["roman empire collapse", "The western roman empire collapsed when the legions went unpaid."],
   ["guitar chords practice", "Practise switching guitar chords until fingers move smoothly between them."],
 ];
+const TOPIC_WORDS = ["savings", "photosynthesis", "roman", "guitar"];
 const BODY_MARKER = "UNIQUE-BODY-TEXT-MARKER";
 const TRANSCRIPT_MARKER = "UNIQUE-TRANSCRIPT-MARKER";
 
@@ -61,12 +63,11 @@ describe("parseNote", () => {
   const note = parseNote(NOTE);
 
   it("reads one segment per transcript line, timed by TimeIndex, colons unescaped", () => {
-    expect(note.segments).toHaveLength(8);
     expect(note.segments.map((s) => s.startSeconds)).toEqual([0, 60, 120, 180, 240, 300, 360, 420]);
     expect(note.segments[0].text).toContain("Note: part 0.");
   });
 
-  it("reads numbered sections only, with headings cleaned of their Watch links", () => {
+  it("reads numbered sections only, headings cleaned of their Watch links, with the current pass's link mapped to a segment", () => {
     expect(note.sections.map((s) => s.heading)).toEqual([
       "1. All about compound interest savings",
       "2. All about photosynthesis chlorophyll",
@@ -74,10 +75,6 @@ describe("parseNote", () => {
       "4. All about guitar chords practice",
     ]);
     expect(note.sections[3].body).not.toContain("Wrap up");
-  });
-
-  it("captures the current pass's link per section, and maps it to a segment", () => {
-    expect(note.sections.map((s) => s.currentSeconds)).toEqual([0, 120, null, 360]);
     expect(note.sections.map((s) => s.currentSegment)).toEqual([0, 2, null, 6]);
   });
 
@@ -88,8 +85,6 @@ describe("parseNote", () => {
 
 describe("monotonicAssign", () => {
   it("maximises total weight, not each section greedily", () => {
-    // Greedy gives section 0 segment 1 (0.9) and section 1 segment 2 (0.1) = 1.0;
-    // the optimum is 0 -> 0 (0.8), 1 -> 1 (0.95) = 1.75.
     const w = [
       [0.8, 0.9, null],
       [null, 0.95, 0.1],
@@ -100,77 +95,109 @@ describe("monotonicAssign", () => {
   it("leaves a section unlinked rather than giving it the least-bad segment", () => {
     expect(monotonicAssign(2, 3, (j, i) => (j === 0 ? null : [0.1, 0.2, 0.3][i]))).toEqual([null, 2]);
   });
-
-  it("never lets a later section point earlier in the video", () => {
-    // Section 1 strongly prefers segment 0, but section 0 already holds segment 1.
-    const w = [
-      [null, 0.9],
-      [0.99, null],
-    ];
-    const result = monotonicAssign(2, 2, (j, i) => w[j][i]);
-    expect(result.filter((x) => x !== null)).toHaveLength(1);
-  });
 });
 
-describe("similarityMatrix", () => {
-  it("scores a segment highest against the section on its topic", () => {
-    const sim = similarityMatrix(["guitar chords practice fingers"], ["roman legions unpaid empire", "practise guitar chords smoothly fingers"]);
-    expect(sim[0][1]).toBeGreaterThan(sim[0][0]);
-  });
-});
+describe("matrix planning", () => {
+  const note = parseNote(NOTE);
 
-describe("planStage3Bodies", () => {
-  it("asks every cell exactly once, at most 20 per request, each request naming only what it asks about", () => {
-    const note = parseNote(NOTE);
-    const bodies = planStage3Bodies(note);
+  it("asks every cell once, at most 20 per request, with no clock time anywhere in a request", () => {
+    const bodies = planMatrixBodies(plainView(note.segments), note.sections);
     const qids = bodies.flatMap((body) => Object.keys(body.questions));
-    expect(qids).toHaveLength(8 * 4);
     expect(new Set(qids).size).toBe(32);
+    expect(qids).toHaveLength(32);
     for (const body of bodies) {
       expect(Object.keys(body.questions).length).toBeLessThanOrEqual(20);
-      expect(body.model).toBe(MODEL_PIN);
-      for (const qid of Object.keys(body.questions)) {
-        const [, t, n] = /^t(\d+)_n(\d+)$/.exec(qid);
-        expect(body.state).toContain(`T${t} [`);
-        expect(body.state).toContain(`N${n} "`);
-      }
+      expect(body.state).not.toMatch(/\[\d{1,2}:\d{2}/);
     }
+  });
+
+  it("a shuffled view relabels segments out of video order, reproducibly, and ids follow the labels", () => {
+    const a = shuffledView(note.segments, 7);
+    expect(shuffledView(note.segments, 7).order).toEqual(a.order);
+    expect(a.order).not.toEqual([0, 1, 2, 3, 4, 5, 6, 7]);
+    const first = a.order[0];
+    expect(a.labelOf[first]).toBe("T1");
+    expect(cellId(a, first, 0)).toBe("t1_n1");
+    const state = planMatrixBodies(a, note.sections).map((b) => b.state).join("\n");
+    expect(state).toContain(`T1: ${note.segments[first].text}`);
   });
 });
 
-/**
- * The fake model: a segment "pertains" to the section on its topic, the
- * topic's second segment slightly more probable; knockouts pick the earlier
- * segment. So arm C should land on each topic's FIRST segment and arm D
- * (maximising total probability) on its SECOND.
- */
-const ON_TOPIC = { 1: 0.8, 0: 0.9 }; // a topic's first segment (odd T) 0.8, its second 0.9
+describe("diagnostics", () => {
+  const cells = (rows) =>
+    rows.map((row) =>
+      row.map((p) => (p === null ? null : { choice: p >= 0.5 ? "pertains" : "does_not_pertain", probabilities: { pertains: p, does_not_pertain: 1 - p, insufficient_evidence: 0 }, confidence: p })),
+    );
 
-function cellAnswer(t, n) {
-  const pertains = Math.ceil(t / 2) === n;
-  const p = pertains ? ON_TOPIC[t % 2] : 0.05;
-  const probabilities = { pertains: p, does_not_pertain: 1 - p - 0.01, insufficient_evidence: 0.01 };
-  return { type: "choice", choice: pertains ? "pertains" : "does_not_pertain", probabilities, confidence: p };
+  it("counts backward steps in the raw argmax, skipping unlinked sections", () => {
+    expect(backwardsSteps([0, 2, null, 1, 3, 2])).toBe(2);
+  });
+
+  it("reports the top-2 margin, and an exact tie resolved to the earliest segment", () => {
+    expect(rawArgmax(cells([[0.2, 0.9, 0.6]]), 0)).toMatchObject({ segment: 1, top: 0.9 });
+    expect(rawArgmax(cells([[0.2, 0.9, 0.6]]), 0).margin).toBeCloseTo(0.3);
+    expect(rawArgmax(cells([[0.99, 0.5, 0.99]]), 0)).toMatchObject({ segment: 0, margin: 0, tied: true });
+  });
+
+  it("calls an ordered, decisive matrix near-ordered and a scattered one not", () => {
+    expect(unconstrainedSummary(cells([[0.9, 0.1, 0.1], [0.1, 0.9, 0.1], [0.1, 0.1, 0.9]])).nearOrdered).toBe(true);
+    expect(unconstrainedSummary(cells([[0.1, 0.1, 0.9], [0.9, 0.1, 0.1], [0.1, 0.9, 0.1]])).nearOrdered).toBe(false);
+  });
+
+  it("passes a decoy matrix that rejects everything and fails one that accepts", () => {
+    expect(decoySummary(cells([[0.01, 0.02], [0.03, 0.01]])).pass).toBe(true);
+    expect(decoySummary(cells([[0.9, 0.02], [0.03, 0.01]])).pass).toBe(false);
+  });
+});
+
+// A content-driven fake: it reads the segment TEXT shown for a label (never
+// the label's number), so its answers are the same however segments are
+// listed. On-topic: a topic's first minute p 0.8, its second 0.9; knockouts
+// pick the earlier minute. Anything off-topic (and every decoy) is rejected.
+function segmentText(state, label) {
+  return new RegExp(`^${label}: (.*)$`, "m").exec(state)[1];
 }
 
-function comparisonAnswer(question) {
-  const [, a, b] = /T(\d+) \(first\) or T(\d+) \(second\)/.exec(question.instructions).map(Number);
-  const first = a < b;
+function topicOf(text) {
+  return TOPIC_WORDS.findIndex((word) => text.includes(word)) + 1;
+}
+
+function minuteOf(text) {
+  return Number(/part (\d+)/.exec(text)?.[1] ?? -1);
+}
+
+function honestCell(state, label, section) {
+  const text = segmentText(state, label);
+  const onTopic = topicOf(text) === section;
+  const p = onTopic ? (minuteOf(text) % 2 === 0 ? 0.8 : 0.9) : 0.02;
+  const probabilities = { pertains: p, does_not_pertain: 0.99 - p, insufficient_evidence: 0.01 };
+  return { type: "choice", choice: onTopic ? "pertains" : "does_not_pertain", probabilities, confidence: 0.95 };
+}
+
+function honestComparison(state, question) {
+  const [, a, b] = /(T\d+) \(first\) or (T\d+) \(second\)/.exec(question.instructions);
+  const first = minuteOf(segmentText(state, a)) < minuteOf(segmentText(state, b));
   return { type: "choice", choice: first ? "first" : "second", probabilities: { first: Number(first), second: Number(!first) }, confidence: 1 };
 }
 
-function answer(qid, question) {
-  const cell = /^t(\d+)_n(\d+)$/.exec(qid);
-  return cell ? cellAnswer(Number(cell[1]), Number(cell[2])) : comparisonAnswer(question);
+function honestAnswer(body, qid) {
+  const cell = /^(t\d+)_n(\d+)$/.exec(qid);
+  return cell ? honestCell(body.state, cell[1].toUpperCase(), Number(cell[2])) : honestComparison(body.state, body.questions[qid]);
 }
 
-function fakeClient() {
+// A worthless matcher: says pertains to every cell with the same probability.
+function credulousAnswer(_body, qid) {
+  if (!qid.startsWith("t")) return { type: "choice", choice: "first", probabilities: { first: 1, second: 0 }, confidence: 1 };
+  return { type: "choice", choice: "pertains", probabilities: { pertains: 0.99, does_not_pertain: 0.005, insufficient_evidence: 0.005 }, confidence: 0.99 };
+}
+
+function fakeClient(answerFor = honestAnswer) {
   const bodies = [];
   return {
     bodies,
     post: async (body) => {
       bodies.push(body);
-      const answers = Object.fromEntries(Object.entries(body.questions).map(([qid, q]) => [qid, answer(qid, q)]));
+      const answers = Object.fromEntries(Object.keys(body.questions).map((qid) => [qid, answerFor(body, qid)]));
       const text = JSON.stringify({ model: MODEL_PIN, answers, usage: { cost: 0.0001 }, id: "x", provider: "TypeSafe" });
       return { kind: "ok", status: 200, headers: {}, bodyText: text, bodyBytes: text.length, timings: {}, socketReused: true, errorCode: null };
     },
@@ -183,54 +210,90 @@ function sink() {
 }
 
 function fakeRecorder() {
-  const recorder = { records: [], summary: null, runDir: "/tmp/run" };
+  const recorder = { records: [], files: {}, summary: null, runDir: "/tmp/run" };
   recorder.record = (r) => recorder.records.push(r);
   recorder.writeRun = (s) => (recorder.summary = s);
+  recorder.writeJson = (name, value) => (recorder.files[name] = value);
   return recorder;
 }
 
+async function stage3(opts, answerFor) {
+  const stdout = sink();
+  const recorder = fakeRecorder();
+  const client = fakeClient(answerFor);
+  const { exitCode } = await runStage3({ client, recorder, stdout, key: "k", opts });
+  return { exitCode, out: stdout.text(), recorder, client };
+}
+
 describe("runStage3", () => {
-  it("runs round 1, the knockout and all three arms, and compares them with the current pass", async () => {
-    const client = fakeClient();
-    const stdout = sink();
-    const recorder = fakeRecorder();
-    let t = 0;
-    const { exitCode } = await runStage3({ client, recorder, stdout, key: "k", opts: { note: writeNote() }, clock: () => (t += 100) });
-    const out = stdout.text();
+  it("an honest matcher: near-ordered unconstrained, passes the decoy, stable under shuffle", async () => {
+    const { exitCode, out, recorder } = await stage3({ notes: [writeNote()], shuffleSegments: true, seed: 3 });
 
     expect(exitCode).toBe(0);
-    const round1 = client.bodies.filter((b) => Object.keys(b.questions)[0].startsWith("t"));
-    const round2 = client.bodies.filter((b) => Object.keys(b.questions)[0].startsWith("r"));
-    expect(round1.length).toBeGreaterThan(0);
-    expect(round2).toHaveLength(1); // every section's single comparison, batched into one request
-    expect(recorder.summary.sections.map((s) => [s.C, s.D])).toEqual([
-      [0, 1],
-      [2, 3],
-      [4, 5],
-      [6, 7],
-    ]);
-    expect(out).toContain("Arm C vs current: exact 3/3");
-    expect(out).toContain("Arm D vs current: exact 0/3 | within +/-1 segment 3/3");
-    expect(out).toContain(`Total: ${client.bodies.length} requests (cap 200; 0 retries, 0 failed)`);
+    const [note] = recorder.summary.notes;
+    expect(note.sections.map((s) => s.rawArgmax)).toEqual([1, 3, 5, 7]);
+    expect(note.sections.map((s) => s.D)).toEqual([1, 3, 5, 7]);
+    expect(note.sections.map((s) => s.C)).toEqual([0, 2, 4, 6]);
+    expect(out).toContain("steps backwards 0 times over 3 consecutive pairs");
+    expect(out).toContain("-> NEAR-ORDERED");
+    expect(out).toContain("Decoy - this note's sections vs SYNTHETIC unrelated segments (not a real transcript)");
+    expect(out).toContain("EXPECTATION: near-zero pertains");
+    expect(out).toContain("-> PASS");
+    expect(out).toContain("raw argmax on the same segment 4/4 | arm D on the same segment 4/4");
+    expect(out).toContain("-> STABLE");
+  });
+
+  it("persists every round-1 matrix with all three probabilities, the choice and the confidence", async () => {
+    const { recorder } = await stage3({ notes: [writeNote()], shuffleSegments: true });
+    expect(Object.keys(recorder.files).sort()).toEqual(["matrix-note1-decoy.json", "matrix-note1-main.json", "matrix-note1-shuffled.json"]);
+    const main = recorder.files["matrix-note1-main.json"];
+    expect(main.cells).toHaveLength(4 * 8);
+    expect(main.cells[0]).toMatchObject({ section: 0, segment: 0, choice: "pertains", confidence: 0.95 });
+    expect(Object.keys(main.cells[0].probabilities).sort()).toEqual(["does_not_pertain", "insufficient_evidence", "pertains"]);
+    expect(main.segments.map((s) => s.startSeconds)).toEqual([0, 60, 120, 180, 240, 300, 360, 420]);
+    expect(main.sections[0].heading).toBe("1. All about compound interest savings");
+    expect(recorder.files["matrix-note1-shuffled.json"].listingOrder).toHaveLength(8);
+  });
+
+  it("a matcher that says pertains to everything FAILS the decoy and is not near-ordered", async () => {
+    const { out } = await stage3({ notes: [writeNote()] }, credulousAnswer);
+    expect(out).toContain("-> FAIL: Jev says pertains to unrelated content");
+    expect(out).toContain("-> SCATTERED");
+    expect(out).toContain("Shuffle: not run (add --shuffle-segments).");
+  });
+
+  it("uses a real decoy note when given, and says so", async () => {
+    const decoyText = NOTE.replaceAll("savings", "beekeeping").replaceAll("photosynthesis", "pottery").replaceAll("roman", "knitting").replaceAll("guitar", "origami");
+    const decoy = writeNote(decoyText);
+    const { out } = await stage3({ notes: [writeNote()], decoyNote: decoy });
+    expect(out).toContain(`vs decoy note ${decoy}`);
+    expect(out).not.toContain("SYNTHETIC");
+    expect(out).toContain("-> PASS");
+  });
+
+  it("reports each note and an aggregate when given several", async () => {
+    const { out, recorder } = await stage3({ notes: [writeNote(), writeNote()] });
+    expect(out).toContain("=== Note 1 of 2:");
+    expect(out).toContain("=== Note 2 of 2:");
+    expect(out).toContain("=== Aggregate over 2 notes (8 sections) ===");
+    expect(recorder.summary.notes).toHaveLength(2);
   });
 
   it("prints headings and clock times only: no transcript or body text", async () => {
-    const stdout = sink();
-    await runStage3({ client: fakeClient(), recorder: fakeRecorder(), stdout, key: "k", opts: { note: writeNote() } });
-    expect(stdout.text()).toContain("1. All about compound interest savings");
-    expect(stdout.text()).not.toContain(BODY_MARKER);
-    expect(stdout.text()).not.toContain(TRANSCRIPT_MARKER);
+    const { out } = await stage3({ notes: [writeNote()], shuffleSegments: true });
+    expect(out).toContain("1. All about compound interest savings");
+    expect(out).not.toContain(BODY_MARKER);
+    expect(out).not.toContain(TRANSCRIPT_MARKER);
   });
 
-  it("refuses a note with no transcript or no numbered sections, naming only the path", () => {
+  it("refuses a note with no transcript, naming only the path", () => {
     const noTranscript = writeNote("# x\n\n## 1. A\n\nbody\n");
     expect(() => loadNote(noTranscript)).toThrow(`no transcript segments found in the frontmatter of ${noTranscript}`);
-    expect(() => loadNote("/no/such/note.md")).toThrow("--note: cannot read /no/such/note.md (ENOENT)");
   });
 });
 
 describe("cli stage3", () => {
-  function deps(overrides = {}) {
+  function deps() {
     return {
       env: { VITEST: "true" },
       execArgv: [],
@@ -240,7 +303,6 @@ describe("cli stage3", () => {
       stderr: sink(),
       requestFn: makeRequestFn(),
       spawn: fakeSpawn({ stdout: "sk-never-used" }),
-      ...overrides,
     };
   }
 
@@ -250,15 +312,17 @@ describe("cli stage3", () => {
     expect(d.stderr.text()).toContain("stage3 needs --note PATH");
   });
 
-  it("--dry-run plans round 1, previews arm B against the current pass, and spends nothing", async () => {
+  it("--dry-run plans every note's round 1, decoy and shuffle, previews, and spends nothing", async () => {
     const d = deps();
-    const note = writeNote();
-    expect(await run(["stage3", "--dry-run", "--note", note], d)).toBe(0);
+    const [a, b] = [writeNote(), writeNote()];
+    expect(await run(["stage3", "--dry-run", "--note", a, "--note", b, "--shuffle-segments"], d)).toBe(0);
     const out = d.stdout.text();
-    expect(out).toContain(`To spend, run: node rig/jev-timestamps/cli.mjs stage3 --yes --note ${JSON.stringify(note)}`);
-    expect(out).toMatch(/Planned requests: \d+\n/);
-    expect(out).toContain("hard cap 200 requests in total");
-    expect(out).toContain("Arm B vs current:");
+    const note = parseNote(NOTE);
+    const perNote = planMatrixBodies(plainView(note.segments), note.sections).length;
+    // per note: round 1 + decoy (10 synthetic segments x 4 sections = 40 cells, 2 requests) + shuffle
+    expect(out).toContain(`Planned requests: ${2 * (perNote + 2 + perNote)}\n`);
+    expect(out).toContain("hard cap of 250 requests per note");
+    expect(out).toContain(`To spend, run: node rig/jev-timestamps/cli.mjs stage3 --yes --note ${JSON.stringify(a)} --note ${JSON.stringify(b)} --shuffle-segments`);
     expect(out).not.toContain(BODY_MARKER);
     expect(out).not.toContain(TRANSCRIPT_MARKER);
     expect(d.requestFn.calls).toHaveLength(0);

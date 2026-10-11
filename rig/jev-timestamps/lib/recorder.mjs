@@ -115,5 +115,11 @@ export function createRecorder({ baseDir = DEFAULT_BASE_DIR, stage, now, key }) 
     writeFileSync(join(runDir, "run.json"), line, "utf8");
   }
 
-  return { runDir, record, writeRun };
+  /** Writes one more JSON file into the run directory (a plain file name, no path). */
+  function writeJson(name, value) {
+    if (!/^[\w.-]+\.json$/.test(name)) throw new Error(`recorder: refusing file name ${JSON.stringify(name)}`);
+    writeFileSync(join(runDir, name), scrubSerialized(value, key), "utf8");
+  }
+
+  return { runDir, record, writeRun, writeJson };
 }
