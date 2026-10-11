@@ -161,3 +161,19 @@ describe("createRecorder: adversarial key scrubbing", () => {
     expect(parsed.response).toBeNull();
   });
 });
+
+describe("createRecorder: writeJson()", () => {
+  it("writes a named JSON file into the run directory, key scrubbed", () => {
+    const recorder = createRecorder({ baseDir: tempBaseDir(), stage: "stage3", now: FIXED_NOW, key: FAKE_KEY });
+    recorder.writeJson("matrix-note1-main.json", { cells: [1, 2], leaked: FAKE_KEY });
+    const raw = readRaw(join(recorder.runDir, "matrix-note1-main.json"));
+    expect(JSON.parse(raw).cells).toEqual([1, 2]);
+    expect(raw).not.toContain(FAKE_KEY);
+  });
+
+  it("refuses anything but a plain .json file name", () => {
+    const recorder = createRecorder({ baseDir: tempBaseDir(), stage: "stage3", now: FIXED_NOW, key: FAKE_KEY });
+    expect(() => recorder.writeJson("../escape.json", {})).toThrow("refusing file name");
+    expect(() => recorder.writeJson("notes.txt", {})).toThrow("refusing file name");
+  });
+});

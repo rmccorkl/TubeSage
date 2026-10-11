@@ -22,9 +22,13 @@ node rig/jev-timestamps/cli.mjs stage0 --yes     # 1 request,         ~$0.000016
 node rig/jev-timestamps/cli.mjs stage1 --yes     # up to 5 (cap 10),  ~$0.00008-0.00025
 node rig/jev-timestamps/cli.mjs stage2 --yes     # up to 60,          ~$0.001-0.002
 
-# Stage 3: one real note. Copy it into fixtures/ first (gitignored).
-node rig/jev-timestamps/cli.mjs stage3 --dry-run --note rig/jev-timestamps/fixtures/<note>.md   # plan + arm B, no request
-node rig/jev-timestamps/cli.mjs stage3 --yes --note rig/jev-timestamps/fixtures/<note>.md
+# Stage 3: real notes. Copy them into fixtures/ first (gitignored).
+F=rig/jev-timestamps/fixtures
+node rig/jev-timestamps/cli.mjs stage3 --dry-run --note $F/a.md                       # plan + current pass, no request
+node rig/jev-timestamps/cli.mjs stage3 --yes --note $F/a.md                           # matrix, arms C/D, unconstrained D, synthetic decoy
+node rig/jev-timestamps/cli.mjs stage3 --yes --note $F/a.md --decoy-note $F/other.md  # decoy = an unrelated real video
+node rig/jev-timestamps/cli.mjs stage3 --yes --note $F/a.md --shuffle-segments        # + positional-bias test (--seed N to vary)
+node rig/jev-timestamps/cli.mjs stage3 --yes --note $F/a.md --note $F/b.md --note $F/c.md --decoy-note $F/other.md --shuffle-segments
 ```
 
 Every dry run and every refusal ends with the exact `--yes` command to run.
@@ -96,7 +100,7 @@ in errors or in saved runs. On success it prints which source was used:
 | 0 liveness | **built** | One request with a 3-way `choice` question (`pertains` / `does_not_pertain` / `insufficient_evidence`). Prints the status, a classified kind, timings (connect, TLS, TTFB, total), response size, the body's *shape* (no upstream text), the returned `model` and whether it equals the pin, and `usage.cost`. It ends with a verdict: `LIVE`, `LIVE-PIN-CHANGED`, `MODEL-GONE`, `AUTH`, `CREDITS`, `ENV-BLOCKED` (DNS/TLS/refused/blocked: your network, not OpenRouter) or `OTHER`. Exits 0 only on `LIVE`. |
 | 1 contract | **built** | Two single-question requests (cold, then warm), then the **multi-question probe**: the same shared `state` with N = 2, 5, then 20 entries in the `questions` map, stopping at the first N that fails (at most 5 requests; cap 10). Each response is checked against the contract observed live in stage 0: model equals the pin, answer keys equal the question ids, criteria keys exactly as sent, probabilities in [0,1] summing to 1 ± 0.01, choice among the criteria, confidence in [0,1], `usage.cost` present. Unknown top-level keys (`id`, `provider`) are tolerated and listed. For each request it prints connect / TLS / TTFB / total, socketReused, size, cost, and how many answers matched the fixture's expected choice. Verdicts: `Contract: OK / DIFFERS` and `MULTI-QUESTION: SUPPORTED up to N=… / accepted up to N=…; failed at N=…`. Exits 0 when the single-question contract holds. |
 | 2 keep-alive + concurrency | **built** | **A.** 6 sequential requests on one keep-alive agent, with socketReused and timings for each, then `KEEP-ALIVE: REUSED / PARTIAL / NOT REUSED`. **B.** Concurrency 1 (4 sequential requests), 5, 10, 25 (one wave each): median and p95 total, reused sockets, 429s. **C.** A 429 is retried with backoff (Retry-After, else 1 s then 2 s; at most 3 attempts). A request still rate-limited after that stops the climb; `SAFE CONCURRENCY CEILING` is the highest level where every request succeeded. A hard budget of 60 requests covers every attempt. |
-| 3 one real note | **built** | `--note PATH`. Parses the note: transcript segments from the frontmatter, numbered sections (`## 1.`, `### 1.1.` …) with their body text, and the **current pass's** link on each heading (`[Watch](…&t=N)`). **Round 1** asks every (segment, section) cell `pertains / does_not_pertain / insufficient_evidence`, 20 questions per request at concurrency 10. Each request carries only the segments and sections it asks about, tiled to send the least text. Then three assignments: **arm B**, local TF-IDF similarity with no API (eligible at cosine ≥ 0.10, a heuristic); **arm C**, the maintainer design: a section with several "pertains" candidates runs a pairwise knockout (k−1 comparisons, weakest first so the strongest meet last; one comparison per section per round, all sections' comparisons of a round batched together), then a monotonic repair over the candidates with the winner strongly preferred; **arm D**, round-1 P(pertains) ≥ 0.5 straight into the monotonic assignment. Every arm links each section to at most one segment, never reuses a segment, never runs time backwards, and leaves a section with no eligible cell **unlinked**. Output: one row per section (heading, current, B, C, D, round-1 p/confidence), agreement with the current pass (exact and within ±1 segment), unlinked counts, requests, wall-clock and `usage.cost`. Hard cap 200 requests: a note needing more round-1 requests is refused before any spend, and a knockout that runs out is marked `*`. `--dry-run` prints the plan and the arm B table with no request and no key. |
+| 3 real notes | **built** | `--note PATH`, repeatable. For each note it parses transcript segments, numbered sections with their body text, and the **current pass's** link on each heading. Then: **round 1** asks every (segment, section) cell `pertains / does_not_pertain / insufficient_evidence` (20 per request, concurrency 10) and saves the **whole matrix** to the run directory. **Arm D** feeds P(pertains) ≥ 0.5 into the monotonic DP and is reported **side by side with the same matrix UNCONSTRAINED**: raw argmax per section as a clock time, top-2 margin, how many times the raw argmax steps backwards down the note, how many sections have a margin under 0.03 (exact ties are counted, marked `=` and resolved to the earliest segment), and the median top P(pertains). It ends with a `NEAR-ORDERED` or `SCATTERED` verdict. **Arm C** is the pairwise knockout plus a monotonic repair. **Decoy** (always run): the note's sections against **unrelated** segments, either `--decoy-note PATH` or synthetic ones, labelled as SYNTHETIC. It reports the choice distribution and mean/max P(pertains) against the stated expectation of near-zero "pertains", with a `PASS` or `FAIL` verdict. **Shuffle** (`--shuffle-segments`, `--seed N`, default 1): round 1 again with segments listed and labelled in a seeded random order, then how many sections land on the same segment for raw argmax and for arm D, with a `STABLE` or `UNSTABLE` verdict. With several notes it reports each, then an aggregate. Arm B (TF-IDF) was removed after it was shown not to match. Hard cap 250 requests per note. |
 | 4–5 | **not built** | Scoring against hand-labelled ground truth, adversarial. Out of scope for now. |
 
 ### Stage 3 privacy
@@ -109,7 +113,30 @@ A note is personal content.
   gitignored, so a real note is never committed.
 - The note's text is sent to the API, which is the point of the stage. It is
   also kept in the request records under `runs/`, which is gitignored.
-- Each run's `run.json` holds headings and segment numbers only.
+- Each run's `run.json` holds headings, segment numbers and the diagnostics.
+- The round-1 matrices are saved as `matrix-note<k>-main.json`,
+  `matrix-note<k>-decoy.json` and `matrix-note<k>-shuffled.json` in the run
+  directory. Every cell carries all three probabilities, the choice and the
+  confidence, with the section headings and segment start times; the
+  shuffled file also has the seed and listing order. Any later analysis can
+  be done from these without spending again.
+
+### What makes stage 3 falsifiable
+
+- **No clock times in requests.** Segment lines carry no timestamps, and
+  question ids use the label the model sees. Only the content can carry video
+  order. That is what lets the shuffle test mean something.
+- **The verdicts use thresholds chosen for this rig**, printed beside each
+  verdict:
+  - near-ordered: backward steps in at most 10% of consecutive pairs AND a
+    margin under 0.03 in at most 20% of sections
+  - decoy pass: "pertains" in under 5% of cells AND mean P(pertains) under 0.10
+  - shuffle stable: at least 80% of sections on the same segment, for both
+    raw argmax and arm D
+- **Reference point:** on the first real note, arm B (TF-IDF) with the
+  constraint removed stepped backwards 6 times, had 9 of 25 sections with a
+  margin under 0.03, and a median cosine of 0.033. That is what "the
+  constraint was doing the work" looks like.
 
 The stage 1 and 2 fixture (`lib/cells.mjs`) is 20 synthetic segments across 5
 note sections, each question with an obvious expected answer. It checks that
