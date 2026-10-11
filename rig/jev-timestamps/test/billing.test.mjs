@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { decideGate, estimateBody, estimatePlan, formatEstimate } from "../lib/billing.mjs";
-import { RATE_USD_PER_M_INPUT, RECORDED_USD_PER_REQUEST } from "../lib/constants.mjs";
+import { OBSERVED_REQUEST_OVERHEAD_TOKENS, RATE_USD_PER_M_INPUT, RECORDED_USD_PER_REQUEST } from "../lib/constants.mjs";
 
 describe("estimateBody", () => {
   it("estimates ceil(utf8Bytes(state + JSON.stringify(questions)) / 4)", () => {
@@ -15,15 +15,16 @@ describe("estimateBody", () => {
 });
 
 describe("estimatePlan", () => {
-  it("aggregates request count, token estimate, and both USD estimates", () => {
+  it("aggregates request count, token estimate (plus the observed per-request overhead), and both USD estimates", () => {
     const bodies = [
       { state: "abcd", questions: {} }, // 4 + 2 = 6 bytes -> ceil(6/4) = 2 tokens
       { state: "abcd", questions: {} },
     ];
     const plan = estimatePlan(bodies);
     expect(plan.requests).toBe(2);
-    expect(plan.inputTokensEst).toBe(4);
-    expect(plan.usdByRate).toBeCloseTo((4 * RATE_USD_PER_M_INPUT) / 1e6, 12);
+    const tokens = 4 + 2 * OBSERVED_REQUEST_OVERHEAD_TOKENS;
+    expect(plan.inputTokensEst).toBe(tokens);
+    expect(plan.usdByRate).toBeCloseTo((tokens * RATE_USD_PER_M_INPUT) / 1e6, 12);
     expect(plan.usdByRecorded).toBeCloseTo(2 * RECORDED_USD_PER_REQUEST, 12);
   });
 

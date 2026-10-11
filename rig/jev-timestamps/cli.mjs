@@ -9,9 +9,31 @@ import { createClient } from "./lib/client.mjs";
 import { createRecorder } from "./lib/recorder.mjs";
 import { estimatePlan, formatEstimate, decideGate } from "./lib/billing.mjs";
 import { buildStage0Body, runStage0 } from "./stages/stage0.mjs";
+import { planStage1Bodies, runStage1, STAGE1_MAX_REQUESTS } from "./stages/stage1.mjs";
+import { planStage2Bodies, runStage2, STAGE2_MAX_REQUESTS } from "./stages/stage2.mjs";
 import { ENDPOINT, USER_AGENT, DEFAULT_TIMEOUT_MS } from "./lib/constants.mjs";
 
-const USAGE = "Usage: node rig/jev-timestamps/cli.mjs <stage0|stage1> [--dry-run | --yes] [--samples N] [--timeout-ms N] [--env-file PATH]";
+const USAGE = "Usage: node rig/jev-timestamps/cli.mjs <stage0|stage1|stage2> [--dry-run | --yes] [--samples N] [--timeout-ms N] [--env-file PATH]";
+
+// Each stage: the bodies its estimate is priced on (an upper bound where the
+// stage can stop early), a note printed with the estimate, and the runner.
+const STAGES = {
+  stage0: { plan: () => [buildStage0Body()], note: "One liveness request.", run: runStage0 },
+  stage1: {
+    plan: planStage1Bodies,
+    note: `Upper bound (cap ${STAGE1_MAX_REQUESTS}): 2 single-question requests, then the multi-question probe at N=2, 5, 20, stopping at the first N that fails.`,
+    run: runStage1,
+  },
+  stage2: {
+    plan: planStage2Bodies,
+    note: `Upper bound: a hard budget of ${STAGE2_MAX_REQUESTS} requests, retries included (6 keep-alive + 4 + 5 + 10 + 25 concurrency = 50, the rest for 429 retries).`,
+    run: runStage2,
+  },
+};
+
+function spendCommand(opts) {
+  return `node rig/jev-timestamps/cli.mjs ${opts.stage} --yes${opts.envFile ? ` --env-file ${opts.envFile}` : ""}`;
+}
 
 function parsePositiveInt(text, label, errors) {
   const n = Number(text);
@@ -88,14 +110,16 @@ function buildPlannedExchange(body) {
   };
 }
 
-function runDryRun({ bodies, stage, now, baseDir, stdout }) {
+// Full bodies go to the run directory; the console gets one line per request.
+function runDryRun({ bodies, stage, now, baseDir, stdout, command }) {
   const recorder = createRecorder({ baseDir, stage, now, key: null });
-  for (const body of bodies) {
-    const planned = buildPlannedExchange(body);
-    recorder.record(planned);
-    stdout.write(`planned request: ${JSON.stringify(planned)}\n`);
-  }
+  bodies.forEach((body, index) => {
+    recorder.record(buildPlannedExchange(body));
+    const bytes = Buffer.byteLength(JSON.stringify(body));
+    stdout.write(`planned request: #${index + 1} questions=${Object.keys(body.questions).length} bytes=${bytes}\n`);
+  });
   recorder.writeRun({ stage, dryRun: true, requests: bodies.length });
+  stdout.write(`Planned bodies written to ${recorder.runDir}\nTo spend, run: ${command}\n`);
   return 0;
 }
 
@@ -110,7 +134,7 @@ async function runGo({ stage, env, fileVars, envFile, requestFn, timeoutMs, now,
 
   const client = createClient({ key: keyResult.key, requestFn, timeoutMs, env });
   const recorder = createRecorder({ baseDir, stage, now, key: keyResult.key });
-  const { exitCode } = await runStage0({ client, recorder, stdout, key: keyResult.key });
+  const { exitCode } = await STAGES[stage].run({ client, recorder, stdout, key: keyResult.key });
   return exitCode;
 }
 
@@ -125,7 +149,7 @@ function tryOrMessage(fn) {
 }
 
 function validateStage(opts, errors) {
-  if (opts.stage !== "stage0" && opts.stage !== "stage1") {
+  if (!Object.hasOwn(STAGES, opts.stage ?? "")) {
     errors.unshift(`Unknown stage: ${opts.stage}`);
   }
 }
@@ -154,7 +178,7 @@ function dispatchGate(gate, ctx) {
     return runDryRun(ctx.dryRunArgs);
   }
   if (gate === "refuse") {
-    ctx.stdout.write("Re-run with --yes to spend, or --dry-run to preview\n");
+    ctx.stdout.write(`Re-run with --yes to spend, or --dry-run to preview\nTo spend, run: ${ctx.command}\n`);
     return 2;
   }
   return runGo(ctx.goArgs);
@@ -174,16 +198,12 @@ function loadEnvFileOrExit(envFile, stderr) {
 }
 
 // Everything between the parsed args and the spend gate that can still
-// short-circuit with a plain exit code: the proxy tripwire, the stage1 stub,
-// and an unreadable --env-file. Returns `{ exit }` or `{ fileVars }`.
-function preflight(opts, env, execArgv, stdout, stderr) {
+// short-circuit with a plain exit code: the proxy tripwire and an unreadable
+// --env-file. Returns `{ exit }` or `{ fileVars }`.
+function preflight(opts, env, execArgv, stderr) {
   const proxyCheck = tryOrMessage(() => assertNoEnvProxy(env, execArgv));
   if (!proxyCheck.ok) {
     stderr.write(`${proxyCheck.message}\n`);
-    return { exit: 1 };
-  }
-  if (opts.stage === "stage1") {
-    stdout.write("stage1: not built yet\n");
     return { exit: 1 };
   }
   return loadEnvFileOrExit(opts.envFile, stderr);
@@ -216,11 +236,12 @@ export async function run(argv = process.argv.slice(2), deps = {}) {
   if (resolved.exit !== undefined) return resolved.exit;
   const { opts } = resolved;
 
-  const checked = preflight(opts, env, execArgv, stdout, stderr);
+  const checked = preflight(opts, env, execArgv, stderr);
   if (checked.exit !== undefined) return checked.exit;
 
-  const bodies = [buildStage0Body()];
-  stdout.write(formatEstimate(estimatePlan(bodies)) + "\n");
+  const stage = STAGES[opts.stage];
+  const bodies = stage.plan();
+  stdout.write(`${formatEstimate(estimatePlan(bodies))}\n${stage.note}\n`);
 
   const gateCheck = tryOrMessage(() => decideGate({ dryRun: opts.dryRun, yes: opts.yes }));
   if (!gateCheck.ok) {
@@ -228,9 +249,11 @@ export async function run(argv = process.argv.slice(2), deps = {}) {
     return 1;
   }
 
+  const command = spendCommand(opts);
   return dispatchGate(gateCheck.value, {
     stdout,
-    dryRunArgs: { bodies, stage: opts.stage, now, baseDir, stdout },
+    command,
+    dryRunArgs: { bodies, stage: opts.stage, now, baseDir, stdout, command },
     goArgs: { stage: opts.stage, env, fileVars: checked.fileVars, envFile: opts.envFile, requestFn, timeoutMs: opts.timeoutMs, now, baseDir, stdout, stderr },
   });
 }

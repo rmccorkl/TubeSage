@@ -10,7 +10,13 @@ export const MODEL_PIN = "typesafe/jev-1.13-20260917";
 // provider's key (e.g. OPENAI_API_KEY).
 export const KEY_ENV_NAMES = ["OPENROUTER_API_KEY_JEV", "OPENROUTER_API_KEY"];
 export const RATE_USD_PER_M_INPUT = 0.042;
-export const RECORDED_USD_PER_REQUEST = 0.00002;
+// Measured: stage 0's live request (2026-10-11) cost $0.000016044, exactly
+// 382 input tokens x $0.042/M (output tokens were not billed).
+export const RECORDED_USD_PER_REQUEST = 0.000016044;
+// The same request's state + questions came to ~113 estimated tokens but the
+// endpoint billed 382, so it adds ~269 tokens of its own per request. One
+// observation: an estimate, not a guarantee (it may scale per question).
+export const OBSERVED_REQUEST_OVERHEAD_TOKENS = 269;
 export const MAX_BODY_BYTES = 262144;
 export const DEFAULT_TIMEOUT_MS = 30000;
 export const USER_AGENT = "tubesage-jev-rig/0.1";

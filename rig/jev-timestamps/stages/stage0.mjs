@@ -1,6 +1,7 @@
 // Stage 0: one liveness request against the decisions endpoint. Never prints
 // bodyText (upstream prose) or the key; only classified fields and a shape.
-import { ENDPOINT, MODEL_PIN, USER_AGENT } from "../lib/constants.mjs";
+import { MODEL_PIN } from "../lib/constants.mjs";
+import { recordRequest } from "../lib/measure.mjs";
 import { describeShape } from "../lib/shape.mjs";
 
 const STATE =
@@ -79,22 +80,7 @@ function parseResult(result) {
 }
 
 function recordExchange(recorder, { body, key, result, verdict, usageCost }) {
-  recorder.record({
-    request: {
-      method: "POST",
-      url: ENDPOINT,
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json", "User-Agent": USER_AGENT },
-      body,
-    },
-    response:
-      result.status === null
-        ? null
-        : { status: result.status, headers: result.headers, bodyText: result.bodyText, bodyBytes: result.bodyBytes },
-    kind: result.kind,
-    errorCode: result.errorCode,
-    timings: result.timings,
-    socketReused: result.socketReused,
-  });
+  recordRequest(recorder, { label: "stage0", body, key, result });
   recorder.writeRun({
     stage: "stage0",
     verdict,
