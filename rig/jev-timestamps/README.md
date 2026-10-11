@@ -10,20 +10,50 @@ and `scripts/rig-containment.test.mjs` checks that on every `npm test`.
 
 ## Run it (maintainer)
 
-The key is read only from `OPENROUTER_API_KEY_JEV`. The rig never reads
-1Password itself and never logs, prints or writes the key.
+Use the OpenRouter key you already have. You don't need a new key, and you
+don't need 1Password.
 
 ```sh
 # 1. Preview. No key needed, no network call.
 node rig/jev-timestamps/cli.mjs stage0 --dry-run
 
-# 2. Live liveness check: one billable request (~$0.00002).
-OPENROUTER_API_KEY_JEV="$(op read 'op://<vault>/<item>/<field>')" \
-  node rig/jev-timestamps/cli.mjs stage0 --yes
+# 2a. Live liveness check (one billable request, ~$0.00002), with the
+#     standard variable already in your shell:
+node rig/jev-timestamps/cli.mjs stage0 --yes
+
+# 2b. Or, with no setup at all, point at a .env that already holds the key:
+node rig/jev-timestamps/cli.mjs stage0 --yes --env-file /path/to/project/.env
 ```
 
 Run from the repo root. Optional flag: `--timeout-ms N` (default 30000,
 a total wall-clock deadline).
+
+### Where the key comes from
+
+The rig uses the first of these names that is set:
+
+1. `OPENROUTER_API_KEY_JEV` (still accepted, so existing setups keep working)
+2. `OPENROUTER_API_KEY` (the standard name; the normal path)
+
+It never falls back to another provider's key, such as `OPENAI_API_KEY`.
+
+`--env-file PATH` reads simple `KEY=VALUE` lines from an existing file. It
+skips blank lines and `#` comments and strips surrounding quotes. Other lines
+are ignored; `export KEY=...` lines are not read. For each name above, the
+real environment wins: a value in the file never overrides a variable
+already set in your shell. A missing or unreadable file fails with an error
+naming the path.
+
+Node 22 quirk (observed on v22.22.3): Node checks an `--env-file` argument
+itself, even when it comes after the script path. A missing or unreadable
+path stops it before the rig starts: `node: <path>: not found` (or
+`invalid format` for a directory), exit 9. That message also names only the
+path. A readable file is passed through untouched; Node does not load it.
+The rig parses it as described above.
+
+The rig only ever prints variable **names** and the file path: never a
+value, never a prefix of one, in errors or in saved runs. On success it
+prints `using key from <NAME> (environment | --env-file PATH)`.
 
 ## Stages
 

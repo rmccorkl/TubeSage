@@ -4,14 +4,14 @@
 // ever called, matching the order of operations in the task brief exactly.
 import { realpathSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { assertNoEnvProxy, readKey } from "./lib/env.mjs";
+import { assertNoEnvProxy, loadEnvFile, readKey } from "./lib/env.mjs";
 import { createClient } from "./lib/client.mjs";
 import { createRecorder } from "./lib/recorder.mjs";
 import { estimatePlan, formatEstimate, decideGate } from "./lib/billing.mjs";
 import { buildStage0Body, runStage0 } from "./stages/stage0.mjs";
 import { ENDPOINT, USER_AGENT, DEFAULT_TIMEOUT_MS } from "./lib/constants.mjs";
 
-const USAGE = "Usage: node rig/jev-timestamps/cli.mjs <stage0|stage1> [--dry-run | --yes] [--samples N] [--timeout-ms N]";
+const USAGE = "Usage: node rig/jev-timestamps/cli.mjs <stage0|stage1> [--dry-run | --yes] [--samples N] [--timeout-ms N] [--env-file PATH]";
 
 function parsePositiveInt(text, label, errors) {
   const n = Number(text);
@@ -43,6 +43,15 @@ const FLAG_HANDLERS = {
   "--timeout-ms": (opts, rest, i, errors) => {
     const value = parsePositiveInt(rest[i + 1], "--timeout-ms", errors);
     if (value !== undefined) opts.timeoutMs = value;
+    return 1;
+  },
+  "--env-file": (opts, rest, i, errors) => {
+    const path = rest[i + 1];
+    if (!path || path.startsWith("--")) {
+      errors.push("--env-file needs a path");
+      return 0;
+    }
+    opts.envFile = path;
     return 1;
   },
 };
@@ -90,12 +99,14 @@ function runDryRun({ bodies, stage, now, baseDir, stdout }) {
   return 0;
 }
 
-async function runGo({ stage, env, requestFn, timeoutMs, now, baseDir, stdout, stderr }) {
-  const keyResult = readKey(env);
+async function runGo({ stage, env, fileVars, envFile, requestFn, timeoutMs, now, baseDir, stdout, stderr }) {
+  const keyResult = readKey(env, fileVars, envFile);
   if (!keyResult.ok) {
     stderr.write(`${keyResult.message}\n`);
     return 1;
   }
+  // The variable NAME and where it came from — never any part of its value.
+  stdout.write(`using key from ${keyResult.name} (${keyResult.source === "env-file" ? `--env-file ${envFile}` : "environment"})\n`);
 
   const client = createClient({ key: keyResult.key, requestFn, timeoutMs, env });
   const recorder = createRecorder({ baseDir, stage, now, key: keyResult.key });
@@ -149,20 +160,33 @@ function dispatchGate(gate, ctx) {
   return runGo(ctx.goArgs);
 }
 
-// Everything between the proxy tripwire and the spend gate that can still
-// short-circuit with a plain exit code: the proxy check itself, and the
-// stage1 stub. Returns an exit code, or null to continue.
-function afterProxyGuard(opts, env, execArgv, stdout, stderr) {
+// Loaded (and a bad path reported) before the gate, so a dry run catches a
+// wrong --env-file too. Its values are only ever handed to readKey; only the
+// path can appear in a message.
+function loadEnvFileOrExit(envFile, stderr) {
+  if (!envFile) return { fileVars: {} };
+  const loaded = loadEnvFile(envFile);
+  if (!loaded.ok) {
+    stderr.write(`${loaded.message}\n`);
+    return { exit: 1 };
+  }
+  return { fileVars: loaded.vars };
+}
+
+// Everything between the parsed args and the spend gate that can still
+// short-circuit with a plain exit code: the proxy tripwire, the stage1 stub,
+// and an unreadable --env-file. Returns `{ exit }` or `{ fileVars }`.
+function preflight(opts, env, execArgv, stdout, stderr) {
   const proxyCheck = tryOrMessage(() => assertNoEnvProxy(env, execArgv));
   if (!proxyCheck.ok) {
     stderr.write(`${proxyCheck.message}\n`);
-    return 1;
+    return { exit: 1 };
   }
   if (opts.stage === "stage1") {
     stdout.write("stage1: not built yet\n");
-    return 1;
+    return { exit: 1 };
   }
-  return null;
+  return loadEnvFileOrExit(opts.envFile, stderr);
 }
 
 /**
@@ -192,8 +216,8 @@ export async function run(argv = process.argv.slice(2), deps = {}) {
   if (resolved.exit !== undefined) return resolved.exit;
   const { opts } = resolved;
 
-  const earlyExit = afterProxyGuard(opts, env, execArgv, stdout, stderr);
-  if (earlyExit !== null) return earlyExit;
+  const checked = preflight(opts, env, execArgv, stdout, stderr);
+  if (checked.exit !== undefined) return checked.exit;
 
   const bodies = [buildStage0Body()];
   stdout.write(formatEstimate(estimatePlan(bodies)) + "\n");
@@ -207,7 +231,7 @@ export async function run(argv = process.argv.slice(2), deps = {}) {
   return dispatchGate(gateCheck.value, {
     stdout,
     dryRunArgs: { bodies, stage: opts.stage, now, baseDir, stdout },
-    goArgs: { stage: opts.stage, env, requestFn, timeoutMs: opts.timeoutMs, now, baseDir, stdout, stderr },
+    goArgs: { stage: opts.stage, env, fileVars: checked.fileVars, envFile: opts.envFile, requestFn, timeoutMs: opts.timeoutMs, now, baseDir, stdout, stderr },
   });
 }
 

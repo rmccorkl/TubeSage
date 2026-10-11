@@ -1,11 +1,11 @@
-import { mkdtempSync, readFileSync, readdirSync } from "node:fs";
+import { mkdtempSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { run } from "../cli.mjs";
-import { KEY_ENV } from "../lib/constants.mjs";
 import { createFakeRes, makeRequestFn } from "./fakes.mjs";
 
+const KEY_ENV = "OPENROUTER_API_KEY_JEV";
 const FAKE_KEY = "sk-test-FAKE-KEY-0123456789";
 
 function makeStream() {
@@ -32,6 +32,25 @@ function baseDeps(overrides = {}) {
 
 function runsDirEntries(baseDir) {
   return readdirSync(baseDir);
+}
+
+function readOnlyRunFile(baseDir, fileName) {
+  const [runDir] = runsDirEntries(baseDir);
+  return readFileSync(join(baseDir, runDir, fileName), "utf8");
+}
+
+// Starts run(), lets the microtask queue reach requestFn (client.post() is
+// called inside runStage0's await chain), then answers with a LIVE response.
+// `requestFn` is the fake whose emitResponse is used; deps.requestFn may wrap it.
+async function runAnsweredLive(argv, deps, requestFn) {
+  const pending = run(argv, deps);
+  await Promise.resolve();
+  await Promise.resolve();
+  const res = createFakeRes({ statusCode: 200 });
+  requestFn.emitResponse(res);
+  res.emit("data", Buffer.from(JSON.stringify({ model: "typesafe/jev-1.13-20260917" })));
+  res.emit("end");
+  return pending;
 }
 
 describe("cli run(): usage", () => {
@@ -149,14 +168,7 @@ describe("cli run(): go path", () => {
       return requestFn(options, callback);
     };
 
-    const pending = run(["stage0", "--yes"], deps);
-    await Promise.resolve();
-    await Promise.resolve();
-    const res = createFakeRes({ statusCode: 200 });
-    requestFn.emitResponse(res);
-    res.emit("data", Buffer.from(JSON.stringify({ model: "typesafe/jev-1.13-20260917" })));
-    res.emit("end");
-    await pending;
+    await runAnsweredLive(["stage0", "--yes"], deps, requestFn);
 
     expect(stdoutAtFirstCall).not.toBeNull();
     expect(stdoutAtFirstCall).toContain("Planned requests:");
@@ -166,18 +178,7 @@ describe("cli run(): go path", () => {
     const requestFn = makeRequestFn();
     const deps = baseDeps({ env: { VITEST: "true", [KEY_ENV]: FAKE_KEY }, requestFn });
 
-    const pending = run(["stage0", "--yes"], deps);
-    // client.post() is called synchronously inside runStage0's await chain;
-    // give the microtask queue a turn so requestFn has been invoked before
-    // we respond.
-    await Promise.resolve();
-    await Promise.resolve();
-    const res = createFakeRes({ statusCode: 200 });
-    requestFn.emitResponse(res);
-    res.emit("data", Buffer.from(JSON.stringify({ model: "typesafe/jev-1.13-20260917" })));
-    res.emit("end");
-
-    const code = await pending;
+    const code = await runAnsweredLive(["stage0", "--yes"], deps, requestFn);
 
     expect(code).toBe(0);
     expect(deps.stdout.text()).toContain("verdict: LIVE");
@@ -213,5 +214,81 @@ describe("cli run(): --timeout-ms and --samples validation", () => {
     const code = await run(["stage0", "--not-a-real-flag"], deps);
     expect(code).toBe(1);
     expect(deps.requestFn.calls).toHaveLength(0);
+  });
+});
+
+describe("cli run(): --env-file", () => {
+  function envFileWith(text) {
+    const path = join(mkdtempSync(join(tmpdir(), "jev-rig-envfile-")), ".env");
+    writeFileSync(path, text);
+    return path;
+  }
+
+  it("exits 1 naming the path when the file does not exist, before any request", async () => {
+    const deps = baseDeps();
+    const missing = join(mkdtempSync(join(tmpdir(), "jev-rig-envfile-")), "nope.env");
+    const code = await run(["stage0", "--yes", "--env-file", missing], deps);
+    expect(code).toBe(1);
+    expect(deps.stderr.text()).toContain(missing);
+    expect(deps.requestFn.calls).toHaveLength(0);
+  });
+
+  it("rejects --env-file with no path", async () => {
+    const deps = baseDeps();
+    const code = await run(["stage0", "--dry-run", "--env-file"], deps);
+    expect(code).toBe(1);
+    expect(deps.stderr.text()).toContain("--env-file needs a path");
+  });
+
+  it("emits no value from the file when no accepted key is in it", async () => {
+    const secrets = ["sk-openai-SECRET-VALUE-111", "sk-typo-SECRET-VALUE-222", "plain-SECRET-333"];
+    const path = envFileWith(
+      `OPENAI_API_KEY=${secrets[0]}\nOPENROUTER_KEY="${secrets[1]}"\n# OPENROUTER_API_KEY=${secrets[2]}\n`,
+    );
+    const deps = baseDeps();
+    const code = await run(["stage0", "--yes", "--env-file", path], deps);
+
+    expect(code).toBe(1);
+    const output = deps.stdout.text() + deps.stderr.text();
+    expect(output).toContain("OPENROUTER_API_KEY");
+    expect(output).toContain(path);
+    for (const secret of secrets) expect(output).not.toContain(secret);
+    expect(deps.requestFn.calls).toHaveLength(0);
+    expect(runsDirEntries(deps.baseDir)).toHaveLength(0);
+  });
+
+  it("emits no value from the file on a dry run", async () => {
+    const path = envFileWith(`OPENROUTER_API_KEY=${FAKE_KEY}\n`);
+    const deps = baseDeps();
+    const code = await run(["stage0", "--dry-run", "--env-file", path], deps);
+
+    expect(code).toBe(0);
+    expect(deps.stdout.text() + deps.stderr.text()).not.toContain(FAKE_KEY);
+    expect(readOnlyRunFile(deps.baseDir, "exchanges.jsonl")).not.toContain(FAKE_KEY);
+  });
+
+  it("uses OPENROUTER_API_KEY from the file, names only the variable, and never leaks the value", async () => {
+    const requestFn = makeRequestFn();
+    const path = envFileWith(`OPENROUTER_API_KEY='${FAKE_KEY}'\n`);
+    const deps = baseDeps({ requestFn });
+
+    const code = await runAnsweredLive(["stage0", "--yes", "--env-file", path], deps, requestFn);
+
+    expect(code).toBe(0);
+    expect(requestFn.calls[0].headers.Authorization).toBe(`Bearer ${FAKE_KEY}`);
+    expect(deps.stdout.text()).toContain("using key from OPENROUTER_API_KEY (--env-file");
+    expect(deps.stdout.text() + deps.stderr.text()).not.toContain(FAKE_KEY);
+    expect(readOnlyRunFile(deps.baseDir, "exchanges.jsonl")).not.toContain(FAKE_KEY);
+  });
+
+  it("does not let the file override a key already in the real environment", async () => {
+    const requestFn = makeRequestFn();
+    const path = envFileWith("OPENROUTER_API_KEY=sk-from-file-should-not-win\n");
+    const deps = baseDeps({ env: { VITEST: "true", OPENROUTER_API_KEY: FAKE_KEY }, requestFn });
+
+    await runAnsweredLive(["stage0", "--yes", "--env-file", path], deps, requestFn);
+
+    expect(requestFn.calls[0].headers.Authorization).toBe(`Bearer ${FAKE_KEY}`);
+    expect(deps.stdout.text()).toContain("using key from OPENROUTER_API_KEY (environment)");
   });
 });

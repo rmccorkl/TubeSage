@@ -6,7 +6,9 @@ export const ENDPOINT_HOST = "openrouter.ai";
 export const ENDPOINT_PATH = "/api/alpha/decisions";
 export const ENDPOINT = "https://openrouter.ai/api/alpha/decisions";
 export const MODEL_PIN = "typesafe/jev-1.13-20260917";
-export const KEY_ENV = "OPENROUTER_API_KEY_JEV";
+// Accepted key variables, in precedence order. Never fall back to another
+// provider's key (e.g. OPENAI_API_KEY).
+export const KEY_ENV_NAMES = ["OPENROUTER_API_KEY_JEV", "OPENROUTER_API_KEY"];
 export const RATE_USD_PER_M_INPUT = 0.042;
 export const RECORDED_USD_PER_REQUEST = 0.00002;
 export const MAX_BODY_BYTES = 262144;
