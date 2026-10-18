@@ -173,7 +173,8 @@ export function buildOpenAiCompatibleModel(options: OpenAiCompatibleModelOptions
   }
   return new ChatOpenAI({
     ...getOpenAiConfiguration({
-      apiKey: options.apiKey.trim() || PLACEHOLDER_API_KEY,
+      // `?? ''`: a hand-edited or pre-release data.json can leave the key out.
+      apiKey: (options.apiKey ?? '').trim() || PLACEHOLDER_API_KEY,
       configuration: { baseURL }
     }),
     timeout: requestBudgetMs(),

@@ -252,6 +252,16 @@ describe("the OpenAI-compatible server is ChatOpenAI at the user's address (#25)
     expect(sent.headers["x-title"]).toBeUndefined();
   });
 
+  it("works with NO key at all, as a hand-edited or pre-release data.json can leave it: no TypeError, placeholder sent", async () => {
+    answerWith("ok");
+    const options = { ...MODEL_OPTIONS, apiKey: undefined as unknown as string, baseURL: LOCAL_SERVER };
+    let model: ReturnType<typeof buildOpenAiCompatibleModel> | undefined;
+    expect(() => { model = buildOpenAiCompatibleModel(options); }).not.toThrow();
+    const response: unknown = await model?.invoke(["hello"]);
+    expect((response as { content: unknown }).content).toBe("ok");
+    expect(sentRequest().headers.authorization).toBe("Bearer not-needed");
+  });
+
   it("treats a key of only spaces as blank, and sends a real key when there is one", async () => {
     answerWith("ok");
     await buildOpenAiCompatibleModel({ ...MODEL_OPTIONS, apiKey: "   ", baseURL: LOCAL_SERVER }).invoke(["hello"]);

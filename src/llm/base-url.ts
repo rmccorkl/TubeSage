@@ -28,8 +28,12 @@ export const DEFAULT_BASE_URLS: Readonly<Record<string, string>> = {
   google: "https://generativelanguage.googleapis.com",
 };
 
-/** The path under each base URL that lists the provider's models. */
-const MODEL_LIST_PATHS: Readonly<Record<string, string>> = {
+/**
+ * The path under each base URL that lists the provider's models. Partial on
+ * purpose: a provider missing here has no model list we can assume, and
+ * modelListUrl refuses it rather than build a URL around `undefined`.
+ */
+const MODEL_LIST_PATHS: Readonly<Partial<Record<string, string>>> = {
   openai: "/models",
   openrouter: "/models",
   anthropic: "/v1/models",
@@ -100,7 +104,18 @@ export function baseUrlOverrides(settings: BaseUrlSettings): Record<string, stri
   return overrides;
 }
 
-/** Where a provider's model list is fetched: under the SAME base URL its chat requests use. */
+/**
+ * Where a provider's model list is fetched: under the SAME base URL its chat
+ * requests use. Throws for a provider with no known model-list path rather
+ * than interpolate `undefined` into a URL. The OpenAI-compatible server is
+ * one, deliberately: an arbitrary server may or may not serve /v1/models.
+ * Every caller builds the URL inside its try, so a refusal becomes the
+ * fetcher's error notice and an empty result — never a request.
+ */
 export function modelListUrl(provider: string, settings: BaseUrlSettings): string {
-  return `${resolveBaseUrl(provider, baseUrlOverrides(settings)[provider])}${MODEL_LIST_PATHS[provider]}`;
+  const path = MODEL_LIST_PATHS[provider];
+  if (path === undefined) {
+    throw new Error(`No model-list endpoint is known for provider "${provider}"`);
+  }
+  return `${resolveBaseUrl(provider, baseUrlOverrides(settings)[provider])}${path}`;
 }

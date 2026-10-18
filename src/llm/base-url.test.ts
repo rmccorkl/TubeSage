@@ -88,6 +88,19 @@ describe("modelListUrl — the model list comes from the SAME base URL as the ch
     expect(() => modelListUrl("anthropic", settings({ anthropic: "gateway.local" }))).toThrow(t("notice.baseUrl.invalid"));
   });
 
+  it.each(["openai-compatible", "ollama", "not-a-provider"])(
+    "refuses %s, which has no model-list path, instead of building a URL around undefined",
+    (provider) => {
+      // A user's address is set, so a careless build would have produced
+      // http://192.168.1.20:1234/v1undefined, not an error.
+      const withAddress = { ...settings(), openaiCompatibleBaseUrl: "http://192.168.1.20:1234/v1" };
+      let url: string | undefined;
+      expect(() => { url = modelListUrl(provider, withAddress); }).toThrow(`No model-list endpoint is known for provider "${provider}"`);
+      expect(url).toBeUndefined();
+      expect(String(url)).not.toContain("http");
+    },
+  );
+
   it("asks the vendor while the toggle is off, though the typed URL is kept (#28)", () => {
     const off = settings({ anthropic: "http://gateway.local:4000/anthropic" }, { anthropic: false });
     expect(modelListUrl("anthropic", off)).toBe("https://api.anthropic.com/v1/models");
