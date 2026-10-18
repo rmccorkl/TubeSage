@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Залиште порожнім, щоб використовувати типову адресу, показану в полі. Запити разом із вашим ключем API надсилаються на вказану адресу."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Власний базовий URL {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Вимк.: запити надсилаються на власну адресу {provider}. Увімк.: вони надсилаються на базовий URL нижче, разом зі списком моделей."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL OpenAI-сумісного сервера"

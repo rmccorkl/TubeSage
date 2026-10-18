@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "Serverns URL, sparad i tilläggets data.",
     "settings.llm.baseUrl.name": "Bas-URL för {provider}",
     "settings.llm.baseUrl.desc": "Lämna tomt för att använda standardadressen som visas i fältet. Förfrågningar, inklusive din API-nyckel, skickas till adressen du anger.",
+    "settings.llm.baseUrl.toggle.name": "Anpassad bas-URL för {provider}",
+    "settings.llm.baseUrl.toggle.desc": "Av: förfrågningar går till {provider}s egen adress. På: de går till bas-URL:en nedan, modellistan inräknad.",
     "settings.llm.openaiCompatible.url.name": "URL till OpenAI-kompatibel server",
     "settings.llm.openaiCompatible.url.desc": "Bas-URL, slutar oftast på /v1. Sparas i tilläggets data. API-nyckeln nedan är valfri.",
     "settings.llm.model.name": "{provider}-modell",

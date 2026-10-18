@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "Server URL, stored in plugin data.",
     "settings.llm.baseUrl.name": "{provider} base URL",
     "settings.llm.baseUrl.desc": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+    "settings.llm.baseUrl.toggle.name": "Custom {provider} base URL",
+    "settings.llm.baseUrl.toggle.desc": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
     "settings.llm.openaiCompatible.url.name": "OpenAI-compatible server URL",
     "settings.llm.openaiCompatible.url.desc": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
     "settings.llm.model.name": "{provider} model",

@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "Server-URL, gemt i plugin-dataene.",
     "settings.llm.baseUrl.name": "Basis-URL til {provider}",
     "settings.llm.baseUrl.desc": "Lad feltet stå tomt for at bruge standardadressen, der vises i feltet. Forespørgsler, inklusive din API-nøgle, sendes til den adresse, du indtaster.",
+    "settings.llm.baseUrl.toggle.name": "Brugerdefineret basis-URL til {provider}",
+    "settings.llm.baseUrl.toggle.desc": "Fra: forespørgsler sendes til {provider}s egen adresse. Til: de sendes til basis-URL'en nedenfor, modellisten inklusive.",
     "settings.llm.openaiCompatible.url.name": "URL til OpenAI-kompatibel server",
     "settings.llm.openaiCompatible.url.desc": "Basis-URL, slutter normalt på /v1. Gemt i plugin-dataene. API-nøglen nedenfor er valgfri.",
     "settings.llm.model.name": "{provider}-model",

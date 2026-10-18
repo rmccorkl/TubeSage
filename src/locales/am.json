@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "በመስኩ ላይ የሚታየውን ነባሪ አድራሻ ለመጠቀም ባዶ ይተዉት። ጥያቄዎች ከAPI ቁልፍዎ ጋር ወደሚያስገቡት አድራሻ ይላካሉ።"
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "ብጁ የ{provider} መሠረታዊ URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "ጠፍቷል፦ ጥያቄዎች ወደ {provider} የራሱ አድራሻ ይሄዳሉ። በርቷል፦ የሞዴል ዝርዝሩን ጨምሮ ከታች ወዳለው መሠረታዊ URL ይሄዳሉ።"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "ከOpenAI ጋር ተኳሃኝ የሆነ አገልጋይ URL"

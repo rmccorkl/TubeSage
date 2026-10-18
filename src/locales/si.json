@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "ක්ෂේත්‍රයේ පෙන්වන පෙරනිමි ලිපිනය භාවිත කිරීමට හිස්ව තබන්න. ඔබේ API යතුර ඇතුළුව ඉල්ලීම් ඔබ ඇතුළු කරන ලිපිනයට යයි."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "අභිරුචි {provider} මූලික URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "අක්‍රිය: ඉල්ලීම් {provider} හි ම ලිපිනයට යයි. සක්‍රිය: ආකෘති ලැයිස්තුව ද ඇතුළුව ඒවා පහත මූලික URL එකට යයි."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI සමඟ ගැළපෙන සේවාදායකයේ URL"

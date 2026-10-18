@@ -28,6 +28,12 @@ export interface YouTubeTranscriptSettings {
      * reaches everyone who has not overridden it.
      */
     customBaseUrls: Record<string, string>;
+    /**
+     * Whether each provider's custom base URL is in use (#28). Off keeps the
+     * typed URL but sends requests to the vendor default; the toggle also
+     * decides whether the URL field is shown.
+     */
+    customBaseUrlEnabled: Record<string, boolean>;
     temperature: number;
     maxTokens: number;
     
@@ -122,6 +128,7 @@ export const DEFAULT_SETTINGS: YouTubeTranscriptSettings = {
     },
     openaiCompatibleBaseUrl: '',
     customBaseUrls: {},
+    customBaseUrlEnabled: {},
     temperature: 0.7,
     maxTokens: 1000,
     

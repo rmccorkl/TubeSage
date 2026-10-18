@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "برای استفاده از نشانی پیش‌فرضی که در کادر نمایش داده می‌شود، خالی بگذارید. درخواست‌ها همراه با کلید API شما به نشانی‌ای که وارد می‌کنید فرستاده می‌شوند."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "نشانی URL پایهٔ دلخواه برای {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "خاموش: درخواست‌ها به نشانی خود {provider} فرستاده می‌شوند. روشن: درخواست‌ها، همراه با فهرست مدل‌ها، به نشانی URL پایهٔ زیر فرستاده می‌شوند."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "نشانی URL سرور سازگار با OpenAI"

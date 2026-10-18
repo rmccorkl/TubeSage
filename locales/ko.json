@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "서버 URL이며 플러그인 데이터에 저장됩니다.",
     "settings.llm.baseUrl.name": "{provider} 기본 URL",
     "settings.llm.baseUrl.desc": "비워 두면 필드에 표시된 기본 주소를 사용합니다. API 키를 포함한 요청은 입력한 주소로 전송됩니다.",
+    "settings.llm.baseUrl.toggle.name": "사용자 지정 {provider} 기본 URL",
+    "settings.llm.baseUrl.toggle.desc": "끄기: 요청이 {provider}의 자체 주소로 전송됩니다. 켜기: 모델 목록을 포함한 요청이 아래 기본 URL로 전송됩니다.",
     "settings.llm.openaiCompatible.url.name": "OpenAI 호환 서버 URL",
     "settings.llm.openaiCompatible.url.desc": "기본 URL이며 보통 /v1로 끝납니다. 플러그인 데이터에 저장됩니다. 아래 API 키는 선택 사항입니다.",
     "settings.llm.model.name": "{provider} 모델",

@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "留空即使用欄位中顯示的預設位址。請求（包括您的 API 金鑰）會傳送到您輸入的位址。"
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "自訂 {provider} 基礎網址"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "關閉：請求會傳送到 {provider} 自己的位址。開啟：請求（包括模型清單）會傳送到下方的基礎網址。"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI 相容伺服器網址"

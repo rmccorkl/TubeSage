@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "URL an fhreastalaí, stóráilte i sonraí an bhreiseáin.",
     "settings.llm.baseUrl.name": "Bun-URL {provider}",
     "settings.llm.baseUrl.desc": "Fág bán é chun an seoladh réamhshocraithe atá sa réimse a úsáid. Téann iarratais, d'eochair API san áireamh, chuig an seoladh a chuireann tú isteach.",
+    "settings.llm.baseUrl.toggle.name": "Bun-URL saincheaptha do {provider}",
+    "settings.llm.baseUrl.toggle.desc": "As: téann iarratais chuig seoladh {provider} féin. Ar: téann siad chuig an mbun-URL thíos, liosta na múnlaí san áireamh.",
     "settings.llm.openaiCompatible.url.name": "URL an fhreastalaí atá comhoiriúnach le OpenAI",
     "settings.llm.openaiCompatible.url.desc": "Bun-URL, a chríochnaíonn le /v1 de ghnáth. Stóráilte i sonraí an bhreiseáin. Is roghnach an eochair API thíos.",
     "settings.llm.model.name": "Múnla {provider}",

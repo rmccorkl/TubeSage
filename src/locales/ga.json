@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Fág bán é chun an seoladh réamhshocraithe atá sa réimse a úsáid. Téann iarratais, d'eochair API san áireamh, chuig an seoladh a chuireann tú isteach."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Bun-URL saincheaptha do {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "As: téann iarratais chuig seoladh {provider} féin. Ar: téann siad chuig an mbun-URL thíos, liosta na múnlaí san áireamh."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL an fhreastalaí atá comhoiriúnach le OpenAI"

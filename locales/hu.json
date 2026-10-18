@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "Kiszolgáló URL-je, a bővítmény adataiban tárolva.",
     "settings.llm.baseUrl.name": "{provider} alap-URL",
     "settings.llm.baseUrl.desc": "Hagyd üresen a mezőben látható alapértelmezett cím használatához. A kérések az API-kulccsal együtt a megadott címre mennek.",
+    "settings.llm.baseUrl.toggle.name": "Egyéni {provider} alap-URL",
+    "settings.llm.baseUrl.toggle.desc": "Ki: a kérések a(z) {provider} saját címére mennek. Be: az alábbi alap-URL-re mennek, a modellistát is beleértve.",
     "settings.llm.openaiCompatible.url.name": "Az OpenAI-kompatibilis kiszolgáló URL-je",
     "settings.llm.openaiCompatible.url.desc": "Alap-URL, általában /v1 végződésű. A bővítmény adataiban tárolva. Az alábbi API-kulcs megadása nem kötelező.",
     "settings.llm.model.name": "{provider} modell",

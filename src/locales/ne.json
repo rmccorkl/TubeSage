@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "फिल्डमा देखाइएको पूर्वनिर्धारित ठेगाना प्रयोग गर्न खाली छोड्नुहोस्। तपाईंको API कुञ्जीसहित अनुरोधहरू तपाईंले लेखेको ठेगानामा जान्छन्।"
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "{provider} को आफ्नै आधार URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "बन्द: अनुरोधहरू {provider} को आफ्नै ठेगानामा जान्छन्। खुला: मोडेल सूचीसहित तिनीहरू तलको आधार URL मा जान्छन्।"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI-अनुकूल सर्भरको URL"

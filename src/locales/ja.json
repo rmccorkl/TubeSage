@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "空欄にすると、欄に表示されている既定のアドレスを使います。リクエストは API キーを含め、入力したアドレスに送られます。"
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "{provider} のカスタムベース URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "オフ: リクエストは {provider} 自身のアドレスに送られます。オン: モデル一覧も含め、下のベース URL に送られます。"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI 互換サーバーの URL"

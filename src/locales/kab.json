@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Eǧǧ-it d ilem i useqdec n tansa tamezwert i d-yettban deg wurti. Tuttriwin, akked tsarut-ik API, ad ruḥent ɣer tansa i tettaruḍ."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "URL azadur udmawan n {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Yensa: tuttriwin ad ruḥent ɣer tansa n {provider} s yiman-is. Yermed: ad ruḥent ɣer URL azadur ddaw-a, akked tebdart n tmudalin."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL n uqeddac imsaḍuf d OpenAI"

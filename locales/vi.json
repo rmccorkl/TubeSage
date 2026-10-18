@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "URL máy chủ, lưu trong dữ liệu plugin.",
     "settings.llm.baseUrl.name": "URL gốc của {provider}",
     "settings.llm.baseUrl.desc": "Để trống để dùng địa chỉ mặc định hiển thị trong ô. Các yêu cầu, kèm khoá API của bạn, sẽ gửi đến địa chỉ bạn nhập.",
+    "settings.llm.baseUrl.toggle.name": "URL gốc tuỳ chỉnh của {provider}",
+    "settings.llm.baseUrl.toggle.desc": "Tắt: yêu cầu gửi đến địa chỉ riêng của {provider}. Bật: yêu cầu, kể cả danh sách mô hình, gửi đến URL gốc bên dưới.",
     "settings.llm.openaiCompatible.url.name": "URL máy chủ tương thích OpenAI",
     "settings.llm.openaiCompatible.url.desc": "URL gốc, thường kết thúc bằng /v1. Lưu trong dữ liệu plugin. Khoá API bên dưới là tuỳ chọn.",
     "settings.llm.model.name": "Mô hình {provider}",

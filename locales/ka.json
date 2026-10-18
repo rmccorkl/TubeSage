@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "სერვერის URL, ინახება მოდულის მონაცემებში.",
     "settings.llm.baseUrl.name": "{provider}-ის საბაზისო URL",
     "settings.llm.baseUrl.desc": "დატოვეთ ცარიელი, რომ გამოიყენოთ ველში ნაჩვენები ნაგულისხმევი მისამართი. მოთხოვნები, თქვენი API გასაღების ჩათვლით, იგზავნება თქვენ მიერ შეყვანილ მისამართზე.",
+    "settings.llm.baseUrl.toggle.name": "{provider}-ის მორგებული საბაზისო URL",
+    "settings.llm.baseUrl.toggle.desc": "გამორთული: მოთხოვნები იგზავნება {provider}-ის საკუთარ მისამართზე. ჩართული: ისინი, მოდელების სიის ჩათვლით, იგზავნება ქვემოთ მოცემულ საბაზისო URL-ზე.",
     "settings.llm.openaiCompatible.url.name": "OpenAI-თან თავსებადი სერვერის URL",
     "settings.llm.openaiCompatible.url.desc": "საბაზისო URL, ჩვეულებრივ /v1-ით მთავრდება. ინახება მოდულის მონაცემებში. ქვემოთ მოცემული API გასაღები არასავალდებულოა.",
     "settings.llm.model.name": "{provider} მოდელი",

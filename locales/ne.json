@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "सर्भरको URL, प्लगइन डेटामा राखिन्छ।",
     "settings.llm.baseUrl.name": "{provider} को आधार URL",
     "settings.llm.baseUrl.desc": "फिल्डमा देखाइएको पूर्वनिर्धारित ठेगाना प्रयोग गर्न खाली छोड्नुहोस्। तपाईंको API कुञ्जीसहित अनुरोधहरू तपाईंले लेखेको ठेगानामा जान्छन्।",
+    "settings.llm.baseUrl.toggle.name": "{provider} को आफ्नै आधार URL",
+    "settings.llm.baseUrl.toggle.desc": "बन्द: अनुरोधहरू {provider} को आफ्नै ठेगानामा जान्छन्। खुला: मोडेल सूचीसहित तिनीहरू तलको आधार URL मा जान्छन्।",
     "settings.llm.openaiCompatible.url.name": "OpenAI-अनुकूल सर्भरको URL",
     "settings.llm.openaiCompatible.url.desc": "आधार URL, प्रायः /v1 मा टुङ्गिन्छ। प्लगइन डेटामा राखिन्छ। तलको API कुञ्जी ऐच्छिक हो।",
     "settings.llm.model.name": "{provider} मोडेल",

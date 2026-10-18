@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Atstājiet tukšu, lai izmantotu laukā redzamo noklusējuma adresi. Pieprasījumi kopā ar jūsu API atslēgu tiek sūtīti uz ievadīto adresi."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Pielāgots {provider} bāzes URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Izslēgts: pieprasījumi tiek sūtīti uz {provider} adresi. Ieslēgts: tie tiek sūtīti uz zemāk norādīto bāzes URL, ieskaitot modeļu sarakstu."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "Ar OpenAI saderīgā servera URL"

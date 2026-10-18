@@ -80,16 +80,24 @@ export function resolveBaseUrl(provider: string, override: string | undefined): 
 /** The settings the base URLs come from; the plugin's settings interface satisfies it. */
 export interface BaseUrlSettings {
   customBaseUrls: Record<string, string>;
+  customBaseUrlEnabled: Record<string, boolean>;
   openaiCompatibleBaseUrl: string;
 }
 
 /**
- * Every provider's base URL as the user set it, blank meaning the default.
- * The one map handed to TranscriptSummarizer, so no call site has to know
- * that the OpenAI-compatible server keeps its address in a setting of its own.
+ * Every provider's base URL in force, blank or absent meaning the default.
+ * An override counts only while its toggle is on (#28); switched off, it is
+ * kept but not used. The one map handed to TranscriptSummarizer, so no call
+ * site has to know about the toggle, or that the OpenAI-compatible server
+ * keeps its address in a setting of its own.
  */
 export function baseUrlOverrides(settings: BaseUrlSettings): Record<string, string> {
-  return { ...settings.customBaseUrls, "openai-compatible": settings.openaiCompatibleBaseUrl };
+  const overrides: Record<string, string> = {};
+  for (const [provider, url] of Object.entries(settings.customBaseUrls)) {
+    if (settings.customBaseUrlEnabled[provider] === true) overrides[provider] = url;
+  }
+  overrides["openai-compatible"] = settings.openaiCompatibleBaseUrl;
+  return overrides;
 }
 
 /** Where a provider's model list is fetched: under the SAME base URL its chat requests use. */

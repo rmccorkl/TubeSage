@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "URL pelayan, disimpan dalam data pemalam.",
     "settings.llm.baseUrl.name": "URL asas {provider}",
     "settings.llm.baseUrl.desc": "Biarkan kosong untuk menggunakan alamat lalai yang dipaparkan dalam medan. Permintaan, termasuk kunci API anda, dihantar ke alamat yang anda masukkan.",
+    "settings.llm.baseUrl.toggle.name": "URL asas tersuai {provider}",
+    "settings.llm.baseUrl.toggle.desc": "Mati: permintaan dihantar ke alamat {provider} sendiri. Hidup: permintaan, termasuk senarai model, dihantar ke URL asas di bawah.",
     "settings.llm.openaiCompatible.url.name": "URL pelayan serasi OpenAI",
     "settings.llm.openaiCompatible.url.desc": "URL asas, biasanya berakhir dengan /v1. Disimpan dalam data pemalam. Kunci API di bawah adalah pilihan.",
     "settings.llm.model.name": "Model {provider}",

@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Jätä tyhjäksi, niin käytetään kentässä näkyvää oletusosoitetta. Pyynnöt API-avaimineen lähetetään antamaasi osoitteeseen."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Mukautettu perus-URL ({provider})"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Pois: pyynnöt menevät palvelun {provider} omaan osoitteeseen. Päällä: ne menevät alla olevaan perus-URL:iin, mallilista mukaan lukien."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI-yhteensopivan palvelimen URL"

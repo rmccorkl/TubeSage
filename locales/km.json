@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "URL របស់ម៉ាស៊ីនបម្រើ រក្សាទុកក្នុងទិន្នន័យកម្មវិធីជំនួយ។",
     "settings.llm.baseUrl.name": "URL មូលដ្ឋានរបស់ {provider}",
     "settings.llm.baseUrl.desc": "ទុកឱ្យទទេ ដើម្បីប្រើអាសយដ្ឋានលំនាំដើមដែលបង្ហាញក្នុងប្រអប់។ សំណើ រួមទាំងសោ API របស់អ្នក ត្រូវផ្ញើទៅអាសយដ្ឋានដែលអ្នកបញ្ចូល។",
+    "settings.llm.baseUrl.toggle.name": "URL មូលដ្ឋានផ្ទាល់ខ្លួនរបស់ {provider}",
+    "settings.llm.baseUrl.toggle.desc": "បិទ៖ សំណើត្រូវផ្ញើទៅអាសយដ្ឋានផ្ទាល់របស់ {provider}។ បើក៖ សំណើ រួមទាំងបញ្ជីម៉ូដែល ត្រូវផ្ញើទៅ URL មូលដ្ឋានខាងក្រោម។",
     "settings.llm.openaiCompatible.url.name": "URL របស់ម៉ាស៊ីនបម្រើដែលត្រូវគ្នានឹង OpenAI",
     "settings.llm.openaiCompatible.url.desc": "URL មូលដ្ឋាន ជាធម្មតាបញ្ចប់ដោយ /v1។ រក្សាទុកក្នុងទិន្នន័យកម្មវិធីជំនួយ។ សោ API ខាងក្រោមមិនចាំបាច់ទេ។",
     "settings.llm.model.name": "ម៉ូដែលរបស់ {provider}",

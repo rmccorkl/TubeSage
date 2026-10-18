@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "URL адрес на сървъра, съхранява се в данните на приставката.",
     "settings.llm.baseUrl.name": "Базов URL адрес на {provider}",
     "settings.llm.baseUrl.desc": "Оставете празно, за да се използва адресът по подразбиране, показан в полето. Заявките, заедно с вашия ключ за API, отиват на въведения адрес.",
+    "settings.llm.baseUrl.toggle.name": "Персонализиран базов URL адрес на {provider}",
+    "settings.llm.baseUrl.toggle.desc": "Изключено: заявките отиват на собствения адрес на {provider}. Включено: отиват на базовия URL адрес по-долу, включително списъкът с модели.",
     "settings.llm.openaiCompatible.url.name": "URL адрес на сървъра, съвместим с OpenAI",
     "settings.llm.openaiCompatible.url.desc": "Базов URL адрес, обикновено завършва на /v1. Съхранява се в данните на приставката. Ключът за API по-долу не е задължителен.",
     "settings.llm.model.name": "Модел на {provider}",

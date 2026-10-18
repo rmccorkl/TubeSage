@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "השאר ריק כדי להשתמש בכתובת ברירת המחדל שמוצגת בשדה. הבקשות, כולל מפתח ה-API שלך, נשלחות לכתובת שתזין."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "כתובת URL בסיסית מותאמת אישית ל-{provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "כבוי: הבקשות נשלחות לכתובת של {provider} עצמו. פעיל: הן נשלחות לכתובת ה-URL הבסיסית שלמטה, כולל רשימת המודלים."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "כתובת URL של שרת תואם OpenAI"

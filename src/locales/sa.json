@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "क्षेत्रे दर्शितं पूर्वनिर्धारितं सङ्केतं प्रयोक्तुं रिक्तं त्यजतु। भवतः API कुञ्जिकया सह अनुरोधाः भवता लिखितं सङ्केतं गच्छन्ति।"
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "{provider} इत्यस्य स्वनिर्मितं मूलं URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "निष्क्रियम्: अनुरोधाः {provider} इत्यस्य स्वकीयं सङ्केतं गच्छन्ति। सक्रियम्: निदर्शनसूच्या सह ते अधःस्थं मूलं URL गच्छन्ति।"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI-अनुकूलस्य परिसेवकस्य URL"

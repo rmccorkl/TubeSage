@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Biarkan kosong untuk menggunakan alamat lalai yang dipaparkan dalam medan. Permintaan, termasuk kunci API anda, dihantar ke alamat yang anda masukkan."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "URL asas tersuai {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Mati: permintaan dihantar ke alamat {provider} sendiri. Hidup: permintaan, termasuk senarai model, dihantar ke URL asas di bawah."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL pelayan serasi OpenAI"

@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "Adresa URL serveru, uložená v datech pluginu.",
     "settings.llm.baseUrl.name": "Základní adresa URL {provider}",
     "settings.llm.baseUrl.desc": "Ponechte prázdné, chcete-li použít výchozí adresu zobrazenou v poli. Požadavky včetně vašeho klíče API půjdou na zadanou adresu.",
+    "settings.llm.baseUrl.toggle.name": "Vlastní základní adresa URL {provider}",
+    "settings.llm.baseUrl.toggle.desc": "Vypnuto: požadavky jdou na vlastní adresu {provider}. Zapnuto: jdou na základní adresu URL níže, včetně seznamu modelů.",
     "settings.llm.openaiCompatible.url.name": "Adresa URL serveru kompatibilního s OpenAI",
     "settings.llm.openaiCompatible.url.desc": "Základní adresa URL, obvykle končí na /v1. Uložená v datech pluginu. Klíč API níže je volitelný.",
     "settings.llm.model.name": "Model {provider}",

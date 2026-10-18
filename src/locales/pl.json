@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Pozostaw puste, aby użyć domyślnego adresu widocznego w polu. Żądania, łącznie z kluczem API, trafiają pod wpisany adres."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Własny bazowy adres URL {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Wył.: żądania trafiają pod własny adres {provider}. Wł.: trafiają pod bazowy adres URL poniżej, łącznie z listą modeli."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "Adres URL serwera zgodnego z OpenAI"

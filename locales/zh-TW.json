@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "伺服器網址，存放在外掛資料中。",
     "settings.llm.baseUrl.name": "{provider} 基礎網址",
     "settings.llm.baseUrl.desc": "留空即使用欄位中顯示的預設位址。請求（包括您的 API 金鑰）會傳送到您輸入的位址。",
+    "settings.llm.baseUrl.toggle.name": "自訂 {provider} 基礎網址",
+    "settings.llm.baseUrl.toggle.desc": "關閉：請求會傳送到 {provider} 自己的位址。開啟：請求（包括模型清單）會傳送到下方的基礎網址。",
     "settings.llm.openaiCompatible.url.name": "OpenAI 相容伺服器網址",
     "settings.llm.openaiCompatible.url.desc": "基礎網址，通常以 /v1 結尾。存放在外掛資料中。下方的 API 金鑰可留空。",
     "settings.llm.model.name": "{provider} 模型",

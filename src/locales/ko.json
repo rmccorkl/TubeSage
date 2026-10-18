@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "비워 두면 필드에 표시된 기본 주소를 사용합니다. API 키를 포함한 요청은 입력한 주소로 전송됩니다."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "사용자 지정 {provider} 기본 URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "끄기: 요청이 {provider}의 자체 주소로 전송됩니다. 켜기: 모델 목록을 포함한 요청이 아래 기본 URL로 전송됩니다."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI 호환 서버 URL"

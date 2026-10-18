@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "نشانی URL سرور، در داده‌های افزونه ذخیره می‌شود.",
     "settings.llm.baseUrl.name": "نشانی URL پایهٔ {provider}",
     "settings.llm.baseUrl.desc": "برای استفاده از نشانی پیش‌فرضی که در کادر نمایش داده می‌شود، خالی بگذارید. درخواست‌ها همراه با کلید API شما به نشانی‌ای که وارد می‌کنید فرستاده می‌شوند.",
+    "settings.llm.baseUrl.toggle.name": "نشانی URL پایهٔ دلخواه برای {provider}",
+    "settings.llm.baseUrl.toggle.desc": "خاموش: درخواست‌ها به نشانی خود {provider} فرستاده می‌شوند. روشن: درخواست‌ها، همراه با فهرست مدل‌ها، به نشانی URL پایهٔ زیر فرستاده می‌شوند.",
     "settings.llm.openaiCompatible.url.name": "نشانی URL سرور سازگار با OpenAI",
     "settings.llm.openaiCompatible.url.desc": "نشانی URL پایه، که معمولاً به /v1 ختم می‌شود. در داده‌های افزونه ذخیره می‌شود. کلید API زیر اختیاری است.",
     "settings.llm.model.name": "مدل {provider}",

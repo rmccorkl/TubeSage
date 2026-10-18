@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "服务器 URL，保存在插件数据中。",
     "settings.llm.baseUrl.name": "{provider} 基础 URL",
     "settings.llm.baseUrl.desc": "留空则使用字段中显示的默认地址。请求（包括您的 API 密钥）会发送到您输入的地址。",
+    "settings.llm.baseUrl.toggle.name": "自定义 {provider} 基础 URL",
+    "settings.llm.baseUrl.toggle.desc": "关闭：请求发送到 {provider} 自己的地址。开启：请求（包括模型列表）发送到下方的基础 URL。",
     "settings.llm.openaiCompatible.url.name": "OpenAI 兼容服务器 URL",
     "settings.llm.openaiCompatible.url.desc": "基础 URL，通常以 /v1 结尾。保存在插件数据中。下方的 API 密钥为可选项。",
     "settings.llm.model.name": "{provider} 模型",

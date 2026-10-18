@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Оставите празно да бисте користили подразумевану адресу приказану у пољу. Захтеви, заједно са вашим кључем за API, иду на адресу коју унесете."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Прилагођени основни URL за {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Искључено: захтеви иду на сопствену адресу услуге {provider}. Укључено: иду на основни URL испод, укључујући списак модела."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL сервера компатибилног са OpenAI"

@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "Adres URL serwera, przechowywany w danych wtyczki.",
     "settings.llm.baseUrl.name": "Bazowy adres URL {provider}",
     "settings.llm.baseUrl.desc": "Pozostaw puste, aby użyć domyślnego adresu widocznego w polu. Żądania, łącznie z kluczem API, trafiają pod wpisany adres.",
+    "settings.llm.baseUrl.toggle.name": "Własny bazowy adres URL {provider}",
+    "settings.llm.baseUrl.toggle.desc": "Wył.: żądania trafiają pod własny adres {provider}. Wł.: trafiają pod bazowy adres URL poniżej, łącznie z listą modeli.",
     "settings.llm.openaiCompatible.url.name": "Adres URL serwera zgodnego z OpenAI",
     "settings.llm.openaiCompatible.url.desc": "Bazowy adres URL, zwykle zakończony na /v1. Przechowywany w danych wtyczki. Klucz API poniżej jest opcjonalny.",
     "settings.llm.model.name": "Model {provider}",

@@ -9,7 +9,8 @@ import type { ChatOpenAI } from "@langchain/openai";
 /** What the OpenAI SDK stores as its transport; named here to keep `globalThis` out of the file. */
 type FetchLike = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 import { buildOpenAIModel, buildOpenAiCompatibleModel, buildOpenRouterModel, LangChainClient } from "./langchain-client";
-import { modelListUrl } from "./base-url";
+import { baseUrlOverrides, modelListUrl } from "./base-url";
+import { TranscriptSummarizer } from "./transcript-summarizer";
 import { DEFAULT_REQUEST_TIMEOUT_MS, setRequestBudgetMs } from "../utils/request-budget";
 import { t } from "../i18n";
 
@@ -316,7 +317,7 @@ describe("every provider's base URL: blank is the vendor, set is the custom host
     async (provider) => {
       const base = `${GATEWAY}/${provider}/`;
       const chat = await chatUrl(provider, base);
-      const list = modelListUrl(provider, { customBaseUrls: { [provider]: base }, openaiCompatibleBaseUrl: "" });
+      const list = modelListUrl(provider, { customBaseUrls: { [provider]: base }, customBaseUrlEnabled: { [provider]: true }, openaiCompatibleBaseUrl: "" });
       for (const url of [chat, list]) {
         expect(url.startsWith(`${GATEWAY}/${provider}/`)).toBe(true);
         expect(url.slice("http://".length)).not.toContain("//");
@@ -335,5 +336,32 @@ describe("every provider's base URL: blank is the vendor, set is the custom host
     expect(builtClient(model).baseURL).toBe(`${GATEWAY}/openrouter/v1`);
     const configured = (model as unknown as { clientConfig: { defaultHeaders?: Record<string, string> } }).clientConfig;
     expect(configured.defaultHeaders?.["X-Title"]).toBe("TubeSage");
+  });
+});
+
+describe("the custom-base-URL toggle decides for chat and model list alike, end to end (#28)", () => {
+  const GATEWAY_ANTHROPIC = "http://gateway.local:4000/anthropic";
+
+  it.each([
+    [false, "https://api.anthropic.com"],
+    [true, GATEWAY_ANTHROPIC],
+  ])("toggle on = %s: the summary request and the model list both go to %s", async (enabled, base) => {
+    requestUrl.mockResolvedValue({
+      status: 200,
+      headers: { "content-type": "application/json" },
+      text: JSON.stringify({ content: [{ type: "text", text: "summary" }] }),
+    });
+    // The URL is typed in both cases; only the toggle differs.
+    const settings = { customBaseUrls: { anthropic: GATEWAY_ANTHROPIC }, customBaseUrlEnabled: { anthropic: enabled }, openaiCompatibleBaseUrl: "" };
+    // As main.ts builds it: the override map from the same settings.
+    const summarizer = new TranscriptSummarizer(
+      { model: "claude-test", temperature: 0, maxTokens: 100, systemPrompt: "system", userPrompt: "user" },
+      { anthropic: "sk-ant-test" },
+      baseUrlOverrides(settings),
+    );
+
+    await expect(summarizer.summarize("a transcript", "anthropic")).resolves.toBe("summary");
+    expect((requestUrl.mock.calls[0][0] as { url: string }).url).toBe(`${base}/v1/messages`);
+    expect(modelListUrl("anthropic", settings)).toBe(`${base}/v1/models`);
   });
 });

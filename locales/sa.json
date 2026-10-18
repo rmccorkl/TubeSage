@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "परिसेवकस्य URL, संयोजकदत्तांशेषु रक्ष्यते।",
     "settings.llm.baseUrl.name": "{provider} इत्यस्य मूलं URL",
     "settings.llm.baseUrl.desc": "क्षेत्रे दर्शितं पूर्वनिर्धारितं सङ्केतं प्रयोक्तुं रिक्तं त्यजतु। भवतः API कुञ्जिकया सह अनुरोधाः भवता लिखितं सङ्केतं गच्छन्ति।",
+    "settings.llm.baseUrl.toggle.name": "{provider} इत्यस्य स्वनिर्मितं मूलं URL",
+    "settings.llm.baseUrl.toggle.desc": "निष्क्रियम्: अनुरोधाः {provider} इत्यस्य स्वकीयं सङ्केतं गच्छन्ति। सक्रियम्: निदर्शनसूच्या सह ते अधःस्थं मूलं URL गच्छन्ति।",
     "settings.llm.openaiCompatible.url.name": "OpenAI-अनुकूलस्य परिसेवकस्य URL",
     "settings.llm.openaiCompatible.url.desc": "मूलं URL, प्रायः /v1 इत्यनेन समाप्यते। संयोजकदत्तांशेषु रक्ष्यते। अधःस्था API कुञ्जिका ऐच्छिकी।",
     "settings.llm.model.name": "{provider} निदर्शनम्",

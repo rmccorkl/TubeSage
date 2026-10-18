@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Ponechte prázdné, chcete-li použít výchozí adresu zobrazenou v poli. Požadavky včetně vašeho klíče API půjdou na zadanou adresu."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Vlastní základní adresa URL {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Vypnuto: požadavky jdou na vlastní adresu {provider}. Zapnuto: jdou na základní adresu URL níže, včetně seznamu modelů."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "Adresa URL serveru kompatibilního s OpenAI"

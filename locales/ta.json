@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "சேவையக URL, செருகுநிரல் தரவில் சேமிக்கப்படுகிறது.",
     "settings.llm.baseUrl.name": "{provider} அடிப்படை URL",
     "settings.llm.baseUrl.desc": "புலத்தில் காட்டப்படும் இயல்புநிலை முகவரியைப் பயன்படுத்த வெறுமையாக விடவும். உங்கள் API விசை உட்பட கோரிக்கைகள் நீங்கள் உள்ளிடும் முகவரிக்குச் செல்லும்.",
+    "settings.llm.baseUrl.toggle.name": "தனிப்பயன் {provider} அடிப்படை URL",
+    "settings.llm.baseUrl.toggle.desc": "முடக்கம்: கோரிக்கைகள் {provider} இன் சொந்த முகவரிக்குச் செல்லும். இயக்கம்: மாடல் பட்டியல் உட்பட அவை கீழே உள்ள அடிப்படை URL க்குச் செல்லும்.",
     "settings.llm.openaiCompatible.url.name": "OpenAI-இணக்கமான சேவையக URL",
     "settings.llm.openaiCompatible.url.desc": "அடிப்படை URL, பொதுவாக /v1 என முடியும். செருகுநிரல் தரவில் சேமிக்கப்படுகிறது. கீழே உள்ள API விசை விருப்பத்தேர்வு.",
     "settings.llm.model.name": "{provider} மாடல்",

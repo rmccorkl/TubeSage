@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "URL сервера, чува се у подацима додатка.",
     "settings.llm.baseUrl.name": "Основни URL за {provider}",
     "settings.llm.baseUrl.desc": "Оставите празно да бисте користили подразумевану адресу приказану у пољу. Захтеви, заједно са вашим кључем за API, иду на адресу коју унесете.",
+    "settings.llm.baseUrl.toggle.name": "Прилагођени основни URL за {provider}",
+    "settings.llm.baseUrl.toggle.desc": "Искључено: захтеви иду на сопствену адресу услуге {provider}. Укључено: иду на основни URL испод, укључујући списак модела.",
     "settings.llm.openaiCompatible.url.name": "URL сервера компатибилног са OpenAI",
     "settings.llm.openaiCompatible.url.desc": "Основни URL, обично се завршава са /v1. Чува се у подацима додатка. Кључ за API испод није обавезан.",
     "settings.llm.model.name": "Модел добављача {provider}",

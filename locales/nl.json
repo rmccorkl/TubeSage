@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "Server-URL, opgeslagen in de plug-ingegevens.",
     "settings.llm.baseUrl.name": "Basis-URL van {provider}",
     "settings.llm.baseUrl.desc": "Laat leeg om het standaardadres in het veld te gebruiken. Verzoeken gaan, inclusief je API-sleutel, naar het adres dat je invult.",
+    "settings.llm.baseUrl.toggle.name": "Eigen basis-URL voor {provider}",
+    "settings.llm.baseUrl.toggle.desc": "Uit: verzoeken gaan naar het eigen adres van {provider}. Aan: ze gaan naar de basis-URL hieronder, de modellijst inbegrepen.",
     "settings.llm.openaiCompatible.url.name": "URL van de OpenAI-compatibele server",
     "settings.llm.openaiCompatible.url.desc": "Basis-URL, eindigt meestal op /v1. Opgeslagen in de plug-ingegevens. De API-sleutel hieronder is optioneel.",
     "settings.llm.model.name": "{provider}-model",

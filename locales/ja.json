@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "サーバーの URL。プラグインのデータに保存されます。",
     "settings.llm.baseUrl.name": "{provider} のベース URL",
     "settings.llm.baseUrl.desc": "空欄にすると、欄に表示されている既定のアドレスを使います。リクエストは API キーを含め、入力したアドレスに送られます。",
+    "settings.llm.baseUrl.toggle.name": "{provider} のカスタムベース URL",
+    "settings.llm.baseUrl.toggle.desc": "オフ: リクエストは {provider} 自身のアドレスに送られます。オン: モデル一覧も含め、下のベース URL に送られます。",
     "settings.llm.openaiCompatible.url.name": "OpenAI 互換サーバーの URL",
     "settings.llm.openaiCompatible.url.desc": "ベース URL。通常は /v1 で終わります。プラグインのデータに保存されます。下の API キーは省略できます。",
     "settings.llm.model.name": "{provider} のモデル",

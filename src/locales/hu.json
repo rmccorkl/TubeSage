@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Hagyd üresen a mezőben látható alapértelmezett cím használatához. A kérések az API-kulccsal együtt a megadott címre mennek."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Egyéni {provider} alap-URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Ki: a kérések a(z) {provider} saját címére mennek. Be: az alábbi alap-URL-re mennek, a modellistát is beleértve."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "Az OpenAI-kompatibilis kiszolgáló URL-je"

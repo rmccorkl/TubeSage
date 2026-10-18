@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "כתובת URL של השרת, נשמרת בנתוני התוסף.",
     "settings.llm.baseUrl.name": "כתובת URL בסיסית של {provider}",
     "settings.llm.baseUrl.desc": "השאר ריק כדי להשתמש בכתובת ברירת המחדל שמוצגת בשדה. הבקשות, כולל מפתח ה-API שלך, נשלחות לכתובת שתזין.",
+    "settings.llm.baseUrl.toggle.name": "כתובת URL בסיסית מותאמת אישית ל-{provider}",
+    "settings.llm.baseUrl.toggle.desc": "כבוי: הבקשות נשלחות לכתובת של {provider} עצמו. פעיל: הן נשלחות לכתובת ה-URL הבסיסית שלמטה, כולל רשימת המודלים.",
     "settings.llm.openaiCompatible.url.name": "כתובת URL של שרת תואם OpenAI",
     "settings.llm.openaiCompatible.url.desc": "כתובת URL בסיסית, בדרך כלל מסתיימת ב-/v1. נשמרת בנתוני התוסף. מפתח ה-API שלמטה הוא אופציונלי.",
     "settings.llm.model.name": "מודל {provider}",

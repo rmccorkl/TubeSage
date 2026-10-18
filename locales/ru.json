@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "URL сервера, хранится в данных плагина.",
     "settings.llm.baseUrl.name": "Базовый URL {provider}",
     "settings.llm.baseUrl.desc": "Оставьте пустым, чтобы использовать адрес по умолчанию, показанный в поле. Запросы вместе с вашим ключом API уходят на указанный адрес.",
+    "settings.llm.baseUrl.toggle.name": "Свой базовый URL {provider}",
+    "settings.llm.baseUrl.toggle.desc": "Выкл.: запросы уходят на собственный адрес {provider}. Вкл.: они уходят на базовый URL ниже, включая список моделей.",
     "settings.llm.openaiCompatible.url.name": "URL OpenAI-совместимого сервера",
     "settings.llm.openaiCompatible.url.desc": "Базовый URL, обычно оканчивается на /v1. Хранится в данных плагина. Ключ API ниже необязателен.",
     "settings.llm.model.name": "Модель {provider}",

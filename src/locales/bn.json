@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "ঘরে দেখানো ডিফল্ট ঠিকানা ব্যবহার করতে ফাঁকা রাখুন। আপনার API কী-সহ অনুরোধগুলো আপনার দেওয়া ঠিকানায় যায়।"
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "{provider}-এর কাস্টম বেস URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "বন্ধ: অনুরোধ {provider}-এর নিজস্ব ঠিকানায় যায়। চালু: মডেল তালিকাসহ অনুরোধ নিচের বেস URL-এ যায়।"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI-সামঞ্জস্যপূর্ণ সার্ভারের URL"

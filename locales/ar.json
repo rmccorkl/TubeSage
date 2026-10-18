@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "عنوان URL للخادم، يُخزَّن في بيانات الإضافة.",
     "settings.llm.baseUrl.name": "عنوان URL الأساسي لـ {provider}",
     "settings.llm.baseUrl.desc": "اتركه فارغًا لاستخدام العنوان الافتراضي الظاهر في الحقل. تُرسَل الطلبات، ومعها مفتاح API، إلى العنوان الذي تُدخله.",
+    "settings.llm.baseUrl.toggle.name": "عنوان URL أساسي مخصّص لـ {provider}",
+    "settings.llm.baseUrl.toggle.desc": "إيقاف: تُرسَل الطلبات إلى عنوان {provider} نفسه. تشغيل: تُرسَل، ومعها قائمة النماذج، إلى عنوان URL الأساسي أدناه.",
     "settings.llm.openaiCompatible.url.name": "عنوان URL للخادم المتوافق مع OpenAI",
     "settings.llm.openaiCompatible.url.desc": "عنوان URL الأساسي، وينتهي عادةً بـ /v1. يُخزَّن في بيانات الإضافة. مفتاح API أدناه اختياري.",
     "settings.llm.model.name": "نموذج {provider}",

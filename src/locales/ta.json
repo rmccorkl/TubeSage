@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "புலத்தில் காட்டப்படும் இயல்புநிலை முகவரியைப் பயன்படுத்த வெறுமையாக விடவும். உங்கள் API விசை உட்பட கோரிக்கைகள் நீங்கள் உள்ளிடும் முகவரிக்குச் செல்லும்."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "தனிப்பயன் {provider} அடிப்படை URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "முடக்கம்: கோரிக்கைகள் {provider} இன் சொந்த முகவரிக்குச் செல்லும். இயக்கம்: மாடல் பட்டியல் உட்பட அவை கீழே உள்ள அடிப்படை URL க்குச் செல்லும்."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI-இணக்கமான சேவையக URL"

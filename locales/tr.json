@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "Sunucu URL'si, eklenti verilerinde saklanır.",
     "settings.llm.baseUrl.name": "{provider} temel URL'si",
     "settings.llm.baseUrl.desc": "Alanda görünen varsayılan adresi kullanmak için boş bırakın. İstekler, API anahtarınız dahil, girdiğiniz adrese gider.",
+    "settings.llm.baseUrl.toggle.name": "Özel {provider} temel URL'si",
+    "settings.llm.baseUrl.toggle.desc": "Kapalı: istekler {provider} hizmetinin kendi adresine gider. Açık: istekler, model listesi dahil, aşağıdaki temel URL'ye gider.",
     "settings.llm.openaiCompatible.url.name": "OpenAI uyumlu sunucu URL'si",
     "settings.llm.openaiCompatible.url.desc": "Temel URL, genellikle /v1 ile biter. Eklenti verilerinde saklanır. Aşağıdaki API anahtarı isteğe bağlıdır.",
     "settings.llm.model.name": "{provider} modeli",

@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "සේවාදායක URL එක, ප්ලගින දත්තවල තැන්පත් වේ.",
     "settings.llm.baseUrl.name": "{provider} මූලික URL",
     "settings.llm.baseUrl.desc": "ක්ෂේත්‍රයේ පෙන්වන පෙරනිමි ලිපිනය භාවිත කිරීමට හිස්ව තබන්න. ඔබේ API යතුර ඇතුළුව ඉල්ලීම් ඔබ ඇතුළු කරන ලිපිනයට යයි.",
+    "settings.llm.baseUrl.toggle.name": "අභිරුචි {provider} මූලික URL",
+    "settings.llm.baseUrl.toggle.desc": "අක්‍රිය: ඉල්ලීම් {provider} හි ම ලිපිනයට යයි. සක්‍රිය: ආකෘති ලැයිස්තුව ද ඇතුළුව ඒවා පහත මූලික URL එකට යයි.",
     "settings.llm.openaiCompatible.url.name": "OpenAI සමඟ ගැළපෙන සේවාදායකයේ URL",
     "settings.llm.openaiCompatible.url.desc": "මූලික URL එක, සාමාන්‍යයෙන් /v1 න් අවසන් වේ. ප්ලගින දත්තවල තැන්පත් වේ. පහත API යතුර අත්‍යවශ්‍ය නොවේ.",
     "settings.llm.model.name": "{provider} ආකෘතිය",

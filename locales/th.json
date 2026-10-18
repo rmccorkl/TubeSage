@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "URL ของเซิร์ฟเวอร์ เก็บไว้ในข้อมูลปลั๊กอิน",
     "settings.llm.baseUrl.name": "URL หลักของ {provider}",
     "settings.llm.baseUrl.desc": "เว้นว่างไว้เพื่อใช้ที่อยู่เริ่มต้นที่แสดงในช่อง คำขอรวมถึงคีย์ API ของคุณจะถูกส่งไปยังที่อยู่ที่คุณป้อน",
+    "settings.llm.baseUrl.toggle.name": "URL หลักที่กำหนดเองของ {provider}",
+    "settings.llm.baseUrl.toggle.desc": "ปิด: คำขอจะส่งไปยังที่อยู่ของ {provider} เอง เปิด: คำขอรวมถึงรายการโมเดลจะส่งไปยัง URL หลักด้านล่าง",
     "settings.llm.openaiCompatible.url.name": "URL ของเซิร์ฟเวอร์ที่เข้ากันได้กับ OpenAI",
     "settings.llm.openaiCompatible.url.desc": "URL หลัก มักลงท้ายด้วย /v1 เก็บไว้ในข้อมูลปลั๊กอิน คีย์ API ด้านล่างจะใส่หรือไม่ก็ได้",
     "settings.llm.model.name": "โมเดลของ {provider}",

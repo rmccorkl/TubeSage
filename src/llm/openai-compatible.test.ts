@@ -25,6 +25,7 @@ describe("providerSetupProblem — what stops a note from starting", () => {
     selectedModels: { "openai-compatible": "llama-3.1-8b-instruct" },
     openaiCompatibleBaseUrl: "http://192.168.1.20:1234/v1",
     customBaseUrls: {},
+    customBaseUrlEnabled: {},
     ...overrides,
   });
 
@@ -45,12 +46,14 @@ describe("providerSetupProblem — what stops a note from starting", () => {
   });
 
   it("stops any other provider whose custom base URL is set but malformed, and only then (#29)", () => {
-    const openai = { selectedLLM: "openai", apiKeys: { openai: "sk-test" } };
+    const openai = { selectedLLM: "openai", apiKeys: { openai: "sk-test" }, customBaseUrlEnabled: { openai: true, anthropic: true } };
     expect(providerSetupProblem(setup({ ...openai, customBaseUrls: { openai: "proxy.example.com/v1" } }))).toBe(t("notice.baseUrl.invalid"));
     expect(providerSetupProblem(setup({ ...openai, customBaseUrls: { openai: "http://proxy.example.com/v1" } }))).toBeNull();
     expect(providerSetupProblem(setup({ ...openai, customBaseUrls: { openai: "" } }))).toBeNull();
     // Another provider's broken override is not this one's problem.
     expect(providerSetupProblem(setup({ ...openai, customBaseUrls: { anthropic: "nope" } }))).toBeNull();
+    // Nor is one switched off (#28): it is kept, but not in use.
+    expect(providerSetupProblem(setup({ ...openai, customBaseUrls: { openai: "nope" }, customBaseUrlEnabled: {} }))).toBeNull();
   });
 
   it("keeps the key rule for every other provider, with the notice it always showed", () => {

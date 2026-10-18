@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "Διεύθυνση URL διακομιστή, αποθηκεύεται στα δεδομένα του πρόσθετου.",
     "settings.llm.baseUrl.name": "Βασική διεύθυνση URL του {provider}",
     "settings.llm.baseUrl.desc": "Αφήστε το κενό για να χρησιμοποιηθεί η προεπιλεγμένη διεύθυνση που εμφανίζεται στο πεδίο. Τα αιτήματα, μαζί με το κλειδί API σας, πηγαίνουν στη διεύθυνση που εισάγετε.",
+    "settings.llm.baseUrl.toggle.name": "Προσαρμοσμένη βασική διεύθυνση URL για {provider}",
+    "settings.llm.baseUrl.toggle.desc": "Ανενεργό: τα αιτήματα πηγαίνουν στη δική του διεύθυνση του {provider}. Ενεργό: πηγαίνουν στη βασική διεύθυνση URL παρακάτω, μαζί με τη λίστα μοντέλων.",
     "settings.llm.openaiCompatible.url.name": "Διεύθυνση URL διακομιστή συμβατού με OpenAI",
     "settings.llm.openaiCompatible.url.desc": "Βασική διεύθυνση URL, συνήθως τελειώνει σε /v1. Αποθηκεύεται στα δεδομένα του πρόσθετου. Το κλειδί API παρακάτω είναι προαιρετικό.",
     "settings.llm.model.name": "Μοντέλο {provider}",

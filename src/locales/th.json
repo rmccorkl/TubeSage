@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "เว้นว่างไว้เพื่อใช้ที่อยู่เริ่มต้นที่แสดงในช่อง คำขอรวมถึงคีย์ API ของคุณจะถูกส่งไปยังที่อยู่ที่คุณป้อน"
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "URL หลักที่กำหนดเองของ {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "ปิด: คำขอจะส่งไปยังที่อยู่ของ {provider} เอง เปิด: คำขอรวมถึงรายการโมเดลจะส่งไปยัง URL หลักด้านล่าง"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL ของเซิร์ฟเวอร์ที่เข้ากันได้กับ OpenAI"

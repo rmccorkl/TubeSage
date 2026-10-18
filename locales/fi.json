@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "Palvelimen URL, tallennetaan laajennuksen tietoihin.",
     "settings.llm.baseUrl.name": "Perus-URL ({provider})",
     "settings.llm.baseUrl.desc": "Jätä tyhjäksi, niin käytetään kentässä näkyvää oletusosoitetta. Pyynnöt API-avaimineen lähetetään antamaasi osoitteeseen.",
+    "settings.llm.baseUrl.toggle.name": "Mukautettu perus-URL ({provider})",
+    "settings.llm.baseUrl.toggle.desc": "Pois: pyynnöt menevät palvelun {provider} omaan osoitteeseen. Päällä: ne menevät alla olevaan perus-URL:iin, mallilista mukaan lukien.",
     "settings.llm.openaiCompatible.url.name": "OpenAI-yhteensopivan palvelimen URL",
     "settings.llm.openaiCompatible.url.desc": "Perus-URL, päättyy yleensä merkkijonoon /v1. Tallennetaan laajennuksen tietoihin. Alla oleva API-avain on valinnainen.",
     "settings.llm.model.name": "{provider}-malli",

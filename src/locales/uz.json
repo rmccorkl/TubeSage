@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Maydonda koʻrsatilgan standart manzildan foydalanish uchun boʻsh qoldiring. Soʻrovlar API kalitingiz bilan birga siz kiritgan manzilga yuboriladi."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "{provider} uchun maxsus asosiy URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Oʻchiq: soʻrovlar {provider} xizmatining oʻz manziliga yuboriladi. Yoniq: ular model roʻyxati bilan birga quyidagi asosiy URL manziliga yuboriladi."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI bilan mos server URL manzili"

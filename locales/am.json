@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "የአገልጋይ URL፤ በተሰኪ ውሂብ ውስጥ ይቀመጣል።",
     "settings.llm.baseUrl.name": "የ{provider} መሠረታዊ URL",
     "settings.llm.baseUrl.desc": "በመስኩ ላይ የሚታየውን ነባሪ አድራሻ ለመጠቀም ባዶ ይተዉት። ጥያቄዎች ከAPI ቁልፍዎ ጋር ወደሚያስገቡት አድራሻ ይላካሉ።",
+    "settings.llm.baseUrl.toggle.name": "ብጁ የ{provider} መሠረታዊ URL",
+    "settings.llm.baseUrl.toggle.desc": "ጠፍቷል፦ ጥያቄዎች ወደ {provider} የራሱ አድራሻ ይሄዳሉ። በርቷል፦ የሞዴል ዝርዝሩን ጨምሮ ከታች ወዳለው መሠረታዊ URL ይሄዳሉ።",
     "settings.llm.openaiCompatible.url.name": "ከOpenAI ጋር ተኳሃኝ የሆነ አገልጋይ URL",
     "settings.llm.openaiCompatible.url.desc": "መሠረታዊ URL፤ ብዙውን ጊዜ በ/v1 ያበቃል። በተሰኪ ውሂብ ውስጥ ይቀመጣል። ከታች ያለው የAPI ቁልፍ አማራጭ ነው።",
     "settings.llm.model.name": "የ{provider} ሞዴል",

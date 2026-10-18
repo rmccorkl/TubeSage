@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "Server URL manzili, plagin maʼlumotlarida saqlanadi.",
     "settings.llm.baseUrl.name": "{provider} asosiy URL manzili",
     "settings.llm.baseUrl.desc": "Maydonda koʻrsatilgan standart manzildan foydalanish uchun boʻsh qoldiring. Soʻrovlar API kalitingiz bilan birga siz kiritgan manzilga yuboriladi.",
+    "settings.llm.baseUrl.toggle.name": "{provider} uchun maxsus asosiy URL",
+    "settings.llm.baseUrl.toggle.desc": "Oʻchiq: soʻrovlar {provider} xizmatining oʻz manziliga yuboriladi. Yoniq: ular model roʻyxati bilan birga quyidagi asosiy URL manziliga yuboriladi.",
     "settings.llm.openaiCompatible.url.name": "OpenAI bilan mos server URL manzili",
     "settings.llm.openaiCompatible.url.desc": "Asosiy URL, odatda /v1 bilan tugaydi. Plagin maʼlumotlarida saqlanadi. Quyidagi API kaliti ixtiyoriy.",
     "settings.llm.model.name": "{provider} modeli",

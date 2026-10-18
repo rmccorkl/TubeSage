@@ -57,7 +57,12 @@ describe("resolveBaseUrl — the override when set, the vendor default when blan
 });
 
 describe("modelListUrl — the model list comes from the SAME base URL as the chat (#29)", () => {
-  const settings = (customBaseUrls: Record<string, string> = {}): BaseUrlSettings => ({ customBaseUrls, openaiCompatibleBaseUrl: "" });
+  /** Overrides with their toggles ON (#28), unless `enabled` says otherwise. */
+  const settings = (customBaseUrls: Record<string, string> = {}, enabled?: Record<string, boolean>): BaseUrlSettings => ({
+    customBaseUrls,
+    customBaseUrlEnabled: enabled ?? Object.fromEntries(Object.keys(customBaseUrls).map((provider) => [provider, true])),
+    openaiCompatibleBaseUrl: "",
+  });
 
   it("asks each vendor exactly where it always did when nothing is overridden", () => {
     expect(modelListUrl("openai", settings())).toBe("https://api.openai.com/v1/models");
@@ -82,11 +87,28 @@ describe("modelListUrl — the model list comes from the SAME base URL as the ch
   it("refuses a malformed override here too, rather than quietly asking the vendor", () => {
     expect(() => modelListUrl("anthropic", settings({ anthropic: "gateway.local" }))).toThrow(t("notice.baseUrl.invalid"));
   });
+
+  it("asks the vendor while the toggle is off, though the typed URL is kept (#28)", () => {
+    const off = settings({ anthropic: "http://gateway.local:4000/anthropic" }, { anthropic: false });
+    expect(modelListUrl("anthropic", off)).toBe("https://api.anthropic.com/v1/models");
+    expect(off.customBaseUrls.anthropic).toBe("http://gateway.local:4000/anthropic");
+  });
 });
 
 describe("baseUrlOverrides — one map for every caller", () => {
   it("folds in the OpenAI-compatible server's own setting, so no call site has to remember it", () => {
-    expect(baseUrlOverrides({ customBaseUrls: { openai: "http://proxy/v1" }, openaiCompatibleBaseUrl: "http://box:1234/v1" }))
-      .toEqual({ openai: "http://proxy/v1", "openai-compatible": "http://box:1234/v1" });
+    expect(baseUrlOverrides({
+      customBaseUrls: { openai: "http://proxy/v1" },
+      customBaseUrlEnabled: { openai: true },
+      openaiCompatibleBaseUrl: "http://box:1234/v1",
+    })).toEqual({ openai: "http://proxy/v1", "openai-compatible": "http://box:1234/v1" });
+  });
+
+  it("leaves out an override whose toggle is off or was never turned on (#28)", () => {
+    expect(baseUrlOverrides({
+      customBaseUrls: { openai: "http://proxy/v1", anthropic: "http://proxy/anthropic", google: "http://proxy/google" },
+      customBaseUrlEnabled: { openai: false, google: true },
+      openaiCompatibleBaseUrl: "",
+    })).toEqual({ google: "http://proxy/google", "openai-compatible": "" });
   });
 });

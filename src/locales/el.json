@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Αφήστε το κενό για να χρησιμοποιηθεί η προεπιλεγμένη διεύθυνση που εμφανίζεται στο πεδίο. Τα αιτήματα, μαζί με το κλειδί API σας, πηγαίνουν στη διεύθυνση που εισάγετε."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Προσαρμοσμένη βασική διεύθυνση URL για {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Ανενεργό: τα αιτήματα πηγαίνουν στη δική του διεύθυνση του {provider}. Ενεργό: πηγαίνουν στη βασική διεύθυνση URL παρακάτω, μαζί με τη λίστα μοντέλων."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "Διεύθυνση URL διακομιστή συμβατού με OpenAI"

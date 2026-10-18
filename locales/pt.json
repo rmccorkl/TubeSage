@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "URL do servidor, guardado nos dados do plugin.",
     "settings.llm.baseUrl.name": "URL base de {provider}",
     "settings.llm.baseUrl.desc": "Deixe em branco para usar o endereço predefinido mostrado no campo. Os pedidos, incluindo a sua chave de API, vão para o endereço que introduzir.",
+    "settings.llm.baseUrl.toggle.name": "URL base personalizado de {provider}",
+    "settings.llm.baseUrl.toggle.desc": "Desligado: os pedidos vão para o endereço próprio de {provider}. Ligado: vão para o URL base abaixo, incluindo a lista de modelos.",
     "settings.llm.openaiCompatible.url.name": "URL do servidor compatível com OpenAI",
     "settings.llm.openaiCompatible.url.desc": "URL base, que costuma terminar em /v1. Guardado nos dados do plugin. A chave de API abaixo é opcional.",
     "settings.llm.model.name": "Modelo {provider}",

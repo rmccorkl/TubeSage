@@ -143,6 +143,11 @@ const POST_LEGACY_ROWS: string[] = [
   "Anthropic base URL",
   "Google base URL",
   "OpenRouter base URL",
+  // #28: the toggle in front of each of those, which shows its field.
+  "Custom OpenAI base URL",
+  "Custom Anthropic base URL",
+  "Custom Google base URL",
+  "Custom OpenRouter base URL",
 ];
 
 describe("buildSettingDefinitions — coverage of the legacy display() rows", () => {
@@ -326,9 +331,36 @@ function fakeText() {
   };
 }
 
+/** Just enough of Obsidian's ToggleComponent: a value, and a way to flip it as a user would. */
+function fakeToggle() {
+  let changed: ((value: boolean) => void) | null = null;
+  const component = {
+    value: false,
+    setValue(value: boolean) { component.value = value; return component; },
+    onChange(listener: (value: boolean) => void) { changed = listener; return component; },
+  };
+  return { component, flip(value: boolean) { component.value = value; changed?.(value); } };
+}
+
+/** Just enough of Obsidian's DropdownComponent to choose an option as a user would. */
+function fakeDropdown() {
+  let changed: ((value: string) => void) | null = null;
+  const options: string[] = [];
+  const component = {
+    value: "",
+    addOption(value: string) { options.push(value); return component; },
+    setValue(value: string) { component.value = value; return component; },
+    getValue() { return component.value; },
+    onChange(listener: (value: string) => void) { changed = listener; return component; },
+  };
+  return { component, options, choose(value: string) { component.value = value; changed?.(value); } };
+}
+
 /** A Setting that records what a render row added to it. */
 function fakeSetting() {
   const texts: ReturnType<typeof fakeText>[] = [];
+  const toggles: ReturnType<typeof fakeToggle>[] = [];
+  const dropdowns: ReturnType<typeof fakeDropdown>[] = [];
   const added: string[] = [];
   const setting = {
     settingEl: { addClass: () => undefined, toggleClass: () => undefined },
@@ -341,10 +373,23 @@ function fakeSetting() {
       build(text.component);
       return setting;
     },
-    addDropdown() { added.push("dropdown"); return setting; },
+    addToggle(build: (toggle: unknown) => unknown) {
+      const toggle = fakeToggle();
+      toggles.push(toggle);
+      added.push("toggle");
+      build(toggle.component);
+      return setting;
+    },
+    addDropdown(build: (dropdown: unknown) => unknown) {
+      const dropdown = fakeDropdown();
+      dropdowns.push(dropdown);
+      added.push("dropdown");
+      build(dropdown.component);
+      return setting;
+    },
     addExtraButton() { added.push("extraButton"); return setting; },
   };
-  return { setting: setting as unknown as Setting, texts, added };
+  return { setting: setting as unknown as Setting, texts, toggles, dropdowns, added };
 }
 
 function renderRow(leaf: SettingDefinition | undefined) {
@@ -432,10 +477,11 @@ describe("the OpenAI-compatible server (#25)", () => {
 });
 
 describe("a custom base URL for every provider with a vendor default (#29)", () => {
-  it("follows each of those providers' key row, and no other", () => {
+  it("follows each of those providers' key row, behind its toggle, and no other", () => {
     const { ordered } = walk(buildSettingDefinitions(makeHost().host));
     for (const name of ["OpenAI", "Anthropic", "Google", "OpenRouter"]) {
-      expect(ordered[ordered.indexOf(`${name} api key`) + 1]).toBe(`${name} base URL`);
+      const at = ordered.indexOf(`${name} api key`);
+      expect(ordered.slice(at, at + 3)).toEqual([`${name} api key`, `Custom ${name} base URL`, `${name} base URL`]);
     }
     expect(ordered).not.toContain("Ollama base URL");
     expect(ordered).not.toContain("OpenAI-compatible server base URL");
@@ -470,5 +516,95 @@ describe("a custom base URL for every provider with a vendor default (#29)", () 
     field.type("");
     field.blur();
     expect(spies.showNotice).not.toHaveBeenCalled();
+  });
+});
+
+// --- only the selected provider's configuration is shown (#28) -------------
+
+/** Whether Obsidian would render the row: `visible` absent, true, or a closure answering true. */
+function isVisible(leaf: SettingDefinition | undefined): boolean {
+  const visible = leaf?.visible;
+  return typeof visible === "function" ? visible() : visible !== false;
+}
+
+describe("only the selected provider's configuration is shown (#28)", () => {
+  const BRANDS: Record<string, string> = { openai: "OpenAI", anthropic: "Anthropic", google: "Google", openrouter: "OpenRouter" };
+  const ALL = ["openai", "anthropic", "google", "ollama", "openrouter", "openai-compatible"];
+  const keyRow = (provider: string): string =>
+    provider === "openai-compatible" ? "OpenAI-compatible server api key" : `${BRANDS[provider] ?? "Ollama"} api key`;
+
+  it.each(ALL)("with %s selected, its connection rows are shown and every other provider's are hidden", (selected) => {
+    // Every toggle on, so each base URL field is hidden by the provider choice alone.
+    const enabled = { openai: true, anthropic: true, google: true, openrouter: true };
+    const { leaves } = walk(buildSettingDefinitions(makeHost({ selectedLLM: selected, customBaseUrlEnabled: enabled }).host));
+    for (const provider of ALL) {
+      const mine = provider === selected;
+      expect(isVisible(leafNamed(leaves, keyRow(provider))), `${keyRow(provider)} with ${selected} selected`).toBe(mine);
+      if (provider in BRANDS) {
+        expect(isVisible(leafNamed(leaves, `Custom ${BRANDS[provider]} base URL`))).toBe(mine);
+        expect(isVisible(leafNamed(leaves, `${BRANDS[provider]} base URL`))).toBe(mine);
+      }
+    }
+    expect(isVisible(leafNamed(leaves, "OpenAI-compatible server URL"))).toBe(selected === "openai-compatible");
+  });
+
+  it("hides a base URL field until its toggle is on; the toggle saves, then re-renders through update()", async () => {
+    const { host, spies } = makeHost({ selectedLLM: "google" });
+    host.settings.customBaseUrlEnabled = DEFAULT_SETTINGS.customBaseUrlEnabled; // shared, as loadSettings leaves it
+    const { leaves } = walk(buildSettingDefinitions(host));
+    const field = leafNamed(leaves, "Google base URL");
+    expect(isVisible(field)).toBe(false);
+
+    const toggle = renderRow(leafNamed(leaves, "Custom Google base URL")).toggles[0];
+    expect(toggle.component.value).toBe(false);
+    toggle.flip(true);
+
+    expect(host.settings.customBaseUrlEnabled).toEqual({ google: true });
+    expect(isVisible(field)).toBe(true);
+    await vi.waitFor(() => expect(spies.update).toHaveBeenCalledTimes(1));
+    expect(spies.saveSettings).toHaveBeenCalledTimes(1);
+    expect(DEFAULT_SETTINGS.customBaseUrlEnabled).toEqual({});
+  });
+
+  it("keeps every hidden provider's values through a switch away and back: keys, addresses and toggles", async () => {
+    const { writes, host: plugin } = makePluginDouble();
+    const setSecret = vi.fn();
+    const update = vi.fn();
+    const host: SettingsHost = { ...plugin, setSecret, update };
+    Object.assign(host.settings, {
+      selectedLLM: "openai",
+      openaiCompatibleBaseUrl: "http://box:1234/v1",
+      customBaseUrls: { openai: "http://proxy.local/v1", google: "http://proxy.local/google" },
+      customBaseUrlEnabled: { openai: true, google: false },
+    });
+    host.settings.apiKeys = { ...host.settings.apiKeys, ollama: "http://box:11434", "openai-compatible": "local-server-key" };
+    const snapshot = () => structuredClone({
+      apiKeys: host.settings.apiKeys,
+      openaiCompatibleBaseUrl: host.settings.openaiCompatibleBaseUrl,
+      customBaseUrls: host.settings.customBaseUrls,
+      customBaseUrlEnabled: host.settings.customBaseUrlEnabled,
+    });
+    const before = snapshot();
+
+    const provider = renderRow(leafNamed(walk(buildSettingDefinitions(host)).leaves, "Provider")).dropdowns[0];
+    provider.choose("ollama");
+    await vi.waitFor(() => expect(update).toHaveBeenCalledTimes(1));
+    provider.choose("openai-compatible");
+    await vi.waitFor(() => expect(update).toHaveBeenCalledTimes(2));
+    provider.choose("openai");
+    await vi.waitFor(() => expect(update).toHaveBeenCalledTimes(3));
+
+    expect(host.settings.selectedLLM).toBe("openai");
+    expect(snapshot()).toEqual(before);
+    // Hiding a key row is not clearing it: secret storage is never written to.
+    expect(setSecret).not.toHaveBeenCalled();
+    const saved = writes[writes.length - 1];
+    expect(saved.customBaseUrls).toEqual(before.customBaseUrls);
+    expect(saved.customBaseUrlEnabled).toEqual(before.customBaseUrlEnabled);
+    expect(saved.openaiCompatibleBaseUrl).toBe("http://box:1234/v1");
+    expect(saved.apiKeys).toEqual({ ollama: "http://box:11434" });
+    for (const secret of ["sk-openai", "sk-ant", "g-key", "or-key", "local-server-key"]) {
+      expect(JSON.stringify(writes)).not.toContain(secret);
+    }
   });
 });

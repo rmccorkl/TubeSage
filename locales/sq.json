@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "URL-ja e serverit, ruhet në të dhënat e shtojcës.",
     "settings.llm.baseUrl.name": "URL-ja bazë e {provider}",
     "settings.llm.baseUrl.desc": "Lëreni bosh për të përdorur adresën e paracaktuar që shfaqet në fushë. Kërkesat, bashkë me çelësin tuaj API, shkojnë te adresa që shkruani.",
+    "settings.llm.baseUrl.toggle.name": "URL bazë e personalizuar për {provider}",
+    "settings.llm.baseUrl.toggle.desc": "Joaktiv: kërkesat shkojnë te adresa e vetë {provider}. Aktiv: shkojnë te URL-ja bazë më poshtë, bashkë me listën e modeleve.",
     "settings.llm.openaiCompatible.url.name": "URL-ja e serverit të përputhshëm me OpenAI",
     "settings.llm.openaiCompatible.url.desc": "URL-ja bazë, zakonisht mbaron me /v1. Ruhet në të dhënat e shtojcës. Çelësi API më poshtë është opsional.",
     "settings.llm.model.name": "Modeli i {provider}",

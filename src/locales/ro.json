@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Lasă gol pentru a folosi adresa implicită afișată în câmp. Cererile, inclusiv cheia ta API, ajung la adresa pe care o introduci."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "URL de bază personalizat pentru {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Dezactivat: cererile ajung la adresa proprie a {provider}. Activat: ajung la URL-ul de bază de mai jos, inclusiv lista de modele."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL-ul serverului compatibil cu OpenAI"

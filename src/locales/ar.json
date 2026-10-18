@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "اتركه فارغًا لاستخدام العنوان الافتراضي الظاهر في الحقل. تُرسَل الطلبات، ومعها مفتاح API، إلى العنوان الذي تُدخله."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "عنوان URL أساسي مخصّص لـ {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "إيقاف: تُرسَل الطلبات إلى عنوان {provider} نفسه. تشغيل: تُرسَل، ومعها قائمة النماذج، إلى عنوان URL الأساسي أدناه."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "عنوان URL للخادم المتوافق مع OpenAI"

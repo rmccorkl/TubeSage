@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "ទុកឱ្យទទេ ដើម្បីប្រើអាសយដ្ឋានលំនាំដើមដែលបង្ហាញក្នុងប្រអប់។ សំណើ រួមទាំងសោ API របស់អ្នក ត្រូវផ្ញើទៅអាសយដ្ឋានដែលអ្នកបញ្ចូល។"
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "URL មូលដ្ឋានផ្ទាល់ខ្លួនរបស់ {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "បិទ៖ សំណើត្រូវផ្ញើទៅអាសយដ្ឋានផ្ទាល់របស់ {provider}។ បើក៖ សំណើ រួមទាំងបញ្ជីម៉ូដែល ត្រូវផ្ញើទៅ URL មូលដ្ឋានខាងក្រោម។"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL របស់ម៉ាស៊ីនបម្រើដែលត្រូវគ្នានឹង OpenAI"

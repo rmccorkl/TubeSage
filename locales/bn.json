@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "সার্ভারের URL, প্লাগইন ডেটায় সংরক্ষিত।",
     "settings.llm.baseUrl.name": "{provider}-এর বেস URL",
     "settings.llm.baseUrl.desc": "ঘরে দেখানো ডিফল্ট ঠিকানা ব্যবহার করতে ফাঁকা রাখুন। আপনার API কী-সহ অনুরোধগুলো আপনার দেওয়া ঠিকানায় যায়।",
+    "settings.llm.baseUrl.toggle.name": "{provider}-এর কাস্টম বেস URL",
+    "settings.llm.baseUrl.toggle.desc": "বন্ধ: অনুরোধ {provider}-এর নিজস্ব ঠিকানায় যায়। চালু: মডেল তালিকাসহ অনুরোধ নিচের বেস URL-এ যায়।",
     "settings.llm.openaiCompatible.url.name": "OpenAI-সামঞ্জস্যপূর্ণ সার্ভারের URL",
     "settings.llm.openaiCompatible.url.desc": "বেস URL, সাধারণত /v1 দিয়ে শেষ হয়। প্লাগইন ডেটায় সংরক্ষিত। নিচের API কী ঐচ্ছিক।",
     "settings.llm.model.name": "{provider} মডেল",

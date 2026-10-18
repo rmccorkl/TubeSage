@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Alanda görünen varsayılan adresi kullanmak için boş bırakın. İstekler, API anahtarınız dahil, girdiğiniz adrese gider."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Özel {provider} temel URL'si"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Kapalı: istekler {provider} hizmetinin kendi adresine gider. Açık: istekler, model listesi dahil, aşağıdaki temel URL'ye gider."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI uyumlu sunucu URL'si"

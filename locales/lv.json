@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "Servera URL, glabājas spraudņa datos.",
     "settings.llm.baseUrl.name": "{provider} bāzes URL",
     "settings.llm.baseUrl.desc": "Atstājiet tukšu, lai izmantotu laukā redzamo noklusējuma adresi. Pieprasījumi kopā ar jūsu API atslēgu tiek sūtīti uz ievadīto adresi.",
+    "settings.llm.baseUrl.toggle.name": "Pielāgots {provider} bāzes URL",
+    "settings.llm.baseUrl.toggle.desc": "Izslēgts: pieprasījumi tiek sūtīti uz {provider} adresi. Ieslēgts: tie tiek sūtīti uz zemāk norādīto bāzes URL, ieskaitot modeļu sarakstu.",
     "settings.llm.openaiCompatible.url.name": "Ar OpenAI saderīgā servera URL",
     "settings.llm.openaiCompatible.url.desc": "Bāzes URL, parasti beidzas ar /v1. Glabājas spraudņa datos. Zemāk esošā API atslēga nav obligāta.",
     "settings.llm.model.name": "{provider} modelis",

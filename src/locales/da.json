@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Lad feltet stå tomt for at bruge standardadressen, der vises i feltet. Forespørgsler, inklusive din API-nøgle, sendes til den adresse, du indtaster."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Brugerdefineret basis-URL til {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Fra: forespørgsler sendes til {provider}s egen adresse. Til: de sendes til basis-URL'en nedenfor, modellisten inklusive."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL til OpenAI-kompatibel server"

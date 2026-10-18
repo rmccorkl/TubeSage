@@ -43,6 +43,8 @@
     "settings.llm.apiKey.desc.ollama": "URL-ul serverului, stocat în datele pluginului.",
     "settings.llm.baseUrl.name": "URL de bază {provider}",
     "settings.llm.baseUrl.desc": "Lasă gol pentru a folosi adresa implicită afișată în câmp. Cererile, inclusiv cheia ta API, ajung la adresa pe care o introduci.",
+    "settings.llm.baseUrl.toggle.name": "URL de bază personalizat pentru {provider}",
+    "settings.llm.baseUrl.toggle.desc": "Dezactivat: cererile ajung la adresa proprie a {provider}. Activat: ajung la URL-ul de bază de mai jos, inclusiv lista de modele.",
     "settings.llm.openaiCompatible.url.name": "URL-ul serverului compatibil cu OpenAI",
     "settings.llm.openaiCompatible.url.desc": "URL de bază, care se termină de obicei cu /v1. Stocat în datele pluginului. Cheia API de mai jos este opțională.",
     "settings.llm.model.name": "Model {provider}",

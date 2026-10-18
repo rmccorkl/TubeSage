@@ -175,6 +175,14 @@
         "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
         "translation": "Để trống để dùng địa chỉ mặc định hiển thị trong ô. Các yêu cầu, kèm khoá API của bạn, sẽ gửi đến địa chỉ bạn nhập."
     },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "URL gốc tuỳ chỉnh của {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Tắt: yêu cầu gửi đến địa chỉ riêng của {provider}. Bật: yêu cầu, kể cả danh sách mô hình, gửi đến URL gốc bên dưới."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL máy chủ tương thích OpenAI"

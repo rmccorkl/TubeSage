@@ -601,12 +601,14 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
         }),
     });
 
-    // API key row for a provider — always rendered for every provider so a
-    // user can populate keys independently of which LLM is currently
-    // selected. The model dropdown / refresh / custom-name / custom-params
-    // are split out into the selected-provider block below (so the LLM
-    // section reflects the active provider's context rather than rendering
-    // all four providers' full settings at once).
+    // API key row for a provider — built for every provider, but shown only
+    // for the selected one (#28): the provider choice sets the context, so a
+    // user running Ollama is not faced with four empty cloud key fields.
+    // `visible` hides a row without touching its value, so a hidden
+    // provider's key, address and toggle all survive switching away and
+    // back. The Provider dropdown's onChange calls host.update(), which is
+    // what re-evaluates every `visible`. The model dropdown / refresh /
+    // custom-name / custom-params are in the selected-provider block below.
     for (const { provider, displayName, placeholder } of providerCatalog) {
         if (provider === 'openai-compatible') {
             // Its address sits directly above its key, as Ollama's sits in
@@ -615,6 +617,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
         }
         llmItems.push({
             name: t('settings.llm.apiKey.name', { provider: displayName }),
+            visible: () => host.settings.selectedLLM === provider,
             desc: provider === 'ollama'
                 ? t('settings.llm.apiKey.desc.ollama')
                 : t('settings.llm.apiKey.desc.cloud'),
@@ -970,12 +973,14 @@ interface AddressRow {
     value: string;
     save: (value: string) => void;
     invalidNotice: string;
+    visible: () => boolean;
 }
 
 function addressRow(host: SettingsHost, gated: (render: Render) => Render, row: AddressRow): SettingDefinitionRender {
     return {
         name: row.name,
         desc: row.desc,
+        visible: row.visible,
         render: gated((setting) => {
             setting.addText(text => {
                 text.setPlaceholder(row.placeholder)
@@ -1010,6 +1015,7 @@ function openAiCompatibleUrlRow(host: SettingsHost, gated: (render: Render) => R
         value: host.settings.openaiCompatibleBaseUrl,
         save: (value) => { host.settings.openaiCompatibleBaseUrl = value; },
         invalidNotice: t('notice.openaiCompatible.invalidUrl'),
+        visible: () => host.settings.selectedLLM === 'openai-compatible',
     });
 }
 
@@ -1017,9 +1023,34 @@ function openAiCompatibleUrlRow(host: SettingsHost, gated: (render: Render) => R
 // to override; none for Ollama, whose address is its key row, or for the
 // OpenAI-compatible server, whose address row is above. Blank means the
 // vendor default, shown as the placeholder and never written to settings.
+//
+// Behind a toggle (#28), so the field only appears for someone who wants to
+// override. The toggle is the switch itself, not just the field's
+// visibility: off sends requests to the vendor while KEEPING the typed URL,
+// so turning it back on restores the override rather than an empty field.
+// baseUrlOverrides() is where "off" is honoured, for every caller at once.
 function customBaseUrlRows(host: SettingsHost, provider: string, displayName: string, gated: (render: Render) => Render): SettingDefinitionRender[] {
     if (!(provider in DEFAULT_BASE_URLS)) return [];
-    return [addressRow(host, gated, {
+    const selected = (): boolean => host.settings.selectedLLM === provider;
+    const toggle: SettingDefinitionRender = {
+        name: t('settings.llm.baseUrl.toggle.name', { provider: displayName }),
+        desc: t('settings.llm.baseUrl.toggle.desc', { provider: displayName }),
+        visible: selected,
+        render: gated((setting) => {
+            setting.addToggle(component => component
+                .setValue(host.settings.customBaseUrlEnabled[provider] === true)
+                .onChange((value: boolean) => {
+                    void (async () => {
+                        // A new map, for the same shallow-merge reason as the URLs.
+                        host.settings.customBaseUrlEnabled = { ...host.settings.customBaseUrlEnabled, [provider]: value };
+                        await host.saveSettings();
+                        // `visible` is evaluated per render: show or hide the field now.
+                        host.update();
+                    })();
+                }));
+        }),
+    };
+    return [toggle, addressRow(host, gated, {
         name: t('settings.llm.baseUrl.name', { provider: displayName }),
         desc: t('settings.llm.baseUrl.desc'),
         placeholder: DEFAULT_BASE_URLS[provider],
@@ -1028,6 +1059,7 @@ function customBaseUrlRows(host: SettingsHost, provider: string, displayName: st
         // shallowly onto DEFAULT_SETTINGS, so the old map may BE the default's.
         save: (value) => { host.settings.customBaseUrls = { ...host.settings.customBaseUrls, [provider]: value }; },
         invalidNotice: t('notice.baseUrl.invalid'),
+        visible: () => selected() && host.settings.customBaseUrlEnabled[provider] === true,
     })];
 }
 
