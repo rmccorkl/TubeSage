@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Грешка: {error} (ни белешка за отклањање грешака није направљена)",
     "notice.transcript.noTimestamps": "Упозорење: у транскрипту нису пронађене временске ознаке. Временске ознаке су неопходне за обраду.",
     "notice.templater.required": "Грешка: потребан је додатак Templater, али није инсталиран нити укључен",
+    "notice.template.notFound": "Датотека шаблона није пронађена: {path}. Проверите и назив датотеке и фасциклу у подешавању TubeSage „Датотека шаблона додатка Templater“.",
     "notice.note.created": "Белешка је направљена: {name}",
     "notice.note.createFailed": "Грешка при прављењу белешке: {error}",
     "notice.templater.missing": "Додатку за транскрипте са Youtube потребан је додатак Templater. Инсталирајте га и укључите.",

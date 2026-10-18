@@ -527,6 +527,10 @@
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "შეცდომა: საჭიროა მოდული Templater, მაგრამ ის დაყენებული ან ჩართული არ არის"
     },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "შაბლონის ფაილი ვერ მოიძებნა: {path}. შეამოწმეთ ფაილის სახელიც და საქაღალდეც TubeSage-ის პარამეტრში „Templater მოდულის შაბლონის ფაილი“."
+    },
     "notice.note.created": {
         "original": "Created note: {name}",
         "translation": "ჩანაწერი შეიქმნა: {name}"

@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Gabim: {error} (as shënimi i korrigjimit s'u krijua dot)",
     "notice.transcript.noTimestamps": "Kujdes: s'u gjetën vula kohore në transkript. Vulat kohore duhen për përpunimin.",
     "notice.templater.required": "Gabim: shtojca Templater është e nevojshme, por s'është instaluar ose aktivizuar",
+    "notice.template.notFound": "Skedari i shabllonit nuk u gjet: {path}. Kontrolloni si emrin e skedarit, ashtu edhe dosjen te cilësimi i TubeSage «Skedari i shabllonit të shtojcës Templater».",
     "notice.note.created": "Shënimi u krijua: {name}",
     "notice.note.createFailed": "Gabim gjatë krijimit të shënimit: {error}",
     "notice.templater.missing": "Shtojca e transkripteve Youtube kërkon shtojcën Templater. Instalojeni dhe aktivizojeni.",

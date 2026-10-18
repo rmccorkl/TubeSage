@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Erreur : {error} (la note de débogage n'a pas pu être créée non plus)",
     "notice.transcript.noTimestamps": "Avertissement : aucun horodatage trouvé dans la transcription. Les horodatages sont nécessaires au traitement.",
     "notice.templater.required": "Erreur : le plugin Templater est requis mais n'est pas installé ou activé",
+    "notice.template.notFound": "Fichier modèle introuvable : {path}. Vérifiez à la fois le nom du fichier et le dossier dans le paramètre TubeSage « Fichier modèle du plugin Templater ».",
     "notice.note.created": "Note créée : {name}",
     "notice.note.createFailed": "Erreur lors de la création de la note : {error}",
     "notice.templater.missing": "Le plugin de transcription Youtube requiert le plugin Templater. Veuillez l'installer et l'activer.",

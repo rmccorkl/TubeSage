@@ -527,6 +527,10 @@
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "त्रुटि: Templater प्लगइन चाहिन्छ, तर यो स्थापना वा सक्रिय गरिएको छैन"
     },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "टेम्प्लेट फाइल फेला परेन: {path}। TubeSage को “Templater प्लगइनको टेम्प्लेट फाइल” सेटिङमा फाइलको नाम र फोल्डर दुवै जाँच गर्नुहोस्।"
+    },
     "notice.note.created": {
         "original": "Created note: {name}",
         "translation": "नोट बनाइयो: {name}"

@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Fel: {error} (felsökningsanteckningen kunde inte heller skapas)",
     "notice.transcript.noTimestamps": "Varning: inga tidsstämplar hittades i transkriptionen. Tidsstämplar krävs för bearbetningen.",
     "notice.templater.required": "Fel: Templater-tillägget krävs, men är inte installerat eller aktiverat",
+    "notice.template.notFound": "Mallfilen hittades inte: {path}. Kontrollera både filnamnet och mappen i TubeSage-inställningen ”Mallfil från Templater-tillägget”.",
     "notice.note.created": "Anteckning skapad: {name}",
     "notice.note.createFailed": "Fel när anteckningen skapades: {error}",
     "notice.templater.missing": "Youtube-transkriptionstillägget kräver Templater-tillägget. Installera och aktivera det.",

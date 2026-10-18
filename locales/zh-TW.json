@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "錯誤：{error}（偵錯筆記也無法建立）",
     "notice.transcript.noTimestamps": "警告：逐字稿中找不到時間戳記。處理需要時間戳記。",
     "notice.templater.required": "錯誤：需要 Templater 外掛，但尚未安裝或啟用",
+    "notice.template.notFound": "找不到範本檔案：{path}。請在 TubeSage 設定「Templater 外掛範本檔案」中同時檢查檔名與資料夾。",
     "notice.note.created": "已建立筆記：{name}",
     "notice.note.createFailed": "建立筆記時發生錯誤：{error}",
     "notice.templater.missing": "Youtube 逐字稿外掛需要 Templater 外掛。請安裝並啟用。",

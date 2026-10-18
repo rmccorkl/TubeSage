@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "エラー: {error}（デバッグノートも作成できませんでした）",
     "notice.transcript.noTimestamps": "警告: 字幕にタイムスタンプが見つかりません。処理にはタイムスタンプが必要です。",
     "notice.templater.required": "エラー: Templater プラグインが必要ですが、インストールまたは有効化されていません",
+    "notice.template.notFound": "テンプレートファイルが見つかりません: {path}。TubeSage の設定「Templater プラグインのテンプレートファイル」で、ファイル名とフォルダーの両方を確認してください。",
     "notice.note.created": "ノートを作成しました: {name}",
     "notice.note.createFailed": "ノートの作成でエラーが発生しました: {error}",
     "notice.templater.missing": "Youtube 文字起こしプラグインには Templater プラグインが必要です。インストールして有効にしてください。",

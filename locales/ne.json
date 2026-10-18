@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "त्रुटि: {error} (डिबग नोट पनि बनाउन सकिएन)",
     "notice.transcript.noTimestamps": "चेतावनी: प्रतिलिपिमा टाइमस्ट्याम्प भेटिएन। प्रशोधनका लागि टाइमस्ट्याम्प चाहिन्छ।",
     "notice.templater.required": "त्रुटि: Templater प्लगइन चाहिन्छ, तर यो स्थापना वा सक्रिय गरिएको छैन",
+    "notice.template.notFound": "टेम्प्लेट फाइल फेला परेन: {path}। TubeSage को “Templater प्लगइनको टेम्प्लेट फाइल” सेटिङमा फाइलको नाम र फोल्डर दुवै जाँच गर्नुहोस्।",
     "notice.note.created": "नोट बनाइयो: {name}",
     "notice.note.createFailed": "नोट बनाउँदा त्रुटि: {error}",
     "notice.templater.missing": "Youtube प्रतिलिपि प्लगइनलाई Templater प्लगइन चाहिन्छ। यसलाई स्थापना गरी सक्रिय गर्नुहोस्।",

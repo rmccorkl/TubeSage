@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "خطا: {error} (یادداشت اشکال‌زدایی هم ساخته نشد)",
     "notice.transcript.noTimestamps": "هشدار: در رونوشت هیچ زمانی یافت نشد. برای پردازش به زمان‌ها نیاز است.",
     "notice.templater.required": "خطا: افزونهٔ Templater لازم است ولی نصب یا فعال نشده است",
+    "notice.template.notFound": "فایل قالب پیدا نشد: {path}. هم نام فایل و هم پوشه را در تنظیم TubeSage «فایل قالب افزونهٔ Templater» بررسی کنید.",
     "notice.note.created": "یادداشت ساخته شد: {name}",
     "notice.note.createFailed": "خطا هنگام ساخت یادداشت: {error}",
     "notice.templater.missing": "افزونهٔ رونوشت Youtube به افزونهٔ Templater نیاز دارد. آن را نصب و فعال کنید.",

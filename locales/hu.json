@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Hiba: {error} (a hibakeresési jegyzet sem jött létre)",
     "notice.transcript.noTimestamps": "Figyelmeztetés: az átiratban nincsenek időbélyegek. Az időbélyegek a feldolgozáshoz szükségesek.",
     "notice.templater.required": "Hiba: a Templater bővítmény szükséges, de nincs telepítve vagy engedélyezve",
+    "notice.template.notFound": "A sablonfájl nem található: {path}. Ellenőrizd a fájlnevet és a mappát is a TubeSage „A Templater bővítmény sablonfájlja” beállításában.",
     "notice.note.created": "Jegyzet létrehozva: {name}",
     "notice.note.createFailed": "Hiba a jegyzet létrehozásakor: {error}",
     "notice.templater.missing": "A Youtube-átirat bővítményhez szükség van a Templater bővítményre. Telepítsd és engedélyezd.",

@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Feil: {error} (feilsøkingsnotatet kunne heller ikke opprettes)",
     "notice.transcript.noTimestamps": "Advarsel: fant ingen tidsstempler i transkripsjonen. Tidsstempler er nødvendige for behandlingen.",
     "notice.templater.required": "Feil: Templater-tillegget kreves, men er ikke installert eller aktivert",
+    "notice.template.notFound": "Fant ikke malfilen: {path}. Sjekk både filnavnet og mappen i TubeSage-innstillingen «Malfil fra Templater-tillegget».",
     "notice.note.created": "Notat opprettet: {name}",
     "notice.note.createFailed": "Feil ved oppretting av notatet: {error}",
     "notice.templater.missing": "Youtube-transkripsjonstillegget krever Templater-tillegget. Installer og aktiver det.",

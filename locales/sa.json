@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "दोषः: {error} (दोषनिवारणटिप्पणम् अपि न निर्मितम्)",
     "notice.transcript.noTimestamps": "सावधानम्: प्रतिलेखे कालमुद्राः न प्राप्ताः। संसाधनाय कालमुद्राः आवश्यकाः।",
     "notice.templater.required": "दोषः: Templater संयोजकः आवश्यकः, परं सः न स्थापितः न वा सक्रियः",
+    "notice.template.notFound": "आदर्शपत्रसञ्चिका न लब्धा: {path}। TubeSage इत्यस्य “Templater संयोजकस्य आदर्शपत्रसञ्चिका” इति विन्यासे सञ्चिकानाम सञ्चिकाकोशः च उभौ परीक्षताम्।",
     "notice.note.created": "टिप्पणं निर्मितम्: {name}",
     "notice.note.createFailed": "टिप्पणनिर्माणे दोषः: {error}",
     "notice.templater.missing": "Youtube प्रतिलेखसंयोजकाय Templater संयोजकः आवश्यकः। तं स्थापयतु सक्रियं च करोतु।",

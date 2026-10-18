@@ -43,6 +43,7 @@ import { ProcessingSpinner } from './src/utils/processing-spinner';
 import { CollectionRunner } from './src/runtime/collection-runner';
 import type { CollectionVideo } from './src/jobs/collection-record';
 import { writeIfUnchanged } from './src/runtime/guarded-write';
+import { templateNotFoundError } from './src/runtime/template-missing';
 import { createRunnerDeps, generateOpaqueId } from './src/runtime/job-adapters';
 import type { RenderedNote, VaultLike } from './src/runtime/job-adapters';
 import { SECRET_IDS, SECRET_KEY_PROVIDERS, SettingsWriter, settingsForPersist } from './src/runtime/settings-persist';
@@ -1450,7 +1451,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // Get template file and verify it exists
         const templateFile = this.app.vault.getAbstractFileByPath(normalizedTemplatePath);
         if (!(templateFile instanceof TFile)) {
-            throw new Error(`Template file not found: ${this.settings.templaterTemplateFile}`);
+            // Permanent and localised, naming the path and the setting (#27).
+            throw templateNotFoundError(normalizedTemplatePath);
         }
         
         // 1. Initialize Templater if needed (force a one-time run)

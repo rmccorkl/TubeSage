@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "ስህተት፦ {error} (የማረሚያ ማስታወሻም አልተፈጠረም)",
     "notice.transcript.noTimestamps": "ማስጠንቀቂያ፦ በግልባጭ ውስጥ የጊዜ ማህተሞች አልተገኙም። ለሂደቱ የጊዜ ማህተሞች ያስፈልጋሉ።",
     "notice.templater.required": "ስህተት፦ የTemplater ተሰኪ ያስፈልጋል፣ ግን አልተጫነም ወይም አልነቃም",
+    "notice.template.notFound": "የአብነት ፋይሉ አልተገኘም፦ {path}። በTubeSage ቅንብር «የTemplater ተሰኪ አብነት ፋይል» ውስጥ የፋይሉን ስም እና አቃፊውን ሁለቱንም ያረጋግጡ።",
     "notice.note.created": "ማስታወሻ ተፈጥሯል፦ {name}",
     "notice.note.createFailed": "ማስታወሻ ሲፈጠር ስህተት፦ {error}",
     "notice.templater.missing": "የYoutube ግልባጭ ተሰኪ የTemplater ተሰኪን ይፈልጋል። እባክዎ ይጫኑትና ያንቁት።",

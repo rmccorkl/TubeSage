@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Chyba: {error} (ladiacu poznámku sa tiež nepodarilo vytvoriť)",
     "notice.transcript.noTimestamps": "Upozornenie: v prepise sa nenašli časové značky. Časové značky sú na spracovanie potrebné.",
     "notice.templater.required": "Chyba: doplnok Templater je potrebný, ale nie je nainštalovaný ani zapnutý",
+    "notice.template.notFound": "Súbor šablóny sa nenašiel: {path}. Skontrolujte názov súboru aj priečinok v nastavení TubeSage „Súbor šablóny doplnku Templater“.",
     "notice.note.created": "Poznámka vytvorená: {name}",
     "notice.note.createFailed": "Chyba pri vytváraní poznámky: {error}",
     "notice.templater.missing": "Doplnok prepisu Youtube vyžaduje doplnok Templater. Nainštalujte ho a zapnite.",

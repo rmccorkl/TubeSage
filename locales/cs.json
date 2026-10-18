@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Chyba: {error} (ladicí poznámku se také nepodařilo vytvořit)",
     "notice.transcript.noTimestamps": "Upozornění: v přepisu nebyly nalezeny časové značky. Časové značky jsou pro zpracování nutné.",
     "notice.templater.required": "Chyba: plugin Templater je vyžadován, ale není nainstalován ani zapnut",
+    "notice.template.notFound": "Soubor šablony nebyl nalezen: {path}. Zkontrolujte název souboru i složku v nastavení TubeSage „Soubor šablony pluginu Templater“.",
     "notice.note.created": "Poznámka vytvořena: {name}",
     "notice.note.createFailed": "Chyba při vytváření poznámky: {error}",
     "notice.templater.missing": "Plugin přepisu Youtube vyžaduje plugin Templater. Nainstalujte jej a zapněte.",

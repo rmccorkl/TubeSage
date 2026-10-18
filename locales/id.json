@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Kesalahan: {error} (catatan debug juga gagal dibuat)",
     "notice.transcript.noTimestamps": "Peringatan: tidak ada stempel waktu dalam transkrip. Stempel waktu diperlukan untuk pemrosesan.",
     "notice.templater.required": "Kesalahan: plugin Templater diperlukan tetapi belum dipasang atau diaktifkan",
+    "notice.template.notFound": "Berkas templat tidak ditemukan: {path}. Periksa nama berkas sekaligus foldernya di pengaturan TubeSage “Berkas templat plugin Templater”.",
     "notice.note.created": "Catatan dibuat: {name}",
     "notice.note.createFailed": "Kesalahan saat membuat catatan: {error}",
     "notice.templater.missing": "Plugin transkrip Youtube memerlukan plugin Templater. Pasang dan aktifkan plugin itu.",

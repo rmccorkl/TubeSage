@@ -527,6 +527,10 @@
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Fejl: Templater-plugin'et er påkrævet, men er ikke installeret eller aktiveret"
     },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Skabelonfilen blev ikke fundet: {path}. Kontrollér både filnavnet og mappen i TubeSage-indstillingen »Skabelonfil til Templater-plugin'et«."
+    },
     "notice.note.created": {
         "original": "Created note: {name}",
         "translation": "Note oprettet: {name}"

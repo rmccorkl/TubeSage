@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Errore: {error} (non è stato possibile creare nemmeno la nota di debug)",
     "notice.transcript.noTimestamps": "Avviso: nessun timestamp trovato nella trascrizione. I timestamp sono necessari per l'elaborazione.",
     "notice.templater.required": "Errore: il plugin Templater è necessario ma non è installato o abilitato",
+    "notice.template.notFound": "File modello non trovato: {path}. Controlla sia il nome del file sia la cartella nell'impostazione di TubeSage «File modello del plugin Templater».",
     "notice.note.created": "Nota creata: {name}",
     "notice.note.createFailed": "Errore durante la creazione della nota: {error}",
     "notice.templater.missing": "Il plugin di trascrizione Youtube richiede il plugin Templater. Installalo e abilitalo.",

@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "កំហុស៖ {error} (ក៏មិនអាចបង្កើតកំណត់ត្រាបំបាត់កំហុសបានដែរ)",
     "notice.transcript.noTimestamps": "ការព្រមាន៖ រកមិនឃើញត្រាពេលវេលាក្នុងប្រតិចារិកទេ។ ត្រាពេលវេលាចាំបាច់សម្រាប់ដំណើរការ។",
     "notice.templater.required": "កំហុស៖ ត្រូវការកម្មវិធីជំនួយ Templater ប៉ុន្តែមិនទាន់ដំឡើង ឬបើកដំណើរការ",
+    "notice.template.notFound": "រកមិនឃើញឯកសារពុម្ព៖ {path}។ សូមពិនិត្យទាំងឈ្មោះឯកសារ និងថតឯកសារ ក្នុងការកំណត់ TubeSage «ឯកសារពុម្ពរបស់កម្មវិធីជំនួយ Templater»។",
     "notice.note.created": "បានបង្កើតកំណត់ត្រា៖ {name}",
     "notice.note.createFailed": "កំហុសពេលបង្កើតកំណត់ត្រា៖ {error}",
     "notice.templater.missing": "កម្មវិធីជំនួយប្រតិចារិក Youtube ត្រូវការកម្មវិធីជំនួយ Templater។ សូមដំឡើង និងបើកដំណើរការវា។",

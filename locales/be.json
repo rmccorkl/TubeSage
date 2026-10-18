@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Памылка: {error} (адладачную нататку таксама не ўдалося стварыць)",
     "notice.transcript.noTimestamps": "Папярэджанне: у транскрыпце не знойдзены адзнакі часу. Адзнакі часу патрэбны для апрацоўкі.",
     "notice.templater.required": "Памылка: патрэбны плагін Templater, але ён не ўсталяваны або не ўключаны",
+    "notice.template.notFound": "Файл шаблону не знойдзены: {path}. Праверце і назву файла, і папку ў наладзе TubeSage «Файл шаблону плагіна Templater».",
     "notice.note.created": "Нататка створана: {name}",
     "notice.note.createFailed": "Памылка пры стварэнні нататкі: {error}",
     "notice.templater.missing": "Плагіну транскрыптаў Youtube патрэбны плагін Templater. Усталюйце і ўключыце яго.",

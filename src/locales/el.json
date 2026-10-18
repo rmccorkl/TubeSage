@@ -527,6 +527,10 @@
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Σφάλμα: απαιτείται το πρόσθετο Templater, αλλά δεν είναι εγκατεστημένο ή ενεργοποιημένο"
     },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Το αρχείο προτύπου δεν βρέθηκε: {path}. Ελέγξτε και το όνομα του αρχείου και τον φάκελο στη ρύθμιση του TubeSage «Αρχείο προτύπου του πρόσθετου Templater»."
+    },
     "notice.note.created": {
         "original": "Created note: {name}",
         "translation": "Δημιουργήθηκε σημείωση: {name}"

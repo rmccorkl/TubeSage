@@ -527,6 +527,10 @@
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "दोषः: Templater संयोजकः आवश्यकः, परं सः न स्थापितः न वा सक्रियः"
     },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "आदर्शपत्रसञ्चिका न लब्धा: {path}। TubeSage इत्यस्य “Templater संयोजकस्य आदर्शपत्रसञ्चिका” इति विन्यासे सञ्चिकानाम सञ्चिकाकोशः च उभौ परीक्षताम्।"
+    },
     "notice.note.created": {
         "original": "Created note: {name}",
         "translation": "टिप्पणं निर्मितम्: {name}"

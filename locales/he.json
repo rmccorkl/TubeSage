@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "שגיאה: {error} (גם הערת ניפוי הבאגים לא נוצרה)",
     "notice.transcript.noTimestamps": "אזהרה: לא נמצאו חותמות זמן בתמליל. חותמות זמן נדרשות לעיבוד.",
     "notice.templater.required": "שגיאה: התוסף Templater נדרש אך אינו מותקן או מופעל",
+    "notice.template.notFound": "קובץ התבנית לא נמצא: {path}. בדוק גם את שם הקובץ וגם את התיקייה בהגדרה של TubeSage ״קובץ תבנית של התוסף Templater״.",
     "notice.note.created": "נוצרה הערה: {name}",
     "notice.note.createFailed": "שגיאה ביצירת ההערה: {error}",
     "notice.templater.missing": "תוסף תמלילי Youtube דורש את התוסף Templater. התקן והפעל אותו.",

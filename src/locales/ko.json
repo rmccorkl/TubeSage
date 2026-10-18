@@ -527,6 +527,10 @@
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "오류: Templater 플러그인이 필요하지만 설치되어 있지 않거나 켜져 있지 않습니다"
     },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "템플릿 파일을 찾을 수 없습니다: {path}. TubeSage 설정 'Templater 플러그인 템플릿 파일'에서 파일 이름과 폴더를 모두 확인하세요."
+    },
     "notice.note.created": {
         "original": "Created note: {name}",
         "translation": "노트를 만들었습니다: {name}"

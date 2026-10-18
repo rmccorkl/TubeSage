@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Erro: {error} (também não foi possível criar a nota de depuração)",
     "notice.transcript.noTimestamps": "Aviso: não foram encontradas marcas de tempo na transcrição. As marcas de tempo são necessárias para o processamento.",
     "notice.templater.required": "Erro: o plugin Templater é necessário, mas não está instalado nem ativado",
+    "notice.template.notFound": "Ficheiro de modelo não encontrado: {path}. Verifique o nome do ficheiro e também a pasta na definição do TubeSage «Ficheiro de modelo do plugin Templater».",
     "notice.note.created": "Nota criada: {name}",
     "notice.note.createFailed": "Erro ao criar a nota: {error}",
     "notice.templater.missing": "O plugin de transcrição do Youtube precisa do plugin Templater. Instale-o e ative-o.",

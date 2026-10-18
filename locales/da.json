@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Fejl: {error} (fejlfindingsnoten kunne heller ikke oprettes)",
     "notice.transcript.noTimestamps": "Advarsel: der blev ikke fundet tidsstempler i transskriptionen. Tidsstempler er nødvendige for behandlingen.",
     "notice.templater.required": "Fejl: Templater-plugin'et er påkrævet, men er ikke installeret eller aktiveret",
+    "notice.template.notFound": "Skabelonfilen blev ikke fundet: {path}. Kontrollér både filnavnet og mappen i TubeSage-indstillingen »Skabelonfil til Templater-plugin'et«.",
     "notice.note.created": "Note oprettet: {name}",
     "notice.note.createFailed": "Fejl ved oprettelse af noten: {error}",
     "notice.templater.missing": "Youtube-transskriptionsplugin'et kræver Templater-plugin'et. Installér og aktivér det.",

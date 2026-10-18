@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Eroare: {error} (nici notița de depanare nu a putut fi creată)",
     "notice.transcript.noTimestamps": "Avertisment: nu s-au găsit marcaje temporale în transcriere. Marcajele temporale sunt necesare pentru procesare.",
     "notice.templater.required": "Eroare: pluginul Templater este necesar, dar nu este instalat sau activat",
+    "notice.template.notFound": "Fișierul șablon nu a fost găsit: {path}. Verifică atât numele fișierului, cât și dosarul în setarea TubeSage „Fișierul șablon al pluginului Templater”.",
     "notice.note.created": "Notiță creată: {name}",
     "notice.note.createFailed": "Eroare la crearea notiței: {error}",
     "notice.templater.missing": "Pluginul de transcriere Youtube are nevoie de pluginul Templater. Instalează-l și activează-l.",

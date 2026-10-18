@@ -527,6 +527,10 @@
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Kļūda: nepieciešams spraudnis Templater, taču tas nav instalēts vai ieslēgts"
     },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Veidnes fails nav atrasts: {path}. Pārbaudiet gan faila nosaukumu, gan mapi TubeSage iestatījumā “Templater spraudņa veidnes fails”."
+    },
     "notice.note.created": {
         "original": "Created note: {name}",
         "translation": "Piezīme izveidota: {name}"

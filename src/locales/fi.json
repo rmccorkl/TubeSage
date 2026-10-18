@@ -527,6 +527,10 @@
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Virhe: Templater-laajennus vaaditaan, mutta sitä ei ole asennettu tai otettu käyttöön"
     },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Mallitiedostoa ei löytynyt: {path}. Tarkista sekä tiedostonimi että kansio TubeSagen asetuksessa ”Templater-laajennuksen mallitiedosto”."
+    },
     "notice.note.created": {
         "original": "Created note: {name}",
         "translation": "Muistiinpano luotu: {name}"

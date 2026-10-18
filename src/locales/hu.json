@@ -527,6 +527,10 @@
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Hiba: a Templater bővítmény szükséges, de nincs telepítve vagy engedélyezve"
     },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "A sablonfájl nem található: {path}. Ellenőrizd a fájlnevet és a mappát is a TubeSage „A Templater bővítmény sablonfájlja” beállításában."
+    },
     "notice.note.created": {
         "original": "Created note: {name}",
         "translation": "Jegyzet létrehozva: {name}"

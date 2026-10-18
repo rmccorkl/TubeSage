@@ -527,6 +527,10 @@
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "பிழை: Templater செருகுநிரல் தேவை, ஆனால் அது நிறுவப்படவில்லை அல்லது இயக்கப்படவில்லை"
     },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "வார்ப்புருக் கோப்பு கிடைக்கவில்லை: {path}. TubeSage அமைப்பான “Templater செருகுநிரலின் வார்ப்புருக் கோப்பு” இல் கோப்புப் பெயரையும் கோப்புறையையும் சரிபார்க்கவும்."
+    },
     "notice.note.created": {
         "original": "Created note: {name}",
         "translation": "குறிப்பு உருவாக்கப்பட்டது: {name}"

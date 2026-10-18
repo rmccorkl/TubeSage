@@ -527,6 +527,10 @@
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Грешка: потребан је додатак Templater, али није инсталиран нити укључен"
     },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Датотека шаблона није пронађена: {path}. Проверите и назив датотеке и фасциклу у подешавању TubeSage „Датотека шаблона додатка Templater“."
+    },
     "notice.note.created": {
         "original": "Created note: {name}",
         "translation": "Белешка је направљена: {name}"

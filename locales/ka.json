@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "შეცდომა: {error} (გამართვის ჩანაწერის შექმნაც ვერ მოხერხდა)",
     "notice.transcript.noTimestamps": "გაფრთხილება: ტრანსკრიპტში დროის ნიშნულები ვერ მოიძებნა. დამუშავებისთვის ისინი აუცილებელია.",
     "notice.templater.required": "შეცდომა: საჭიროა მოდული Templater, მაგრამ ის დაყენებული ან ჩართული არ არის",
+    "notice.template.notFound": "შაბლონის ფაილი ვერ მოიძებნა: {path}. შეამოწმეთ ფაილის სახელიც და საქაღალდეც TubeSage-ის პარამეტრში „Templater მოდულის შაბლონის ფაილი“.",
     "notice.note.created": "ჩანაწერი შეიქმნა: {name}",
     "notice.note.createFailed": "შეცდომა ჩანაწერის შექმნისას: {error}",
     "notice.templater.missing": "Youtube-ის ტრანსკრიპტების მოდულს სჭირდება მოდული Templater. დააყენეთ და ჩართეთ იგი.",

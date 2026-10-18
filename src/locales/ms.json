@@ -527,6 +527,10 @@
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Ralat: pemalam Templater diperlukan tetapi belum dipasang atau diaktifkan"
     },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Fail templat tidak ditemui: {path}. Semak nama fail dan juga foldernya dalam tetapan TubeSage “Fail templat pemalam Templater”."
+    },
     "notice.note.created": {
         "original": "Created note: {name}",
         "translation": "Nota telah dicipta: {name}"

@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "ข้อผิดพลาด: {error} (สร้างโน้ตดีบักไม่สำเร็จด้วย)",
     "notice.transcript.noTimestamps": "คำเตือน: ไม่พบไทม์สแตมป์ในคำบรรยาย ต้องมีไทม์สแตมป์จึงจะประมวลผลได้",
     "notice.templater.required": "ข้อผิดพลาด: ต้องใช้ปลั๊กอิน Templater แต่ยังไม่ได้ติดตั้งหรือเปิดใช้งาน",
+    "notice.template.notFound": "ไม่พบไฟล์เทมเพลต: {path} โปรดตรวจสอบทั้งชื่อไฟล์และโฟลเดอร์ในการตั้งค่า TubeSage “ไฟล์เทมเพลตของปลั๊กอิน Templater”",
     "notice.note.created": "สร้างโน้ตแล้ว: {name}",
     "notice.note.createFailed": "เกิดข้อผิดพลาดขณะสร้างโน้ต: {error}",
     "notice.templater.missing": "ปลั๊กอินถอดคำบรรยาย Youtube ต้องใช้ปลั๊กอิน Templater โปรดติดตั้งและเปิดใช้งาน",

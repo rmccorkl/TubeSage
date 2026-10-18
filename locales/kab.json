@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Tuccḍa: {error} (ur tettwarna ara daɣen tzemmilt n usezreg)",
     "notice.transcript.noTimestamps": "Ɣur-k: ulac tirectiwin n wakud deg uḍris. Tirectiwin n wakud ilaqent i usesfer.",
     "notice.templater.required": "Tuccḍa: ilaq usiɣzef Templater, maca ur yettwasbedd ara neɣ ur yermid ara",
+    "notice.template.notFound": "Ulac afaylu n tmudemt: {path}. Senqed isem n ufaylu akked ukaram deg uɣewwar n TubeSage «Afaylu n tmudemt n usiɣzef Templater».",
     "notice.note.created": "Tettwarna tzemmilt: {name}",
     "notice.note.createFailed": "Tuccḍa deg usnulfu n tzemmilt: {error}",
     "notice.templater.missing": "Asiɣzef n yiḍrisen Youtube yesra asiɣzef Templater. Sebded-it terniḍ sermed-it.",

@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Ralat: {error} (nota nyahpepijat juga gagal dicipta)",
     "notice.transcript.noTimestamps": "Amaran: tiada cap masa dalam transkrip. Cap masa diperlukan untuk pemprosesan.",
     "notice.templater.required": "Ralat: pemalam Templater diperlukan tetapi belum dipasang atau diaktifkan",
+    "notice.template.notFound": "Fail templat tidak ditemui: {path}. Semak nama fail dan juga foldernya dalam tetapan TubeSage “Fail templat pemalam Templater”.",
     "notice.note.created": "Nota telah dicipta: {name}",
     "notice.note.createFailed": "Ralat semasa mencipta nota: {error}",
     "notice.templater.missing": "Pemalam transkrip Youtube memerlukan pemalam Templater. Sila pasang dan aktifkannya.",

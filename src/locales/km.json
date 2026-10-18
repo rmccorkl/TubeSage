@@ -527,6 +527,10 @@
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "កំហុស៖ ត្រូវការកម្មវិធីជំនួយ Templater ប៉ុន្តែមិនទាន់ដំឡើង ឬបើកដំណើរការ"
     },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "រកមិនឃើញឯកសារពុម្ព៖ {path}។ សូមពិនិត្យទាំងឈ្មោះឯកសារ និងថតឯកសារ ក្នុងការកំណត់ TubeSage «ឯកសារពុម្ពរបស់កម្មវិធីជំនួយ Templater»។"
+    },
     "notice.note.created": {
         "original": "Created note: {name}",
         "translation": "បានបង្កើតកំណត់ត្រា៖ {name}"

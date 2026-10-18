@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Fout: {error} (de debugnotitie kon ook niet worden gemaakt)",
     "notice.transcript.noTimestamps": "Waarschuwing: geen tijdstempels gevonden in de transcriptie. Tijdstempels zijn nodig voor de verwerking.",
     "notice.templater.required": "Fout: de Templater-plug-in is vereist maar niet geïnstalleerd of ingeschakeld",
+    "notice.template.notFound": "Sjabloonbestand niet gevonden: {path}. Controleer zowel de bestandsnaam als de map in de TubeSage-instelling ‘Sjabloonbestand van de Templater-plug-in’.",
     "notice.note.created": "Notitie gemaakt: {name}",
     "notice.note.createFailed": "Fout bij het maken van de notitie: {error}",
     "notice.templater.missing": "De Youtube-transcriptieplug-in heeft de Templater-plug-in nodig. Installeer en schakel die in.",

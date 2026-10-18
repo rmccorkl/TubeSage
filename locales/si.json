@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "දෝෂය: {error} (දෝෂහරණ සටහනද සෑදිය නොහැකි විය)",
     "notice.transcript.noTimestamps": "අවවාදයයි: පිටපතේ කාල මුද්‍රා හමු නොවීය. සැකසීමට කාල මුද්‍රා අවශ්‍යයි.",
     "notice.templater.required": "දෝෂය: Templater ප්ලගිනය අවශ්‍යයි, නමුත් එය ස්ථාපනය හෝ සක්‍රිය කර නැත",
+    "notice.template.notFound": "අච්චු ගොනුව හමු නොවීය: {path}. TubeSage සැකසුම “Templater ප්ලගිනයේ අච්චු ගොනුව” තුළ ගොනු නාමය සහ ෆෝල්ඩරය යන දෙකම පරීක්ෂා කරන්න.",
     "notice.note.created": "සටහන සාදන ලදී: {name}",
     "notice.note.createFailed": "සටහන සෑදීමේ දෝෂය: {error}",
     "notice.templater.missing": "Youtube පිටපත් ප්ලගිනයට Templater ප්ලගිනය අවශ්‍යයි. එය ස්ථාපනය කර සක්‍රිය කරන්න.",

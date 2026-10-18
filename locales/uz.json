@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Xato: {error} (nosozlik yozuvi ham yaratilmadi)",
     "notice.transcript.noTimestamps": "Ogohlantirish: transkriptda vaqt belgilari topilmadi. Qayta ishlash uchun ular zarur.",
     "notice.templater.required": "Xato: Templater plagini kerak, ammo u oʻrnatilmagan yoki yoqilmagan",
+    "notice.template.notFound": "Shablon fayli topilmadi: {path}. TubeSage sozlamalaridagi “Templater plagini shablon fayli” bandida fayl nomini ham, jildni ham tekshiring.",
     "notice.note.created": "Yozuv yaratildi: {name}",
     "notice.note.createFailed": "Yozuv yaratishda xato: {error}",
     "notice.templater.missing": "Youtube transkript plagini Templater plaginini talab qiladi. Uni oʻrnating va yoqing.",

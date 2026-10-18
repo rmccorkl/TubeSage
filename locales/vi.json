@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Lỗi: {error} (cũng không tạo được ghi chú gỡ lỗi)",
     "notice.transcript.noTimestamps": "Cảnh báo: không tìm thấy dấu thời gian trong bản chép lời. Cần có dấu thời gian để xử lý.",
     "notice.templater.required": "Lỗi: cần plugin Templater nhưng chưa cài đặt hoặc chưa bật",
+    "notice.template.notFound": "Không tìm thấy tệp mẫu: {path}. Hãy kiểm tra cả tên tệp lẫn thư mục trong cài đặt TubeSage “Tệp mẫu của plugin Templater”.",
     "notice.note.created": "Đã tạo ghi chú: {name}",
     "notice.note.createFailed": "Lỗi khi tạo ghi chú: {error}",
     "notice.templater.missing": "Plugin bản chép lời Youtube cần plugin Templater. Hãy cài đặt và bật nó.",

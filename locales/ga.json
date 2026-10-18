@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Earráid: {error} (níorbh fhéidir an nóta dífhabhtaithe a chruthú ach oiread)",
     "notice.transcript.noTimestamps": "Rabhadh: níor aimsíodh aon stampa ama sa tras-scríbhinn. Tá stampaí ama riachtanach don phróiseáil.",
     "notice.templater.required": "Earráid: tá an breiseán Templater riachtanach ach níl sé suiteáilte ná cumasaithe",
+    "notice.template.notFound": "Níor aimsíodh an comhad teimpléid: {path}. Seiceáil ainm an chomhaid agus an fillteán araon sa socrú TubeSage “Comhad teimpléid an bhreiseáin Templater”.",
     "notice.note.created": "Cruthaíodh nóta: {name}",
     "notice.note.createFailed": "Earráid agus an nóta á chruthú: {error}",
     "notice.templater.missing": "Teastaíonn an breiseán Templater ón mbreiseán tras-scríbhinní Youtube. Suiteáil agus cumasaigh é.",

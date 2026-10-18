@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Hata: {error} (hata ayıklama notu da oluşturulamadı)",
     "notice.transcript.noTimestamps": "Uyarı: transkriptte zaman damgası bulunamadı. İşleme için zaman damgaları gerekir.",
     "notice.templater.required": "Hata: Templater eklentisi gerekli ama kurulu ya da etkin değil",
+    "notice.template.notFound": "Şablon dosyası bulunamadı: {path}. TubeSage'in “Templater eklentisi şablon dosyası” ayarında hem dosya adını hem de klasörü kontrol edin.",
     "notice.note.created": "Not oluşturuldu: {name}",
     "notice.note.createFailed": "Not oluşturulurken hata: {error}",
     "notice.templater.missing": "Youtube transkript eklentisi Templater eklentisini gerektirir. Lütfen kurun ve etkinleştirin.",

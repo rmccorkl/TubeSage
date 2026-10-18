@@ -527,6 +527,10 @@
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Hata: Templater eklentisi gerekli ama kurulu ya da etkin değil"
     },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Şablon dosyası bulunamadı: {path}. TubeSage'in “Templater eklentisi şablon dosyası” ayarında hem dosya adını hem de klasörü kontrol edin."
+    },
     "notice.note.created": {
         "original": "Created note: {name}",
         "translation": "Not oluşturuldu: {name}"

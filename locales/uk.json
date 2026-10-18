@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Помилка: {error} (налагоджувальну нотатку теж не вдалося створити)",
     "notice.transcript.noTimestamps": "Попередження: у транскрипті не знайдено позначок часу. Позначки часу потрібні для обробки.",
     "notice.templater.required": "Помилка: потрібен плагін Templater, але його не встановлено або не ввімкнено",
+    "notice.template.notFound": "Файл шаблону не знайдено: {path}. Перевірте і назву файлу, і теку в налаштуванні TubeSage «Файл шаблону плагіна Templater».",
     "notice.note.created": "Нотатку створено: {name}",
     "notice.note.createFailed": "Помилка під час створення нотатки: {error}",
     "notice.templater.missing": "Плагіну транскриптів Youtube потрібен плагін Templater. Установіть і ввімкніть його.",

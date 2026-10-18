@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Fehler: {error} (Die Debug-Notiz konnte ebenfalls nicht erstellt werden)",
     "notice.transcript.noTimestamps": "Warnung: Im Transkript wurden keine Zeitstempel gefunden. Zeitstempel sind für die Verarbeitung erforderlich.",
     "notice.templater.required": "Fehler: Das Templater-Plugin ist erforderlich, aber nicht installiert oder aktiviert",
+    "notice.template.notFound": "Vorlagendatei nicht gefunden: {path}. Prüfe sowohl den Dateinamen als auch den Ordner in der TubeSage-Einstellung „Vorlagendatei des Templater-Plugins“.",
     "notice.note.created": "Notiz erstellt: {name}",
     "notice.note.createFailed": "Fehler beim Erstellen der Notiz: {error}",
     "notice.templater.missing": "Das Youtube-Transkript-Plugin benötigt das Templater-Plugin. Bitte installiere und aktiviere es.",

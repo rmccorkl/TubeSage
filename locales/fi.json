@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Virhe: {error} (myöskään vianmäärityksen muistiinpanoa ei voitu luoda)",
     "notice.transcript.noTimestamps": "Varoitus: litteroinnista ei löytynyt aikaleimoja. Aikaleimat ovat käsittelyn edellytys.",
     "notice.templater.required": "Virhe: Templater-laajennus vaaditaan, mutta sitä ei ole asennettu tai otettu käyttöön",
+    "notice.template.notFound": "Mallitiedostoa ei löytynyt: {path}. Tarkista sekä tiedostonimi että kansio TubeSagen asetuksessa ”Templater-laajennuksen mallitiedosto”.",
     "notice.note.created": "Muistiinpano luotu: {name}",
     "notice.note.createFailed": "Virhe muistiinpanoa luotaessa: {error}",
     "notice.templater.missing": "Youtube-litterointilaajennus tarvitsee Templater-laajennuksen. Asenna ja ota se käyttöön.",

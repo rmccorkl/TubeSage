@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Ошибка: {error} (отладочную заметку тоже не удалось создать)",
     "notice.transcript.noTimestamps": "Предупреждение: в транскрипте не найдены метки времени. Метки времени нужны для обработки.",
     "notice.templater.required": "Ошибка: требуется плагин Templater, но он не установлен или не включён",
+    "notice.template.notFound": "Файл шаблона не найден: {path}. Проверьте и имя файла, и папку в настройке TubeSage «Файл шаблона плагина Templater».",
     "notice.note.created": "Заметка создана: {name}",
     "notice.note.createFailed": "Ошибка при создании заметки: {error}",
     "notice.templater.missing": "Плагину транскриптов Youtube нужен плагин Templater. Установите и включите его.",

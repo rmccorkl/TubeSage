@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Kļūda: {error} (arī atkļūdošanas piezīmi neizdevās izveidot)",
     "notice.transcript.noTimestamps": "Brīdinājums: transkriptā nav atrastas laika atzīmes. Laika atzīmes ir nepieciešamas apstrādei.",
     "notice.templater.required": "Kļūda: nepieciešams spraudnis Templater, taču tas nav instalēts vai ieslēgts",
+    "notice.template.notFound": "Veidnes fails nav atrasts: {path}. Pārbaudiet gan faila nosaukumu, gan mapi TubeSage iestatījumā “Templater spraudņa veidnes fails”.",
     "notice.note.created": "Piezīme izveidota: {name}",
     "notice.note.createFailed": "Kļūda, veidojot piezīmi: {error}",
     "notice.templater.missing": "Youtube transkriptu spraudnim nepieciešams spraudnis Templater. Instalējiet un ieslēdziet to.",

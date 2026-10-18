@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "Błąd: {error} (nie udało się też utworzyć notatki diagnostycznej)",
     "notice.transcript.noTimestamps": "Ostrzeżenie: w transkrypcji nie znaleziono znaczników czasu. Znaczniki czasu są wymagane do przetwarzania.",
     "notice.templater.required": "Błąd: wtyczka Templater jest wymagana, ale nie jest zainstalowana ani włączona",
+    "notice.template.notFound": "Nie znaleziono pliku szablonu: {path}. Sprawdź zarówno nazwę pliku, jak i folder w ustawieniu TubeSage „Plik szablonu wtyczki Templater”.",
     "notice.note.created": "Utworzono notatkę: {name}",
     "notice.note.createFailed": "Błąd podczas tworzenia notatki: {error}",
     "notice.templater.missing": "Wtyczka transkrypcji Youtube wymaga wtyczki Templater. Zainstaluj ją i włącz.",

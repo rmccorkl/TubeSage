@@ -131,6 +131,7 @@
     "notice.debugNote.failed": "错误：{error}（调试笔记也未能创建）",
     "notice.transcript.noTimestamps": "警告：字幕中未找到时间戳。处理需要时间戳。",
     "notice.templater.required": "错误：需要 Templater 插件，但它未安装或未启用",
+    "notice.template.notFound": "未找到模板文件：{path}。请在 TubeSage 设置“Templater 插件模板文件”中同时检查文件名和文件夹。",
     "notice.note.created": "已创建笔记：{name}",
     "notice.note.createFailed": "创建笔记时出错：{error}",
     "notice.templater.missing": "Youtube 字幕插件需要 Templater 插件。请安装并启用它。",
