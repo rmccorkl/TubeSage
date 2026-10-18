@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Dostawca używany do streszczeń. OpenRouter jest zalecany ze względu na niezawodność; tańsze plany Gemini bywają ograniczane."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Serwer zgodny z OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Klucz API {provider}"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Adres URL serwera, przechowywany w danych wtyczki."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "Bazowy adres URL {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Pozostaw puste, aby użyć domyślnego adresu widocznego w polu. Żądania, łącznie z kluczem API, trafiają pod wpisany adres."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Własny bazowy adres URL {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Wył.: żądania trafiają pod własny adres {provider}. Wł.: trafiają pod bazowy adres URL poniżej, łącznie z listą modeli."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "Adres URL serwera zgodnego z OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Bazowy adres URL, zwykle zakończony na /v1. Przechowywany w danych wtyczki. Klucz API poniżej jest opcjonalny."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Model {provider}"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Wybierz gotowy model albo wpisz poniżej własną nazwę modelu."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Wpisz nazwę modelu dokładnie tak, jak podaje ją serwer."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Wtyczka transkrypcji Youtube: brak skonfigurowanego klucza API dla {provider}. Dodaj swój klucz API w ustawieniach wtyczki."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "Adres URL serwera zgodnego z OpenAI musi być pełnym adresem zaczynającym się od http:// lub https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Nie ustawiono nazwy modelu dla serwera zgodnego z OpenAI. Dodaj ją w ustawieniach wtyczki."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Własny bazowy adres URL musi być pełnym adresem zaczynającym się od http:// lub https://."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "Błąd: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Błąd: wtyczka Templater jest wymagana, ale nie jest zainstalowana ani włączona"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Nie znaleziono pliku szablonu: {path}. Sprawdź zarówno nazwę pliku, jak i folder w ustawieniu TubeSage „Plik szablonu wtyczki Templater”."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

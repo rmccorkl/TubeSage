@@ -43,9 +43,12 @@ import { ProcessingSpinner } from './src/utils/processing-spinner';
 import { CollectionRunner } from './src/runtime/collection-runner';
 import type { CollectionVideo } from './src/jobs/collection-record';
 import { writeIfUnchanged } from './src/runtime/guarded-write';
+import { templateNotFoundError } from './src/runtime/template-missing';
 import { createRunnerDeps, generateOpaqueId } from './src/runtime/job-adapters';
 import type { RenderedNote, VaultLike } from './src/runtime/job-adapters';
-import { SettingsWriter, settingsForPersist } from './src/runtime/settings-persist';
+import { SECRET_IDS, SECRET_KEY_PROVIDERS, SettingsWriter, settingsForPersist } from './src/runtime/settings-persist';
+import { providerSetupProblem } from './src/llm/openai-compatible';
+import { baseUrlOverrides, modelListUrl } from './src/llm/base-url';
 import { DEFAULT_SETTINGS } from './src/settings/settings-defaults';
 import { buildSettingDefinitions, readSettingValue, writeSettingValue } from './src/settings/setting-definitions';
 import type { FetchedModelInfo, SettingsHost } from './src/settings/setting-definitions';
@@ -209,20 +212,6 @@ interface ChannelIdResponse {
         id?: string;
     }>;
 }
-
-// Cloud LLM providers whose API keys are secrets stored in Obsidian's
-// secret storage. 'ollama' is intentionally excluded — its apiKeys entry
-// is a server URL, not a secret, and stays in data.json.
-const CLOUD_PROVIDERS = ['openai', 'anthropic', 'google', 'openrouter'] as const;
-
-// Secret-storage IDs, one per cloud provider. IDs must be lowercase
-// alphanumeric with optional dashes (required by SecretStorage.setSecret).
-const SECRET_IDS: Record<string, string> = {
-    openai: 'tubesage-openai-key',
-    anthropic: 'tubesage-anthropic-key',
-    google: 'tubesage-google-key',
-    openrouter: 'tubesage-openrouter-key',
-};
 
 // Define a simple interface for the model object from OpenAI API
 interface OpenAIModel {
@@ -495,15 +484,16 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 return;
             }
             
-            // Check if API key is set for the selected LLM provider
-            const selectedLlm = this.settings.selectedLLM;
-            if (!this.settings.apiKeys[selectedLlm] || this.settings.apiKeys[selectedLlm].trim() === '') {
+            // Check the selected LLM provider is set up: an API key, or for
+            // the OpenAI-compatible server an address and a model (#25)
+            const setupProblem = providerSetupProblem(this.settings);
+            if (setupProblem) {
                 // Show error notice
-                showNotice(t('notice.apiKey.missing', { provider: selectedLlm }), 7000);
+                showNotice(setupProblem, 7000);
                 return;
             }
 
-            // If license is accepted and API key is set, proceed with the usual workflow
+            // If license is accepted and the provider is set up, proceed with the usual workflow
             new YouTubeTranscriptModal(this.app, this).open();
         });
 
@@ -519,15 +509,16 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                     return;
                 }
 
-                // Check if API key is set for the selected LLM provider
-                const selectedLlm = this.settings.selectedLLM;
-                if (!this.settings.apiKeys[selectedLlm] || this.settings.apiKeys[selectedLlm].trim() === '') {
+                // Check the selected LLM provider is set up: an API key, or for
+                // the OpenAI-compatible server an address and a model (#25)
+                const setupProblem = providerSetupProblem(this.settings);
+                if (setupProblem) {
                     // Show error notice
-                    showNotice(t('notice.apiKey.missing', { provider: selectedLlm }), 7000);
+                    showNotice(setupProblem, 7000);
                     return;
                 }
-                
-                // If license is accepted and API key is set, proceed with the usual workflow
+
+                // If license is accepted and the provider is set up, proceed with the usual workflow
                 new YouTubeTranscriptModal(this.app, this).open();
             }
         });
@@ -586,7 +577,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             maxTokens: this.getEffectiveMaxTokens(), // Use dynamic calculation for all models
             systemPrompt: this.settings.systemPrompt,
             userPrompt: this.settings.userPrompt
-        }, this.settings.apiKeys);
+        }, this.settings.apiKeys, baseUrlOverrides(this.settings));
     }
 
     private getModelForProvider(provider: string): string {
@@ -616,6 +607,10 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             case 'openrouter':
                 logger.debug(`[getModelForProvider] Using OpenRouter fallback: 'openai/gpt-4o'`);
                 return 'openai/gpt-4o';
+            case 'openai-compatible':
+                // No fallback model: only the user knows what their server
+                // serves, and providerSetupProblem refuses to start without one.
+                return '';
             default:
                 throw new Error(`Unsupported LLM provider: ${provider}`);
         }
@@ -697,7 +692,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         const dataApiKeys: Record<string, string> =
             isRecord(loadedSettings.apiKeys) ? loadedSettings.apiKeys : {};
         let hadCloudKeysInData = false;
-        for (const provider of CLOUD_PROVIDERS) {
+        for (const provider of SECRET_KEY_PROVIDERS) {
             const fromData = dataApiKeys[provider];
             if (typeof fromData === 'string' && fromData.trim() !== '') {
                 hadCloudKeysInData = true;
@@ -706,7 +701,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 }
             }
         }
-        for (const provider of CLOUD_PROVIDERS) {
+        for (const provider of SECRET_KEY_PROVIDERS) {
             this.settings.apiKeys[provider] =
                 this.app.secretStorage.getSecret(SECRET_IDS[provider]) ?? '';
         }
@@ -1225,7 +1220,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 maxTokens: promptConfig.maxTokens,
                 systemPrompt: promptConfig.systemPrompt,
                 userPrompt: promptConfig.userPrompt
-            }, this.settings.apiKeys);
+            }, this.settings.apiKeys, baseUrlOverrides(this.settings));
             llmLogger.debug(`[DEBUG] TranscriptSummarizer created successfully`);
             
             llmLogger.debug(`[DEBUG] About to call summarize with provider: '${selectedProvider}'`);
@@ -1456,7 +1451,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // Get template file and verify it exists
         const templateFile = this.app.vault.getAbstractFileByPath(normalizedTemplatePath);
         if (!(templateFile instanceof TFile)) {
-            throw new Error(`Template file not found: ${this.settings.templaterTemplateFile}`);
+            // Permanent and localised, naming the path and the setting (#27).
+            throw templateNotFoundError(normalizedTemplatePath);
         }
         
         // 1. Initialize Templater if needed (force a one-time run)
@@ -1613,11 +1609,11 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             }, 3000); // Delay to ensure it's seen after initial plugin load
         }
 
-        // Check for LLM API key
-        const selectedLlm = this.settings.selectedLLM;
-        if (!this.settings.apiKeys[selectedLlm] || this.settings.apiKeys[selectedLlm].trim() === '') {
+        // Check the LLM provider is set up (an API key, or the OpenAI-compatible server's address and model)
+        const setupProblem = providerSetupProblem(this.settings);
+        if (setupProblem) {
             window.setTimeout(() => {
-                this.showNotice(t('notice.apiKey.missing', { provider: selectedLlm }), 5000);
+                this.showNotice(setupProblem, 5000);
             }, 4500);
         }
     }
@@ -2038,7 +2034,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 maxTokens: maxTokens,
                 systemPrompt: timestampConfig.systemPrompt,
                 userPrompt: timestampConfig.userPrompt
-            }, this.settings.apiKeys);
+            }, this.settings.apiKeys, baseUrlOverrides(this.settings));
             
             // Add debug logging
             if (this.settings.debugLogging) {
@@ -2186,7 +2182,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                         maxTokens: reducedTokens,
                         systemPrompt: timestampConfig.systemPrompt,
                         userPrompt: timestampConfig.userPrompt
-                    }, this.settings.apiKeys);
+                    }, this.settings.apiKeys, baseUrlOverrides(this.settings));
                     
                     try {
                         enhancedContent = await reducedTokensSummarizer.summarize(
@@ -2351,7 +2347,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 maxTokens: this.getMaxTokensForTimestampPass(),
                 systemPrompt: "You are a highly accurate translator who preserves all formatting, links, and structure when translating content.",
                 userPrompt: "Translate the following content while preserving all Markdown formatting, links, and structure:"
-            }, this.settings.apiKeys);
+            }, this.settings.apiKeys, baseUrlOverrides(this.settings));
             
             // Create the translation prompt
             const translationPrompt = `
@@ -2432,7 +2428,7 @@ ${contentToTranslate}
             maxTokens: this.getMaxTokensForTimestampPass(),
             systemPrompt: "You are a highly accurate translator who preserves all formatting, links, and structure when translating content.",
             userPrompt: "Translate the following content while preserving all Markdown formatting, links, and structure:"
-        }, this.settings.apiKeys);
+        }, this.settings.apiKeys, baseUrlOverrides(this.settings));
 
         const translationPrompt = `
 TRANSLATION TASK: Translate the following content into ${language.toUpperCase()}-${country}.
@@ -2618,7 +2614,7 @@ ${contentWithoutFrontmatter}
                         maxTokens: maxTokens,
                         systemPrompt: timestampConfig.systemPrompt,
                         userPrompt: timestampConfig.userPrompt // Use the base prompt, not the complete chunk prompt
-                    }, this.settings.apiKeys);
+                    }, this.settings.apiKeys, baseUrlOverrides(this.settings));
                     
                     // Process the chunk
                     const processedChunk = await chunkSummarizer.summarize(
@@ -2895,8 +2891,10 @@ ${contentWithoutFrontmatter}
             return [];
         }
 
-        const url = "https://api.openai.com/v1/models";
         try {
+            // The same base URL the chat requests use (#29); inside the try,
+            // because a malformed custom URL throws the settings-tab message.
+            const url = modelListUrl('openai', this.settings);
             this.showNotice(t('notice.models.fetching', { provider: 'OpenAI' }), 3000);
             const response = await obsidianFetch(url, {
                 method: 'GET',
@@ -2955,8 +2953,9 @@ ${contentWithoutFrontmatter}
             return [];
         }
 
-        const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
         try {
+            // The same base URL the chat requests use (#29)
+            const url = `${modelListUrl('google', this.settings)}?key=${apiKey}`;
             this.showNotice(t('notice.models.fetching', { provider: 'Google' }), 3000);
             const response = await obsidianFetch(url, { method: 'GET' });
 
@@ -3036,8 +3035,9 @@ ${contentWithoutFrontmatter}
             return [];
         }
 
-        const url = "https://api.anthropic.com/v1/models";
         try {
+            // The same base URL the chat requests use (#29)
+            const url = modelListUrl('anthropic', this.settings);
             this.showNotice(t('notice.models.fetching', { provider: 'Anthropic' }), 3000);
             const response = await obsidianFetch(url, {
                 method: 'GET',
@@ -3115,8 +3115,9 @@ ${contentWithoutFrontmatter}
     }
 
     async fetchOpenRouterModels(): Promise<FetchedModelInfo[]> {
-        const url = 'https://openrouter.ai/api/v1/models';
         try {
+            // The same base URL the chat requests use (#29)
+            const url = modelListUrl('openrouter', this.settings);
             this.showNotice(t('notice.models.fetching', { provider: 'OpenRouter' }), 3000);
             const response = await obsidianFetch(url, { method: 'GET' });
 
@@ -3870,7 +3871,7 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
             showNotice: (message, timeout) => { plugin.showNotice(message, timeout); },
             getEffectiveMaxTokens: () => plugin.getEffectiveMaxTokens(),
             setSecret: (provider, value) => {
-                if (CLOUD_PROVIDERS.includes(provider as typeof CLOUD_PROVIDERS[number])) {
+                if (SECRET_KEY_PROVIDERS.includes(provider as typeof SECRET_KEY_PROVIDERS[number])) {
                     plugin.app.secretStorage.setSecret(SECRET_IDS[provider], value);
                 }
             },

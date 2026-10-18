@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "ผู้ให้บริการที่ใช้สรุปเนื้อหา แนะนำ OpenRouter เพราะเสถียรกว่า ส่วนแพ็กเกจ Gemini ราคาถูกอาจถูกจำกัดอัตรา"
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "เซิร์ฟเวอร์ที่เข้ากันได้กับ OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "คีย์ API ของ {provider}"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL ของเซิร์ฟเวอร์ เก็บไว้ในข้อมูลปลั๊กอิน"
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "URL หลักของ {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "เว้นว่างไว้เพื่อใช้ที่อยู่เริ่มต้นที่แสดงในช่อง คำขอรวมถึงคีย์ API ของคุณจะถูกส่งไปยังที่อยู่ที่คุณป้อน"
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "URL หลักที่กำหนดเองของ {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "ปิด: คำขอจะส่งไปยังที่อยู่ของ {provider} เอง เปิด: คำขอรวมถึงรายการโมเดลจะส่งไปยัง URL หลักด้านล่าง"
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "URL ของเซิร์ฟเวอร์ที่เข้ากันได้กับ OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "URL หลัก มักลงท้ายด้วย /v1 เก็บไว้ในข้อมูลปลั๊กอิน คีย์ API ด้านล่างจะใส่หรือไม่ก็ได้"
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "โมเดลของ {provider}"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "เลือกโมเดลที่ตั้งไว้ล่วงหน้า หรือพิมพ์ชื่อโมเดลเองด้านล่าง"
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "พิมพ์ชื่อโมเดลให้ตรงกับที่เซิร์ฟเวอร์แสดงทุกตัวอักษร"
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "ปลั๊กอินถอดคำบรรยาย Youtube: ยังไม่ได้ตั้งค่าคีย์ API สำหรับ {provider} โปรดเพิ่มคีย์ API ในการตั้งค่าปลั๊กอิน"
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "URL ของเซิร์ฟเวอร์ที่เข้ากันได้กับ OpenAI ต้องเป็นที่อยู่เต็มที่ขึ้นต้นด้วย http:// หรือ https://"
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "ยังไม่ได้ตั้งชื่อโมเดลสำหรับเซิร์ฟเวอร์ที่เข้ากันได้กับ OpenAI โปรดเพิ่มในการตั้งค่าปลั๊กอิน"
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "URL หลักที่กำหนดเองต้องเป็นที่อยู่เต็มที่ขึ้นต้นด้วย http:// หรือ https://"
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "ข้อผิดพลาด: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "ข้อผิดพลาด: ต้องใช้ปลั๊กอิน Templater แต่ยังไม่ได้ติดตั้งหรือเปิดใช้งาน"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "ไม่พบไฟล์เทมเพลต: {path} โปรดตรวจสอบทั้งชื่อไฟล์และโฟลเดอร์ในการตั้งค่า TubeSage “ไฟล์เทมเพลตของปลั๊กอิน Templater”"
     },
     "notice.note.created": {
         "original": "Created note: {name}",

@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Proveïdor utilitzat per al resum. Es recomana OpenRouter per la fiabilitat; els nivells més barats de Gemini es poden limitar."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Servidor compatible amb OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Clau de l'API {provider}"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL del servidor, desat a les dades del plugin."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "URL base de {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Deixa-ho en blanc per fer servir l'adreça predeterminada que mostra el camp. Les sol·licituds, amb la teva clau d'API inclosa, van a l'adreça que escriguis."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "URL base personalitzat de {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Desactivat: les sol·licituds van a l'adreça pròpia de {provider}. Activat: van a l'URL base de sota, llista de models inclosa."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "URL del servidor compatible amb OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "URL base, que sol acabar en /v1. Es desa a les dades del plugin. La clau d'API de sota és opcional."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Model {provider}"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Selecciona un model predefinit o escriu a sota un nom de model personalitzat."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Escriu el nom del model exactament com el mostra el servidor."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Plugin de transcripció de Youtube: no hi ha cap clau d'API configurada per a {provider}. Afegeix la teva clau d'API a la configuració del plugin."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "L'URL del servidor compatible amb OpenAI ha de ser una adreça completa que comenci per http:// o https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "No hi ha cap nom de model definit per al servidor compatible amb OpenAI. Afegeix-ne un a la configuració del plugin."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "L'URL base personalitzat ha de ser una adreça completa que comenci per http:// o https://."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "Error: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Error: cal el plugin Templater, però no està instal·lat ni activat"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "No s'ha trobat el fitxer de plantilla: {path}. Comprova tant el nom del fitxer com la carpeta a l'opció de TubeSage «Fitxer de plantilla del plugin Templater»."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

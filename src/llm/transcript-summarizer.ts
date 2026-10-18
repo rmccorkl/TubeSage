@@ -1,6 +1,7 @@
 import { getLogger } from '../utils/logger';
 import { LLMFactory } from './llm-factory';
 import { LangChainClient } from './langchain-client';
+import { isMissingApiKey } from './openai-compatible';
 
 interface LLMConfig {
     model: string;
@@ -16,9 +17,11 @@ const llmLogger = getLogger('LLM');
 export class TranscriptSummarizer {
     private config: LLMConfig;
     private apiKeys: Record<string, string>;
+    /** Each provider's base URL as the user set it, blank meaning its default (#29): baseUrlOverrides(). */
+    private baseUrls: Record<string, string>;
     private llmFactory: LLMFactory;
 
-    constructor(config: LLMConfig, apiKeys: Record<string, string>) {
+    constructor(config: LLMConfig, apiKeys: Record<string, string>, baseUrls: Record<string, string> = {}) {
         // Validate config
         if (!config) {
             llmLogger.error('TranscriptSummarizer: config is null or undefined');
@@ -35,7 +38,8 @@ export class TranscriptSummarizer {
         };
         
         this.apiKeys = apiKeys;
-        
+        this.baseUrls = baseUrls;
+
         // Validate that essential config properties are present
         if (!this.config.model) {
             llmLogger.error('TranscriptSummarizer: model is missing from config');
@@ -84,8 +88,9 @@ export class TranscriptSummarizer {
             llmLogger.info(`Temperature: ${this.config.temperature}`);
             llmLogger.info(`Max tokens: ${this.config.maxTokens}`);
             
-            // Check if the API key exists before proceeding
-            if (!this.apiKeys[provider] || this.apiKeys[provider].trim() === '') {
+            // Check if the API key exists before proceeding (never "missing"
+            // for the OpenAI-compatible server, whose key is optional: #25)
+            if (isMissingApiKey(provider, this.apiKeys)) {
                 llmLogger.error(`API key missing for provider: ${provider}`);
                 throw new Error(`API key for ${provider} is missing or empty.`);
             }
@@ -155,7 +160,8 @@ export class TranscriptSummarizer {
                 model: this.config.model,
                 apiKey: this.apiKeys[provider],
                 temperature: this.config.temperature,
-                maxTokens: this.config.maxTokens
+                maxTokens: this.config.maxTokens,
+                baseURL: this.baseUrls[provider] ?? ''
             });
             
             const promptToUse = userPrompt || this.config.userPrompt;

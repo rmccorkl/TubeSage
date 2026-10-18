@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "সারাংশের জন্য ব্যবহৃত সরবরাহকারী। নির্ভরযোগ্যতার জন্য OpenRouter সুপারিশ করা হয়; কম খরচের Gemini স্তরে গতি কমানো হতে পারে।"
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "OpenAI-সামঞ্জস্যপূর্ণ সার্ভার"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "{provider} API কী"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "সার্ভারের URL, প্লাগইন ডেটায় সংরক্ষিত।"
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider}-এর বেস URL"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "ঘরে দেখানো ডিফল্ট ঠিকানা ব্যবহার করতে ফাঁকা রাখুন। আপনার API কী-সহ অনুরোধগুলো আপনার দেওয়া ঠিকানায় যায়।"
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "{provider}-এর কাস্টম বেস URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "বন্ধ: অনুরোধ {provider}-এর নিজস্ব ঠিকানায় যায়। চালু: মডেল তালিকাসহ অনুরোধ নিচের বেস URL-এ যায়।"
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "OpenAI-সামঞ্জস্যপূর্ণ সার্ভারের URL"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "বেস URL, সাধারণত /v1 দিয়ে শেষ হয়। প্লাগইন ডেটায় সংরক্ষিত। নিচের API কী ঐচ্ছিক।"
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} মডেল"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "একটি প্রস্তুত মডেল বাছুন অথবা নিচে নিজের মডেলের নাম লিখুন।"
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "সার্ভার যেভাবে তালিকাভুক্ত করে, মডেলের নাম ঠিক সেভাবেই লিখুন।"
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Youtube প্রতিলিপি প্লাগইন: {provider}-এর জন্য কোনো API কী সেট করা নেই। প্লাগইন সেটিংসে আপনার API কী যোগ করুন।"
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "OpenAI-সামঞ্জস্যপূর্ণ সার্ভারের URL অবশ্যই http:// বা https:// দিয়ে শুরু হওয়া পূর্ণ ঠিকানা হতে হবে।"
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "OpenAI-সামঞ্জস্যপূর্ণ সার্ভারের জন্য কোনো মডেলের নাম সেট করা নেই। প্লাগইন সেটিংসে একটি যোগ করুন।"
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "কাস্টম বেস URL অবশ্যই http:// বা https:// দিয়ে শুরু হওয়া পূর্ণ ঠিকানা হতে হবে।"
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "ত্রুটি: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "ত্রুটি: Templater প্লাগইন দরকার, কিন্তু সেটি ইনস্টল বা চালু করা নেই"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "টেমপ্লেট ফাইল পাওয়া যায়নি: {path}। TubeSage-এর “Templater প্লাগইনের টেমপ্লেট ফাইল” সেটিংয়ে ফাইলের নাম ও ফোল্ডার দুটোই যাচাই করুন।"
     },
     "notice.note.created": {
         "original": "Created note: {name}",

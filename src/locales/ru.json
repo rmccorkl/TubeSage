@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Провайдер, используемый для пересказа. Для надёжности рекомендуется OpenRouter; дешёвые тарифы Gemini могут ограничиваться."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "OpenAI-совместимый сервер"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Ключ API {provider}"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL сервера, хранится в данных плагина."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "Базовый URL {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Оставьте пустым, чтобы использовать адрес по умолчанию, показанный в поле. Запросы вместе с вашим ключом API уходят на указанный адрес."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Свой базовый URL {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Выкл.: запросы уходят на собственный адрес {provider}. Вкл.: они уходят на базовый URL ниже, включая список моделей."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "URL OpenAI-совместимого сервера"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Базовый URL, обычно оканчивается на /v1. Хранится в данных плагина. Ключ API ниже необязателен."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Модель {provider}"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Выберите готовую модель или введите ниже своё название модели."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Введите название модели точно так, как его указывает сервер."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Плагин транскриптов Youtube: для {provider} не задан ключ API. Добавьте свой ключ API в настройках плагина."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "URL OpenAI-совместимого сервера должен быть полным адресом, начинающимся с http:// или https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Для OpenAI-совместимого сервера не задано название модели. Добавьте его в настройках плагина."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Пользовательский базовый URL должен быть полным адресом, начинающимся с http:// или https://."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "Ошибка: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Ошибка: требуется плагин Templater, но он не установлен или не включён"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Файл шаблона не найден: {path}. Проверьте и имя файла, и папку в настройке TubeSage «Файл шаблона плагина Templater»."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

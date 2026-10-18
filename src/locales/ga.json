@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "An soláthraí a úsáidtear le haghaidh achoimrithe. Moltar OpenRouter mar gheall ar a iontaofacht; féadfar na leibhéil Gemini is saoire a mhaolú."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Freastalaí comhoiriúnach le OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Eochair API {provider}"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL an fhreastalaí, stóráilte i sonraí an bhreiseáin."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "Bun-URL {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Fág bán é chun an seoladh réamhshocraithe atá sa réimse a úsáid. Téann iarratais, d'eochair API san áireamh, chuig an seoladh a chuireann tú isteach."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Bun-URL saincheaptha do {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "As: téann iarratais chuig seoladh {provider} féin. Ar: téann siad chuig an mbun-URL thíos, liosta na múnlaí san áireamh."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "URL an fhreastalaí atá comhoiriúnach le OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Bun-URL, a chríochnaíonn le /v1 de ghnáth. Stóráilte i sonraí an bhreiseáin. Is roghnach an eochair API thíos."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Múnla {provider}"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Roghnaigh múnla réamhshocraithe nó clóscríobh ainm múnla saincheaptha thíos."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Clóscríobh ainm an mhúnla díreach mar a liostaíonn an freastalaí é."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Breiseán tras-scríbhinní Youtube: níl eochair API cumraithe do {provider}. Cuir d'eochair API leis i socruithe an bhreiseáin."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "Ní mór gur seoladh iomlán é URL an fhreastalaí atá comhoiriúnach le OpenAI, ag tosú le http:// nó https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Níl ainm múnla socraithe don fhreastalaí atá comhoiriúnach le OpenAI. Cuir ceann leis i socruithe an bhreiseáin."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Ní mór gur seoladh iomlán é an bun-URL saincheaptha, ag tosú le http:// nó https://."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "Earráid: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Earráid: tá an breiseán Templater riachtanach ach níl sé suiteáilte ná cumasaithe"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Níor aimsíodh an comhad teimpléid: {path}. Seiceáil ainm an chomhaid agus an fillteán araon sa socrú TubeSage “Comhad teimpléid an bhreiseáin Templater”."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

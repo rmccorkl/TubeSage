@@ -3,6 +3,7 @@ import { assertRecordIsMetadataOnly } from "./job-record";
 import type { NoteJobRecord } from "./job-record";
 import { JobStore } from "./job-store";
 import { DEFAULT_DEADLINES, JobRunner, NoteChangedError, PathDriftError, PermanentJobError } from "./job-runner";
+import { templateNotFoundError } from "../runtime/template-missing";
 import type { JobEvent, JobStages, RunnerDeps, SubmitInput } from "./job-runner";
 import { JobProgressNotices } from "../runtime/job-progress-notice";
 import type { ProgressNoticeHandle } from "../runtime/job-progress-notice";
@@ -853,6 +854,20 @@ describe("JobRunner — final review C1: path drift and frozen path settings", (
     expect(h.events.filter((e) => e.type === "failed")).toEqual([
       { type: "failed", id: "job-1", error: "Target path drift: rendered elsewhere" },
     ]);
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([]);
+  });
+
+  it("a missing template file from renderNote fails the job and carries its message, instead of interrupting it (#27)", async () => {
+    // A plain Error here ended `interrupted`, and the user saw only
+    // "Processing was interrupted": no path, no reason.
+    const h = makeHarness();
+    const error = templateNotFoundError("Templates/YouTube.md");
+    h.stages.render.failWith = error;
+    await h.runner.submit(SUBMIT);
+    await flush();
+    expect(h.store.get("job-1")).toMatchObject({ status: "failed", inFlight: false });
+    expect(h.stages.create.count).toBe(0);
+    expect(h.events.filter((e) => e.type === "failed")).toEqual([{ type: "failed", id: "job-1", error: error.message }]);
     expect(h.events.filter((e) => e.type === "interrupted")).toEqual([]);
   });
 });

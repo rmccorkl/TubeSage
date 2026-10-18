@@ -8,8 +8,11 @@ vi.mock("obsidian", () => ({ requestUrl }));
 import type { ChatOpenAI } from "@langchain/openai";
 /** What the OpenAI SDK stores as its transport; named here to keep `globalThis` out of the file. */
 type FetchLike = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
-import { buildOpenAIModel, buildOpenRouterModel } from "./langchain-client";
+import { buildOpenAIModel, buildOpenAiCompatibleModel, buildOpenRouterModel, LangChainClient } from "./langchain-client";
+import { baseUrlOverrides, modelListUrl } from "./base-url";
+import { TranscriptSummarizer } from "./transcript-summarizer";
 import { DEFAULT_REQUEST_TIMEOUT_MS, setRequestBudgetMs } from "../utils/request-budget";
+import { t } from "../i18n";
 
 /**
  * The OpenAI client ChatOpenAI actually builds.
@@ -32,6 +35,13 @@ function builtClient(model: ChatOpenAI): { fetch: FetchLike; baseURL?: string; t
 }
 
 const MODEL_OPTIONS = { apiKey: "sk-test-key", model: "gpt-4o", temperature: 0.2, maxTokens: 1000 };
+
+/** A self-hosted server on the local network, over plain http as most of them are (#25). */
+const LOCAL_SERVER = "http://192.168.1.20:1234/v1";
+
+/** The custom endpoint's builder in the shape the shared loops below call. */
+const buildLocalServerModel = (options: typeof MODEL_OPTIONS) =>
+  buildOpenAiCompatibleModel({ ...options, baseURL: LOCAL_SERVER });
 
 beforeEach(() => {
   requestUrl.mockReset();
@@ -57,6 +67,7 @@ describe("the ChatOpenAI paths run on OUR transport (#19)", () => {
   for (const [name, build] of [
     ["OpenAI", buildOpenAIModel],
     ["OpenRouter", buildOpenRouterModel],
+    ["OpenAI-compatible server", buildLocalServerModel],
   ] as const) {
     it(`${name}: the built client's fetch is the shim, and a request through it reaches requestUrl`, async () => {
       const client = builtClient(build(MODEL_OPTIONS));
@@ -166,6 +177,7 @@ describe("the configured budget is the one that applies, not the SDK's ten minut
   for (const [name, build] of [
     ["OpenAI", buildOpenAIModel],
     ["OpenRouter", buildOpenRouterModel],
+    ["OpenAI-compatible server", buildLocalServerModel],
   ] as const) {
     it(`${name}: a request outlives the SDK's default and is bounded at the configured budget`, async () => {
       requestUrl.mockReturnValue(new Promise(() => undefined));
@@ -193,4 +205,173 @@ describe("the configured budget is the one that applies, not the SDK's ten minut
       expect(outcome).toMatch(/timed out|stopped waiting/i);
     });
   }
+});
+
+describe("the OpenAI-compatible server is ChatOpenAI at the user's address (#25)", () => {
+  /** A chat completion as a local server returns one; the content type and `usage` matter (see the OpenRouter header test). */
+  function answerWith(content: string): void {
+    requestUrl.mockResolvedValue({
+      status: 200,
+      headers: { "content-type": "application/json" },
+      text: JSON.stringify({
+        id: "chatcmpl-local",
+        object: "chat.completion",
+        created: 0,
+        model: "llama-3.1-8b-instruct",
+        choices: [{ index: 0, message: { role: "assistant", content }, finish_reason: "stop" }],
+        usage: { prompt_tokens: 3, completion_tokens: 2, total_tokens: 5 },
+      }),
+    });
+  }
+
+  function sentRequest(): { url: string; headers: Record<string, string> } {
+    return requestUrl.mock.calls[0][0] as { url: string; headers: Record<string, string> };
+  }
+
+  it("builds the client at the user's base URL, on the shim, without OpenRouter's attribution headers", () => {
+    const model = buildLocalServerModel(MODEL_OPTIONS);
+    expect(builtClient(model).baseURL).toBe(LOCAL_SERVER);
+    const configured = (model as unknown as {
+      clientConfig: { defaultHeaders?: Record<string, string> };
+    }).clientConfig;
+    // OpenRouter's headers are OpenRouter's to ask for: a user's own server
+    // should not be told about TubeSage's GitHub page.
+    expect(configured.defaultHeaders).toBeUndefined();
+  });
+
+  it("works with a BLANK key: the request goes out with a placeholder bearer token and the answer comes back", async () => {
+    answerWith("summary from the local server");
+
+    const response: unknown = await buildOpenAiCompatibleModel({ ...MODEL_OPTIONS, apiKey: "", baseURL: LOCAL_SERVER }).invoke(["hello"]);
+
+    expect((response as { content: unknown }).content).toBe("summary from the local server");
+    const sent = sentRequest();
+    expect(sent.url).toBe(`${LOCAL_SERVER}/chat/completions`);
+    expect(sent.headers.authorization).toBe("Bearer not-needed");
+    expect(sent.headers["http-referer"]).toBeUndefined();
+    expect(sent.headers["x-title"]).toBeUndefined();
+  });
+
+  it("works with NO key at all, as a hand-edited or pre-release data.json can leave it: no TypeError, placeholder sent", async () => {
+    answerWith("ok");
+    const options = { ...MODEL_OPTIONS, apiKey: undefined as unknown as string, baseURL: LOCAL_SERVER };
+    let model: ReturnType<typeof buildOpenAiCompatibleModel> | undefined;
+    expect(() => { model = buildOpenAiCompatibleModel(options); }).not.toThrow();
+    const response: unknown = await model?.invoke(["hello"]);
+    expect((response as { content: unknown }).content).toBe("ok");
+    expect(sentRequest().headers.authorization).toBe("Bearer not-needed");
+  });
+
+  it("treats a key of only spaces as blank, and sends a real key when there is one", async () => {
+    answerWith("ok");
+    await buildOpenAiCompatibleModel({ ...MODEL_OPTIONS, apiKey: "   ", baseURL: LOCAL_SERVER }).invoke(["hello"]);
+    expect(sentRequest().headers.authorization).toBe("Bearer not-needed");
+
+    requestUrl.mockClear();
+    await buildOpenAiCompatibleModel({ ...MODEL_OPTIONS, apiKey: "local-key", baseURL: LOCAL_SERVER }).invoke(["hello"]);
+    expect(sentRequest().headers.authorization).toBe("Bearer local-key");
+  });
+
+  it.each([
+    ["no scheme", "192.168.1.20:1234/v1"],
+    ["a scheme it cannot use", "ftp://192.168.1.20/v1"],
+    ["blank", ""],
+  ])("refuses an address with %s, with the message the settings tab shows, before any request", (_why, baseURL) => {
+    expect(() => buildOpenAiCompatibleModel({ ...MODEL_OPTIONS, baseURL })).toThrow(t("notice.openaiCompatible.invalidUrl"));
+    expect(requestUrl).not.toHaveBeenCalled();
+  });
+});
+
+describe("every provider's base URL: blank is the vendor, set is the custom host, for chat AND model list (#29)", () => {
+  const GATEWAY = "http://gateway.local:4000";
+
+  /** A reply each provider's parser accepts; the shape differs, the transport does not. */
+  function answerFor(provider: string): void {
+    const bodies: Record<string, unknown> = {
+      anthropic: { content: [{ type: "text", text: "ok" }], usage: { input_tokens: 1, output_tokens: 1 } },
+      google: { candidates: [{ content: { parts: [{ text: "ok" }] } }] },
+    };
+    requestUrl.mockResolvedValue({
+      status: 200,
+      headers: { "content-type": "application/json" },
+      text: JSON.stringify(bodies[provider] ?? {
+        id: "chatcmpl-test",
+        object: "chat.completion",
+        created: 0,
+        model: "m",
+        choices: [{ index: 0, message: { role: "assistant", content: "ok" }, finish_reason: "stop" }],
+        usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 },
+      }),
+    });
+  }
+
+  /** The URL the chat request for `provider` actually went to, through the real LangChainClient switch. */
+  async function chatUrl(provider: string, baseURL: string): Promise<string> {
+    answerFor(provider);
+    const client = new LangChainClient({ provider, model: "some-model", apiKey: "key", baseURL });
+    await expect(client.generateCompletion("system", "user")).resolves.toBe("ok");
+    return (requestUrl.mock.calls[0][0] as { url: string }).url;
+  }
+
+  it.each([
+    ["openai", "https://api.openai.com/v1/chat/completions"],
+    ["openrouter", "https://openrouter.ai/api/v1/chat/completions"],
+    ["anthropic", "https://api.anthropic.com/v1/messages"],
+    ["google", "https://generativelanguage.googleapis.com/v1beta/models/some-model:generateContent?key=key"],
+  ])("%s with a blank base URL goes exactly where it always did", async (provider, url) => {
+    expect(await chatUrl(provider, "")).toBe(url);
+  });
+
+  it.each(["openai", "openrouter", "anthropic", "google"])(
+    "%s with a custom base URL (trailing slash and all): chat and model list both go to it, with no doubled slash",
+    async (provider) => {
+      const base = `${GATEWAY}/${provider}/`;
+      const chat = await chatUrl(provider, base);
+      const list = modelListUrl(provider, { customBaseUrls: { [provider]: base }, customBaseUrlEnabled: { [provider]: true }, openaiCompatibleBaseUrl: "" });
+      for (const url of [chat, list]) {
+        expect(url.startsWith(`${GATEWAY}/${provider}/`)).toBe(true);
+        expect(url.slice("http://".length)).not.toContain("//");
+      }
+    },
+  );
+
+  it("refuses a malformed custom base URL before any request, instead of falling back to the vendor", async () => {
+    const client = new LangChainClient({ provider: "anthropic", model: "m", apiKey: "key", baseURL: "gateway.local" });
+    await expect(client.generateCompletion("system", "user")).rejects.toThrow(t("notice.baseUrl.invalid"));
+    expect(requestUrl).not.toHaveBeenCalled();
+  });
+
+  it("keeps OpenRouter's attribution headers when its base URL is overridden", () => {
+    const model = buildOpenRouterModel({ ...MODEL_OPTIONS, baseURL: `${GATEWAY}/openrouter/v1` });
+    expect(builtClient(model).baseURL).toBe(`${GATEWAY}/openrouter/v1`);
+    const configured = (model as unknown as { clientConfig: { defaultHeaders?: Record<string, string> } }).clientConfig;
+    expect(configured.defaultHeaders?.["X-Title"]).toBe("TubeSage");
+  });
+});
+
+describe("the custom-base-URL toggle decides for chat and model list alike, end to end (#28)", () => {
+  const GATEWAY_ANTHROPIC = "http://gateway.local:4000/anthropic";
+
+  it.each([
+    [false, "https://api.anthropic.com"],
+    [true, GATEWAY_ANTHROPIC],
+  ])("toggle on = %s: the summary request and the model list both go to %s", async (enabled, base) => {
+    requestUrl.mockResolvedValue({
+      status: 200,
+      headers: { "content-type": "application/json" },
+      text: JSON.stringify({ content: [{ type: "text", text: "summary" }] }),
+    });
+    // The URL is typed in both cases; only the toggle differs.
+    const settings = { customBaseUrls: { anthropic: GATEWAY_ANTHROPIC }, customBaseUrlEnabled: { anthropic: enabled }, openaiCompatibleBaseUrl: "" };
+    // As main.ts builds it: the override map from the same settings.
+    const summarizer = new TranscriptSummarizer(
+      { model: "claude-test", temperature: 0, maxTokens: 100, systemPrompt: "system", userPrompt: "user" },
+      { anthropic: "sk-ant-test" },
+      baseUrlOverrides(settings),
+    );
+
+    await expect(summarizer.summarize("a transcript", "anthropic")).resolves.toBe("summary");
+    expect((requestUrl.mock.calls[0][0] as { url: string }).url).toBe(`${base}/v1/messages`);
+    expect(modelListUrl("anthropic", settings)).toBe(`${base}/v1/models`);
+  });
 });

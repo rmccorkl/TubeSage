@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Nhà cung cấp dùng để tóm tắt. Nên chọn OpenRouter cho ổn định; các gói Gemini giá thấp có thể bị bóp tần suất."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Máy chủ tương thích OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Khoá API {provider}"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL máy chủ, lưu trong dữ liệu plugin."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "URL gốc của {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Để trống để dùng địa chỉ mặc định hiển thị trong ô. Các yêu cầu, kèm khoá API của bạn, sẽ gửi đến địa chỉ bạn nhập."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "URL gốc tuỳ chỉnh của {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Tắt: yêu cầu gửi đến địa chỉ riêng của {provider}. Bật: yêu cầu, kể cả danh sách mô hình, gửi đến URL gốc bên dưới."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "URL máy chủ tương thích OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "URL gốc, thường kết thúc bằng /v1. Lưu trong dữ liệu plugin. Khoá API bên dưới là tuỳ chọn."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Mô hình {provider}"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Chọn một mô hình có sẵn hoặc nhập tên mô hình tuỳ chỉnh bên dưới."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Nhập tên mô hình đúng như máy chủ liệt kê."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Plugin bản chép lời Youtube: chưa cấu hình khoá API cho {provider}. Hãy thêm khoá API của bạn trong cài đặt plugin."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "URL máy chủ tương thích OpenAI phải là địa chỉ đầy đủ, bắt đầu bằng http:// hoặc https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Chưa đặt tên mô hình cho máy chủ tương thích OpenAI. Hãy thêm tên trong cài đặt plugin."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "URL gốc tuỳ chỉnh phải là địa chỉ đầy đủ, bắt đầu bằng http:// hoặc https://."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "Lỗi: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Lỗi: cần plugin Templater nhưng chưa cài đặt hoặc chưa bật"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Không tìm thấy tệp mẫu: {path}. Hãy kiểm tra cả tên tệp lẫn thư mục trong cài đặt TubeSage “Tệp mẫu của plugin Templater”."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

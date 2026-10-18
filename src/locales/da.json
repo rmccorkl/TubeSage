@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Udbyder, der bruges til resuméet. OpenRouter anbefales for pålidelighedens skyld; billigere Gemini-niveauer kan blive begrænset."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "OpenAI-kompatibel server"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "{provider} API-nøgle"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Server-URL, gemt i plugin-dataene."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "Basis-URL til {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Lad feltet stå tomt for at bruge standardadressen, der vises i feltet. Forespørgsler, inklusive din API-nøgle, sendes til den adresse, du indtaster."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Brugerdefineret basis-URL til {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Fra: forespørgsler sendes til {provider}s egen adresse. Til: de sendes til basis-URL'en nedenfor, modellisten inklusive."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "URL til OpenAI-kompatibel server"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Basis-URL, slutter normalt på /v1. Gemt i plugin-dataene. API-nøglen nedenfor er valgfri."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider}-model"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Vælg en foruddefineret model, eller skriv et eget modelnavn nedenfor."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Skriv modelnavnet præcis, som serveren viser det."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Youtube-transskriptionsplugin: der er ikke konfigureret en API-nøgle til {provider}. Tilføj din API-nøgle i plugin-indstillingerne."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "URL'en til den OpenAI-kompatible server skal være en fuld adresse, der starter med http:// eller https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Der er ikke angivet et modelnavn til den OpenAI-kompatible server. Tilføj et i plugin-indstillingerne."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Den brugerdefinerede basis-URL skal være en fuld adresse, der starter med http:// eller https://."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "Fejl: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Fejl: Templater-plugin'et er påkrævet, men er ikke installeret eller aktiveret"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Skabelonfilen blev ikke fundet: {path}. Kontrollér både filnavnet og mappen i TubeSage-indstillingen »Skabelonfil til Templater-plugin'et«."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

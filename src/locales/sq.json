@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Ofruesi i përdorur për përmbledhje. OpenRouter rekomandohet për besueshmëri; nivelet më të lira të Gemini mund të kufizohen."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Server i përputhshëm me OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Çelësi API i {provider}"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL-ja e serverit, ruhet në të dhënat e shtojcës."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "URL-ja bazë e {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Lëreni bosh për të përdorur adresën e paracaktuar që shfaqet në fushë. Kërkesat, bashkë me çelësin tuaj API, shkojnë te adresa që shkruani."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "URL bazë e personalizuar për {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Joaktiv: kërkesat shkojnë te adresa e vetë {provider}. Aktiv: shkojnë te URL-ja bazë më poshtë, bashkë me listën e modeleve."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "URL-ja e serverit të përputhshëm me OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "URL-ja bazë, zakonisht mbaron me /v1. Ruhet në të dhënat e shtojcës. Çelësi API më poshtë është opsional."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Modeli i {provider}"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Zgjidhni një model të gatshëm ose shkruani më poshtë një emër modeli të personalizuar."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Shkruani emrin e modelit saktësisht ashtu siç e liston serveri."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Shtojca e transkripteve Youtube: s'ka çelës API të konfiguruar për {provider}. Shtoni çelësin tuaj API te cilësimet e shtojcës."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "URL-ja e serverit të përputhshëm me OpenAI duhet të jetë një adresë e plotë që fillon me http:// ose https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Nuk është caktuar emër modeli për serverin e përputhshëm me OpenAI. Shtoni një te cilësimet e shtojcës."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "URL-ja bazë e personalizuar duhet të jetë një adresë e plotë që fillon me http:// ose https://."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "Gabim: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Gabim: shtojca Templater është e nevojshme, por s'është instaluar ose aktivizuar"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Skedari i shabllonit nuk u gjet: {path}. Kontrolloni si emrin e skedarit, ashtu edhe dosjen te cilësimi i TubeSage «Skedari i shabllonit të shtojcës Templater»."
     },
     "notice.note.created": {
         "original": "Created note: {name}",
