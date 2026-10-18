@@ -17,10 +17,11 @@ const llmLogger = getLogger('LLM');
 export class TranscriptSummarizer {
     private config: LLMConfig;
     private apiKeys: Record<string, string>;
-    private openaiCompatibleBaseUrl: string;
+    /** Each provider's base URL as the user set it, blank meaning its default (#29): baseUrlOverrides(). */
+    private baseUrls: Record<string, string>;
     private llmFactory: LLMFactory;
 
-    constructor(config: LLMConfig, apiKeys: Record<string, string>, openaiCompatibleBaseUrl = '') {
+    constructor(config: LLMConfig, apiKeys: Record<string, string>, baseUrls: Record<string, string> = {}) {
         // Validate config
         if (!config) {
             llmLogger.error('TranscriptSummarizer: config is null or undefined');
@@ -37,7 +38,7 @@ export class TranscriptSummarizer {
         };
         
         this.apiKeys = apiKeys;
-        this.openaiCompatibleBaseUrl = openaiCompatibleBaseUrl;
+        this.baseUrls = baseUrls;
 
         // Validate that essential config properties are present
         if (!this.config.model) {
@@ -160,7 +161,7 @@ export class TranscriptSummarizer {
                 apiKey: this.apiKeys[provider],
                 temperature: this.config.temperature,
                 maxTokens: this.config.maxTokens,
-                baseURL: this.openaiCompatibleBaseUrl
+                baseURL: this.baseUrls[provider] ?? ''
             });
             
             const promptToUse = userPrompt || this.config.userPrompt;

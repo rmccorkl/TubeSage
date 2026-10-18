@@ -10,7 +10,8 @@ import { requestBudgetMs } from "../utils/request-budget";
 import type { LlmCallOutcome } from "./call-timing";
 import { obsidianFetch } from "../utils/fetch-shim";
 import { t } from "../i18n";
-import { parseBaseUrl, PLACEHOLDER_API_KEY } from "./openai-compatible";
+import { PLACEHOLDER_API_KEY } from "./openai-compatible";
+import { parseBaseUrl, resolveBaseUrl } from "./base-url";
 
 const logger = getLogger('LANGCHAIN');
 
@@ -56,6 +57,8 @@ export interface OpenAiModelOptions {
   model: string;
   temperature: number;
   maxTokens: number;
+  /** The user's base URL for this provider; blank or absent means its default (#29). */
+  baseURL?: string;
 }
 
 /**
@@ -83,8 +86,12 @@ export function buildOpenAIModel(options: OpenAiModelOptions): ChatOpenAI {
   // OpenAI: use maxCompletionTokens for o-series, fall back to maxTokens otherwise
   return new ChatOpenAI({
     // `configuration`, not the top level: see getOpenAiConfiguration, which
-    // also records who owns the request timeout now (#19).
-    ...getOpenAiConfiguration({ apiKey: options.apiKey }),
+    // also records who owns the request timeout now (#19). The baseURL is the
+    // user's override or OpenAI's own default (#29).
+    ...getOpenAiConfiguration({
+      apiKey: options.apiKey,
+      configuration: { baseURL: resolveBaseUrl('openai', options.baseURL) }
+    }),
     // The SDK gets OUR budget, not its own ten-minute default (#19 F1).
     // openai@5.12.2 implements a timeout by aborting the signal it hands to
     // fetch, and since the shim started honouring signals that abort lands —
@@ -120,7 +127,7 @@ export function buildOpenRouterModel(options: OpenAiModelOptions): ChatOpenAI {
     ...getOpenAiConfiguration({
       apiKey: options.apiKey,
       configuration: {
-        baseURL: 'https://openrouter.ai/api/v1',
+        baseURL: resolveBaseUrl('openrouter', options.baseURL),
         defaultHeaders: {
           'HTTP-Referer': 'https://github.com/rmccorkl/TubeSage',
           'X-Title': 'TubeSage'
@@ -145,7 +152,7 @@ export function buildOpenRouterModel(options: OpenAiModelOptions): ChatOpenAI {
   });
 }
 
-/** The custom endpoint's model needs one thing the other two do not: where the server is. */
+/** The custom endpoint's address is not an override: there is no default to fall back to. */
 interface OpenAiCompatibleModelOptions extends OpenAiModelOptions {
   baseURL: string;
 }
@@ -194,7 +201,11 @@ export class LangChainClient {
     apiKey: string;
     temperature?: number;
     maxTokens?: number;
-    /** The OpenAI-compatible server's address; read by that provider only. */
+    /**
+     * This provider's base URL as the user set it (#29): blank means the
+     * provider's default. Required for the OpenAI-compatible server; unused
+     * by Ollama, whose address is its apiKeys entry.
+     */
     baseURL: string;
   }) {
     this.provider = options.provider;
@@ -241,6 +252,24 @@ export class LangChainClient {
     }
   }
 
+  /**
+   * The three providers that are ChatOpenAI underneath, each from its own
+   * exported builder: the same options, including this provider's base URL
+   * (#29), which only the OpenAI-compatible server requires.
+   */
+  private buildChatOpenAiModel(): ChatOpenAI {
+    const options = {
+      apiKey: this.apiKey,
+      model: this.model,
+      temperature: this.temperature,
+      maxTokens: this.maxTokens,
+      baseURL: this.baseURL,
+    };
+    if (this.provider === 'openai') return buildOpenAIModel(options);
+    if (this.provider === 'openrouter') return buildOpenRouterModel(options);
+    return buildOpenAiCompatibleModel(options);
+  }
+
   /** The provider switch itself. Timed by generateCompletion, which is what everything calls. */
   private async runCompletion(systemPrompt: string, userPrompt: string): Promise<string> {
     try {
@@ -256,19 +285,11 @@ export class LangChainClient {
       ];
       
       switch (this.provider) {
-        case 'openai': {
-          logger.debug(`Using OpenAI with model ${this.model}`);
-          const model = buildOpenAIModel({
-            apiKey: this.apiKey,
-            model: this.model,
-            temperature: this.temperature,
-            maxTokens: this.maxTokens,
-          });
-          
-          // TODO: Revisit this type casting when LangChain's type definitions are more stable
-          // Type cast to any[] is needed because LangChain's type definitions for invoke()
-          // expect an array type that's not directly compatible with (SystemMessage | HumanMessage)[]
-          const response = await model.invoke(messages);
+        case 'openai':
+        case 'openrouter':
+        case 'openai-compatible': {
+          logger.debug(`Using ${this.provider} with model ${this.model}`);
+          const response = await this.buildChatOpenAiModel().invoke(messages);
           return String(extractContent(response));
         }
           
@@ -335,8 +356,9 @@ export class LangChainClient {
             logger.debug(`User messages (${formattedMessages.length}): ${truncateForDebug(userPromptContent)}`);
             logger.debug(`Temperature: ${this.temperature}, MaxTokens: ${this.maxTokens}`);
             
-            // Make the request directly using our fetch shim
-            const response = await obsidianFetch('https://api.anthropic.com/v1/messages', {
+            // Make the request directly using our fetch shim, at the user's
+            // base URL or Anthropic's own (#29)
+            const response = await obsidianFetch(`${resolveBaseUrl('anthropic', this.baseURL)}/v1/messages`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -385,7 +407,7 @@ export class LangChainClient {
 
           // Use GeminiClient directly with obsidianFetch — ChatGoogleGenerativeAI ignores the
           // custom fetch override so it breaks on mobile. Direct calls mirror the Anthropic pattern.
-          const geminiClient = new GeminiClient(this.apiKey);
+          const geminiClient = new GeminiClient(this.apiKey, resolveBaseUrl('google', this.baseURL));
           const systemContent = extractContent(messages[0]);
           const userContent = extractContent(messages[1]);
 
@@ -408,33 +430,6 @@ export class LangChainClient {
           });
 
           // Type cast needed for compatibility with LangChain's invoke() method
-          const response = await model.invoke(messages);
-          return String(extractContent(response));
-        }
-
-        case 'openrouter': {
-          logger.debug(`Using OpenRouter with model ${this.model}`);
-          const model = buildOpenRouterModel({
-            apiKey: this.apiKey,
-            model: this.model,
-            temperature: this.temperature,
-            maxTokens: this.maxTokens,
-          });
-
-          const response = await model.invoke(messages);
-          return String(extractContent(response));
-        }
-
-        case 'openai-compatible': {
-          logger.debug(`Using OpenAI-compatible server with model ${this.model}`);
-          const model = buildOpenAiCompatibleModel({
-            apiKey: this.apiKey,
-            model: this.model,
-            temperature: this.temperature,
-            maxTokens: this.maxTokens,
-            baseURL: this.baseURL,
-          });
-
           const response = await model.invoke(messages);
           return String(extractContent(response));
         }

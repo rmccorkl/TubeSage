@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL сервера, зберігається в даних плагіна."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "Базовий URL {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Залиште порожнім, щоб використовувати типову адресу, показану в полі. Запити разом із вашим ключем API надсилаються на вказану адресу."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL OpenAI-сумісного сервера"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Для OpenAI-сумісного сервера не задано назву моделі. Додайте її в налаштуваннях плагіна."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Власний базовий URL має бути повною адресою, що починається з http:// або https://."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

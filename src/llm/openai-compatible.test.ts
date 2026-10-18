@@ -1,40 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { isMissingApiKey, parseBaseUrl, providerSetupProblem } from "./openai-compatible";
+import { isMissingApiKey, providerSetupProblem } from "./openai-compatible";
 import type { ProviderSetup } from "./openai-compatible";
 import { t } from "../i18n";
 import { LOCALES } from "../i18n/locales";
-
-describe("parseBaseUrl — an absolute http(s) address, or nothing (#25)", () => {
-  it.each([
-    ["LM Studio on this machine", "http://localhost:1234/v1"],
-    ["a server on the local network, plain http", "http://192.168.1.20:8000/v1"],
-    ["a hosted server over https", "https://llm.example.com/v1"],
-    ["an IPv6 literal", "http://[::1]:8080/v1"],
-    ["a scheme in capitals", "HTTP://BOX:1234/v1"],
-    ["a trailing slash", "http://localhost:1234/v1/"],
-  ])("accepts %s, exactly as typed", (_what, url) => {
-    expect(parseBaseUrl(url)).toBe(url);
-  });
-
-  it("trims the surrounding whitespace a paste brings with it, and changes nothing else", () => {
-    expect(parseBaseUrl("  http://localhost:1234/v1 \n")).toBe("http://localhost:1234/v1");
-  });
-
-  it.each([
-    ["blank", ""],
-    ["only spaces", "   "],
-    ["no scheme", "localhost:1234/v1"],
-    ["a protocol-relative address", "//localhost:1234/v1"],
-    // `new URL` alone reads this as http://foo/ — the literal prefix check is what refuses it.
-    ["a scheme with no slashes", "http:foo"],
-    ["a scheme the SDK cannot use", "ftp://localhost/v1"],
-    ["a websocket scheme", "ws://localhost:1234/v1"],
-    ["a scheme and nothing else", "http://"],
-    ["a space inside the host", "http://local host:1234/v1"],
-  ])("refuses %s", (_what, url) => {
-    expect(parseBaseUrl(url)).toBeNull();
-  });
-});
 
 describe("isMissingApiKey — the key rule, with the one exception", () => {
   it("is never true for the OpenAI-compatible server, whose key is optional", () => {
@@ -56,6 +24,7 @@ describe("providerSetupProblem — what stops a note from starting", () => {
     apiKeys: { openai: "", "openai-compatible": "" },
     selectedModels: { "openai-compatible": "llama-3.1-8b-instruct" },
     openaiCompatibleBaseUrl: "http://192.168.1.20:1234/v1",
+    customBaseUrls: {},
     ...overrides,
   });
 
@@ -73,6 +42,15 @@ describe("providerSetupProblem — what stops a note from starting", () => {
     // fallback for a falsy model is 'gemini-1.5-pro' — sent to the user's server.
     expect(providerSetupProblem(setup({ selectedModels: { "openai-compatible": "  " } }))).toBe(t("notice.openaiCompatible.modelMissing"));
     expect(providerSetupProblem(setup({ selectedModels: {} }))).toBe(t("notice.openaiCompatible.modelMissing"));
+  });
+
+  it("stops any other provider whose custom base URL is set but malformed, and only then (#29)", () => {
+    const openai = { selectedLLM: "openai", apiKeys: { openai: "sk-test" } };
+    expect(providerSetupProblem(setup({ ...openai, customBaseUrls: { openai: "proxy.example.com/v1" } }))).toBe(t("notice.baseUrl.invalid"));
+    expect(providerSetupProblem(setup({ ...openai, customBaseUrls: { openai: "http://proxy.example.com/v1" } }))).toBeNull();
+    expect(providerSetupProblem(setup({ ...openai, customBaseUrls: { openai: "" } }))).toBeNull();
+    // Another provider's broken override is not this one's problem.
+    expect(providerSetupProblem(setup({ ...openai, customBaseUrls: { anthropic: "nope" } }))).toBeNull();
   });
 
   it("keeps the key rule for every other provider, with the notice it always showed", () => {

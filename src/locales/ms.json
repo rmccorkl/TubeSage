@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL pelayan, disimpan dalam data pemalam."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "URL asas {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Biarkan kosong untuk menggunakan alamat lalai yang dipaparkan dalam medan. Permintaan, termasuk kunci API anda, dihantar ke alamat yang anda masukkan."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL pelayan serasi OpenAI"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Tiada nama model ditetapkan untuk pelayan serasi OpenAI. Sila tambah satu dalam tetapan pemalam."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "URL asas tersuai mestilah alamat penuh yang bermula dengan http:// atau https://."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

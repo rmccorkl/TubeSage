@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL du serveur, stockée dans les données du plugin."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "URL de base {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Laissez vide pour utiliser l'adresse par défaut affichée dans le champ. Les requêtes, clé API comprise, sont envoyées à l'adresse saisie."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL du serveur compatible OpenAI"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Aucun nom de modèle n'est défini pour le serveur compatible OpenAI. Ajoutez-en un dans les paramètres du plugin."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "L'URL de base personnalisée doit être une adresse complète commençant par http:// ou https://."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

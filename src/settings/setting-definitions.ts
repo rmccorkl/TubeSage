@@ -26,7 +26,7 @@ import type {
 import { t, tPlural } from '../i18n';
 import { getLogger, LogLevel, setGlobalLogLevel } from '../utils/logger';
 import { getEffectiveLimits, isModelSupported } from '../utils/model-limits-registry';
-import { parseBaseUrl } from '../llm/openai-compatible';
+import { DEFAULT_BASE_URLS, isUsableBaseUrl } from '../llm/base-url';
 import type { YouTubeTranscriptSettings } from './settings-defaults';
 
 const logger = getLogger('PLUGIN');
@@ -638,6 +638,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                 }
             }),
         });
+        llmItems.push(...customBaseUrlRows(host, provider, displayName, gated));
     }
 
     // Render the model config block for the currently-selected provider only.
@@ -951,45 +952,83 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
     return items;
 }
 
-// --- OpenAI-compatible server address ----------------------------------------
+// --- provider addresses -----------------------------------------------------
 
-// The base URL of the self-hosted OpenAI-compatible server (#25). Plugin data,
-// not secret storage: an address is not a secret, which is also why the Ollama
-// URL stays in data.json. Saved on every keystroke like the key rows, but only
-// judged on blur, so an address is not reported while it is still being typed.
-// An address that fails is still saved — the field keeps what was typed — and
-// the request-time check refuses it again with the same message.
-//
-// The placeholder is an address format, which i18n/TERMS.md keeps out of the
-// matrix and which sentence case does not apply to (Ollama's is a literal in
-// the catalog for the same reason). LM Studio's default port, with the /v1
-// that the SDK expects the user to include.
-const OPENAI_COMPATIBLE_URL_PLACEHOLDER = 'http://localhost:1234/v1';
+// One address field: plugin data, not secret storage — an address is not a
+// secret, which is also why the Ollama URL stays in data.json. Saved on every
+// keystroke like the key rows, but only judged on blur, so an address is not
+// reported while it is still being typed. One that fails is still saved — the
+// field keeps what was typed — and the request-time check refuses it again
+// with the same message. Blank never gets a notice: for an override it means
+// the default, and for the OpenAI-compatible server the start-up check says
+// what is missing.
+interface AddressRow {
+    name: string;
+    desc: string;
+    /** An address format, which i18n/TERMS.md keeps out of the matrix and which sentence case does not apply to. */
+    placeholder: string;
+    value: string;
+    save: (value: string) => void;
+    invalidNotice: string;
+}
 
-function openAiCompatibleUrlRow(host: SettingsHost, gated: (render: Render) => Render): SettingDefinitionRender {
+function addressRow(host: SettingsHost, gated: (render: Render) => Render, row: AddressRow): SettingDefinitionRender {
     return {
-        name: t('settings.llm.openaiCompatible.url.name'),
-        desc: t('settings.llm.openaiCompatible.url.desc'),
+        name: row.name,
+        desc: row.desc,
         render: gated((setting) => {
             setting.addText(text => {
-                text.setPlaceholder(OPENAI_COMPATIBLE_URL_PLACEHOLDER)
-                    .setValue(host.settings.openaiCompatibleBaseUrl)
+                text.setPlaceholder(row.placeholder)
+                    .setValue(row.value)
                     .onChange((value: string) => {
                         void (async () => {
-                            host.settings.openaiCompatibleBaseUrl = value;
+                            row.save(value);
                             await host.saveSettings();
                         })();
                     });
                 text.inputEl?.addEventListener('blur', () => {
-                    const value = text.getValue();
-                    if (value.trim() !== '' && parseBaseUrl(value) === null) {
-                        host.showNotice(t('notice.openaiCompatible.invalidUrl'), 5000);
+                    if (!isUsableBaseUrl(text.getValue())) {
+                        host.showNotice(row.invalidNotice, 5000);
                     }
                 });
                 return text;
             });
         }),
     };
+}
+
+// The base URL of the self-hosted OpenAI-compatible server (#25): required,
+// with no default behind it. The placeholder is LM Studio's default port, with
+// the /v1 that the SDK expects the user to include.
+const OPENAI_COMPATIBLE_URL_PLACEHOLDER = 'http://localhost:1234/v1';
+
+function openAiCompatibleUrlRow(host: SettingsHost, gated: (render: Render) => Render): SettingDefinitionRender {
+    return addressRow(host, gated, {
+        name: t('settings.llm.openaiCompatible.url.name'),
+        desc: t('settings.llm.openaiCompatible.url.desc'),
+        placeholder: OPENAI_COMPATIBLE_URL_PLACEHOLDER,
+        value: host.settings.openaiCompatibleBaseUrl,
+        save: (value) => { host.settings.openaiCompatibleBaseUrl = value; },
+        invalidNotice: t('notice.openaiCompatible.invalidUrl'),
+    });
+}
+
+// A provider's custom base URL (#29), for the providers with a vendor default
+// to override; none for Ollama, whose address is its key row, or for the
+// OpenAI-compatible server, whose address row is above. Blank means the
+// vendor default, shown as the placeholder and never written to settings.
+function customBaseUrlRows(host: SettingsHost, provider: string, displayName: string, gated: (render: Render) => Render): SettingDefinitionRender[] {
+    if (!(provider in DEFAULT_BASE_URLS)) return [];
+    return [addressRow(host, gated, {
+        name: t('settings.llm.baseUrl.name', { provider: displayName }),
+        desc: t('settings.llm.baseUrl.desc'),
+        placeholder: DEFAULT_BASE_URLS[provider],
+        value: host.settings.customBaseUrls[provider] ?? '',
+        // A new map, never a write into the old one: settings are merged
+        // shallowly onto DEFAULT_SETTINGS, so the old map may BE the default's.
+        save: (value) => { host.settings.customBaseUrls = { ...host.settings.customBaseUrls, [provider]: value }; },
+        invalidNotice: t('notice.baseUrl.invalid'),
+    })];
 }
 
 // --- selected-provider block -------------------------------------------------

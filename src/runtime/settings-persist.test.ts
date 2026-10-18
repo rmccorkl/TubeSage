@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import { JOBS_KEY } from "../jobs/job-store";
 import { COLLECTIONS_KEY } from "../jobs/collection-record";
 import { SECRET_IDS, SECRET_KEY_PROVIDERS, SettingsWriter, settingsForPersist } from "./settings-persist";
+import { DEFAULT_SETTINGS } from "../settings/settings-defaults";
+import { DEFAULT_BASE_URLS } from "../llm/base-url";
 
 // The real composer main.ts persists through: this test binds the exact
 // function, not a re-implementation, so a regression in what reaches data.json
@@ -140,6 +142,18 @@ describe("the OpenAI-compatible server's two values go to two places (#25)", () 
     // SecretStorage.setSecret requires lowercase alphanumeric with optional dashes.
     for (const id of ids) expect(id).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+});
+
+describe("custom base URLs persist as typed, and the defaults never do (#29)", () => {
+  it("writes no vendor default into data.json: blank resolves at call time, so a changed default still reaches everyone", () => {
+    const json = JSON.stringify(settingsForPersist(structuredClone(DEFAULT_SETTINGS), OLLAMA_DEFAULT));
+    for (const url of Object.values(DEFAULT_BASE_URLS)) expect(json).not.toContain(url);
+  });
+
+  it("writes an override exactly as typed, in plugin data", () => {
+    const settings = { ...structuredClone(DEFAULT_SETTINGS), customBaseUrls: { anthropic: "http://gateway.local:4000/anthropic" } };
+    expect(settingsForPersist(settings, OLLAMA_DEFAULT).customBaseUrls).toEqual({ anthropic: "http://gateway.local:4000/anthropic" });
   });
 });
 

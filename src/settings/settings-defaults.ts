@@ -20,6 +20,14 @@ export interface YouTubeTranscriptSettings {
      * data while the optional key goes to secret storage.
      */
     openaiCompatibleBaseUrl: string;
+    /**
+     * Per-provider base URL overrides for the providers with a vendor endpoint
+     * (#29): openai, openrouter, anthropic, google. Blank or absent means the
+     * vendor default (DEFAULT_BASE_URLS in src/llm/base-url.ts), which is
+     * resolved at call time and never stored here, so a changed default still
+     * reaches everyone who has not overridden it.
+     */
+    customBaseUrls: Record<string, string>;
     temperature: number;
     maxTokens: number;
     
@@ -113,6 +121,7 @@ export const DEFAULT_SETTINGS: YouTubeTranscriptSettings = {
         'openai-compatible': ''
     },
     openaiCompatibleBaseUrl: '',
+    customBaseUrls: {},
     temperature: 0.7,
     maxTokens: 1000,
     

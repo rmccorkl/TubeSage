@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "伺服器網址，存放在外掛資料中。"
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} 基礎網址"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "留空即使用欄位中顯示的預設位址。請求（包括您的 API 金鑰）會傳送到您輸入的位址。"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI 相容伺服器網址"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "尚未替 OpenAI 相容伺服器設定模型名稱。請在外掛設定中加入。"
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "自訂基礎網址必須是以 http:// 或 https:// 開頭的完整位址。"
     },
     "notice.job.failed": {
         "original": "Error: {error}",

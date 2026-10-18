@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Sunucu URL'si, eklenti verilerinde saklanır."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} temel URL'si"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Alanda görünen varsayılan adresi kullanmak için boş bırakın. İstekler, API anahtarınız dahil, girdiğiniz adrese gider."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI uyumlu sunucu URL'si"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "OpenAI uyumlu sunucu için model adı ayarlanmamış. Eklenti ayarlarından bir tane ekleyin."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Özel temel URL, http:// veya https:// ile başlayan tam bir adres olmalıdır."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

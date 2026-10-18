@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Palvelimen URL, tallennetaan laajennuksen tietoihin."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "Perus-URL ({provider})"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Jätä tyhjäksi, niin käytetään kentässä näkyvää oletusosoitetta. Pyynnöt API-avaimineen lähetetään antamaasi osoitteeseen."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI-yhteensopivan palvelimen URL"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "OpenAI-yhteensopivalle palvelimelle ei ole asetettu mallin nimeä. Lisää se laajennuksen asetuksiin."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Mukautetun perus-URL:n on oltava kokonainen osoite, joka alkaa http:// tai https://."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

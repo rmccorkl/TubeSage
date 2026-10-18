@@ -9,6 +9,7 @@ import { buildSettingDefinitions, readSettingValue, writeSettingValue } from "./
 import type { SettingsHost } from "./setting-definitions";
 import legacy from "./__fixtures__/legacy-display-rows.json";
 import { t } from "../i18n";
+import { DEFAULT_BASE_URLS } from "../llm/base-url";
 
 // The fixture is a snapshot of every `new Setting(` row the legacy imperative
 // display() produced (main.ts @ 80baa72), in render order, taken BEFORE that
@@ -137,6 +138,11 @@ const POST_LEGACY_ROWS: string[] = [
   // are rendered for every provider, as every key row is.
   "OpenAI-compatible server URL",
   "OpenAI-compatible server api key",
+  // #29: a custom base URL for each provider that has a vendor default.
+  "OpenAI base URL",
+  "Anthropic base URL",
+  "Google base URL",
+  "OpenRouter base URL",
 ];
 
 describe("buildSettingDefinitions — coverage of the legacy display() rows", () => {
@@ -356,10 +362,10 @@ describe("the OpenAI-compatible server (#25)", () => {
   const URL_ROW = "OpenAI-compatible server URL";
   const KEY_ROW = "OpenAI-compatible server api key";
 
-  it("puts its address row directly above its key row, after every other provider's key", () => {
+  it("puts its address row directly above its key row, after every other provider's rows", () => {
     const { ordered } = walk(buildSettingDefinitions(makeHost().host));
     const at = ordered.indexOf(URL_ROW);
-    expect(ordered.slice(at - 1, at + 2)).toEqual(["OpenRouter api key", URL_ROW, KEY_ROW]);
+    expect(ordered.slice(at - 1, at + 2)).toEqual(["OpenRouter base URL", URL_ROW, KEY_ROW]);
   });
 
   it("round-trips: the address persists to plugin data, the key goes to secret storage and never to data.json", () => {
@@ -422,5 +428,47 @@ describe("the OpenAI-compatible server (#25)", () => {
     } finally {
       vi.unstubAllGlobals();
     }
+  });
+});
+
+describe("a custom base URL for every provider with a vendor default (#29)", () => {
+  it("follows each of those providers' key row, and no other", () => {
+    const { ordered } = walk(buildSettingDefinitions(makeHost().host));
+    for (const name of ["OpenAI", "Anthropic", "Google", "OpenRouter"]) {
+      expect(ordered[ordered.indexOf(`${name} api key`) + 1]).toBe(`${name} base URL`);
+    }
+    expect(ordered).not.toContain("Ollama base URL");
+    expect(ordered).not.toContain("OpenAI-compatible server base URL");
+  });
+
+  it("shows the vendor default as the placeholder, stores what is typed, and never touches the shared defaults", () => {
+    const { writes, host } = makePluginDouble();
+    // As loadSettings leaves it for anyone who never set one: `{ ...DEFAULT_SETTINGS, ...loaded }`
+    // shares the default's map rather than copying it.
+    host.settings.customBaseUrls = DEFAULT_SETTINGS.customBaseUrls;
+    const field = renderRow(leafNamed(walk(buildSettingDefinitions(host)).leaves, "Anthropic base URL")).texts[0];
+    expect(field.component.placeholder).toBe(DEFAULT_BASE_URLS.anthropic);
+    expect(field.component.value).toBe("");
+
+    field.type("http://gateway.local:4000/anthropic");
+    expect(host.settings.customBaseUrls).toEqual({ anthropic: "http://gateway.local:4000/anthropic" });
+    expect(writes[writes.length - 1].customBaseUrls).toEqual({ anthropic: "http://gateway.local:4000/anthropic" });
+    // Settings are merged shallowly onto DEFAULT_SETTINGS: a write INTO the
+    // map would have changed the default for everyone.
+    expect(DEFAULT_SETTINGS.customBaseUrls).toEqual({});
+  });
+
+  it("judges an override on blur: malformed gets the clear notice, blank or well-formed none", () => {
+    const { host, spies } = makeHost();
+    const field = renderRow(leafNamed(walk(buildSettingDefinitions(host)).leaves, "OpenAI base URL")).texts[0];
+    field.type("proxy.example.com/v1");
+    field.blur();
+    expect(spies.showNotice).toHaveBeenCalledWith(t("notice.baseUrl.invalid"), 5000);
+    spies.showNotice.mockClear();
+    field.type("https://proxy.example.com/v1");
+    field.blur();
+    field.type("");
+    field.blur();
+    expect(spies.showNotice).not.toHaveBeenCalled();
   });
 });

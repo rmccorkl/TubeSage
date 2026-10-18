@@ -77,7 +77,7 @@ The plugin uses a comprehensive settings system (`YouTubeTranscriptPluginSetting
 
 1. **LLM Provider Abstraction**: ALL LLM providers MUST use LangChain for consistent provider abstraction
    - Never bypass LangChain by calling provider APIs directly  
-   - Use `ChatOpenAI`, `ChatGoogleGenerativeAI`, `ChatOllama` classes from respective LangChain packages
+   - Use the `ChatOpenAI` and `ChatOllama` classes from their LangChain packages (not `ChatGoogleGenerativeAI`: see the Google exception below)
    - This ensures consistent interface, error handling, and maintainability across all providers
    - All LLM calls must go through `src/llm/langchain-client.ts` using LangChain abstractions
    - **NO DIRECT API CALLS TO LLM PROVIDERS - USE LANGCHAIN ONLY**
@@ -85,7 +85,11 @@ The plugin uses a comprehensive settings system (`YouTubeTranscriptPluginSetting
    **EXCEPTION - Anthropic**: Uses direct API calls with `obsidianFetch` instead of LangChain
    - Anthropic's SDK has browser environment detection that conflicts with Obsidian's execution environment
    - Direct API calls bypass this detection and ensure reliable operation in both desktop and mobile
-   - Must continue using direct HTTP calls to `https://api.anthropic.com/v1/messages` with custom headers
+   - Must continue using direct HTTP calls to `<base URL>/v1/messages` with custom headers (the base URL defaults to `https://api.anthropic.com` and is user-overridable, #29)
+
+   **EXCEPTION - Google**: `GeminiClient` (`src/llm/gemini-client.ts`) calls the Gemini REST API directly with `obsidianFetch` instead of LangChain
+   - `ChatGoogleGenerativeAI` ignores an injected fetch, so it would bypass the shim and fail on mobile; `@langchain/google-genai` is not even an installed dependency
+   - Anthropic and Google are the TWO exceptions; every other provider goes through LangChain
 
 2. **HTTP Abstraction Layer**: Use `obsidianFetch` from `src/utils/fetch-shim.ts` for cross-platform compatibility
    - This is critical for cross-platform compatibility (desktop and mobile)

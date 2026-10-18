@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL ของเซิร์ฟเวอร์ เก็บไว้ในข้อมูลปลั๊กอิน"
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "URL หลักของ {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "เว้นว่างไว้เพื่อใช้ที่อยู่เริ่มต้นที่แสดงในช่อง คำขอรวมถึงคีย์ API ของคุณจะถูกส่งไปยังที่อยู่ที่คุณป้อน"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL ของเซิร์ฟเวอร์ที่เข้ากันได้กับ OpenAI"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "ยังไม่ได้ตั้งชื่อโมเดลสำหรับเซิร์ฟเวอร์ที่เข้ากันได้กับ OpenAI โปรดเพิ่มในการตั้งค่าปลั๊กอิน"
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "URL หลักที่กำหนดเองต้องเป็นที่อยู่เต็มที่ขึ้นต้นด้วย http:// หรือ https://"
     },
     "notice.job.failed": {
         "original": "Error: {error}",

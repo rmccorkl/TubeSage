@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "כתובת URL של השרת, נשמרת בנתוני התוסף."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "כתובת URL בסיסית של {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "השאר ריק כדי להשתמש בכתובת ברירת המחדל שמוצגת בשדה. הבקשות, כולל מפתח ה-API שלך, נשלחות לכתובת שתזין."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "כתובת URL של שרת תואם OpenAI"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "לא הוגדר שם מודל עבור השרת התואם OpenAI. הוסף שם בהגדרות התוסף."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "כתובת ה-URL הבסיסית המותאמת אישית חייבת להיות כתובת מלאה שמתחילה ב-http:// או ב-https://."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

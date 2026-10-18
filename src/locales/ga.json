@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL an fhreastalaí, stóráilte i sonraí an bhreiseáin."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "Bun-URL {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Fág bán é chun an seoladh réamhshocraithe atá sa réimse a úsáid. Téann iarratais, d'eochair API san áireamh, chuig an seoladh a chuireann tú isteach."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL an fhreastalaí atá comhoiriúnach le OpenAI"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Níl ainm múnla socraithe don fhreastalaí atá comhoiriúnach le OpenAI. Cuir ceann leis i socruithe an bhreiseáin."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Ní mór gur seoladh iomlán é an bun-URL saincheaptha, ag tosú le http:// nó https://."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

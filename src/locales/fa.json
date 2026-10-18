@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "نشانی URL سرور، در داده‌های افزونه ذخیره می‌شود."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "نشانی URL پایهٔ {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "برای استفاده از نشانی پیش‌فرضی که در کادر نمایش داده می‌شود، خالی بگذارید. درخواست‌ها همراه با کلید API شما به نشانی‌ای که وارد می‌کنید فرستاده می‌شوند."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "نشانی URL سرور سازگار با OpenAI"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "هیچ نام مدلی برای سرور سازگار با OpenAI تنظیم نشده است. یکی را در تنظیمات افزونه بیفزایید."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "نشانی URL پایهٔ دلخواه باید نشانی کاملی باشد که با http:// یا https:// شروع می‌شود."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL n uqeddac, yettwaḥrez deg yisefka n usiɣzef."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "URL azadur n {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Eǧǧ-it d ilem i useqdec n tansa tamezwert i d-yettban deg wurti. Tuttriwin, akked tsarut-ik API, ad ruḥent ɣer tansa i tettaruḍ."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL n uqeddac imsaḍuf d OpenAI"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Ulac isem n tmudelt i uqeddac imsaḍuf d OpenAI. Rnu yiwen deg yiɣewwaṛen n usiɣzef."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "URL azadur udmawan ilaq ad yili d tansa taččurant i yebdan s http:// neɣ https://."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL របស់ម៉ាស៊ីនបម្រើ រក្សាទុកក្នុងទិន្នន័យកម្មវិធីជំនួយ។"
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "URL មូលដ្ឋានរបស់ {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "ទុកឱ្យទទេ ដើម្បីប្រើអាសយដ្ឋានលំនាំដើមដែលបង្ហាញក្នុងប្រអប់។ សំណើ រួមទាំងសោ API របស់អ្នក ត្រូវផ្ញើទៅអាសយដ្ឋានដែលអ្នកបញ្ចូល។"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL របស់ម៉ាស៊ីនបម្រើដែលត្រូវគ្នានឹង OpenAI"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "មិនទាន់កំណត់ឈ្មោះម៉ូដែលសម្រាប់ម៉ាស៊ីនបម្រើដែលត្រូវគ្នានឹង OpenAI ទេ។ សូមបញ្ចូលវាក្នុងការកំណត់កម្មវិធីជំនួយ។"
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "URL មូលដ្ឋានផ្ទាល់ខ្លួន ត្រូវតែជាអាសយដ្ឋានពេញលេញ ដែលចាប់ផ្ដើមដោយ http:// ឬ https://។"
     },
     "notice.job.failed": {
         "original": "Error: {error}",

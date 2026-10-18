@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "服务器 URL，保存在插件数据中。"
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} 基础 URL"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "留空则使用字段中显示的默认地址。请求（包括您的 API 密钥）会发送到您输入的地址。"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI 兼容服务器 URL"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "尚未为 OpenAI 兼容服务器设置模型名称。请在插件设置中添加。"
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "自定义基础 URL 必须是以 http:// 或 https:// 开头的完整地址。"
     },
     "notice.job.failed": {
         "original": "Error: {error}",

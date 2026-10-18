@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Διεύθυνση URL διακομιστή, αποθηκεύεται στα δεδομένα του πρόσθετου."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "Βασική διεύθυνση URL του {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Αφήστε το κενό για να χρησιμοποιηθεί η προεπιλεγμένη διεύθυνση που εμφανίζεται στο πεδίο. Τα αιτήματα, μαζί με το κλειδί API σας, πηγαίνουν στη διεύθυνση που εισάγετε."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "Διεύθυνση URL διακομιστή συμβατού με OpenAI"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Δεν έχει οριστεί όνομα μοντέλου για τον διακομιστή που είναι συμβατός με OpenAI. Προσθέστε ένα στις ρυθμίσεις του πρόσθετου."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Η προσαρμοσμένη βασική διεύθυνση URL πρέπει να είναι πλήρης και να ξεκινά με http:// ή https://."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

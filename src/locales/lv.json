@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Servera URL, glabājas spraudņa datos."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} bāzes URL"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Atstājiet tukšu, lai izmantotu laukā redzamo noklusējuma adresi. Pieprasījumi kopā ar jūsu API atslēgu tiek sūtīti uz ievadīto adresi."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "Ar OpenAI saderīgā servera URL"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Ar OpenAI saderīgajam serverim nav iestatīts modeļa nosaukums. Pievienojiet to spraudņa iestatījumos."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Pielāgotajam bāzes URL jābūt pilnai adresei, kas sākas ar http:// vai https://."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

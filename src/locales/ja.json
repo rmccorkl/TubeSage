@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "サーバーの URL。プラグインのデータに保存されます。"
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} のベース URL"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "空欄にすると、欄に表示されている既定のアドレスを使います。リクエストは API キーを含め、入力したアドレスに送られます。"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI 互換サーバーの URL"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "OpenAI 互換サーバーのモデル名が設定されていません。プラグインの設定で追加してください。"
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "カスタムのベース URL は、http:// または https:// で始まる完全なアドレスにしてください。"
     },
     "notice.job.failed": {
         "original": "Error: {error}",

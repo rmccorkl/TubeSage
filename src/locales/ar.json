@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "عنوان URL للخادم، يُخزَّن في بيانات الإضافة."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "عنوان URL الأساسي لـ {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "اتركه فارغًا لاستخدام العنوان الافتراضي الظاهر في الحقل. تُرسَل الطلبات، ومعها مفتاح API، إلى العنوان الذي تُدخله."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "عنوان URL للخادم المتوافق مع OpenAI"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "لم يُحدَّد اسم نموذج للخادم المتوافق مع OpenAI. أضف اسمًا في إعدادات الإضافة."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "يجب أن يكون عنوان URL الأساسي المخصّص عنوانًا كاملًا يبدأ بـ http:// أو https://."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

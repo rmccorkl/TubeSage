@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL адрес на сървъра, съхранява се в данните на приставката."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "Базов URL адрес на {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Оставете празно, за да се използва адресът по подразбиране, показан в полето. Заявките, заедно с вашия ключ за API, отиват на въведения адрес."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL адрес на сървъра, съвместим с OpenAI"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Не е зададено име на модел за сървъра, съвместим с OpenAI. Добавете го в настройките на приставката."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Персонализираният базов URL адрес трябва да е пълен адрес, започващ с http:// или https://."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

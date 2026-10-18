@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Adresa URL serveru, uložená v datech pluginu."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "Základní adresa URL {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Ponechte prázdné, chcete-li použít výchozí adresu zobrazenou v poli. Požadavky včetně vašeho klíče API půjdou na zadanou adresu."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "Adresa URL serveru kompatibilního s OpenAI"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Pro server kompatibilní s OpenAI není nastaven žádný název modelu. Přidejte ho v nastavení pluginu."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Vlastní základní adresa URL musí být úplná adresa začínající http:// nebo https://."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

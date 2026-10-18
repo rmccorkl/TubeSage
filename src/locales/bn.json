@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "সার্ভারের URL, প্লাগইন ডেটায় সংরক্ষিত।"
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider}-এর বেস URL"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "ঘরে দেখানো ডিফল্ট ঠিকানা ব্যবহার করতে ফাঁকা রাখুন। আপনার API কী-সহ অনুরোধগুলো আপনার দেওয়া ঠিকানায় যায়।"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI-সামঞ্জস্যপূর্ণ সার্ভারের URL"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "OpenAI-সামঞ্জস্যপূর্ণ সার্ভারের জন্য কোনো মডেলের নাম সেট করা নেই। প্লাগইন সেটিংসে একটি যোগ করুন।"
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "কাস্টম বেস URL অবশ্যই http:// বা https:// দিয়ে শুরু হওয়া পূর্ণ ঠিকানা হতে হবে।"
     },
     "notice.job.failed": {
         "original": "Error: {error}",

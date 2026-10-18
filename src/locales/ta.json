@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "சேவையக URL, செருகுநிரல் தரவில் சேமிக்கப்படுகிறது."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} அடிப்படை URL"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "புலத்தில் காட்டப்படும் இயல்புநிலை முகவரியைப் பயன்படுத்த வெறுமையாக விடவும். உங்கள் API விசை உட்பட கோரிக்கைகள் நீங்கள் உள்ளிடும் முகவரிக்குச் செல்லும்."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI-இணக்கமான சேவையக URL"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "OpenAI-இணக்கமான சேவையகத்திற்கு மாடல் பெயர் அமைக்கப்படவில்லை. செருகுநிரல் அமைப்புகளில் ஒன்றைச் சேர்க்கவும்."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "தனிப்பயன் அடிப்படை URL, http:// அல்லது https:// என்று தொடங்கும் முழு முகவரியாக இருக்க வேண்டும்."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

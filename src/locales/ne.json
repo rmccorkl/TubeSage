@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "सर्भरको URL, प्लगइन डेटामा राखिन्छ।"
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} को आधार URL"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "फिल्डमा देखाइएको पूर्वनिर्धारित ठेगाना प्रयोग गर्न खाली छोड्नुहोस्। तपाईंको API कुञ्जीसहित अनुरोधहरू तपाईंले लेखेको ठेगानामा जान्छन्।"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI-अनुकूल सर्भरको URL"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "OpenAI-अनुकूल सर्भरका लागि मोडेलको नाम सेट गरिएको छैन। प्लगइन सेटिङमा एउटा थप्नुहोस्।"
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "आफ्नो आधार URL http:// वा https:// बाट सुरु हुने पूरा ठेगाना हुनुपर्छ।"
     },
     "notice.job.failed": {
         "original": "Error: {error}",

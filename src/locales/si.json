@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "සේවාදායක URL එක, ප්ලගින දත්තවල තැන්පත් වේ."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} මූලික URL"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "ක්ෂේත්‍රයේ පෙන්වන පෙරනිමි ලිපිනය භාවිත කිරීමට හිස්ව තබන්න. ඔබේ API යතුර ඇතුළුව ඉල්ලීම් ඔබ ඇතුළු කරන ලිපිනයට යයි."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI සමඟ ගැළපෙන සේවාදායකයේ URL"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "OpenAI සමඟ ගැළපෙන සේවාදායකය සඳහා ආකෘති නමක් සකසා නැත. ප්ලගින සැකසුම්වල එකක් එක් කරන්න."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "අභිරුචි මූලික URL එක http:// හෝ https:// න් ආරම්භ වන සම්පූර්ණ ලිපිනයක් විය යුතුය."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

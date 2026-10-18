@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "परिसेवकस्य URL, संयोजकदत्तांशेषु रक्ष्यते।"
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} इत्यस्य मूलं URL"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "क्षेत्रे दर्शितं पूर्वनिर्धारितं सङ्केतं प्रयोक्तुं रिक्तं त्यजतु। भवतः API कुञ्जिकया सह अनुरोधाः भवता लिखितं सङ्केतं गच्छन्ति।"
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "OpenAI-अनुकूलस्य परिसेवकस्य URL"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "OpenAI-अनुकूलस्य परिसेवकस्य कृते निदर्शननाम न विन्यस्तम्। संयोजकविन्यासेषु एकं योजयतु।"
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "स्वनिर्मितं मूलं URL http:// अथवा https:// इत्यनेन आरभमाणः पूर्णः सङ्केतः भवेत्।"
     },
     "notice.job.failed": {
         "original": "Error: {error}",

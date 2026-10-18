@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL máy chủ, lưu trong dữ liệu plugin."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "URL gốc của {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Để trống để dùng địa chỉ mặc định hiển thị trong ô. Các yêu cầu, kèm khoá API của bạn, sẽ gửi đến địa chỉ bạn nhập."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL máy chủ tương thích OpenAI"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Chưa đặt tên mô hình cho máy chủ tương thích OpenAI. Hãy thêm tên trong cài đặt plugin."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "URL gốc tuỳ chỉnh phải là địa chỉ đầy đủ, bắt đầu bằng http:// hoặc https://."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

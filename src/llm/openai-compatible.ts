@@ -1,4 +1,6 @@
 import { t } from "../i18n";
+import { baseUrlOverrides, isUsableBaseUrl, parseBaseUrl } from "./base-url";
+import type { BaseUrlSettings } from "./base-url";
 
 // The custom OpenAI-compatible endpoint (#25): LM Studio, vLLM, llama.cpp
 // server, LocalAI — any self-hosted server that speaks the OpenAI chat API.
@@ -16,26 +18,6 @@ import { t } from "../i18n";
  */
 export const PLACEHOLDER_API_KEY = "not-needed";
 
-const HTTP_PREFIX = /^https?:\/\//i;
-
-/**
- * The address to use, trimmed, when it is an absolute http(s) URL; null when
- * it is not. The prefix is checked literally before parsing because `new URL`
- * alone is lenient: it reads `http:foo` as `http://foo/`. Plain http is
- * accepted on purpose — a server on the local network rarely has a
- * certificate. The address is otherwise left exactly as typed: the SDK
- * appends `/chat/completions` to it, so `/v1` is the user's to include.
- */
-export function parseBaseUrl(raw: string): string | null {
-  const trimmed = typeof raw === "string" ? raw.trim() : "";
-  if (!HTTP_PREFIX.test(trimmed)) return null;
-  try {
-    return new URL(trimmed).hostname === "" ? null : trimmed;
-  } catch {
-    return null;
-  }
-}
-
 /**
  * Whether the provider would be called without the key it needs. Never true
  * for the OpenAI-compatible server, whose key is optional: buildOpenAiCompatibleModel
@@ -48,25 +30,27 @@ export function isMissingApiKey(provider: string, apiKeys: Record<string, string
 }
 
 /** The settings providerSetupProblem reads; the plugin's settings interface satisfies it. */
-export interface ProviderSetup {
+export interface ProviderSetup extends BaseUrlSettings {
   selectedLLM: string;
   apiKeys: Record<string, string>;
   selectedModels: Record<string, string>;
-  openaiCompatibleBaseUrl: string;
 }
 
 /**
  * The notice that stops a note from starting with the selected provider, or
- * null when nothing does. Every other provider needs a key. This one needs an
- * address and a model instead: its key is optional, and its model is free
- * text with no default, because only the user knows what their server serves.
+ * null when nothing does. Every other provider needs a key, and a custom base
+ * URL, if it has one, that can be used (#29). The OpenAI-compatible server
+ * needs an address and a model instead: its key is optional, and its model is
+ * free text with no default, because only the user knows what their server
+ * serves.
  */
 export function providerSetupProblem(settings: ProviderSetup): string | null {
   const provider = settings.selectedLLM;
   if (provider === "openai-compatible") {
     return openAiCompatibleSetupProblem(settings.openaiCompatibleBaseUrl, settings.selectedModels[provider]);
   }
-  return isMissingApiKey(provider, settings.apiKeys) ? t("notice.apiKey.missing", { provider }) : null;
+  if (isMissingApiKey(provider, settings.apiKeys)) return t("notice.apiKey.missing", { provider });
+  return isUsableBaseUrl(baseUrlOverrides(settings)[provider]) ? null : t("notice.baseUrl.invalid");
 }
 
 function openAiCompatibleSetupProblem(baseUrl: string, model: string | undefined): string | null {

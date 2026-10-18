@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Kiszolgáló URL-je, a bővítmény adataiban tárolva."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} alap-URL"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Hagyd üresen a mezőben látható alapértelmezett cím használatához. A kérések az API-kulccsal együtt a megadott címre mennek."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "Az OpenAI-kompatibilis kiszolgáló URL-je"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Az OpenAI-kompatibilis kiszolgálóhoz nincs modellnév megadva. Add meg a bővítmény beállításaiban."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Az egyéni alap-URL-nek teljes, http:// vagy https:// kezdetű címnek kell lennie."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

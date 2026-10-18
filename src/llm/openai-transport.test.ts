@@ -8,7 +8,8 @@ vi.mock("obsidian", () => ({ requestUrl }));
 import type { ChatOpenAI } from "@langchain/openai";
 /** What the OpenAI SDK stores as its transport; named here to keep `globalThis` out of the file. */
 type FetchLike = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
-import { buildOpenAIModel, buildOpenAiCompatibleModel, buildOpenRouterModel } from "./langchain-client";
+import { buildOpenAIModel, buildOpenAiCompatibleModel, buildOpenRouterModel, LangChainClient } from "./langchain-client";
+import { modelListUrl } from "./base-url";
 import { DEFAULT_REQUEST_TIMEOUT_MS, setRequestBudgetMs } from "../utils/request-budget";
 import { t } from "../i18n";
 
@@ -267,5 +268,72 @@ describe("the OpenAI-compatible server is ChatOpenAI at the user's address (#25)
   ])("refuses an address with %s, with the message the settings tab shows, before any request", (_why, baseURL) => {
     expect(() => buildOpenAiCompatibleModel({ ...MODEL_OPTIONS, baseURL })).toThrow(t("notice.openaiCompatible.invalidUrl"));
     expect(requestUrl).not.toHaveBeenCalled();
+  });
+});
+
+describe("every provider's base URL: blank is the vendor, set is the custom host, for chat AND model list (#29)", () => {
+  const GATEWAY = "http://gateway.local:4000";
+
+  /** A reply each provider's parser accepts; the shape differs, the transport does not. */
+  function answerFor(provider: string): void {
+    const bodies: Record<string, unknown> = {
+      anthropic: { content: [{ type: "text", text: "ok" }], usage: { input_tokens: 1, output_tokens: 1 } },
+      google: { candidates: [{ content: { parts: [{ text: "ok" }] } }] },
+    };
+    requestUrl.mockResolvedValue({
+      status: 200,
+      headers: { "content-type": "application/json" },
+      text: JSON.stringify(bodies[provider] ?? {
+        id: "chatcmpl-test",
+        object: "chat.completion",
+        created: 0,
+        model: "m",
+        choices: [{ index: 0, message: { role: "assistant", content: "ok" }, finish_reason: "stop" }],
+        usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 },
+      }),
+    });
+  }
+
+  /** The URL the chat request for `provider` actually went to, through the real LangChainClient switch. */
+  async function chatUrl(provider: string, baseURL: string): Promise<string> {
+    answerFor(provider);
+    const client = new LangChainClient({ provider, model: "some-model", apiKey: "key", baseURL });
+    await expect(client.generateCompletion("system", "user")).resolves.toBe("ok");
+    return (requestUrl.mock.calls[0][0] as { url: string }).url;
+  }
+
+  it.each([
+    ["openai", "https://api.openai.com/v1/chat/completions"],
+    ["openrouter", "https://openrouter.ai/api/v1/chat/completions"],
+    ["anthropic", "https://api.anthropic.com/v1/messages"],
+    ["google", "https://generativelanguage.googleapis.com/v1beta/models/some-model:generateContent?key=key"],
+  ])("%s with a blank base URL goes exactly where it always did", async (provider, url) => {
+    expect(await chatUrl(provider, "")).toBe(url);
+  });
+
+  it.each(["openai", "openrouter", "anthropic", "google"])(
+    "%s with a custom base URL (trailing slash and all): chat and model list both go to it, with no doubled slash",
+    async (provider) => {
+      const base = `${GATEWAY}/${provider}/`;
+      const chat = await chatUrl(provider, base);
+      const list = modelListUrl(provider, { customBaseUrls: { [provider]: base }, openaiCompatibleBaseUrl: "" });
+      for (const url of [chat, list]) {
+        expect(url.startsWith(`${GATEWAY}/${provider}/`)).toBe(true);
+        expect(url.slice("http://".length)).not.toContain("//");
+      }
+    },
+  );
+
+  it("refuses a malformed custom base URL before any request, instead of falling back to the vendor", async () => {
+    const client = new LangChainClient({ provider: "anthropic", model: "m", apiKey: "key", baseURL: "gateway.local" });
+    await expect(client.generateCompletion("system", "user")).rejects.toThrow(t("notice.baseUrl.invalid"));
+    expect(requestUrl).not.toHaveBeenCalled();
+  });
+
+  it("keeps OpenRouter's attribution headers when its base URL is overridden", () => {
+    const model = buildOpenRouterModel({ ...MODEL_OPTIONS, baseURL: `${GATEWAY}/openrouter/v1` });
+    expect(builtClient(model).baseURL).toBe(`${GATEWAY}/openrouter/v1`);
+    const configured = (model as unknown as { clientConfig: { defaultHeaders?: Record<string, string> } }).clientConfig;
+    expect(configured.defaultHeaders?.["X-Title"]).toBe("TubeSage");
   });
 });

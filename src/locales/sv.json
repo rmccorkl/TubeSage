@@ -167,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Serverns URL, sparad i tilläggets data."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "Bas-URL för {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Lämna tomt för att använda standardadressen som visas i fältet. Förfrågningar, inklusive din API-nyckel, skickas till adressen du anger."
+    },
     "settings.llm.openaiCompatible.url.name": {
         "original": "OpenAI-compatible server URL",
         "translation": "URL till OpenAI-kompatibel server"
@@ -478,6 +486,10 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Inget modellnamn har angetts för den OpenAI-kompatibla servern. Lägg till ett i tilläggets inställningar."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Den anpassade bas-URL:en måste vara en fullständig adress som börjar med http:// eller https://."
     },
     "notice.job.failed": {
         "original": "Error: {error}",
