@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Poskytovateľ použitý na zhrnutie. Pre spoľahlivosť odporúčame OpenRouter; lacnejšie úrovne Gemini bývajú obmedzované."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Server kompatibilný s OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Kľúč API {provider}"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Adresa URL servera, uložená v údajoch doplnku."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "Základná adresa URL {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Nechajte prázdne, ak chcete použiť predvolenú adresu zobrazenú v poli. Požiadavky vrátane vášho kľúča API pôjdu na zadanú adresu."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Vlastná základná adresa URL {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Vypnuté: požiadavky idú na vlastnú adresu {provider}. Zapnuté: idú na základnú adresu URL nižšie, vrátane zoznamu modelov."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "Adresa URL servera kompatibilného s OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Základná adresa URL, zvyčajne končí na /v1. Uložená v údajoch doplnku. Kľúč API nižšie je voliteľný."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Model {provider}"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Vyberte prednastavený model alebo nižšie zadajte vlastný názov modelu."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Zadajte názov modelu presne tak, ako ho uvádza server."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Doplnok prepisu Youtube: pre {provider} nie je nastavený žiadny kľúč API. Pridajte svoj kľúč API v nastaveniach doplnku."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "Adresa URL servera kompatibilného s OpenAI musí byť úplná adresa začínajúca http:// alebo https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Pre server kompatibilný s OpenAI nie je nastavený žiadny názov modelu. Pridajte ho v nastaveniach doplnku."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Vlastná základná adresa URL musí byť úplná adresa začínajúca http:// alebo https://."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "Chyba: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Chyba: doplnok Templater je potrebný, ale nie je nainštalovaný ani zapnutý"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Súbor šablóny sa nenašiel: {path}. Skontrolujte názov súboru aj priečinok v nastavení TubeSage „Súbor šablóny doplnku Templater“."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

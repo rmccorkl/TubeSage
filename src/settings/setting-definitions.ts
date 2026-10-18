@@ -26,6 +26,7 @@ import type {
 import { t, tPlural } from '../i18n';
 import { getLogger, LogLevel, setGlobalLogLevel } from '../utils/logger';
 import { getEffectiveLimits, isModelSupported } from '../utils/model-limits-registry';
+import { DEFAULT_BASE_URLS, isUsableBaseUrl } from '../llm/base-url';
 import type { YouTubeTranscriptSettings } from './settings-defaults';
 
 const logger = getLogger('PLUGIN');
@@ -122,6 +123,8 @@ interface ProviderCatalogEntry {
     placeholder: string;
     modelOptions: string[];
     defaultModelValue: string;
+    /** An example model identifier for the model-name field; the generic placeholder when absent. */
+    modelPlaceholder?: string;
 }
 
 const providerCatalog: ProviderCatalogEntry[] = [
@@ -214,6 +217,21 @@ const providerCatalog: ProviderCatalogEntry[] = [
             'mistralai/mistral-large',
         ],
         defaultModelValue: 'openai/gpt-4o',
+    },
+    {
+        provider: 'openai-compatible',
+        // A getter, unlike the names above: this label is a description, not
+        // a brand, so it is translated — and the translation has to be looked
+        // up while the rows are built, in the reader's language, not once
+        // when this module loads.
+        get displayName() { return t('settings.llm.provider.openaiCompatible'); },
+        // The key is optional (the URL row says so), and there is no common
+        // format to show: each server sets its own.
+        placeholder: '',
+        // Free text only: no presets, and no refresh button (#25 out of scope).
+        modelOptions: [],
+        defaultModelValue: '',
+        modelPlaceholder: 'llama-3.1-8b-instruct',
     },
 ];
 
@@ -549,6 +567,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                 dropdown.addOption('google', 'Google');
                 dropdown.addOption('ollama', 'Ollama');
                 dropdown.addOption('openrouter', 'OpenRouter');
+                dropdown.addOption('openai-compatible', t('settings.llm.provider.openaiCompatible'));
 
                 // Set the current value
                 const currentValue = host.settings.selectedLLM;
@@ -582,15 +601,23 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
         }),
     });
 
-    // API key row for a provider — always rendered for every provider so a
-    // user can populate keys independently of which LLM is currently
-    // selected. The model dropdown / refresh / custom-name / custom-params
-    // are split out into the selected-provider block below (so the LLM
-    // section reflects the active provider's context rather than rendering
-    // all four providers' full settings at once).
+    // API key row for a provider — built for every provider, but shown only
+    // for the selected one (#28): the provider choice sets the context, so a
+    // user running Ollama is not faced with four empty cloud key fields.
+    // `visible` hides a row without touching its value, so a hidden
+    // provider's key, address and toggle all survive switching away and
+    // back. The Provider dropdown's onChange calls host.update(), which is
+    // what re-evaluates every `visible`. The model dropdown / refresh /
+    // custom-name / custom-params are in the selected-provider block below.
     for (const { provider, displayName, placeholder } of providerCatalog) {
+        if (provider === 'openai-compatible') {
+            // Its address sits directly above its key, as Ollama's sits in
+            // its own row: always rendered, like every key row.
+            llmItems.push(openAiCompatibleUrlRow(host, gated));
+        }
         llmItems.push({
             name: t('settings.llm.apiKey.name', { provider: displayName }),
+            visible: () => host.settings.selectedLLM === provider,
             desc: provider === 'ollama'
                 ? t('settings.llm.apiKey.desc.ollama')
                 : t('settings.llm.apiKey.desc.cloud'),
@@ -614,6 +641,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                 }
             }),
         });
+        llmItems.push(...customBaseUrlRows(host, provider, displayName, gated));
     }
 
     // Render the model config block for the currently-selected provider only.
@@ -927,6 +955,114 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
     return items;
 }
 
+// --- provider addresses -----------------------------------------------------
+
+// One address field: plugin data, not secret storage — an address is not a
+// secret, which is also why the Ollama URL stays in data.json. Saved on every
+// keystroke like the key rows, but only judged on blur, so an address is not
+// reported while it is still being typed. One that fails is still saved — the
+// field keeps what was typed — and the request-time check refuses it again
+// with the same message. Blank never gets a notice: for an override it means
+// the default, and for the OpenAI-compatible server the start-up check says
+// what is missing.
+interface AddressRow {
+    name: string;
+    desc: string;
+    /** An address format, which i18n/TERMS.md keeps out of the matrix and which sentence case does not apply to. */
+    placeholder: string;
+    value: string;
+    save: (value: string) => void;
+    invalidNotice: string;
+    visible: () => boolean;
+}
+
+function addressRow(host: SettingsHost, gated: (render: Render) => Render, row: AddressRow): SettingDefinitionRender {
+    return {
+        name: row.name,
+        desc: row.desc,
+        visible: row.visible,
+        render: gated((setting) => {
+            setting.addText(text => {
+                text.setPlaceholder(row.placeholder)
+                    .setValue(row.value)
+                    .onChange((value: string) => {
+                        void (async () => {
+                            row.save(value);
+                            await host.saveSettings();
+                        })();
+                    });
+                text.inputEl?.addEventListener('blur', () => {
+                    if (!isUsableBaseUrl(text.getValue())) {
+                        host.showNotice(row.invalidNotice, 5000);
+                    }
+                });
+                return text;
+            });
+        }),
+    };
+}
+
+// The base URL of the self-hosted OpenAI-compatible server (#25): required,
+// with no default behind it. The placeholder is LM Studio's default port, with
+// the /v1 that the SDK expects the user to include.
+const OPENAI_COMPATIBLE_URL_PLACEHOLDER = 'http://localhost:1234/v1';
+
+function openAiCompatibleUrlRow(host: SettingsHost, gated: (render: Render) => Render): SettingDefinitionRender {
+    return addressRow(host, gated, {
+        name: t('settings.llm.openaiCompatible.url.name'),
+        desc: t('settings.llm.openaiCompatible.url.desc'),
+        placeholder: OPENAI_COMPATIBLE_URL_PLACEHOLDER,
+        value: host.settings.openaiCompatibleBaseUrl,
+        save: (value) => { host.settings.openaiCompatibleBaseUrl = value; },
+        invalidNotice: t('notice.openaiCompatible.invalidUrl'),
+        visible: () => host.settings.selectedLLM === 'openai-compatible',
+    });
+}
+
+// A provider's custom base URL (#29), for the providers with a vendor default
+// to override; none for Ollama, whose address is its key row, or for the
+// OpenAI-compatible server, whose address row is above. Blank means the
+// vendor default, shown as the placeholder and never written to settings.
+//
+// Behind a toggle (#28), so the field only appears for someone who wants to
+// override. The toggle is the switch itself, not just the field's
+// visibility: off sends requests to the vendor while KEEPING the typed URL,
+// so turning it back on restores the override rather than an empty field.
+// baseUrlOverrides() is where "off" is honoured, for every caller at once.
+function customBaseUrlRows(host: SettingsHost, provider: string, displayName: string, gated: (render: Render) => Render): SettingDefinitionRender[] {
+    if (!(provider in DEFAULT_BASE_URLS)) return [];
+    const selected = (): boolean => host.settings.selectedLLM === provider;
+    const toggle: SettingDefinitionRender = {
+        name: t('settings.llm.baseUrl.toggle.name', { provider: displayName }),
+        desc: t('settings.llm.baseUrl.toggle.desc', { provider: displayName }),
+        visible: selected,
+        render: gated((setting) => {
+            setting.addToggle(component => component
+                .setValue(host.settings.customBaseUrlEnabled[provider] === true)
+                .onChange((value: boolean) => {
+                    void (async () => {
+                        // A new map, for the same shallow-merge reason as the URLs.
+                        host.settings.customBaseUrlEnabled = { ...host.settings.customBaseUrlEnabled, [provider]: value };
+                        await host.saveSettings();
+                        // `visible` is evaluated per render: show or hide the field now.
+                        host.update();
+                    })();
+                }));
+        }),
+    };
+    return [toggle, addressRow(host, gated, {
+        name: t('settings.llm.baseUrl.name', { provider: displayName }),
+        desc: t('settings.llm.baseUrl.desc'),
+        placeholder: DEFAULT_BASE_URLS[provider],
+        value: host.settings.customBaseUrls[provider] ?? '',
+        // A new map, never a write into the old one: settings are merged
+        // shallowly onto DEFAULT_SETTINGS, so the old map may BE the default's.
+        save: (value) => { host.settings.customBaseUrls = { ...host.settings.customBaseUrls, [provider]: value }; },
+        invalidNotice: t('notice.baseUrl.invalid'),
+        visible: () => selected() && host.settings.customBaseUrlEnabled[provider] === true,
+    })];
+}
+
 // --- selected-provider block -------------------------------------------------
 
 interface CustomLimits {
@@ -1043,7 +1179,8 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
     // value, so the same panel signals "required input" for custom models
     // and "optional override" for preset models.
     const updateCustomParamsLabel = (): void => {
-        const isCustomSelected = state.modelDropdown?.getValue() === 'custom';
+        // No dropdown means a free-text model, which is always a custom one.
+        const isCustomSelected = (state.modelDropdown?.getValue() ?? 'custom') === 'custom';
         state.headingSetting?.nameEl.setText(
             isCustomSelected
                 ? t('settings.llm.modelParams.headingCustom', { provider: provider.toUpperCase() })
@@ -1110,7 +1247,7 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
         {
             // Header row
             name: t('settings.llm.model.name', { provider: displayName }),
-            desc: t('settings.llm.model.desc'),
+            desc: mergedOptions.length > 0 ? t('settings.llm.model.desc') : t('settings.llm.model.descFreeText'),
             render: gated((setting) => {
                 setting.settingEl.addClass('tubesage-provider-header');
             }),
@@ -1122,75 +1259,79 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
             render: gated((setting) => {
                 setting.setClass('tubesage-provider-controls');
 
-                // Add dropdown for preset + fetched models
-                setting.addDropdown(dropdown => {
-                    state.modelDropdown = dropdown;
-                    if (provider === 'openrouter') {
-                        let currentVendor = '';
-                        let group: HTMLElement | null = null;
-                        for (const model of mergedOptions) {
-                            const vendor = model.includes('/') ? model.slice(0, model.indexOf('/')) : 'other';
-                            if (vendor !== currentVendor) {
-                                currentVendor = vendor;
-                                group = dropdown.selectEl.createEl('optgroup', { attr: { label: vendor } });
+                // Add dropdown for preset + fetched models. Only when there is
+                // something to pick: the OpenAI-compatible server has neither
+                // presets nor a refresh, so its model is the text field alone.
+                if (mergedOptions.length > 0) {
+                    setting.addDropdown(dropdown => {
+                        state.modelDropdown = dropdown;
+                        if (provider === 'openrouter') {
+                            let currentVendor = '';
+                            let group: HTMLElement | null = null;
+                            for (const model of mergedOptions) {
+                                const vendor = model.includes('/') ? model.slice(0, model.indexOf('/')) : 'other';
+                                if (vendor !== currentVendor) {
+                                    currentVendor = vendor;
+                                    group = dropdown.selectEl.createEl('optgroup', { attr: { label: vendor } });
+                                }
+                                (group ?? dropdown.selectEl).createEl('option', { value: model, text: model });
                             }
-                            (group ?? dropdown.selectEl).createEl('option', { value: model, text: model });
+                        } else {
+                            mergedOptions.forEach((model) => {
+                                dropdown.addOption(model, model);
+                            });
                         }
-                    } else {
-                        mergedOptions.forEach((model) => {
-                            dropdown.addOption(model, model);
-                        });
-                    }
-                    dropdown.addOption('custom', t('settings.llm.model.customOption'));
-                    const currentModel = host.settings.selectedModels[provider];
-                    const validSelection = mergedOptions.includes(currentModel) ? currentModel : 'custom';
-                    dropdown.setValue(validSelection)
-                        .onChange((value: string) => {
-                            // Synchronous part of the write must run before the
-                            // selectEl 'change' DOM listener fires (see the wiring
-                            // below). The listener calls refreshAll() which reads
-                            // selectedModels[provider] via getCurrentCustomLimits;
-                            // if the write is inside the async IIFE the listener
-                            // sees the previous model and the params panel keeps
-                            // showing stale values.
-                            if (value !== 'custom') {
-                                host.settings.selectedModels[provider] = value;
-                                state.customField?.setValue(''); // Clear custom if a preset is chosen
-                                host.settings.maxTokens = host.getEffectiveMaxTokens();
-                            }
-
-                            void (async () => {
+                        dropdown.addOption('custom', t('settings.llm.model.customOption'));
+                        const currentModel = host.settings.selectedModels[provider];
+                        const validSelection = mergedOptions.includes(currentModel) ? currentModel : 'custom';
+                        dropdown.setValue(validSelection)
+                            .onChange((value: string) => {
+                                // Synchronous part of the write must run before the
+                                // selectEl 'change' DOM listener fires (see the wiring
+                                // below). The listener calls refreshAll() which reads
+                                // selectedModels[provider] via getCurrentCustomLimits;
+                                // if the write is inside the async IIFE the listener
+                                // sees the previous model and the params panel keeps
+                                // showing stale values.
                                 if (value !== 'custom') {
-                                    await host.saveSettings();
-                                    host.showNotice(t('notice.models.modelChanged', { model: value, tokens: host.settings.maxTokens }), 3000);
-                                } else {
-                                    // Custom model selected - initialize custom model limits if they don't exist
-                                    const currentModel = host.settings.selectedModels[provider];
-                                    if (currentModel && currentModel !== '') {
-                                        const customKey = `${provider}:${currentModel}`;
+                                    host.settings.selectedModels[provider] = value;
+                                    state.customField?.setValue(''); // Clear custom if a preset is chosen
+                                    host.settings.maxTokens = host.getEffectiveMaxTokens();
+                                }
 
-                                        // Initialize custom limits if they don't exist
-                                        if (!host.settings.customModelLimits[customKey]) {
-                                            host.settings.customModelLimits[customKey] = {
-                                                contextK: 128,
-                                                maxOutputK: 16,
-                                                inputMaxK: undefined,
-                                                reservePct: 0.1
-                                            };
+                                void (async () => {
+                                    if (value !== 'custom') {
+                                        await host.saveSettings();
+                                        host.showNotice(t('notice.models.modelChanged', { model: value, tokens: host.settings.maxTokens }), 3000);
+                                    } else {
+                                        // Custom model selected - initialize custom model limits if they don't exist
+                                        const currentModel = host.settings.selectedModels[provider];
+                                        if (currentModel && currentModel !== '') {
+                                            const customKey = `${provider}:${currentModel}`;
 
-                                            // Update maxTokens setting based on new custom limits
-                                            host.settings.maxTokens = host.getEffectiveMaxTokens();
-                                            await host.saveSettings();
+                                            // Initialize custom limits if they don't exist
+                                            if (!host.settings.customModelLimits[customKey]) {
+                                                host.settings.customModelLimits[customKey] = {
+                                                    contextK: 128,
+                                                    maxOutputK: 16,
+                                                    inputMaxK: undefined,
+                                                    reservePct: 0.1
+                                                };
 
-                                            // Refresh display to show custom parameters
-                                            host.update();
+                                                // Update maxTokens setting based on new custom limits
+                                                host.settings.maxTokens = host.getEffectiveMaxTokens();
+                                                await host.saveSettings();
+
+                                                // Refresh display to show custom parameters
+                                                host.update();
+                                            }
                                         }
                                     }
-                                }
-                            })();
-                        });
-                    return dropdown;
-                });
+                                })();
+                            });
+                        return dropdown;
+                    });
+                }
 
                 // Add refresh button for OpenAI, Google, Anthropic, and OpenRouter providers
                 if (provider === 'openai' || provider === 'google' || provider === 'anthropic' || provider === 'openrouter') {
@@ -1280,14 +1421,16 @@ function buildProviderBlock(host: SettingsHost, entry: ProviderCatalogEntry, gat
                 // becomes a real custom model entry.
                 setting.addText(text => {
                     state.customField = text;
-                    text.setPlaceholder(t('settings.llm.model.customPlaceholder'))
+                    text.setPlaceholder(entry.modelPlaceholder ?? t('settings.llm.model.customPlaceholder'))
                         .setValue(
                             // Show current model in custom field only when it's not
                             // in the merged dropdown options (preset + previously-
                             // fetched). A fetched-but-not-preset model is a normal
-                            // dropdown selection, not a custom one.
+                            // dropdown selection, not a custom one. `?? ''`: a
+                            // data.json from before a provider existed has no
+                            // selectedModels entry for it.
                             !mergedOptions.includes(host.settings.selectedModels[provider])
-                                ? host.settings.selectedModels[provider]
+                                ? host.settings.selectedModels[provider] ?? ''
                                 : ''
                         );
 

@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "සාරාංශ කිරීමට භාවිත වන සපයන්නා. විශ්වාසනීයත්වය සඳහා OpenRouter නිර්දේශ කෙරේ; අඩු මිල Gemini ස්ථර අනුපාත සීමාවට ලක් විය හැක."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "OpenAI සමඟ ගැළපෙන සේවාදායකය"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "{provider} API යතුර"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "සේවාදායක URL එක, ප්ලගින දත්තවල තැන්පත් වේ."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} මූලික URL"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "ක්ෂේත්‍රයේ පෙන්වන පෙරනිමි ලිපිනය භාවිත කිරීමට හිස්ව තබන්න. ඔබේ API යතුර ඇතුළුව ඉල්ලීම් ඔබ ඇතුළු කරන ලිපිනයට යයි."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "අභිරුචි {provider} මූලික URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "අක්‍රිය: ඉල්ලීම් {provider} හි ම ලිපිනයට යයි. සක්‍රිය: ආකෘති ලැයිස්තුව ද ඇතුළුව ඒවා පහත මූලික URL එකට යයි."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "OpenAI සමඟ ගැළපෙන සේවාදායකයේ URL"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "මූලික URL එක, සාමාන්‍යයෙන් /v1 න් අවසන් වේ. ප්ලගින දත්තවල තැන්පත් වේ. පහත API යතුර අත්‍යවශ්‍ය නොවේ."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} ආකෘතිය"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "පෙර සැකසූ ආකෘතියක් තෝරන්න, නැතහොත් පහතින් අභිරුචි ආකෘති නමක් ටයිප් කරන්න."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "සේවාදායකය දක්වන ආකාරයටම ආකෘති නම නිවැරදිව ටයිප් කරන්න."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Youtube පිටපත් ප්ලගිනය: {provider} සඳහා API යතුරක් සකසා නැත. ඔබේ API යතුර ප්ලගින සැකසුම්වල එක් කරන්න."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "OpenAI සමඟ ගැළපෙන සේවාදායකයේ URL එක http:// හෝ https:// න් ආරම්භ වන සම්පූර්ණ ලිපිනයක් විය යුතුය."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "OpenAI සමඟ ගැළපෙන සේවාදායකය සඳහා ආකෘති නමක් සකසා නැත. ප්ලගින සැකසුම්වල එකක් එක් කරන්න."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "අභිරුචි මූලික URL එක http:// හෝ https:// න් ආරම්භ වන සම්පූර්ණ ලිපිනයක් විය යුතුය."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "දෝෂය: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "දෝෂය: Templater ප්ලගිනය අවශ්‍යයි, නමුත් එය ස්ථාපනය හෝ සක්‍රිය කර නැත"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "අච්චු ගොනුව හමු නොවීය: {path}. TubeSage සැකසුම “Templater ප්ලගිනයේ අච්චු ගොනුව” තුළ ගොනු නාමය සහ ෆෝල්ඩරය යන දෙකම පරීක්ෂා කරන්න."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

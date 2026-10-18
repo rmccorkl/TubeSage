@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "المزوّد المستخدَم للتلخيص. يُنصح بـ OpenRouter للموثوقية؛ وقد تُقيَّد فئات Gemini الأقل تكلفة."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "خادم متوافق مع OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "مفتاح API لـ {provider}"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "عنوان URL للخادم، يُخزَّن في بيانات الإضافة."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "عنوان URL الأساسي لـ {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "اتركه فارغًا لاستخدام العنوان الافتراضي الظاهر في الحقل. تُرسَل الطلبات، ومعها مفتاح API، إلى العنوان الذي تُدخله."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "عنوان URL أساسي مخصّص لـ {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "إيقاف: تُرسَل الطلبات إلى عنوان {provider} نفسه. تشغيل: تُرسَل، ومعها قائمة النماذج، إلى عنوان URL الأساسي أدناه."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "عنوان URL للخادم المتوافق مع OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "عنوان URL الأساسي، وينتهي عادةً بـ /v1. يُخزَّن في بيانات الإضافة. مفتاح API أدناه اختياري."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "نموذج {provider}"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "اختر نموذجًا جاهزًا أو اكتب اسم نموذج مخصّص أدناه."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "اكتب اسم النموذج تمامًا كما يعرضه الخادم."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "إضافة نصوص Youtube: لا يوجد مفتاح API مُعدّ لـ {provider}. أضف مفتاح API في إعدادات الإضافة."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "يجب أن يكون عنوان URL للخادم المتوافق مع OpenAI عنوانًا كاملًا يبدأ بـ http:// أو https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "لم يُحدَّد اسم نموذج للخادم المتوافق مع OpenAI. أضف اسمًا في إعدادات الإضافة."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "يجب أن يكون عنوان URL الأساسي المخصّص عنوانًا كاملًا يبدأ بـ http:// أو https://."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "خطأ: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "خطأ: إضافة Templater مطلوبة لكنها غير مثبّتة أو غير مفعّلة"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "لم يُعثر على ملف القالب: {path}. تحقّق من اسم الملف ومن المجلد معًا في إعداد TubeSage «ملف قالب إضافة Templater»."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

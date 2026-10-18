@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Özetleme için kullanılan sağlayıcı. Güvenilirlik için OpenRouter önerilir; düşük maliyetli Gemini katmanları kısıtlanabilir."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "OpenAI uyumlu sunucu"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "{provider} API anahtarı"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Sunucu URL'si, eklenti verilerinde saklanır."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} temel URL'si"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Alanda görünen varsayılan adresi kullanmak için boş bırakın. İstekler, API anahtarınız dahil, girdiğiniz adrese gider."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Özel {provider} temel URL'si"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Kapalı: istekler {provider} hizmetinin kendi adresine gider. Açık: istekler, model listesi dahil, aşağıdaki temel URL'ye gider."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "OpenAI uyumlu sunucu URL'si"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Temel URL, genellikle /v1 ile biter. Eklenti verilerinde saklanır. Aşağıdaki API anahtarı isteğe bağlıdır."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} modeli"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Hazır bir model seçin veya aşağıya özel bir model adı yazın."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Model adını sunucunun listelediği şekilde aynen yazın."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Youtube transkript eklentisi: {provider} için API anahtarı ayarlanmamış. API anahtarınızı eklenti ayarlarına ekleyin."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "OpenAI uyumlu sunucu URL'si, http:// veya https:// ile başlayan tam bir adres olmalıdır."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "OpenAI uyumlu sunucu için model adı ayarlanmamış. Eklenti ayarlarından bir tane ekleyin."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Özel temel URL, http:// veya https:// ile başlayan tam bir adres olmalıdır."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "Hata: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Hata: Templater eklentisi gerekli ama kurulu ya da etkin değil"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Şablon dosyası bulunamadı: {path}. TubeSage'in “Templater eklentisi şablon dosyası” ayarında hem dosya adını hem de klasörü kontrol edin."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

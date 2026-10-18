@@ -279,6 +279,8 @@ function sameCounts(a, b) {
 
 export const QUOTED_LABELS = [
   { key: "license.required.step5", quotes: "settings.support.license.acceptLabel" },
+  // #27: the missing-template message sends the user to this setting by name.
+  { key: "notice.template.notFound", quotes: "settings.templates.templaterFile.name" },
   // Four more rows pinned sentences that quoted `common.command.showActiveJobs`
   // to that command's own name in each locale. The command is gone with the
   // jobs modal, so its key is gone from the matrix, and a pairing whose

@@ -18,6 +18,27 @@ import { JOBS_KEY } from "../jobs/job-store";
 //    settings object would otherwise be rewritten as user configuration and
 //    then persist forever.
 
+/**
+ * The providers whose apiKeys entry is a secret, kept in Obsidian secret
+ * storage under SECRET_IDS. 'ollama' is intentionally excluded — its entry is
+ * a server URL, not a secret, and stays in data.json. The OpenAI-compatible
+ * server is included although it is self-hosted rather than cloud: its key is
+ * optional, but when there is one it is as much a secret as any other (#25).
+ */
+export const SECRET_KEY_PROVIDERS = ['openai', 'anthropic', 'google', 'openrouter', 'openai-compatible'] as const;
+
+/**
+ * Secret-storage IDs, one per provider above. IDs must be lowercase
+ * alphanumeric with optional dashes (required by SecretStorage.setSecret).
+ */
+export const SECRET_IDS: Record<string, string> = {
+  openai: 'tubesage-openai-key',
+  anthropic: 'tubesage-anthropic-key',
+  google: 'tubesage-google-key',
+  openrouter: 'tubesage-openrouter-key',
+  'openai-compatible': 'tubesage-openai-compatible-key',
+};
+
 /** Structural: any settings object with an optional apiKeys map (the plugin's interface satisfies it). */
 export interface PersistableSettings {
   apiKeys?: Record<string, string | undefined>;

@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "ارائه‌دهنده‌ای که برای خلاصه‌سازی به کار می‌رود. OpenRouter برای پایداری توصیه می‌شود؛ رده‌های ارزان‌تر Gemini ممکن است محدود شوند."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "سرور سازگار با OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "کلید API {provider}"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "نشانی URL سرور، در داده‌های افزونه ذخیره می‌شود."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "نشانی URL پایهٔ {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "برای استفاده از نشانی پیش‌فرضی که در کادر نمایش داده می‌شود، خالی بگذارید. درخواست‌ها همراه با کلید API شما به نشانی‌ای که وارد می‌کنید فرستاده می‌شوند."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "نشانی URL پایهٔ دلخواه برای {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "خاموش: درخواست‌ها به نشانی خود {provider} فرستاده می‌شوند. روشن: درخواست‌ها، همراه با فهرست مدل‌ها، به نشانی URL پایهٔ زیر فرستاده می‌شوند."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "نشانی URL سرور سازگار با OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "نشانی URL پایه، که معمولاً به /v1 ختم می‌شود. در داده‌های افزونه ذخیره می‌شود. کلید API زیر اختیاری است."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "مدل {provider}"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "یک مدل آماده انتخاب کنید یا نام مدل دلخواه را در زیر بنویسید."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "نام مدل را دقیقاً همان‌طور که سرور فهرست می‌کند بنویسید."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "افزونهٔ رونوشت Youtube: برای {provider} کلید API تنظیم نشده است. کلید API خود را در تنظیمات افزونه بیفزایید."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "نشانی URL سرور سازگار با OpenAI باید نشانی کاملی باشد که با http:// یا https:// شروع می‌شود."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "هیچ نام مدلی برای سرور سازگار با OpenAI تنظیم نشده است. یکی را در تنظیمات افزونه بیفزایید."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "نشانی URL پایهٔ دلخواه باید نشانی کاملی باشد که با http:// یا https:// شروع می‌شود."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "خطا: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "خطا: افزونهٔ Templater لازم است ولی نصب یا فعال نشده است"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "فایل قالب پیدا نشد: {path}. هم نام فایل و هم پوشه را در تنظیم TubeSage «فایل قالب افزونهٔ Templater» بررسی کنید."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

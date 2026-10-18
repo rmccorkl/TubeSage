@@ -20,15 +20,17 @@ const isRecord = (value: unknown): value is Record<string, unknown> => {
  */
 export class GeminiClient {
   private apiKey: string;
-  private baseUrl = "https://generativelanguage.googleapis.com";
+  private baseUrl: string;
   private apiVersion = "v1beta"; // v1beta required for Gemini 2.x models
   
-  constructor(apiKey: string) {
+  /** `baseUrl` is the user's override or Google's default, resolved by the caller (#29), with no trailing slash. */
+  constructor(apiKey: string, baseUrl: string) {
     if (!apiKey || apiKey.trim() === '') {
       throw new Error('Google API key is required');
     }
     
     this.apiKey = apiKey;
+    this.baseUrl = baseUrl;
     logger.debug('Creating Gemini client');
   }
 

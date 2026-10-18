@@ -32,6 +32,7 @@ TubeSage is an Obsidian plugin that converts YouTube videos into structured note
   - Google (Gemini)
   - OpenRouter
   - Ollama (local models)
+  - An OpenAI-compatible server such as LM Studio, vLLM, llama.cpp server or LocalAI (key optional)
 - A YouTube Data API key (optional — required only for channel/playlist processing)
 
 ## Features
@@ -41,7 +42,7 @@ TubeSage is an Obsidian plugin that converts YouTube videos into structured note
 - Optional timestamp links added to section headings, linking to the moment in the video
 - Works on desktop and mobile Obsidian
 - Batch processing of YouTube channels and playlists
-- Multi-provider support: OpenAI, Anthropic, Google Gemini, OpenRouter, and Ollama
+- Multi-provider support: OpenAI, Anthropic, Google Gemini, OpenRouter, Ollama, and any OpenAI-compatible server
 - A cross-platform fetch shim so all providers work on mobile without Node.js dependencies
 - Live progress while a job runs — a status-bar spinner on desktop, a tappable notice on mobile
 
@@ -54,15 +55,18 @@ Accept the MIT license terms in the settings panel before using the plugin. Use 
 For the most reliable results, use **OpenRouter** as the LLM provider together with **ScrapeCreators** for transcript retrieval. Direct YouTube transcript extraction breaks whenever YouTube changes or restricts how captions are served, so a paid transcript service is the dependable path. Gemini's lower-cost tiers are rate-limited and can be throttled or unavailable under load, whereas OpenRouter lets you pick a model with the capacity you need. Other providers still work; this is the combination the maintainer has found most dependable.
 
 ### 2. LLM provider setup
-Choose and configure a provider in settings:
+Choose a provider in settings. Only that provider's settings are shown — its key, model and address; the other providers' fields are hidden, not cleared, so switching back finds them as you left them.
 
 - **OpenAI** — models such as GPT-4o, GPT-4, GPT-3.5-Turbo.
 - **Anthropic** — Claude 3 family models.
 - **Google Gemini** — Gemini Pro models.
 - **OpenRouter** — gateway access to models from multiple vendors.
-- **Ollama** — local open-source models; runs offline, requires Ollama installed and running.
+- **Ollama** — local open-source models; runs offline, requires Ollama installed and running. Ollama on another machine works too: put that machine's address in the Ollama field, for example `http://192.168.1.20:11434` (Ollama itself must be listening on the network, e.g. started with `OLLAMA_HOST=0.0.0.0`).
+- **OpenAI-compatible server** — any self-hosted server that speaks the OpenAI chat API, such as LM Studio, vLLM, llama.cpp server or LocalAI. Enter its base URL, which usually ends in `/v1` (for example `http://192.168.1.20:1234/v1`; plain `http://` is accepted), and type the model name exactly as the server lists it. The API key is optional: leave it blank if the server does not check one.
 
-**Where API keys are stored:** cloud-provider keys (OpenAI, Anthropic, Google, OpenRouter) are saved in Obsidian's native secret storage, not in the plugin's `data.json`. Type a key into its provider field and it is written to the secret store automatically — there is no separate setting to enable this, and it is not optional. The Ollama field holds a server URL rather than a secret, so it remains in plugin data.
+**Custom base URL for any provider:** OpenAI, Anthropic, Google and OpenRouter can each be pointed at another address — a corporate proxy, a gateway such as LiteLLM, or a mirror. Turn on that provider's **Custom base URL** toggle to show its base URL field; turn it off to go back to the vendor's address while keeping what you typed. Leave the field blank to use the vendor's own address, which it shows as its placeholder. The shape differs by vendor, so copy the placeholder's: OpenAI and OpenRouter include the version (`https://api.openai.com/v1`), Anthropic and Google do not (`https://api.anthropic.com`). Chat requests and the model-list refresh both go to the address you set, and **that provider's API key is sent to it**. Only bearer-style keys are supported, so services that need another auth scheme (Azure OpenAI's `api-key` header, for example) are not.
+
+**Where API keys are stored:** cloud-provider keys (OpenAI, Anthropic, Google, OpenRouter) and the optional OpenAI-compatible server key are saved in Obsidian's native secret storage, not in the plugin's `data.json`. Type a key into its provider field and it is written to the secret store automatically — there is no separate setting to enable this, and it is not optional. The Ollama field, the OpenAI-compatible server URL and the custom base URLs hold server addresses rather than secrets, so they remain in plugin data.
 
 ### 3. Other settings
 - **Summary modes**: Fast (brief) or Extensive (detailed).
@@ -127,13 +131,13 @@ Architecture diagrams are in the `docs/` directory:
 ## Privacy & Security
 
 ### API keys
-Cloud-provider API keys (OpenAI, Anthropic, Google, OpenRouter) are stored in Obsidian's native secret storage, never written to the plugin's `data.json`. Keys saved by versions older than 1.3.0 are migrated into secret storage automatically the first time you open the plugin after upgrading.
+Cloud-provider API keys (OpenAI, Anthropic, Google, OpenRouter) and the optional OpenAI-compatible server key are stored in Obsidian's native secret storage, never written to the plugin's `data.json`. Keys saved by versions older than 1.3.0 are migrated into secret storage automatically the first time you open the plugin after upgrading.
 
 ### Network requests
-All requests use HTTPS. TubeSage contacts:
+Requests to hosted services use HTTPS; a self-hosted server (Ollama, an OpenAI-compatible server, or a custom base URL you set) is contacted at the address you give it, which may be plain HTTP. TubeSage contacts:
 
 - **YouTube**, to fetch video metadata and transcripts.
-- **Your configured LLM provider** (OpenAI, Anthropic, Google, or OpenRouter), to generate summaries. If you use Ollama, requests go only to your local Ollama server and nothing leaves your machine.
+- **Your configured LLM provider** (OpenAI, Anthropic, Google, or OpenRouter), to generate summaries and to list models — at its own address, or at the custom base URL you set for it. If you use Ollama or an OpenAI-compatible server, requests go only to the server address you set.
 - **ScrapeCreators** (`api.scrapecreators.com`) and **Supadata** (`api.supadata.ai`) — contacted only if you choose to configure an API key for one of them. These are optional paid transcript services used as alternatives or fallbacks to direct YouTube extraction; with no key set, neither is contacted.
 
 That is the complete list. LangChain's bundled tiktoken helper, which would otherwise fetch tokenizer data from a third-party CDN, is replaced with a network-free stub at build time, so TubeSage contacts no other hosts.

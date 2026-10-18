@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Xulosa uchun ishlatiladigan provayder. Ishonchlilik uchun OpenRouter tavsiya etiladi; arzon Gemini darajalari sekinlashtirilishi mumkin."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "OpenAI bilan mos server"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "{provider} API kaliti"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Server URL manzili, plagin maʼlumotlarida saqlanadi."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} asosiy URL manzili"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Maydonda koʻrsatilgan standart manzildan foydalanish uchun boʻsh qoldiring. Soʻrovlar API kalitingiz bilan birga siz kiritgan manzilga yuboriladi."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "{provider} uchun maxsus asosiy URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Oʻchiq: soʻrovlar {provider} xizmatining oʻz manziliga yuboriladi. Yoniq: ular model roʻyxati bilan birga quyidagi asosiy URL manziliga yuboriladi."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "OpenAI bilan mos server URL manzili"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Asosiy URL, odatda /v1 bilan tugaydi. Plagin maʼlumotlarida saqlanadi. Quyidagi API kaliti ixtiyoriy."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} modeli"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Tayyor modelni tanlang yoki quyida oʻz model nomingizni yozing."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Model nomini server koʻrsatganidek aniq yozing."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Youtube transkript plagini: {provider} uchun API kaliti sozlanmagan. API kalitingizni plagin sozlamalariga qoʻshing."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "OpenAI bilan mos server URL manzili http:// yoki https:// bilan boshlanadigan toʻliq manzil boʻlishi kerak."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "OpenAI bilan mos server uchun model nomi belgilanmagan. Plagin sozlamalarida bittasini qoʻshing."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Maxsus asosiy URL manzili http:// yoki https:// bilan boshlanadigan toʻliq manzil boʻlishi kerak."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "Xato: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Xato: Templater plagini kerak, ammo u oʻrnatilmagan yoki yoqilmagan"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Shablon fayli topilmadi: {path}. TubeSage sozlamalaridagi “Templater plagini shablon fayli” bandida fayl nomini ham, jildni ham tekshiring."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

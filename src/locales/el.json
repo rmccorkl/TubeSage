@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Πάροχος που χρησιμοποιείται για τη σύνοψη. Συνιστάται το OpenRouter για αξιοπιστία· οι φθηνότερες βαθμίδες Gemini μπορεί να περιορίζονται."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Διακομιστής συμβατός με OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Κλειδί API {provider}"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Διεύθυνση URL διακομιστή, αποθηκεύεται στα δεδομένα του πρόσθετου."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "Βασική διεύθυνση URL του {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Αφήστε το κενό για να χρησιμοποιηθεί η προεπιλεγμένη διεύθυνση που εμφανίζεται στο πεδίο. Τα αιτήματα, μαζί με το κλειδί API σας, πηγαίνουν στη διεύθυνση που εισάγετε."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Προσαρμοσμένη βασική διεύθυνση URL για {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Ανενεργό: τα αιτήματα πηγαίνουν στη δική του διεύθυνση του {provider}. Ενεργό: πηγαίνουν στη βασική διεύθυνση URL παρακάτω, μαζί με τη λίστα μοντέλων."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "Διεύθυνση URL διακομιστή συμβατού με OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Βασική διεύθυνση URL, συνήθως τελειώνει σε /v1. Αποθηκεύεται στα δεδομένα του πρόσθετου. Το κλειδί API παρακάτω είναι προαιρετικό."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Μοντέλο {provider}"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Επιλέξτε έτοιμο μοντέλο ή πληκτρολογήστε προσαρμοσμένο όνομα παρακάτω."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Πληκτρολογήστε το όνομα του μοντέλου ακριβώς όπως το αναφέρει ο διακομιστής."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Πρόσθετο απομαγνητοφώνησης Youtube: δεν έχει οριστεί κλειδί API για {provider}. Προσθέστε το κλειδί API στις ρυθμίσεις του πρόσθετου."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "Η διεύθυνση URL του διακομιστή που είναι συμβατός με OpenAI πρέπει να είναι πλήρης και να ξεκινά με http:// ή https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Δεν έχει οριστεί όνομα μοντέλου για τον διακομιστή που είναι συμβατός με OpenAI. Προσθέστε ένα στις ρυθμίσεις του πρόσθετου."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Η προσαρμοσμένη βασική διεύθυνση URL πρέπει να είναι πλήρης και να ξεκινά με http:// ή https://."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "Σφάλμα: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Σφάλμα: απαιτείται το πρόσθετο Templater, αλλά δεν είναι εγκατεστημένο ή ενεργοποιημένο"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Το αρχείο προτύπου δεν βρέθηκε: {path}. Ελέγξτε και το όνομα του αρχείου και τον φάκελο στη ρύθμιση του TubeSage «Αρχείο προτύπου του πρόσθετου Templater»."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

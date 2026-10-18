@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Sniedzējs, kas veido kopsavilkumu. Uzticamībai ieteicams OpenRouter; lētākie Gemini līmeņi var tikt ierobežoti."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Ar OpenAI saderīgs serveris"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "{provider} API atslēga"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Servera URL, glabājas spraudņa datos."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} bāzes URL"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Atstājiet tukšu, lai izmantotu laukā redzamo noklusējuma adresi. Pieprasījumi kopā ar jūsu API atslēgu tiek sūtīti uz ievadīto adresi."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "Pielāgots {provider} bāzes URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Izslēgts: pieprasījumi tiek sūtīti uz {provider} adresi. Ieslēgts: tie tiek sūtīti uz zemāk norādīto bāzes URL, ieskaitot modeļu sarakstu."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "Ar OpenAI saderīgā servera URL"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Bāzes URL, parasti beidzas ar /v1. Glabājas spraudņa datos. Zemāk esošā API atslēga nav obligāta."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} modelis"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Izvēlieties sagatavotu modeli vai zemāk ievadiet savu modeļa nosaukumu."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Ievadiet modeļa nosaukumu tieši tā, kā to norāda serveris."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Youtube transkriptu spraudnis: pakalpojumam {provider} nav iestatīta API atslēga. Pievienojiet savu API atslēgu spraudņa iestatījumos."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "Ar OpenAI saderīgā servera URL jābūt pilnai adresei, kas sākas ar http:// vai https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Ar OpenAI saderīgajam serverim nav iestatīts modeļa nosaukums. Pievienojiet to spraudņa iestatījumos."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "Pielāgotajam bāzes URL jābūt pilnai adresei, kas sākas ar http:// vai https://."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "Kļūda: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Kļūda: nepieciešams spraudnis Templater, taču tas nav instalēts vai ieslēgts"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Veidnes fails nav atrasts: {path}. Pārbaudiet gan faila nosaukumu, gan mapi TubeSage iestatījumā “Templater spraudņa veidnes fails”."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

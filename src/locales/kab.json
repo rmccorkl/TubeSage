@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Amefki ara yesseqdec i ugzul. Yettwawelleh OpenRouter ɣef twuridt-is; iswiren irxisen n Gemini zemren ad ttwaḥebsen."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Aqeddac imsaḍuf d OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Tasarut API n {provider}"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL n uqeddac, yettwaḥrez deg yisefka n usiɣzef."
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "URL azadur n {provider}"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "Eǧǧ-it d ilem i useqdec n tansa tamezwert i d-yettban deg wurti. Tuttriwin, akked tsarut-ik API, ad ruḥent ɣer tansa i tettaruḍ."
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "URL azadur udmawan n {provider}"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "Yensa: tuttriwin ad ruḥent ɣer tansa n {provider} s yiman-is. Yermed: ad ruḥent ɣer URL azadur ddaw-a, akked tebdart n tmudalin."
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "URL n uqeddac imsaḍuf d OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "URL azadur, s umata ifukk s /v1. Yettwaḥrez deg yisefka n usiɣzef. Tasarut API ddaw-a d tafrayant."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Tamudelt n {provider}"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Fren tamudelt tuheggit neɣ aru isem n tmudelt tudmawant ddaw-a."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Aru isem n tmudelt akken i t-id-yeskan uqeddac."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Asiɣzef n yiḍrisen Youtube: ulac tasarut API yettwaslen i {provider}. Rnu tasarut-ik API deg yiɣewwaṛen n usiɣzef."
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "URL n uqeddac imsaḍuf d OpenAI ilaq ad yili d tansa taččurant i yebdan s http:// neɣ https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Ulac isem n tmudelt i uqeddac imsaḍuf d OpenAI. Rnu yiwen deg yiɣewwaṛen n usiɣzef."
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "URL azadur udmawan ilaq ad yili d tansa taččurant i yebdan s http:// neɣ https://."
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "Tuccḍa: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "Tuccḍa: ilaq usiɣzef Templater, maca ur yettwasbedd ara neɣ ur yermid ara"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "Ulac afaylu n tmudemt: {path}. Senqed isem n ufaylu akked ukaram deg uɣewwar n TubeSage «Afaylu n tmudemt n usiɣzef Templater»."
     },
     "notice.note.created": {
         "original": "Created note: {name}",

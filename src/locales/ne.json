@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "सारांशका लागि प्रयोग हुने प्रदायक। भरपर्दोपनका लागि OpenRouter सिफारिस गरिन्छ; कम मूल्यका Gemini तह सुस्त हुन सक्छन्।"
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "OpenAI-अनुकूल सर्भर"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "{provider} API कुञ्जी"
@@ -163,6 +167,30 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "सर्भरको URL, प्लगइन डेटामा राखिन्छ।"
     },
+    "settings.llm.baseUrl.name": {
+        "original": "{provider} base URL",
+        "translation": "{provider} को आधार URL"
+    },
+    "settings.llm.baseUrl.desc": {
+        "original": "Leave blank to use the default shown in the field. Requests, including your API key, go to the address you enter.",
+        "translation": "फिल्डमा देखाइएको पूर्वनिर्धारित ठेगाना प्रयोग गर्न खाली छोड्नुहोस्। तपाईंको API कुञ्जीसहित अनुरोधहरू तपाईंले लेखेको ठेगानामा जान्छन्।"
+    },
+    "settings.llm.baseUrl.toggle.name": {
+        "original": "Custom {provider} base URL",
+        "translation": "{provider} को आफ्नै आधार URL"
+    },
+    "settings.llm.baseUrl.toggle.desc": {
+        "original": "Off: requests go to {provider}'s own address. On: they go to the base URL below, model list included.",
+        "translation": "बन्द: अनुरोधहरू {provider} को आफ्नै ठेगानामा जान्छन्। खुला: मोडेल सूचीसहित तिनीहरू तलको आधार URL मा जान्छन्।"
+    },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "OpenAI-अनुकूल सर्भरको URL"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "आधार URL, प्रायः /v1 मा टुङ्गिन्छ। प्लगइन डेटामा राखिन्छ। तलको API कुञ्जी ऐच्छिक हो।"
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} मोडेल"
@@ -170,6 +198,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "तयारी मोडेल छान्नुहोस् वा तल आफ्नै मोडेलको नाम लेख्नुहोस्।"
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "सर्भरले सूचीमा देखाए जस्तै मोडेलको नाम ठ्याक्कै लेख्नुहोस्।"
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -455,6 +487,18 @@
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Youtube प्रतिलिपि प्लगइन: {provider} का लागि API कुञ्जी सेट गरिएको छैन। प्लगइन सेटिङमा आफ्नो API कुञ्जी थप्नुहोस्।"
     },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "OpenAI-अनुकूल सर्भरको URL http:// वा https:// बाट सुरु हुने पूरा ठेगाना हुनुपर्छ।"
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "OpenAI-अनुकूल सर्भरका लागि मोडेलको नाम सेट गरिएको छैन। प्लगइन सेटिङमा एउटा थप्नुहोस्।"
+    },
+    "notice.baseUrl.invalid": {
+        "original": "The custom base URL must be a full address starting with http:// or https://.",
+        "translation": "आफ्नो आधार URL http:// वा https:// बाट सुरु हुने पूरा ठेगाना हुनुपर्छ।"
+    },
     "notice.job.failed": {
         "original": "Error: {error}",
         "translation": "त्रुटि: {error}"
@@ -482,6 +526,10 @@
     "notice.templater.required": {
         "original": "Error: Templater plugin is required but not installed or enabled",
         "translation": "त्रुटि: Templater प्लगइन चाहिन्छ, तर यो स्थापना वा सक्रिय गरिएको छैन"
+    },
+    "notice.template.notFound": {
+        "original": "Template file not found: {path}. Check both the file name and the folder in the TubeSage setting \"Templater plugin template file\".",
+        "translation": "टेम्प्लेट फाइल फेला परेन: {path}। TubeSage को “Templater प्लगइनको टेम्प्लेट फाइल” सेटिङमा फाइलको नाम र फोल्डर दुवै जाँच गर्नुहोस्।"
     },
     "notice.note.created": {
         "original": "Created note: {name}",
