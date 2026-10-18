@@ -1,6 +1,6 @@
 {
   "name": "tubesage",
-  "version": "1.13.3",
+  "version": "1.14.0",
   "description": "Create comprehensive notes from YouTube transcripts using LLMs.",
   "main": "main.js",
   "scripts": {
