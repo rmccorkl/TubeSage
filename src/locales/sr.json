@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Добављач који прави сажетак. Ради поузданости препоручује се OpenRouter; јефтинији нивои услуге Gemini могу бити успорени."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Сервер компатибилан са OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Кључ за API добављача {provider}"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL сервера, чува се у подацима додатка."
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "URL сервера компатибилног са OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Основни URL, обично се завршава са /v1. Чува се у подацима додатка. Кључ за API испод није обавезан."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Модел добављача {provider}"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Изаберите понуђени модел или испод унесите сопствени назив модела."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Унесите назив модела тачно онако како га сервер наводи."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Додатак за транскрипте са Youtube: за {provider} није подешен кључ за API. Додајте свој кључ за API у подешавањима додатка."
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "URL сервера компатибилног са OpenAI мора бити пуна адреса која почиње са http:// или https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "За сервер компатибилан са OpenAI није подешен назив модела. Додајте га у подешавањима додатка."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

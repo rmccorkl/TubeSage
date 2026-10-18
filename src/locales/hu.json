@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Az összefoglalót készítő szolgáltató. Megbízhatóság miatt az OpenRouter ajánlott; az olcsóbb Gemini csomagok korlátozhatók."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "OpenAI-kompatibilis kiszolgáló"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "{provider} API-kulcs"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Kiszolgáló URL-je, a bővítmény adataiban tárolva."
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "Az OpenAI-kompatibilis kiszolgáló URL-je"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Alap-URL, általában /v1 végződésű. A bővítmény adataiban tárolva. Az alábbi API-kulcs megadása nem kötelező."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} modell"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Válassz kész modellt, vagy írj be lent saját modellnevet."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Írd be a modell nevét pontosan úgy, ahogy a kiszolgáló felsorolja."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Youtube-átirat bővítmény: a(z) {provider} szolgáltatáshoz nincs API-kulcs beállítva. Add meg az API-kulcsodat a bővítmény beállításaiban."
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "Az OpenAI-kompatibilis kiszolgáló URL-jének teljes, http:// vagy https:// kezdetű címnek kell lennie."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Az OpenAI-kompatibilis kiszolgálóhoz nincs modellnév megadva. Add meg a bővítmény beállításaiban."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

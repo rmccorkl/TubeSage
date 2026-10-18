@@ -13,6 +13,13 @@ export interface YouTubeTranscriptSettings {
     selectedLLM: string;
     apiKeys: Record<string, string>;
     selectedModels: Record<string, string>;
+    /**
+     * Base URL of the self-hosted OpenAI-compatible server (#25). Its own
+     * setting rather than its apiKeys entry, unlike Ollama's: this provider
+     * has two values, and the address is not a secret, so it lives in plugin
+     * data while the optional key goes to secret storage.
+     */
+    openaiCompatibleBaseUrl: string;
     temperature: number;
     maxTokens: number;
     
@@ -93,15 +100,19 @@ export const DEFAULT_SETTINGS: YouTubeTranscriptSettings = {
         anthropic: '',
         google: '',
         ollama: 'http://localhost:11434',
-        openrouter: ''
+        openrouter: '',
+        'openai-compatible': ''
     },
     selectedModels: {
         openai: 'gpt-4-turbo',
         anthropic: 'claude-3-sonnet-20240229',
         google: 'gemini-1.5-pro',
         ollama: 'llama3.1',
-        openrouter: 'openai/gpt-4o'
+        openrouter: 'openai/gpt-4o',
+        // No default: only the user knows what their server serves.
+        'openai-compatible': ''
     },
+    openaiCompatibleBaseUrl: '',
     temperature: 0.7,
     maxTokens: 1000,
     
@@ -115,6 +126,7 @@ export const DEFAULT_SETTINGS: YouTubeTranscriptSettings = {
         google: [],
         ollama: [],
         openrouter: [],
+        'openai-compatible': [],
     },
 
 

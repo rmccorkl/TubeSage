@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Pembekal yang digunakan untuk meringkaskan. OpenRouter disyorkan demi kebolehharapan; peringkat Gemini yang murah mungkin dikenakan had kadar."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Pelayan serasi OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Kunci API {provider}"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL pelayan, disimpan dalam data pemalam."
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "URL pelayan serasi OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "URL asas, biasanya berakhir dengan /v1. Disimpan dalam data pemalam. Kunci API di bawah adalah pilihan."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Model {provider}"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Pilih model pratetap atau taipkan nama model tersuai di bawah."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Taipkan nama model tepat seperti yang disenaraikan oleh pelayan."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Pemalam transkrip Youtube: tiada kunci API ditetapkan untuk {provider}. Sila tambah kunci API anda dalam tetapan pemalam."
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "URL pelayan serasi OpenAI mestilah alamat penuh yang bermula dengan http:// atau https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Tiada nama model ditetapkan untuk pelayan serasi OpenAI. Sila tambah satu dalam tetapan pemalam."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

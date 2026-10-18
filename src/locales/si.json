@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "සාරාංශ කිරීමට භාවිත වන සපයන්නා. විශ්වාසනීයත්වය සඳහා OpenRouter නිර්දේශ කෙරේ; අඩු මිල Gemini ස්ථර අනුපාත සීමාවට ලක් විය හැක."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "OpenAI සමඟ ගැළපෙන සේවාදායකය"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "{provider} API යතුර"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "සේවාදායක URL එක, ප්ලගින දත්තවල තැන්පත් වේ."
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "OpenAI සමඟ ගැළපෙන සේවාදායකයේ URL"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "මූලික URL එක, සාමාන්‍යයෙන් /v1 න් අවසන් වේ. ප්ලගින දත්තවල තැන්පත් වේ. පහත API යතුර අත්‍යවශ්‍ය නොවේ."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} ආකෘතිය"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "පෙර සැකසූ ආකෘතියක් තෝරන්න, නැතහොත් පහතින් අභිරුචි ආකෘති නමක් ටයිප් කරන්න."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "සේවාදායකය දක්වන ආකාරයටම ආකෘති නම නිවැරදිව ටයිප් කරන්න."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Youtube පිටපත් ප්ලගිනය: {provider} සඳහා API යතුරක් සකසා නැත. ඔබේ API යතුර ප්ලගින සැකසුම්වල එක් කරන්න."
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "OpenAI සමඟ ගැළපෙන සේවාදායකයේ URL එක http:// හෝ https:// න් ආරම්භ වන සම්පූර්ණ ලිපිනයක් විය යුතුය."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "OpenAI සමඟ ගැළපෙන සේවාදායකය සඳහා ආකෘති නමක් සකසා නැත. ප්ලගින සැකසුම්වල එකක් එක් කරන්න."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

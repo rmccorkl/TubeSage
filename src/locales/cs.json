@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Poskytovatel použitý pro shrnutí. Pro spolehlivost doporučujeme OpenRouter; levnější úrovně Gemini bývají omezovány."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Server kompatibilní s OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Klíč API {provider}"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Adresa URL serveru, uložená v datech pluginu."
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "Adresa URL serveru kompatibilního s OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Základní adresa URL, obvykle končí na /v1. Uložená v datech pluginu. Klíč API níže je volitelný."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Model {provider}"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Vyberte přednastavený model nebo níže zadejte vlastní název modelu."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Zadejte název modelu přesně tak, jak ho uvádí server."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Plugin přepisu Youtube: pro {provider} není nastaven žádný klíč API. Přidejte svůj klíč API v nastavení pluginu."
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "Adresa URL serveru kompatibilního s OpenAI musí být úplná adresa začínající http:// nebo https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Pro server kompatibilní s OpenAI není nastaven žádný název modelu. Přidejte ho v nastavení pluginu."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

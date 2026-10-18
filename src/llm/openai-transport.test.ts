@@ -8,8 +8,9 @@ vi.mock("obsidian", () => ({ requestUrl }));
 import type { ChatOpenAI } from "@langchain/openai";
 /** What the OpenAI SDK stores as its transport; named here to keep `globalThis` out of the file. */
 type FetchLike = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
-import { buildOpenAIModel, buildOpenRouterModel } from "./langchain-client";
+import { buildOpenAIModel, buildOpenAiCompatibleModel, buildOpenRouterModel } from "./langchain-client";
 import { DEFAULT_REQUEST_TIMEOUT_MS, setRequestBudgetMs } from "../utils/request-budget";
+import { t } from "../i18n";
 
 /**
  * The OpenAI client ChatOpenAI actually builds.
@@ -32,6 +33,13 @@ function builtClient(model: ChatOpenAI): { fetch: FetchLike; baseURL?: string; t
 }
 
 const MODEL_OPTIONS = { apiKey: "sk-test-key", model: "gpt-4o", temperature: 0.2, maxTokens: 1000 };
+
+/** A self-hosted server on the local network, over plain http as most of them are (#25). */
+const LOCAL_SERVER = "http://192.168.1.20:1234/v1";
+
+/** The custom endpoint's builder in the shape the shared loops below call. */
+const buildLocalServerModel = (options: typeof MODEL_OPTIONS) =>
+  buildOpenAiCompatibleModel({ ...options, baseURL: LOCAL_SERVER });
 
 beforeEach(() => {
   requestUrl.mockReset();
@@ -57,6 +65,7 @@ describe("the ChatOpenAI paths run on OUR transport (#19)", () => {
   for (const [name, build] of [
     ["OpenAI", buildOpenAIModel],
     ["OpenRouter", buildOpenRouterModel],
+    ["OpenAI-compatible server", buildLocalServerModel],
   ] as const) {
     it(`${name}: the built client's fetch is the shim, and a request through it reaches requestUrl`, async () => {
       const client = builtClient(build(MODEL_OPTIONS));
@@ -166,6 +175,7 @@ describe("the configured budget is the one that applies, not the SDK's ten minut
   for (const [name, build] of [
     ["OpenAI", buildOpenAIModel],
     ["OpenRouter", buildOpenRouterModel],
+    ["OpenAI-compatible server", buildLocalServerModel],
   ] as const) {
     it(`${name}: a request outlives the SDK's default and is bounded at the configured budget`, async () => {
       requestUrl.mockReturnValue(new Promise(() => undefined));
@@ -193,4 +203,69 @@ describe("the configured budget is the one that applies, not the SDK's ten minut
       expect(outcome).toMatch(/timed out|stopped waiting/i);
     });
   }
+});
+
+describe("the OpenAI-compatible server is ChatOpenAI at the user's address (#25)", () => {
+  /** A chat completion as a local server returns one; the content type and `usage` matter (see the OpenRouter header test). */
+  function answerWith(content: string): void {
+    requestUrl.mockResolvedValue({
+      status: 200,
+      headers: { "content-type": "application/json" },
+      text: JSON.stringify({
+        id: "chatcmpl-local",
+        object: "chat.completion",
+        created: 0,
+        model: "llama-3.1-8b-instruct",
+        choices: [{ index: 0, message: { role: "assistant", content }, finish_reason: "stop" }],
+        usage: { prompt_tokens: 3, completion_tokens: 2, total_tokens: 5 },
+      }),
+    });
+  }
+
+  function sentRequest(): { url: string; headers: Record<string, string> } {
+    return requestUrl.mock.calls[0][0] as { url: string; headers: Record<string, string> };
+  }
+
+  it("builds the client at the user's base URL, on the shim, without OpenRouter's attribution headers", () => {
+    const model = buildLocalServerModel(MODEL_OPTIONS);
+    expect(builtClient(model).baseURL).toBe(LOCAL_SERVER);
+    const configured = (model as unknown as {
+      clientConfig: { defaultHeaders?: Record<string, string> };
+    }).clientConfig;
+    // OpenRouter's headers are OpenRouter's to ask for: a user's own server
+    // should not be told about TubeSage's GitHub page.
+    expect(configured.defaultHeaders).toBeUndefined();
+  });
+
+  it("works with a BLANK key: the request goes out with a placeholder bearer token and the answer comes back", async () => {
+    answerWith("summary from the local server");
+
+    const response: unknown = await buildOpenAiCompatibleModel({ ...MODEL_OPTIONS, apiKey: "", baseURL: LOCAL_SERVER }).invoke(["hello"]);
+
+    expect((response as { content: unknown }).content).toBe("summary from the local server");
+    const sent = sentRequest();
+    expect(sent.url).toBe(`${LOCAL_SERVER}/chat/completions`);
+    expect(sent.headers.authorization).toBe("Bearer not-needed");
+    expect(sent.headers["http-referer"]).toBeUndefined();
+    expect(sent.headers["x-title"]).toBeUndefined();
+  });
+
+  it("treats a key of only spaces as blank, and sends a real key when there is one", async () => {
+    answerWith("ok");
+    await buildOpenAiCompatibleModel({ ...MODEL_OPTIONS, apiKey: "   ", baseURL: LOCAL_SERVER }).invoke(["hello"]);
+    expect(sentRequest().headers.authorization).toBe("Bearer not-needed");
+
+    requestUrl.mockClear();
+    await buildOpenAiCompatibleModel({ ...MODEL_OPTIONS, apiKey: "local-key", baseURL: LOCAL_SERVER }).invoke(["hello"]);
+    expect(sentRequest().headers.authorization).toBe("Bearer local-key");
+  });
+
+  it.each([
+    ["no scheme", "192.168.1.20:1234/v1"],
+    ["a scheme it cannot use", "ftp://192.168.1.20/v1"],
+    ["blank", ""],
+  ])("refuses an address with %s, with the message the settings tab shows, before any request", (_why, baseURL) => {
+    expect(() => buildOpenAiCompatibleModel({ ...MODEL_OPTIONS, baseURL })).toThrow(t("notice.openaiCompatible.invalidUrl"));
+    expect(requestUrl).not.toHaveBeenCalled();
+  });
 });

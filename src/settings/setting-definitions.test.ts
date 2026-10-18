@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { SettingDefinition, SettingDefinitionGroup, SettingDefinitionItem, SettingDefinitionPage } from "obsidian";
+import type { Setting, SettingDefinition, SettingDefinitionGroup, SettingDefinitionItem, SettingDefinitionPage } from "obsidian";
 import { JOBS_KEY } from "../jobs/job-store";
 import { COLLECTIONS_KEY } from "../jobs/collection-record";
 import { settingsForPersist } from "../runtime/settings-persist";
@@ -8,6 +8,7 @@ import type { YouTubeTranscriptSettings } from "./settings-defaults";
 import { buildSettingDefinitions, readSettingValue, writeSettingValue } from "./setting-definitions";
 import type { SettingsHost } from "./setting-definitions";
 import legacy from "./__fixtures__/legacy-display-rows.json";
+import { t } from "../i18n";
 
 // The fixture is a snapshot of every `new Setting(` row the legacy imperative
 // display() produced (main.ts @ 80baa72), in render order, taken BEFORE that
@@ -132,6 +133,10 @@ const POST_LEGACY_ROWS: string[] = [
   // #19: the per-request budget, which became a setting once every provider
   // path routed through the shim and it was the only bound left.
   "Request timeout (ms)",
+  // #25: the self-hosted OpenAI-compatible server. Its address and key rows
+  // are rendered for every provider, as every key row is.
+  "OpenAI-compatible server URL",
+  "OpenAI-compatible server api key",
 ];
 
 describe("buildSettingDefinitions — coverage of the legacy display() rows", () => {
@@ -284,5 +289,138 @@ describe("writeSettingValue / readSettingValue — the control accessors", () =>
     await writeSettingValue(host, "apiKeys.ollama", "http://box:11434");
     expect(plugin.settings.apiKeys.ollama).toBe("http://box:11434");
     expect(plugin.saveSettings).toHaveBeenCalledTimes(1);
+  });
+});
+
+// --- the OpenAI-compatible server's rows (#25) ----------------------------
+
+/** Just enough of Obsidian's TextComponent for a render row to wire itself up and be typed into. */
+function fakeText() {
+  const listeners = new Map<string, (() => void)[]>();
+  let changed: ((value: string) => void) | null = null;
+  const component = {
+    value: "",
+    placeholder: "",
+    inputEl: {
+      type: "text",
+      addEventListener: (event: string, listener: () => void) => {
+        listeners.set(event, [...(listeners.get(event) ?? []), listener]);
+      },
+    },
+    setPlaceholder(placeholder: string) { component.placeholder = placeholder; return component; },
+    setValue(value: string) { component.value = value; return component; },
+    getValue() { return component.value; },
+    onChange(listener: (value: string) => void) { changed = listener; return component; },
+  };
+  return {
+    component,
+    /** One edit, as Obsidian reports it: the new value, then onChange. */
+    type(value: string) { component.value = value; changed?.(value); },
+    blur() { for (const listener of listeners.get("blur") ?? []) listener(); },
+  };
+}
+
+/** A Setting that records what a render row added to it. */
+function fakeSetting() {
+  const texts: ReturnType<typeof fakeText>[] = [];
+  const added: string[] = [];
+  const setting = {
+    settingEl: { addClass: () => undefined, toggleClass: () => undefined },
+    setClass: () => setting,
+    setDisabled: () => setting,
+    addText(build: (text: unknown) => unknown) {
+      const text = fakeText();
+      texts.push(text);
+      added.push("text");
+      build(text.component);
+      return setting;
+    },
+    addDropdown() { added.push("dropdown"); return setting; },
+    addExtraButton() { added.push("extraButton"); return setting; },
+  };
+  return { setting: setting as unknown as Setting, texts, added };
+}
+
+function renderRow(leaf: SettingDefinition | undefined) {
+  expect(leaf?.render, "row must be a render row").toBeTypeOf("function");
+  const fake = fakeSetting();
+  (leaf?.render as (setting: Setting) => void)(fake.setting);
+  return fake;
+}
+
+function leafNamed(leaves: SettingDefinition[], name: string): SettingDefinition | undefined {
+  return leaves.find((leaf) => leaf.name === name);
+}
+
+describe("the OpenAI-compatible server (#25)", () => {
+  const URL_ROW = "OpenAI-compatible server URL";
+  const KEY_ROW = "OpenAI-compatible server api key";
+
+  it("puts its address row directly above its key row, after every other provider's key", () => {
+    const { ordered } = walk(buildSettingDefinitions(makeHost().host));
+    const at = ordered.indexOf(URL_ROW);
+    expect(ordered.slice(at - 1, at + 2)).toEqual(["OpenRouter api key", URL_ROW, KEY_ROW]);
+  });
+
+  it("round-trips: the address persists to plugin data, the key goes to secret storage and never to data.json", () => {
+    const { writes, host: plugin } = makePluginDouble();
+    // The real setSecret (main.ts) writes to Obsidian secret storage; this one records the call.
+    const setSecret = vi.fn();
+    const host: SettingsHost = { ...plugin, setSecret };
+    const { leaves } = walk(buildSettingDefinitions(host));
+
+    renderRow(leafNamed(leaves, URL_ROW)).texts[0].type("http://192.168.1.20:1234/v1");
+    renderRow(leafNamed(leaves, KEY_ROW)).texts[0].type("local-server-key");
+
+    expect(setSecret).toHaveBeenCalledWith("openai-compatible", "local-server-key");
+    expect(host.settings.openaiCompatibleBaseUrl).toBe("http://192.168.1.20:1234/v1");
+    const saved = writes[writes.length - 1];
+    expect(saved.openaiCompatibleBaseUrl).toBe("http://192.168.1.20:1234/v1");
+    for (const payload of writes) expect(JSON.stringify(payload)).not.toContain("local-server-key");
+  });
+
+  it("judges the address on blur: a malformed one gets the clear notice, a good or blank one gets none", () => {
+    const { host, spies } = makeHost();
+    const url = renderRow(leafNamed(walk(buildSettingDefinitions(host)).leaves, URL_ROW)).texts[0];
+    expect(url.component.placeholder).toBe("http://localhost:1234/v1");
+
+    url.type("192.168.1.20:1234/v1");
+    // Typing alone says nothing: the address is half-written until the field is left.
+    expect(spies.showNotice).not.toHaveBeenCalled();
+    url.blur();
+    expect(spies.showNotice).toHaveBeenCalledWith(t("notice.openaiCompatible.invalidUrl"), 5000);
+
+    spies.showNotice.mockClear();
+    url.type("http://192.168.1.20:1234/v1");
+    url.blur();
+    url.type("");
+    url.blur();
+    expect(spies.showNotice).not.toHaveBeenCalled();
+  });
+
+  it("when selected, takes its model as free text: no dropdown, no refresh, an example model as placeholder", () => {
+    // A data.json from before the provider existed: no selectedModels entry.
+    const { host, spies } = makeHost({ selectedLLM: "openai-compatible", selectedModels: { openai: "gpt-4o" } });
+    const { leaves } = walk(buildSettingDefinitions(host));
+    const header = leaves.findIndex((leaf) => leaf.name === "OpenAI-compatible server model");
+    expect(leaves[header].desc).toBe(t("settings.llm.model.descFreeText"));
+
+    // The custom-model field's second blur listener schedules a panel refresh on `window`.
+    vi.stubGlobal("window", { setTimeout: () => 0 });
+    try {
+      const controls = renderRow(leaves[header + 1]);
+      expect(controls.added).toEqual(["text"]);
+      const model = controls.texts[0];
+      expect(model.component.placeholder).toBe("llama-3.1-8b-instruct");
+      expect(model.component.value).toBe("");
+
+      model.type("qwen2.5-7b-instruct");
+      model.blur();
+      expect(host.settings.selectedModels["openai-compatible"]).toBe("qwen2.5-7b-instruct");
+      expect(host.settings.customModelLimits["openai-compatible:qwen2.5-7b-instruct"]).toBeDefined();
+      expect(spies.saveSettings).toHaveBeenCalled();
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 });

@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "An soláthraí a úsáidtear le haghaidh achoimrithe. Moltar OpenRouter mar gheall ar a iontaofacht; féadfar na leibhéil Gemini is saoire a mhaolú."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Freastalaí comhoiriúnach le OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Eochair API {provider}"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL an fhreastalaí, stóráilte i sonraí an bhreiseáin."
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "URL an fhreastalaí atá comhoiriúnach le OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Bun-URL, a chríochnaíonn le /v1 de ghnáth. Stóráilte i sonraí an bhreiseáin. Is roghnach an eochair API thíos."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Múnla {provider}"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Roghnaigh múnla réamhshocraithe nó clóscríobh ainm múnla saincheaptha thíos."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Clóscríobh ainm an mhúnla díreach mar a liostaíonn an freastalaí é."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Breiseán tras-scríbhinní Youtube: níl eochair API cumraithe do {provider}. Cuir d'eochair API leis i socruithe an bhreiseáin."
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "Ní mór gur seoladh iomlán é URL an fhreastalaí atá comhoiriúnach le OpenAI, ag tosú le http:// nó https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Níl ainm múnla socraithe don fhreastalaí atá comhoiriúnach le OpenAI. Cuir ceann leis i socruithe an bhreiseáin."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

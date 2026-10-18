@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "用于生成摘要的提供方。推荐 OpenRouter，稳定性更好；低价的 Gemini 档位可能被限流。"
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "OpenAI 兼容服务器"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "{provider} API 密钥"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "服务器 URL，保存在插件数据中。"
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "OpenAI 兼容服务器 URL"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "基础 URL，通常以 /v1 结尾。保存在插件数据中。下方的 API 密钥为可选项。"
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} 模型"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "选择预设模型，或在下方输入自定义模型名称。"
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "请按服务器列出的名称准确输入模型名称。"
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Youtube 字幕插件：尚未为 {provider} 配置 API 密钥。请在插件设置中添加您的 API 密钥。"
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "OpenAI 兼容服务器的 URL 必须是以 http:// 或 https:// 开头的完整地址。"
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "尚未为 OpenAI 兼容服务器设置模型名称。请在插件设置中添加。"
     },
     "notice.job.failed": {
         "original": "Error: {error}",

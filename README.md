@@ -32,6 +32,7 @@ TubeSage is an Obsidian plugin that converts YouTube videos into structured note
   - Google (Gemini)
   - OpenRouter
   - Ollama (local models)
+  - An OpenAI-compatible server such as LM Studio, vLLM, llama.cpp server or LocalAI (key optional)
 - A YouTube Data API key (optional — required only for channel/playlist processing)
 
 ## Features
@@ -41,7 +42,7 @@ TubeSage is an Obsidian plugin that converts YouTube videos into structured note
 - Optional timestamp links added to section headings, linking to the moment in the video
 - Works on desktop and mobile Obsidian
 - Batch processing of YouTube channels and playlists
-- Multi-provider support: OpenAI, Anthropic, Google Gemini, OpenRouter, and Ollama
+- Multi-provider support: OpenAI, Anthropic, Google Gemini, OpenRouter, Ollama, and any OpenAI-compatible server
 - A cross-platform fetch shim so all providers work on mobile without Node.js dependencies
 - Live progress while a job runs — a status-bar spinner on desktop, a tappable notice on mobile
 
@@ -60,9 +61,10 @@ Choose and configure a provider in settings:
 - **Anthropic** — Claude 3 family models.
 - **Google Gemini** — Gemini Pro models.
 - **OpenRouter** — gateway access to models from multiple vendors.
-- **Ollama** — local open-source models; runs offline, requires Ollama installed and running.
+- **Ollama** — local open-source models; runs offline, requires Ollama installed and running. Ollama on another machine works too: put that machine's address in the Ollama field, for example `http://192.168.1.20:11434` (Ollama itself must be listening on the network, e.g. started with `OLLAMA_HOST=0.0.0.0`).
+- **OpenAI-compatible server** — any self-hosted server that speaks the OpenAI chat API, such as LM Studio, vLLM, llama.cpp server or LocalAI. Enter its base URL, which usually ends in `/v1` (for example `http://192.168.1.20:1234/v1`; plain `http://` is accepted), and type the model name exactly as the server lists it. The API key is optional: leave it blank if the server does not check one.
 
-**Where API keys are stored:** cloud-provider keys (OpenAI, Anthropic, Google, OpenRouter) are saved in Obsidian's native secret storage, not in the plugin's `data.json`. Type a key into its provider field and it is written to the secret store automatically — there is no separate setting to enable this, and it is not optional. The Ollama field holds a server URL rather than a secret, so it remains in plugin data.
+**Where API keys are stored:** cloud-provider keys (OpenAI, Anthropic, Google, OpenRouter) and the optional OpenAI-compatible server key are saved in Obsidian's native secret storage, not in the plugin's `data.json`. Type a key into its provider field and it is written to the secret store automatically — there is no separate setting to enable this, and it is not optional. The Ollama field and the OpenAI-compatible server URL hold server addresses rather than secrets, so they remain in plugin data.
 
 ### 3. Other settings
 - **Summary modes**: Fast (brief) or Extensive (detailed).
@@ -127,13 +129,13 @@ Architecture diagrams are in the `docs/` directory:
 ## Privacy & Security
 
 ### API keys
-Cloud-provider API keys (OpenAI, Anthropic, Google, OpenRouter) are stored in Obsidian's native secret storage, never written to the plugin's `data.json`. Keys saved by versions older than 1.3.0 are migrated into secret storage automatically the first time you open the plugin after upgrading.
+Cloud-provider API keys (OpenAI, Anthropic, Google, OpenRouter) and the optional OpenAI-compatible server key are stored in Obsidian's native secret storage, never written to the plugin's `data.json`. Keys saved by versions older than 1.3.0 are migrated into secret storage automatically the first time you open the plugin after upgrading.
 
 ### Network requests
-All requests use HTTPS. TubeSage contacts:
+Requests to hosted services use HTTPS; a self-hosted server (Ollama or an OpenAI-compatible server) is contacted at the address you set, which may be plain HTTP. TubeSage contacts:
 
 - **YouTube**, to fetch video metadata and transcripts.
-- **Your configured LLM provider** (OpenAI, Anthropic, Google, or OpenRouter), to generate summaries. If you use Ollama, requests go only to your local Ollama server and nothing leaves your machine.
+- **Your configured LLM provider** (OpenAI, Anthropic, Google, or OpenRouter), to generate summaries. If you use Ollama or an OpenAI-compatible server, requests go only to the server address you set.
 - **ScrapeCreators** (`api.scrapecreators.com`) and **Supadata** (`api.supadata.ai`) — contacted only if you choose to configure an API key for one of them. These are optional paid transcript services used as alternatives or fallbacks to direct YouTube extraction; with no key set, neither is contacted.
 
 That is the complete list. LangChain's bundled tiktoken helper, which would otherwise fetch tokenizer data from a third-party CDN, is replaced with a network-free stub at build time, so TubeSage contacts no other hosts.

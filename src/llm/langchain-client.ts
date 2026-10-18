@@ -9,6 +9,8 @@ import { llmCallTimingMessage } from "./call-timing";
 import { requestBudgetMs } from "../utils/request-budget";
 import type { LlmCallOutcome } from "./call-timing";
 import { obsidianFetch } from "../utils/fetch-shim";
+import { t } from "../i18n";
+import { parseBaseUrl, PLACEHOLDER_API_KEY } from "./openai-compatible";
 
 const logger = getLogger('LANGCHAIN');
 
@@ -143,6 +145,38 @@ export function buildOpenRouterModel(options: OpenAiModelOptions): ChatOpenAI {
   });
 }
 
+/** The custom endpoint's model needs one thing the other two do not: where the server is. */
+interface OpenAiCompatibleModelOptions extends OpenAiModelOptions {
+  baseURL: string;
+}
+
+/**
+ * A self-hosted OpenAI-compatible server (#25): LM Studio, vLLM, llama.cpp
+ * server, LocalAI. Built as buildOpenRouterModel is — same SDK, transport,
+ * budget and retry policy, for the reasons given there — but at the user's
+ * base URL and without OpenRouter's attribution headers, which are OpenRouter's
+ * to ask for and no one else's. A blank key sends PLACEHOLDER_API_KEY. The
+ * address is judged again here, not only in the settings tab, because a
+ * hand-edited data.json can hold one the tab never saw.
+ */
+export function buildOpenAiCompatibleModel(options: OpenAiCompatibleModelOptions): ChatOpenAI {
+  const baseURL = parseBaseUrl(options.baseURL);
+  if (baseURL === null) {
+    throw new Error(t('notice.openaiCompatible.invalidUrl'));
+  }
+  return new ChatOpenAI({
+    ...getOpenAiConfiguration({
+      apiKey: options.apiKey.trim() || PLACEHOLDER_API_KEY,
+      configuration: { baseURL }
+    }),
+    timeout: requestBudgetMs(),
+    modelName: options.model,
+    maxTokens: options.maxTokens,
+    temperature: options.temperature,
+    maxRetries: 0
+  });
+}
+
 /**
  * A unified client for multiple LLM providers using LangChain
  */
@@ -152,19 +186,23 @@ export class LangChainClient {
   private apiKey: string;
   private temperature: number;
   private maxTokens: number;
-  
+  private baseURL: string;
+
   constructor(options: {
     provider: string;
     model: string;
     apiKey: string;
     temperature?: number;
     maxTokens?: number;
+    /** The OpenAI-compatible server's address; read by that provider only. */
+    baseURL: string;
   }) {
     this.provider = options.provider;
     this.model = options.model;
     this.apiKey = options.apiKey;
     this.temperature = options.temperature ?? 0.7;
     this.maxTokens = options.maxTokens ?? 1024;
+    this.baseURL = options.baseURL;
     
     // Enhanced debugging for Google provider
     logger.debug(`[CONSTRUCTOR] Creating LangChain client for provider: '${this.provider}' with model: '${this.model}'`);
@@ -381,6 +419,20 @@ export class LangChainClient {
             model: this.model,
             temperature: this.temperature,
             maxTokens: this.maxTokens,
+          });
+
+          const response = await model.invoke(messages);
+          return String(extractContent(response));
+        }
+
+        case 'openai-compatible': {
+          logger.debug(`Using OpenAI-compatible server with model ${this.model}`);
+          const model = buildOpenAiCompatibleModel({
+            apiKey: this.apiKey,
+            model: this.model,
+            temperature: this.temperature,
+            maxTokens: this.maxTokens,
+            baseURL: this.baseURL,
           });
 
           const response = await model.invoke(messages);

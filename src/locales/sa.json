@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "संक्षेपार्थम् उपयुज्यमानः प्रदाता। विश्वसनीयतायै OpenRouter संस्तूयते; अल्पमूल्यानि Gemini स्तराणि मन्दीकर्तुं शक्यन्ते।"
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "OpenAI-अनुकूलः परिसेवकः"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "{provider} API कुञ्जिका"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "परिसेवकस्य URL, संयोजकदत्तांशेषु रक्ष्यते।"
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "OpenAI-अनुकूलस्य परिसेवकस्य URL"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "मूलं URL, प्रायः /v1 इत्यनेन समाप्यते। संयोजकदत्तांशेषु रक्ष्यते। अधःस्था API कुञ्जिका ऐच्छिकी।"
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} निदर्शनम्"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "सिद्धं निदर्शनं वृणोतु अथवा अधः स्वनिर्मितनिदर्शनस्य नाम लिखतु।"
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "परिसेवकः यथा सूचयति तथैव निदर्शनस्य नाम यथावत् लिखतु।"
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Youtube प्रतिलेखसंयोजकः: {provider} कृते API कुञ्जिका न विन्यस्ता। संयोजकविन्यासेषु स्वकीयां API कुञ्जिकां योजयतु।"
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "OpenAI-अनुकूलस्य परिसेवकस्य URL http:// अथवा https:// इत्यनेन आरभमाणः पूर्णः सङ्केतः भवेत्।"
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "OpenAI-अनुकूलस्य परिसेवकस्य कृते निदर्शननाम न विन्यस्तम्। संयोजकविन्यासेषु एकं योजयतु।"
     },
     "notice.job.failed": {
         "original": "Error: {error}",

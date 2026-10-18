@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "ارائه‌دهنده‌ای که برای خلاصه‌سازی به کار می‌رود. OpenRouter برای پایداری توصیه می‌شود؛ رده‌های ارزان‌تر Gemini ممکن است محدود شوند."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "سرور سازگار با OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "کلید API {provider}"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "نشانی URL سرور، در داده‌های افزونه ذخیره می‌شود."
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "نشانی URL سرور سازگار با OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "نشانی URL پایه، که معمولاً به /v1 ختم می‌شود. در داده‌های افزونه ذخیره می‌شود. کلید API زیر اختیاری است."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "مدل {provider}"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "یک مدل آماده انتخاب کنید یا نام مدل دلخواه را در زیر بنویسید."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "نام مدل را دقیقاً همان‌طور که سرور فهرست می‌کند بنویسید."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "افزونهٔ رونوشت Youtube: برای {provider} کلید API تنظیم نشده است. کلید API خود را در تنظیمات افزونه بیفزایید."
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "نشانی URL سرور سازگار با OpenAI باید نشانی کاملی باشد که با http:// یا https:// شروع می‌شود."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "هیچ نام مدلی برای سرور سازگار با OpenAI تنظیم نشده است. یکی را در تنظیمات افزونه بیفزایید."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

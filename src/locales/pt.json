@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Fornecedor utilizado para o resumo. Recomenda-se o OpenRouter pela fiabilidade; os escalões mais baratos do Gemini podem ser limitados."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Servidor compatível com OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Chave da API {provider}"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL do servidor, guardado nos dados do plugin."
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "URL do servidor compatível com OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "URL base, que costuma terminar em /v1. Guardado nos dados do plugin. A chave de API abaixo é opcional."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Modelo {provider}"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Selecione um modelo predefinido ou escreva abaixo um nome de modelo personalizado."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Escreva o nome do modelo exatamente como o servidor o apresenta."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Plugin de transcrição do Youtube: não há chave de API configurada para {provider}. Adicione a sua chave de API nas definições do plugin."
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "O URL do servidor compatível com OpenAI tem de ser um endereço completo que comece por http:// ou https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Não está definido nenhum nome de modelo para o servidor compatível com OpenAI. Adicione um nas definições do plugin."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

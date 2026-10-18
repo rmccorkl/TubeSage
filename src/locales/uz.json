@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Xulosa uchun ishlatiladigan provayder. Ishonchlilik uchun OpenRouter tavsiya etiladi; arzon Gemini darajalari sekinlashtirilishi mumkin."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "OpenAI bilan mos server"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "{provider} API kaliti"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Server URL manzili, plagin maʼlumotlarida saqlanadi."
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "OpenAI bilan mos server URL manzili"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Asosiy URL, odatda /v1 bilan tugaydi. Plagin maʼlumotlarida saqlanadi. Quyidagi API kaliti ixtiyoriy."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} modeli"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Tayyor modelni tanlang yoki quyida oʻz model nomingizni yozing."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Model nomini server koʻrsatganidek aniq yozing."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Youtube transkript plagini: {provider} uchun API kaliti sozlanmagan. API kalitingizni plagin sozlamalariga qoʻshing."
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "OpenAI bilan mos server URL manzili http:// yoki https:// bilan boshlanadigan toʻliq manzil boʻlishi kerak."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "OpenAI bilan mos server uchun model nomi belgilanmagan. Plagin sozlamalarida bittasini qoʻshing."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

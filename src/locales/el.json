@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Πάροχος που χρησιμοποιείται για τη σύνοψη. Συνιστάται το OpenRouter για αξιοπιστία· οι φθηνότερες βαθμίδες Gemini μπορεί να περιορίζονται."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Διακομιστής συμβατός με OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Κλειδί API {provider}"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Διεύθυνση URL διακομιστή, αποθηκεύεται στα δεδομένα του πρόσθετου."
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "Διεύθυνση URL διακομιστή συμβατού με OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Βασική διεύθυνση URL, συνήθως τελειώνει σε /v1. Αποθηκεύεται στα δεδομένα του πρόσθετου. Το κλειδί API παρακάτω είναι προαιρετικό."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Μοντέλο {provider}"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Επιλέξτε έτοιμο μοντέλο ή πληκτρολογήστε προσαρμοσμένο όνομα παρακάτω."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Πληκτρολογήστε το όνομα του μοντέλου ακριβώς όπως το αναφέρει ο διακομιστής."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Πρόσθετο απομαγνητοφώνησης Youtube: δεν έχει οριστεί κλειδί API για {provider}. Προσθέστε το κλειδί API στις ρυθμίσεις του πρόσθετου."
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "Η διεύθυνση URL του διακομιστή που είναι συμβατός με OpenAI πρέπει να είναι πλήρης και να ξεκινά με http:// ή https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Δεν έχει οριστεί όνομα μοντέλου για τον διακομιστή που είναι συμβατός με OpenAI. Προσθέστε ένα στις ρυθμίσεις του πρόσθετου."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Leverandøren som brukes til sammendraget. OpenRouter anbefales for påliteligheten; rimeligere Gemini-nivåer kan bli strupet."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "OpenAI-kompatibel server"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "{provider} API-nøkkel"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "Server-URL, lagret i tilleggsdataene."
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "URL-en til den OpenAI-kompatible serveren"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "Grunn-URL, slutter vanligvis på /v1. Lagret i tilleggsdataene. API-nøkkelen nedenfor er valgfri."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider}-modell"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Velg en forhåndsdefinert modell, eller skriv inn et eget modellnavn nedenfor."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Skriv inn modellnavnet nøyaktig slik serveren oppgir det."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Youtube-transkripsjonstillegg: ingen API-nøkkel er satt opp for {provider}. Legg til API-nøkkelen din i innstillingene for tillegget."
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "URL-en til den OpenAI-kompatible serveren må være en fullstendig adresse som begynner med http:// eller https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Ingen modellnavn er satt for den OpenAI-kompatible serveren. Legg til et i innstillingene for tillegget."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

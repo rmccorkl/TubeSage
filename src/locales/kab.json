@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "Amefki ara yesseqdec i ugzul. Yettwawelleh OpenRouter ɣef twuridt-is; iswiren irxisen n Gemini zemren ad ttwaḥebsen."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "Aqeddac imsaḍuf d OpenAI"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "Tasarut API n {provider}"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "URL n uqeddac, yettwaḥrez deg yisefka n usiɣzef."
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "URL n uqeddac imsaḍuf d OpenAI"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "URL azadur, s umata ifukk s /v1. Yettwaḥrez deg yisefka n usiɣzef. Tasarut API ddaw-a d tafrayant."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Tamudelt n {provider}"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "Fren tamudelt tuheggit neɣ aru isem n tmudelt tudmawant ddaw-a."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "Aru isem n tmudelt akken i t-id-yeskan uqeddac."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Asiɣzef n yiḍrisen Youtube: ulac tasarut API yettwaslen i {provider}. Rnu tasarut-ik API deg yiɣewwaṛen n usiɣzef."
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "URL n uqeddac imsaḍuf d OpenAI ilaq ad yili d tansa taččurant i yebdan s http:// neɣ https://."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "Ulac isem n tmudelt i uqeddac imsaḍuf d OpenAI. Rnu yiwen deg yiɣewwaṛen n usiɣzef."
     },
     "notice.job.failed": {
         "original": "Error: {error}",

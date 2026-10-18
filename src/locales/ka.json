@@ -151,6 +151,10 @@
         "original": "Provider used for summarization. OpenRouter is recommended for reliability; lower-cost Gemini tiers can be throttled.",
         "translation": "შეჯამებისთვის გამოყენებული მომწოდებელი. საიმედოობისთვის რეკომენდებულია OpenRouter; Gemini-ის იაფი დონეები შეიძლება შეიზღუდოს."
     },
+    "settings.llm.provider.openaiCompatible": {
+        "original": "OpenAI-compatible server",
+        "translation": "OpenAI-თან თავსებადი სერვერი"
+    },
     "settings.llm.apiKey.name": {
         "original": "{provider} api key",
         "translation": "{provider} API გასაღები"
@@ -163,6 +167,14 @@
         "original": "Server URL, stored in plugin data.",
         "translation": "სერვერის URL, ინახება მოდულის მონაცემებში."
     },
+    "settings.llm.openaiCompatible.url.name": {
+        "original": "OpenAI-compatible server URL",
+        "translation": "OpenAI-თან თავსებადი სერვერის URL"
+    },
+    "settings.llm.openaiCompatible.url.desc": {
+        "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
+        "translation": "საბაზისო URL, ჩვეულებრივ /v1-ით მთავრდება. ინახება მოდულის მონაცემებში. ქვემოთ მოცემული API გასაღები არასავალდებულოა."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} მოდელი"
@@ -170,6 +182,10 @@
     "settings.llm.model.desc": {
         "original": "Select a preset model or type a custom model name below.",
         "translation": "აირჩიეთ მზა მოდელი ან ქვემოთ აკრიფეთ მორგებული მოდელის სახელი."
+    },
+    "settings.llm.model.descFreeText": {
+        "original": "Type the model name exactly as the server lists it.",
+        "translation": "აკრიფეთ მოდელის სახელი ზუსტად ისე, როგორც სერვერი ასახელებს."
     },
     "settings.llm.model.customOption": {
         "original": "Use custom model",
@@ -454,6 +470,14 @@
     "notice.apiKey.missing": {
         "original": "Youtube transcript plugin: no API key configured for {provider}. Add your API key in the plugin settings.",
         "translation": "Youtube-ის ტრანსკრიპტების მოდული: {provider}-ისთვის API გასაღები არ არის მითითებული. დაამატეთ თქვენი API გასაღები მოდულის პარამეტრებში."
+    },
+    "notice.openaiCompatible.invalidUrl": {
+        "original": "The OpenAI-compatible server URL must be a full address starting with http:// or https://.",
+        "translation": "OpenAI-თან თავსებადი სერვერის URL უნდა იყოს სრული მისამართი, რომელიც იწყება http://-ით ან https://-ით."
+    },
+    "notice.openaiCompatible.modelMissing": {
+        "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
+        "translation": "OpenAI-თან თავსებადი სერვერისთვის მოდელის სახელი არ არის მითითებული. დაამატეთ ის მოდულის პარამეტრებში."
     },
     "notice.job.failed": {
         "original": "Error: {error}",
