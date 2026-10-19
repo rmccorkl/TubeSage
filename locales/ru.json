@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Пользовательский базовый URL должен быть полным адресом, начинающимся с http:// или https://.",
     "notice.job.failed": "Ошибка: {error}",
     "notice.job.cancelled": "Обработка отменена",
-    "notice.job.interrupted": "Обработка прервана",
+    "notice.job.interrupted": "Обработка прервана: {error}",
     "notice.debugNote.created": "Создана заметка об ошибке с отладочными сведениями: {file}",
     "notice.debugNote.failed": "Ошибка: {error} (отладочную заметку тоже не удалось создать)",
     "notice.transcript.noTimestamps": "Предупреждение: в транскрипте не найдены метки времени. Метки времени нужны для обработки.",

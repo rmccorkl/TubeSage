@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Pielāgotajam bāzes URL jābūt pilnai adresei, kas sākas ar http:// vai https://.",
     "notice.job.failed": "Kļūda: {error}",
     "notice.job.cancelled": "Apstrāde atcelta",
-    "notice.job.interrupted": "Apstrāde tika pārtraukta",
+    "notice.job.interrupted": "Apstrāde tika pārtraukta: {error}",
     "notice.debugNote.created": "Izveidota kļūdas piezīme ar atkļūdošanas informāciju: {file}",
     "notice.debugNote.failed": "Kļūda: {error} (arī atkļūdošanas piezīmi neizdevās izveidot)",
     "notice.transcript.noTimestamps": "Brīdinājums: transkriptā nav atrastas laika atzīmes. Laika atzīmes ir nepieciešamas apstrādei.",

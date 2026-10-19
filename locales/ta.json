@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "தனிப்பயன் அடிப்படை URL, http:// அல்லது https:// என்று தொடங்கும் முழு முகவரியாக இருக்க வேண்டும்.",
     "notice.job.failed": "பிழை: {error}",
     "notice.job.cancelled": "செயலாக்கம் ரத்துசெய்யப்பட்டது",
-    "notice.job.interrupted": "செயலாக்கம் தடைபட்டது",
+    "notice.job.interrupted": "செயலாக்கம் தடைபட்டது: {error}",
     "notice.debugNote.created": "பிழைத்திருத்தத் தகவலுடன் பிழைக் குறிப்பு உருவாக்கப்பட்டது: {file}",
     "notice.debugNote.failed": "பிழை: {error} (பிழைத்திருத்தக் குறிப்பையும் உருவாக்க முடியவில்லை)",
     "notice.transcript.noTimestamps": "எச்சரிக்கை: எழுத்துப்படியில் நேர முத்திரைகள் இல்லை. செயலாக்கத்திற்கு நேர முத்திரைகள் தேவை.",

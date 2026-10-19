@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Персонализираният базов URL адрес трябва да е пълен адрес, започващ с http:// или https://.",
     "notice.job.failed": "Грешка: {error}",
     "notice.job.cancelled": "Обработката е отказана",
-    "notice.job.interrupted": "Обработката е прекъсната",
+    "notice.job.interrupted": "Обработката е прекъсната: {error}",
     "notice.debugNote.created": "Създадена е бележка за грешката с данни за отстраняване на грешки: {file}",
     "notice.debugNote.failed": "Грешка: {error} (бележката за отстраняване на грешки също не беше създадена)",
     "notice.transcript.noTimestamps": "Предупреждение: в транскрипцията не са намерени времеви отметки. Времевите отметки са нужни за обработката.",

@@ -508,8 +508,8 @@
         "translation": "Procesare anulată"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "Procesarea a fost întreruptă"
+        "original": "Processing was interrupted: {error}",
+        "translation": "Procesarea a fost întreruptă: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

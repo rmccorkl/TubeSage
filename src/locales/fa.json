@@ -508,8 +508,8 @@
         "translation": "پردازش لغو شد"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "پردازش نیمه‌کاره ماند"
+        "original": "Processing was interrupted: {error}",
+        "translation": "پردازش نیمه‌کاره ماند: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Den anpassade bas-URL:en måste vara en fullständig adress som börjar med http:// eller https://.",
     "notice.job.failed": "Fel: {error}",
     "notice.job.cancelled": "Bearbetning avbruten",
-    "notice.job.interrupted": "Bearbetningen avbröts",
+    "notice.job.interrupted": "Bearbetningen avbröts: {error}",
     "notice.debugNote.created": "Felanteckning med felsökningsinformation skapad: {file}",
     "notice.debugNote.failed": "Fel: {error} (felsökningsanteckningen kunde inte heller skapas)",
     "notice.transcript.noTimestamps": "Varning: inga tidsstämplar hittades i transkriptionen. Tidsstämplar krävs för bearbetningen.",

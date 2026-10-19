@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "自定义基础 URL 必须是以 http:// 或 https:// 开头的完整地址。",
     "notice.job.failed": "错误：{error}",
     "notice.job.cancelled": "处理已取消",
-    "notice.job.interrupted": "处理已中断",
+    "notice.job.interrupted": "处理已中断：{error}",
     "notice.debugNote.created": "已创建包含调试信息的错误笔记：{file}",
     "notice.debugNote.failed": "错误：{error}（调试笔记也未能创建）",
     "notice.transcript.noTimestamps": "警告：字幕中未找到时间戳。处理需要时间戳。",

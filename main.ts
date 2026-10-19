@@ -6,7 +6,7 @@ import { TranscriptSummarizer } from './src/llm/transcript-summarizer';
 import { sanitizeFilename } from './src/utils/filename-sanitizer';
 import { handleApiError, getSafeErrorMessage } from './src/utils/error-utils';
 import { DEFAULT_REQUEST_TIMEOUT_MS, setRequestBudgetMs } from './src/utils/request-budget';
-import { getLogger, LogLevel, setGlobalLogLevel, clearLogs, getLogsForCallout } from './src/utils/logger';
+import { getLogger, LogLevel, setGlobalLogLevel, clearLogs, getLogsForCallout, logMark } from './src/utils/logger';
 import { normalizePath, ensureFolder, joinPaths, sanitizePathComponent, collectUnder } from './src/utils/path-utils';
 import { validateRequired, validateYouTubeUrl, ValidationResult, displayValidationResult } from './src/utils/form-utils';
 import { getPromptConfig, cleanTranscript, SummaryMode, getTimestampLinkConfig } from './src/utils/prompt-utils';
@@ -57,6 +57,7 @@ import { chunkFailureAction, timestampPassFailure } from './src/runtime/timestam
 import type { TimestampPassOptions } from './src/runtime/timestamp-pass-policy';
 import { JobProgressNotices, doneNoticeText } from './src/runtime/job-progress-notice';
 import { NoteAutoOpen } from './src/runtime/note-auto-open';
+import { DebugNotes, outcomeText } from './src/runtime/debug-note';
 import { readmeText } from './src/bundled';
 import { exampleTemplateView } from './src/runtime/example-template-view';
 import { licenseView } from './src/runtime/license-view';
@@ -278,6 +279,42 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     // has no test harness and the two-tabs-for-one-note failure is invisible
     // to inspection.
     private readonly noteAutoOpen = new NoteAutoOpen();
+    // Debug logging puts the captured logs into the note (#32): every note,
+    // whatever the job's outcome. The one condition is the setting itself;
+    // a job that never got a note of its own gets a debug note instead.
+    private readonly debugNotes = new DebugNotes<TFile>({
+        enabled: () => this.settings.debugLogging,
+        logsSince: (mark: number, redact: (text: string) => string) => getLogsForCallout(mark, redact),
+        // Masked as X's wherever they appear in a note (#32).
+        secrets: () => [
+            ...SECRET_KEY_PROVIDERS.map((provider) => this.settings.apiKeys[provider]),
+            this.settings.scrapcreatorsApiKey,
+            this.settings.supadataApiKey,
+            this.settings.youtubeApiKey,
+        ],
+        job: (id: string) => {
+            const record = this.jobStore.get(id);
+            if (record === undefined) return undefined;
+            return {
+                title: effectiveTitle(record) ?? 'Failed Youtube transcript',
+                url: record.url,
+                folder: record.folder,
+                notePath: record.notePath,
+            };
+        },
+        vault: {
+            getFile: (path: string) => {
+                const file = this.app.vault.getAbstractFileByPath(path);
+                return file instanceof TFile ? file : null;
+            },
+            create: (path: string, content: string) => this.app.vault.create(path, content),
+            process: (file: TFile, fn: (data: string) => string) => this.app.vault.process(file, fn),
+        },
+        ensureFolder: (folder: string) => this.ensureFolder(folder),
+        normalizePath: (path: string) => obsidianNormalizePath(path),
+        notify: (message: string, durationMs: number) => this.showNotice(message, durationMs),
+        logError: (message: string, error: unknown) => logger.error(message, error),
+    });
     // The single progress surface for single-video jobs, on both platforms
     // (#7): one floating notice per job, created on its first `progress`
     // event and hidden on its terminal one. The submitting modal closes as
@@ -790,6 +827,9 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     // place — every event type reaches it, so a job's notice appears on its
     // first progress event and is hidden by whichever terminal event ends it.
     private onJobEvent(event: JobEvent): void {
+        // Where this event's log lines begin: a job's debug callout starts at
+        // its first event (#32).
+        const eventLogMark = logMark();
         // A child of a live collection is reported by that run's single notice,
         // so its own per-job notice and per-job completion notices are
         // suppressed. Logging, the debug note and the UI subscribers below are
@@ -845,30 +885,23 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             case 'failed':
                 logger.error(`[jobs] ${event.id} failed: ${event.error}`);
                 this.sessionJobIds.delete(event.id);
-                if (!inCollection) { this.showNotice(t('notice.job.failed', { error: event.error }), 5000); }
-                if (this.settings.debugLogging) {
-                    const record = this.jobStore.get(event.id);
-                    if (record !== undefined) {
-                        void this.writeErrorDebugNote(
-                            effectiveTitle(record) ?? 'Failed Youtube transcript',
-                            record.url,
-                            record.folder,
-                            event.error
-                        );
-                    }
-                }
+                if (!inCollection) { this.showNotice(outcomeText(event), 5000); }
                 break;
             case 'cancelled':
                 logger.info(`[jobs] ${event.id} cancelled`);
                 this.sessionJobIds.delete(event.id);
-                if (!inCollection) { this.showNotice(t('notice.job.cancelled'), 3000); }
+                if (!inCollection) { this.showNotice(outcomeText(event), 3000); }
                 break;
             case 'interrupted':
-                logger.warn(`[jobs] ${event.id} interrupted`);
+                logger.warn(`[jobs] ${event.id} interrupted: ${event.error}`);
                 this.sessionJobIds.delete(event.id);
-                if (!inCollection) { this.showNotice(t('notice.job.interrupted'), 6000); }
+                // With its reason (#31): this used to be the bare sentence.
+                if (!inCollection) { this.showNotice(outcomeText(event), 6000); }
                 break;
         }
+        // After the switch, so the outcome's own log line is in the callout.
+        // Every event goes in, and no outcome decides anything (#32).
+        void this.debugNotes.handle(event, eventLogMark);
     }
 
     async openNote(notePath: string): Promise<void> {
@@ -881,34 +914,6 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             await this.app.workspace.getLeaf(true).openFile(file);
         } catch (error) {
             logger.error('[jobs] Could not open the note:', error);
-        }
-    }
-
-    /**
-     * Legacy debug-on-failure behaviour (extracted from the old modal's catch): when debug logging is
-     * on, a failed run leaves an error note carrying the captured logs so the failure can be diagnosed.
-     */
-    private async writeErrorDebugNote(title: string, url: string, folder: string, message: string): Promise<void> {
-        try {
-            const finalLogs = getLogsForCallout();
-            let errorContent = `# ${title}\n\n`;
-            errorContent += `**Error occurred during processing:**\n\n`;
-            errorContent += `> [!error] Processing Failed\n`;
-            errorContent += `> ${message}\n\n`;
-            errorContent += `**URL:** ${url}\n\n`;
-            if (finalLogs && finalLogs.trim() !== "") {
-                // Use the exact same format as successful notes
-                const debugHeader = "\n\n> [!info]- Debug Information (hidden)\n> ```";
-                const debugFooter = "\n> ```";
-                errorContent += debugHeader + "\n" + finalLogs + debugFooter;
-            }
-            const fileName = sanitizeFilename(title) + '.md';
-            const notePath = normalizePath(joinPaths(folder, fileName));
-            await this.app.vault.create(notePath, errorContent);
-            this.showNotice(t('notice.debugNote.created', { file: fileName }), 8000);
-        } catch (noteError) {
-            logger.error('Failed to create error note:', noteError);
-            this.showNotice(t('notice.debugNote.failed', { error: message }), 5000);
         }
     }
 
@@ -1502,7 +1507,8 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // Add plugin version for frontmatter tracking
         user.version = this.getVersion();
         
-        // Debug info is only logged, not included in notes
+        // Debug mode only; like every logged line, it reaches the note through
+        // the debug callout appended when the job ends (#32).
         if (this.settings.debugLogging) {
             logger.debug(`Transcript info: 
             - Length: ${transcript ? transcript.length : 'unknown'} characters

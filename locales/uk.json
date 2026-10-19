@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Власний базовий URL має бути повною адресою, що починається з http:// або https://.",
     "notice.job.failed": "Помилка: {error}",
     "notice.job.cancelled": "Обробку скасовано",
-    "notice.job.interrupted": "Обробку перервано",
+    "notice.job.interrupted": "Обробку перервано: {error}",
     "notice.debugNote.created": "Створено нотатку про помилку з налагоджувальними відомостями: {file}",
     "notice.debugNote.failed": "Помилка: {error} (налагоджувальну нотатку теж не вдалося створити)",
     "notice.transcript.noTimestamps": "Попередження: у транскрипті не знайдено позначок часу. Позначки часу потрібні для обробки.",

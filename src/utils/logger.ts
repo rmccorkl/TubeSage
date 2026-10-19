@@ -38,6 +38,8 @@ interface LogEntry {
     message: string;
     args: unknown[];
     formattedMessage: string;
+    /** Position in the running count of every entry ever buffered (logMark). */
+    sequence: number;
 }
 
 // Default configuration
@@ -53,6 +55,10 @@ let config: LoggerConfig = { ...defaultConfig };
 
 // Central buffer to store all log messages
 const logBuffer: LogEntry[] = [];
+
+// Every entry ever buffered, counted. A mark taken from it keeps meaning the
+// same place after clearLogs(), which an index into the buffer would not.
+let entriesLogged = 0;
 
 /**
  * Logger class for a specific category
@@ -136,7 +142,8 @@ class Logger {
             category: this.category,
             message: messageText,
             args,
-            formattedMessage: displayMessage
+            formattedMessage: displayMessage,
+            sequence: entriesLogged++
         });
     }
     
@@ -176,22 +183,34 @@ export function getLogger(category: string): Logger {
 }
 
 /**
- * Gets all log entries formatted for Obsidian callouts
+ * Where the log stands now: pass it back to getLogsForCallout to get only what
+ * was logged after this point (one job's lines, #32).
+ */
+export function logMark(): number {
+    return entriesLogged;
+}
+
+/**
+ * Gets the log entries formatted for Obsidian callouts
  * Each log entry is properly formatted to maintain callout structure
+ * @param since A logMark(): only entries logged from that point on. Omitted, everything buffered.
+ * @param redact Applied to each entry before it is split and wrapped (the debug note masks secrets here).
  * @returns Formatted log messages for callout display
  */
-export function getLogsForCallout(): string {
+export function getLogsForCallout(since = 0, redact: (text: string) => string = (text) => text): string {
     const MAX_LINE_LENGTH = 120; // Prevent very long lines from breaking callouts
     
-    return logBuffer.map(entry => {
+    return logBuffer.filter(entry => entry.sequence >= since).map(entry => {
         // Each log entry might contain multiple lines, so we need to add ">" prefix to each line
-        const lines = entry.formattedMessage.split('\n');
+        const lines = redact(entry.formattedMessage).split('\n');
         return lines.map(line => {
             // Clean the line to prevent callout breaking (keep URLs as-is for debugging)
             let cleanedLine = line
                 .replace(/\r/g, '') // Remove carriage returns
                 .replace(/\t/g, '    ') // Convert tabs to spaces
-                .replace(/[^\x20-\x7E\n]/g, ''); // Remove non-printable chars except newlines
+                // Control characters only: everything else, non-ASCII text included, is
+                // printable, and TubeSage's titles and errors arrive in 51 languages.
+                .replace(/\p{Cc}/gu, '');
                 // Note: Removed HTML entity escaping to show actual URLs in logs
             
             // Wrap very long lines to prevent callout breaking

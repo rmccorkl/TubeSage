@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "მორგებული საბაზისო URL უნდა იყოს სრული მისამართი, რომელიც იწყება http://-ით ან https://-ით.",
     "notice.job.failed": "შეცდომა: {error}",
     "notice.job.cancelled": "დამუშავება გაუქმდა",
-    "notice.job.interrupted": "დამუშავება შეწყდა",
+    "notice.job.interrupted": "დამუშავება შეწყდა: {error}",
     "notice.debugNote.created": "შეიქმნა შეცდომის ჩანაწერი გამართვის ინფორმაციით: {file}",
     "notice.debugNote.failed": "შეცდომა: {error} (გამართვის ჩანაწერის შექმნაც ვერ მოხერხდა)",
     "notice.transcript.noTimestamps": "გაფრთხილება: ტრანსკრიპტში დროის ნიშნულები ვერ მოიძებნა. დამუშავებისთვის ისინი აუცილებელია.",

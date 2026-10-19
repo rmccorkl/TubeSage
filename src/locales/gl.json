@@ -508,8 +508,8 @@
         "translation": "Procesamento cancelado"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "O procesamento interrompeuse"
+        "original": "Processing was interrupted: {error}",
+        "translation": "O procesamento interrompeuse: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

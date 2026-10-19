@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "A URL base personalizada precisa ser um endereço completo que comece com http:// ou https://.",
     "notice.job.failed": "Erro: {error}",
     "notice.job.cancelled": "O processamento foi cancelado",
-    "notice.job.interrupted": "O processamento foi interrompido",
+    "notice.job.interrupted": "O processamento foi interrompido: {error}",
     "notice.debugNote.created": "Nota de erro criada com informações de depuração: {file}",
     "notice.debugNote.failed": "Erro: {error} (a nota de depuração também não pôde ser criada)",
     "notice.transcript.noTimestamps": "Aviso: nenhuma marcação de tempo foi encontrada na transcrição. As marcações de tempo são necessárias para o processamento.",

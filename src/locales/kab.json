@@ -508,8 +508,8 @@
         "translation": "Asesfer yefsex"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "Asesfer yeḥbes"
+        "original": "Processing was interrupted: {error}",
+        "translation": "Asesfer yeḥbes: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "URL-ja bazë e personalizuar duhet të jetë një adresë e plotë që fillon me http:// ose https://.",
     "notice.job.failed": "Gabim: {error}",
     "notice.job.cancelled": "Përpunimi u anulua",
-    "notice.job.interrupted": "Përpunimi u ndërpre",
+    "notice.job.interrupted": "Përpunimi u ndërpre: {error}",
     "notice.debugNote.created": "U krijua një shënim gabimi me të dhëna korrigjimi: {file}",
     "notice.debugNote.failed": "Gabim: {error} (as shënimi i korrigjimit s'u krijua dot)",
     "notice.transcript.noTimestamps": "Kujdes: s'u gjetën vula kohore në transkript. Vulat kohore duhen për përpunimin.",

@@ -508,8 +508,8 @@
         "translation": "প্রক্রিয়াকরণ বাতিল করা হয়েছে"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "প্রক্রিয়াকরণ বাধাগ্রস্ত হয়েছে"
+        "original": "Processing was interrupted: {error}",
+        "translation": "প্রক্রিয়াকরণ বাধাগ্রস্ত হয়েছে: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

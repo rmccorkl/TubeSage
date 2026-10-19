@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "URL dasar kustom harus berupa alamat lengkap yang diawali http:// atau https://.",
     "notice.job.failed": "Kesalahan: {error}",
     "notice.job.cancelled": "Pemrosesan dibatalkan",
-    "notice.job.interrupted": "Pemrosesan terhenti",
+    "notice.job.interrupted": "Pemrosesan terhenti: {error}",
     "notice.debugNote.created": "Catatan kesalahan dengan informasi debug dibuat: {file}",
     "notice.debugNote.failed": "Kesalahan: {error} (catatan debug juga gagal dibuat)",
     "notice.transcript.noTimestamps": "Peringatan: tidak ada stempel waktu dalam transkrip. Stempel waktu diperlukan untuk pemrosesan.",

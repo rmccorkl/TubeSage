@@ -508,8 +508,8 @@
         "translation": "සැකසීම අවලංගු කෙරිණි"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "සැකසීම බිඳුණි"
+        "original": "Processing was interrupted: {error}",
+        "translation": "සැකසීම බිඳුණි: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

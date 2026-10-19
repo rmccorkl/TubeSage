@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "يجب أن يكون عنوان URL الأساسي المخصّص عنوانًا كاملًا يبدأ بـ http:// أو https://.",
     "notice.job.failed": "خطأ: {error}",
     "notice.job.cancelled": "تم إلغاء المعالجة",
-    "notice.job.interrupted": "تمت مقاطعة المعالجة",
+    "notice.job.interrupted": "تمت مقاطعة المعالجة: {error}",
     "notice.debugNote.created": "أُنشئت ملاحظة خطأ تتضمن معلومات التصحيح: {file}",
     "notice.debugNote.failed": "خطأ: {error} (تعذّر أيضًا إنشاء ملاحظة التصحيح)",
     "notice.transcript.noTimestamps": "تحذير: لم يُعثر على طوابع زمنية في النص. الطوابع الزمنية لازمة للمعالجة.",

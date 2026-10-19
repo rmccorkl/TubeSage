@@ -508,8 +508,8 @@
         "translation": "Elaborazione annullata"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "L'elaborazione è stata interrotta"
+        "original": "Processing was interrupted: {error}",
+        "translation": "L'elaborazione è stata interrotta: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

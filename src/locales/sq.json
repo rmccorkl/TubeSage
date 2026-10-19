@@ -508,8 +508,8 @@
         "translation": "Përpunimi u anulua"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "Përpunimi u ndërpre"
+        "original": "Processing was interrupted: {error}",
+        "translation": "Përpunimi u ndërpre: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

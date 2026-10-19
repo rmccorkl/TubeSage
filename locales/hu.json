@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Az egyéni alap-URL-nek teljes, http:// vagy https:// kezdetű címnek kell lennie.",
     "notice.job.failed": "Hiba: {error}",
     "notice.job.cancelled": "A feldolgozás megszakítva",
-    "notice.job.interrupted": "A feldolgozás megszakadt",
+    "notice.job.interrupted": "A feldolgozás megszakadt: {error}",
     "notice.debugNote.created": "Hibajegyzet készült hibakeresési adatokkal: {file}",
     "notice.debugNote.failed": "Hiba: {error} (a hibakeresési jegyzet sem jött létre)",
     "notice.transcript.noTimestamps": "Figyelmeztetés: az átiratban nincsenek időbélyegek. Az időbélyegek a feldolgozáshoz szükségesek.",

@@ -73,3 +73,33 @@ describe("the licence is never composed through a translation", () => {
     expect(code(view)).not.toMatch(/from '\.\.\/i18n'/);
   });
 });
+
+describe("debug logging reaches every note through one condition (#32, #31)", () => {
+  // src/runtime/debug-note.test.ts and end-to-end.test.ts cover what
+  // DebugNotes writes for every outcome. What they cannot see is main.ts
+  // feeding it: an outcome-specific `if (this.settings.debugLogging)` creeping
+  // back into onJobEvent is exactly how the success path lost its callout.
+  const open = main.indexOf("\n    private onJobEvent(event: JobEvent): void {");
+  const close = main.indexOf("\n    }\n", open);
+  const body = main.slice(open, close);
+
+  it("hands every event to DebugNotes once, after the outcome is logged", () => {
+    expect(open, "main.ts has no onJobEvent").toBeGreaterThan(-1);
+    expect(body.split("this.debugNotes.handle(event, eventLogMark)")).toHaveLength(2);
+    expect(body.indexOf("this.debugNotes.handle(")).toBeGreaterThan(body.lastIndexOf("case 'interrupted':"));
+    expect(body.indexOf("const eventLogMark = logMark();")).toBeGreaterThan(-1);
+    expect(body.indexOf("const eventLogMark = logMark();")).toBeLessThan(body.indexOf("logger."));
+  });
+
+  it("decides nothing per outcome: the setting is read in one place, by DebugNotes", () => {
+    expect(body).not.toContain("debugLogging");
+    expect(main).toContain("enabled: () => this.settings.debugLogging,");
+    expect(main).not.toContain("writeErrorDebugNote");
+  });
+
+  it("shows an interrupted job's reason, as the failed notice always has", () => {
+    const interrupted = body.slice(body.indexOf("case 'interrupted':"));
+    expect(interrupted).toContain("this.showNotice(outcomeText(event), 6000)");
+    expect(interrupted).not.toContain("t('notice.job.interrupted')");
+  });
+});

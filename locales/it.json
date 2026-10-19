@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "L'URL di base personalizzato deve essere un indirizzo completo che inizia con http:// o https://.",
     "notice.job.failed": "Errore: {error}",
     "notice.job.cancelled": "Elaborazione annullata",
-    "notice.job.interrupted": "L'elaborazione è stata interrotta",
+    "notice.job.interrupted": "L'elaborazione è stata interrotta: {error}",
     "notice.debugNote.created": "Nota di errore creata con le informazioni di debug: {file}",
     "notice.debugNote.failed": "Errore: {error} (non è stato possibile creare nemmeno la nota di debug)",
     "notice.transcript.noTimestamps": "Avviso: nessun timestamp trovato nella trascrizione. I timestamp sono necessari per l'elaborazione.",

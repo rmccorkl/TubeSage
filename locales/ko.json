@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "사용자 지정 기본 URL은 http:// 또는 https://로 시작하는 전체 주소여야 합니다.",
     "notice.job.failed": "오류: {error}",
     "notice.job.cancelled": "처리를 취소했습니다",
-    "notice.job.interrupted": "처리가 중단되었습니다",
+    "notice.job.interrupted": "처리가 중단되었습니다: {error}",
     "notice.debugNote.created": "디버그 정보가 담긴 오류 노트를 만들었습니다: {file}",
     "notice.debugNote.failed": "오류: {error} (디버그 노트도 만들지 못했습니다)",
     "notice.transcript.noTimestamps": "경고: 자막에서 타임스탬프를 찾지 못했습니다. 처리하려면 타임스탬프가 필요합니다.",

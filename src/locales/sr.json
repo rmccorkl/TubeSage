@@ -508,8 +508,8 @@
         "translation": "Обрада је отказана"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "Обрада је прекинута"
+        "original": "Processing was interrupted: {error}",
+        "translation": "Обрада је прекинута: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",
