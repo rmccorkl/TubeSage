@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "आफ्नो आधार URL http:// वा https:// बाट सुरु हुने पूरा ठेगाना हुनुपर्छ।",
     "notice.job.failed": "त्रुटि: {error}",
     "notice.job.cancelled": "प्रशोधन रद्द गरियो",
-    "notice.job.interrupted": "प्रशोधन अवरुद्ध भयो",
+    "notice.job.interrupted": "प्रशोधन अवरुद्ध भयो: {error}",
     "notice.debugNote.created": "डिबग जानकारीसहित त्रुटि नोट बनाइयो: {file}",
     "notice.debugNote.failed": "त्रुटि: {error} (डिबग नोट पनि बनाउन सकिएन)",
     "notice.transcript.noTimestamps": "चेतावनी: प्रतिलिपिमा टाइमस्ट्याम्प भेटिएन। प्रशोधनका लागि टाइमस्ट्याम्प चाहिन्छ।",

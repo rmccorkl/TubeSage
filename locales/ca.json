@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "L'URL base personalitzat ha de ser una adreça completa que comenci per http:// o https://.",
     "notice.job.failed": "Error: {error}",
     "notice.job.cancelled": "Processament cancel·lat",
-    "notice.job.interrupted": "El processament s'ha interromput",
+    "notice.job.interrupted": "El processament s'ha interromput: {error}",
     "notice.debugNote.created": "S'ha creat una nota d'error amb informació de depuració: {file}",
     "notice.debugNote.failed": "Error: {error} (tampoc s'ha pogut crear la nota de depuració)",
     "notice.transcript.noTimestamps": "Avís: no s'han trobat marques de temps a la transcripció. Les marques de temps són necessàries per al processament.",

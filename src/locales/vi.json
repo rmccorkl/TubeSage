@@ -508,8 +508,8 @@
         "translation": "Đã huỷ xử lý"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "Quá trình xử lý bị gián đoạn"
+        "original": "Processing was interrupted: {error}",
+        "translation": "Quá trình xử lý bị gián đoạn: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

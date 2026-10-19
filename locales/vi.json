@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "URL gốc tuỳ chỉnh phải là địa chỉ đầy đủ, bắt đầu bằng http:// hoặc https://.",
     "notice.job.failed": "Lỗi: {error}",
     "notice.job.cancelled": "Đã huỷ xử lý",
-    "notice.job.interrupted": "Quá trình xử lý bị gián đoạn",
+    "notice.job.interrupted": "Quá trình xử lý bị gián đoạn: {error}",
     "notice.debugNote.created": "Đã tạo ghi chú lỗi kèm thông tin gỡ lỗi: {file}",
     "notice.debugNote.failed": "Lỗi: {error} (cũng không tạo được ghi chú gỡ lỗi)",
     "notice.transcript.noTimestamps": "Cảnh báo: không tìm thấy dấu thời gian trong bản chép lời. Cần có dấu thời gian để xử lý.",

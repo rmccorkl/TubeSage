@@ -467,7 +467,7 @@ describe("JobRunner — generation fence", () => {
     await submitUntilTranscriptPending(h);
     await timeOutTranscript(h);
     const writesAtTimeout = h.io.calls.length;
-    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id: "job-1" }]);
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id: "job-1", error: "TubeSage stopped waiting after 90 s at the transcript stage (its time limit)" }]);
     expect(h.runner.isActive("job-1")).toBe(false);
 
     h.stages.fetch.resolveLast({ transcript: TRANSCRIPT_BODY, title: VIDEO_TITLE });
@@ -604,7 +604,7 @@ describe("JobRunner — errors", () => {
     await h.runner.submit(SUBMIT);
     await flush();
     expect(lastRecord(h)).toMatchObject({ status: "interrupted", inFlight: true, lastError: "socket hang up" });
-    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id: "job-1" }]);
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id: "job-1", error: "socket hang up" }]);
     expect(h.events.filter((e) => e.type === "failed")).toEqual([]);
   });
 });
@@ -917,7 +917,7 @@ describe("JobRunner — translation stage (#3 final review residual)", () => {
     await flush();
     const record = lastRecord(h);
     expect(record).toMatchObject({ stage: "translation", status: "interrupted", inFlight: true, lastError: "socket hang up" });
-    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id: "job-1" }]);
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id: "job-1", error: "socket hang up" }]);
     // A second, late arrival applies nothing (generation fence).
     await h.clock.advance(OLD_LLM_BUDGET_MS);
     expect(lastRecord(h).status).toBe("interrupted");

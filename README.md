@@ -106,9 +106,11 @@ While a job runs, its current stage is shown:
 ### Running the same video twice
 Obsidian's `Vault.create` rejects a path that already exists rather than versioning it, so processing a URL you have already done does not overwrite the old note or fail. It lands on the next free neighbouring name — `Title 1.md`, `Title 2.md`, and so on — which is the convention Obsidian itself uses.
 
-### Behaviour on desktop
-- A successful note does not have a "Debug Information" callout appended to it.
-- A failed transcript does not create a placeholder note. With debug logging turned on, an error note carrying the captured logs is written instead, so the failure can be diagnosed.
+### Debug logging
+On desktop and mobile alike:
+- With **Debug logging** turned on, every note TubeSage writes ends with a collapsed "Debug Information" callout holding the logs captured while that video was processed, successful notes included. With it off, no note gets one.
+- A video that fails, is interrupted or is cancelled before its note exists does not leave a placeholder note. With debug logging turned on, a separate note carrying the reason and the captured logs is written instead, so the failure can be diagnosed. If the same video fails again, the next note lands beside it as `Title 1.md`.
+- When processing is interrupted (a network error, a refused connection, a provider error, a time limit), the notice says why.
 
 ### Batch jobs
 Playlists and channels run as a series of single-video jobs and end with the app in the same way.

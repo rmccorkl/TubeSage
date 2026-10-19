@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "カスタムのベース URL は、http:// または https:// で始まる完全なアドレスにしてください。",
     "notice.job.failed": "エラー: {error}",
     "notice.job.cancelled": "処理を中止しました",
-    "notice.job.interrupted": "処理が中断されました",
+    "notice.job.interrupted": "処理が中断されました: {error}",
     "notice.debugNote.created": "デバッグ情報付きのエラーノートを作成しました: {file}",
     "notice.debugNote.failed": "エラー: {error}（デバッグノートも作成できませんでした）",
     "notice.transcript.noTimestamps": "警告: 字幕にタイムスタンプが見つかりません。処理にはタイムスタンプが必要です。",

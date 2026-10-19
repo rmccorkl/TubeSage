@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "כתובת ה-URL הבסיסית המותאמת אישית חייבת להיות כתובת מלאה שמתחילה ב-http:// או ב-https://.",
     "notice.job.failed": "שגיאה: {error}",
     "notice.job.cancelled": "העיבוד בוטל",
-    "notice.job.interrupted": "העיבוד הופסק",
+    "notice.job.interrupted": "העיבוד הופסק: {error}",
     "notice.debugNote.created": "נוצרה הערת שגיאה עם מידע לניפוי באגים: {file}",
     "notice.debugNote.failed": "שגיאה: {error} (גם הערת ניפוי הבאגים לא נוצרה)",
     "notice.transcript.noTimestamps": "אזהרה: לא נמצאו חותמות זמן בתמליל. חותמות זמן נדרשות לעיבוד.",

@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "نشانی URL پایهٔ دلخواه باید نشانی کاملی باشد که با http:// یا https:// شروع می‌شود.",
     "notice.job.failed": "خطا: {error}",
     "notice.job.cancelled": "پردازش لغو شد",
-    "notice.job.interrupted": "پردازش نیمه‌کاره ماند",
+    "notice.job.interrupted": "پردازش نیمه‌کاره ماند: {error}",
     "notice.debugNote.created": "یادداشت خطا همراه با اطلاعات اشکال‌زدایی ساخته شد: {file}",
     "notice.debugNote.failed": "خطا: {error} (یادداشت اشکال‌زدایی هم ساخته نشد)",
     "notice.transcript.noTimestamps": "هشدار: در رونوشت هیچ زمانی یافت نشد. برای پردازش به زمان‌ها نیاز است.",

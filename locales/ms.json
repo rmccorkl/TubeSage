@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "URL asas tersuai mestilah alamat penuh yang bermula dengan http:// atau https://.",
     "notice.job.failed": "Ralat: {error}",
     "notice.job.cancelled": "Pemprosesan telah dibatalkan",
-    "notice.job.interrupted": "Pemprosesan terganggu",
+    "notice.job.interrupted": "Pemprosesan terganggu: {error}",
     "notice.debugNote.created": "Nota ralat dengan maklumat nyahpepijat telah dicipta: {file}",
     "notice.debugNote.failed": "Ralat: {error} (nota nyahpepijat juga gagal dicipta)",
     "notice.transcript.noTimestamps": "Amaran: tiada cap masa dalam transkrip. Cap masa diperlukan untuk pemprosesan.",

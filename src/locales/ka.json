@@ -508,8 +508,8 @@
         "translation": "დამუშავება გაუქმდა"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "დამუშავება შეწყდა"
+        "original": "Processing was interrupted: {error}",
+        "translation": "დამუშავება შეწყდა: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

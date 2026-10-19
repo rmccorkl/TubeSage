@@ -137,7 +137,7 @@ describe("JobProgressNotices", () => {
     { type: "done", id: "job-1", notePath: "Notes/a.md" },
     { type: "failed", id: "job-1", error: "boom" },
     { type: "cancelled", id: "job-1" },
-    { type: "interrupted", id: "job-1" },
+    { type: "interrupted", id: "job-1", error: "socket hang up" },
   ];
 
   for (const terminal of terminals) {

@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "自訂基礎網址必須是以 http:// 或 https:// 開頭的完整位址。",
     "notice.job.failed": "錯誤：{error}",
     "notice.job.cancelled": "處理已取消",
-    "notice.job.interrupted": "處理已中斷",
+    "notice.job.interrupted": "處理已中斷：{error}",
     "notice.debugNote.created": "已建立含偵錯資訊的錯誤筆記：{file}",
     "notice.debugNote.failed": "錯誤：{error}（偵錯筆記也無法建立）",
     "notice.transcript.noTimestamps": "警告：逐字稿中找不到時間戳記。處理需要時間戳記。",

@@ -508,8 +508,8 @@
         "translation": "ሂደቱ ተሰርዟል"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "ሂደቱ ተቋርጧል"
+        "original": "Processing was interrupted: {error}",
+        "translation": "ሂደቱ ተቋርጧል፦ {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

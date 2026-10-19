@@ -508,8 +508,8 @@
         "translation": "ยกเลิกการประมวลผลแล้ว"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "การประมวลผลถูกขัดจังหวะ"
+        "original": "Processing was interrupted: {error}",
+        "translation": "การประมวลผลถูกขัดจังหวะ: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

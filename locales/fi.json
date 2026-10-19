@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Mukautetun perus-URL:n on oltava kokonainen osoite, joka alkaa http:// tai https://.",
     "notice.job.failed": "Virhe: {error}",
     "notice.job.cancelled": "Käsittely peruutettu",
-    "notice.job.interrupted": "Käsittely keskeytyi",
+    "notice.job.interrupted": "Käsittely keskeytyi: {error}",
     "notice.debugNote.created": "Virhemuistiinpano vianmääritystiedoilla luotu: {file}",
     "notice.debugNote.failed": "Virhe: {error} (myöskään vianmäärityksen muistiinpanoa ei voitu luoda)",
     "notice.transcript.noTimestamps": "Varoitus: litteroinnista ei löytynyt aikaleimoja. Aikaleimat ovat käsittelyn edellytys.",

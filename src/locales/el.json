@@ -508,8 +508,8 @@
         "translation": "Η επεξεργασία ακυρώθηκε"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "Η επεξεργασία διακόπηκε"
+        "original": "Processing was interrupted: {error}",
+        "translation": "Η επεξεργασία διακόπηκε: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

@@ -508,8 +508,8 @@
         "translation": "處理已取消"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "處理已中斷"
+        "original": "Processing was interrupted: {error}",
+        "translation": "處理已中斷：{error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "URL หลักที่กำหนดเองต้องเป็นที่อยู่เต็มที่ขึ้นต้นด้วย http:// หรือ https://",
     "notice.job.failed": "ข้อผิดพลาด: {error}",
     "notice.job.cancelled": "ยกเลิกการประมวลผลแล้ว",
-    "notice.job.interrupted": "การประมวลผลถูกขัดจังหวะ",
+    "notice.job.interrupted": "การประมวลผลถูกขัดจังหวะ: {error}",
     "notice.debugNote.created": "สร้างโน้ตข้อผิดพลาดพร้อมข้อมูลดีบักแล้ว: {file}",
     "notice.debugNote.failed": "ข้อผิดพลาด: {error} (สร้างโน้ตดีบักไม่สำเร็จด้วย)",
     "notice.transcript.noTimestamps": "คำเตือน: ไม่พบไทม์สแตมป์ในคำบรรยาย ต้องมีไทม์สแตมป์จึงจะประมวลผลได้",

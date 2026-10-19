@@ -508,8 +508,8 @@
         "translation": "処理を中止しました"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "処理が中断されました"
+        "original": "Processing was interrupted: {error}",
+        "translation": "処理が中断されました: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

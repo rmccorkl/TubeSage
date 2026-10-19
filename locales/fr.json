@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "L'URL de base personnalisée doit être une adresse complète commençant par http:// ou https://.",
     "notice.job.failed": "Erreur : {error}",
     "notice.job.cancelled": "Traitement annulé",
-    "notice.job.interrupted": "Le traitement a été interrompu",
+    "notice.job.interrupted": "Le traitement a été interrompu : {error}",
     "notice.debugNote.created": "Note d'erreur créée avec les informations de débogage : {file}",
     "notice.debugNote.failed": "Erreur : {error} (la note de débogage n'a pas pu être créée non plus)",
     "notice.transcript.noTimestamps": "Avertissement : aucun horodatage trouvé dans la transcription. Les horodatages sont nécessaires au traitement.",

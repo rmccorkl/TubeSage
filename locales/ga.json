@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Ní mór gur seoladh iomlán é an bun-URL saincheaptha, ag tosú le http:// nó https://.",
     "notice.job.failed": "Earráid: {error}",
     "notice.job.cancelled": "Cuireadh an phróiseáil ar ceal",
-    "notice.job.interrupted": "Cuireadh isteach ar an bpróiseáil",
+    "notice.job.interrupted": "Cuireadh isteach ar an bpróiseáil: {error}",
     "notice.debugNote.created": "Cruthaíodh nóta earráide le heolas dífhabhtaithe: {file}",
     "notice.debugNote.failed": "Earráid: {error} (níorbh fhéidir an nóta dífhabhtaithe a chruthú ach oiread)",
     "notice.transcript.noTimestamps": "Rabhadh: níor aimsíodh aon stampa ama sa tras-scríbhinn. Tá stampaí ama riachtanach don phróiseáil.",

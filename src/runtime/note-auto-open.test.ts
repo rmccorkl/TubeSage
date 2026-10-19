@@ -70,7 +70,7 @@ describe("NoteAutoOpen — the note opens when it is created (#20)", () => {
     const policy = new NoteAutoOpen();
     expect(policy.handle(created(), ORDINARY)).toBe(NOTE);
     expect(policy.handle({ type: "failed", id: "job-1", error: "boom" }, ORDINARY)).toBeUndefined();
-    expect(policy.handle({ type: "interrupted", id: "job-1" }, ORDINARY)).toBeUndefined();
+    expect(policy.handle({ type: "interrupted", id: "job-1", error: "socket hang up" }, ORDINARY)).toBeUndefined();
     expect(policy.handle({ type: "cancelled", id: "job-1" }, ORDINARY)).toBeUndefined();
   });
 

@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "स्वनिर्मितं मूलं URL http:// अथवा https:// इत्यनेन आरभमाणः पूर्णः सङ्केतः भवेत्।",
     "notice.job.failed": "दोषः: {error}",
     "notice.job.cancelled": "संसाधनं निरस्तम्",
-    "notice.job.interrupted": "संसाधनं विच्छिन्नम्",
+    "notice.job.interrupted": "संसाधनं विच्छिन्नम्: {error}",
     "notice.debugNote.created": "दोषनिवारणसूचनासहितं दोषटिप्पणं निर्मितम्: {file}",
     "notice.debugNote.failed": "दोषः: {error} (दोषनिवारणटिप्पणम् अपि न निर्मितम्)",
     "notice.transcript.noTimestamps": "सावधानम्: प्रतिलेखे कालमुद्राः न प्राप्ताः। संसाधनाय कालमुद्राः आवश्यकाः।",

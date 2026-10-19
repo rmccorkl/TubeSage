@@ -110,9 +110,11 @@ export type JobEvent =
    * The run stopped without finishing and without a verdict that the video can never work: a timeout,
    * or a transient error. TERMINAL to every consumer — nothing resumes it, so a collection advances
    * past the child (collection-runner.ts) and the progress notice closes (job-progress-notice.ts).
-   * The reason lives on the record's `lastError`, not here; no consumer has ever read one off the event.
+   * `error` is the reason, as `failed` carries one (#31): the host shows it and writes it into the
+   * debug note. It used to live only on the record's `lastError`, so every provider and network
+   * failure reached the user as a bare "Processing was interrupted".
    */
-  | { type: "interrupted"; id: string }
+  | { type: "interrupted"; id: string; error: string }
   | { type: "failed"; id: string; error: string }
   | { type: "cancelled"; id: string }
   /**
@@ -176,8 +178,8 @@ export type SubmitResult = { kind: "started"; id: string } | { kind: "already-ru
 type CalledStage = "transcript" | "summary" | "timestamps" | "translation";
 
 // The outcome of one raced stage call. "timeout" means the deadline fired
-// first; the underlying promise is still dangling and may settle later.
-type Settled<T> = { kind: "ok"; value: T } | { kind: "error"; error: unknown } | { kind: "timeout" };
+// first (after `ms`); the underlying promise is still dangling and may settle later.
+type Settled<T> = { kind: "ok"; value: T } | { kind: "error"; error: unknown } | { kind: "timeout"; ms: number };
 
 // Per-run state that never reaches the record: the transcript text lives here
 // for as long as the run loop is alive, and dies with it. One run fetches it
@@ -197,6 +199,13 @@ interface ActiveRun {
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
+}
+
+// The reason a timed-out stage is interrupted with (#31). In English, like
+// every other reason the runner writes itself ("no title", "no note path"):
+// it reaches the user verbatim inside the localised notice.
+function stageTimeoutMessage(stage: JobStage, ms: number): string {
+  return `TubeSage stopped waiting after ${Math.round(ms / 1000)} s at the ${stage} stage (its time limit)`;
 }
 
 // Record-scoped, frozen at submit (F1/F4): true when this job's own flags
@@ -744,7 +753,7 @@ export class JobRunner {
   private async settleFailure(record: NoteJobRecord, settled: Exclude<Settled<unknown>, { kind: "ok" }>): Promise<void> {
     if (settled.kind === "timeout") {
       // inFlight stays true: the call may still complete out there.
-      await this.interrupt(record, undefined);
+      await this.interrupt(record, stageTimeoutMessage(record.stage, settled.ms));
       return;
     }
     if (settled.error instanceof PermanentJobError) {
@@ -754,13 +763,11 @@ export class JobRunner {
     await this.interrupt(record, errorMessage(settled.error));
   }
 
-  private async interrupt(record: NoteJobRecord, lastError: string | undefined): Promise<void> {
+  private async interrupt(record: NoteJobRecord, reason: string): Promise<void> {
     record.status = "interrupted";
-    if (lastError !== undefined) {
-      record.lastError = lastError;
-    }
+    record.lastError = reason;
     await this.deps.store.upsert(record, this.deps.now());
-    this.deps.onEvent({ type: "interrupted", id: record.id });
+    this.deps.onEvent({ type: "interrupted", id: record.id, error: reason });
   }
 
   private async fail(record: NoteJobRecord, message: string): Promise<void> {
@@ -810,7 +817,7 @@ export class JobRunner {
         run?.deadlines.delete(handle);
         if (!settled) {
           settled = true;
-          resolve({ kind: "timeout" });
+          resolve({ kind: "timeout", ms });
         }
       }, ms);
       if (run !== undefined && run.gen === gen) {

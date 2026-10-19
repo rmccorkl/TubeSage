@@ -508,8 +508,8 @@
         "translation": "प्रशोधन रद्द गरियो"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "प्रशोधन अवरुद्ध भयो"
+        "original": "Processing was interrupted: {error}",
+        "translation": "प्रशोधन अवरुद्ध भयो: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

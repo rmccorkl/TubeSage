@@ -508,8 +508,8 @@
         "translation": "Pemprosesan telah dibatalkan"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "Pemprosesan terganggu"
+        "original": "Processing was interrupted: {error}",
+        "translation": "Pemprosesan terganggu: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

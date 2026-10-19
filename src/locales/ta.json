@@ -508,8 +508,8 @@
         "translation": "செயலாக்கம் ரத்துசெய்யப்பட்டது"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "செயலாக்கம் தடைபட்டது"
+        "original": "Processing was interrupted: {error}",
+        "translation": "செயலாக்கம் தடைபட்டது: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

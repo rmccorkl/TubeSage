@@ -508,8 +508,8 @@
         "translation": "Bearbetning avbruten"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "Bearbetningen avbröts"
+        "original": "Processing was interrupted: {error}",
+        "translation": "Bearbetningen avbröts: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

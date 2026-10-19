@@ -508,8 +508,8 @@
         "translation": "Spracovanie zrušené"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "Spracovanie bolo prerušené"
+        "original": "Processing was interrupted: {error}",
+        "translation": "Spracovanie bolo prerušené: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

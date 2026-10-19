@@ -508,8 +508,8 @@
         "translation": "Apstrāde atcelta"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "Apstrāde tika pārtraukta"
+        "original": "Processing was interrupted: {error}",
+        "translation": "Apstrāde tika pārtraukta: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

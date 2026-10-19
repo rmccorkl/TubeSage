@@ -508,8 +508,8 @@
         "translation": "تم إلغاء المعالجة"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "تمت مقاطعة المعالجة"
+        "original": "Processing was interrupted: {error}",
+        "translation": "تمت مقاطعة المعالجة: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

@@ -508,8 +508,8 @@
         "translation": "처리를 취소했습니다"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "처리가 중단되었습니다"
+        "original": "Processing was interrupted: {error}",
+        "translation": "처리가 중단되었습니다: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

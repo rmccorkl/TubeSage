@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "The custom base URL must be a full address starting with http:// or https://.",
     "notice.job.failed": "Error: {error}",
     "notice.job.cancelled": "Processing cancelled",
-    "notice.job.interrupted": "Processing was interrupted",
+    "notice.job.interrupted": "Processing was interrupted: {error}",
     "notice.debugNote.created": "Error note created with debug information: {file}",
     "notice.debugNote.failed": "Error: {error} (Also failed to create debug note)",
     "notice.transcript.noTimestamps": "Warning: No timestamps found in transcript. Timestamps are required for proper processing.",

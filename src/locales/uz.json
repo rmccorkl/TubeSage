@@ -508,8 +508,8 @@
         "translation": "Qayta ishlash bekor qilindi"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "Qayta ishlash uzildi"
+        "original": "Processing was interrupted: {error}",
+        "translation": "Qayta ishlash uzildi: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

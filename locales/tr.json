@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Özel temel URL, http:// veya https:// ile başlayan tam bir adres olmalıdır.",
     "notice.job.failed": "Hata: {error}",
     "notice.job.cancelled": "İşleme iptal edildi",
-    "notice.job.interrupted": "İşleme kesintiye uğradı",
+    "notice.job.interrupted": "İşleme kesintiye uğradı: {error}",
     "notice.debugNote.created": "Hata ayıklama bilgisi içeren hata notu oluşturuldu: {file}",
     "notice.debugNote.failed": "Hata: {error} (hata ayıklama notu da oluşturulamadı)",
     "notice.transcript.noTimestamps": "Uyarı: transkriptte zaman damgası bulunamadı. İşleme için zaman damgaları gerekir.",
