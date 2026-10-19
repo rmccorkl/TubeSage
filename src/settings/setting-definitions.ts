@@ -28,6 +28,7 @@ import { getLogger, LogLevel, setGlobalLogLevel } from '../utils/logger';
 import { getEffectiveLimits, isModelSupported } from '../utils/model-limits-registry';
 import { DEFAULT_BASE_URLS, isUsableBaseUrl } from '../llm/base-url';
 import type { YouTubeTranscriptSettings } from './settings-defaults';
+import type { TranscriptKeyField } from '../runtime/settings-persist';
 
 const logger = getLogger('PLUGIN');
 
@@ -53,6 +54,8 @@ export interface SettingsHost {
     getEffectiveMaxTokens(): number;
     /** Store a cloud-provider key in Obsidian secret storage (no-op for ollama). */
     setSecret(provider: string, value: string): void;
+    /** Store a transcript-service key in Obsidian secret storage (#38). */
+    setTranscriptSecret(field: TranscriptKeyField, value: string): void;
     fetchOpenAIModels(apiKey: string): Promise<FetchedModelInfo[]>;
     fetchGoogleModels(apiKey: string): Promise<FetchedModelInfo[]>;
     fetchAnthropicModels(apiKey: string): Promise<FetchedModelInfo[]>;
@@ -490,6 +493,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                             .onChange((value: string) => {
                                 void (async () => {
                                     host.settings.youtubeApiKey = value;
+                                    host.setTranscriptSecret('youtubeApiKey', value);
                                     await host.saveSettings();
                                 })();
                             });
@@ -509,6 +513,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                             .onChange((value: string) => {
                                 void (async () => {
                                     host.settings.scrapcreatorsApiKey = value;
+                                    host.setTranscriptSecret('scrapcreatorsApiKey', value);
                                     await host.saveSettings();
                                 })();
                             });
@@ -529,6 +534,7 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                             .onChange((value: string) => {
                                 void (async () => {
                                     host.settings.supadataApiKey = value;
+                                    host.setTranscriptSecret('supadataApiKey', value);
                                     await host.saveSettings();
                                 })();
                             });
