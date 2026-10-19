@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { JOBS_KEY } from "../jobs/job-store";
 import { COLLECTIONS_KEY } from "../jobs/collection-record";
-import { SECRET_IDS, SECRET_KEY_PROVIDERS, SettingsWriter, settingsForPersist } from "./settings-persist";
+import { SECRET_IDS, SECRET_KEY_PROVIDERS, SettingsWriter, TRANSCRIPT_SECRET_IDS, loadTranscriptKeys, settingsForPersist } from "./settings-persist";
 import { DEFAULT_SETTINGS } from "../settings/settings-defaults";
 import { DEFAULT_BASE_URLS } from "../llm/base-url";
 
@@ -142,6 +142,41 @@ describe("the OpenAI-compatible server's two values go to two places (#25)", () 
     // SecretStorage.setSecret requires lowercase alphanumeric with optional dashes.
     for (const id of ids) expect(id).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+});
+
+describe("the transcript-service keys live in secret storage, not data.json (#38)", () => {
+  it("bound to the real persist path: the YouTube Data, ScrapeCreators and Supadata keys never reach the saved payload", async () => {
+    const plugin = new FakePlugin({
+      ...liveSettings(),
+      youtubeApiKey: "yt-data-key",
+      scrapcreatorsApiKey: "sc-key",
+      supadataApiKey: "sd-key",
+    });
+    await plugin.persist();
+
+    const payload = plugin.calls[0];
+    for (const field of ["youtubeApiKey", "scrapcreatorsApiKey", "supadataApiKey"]) {
+      expect(payload).not.toHaveProperty(field);
+    }
+    for (const key of ["yt-data-key", "sc-key", "sd-key"]) {
+      expect(JSON.stringify(payload)).not.toContain(key);
+    }
+  });
+
+  it("on load, a key still in data.json moves into secret storage and the runtime setting", () => {
+    const stored = new Map<string, string>();
+    const store = {
+      getSecret: (id: string) => stored.get(id) ?? null,
+      setSecret: (id: string, secret: string) => { stored.set(id, secret); },
+    };
+    const settings = { youtubeApiKey: "", scrapcreatorsApiKey: "", supadataApiKey: "" };
+
+    const foundInData = loadTranscriptKeys({ scrapcreatorsApiKey: "sc-key" }, settings, store);
+
+    expect(foundInData).toBe(true);
+    expect(stored.get(TRANSCRIPT_SECRET_IDS.scrapcreatorsApiKey)).toBe("sc-key");
+    expect(settings.scrapcreatorsApiKey).toBe("sc-key");
   });
 });
 

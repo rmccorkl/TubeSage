@@ -46,7 +46,7 @@ import { writeIfUnchanged } from './src/runtime/guarded-write';
 import { templateNotFoundError } from './src/runtime/template-missing';
 import { createRunnerDeps, generateOpaqueId } from './src/runtime/job-adapters';
 import type { RenderedNote, VaultLike } from './src/runtime/job-adapters';
-import { SECRET_IDS, SECRET_KEY_PROVIDERS, SettingsWriter, settingsForPersist } from './src/runtime/settings-persist';
+import { SECRET_IDS, SECRET_KEY_PROVIDERS, SettingsWriter, TRANSCRIPT_SECRET_IDS, loadTranscriptKeys, settingsForPersist } from './src/runtime/settings-persist';
 import { providerSetupProblem } from './src/llm/openai-compatible';
 import { baseUrlOverrides, modelListUrl } from './src/llm/base-url';
 import { DEFAULT_SETTINGS } from './src/settings/settings-defaults';
@@ -726,9 +726,11 @@ export default class YouTubeTranscriptPlugin extends Plugin {
         // 1. Migrate any key still present in data.json into secret storage.
         // 2. Populate the runtime settings.apiKeys cloud entries from storage.
         // 3. If data.json held any cloud key, persist once to scrub it out.
+        // The transcript-service keys take steps 1 and 2 first (#38), so the
+        // one scrub below runs after both copies.
         const dataApiKeys: Record<string, string> =
             isRecord(loadedSettings.apiKeys) ? loadedSettings.apiKeys : {};
-        let hadCloudKeysInData = false;
+        let hadCloudKeysInData = loadTranscriptKeys(loadedSettings, this.settings, this.app.secretStorage);
         for (const provider of SECRET_KEY_PROVIDERS) {
             const fromData = dataApiKeys[provider];
             if (typeof fromData === 'string' && fromData.trim() !== '') {
@@ -3880,6 +3882,9 @@ class YouTubeTranscriptSettingTab extends PluginSettingTab {
                 if (SECRET_KEY_PROVIDERS.includes(provider as typeof SECRET_KEY_PROVIDERS[number])) {
                     plugin.app.secretStorage.setSecret(SECRET_IDS[provider], value);
                 }
+            },
+            setTranscriptSecret: (field, value) => {
+                plugin.app.secretStorage.setSecret(TRANSCRIPT_SECRET_IDS[field], value);
             },
             fetchOpenAIModels: (apiKey) => plugin.fetchOpenAIModels(apiKey),
             fetchGoogleModels: (apiKey) => plugin.fetchGoogleModels(apiKey),

@@ -66,7 +66,7 @@ Choose a provider in settings. Only that provider's settings are shown — its k
 
 **Custom base URL for any provider:** OpenAI, Anthropic, Google and OpenRouter can each be pointed at another address — a corporate proxy, a gateway such as LiteLLM, or a mirror. Turn on that provider's **Custom base URL** toggle to show its base URL field; turn it off to go back to the vendor's address while keeping what you typed. Leave the field blank to use the vendor's own address, which it shows as its placeholder. The shape differs by vendor, so copy the placeholder's: OpenAI and OpenRouter include the version (`https://api.openai.com/v1`), Anthropic and Google do not (`https://api.anthropic.com`). Chat requests and the model-list refresh both go to the address you set, and **that provider's API key is sent to it**. Only bearer-style keys are supported, so services that need another auth scheme (Azure OpenAI's `api-key` header, for example) are not.
 
-**Where API keys are stored:** cloud-provider keys (OpenAI, Anthropic, Google, OpenRouter) and the optional OpenAI-compatible server key are saved in Obsidian's native secret storage, not in the plugin's `data.json`. Type a key into its provider field and it is written to the secret store automatically — there is no separate setting to enable this, and it is not optional. The Ollama field, the OpenAI-compatible server URL and the custom base URLs hold server addresses rather than secrets, so they remain in plugin data.
+**Where API keys are stored:** cloud-provider keys (OpenAI, Anthropic, Google, OpenRouter), the optional OpenAI-compatible server key and the transcript-service keys (YouTube Data API, ScrapeCreators, Supadata) are saved in Obsidian's native secret storage, not in the plugin's `data.json`. Type a key into its field and it is written to the secret store automatically — there is no separate setting to enable this, and it is not optional. The Ollama field, the OpenAI-compatible server URL and the custom base URLs hold server addresses rather than secrets, so they remain in plugin data.
 
 ### 3. Other settings
 - **Summary modes**: Fast (brief) or Extensive (detailed).
@@ -133,7 +133,7 @@ Architecture diagrams are in the `docs/` directory:
 ## Privacy & Security
 
 ### API keys
-Cloud-provider API keys (OpenAI, Anthropic, Google, OpenRouter) and the optional OpenAI-compatible server key are stored in Obsidian's native secret storage, never written to the plugin's `data.json`. Keys saved by versions older than 1.3.0 are migrated into secret storage automatically the first time you open the plugin after upgrading.
+Cloud-provider API keys (OpenAI, Anthropic, Google, OpenRouter), the optional OpenAI-compatible server key and the transcript-service keys (YouTube Data API, ScrapeCreators, Supadata) are stored in Obsidian's native secret storage, never written to the plugin's `data.json`. Keys saved in `data.json` by older versions (before 1.3.0 for the cloud-provider keys) are migrated into secret storage automatically the first time you open the plugin after upgrading.
 
 ### Network requests
 Requests to hosted services use HTTPS; a self-hosted server (Ollama, an OpenAI-compatible server, or a custom base URL you set) is contacted at the address you give it, which may be plain HTTP. TubeSage contacts:
