@@ -9,6 +9,7 @@ import { JOBS_KEY } from "../jobs/job-store";
 //
 // 1. Cloud-provider API keys live in Obsidian secret storage and never in
 //    data.json (only the ollama entry — a server URL, not a secret — is kept).
+//    So do the three transcript-service keys (#38).
 //    This function is the ONLY thing standing between a live key and disk.
 //
 // 2. `_jobs` and `_collections` never go back out. Jobs are memory-only since
@@ -39,6 +40,51 @@ export const SECRET_IDS: Record<string, string> = {
   'openai-compatible': 'tubesage-openai-compatible-key',
 };
 
+/**
+ * Secret-storage IDs for the transcript-service keys (#38), keyed by their
+ * top-level settings field. Same ID rules as SECRET_IDS.
+ */
+export const TRANSCRIPT_SECRET_IDS = {
+  youtubeApiKey: 'tubesage-youtube-data-key',
+  scrapcreatorsApiKey: 'tubesage-scrapecreators-key',
+  supadataApiKey: 'tubesage-supadata-key',
+} as const;
+
+export type TranscriptKeyField = keyof typeof TRANSCRIPT_SECRET_IDS;
+
+const TRANSCRIPT_KEY_FIELDS = Object.keys(TRANSCRIPT_SECRET_IDS) as TranscriptKeyField[];
+
+/** The two calls the migration makes on Obsidian's SecretStorage. */
+interface SecretStore {
+  getSecret(id: string): string | null;
+  setSecret(id: string, secret: string): void;
+}
+
+/**
+ * Load-time migration for the transcript-service keys, the steps main.ts takes
+ * for the provider keys: a non-empty data.json value is copied into secret
+ * storage unless storage already holds one, then the runtime field is filled
+ * from storage. Returns whether data.json held any of them, so the caller
+ * persists once to scrub it, after the copy.
+ */
+export function loadTranscriptKeys(
+  loaded: Partial<Record<TranscriptKeyField, unknown>>,
+  settings: Record<TranscriptKeyField, string>,
+  store: SecretStore,
+): boolean {
+  let foundInData = false;
+  for (const field of TRANSCRIPT_KEY_FIELDS) {
+    const id = TRANSCRIPT_SECRET_IDS[field];
+    const fromData = loaded[field];
+    if (typeof fromData === 'string' && fromData.trim() !== '') {
+      foundInData = true;
+      if (!store.getSecret(id)) store.setSecret(id, fromData);
+    }
+    settings[field] = store.getSecret(id) ?? '';
+  }
+  return foundInData;
+}
+
 /** Structural: any settings object with an optional apiKeys map (the plugin's interface satisfies it). */
 export interface PersistableSettings {
   apiKeys?: Record<string, string | undefined>;
@@ -48,6 +94,7 @@ export interface PersistableSettings {
 export function settingsForPersist(settings: PersistableSettings, ollamaDefault: string): Record<string, unknown> {
   const sanitizedApiKeys: Record<string, string> = { ollama: settings.apiKeys?.ollama ?? ollamaDefault };
   const payload: Record<string, unknown> = { ...settings, apiKeys: sanitizedApiKeys };
+  for (const field of TRANSCRIPT_KEY_FIELDS) delete payload[field];
   delete payload[JOBS_KEY];
   delete payload[COLLECTIONS_KEY];
   return payload;

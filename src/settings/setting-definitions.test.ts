@@ -87,6 +87,7 @@ function hostSpies() {
     showNotice: vi.fn(),
     getEffectiveMaxTokens: vi.fn(() => 1000),
     setSecret: vi.fn(),
+    setTranscriptSecret: vi.fn(),
     fetchOpenAIModels: vi.fn(() => Promise.resolve([])),
     fetchGoogleModels: vi.fn(() => Promise.resolve([])),
     fetchAnthropicModels: vi.fn(() => Promise.resolve([])),
