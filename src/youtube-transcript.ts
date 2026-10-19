@@ -34,6 +34,13 @@ const NO_CAPTIONS_MESSAGES = [
 const isNoCaptionsMessage = (message: string): boolean =>
     NO_CAPTIONS_MESSAGES.some(known => message.includes(known));
 
+// Words that mark a failure to reach YouTube at all. A message carrying an HTTP
+// status is never one: YouTube answered, so the connection worked (#35).
+const NETWORK_FAILURE_WORDS = ['network', 'fetch', 'connect', 'timeout'];
+
+const isNetworkFailureMessage = (message: string): boolean =>
+    !/\bHTTP \d{3}\b/.test(message) && NETWORK_FAILURE_WORDS.some(word => message.includes(word));
+
 // YouTube InnerTube iOS player endpoint.
 // See docs/superpowers/specs/2026-05-18-transcript-fallback-ios-player-design.md
 // The iOS client still returns working caption track URLs without PO tokens,
@@ -226,11 +233,7 @@ export class YouTubeTranscriptExtractor {
                 throw new Error('CORS policy blocked the request. Please try a different video or check your internet connection.' + detail);
             }
 
-            if (errorMessage.includes('network') ||
-                errorMessage.includes('fetch') ||
-                errorMessage.includes('connect') ||
-                errorMessage.includes('timeout')
-            ) {
+            if (isNetworkFailureMessage(errorMessage)) {
                 throw new Error('Network error while fetching transcript. Please check your internet connection.' + detail);
             }
 
@@ -658,13 +661,6 @@ export class YouTubeTranscriptExtractor {
     private static async fetchCaptionTrack(baseUrl: string, tlang?: string, userAgent?: string): Promise<TranscriptSegment[]> {
         // Ensure absolute URL
         let url = this.makeAbsoluteUrl(baseUrl);
-
-        // Strip ip=0.0.0.0 and ipbits=0 parameters — YouTube embeds these in
-        // ytInitialPlayerResponse but they cause empty responses when the request
-        // comes from a non-browser context (Obsidian's requestUrl)
-        url = url.replace(/[&?]ip=0\.0\.0\.0/g, '&').replace(/[&?]ipbits=0/g, '&');
-        // Clean up any resulting double-ampersands or trailing ampersands
-        url = url.replace(/&&+/g, '&').replace(/\?&/, '?').replace(/&$/, '');
 
         // Add or replace tlang parameter for translation
         if (tlang) {
