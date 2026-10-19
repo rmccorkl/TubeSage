@@ -508,8 +508,8 @@
         "translation": "Käsittely peruutettu"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "Käsittely keskeytyi"
+        "original": "Processing was interrupted: {error}",
+        "translation": "Käsittely keskeytyi: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

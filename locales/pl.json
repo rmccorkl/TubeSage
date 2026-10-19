@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Własny bazowy adres URL musi być pełnym adresem zaczynającym się od http:// lub https://.",
     "notice.job.failed": "Błąd: {error}",
     "notice.job.cancelled": "Przetwarzanie anulowane",
-    "notice.job.interrupted": "Przetwarzanie zostało przerwane",
+    "notice.job.interrupted": "Przetwarzanie zostało przerwane: {error}",
     "notice.debugNote.created": "Utworzono notatkę błędu z informacjami diagnostycznymi: {file}",
     "notice.debugNote.failed": "Błąd: {error} (nie udało się też utworzyć notatki diagnostycznej)",
     "notice.transcript.noTimestamps": "Ostrzeżenie: w transkrypcji nie znaleziono znaczników czasu. Znaczniki czasu są wymagane do przetwarzania.",

@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Maxsus asosiy URL manzili http:// yoki https:// bilan boshlanadigan toʻliq manzil boʻlishi kerak.",
     "notice.job.failed": "Xato: {error}",
     "notice.job.cancelled": "Qayta ishlash bekor qilindi",
-    "notice.job.interrupted": "Qayta ishlash uzildi",
+    "notice.job.interrupted": "Qayta ishlash uzildi: {error}",
     "notice.debugNote.created": "Nosozliklarni tuzatish maʼlumotlari bilan xato yozuvi yaratildi: {file}",
     "notice.debugNote.failed": "Xato: {error} (nosozlik yozuvi ham yaratilmadi)",
     "notice.transcript.noTimestamps": "Ogohlantirish: transkriptda vaqt belgilari topilmadi. Qayta ishlash uchun ular zarur.",

@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "কাস্টম বেস URL অবশ্যই http:// বা https:// দিয়ে শুরু হওয়া পূর্ণ ঠিকানা হতে হবে।",
     "notice.job.failed": "ত্রুটি: {error}",
     "notice.job.cancelled": "প্রক্রিয়াকরণ বাতিল করা হয়েছে",
-    "notice.job.interrupted": "প্রক্রিয়াকরণ বাধাগ্রস্ত হয়েছে",
+    "notice.job.interrupted": "প্রক্রিয়াকরণ বাধাগ্রস্ত হয়েছে: {error}",
     "notice.debugNote.created": "ডিবাগ তথ্যসহ ত্রুটির নোট তৈরি হয়েছে: {file}",
     "notice.debugNote.failed": "ত্রুটি: {error} (ডিবাগ নোটও তৈরি করা যায়নি)",
     "notice.transcript.noTimestamps": "সতর্কতা: প্রতিলিপিতে কোনো টাইমস্ট্যাম্প পাওয়া যায়নি। প্রক্রিয়াকরণের জন্য টাইমস্ট্যাম্প দরকার।",

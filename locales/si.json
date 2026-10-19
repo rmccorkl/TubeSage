@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "අභිරුචි මූලික URL එක http:// හෝ https:// න් ආරම්භ වන සම්පූර්ණ ලිපිනයක් විය යුතුය.",
     "notice.job.failed": "දෝෂය: {error}",
     "notice.job.cancelled": "සැකසීම අවලංගු කෙරිණි",
-    "notice.job.interrupted": "සැකසීම බිඳුණි",
+    "notice.job.interrupted": "සැකසීම බිඳුණි: {error}",
     "notice.debugNote.created": "දෝෂහරණ තොරතුරු සහිත දෝෂ සටහන සාදන ලදී: {file}",
     "notice.debugNote.failed": "දෝෂය: {error} (දෝෂහරණ සටහනද සෑදිය නොහැකි විය)",
     "notice.transcript.noTimestamps": "අවවාදයයි: පිටපතේ කාල මුද්‍රා හමු නොවීය. සැකසීමට කාල මුද්‍රා අවශ්‍යයි.",

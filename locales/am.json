@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "ብጁ መሠረታዊ URL በhttp:// ወይም በhttps:// የሚጀምር ሙሉ አድራሻ መሆን አለበት።",
     "notice.job.failed": "ስህተት፦ {error}",
     "notice.job.cancelled": "ሂደቱ ተሰርዟል",
-    "notice.job.interrupted": "ሂደቱ ተቋርጧል",
+    "notice.job.interrupted": "ሂደቱ ተቋርጧል፦ {error}",
     "notice.debugNote.created": "የስህተት ማስታወሻ ከማረሚያ መረጃ ጋር ተፈጥሯል፦ {file}",
     "notice.debugNote.failed": "ስህተት፦ {error} (የማረሚያ ማስታወሻም አልተፈጠረም)",
     "notice.transcript.noTimestamps": "ማስጠንቀቂያ፦ በግልባጭ ውስጥ የጊዜ ማህተሞች አልተገኙም። ለሂደቱ የጊዜ ማህተሞች ያስፈልጋሉ።",

@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Die eigene Basis-URL muss eine vollständige Adresse sein, die mit http:// oder https:// beginnt.",
     "notice.job.failed": "Fehler: {error}",
     "notice.job.cancelled": "Verarbeitung abgebrochen",
-    "notice.job.interrupted": "Die Verarbeitung wurde unterbrochen",
+    "notice.job.interrupted": "Die Verarbeitung wurde unterbrochen: {error}",
     "notice.debugNote.created": "Fehlernotiz mit Debug-Informationen erstellt: {file}",
     "notice.debugNote.failed": "Fehler: {error} (Die Debug-Notiz konnte ebenfalls nicht erstellt werden)",
     "notice.transcript.noTimestamps": "Warnung: Im Transkript wurden keine Zeitstempel gefunden. Zeitstempel sind für die Verarbeitung erforderlich.",

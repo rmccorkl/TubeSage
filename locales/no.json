@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Den egendefinerte grunn-URL-en må være en fullstendig adresse som begynner med http:// eller https://.",
     "notice.job.failed": "Feil: {error}",
     "notice.job.cancelled": "Behandling avbrutt",
-    "notice.job.interrupted": "Behandlingen ble avbrutt",
+    "notice.job.interrupted": "Behandlingen ble avbrutt: {error}",
     "notice.debugNote.created": "Feilnotat med feilsøkingsinformasjon opprettet: {file}",
     "notice.debugNote.failed": "Feil: {error} (feilsøkingsnotatet kunne heller ikke opprettes)",
     "notice.transcript.noTimestamps": "Advarsel: fant ingen tidsstempler i transkripsjonen. Tidsstempler er nødvendige for behandlingen.",

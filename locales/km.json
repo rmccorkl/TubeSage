@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "URL មូលដ្ឋានផ្ទាល់ខ្លួន ត្រូវតែជាអាសយដ្ឋានពេញលេញ ដែលចាប់ផ្ដើមដោយ http:// ឬ https://។",
     "notice.job.failed": "កំហុស៖ {error}",
     "notice.job.cancelled": "បានបោះបង់ដំណើរការ",
-    "notice.job.interrupted": "ដំណើរការត្រូវបានរំខាន",
+    "notice.job.interrupted": "ដំណើរការត្រូវបានរំខាន៖ {error}",
     "notice.debugNote.created": "បានបង្កើតកំណត់ត្រាកំហុសជាមួយព័ត៌មានបំបាត់កំហុស៖ {file}",
     "notice.debugNote.failed": "កំហុស៖ {error} (ក៏មិនអាចបង្កើតកំណត់ត្រាបំបាត់កំហុសបានដែរ)",
     "notice.transcript.noTimestamps": "ការព្រមាន៖ រកមិនឃើញត្រាពេលវេលាក្នុងប្រតិចារិកទេ។ ត្រាពេលវេលាចាំបាច់សម្រាប់ដំណើរការ។",

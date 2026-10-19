@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Vlastní základní adresa URL musí být úplná adresa začínající http:// nebo https://.",
     "notice.job.failed": "Chyba: {error}",
     "notice.job.cancelled": "Zpracování zrušeno",
-    "notice.job.interrupted": "Zpracování bylo přerušeno",
+    "notice.job.interrupted": "Zpracování bylo přerušeno: {error}",
     "notice.debugNote.created": "Poznámka o chybě s ladicími informacemi byla vytvořena: {file}",
     "notice.debugNote.failed": "Chyba: {error} (ladicí poznámku se také nepodařilo vytvořit)",
     "notice.transcript.noTimestamps": "Upozornění: v přepisu nebyly nalezeny časové značky. Časové značky jsou pro zpracování nutné.",

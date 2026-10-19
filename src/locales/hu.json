@@ -508,8 +508,8 @@
         "translation": "A feldolgozás megszakítva"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "A feldolgozás megszakadt"
+        "original": "Processing was interrupted: {error}",
+        "translation": "A feldolgozás megszakadt: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

@@ -508,8 +508,8 @@
         "translation": "संसाधनं निरस्तम्"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "संसाधनं विच्छिन्नम्"
+        "original": "Processing was interrupted: {error}",
+        "translation": "संसाधनं विच्छिन्नम्: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

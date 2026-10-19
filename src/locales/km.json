@@ -508,8 +508,8 @@
         "translation": "បានបោះបង់ដំណើរការ"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "ដំណើរការត្រូវបានរំខាន"
+        "original": "Processing was interrupted: {error}",
+        "translation": "ដំណើរការត្រូវបានរំខាន៖ {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

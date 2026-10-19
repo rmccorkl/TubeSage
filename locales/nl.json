@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "De eigen basis-URL moet een volledig adres zijn dat begint met http:// of https://.",
     "notice.job.failed": "Fout: {error}",
     "notice.job.cancelled": "Verwerking geannuleerd",
-    "notice.job.interrupted": "De verwerking is onderbroken",
+    "notice.job.interrupted": "De verwerking is onderbroken: {error}",
     "notice.debugNote.created": "Foutnotitie met debuginformatie gemaakt: {file}",
     "notice.debugNote.failed": "Fout: {error} (de debugnotitie kon ook niet worden gemaakt)",
     "notice.transcript.noTimestamps": "Waarschuwing: geen tijdstempels gevonden in de transcriptie. Tijdstempels zijn nodig voor de verwerking.",

@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "Уласны базавы URL павінен быць поўным адрасам, які пачынаецца з http:// або https://.",
     "notice.job.failed": "Памылка: {error}",
     "notice.job.cancelled": "Апрацоўка адменена",
-    "notice.job.interrupted": "Апрацоўка перапынена",
+    "notice.job.interrupted": "Апрацоўка перапынена: {error}",
     "notice.debugNote.created": "Створана нататка пра памылку з адладачнымі звесткамі: {file}",
     "notice.debugNote.failed": "Памылка: {error} (адладачную нататку таксама не ўдалося стварыць)",
     "notice.transcript.noTimestamps": "Папярэджанне: у транскрыпце не знойдзены адзнакі часу. Адзнакі часу патрэбны для апрацоўкі.",

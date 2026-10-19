@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "URL-ul de bază personalizat trebuie să fie o adresă completă care începe cu http:// sau https://.",
     "notice.job.failed": "Eroare: {error}",
     "notice.job.cancelled": "Procesare anulată",
-    "notice.job.interrupted": "Procesarea a fost întreruptă",
+    "notice.job.interrupted": "Procesarea a fost întreruptă: {error}",
     "notice.debugNote.created": "S-a creat o notiță de eroare cu informații de depanare: {file}",
     "notice.debugNote.failed": "Eroare: {error} (nici notița de depanare nu a putut fi creată)",
     "notice.transcript.noTimestamps": "Avertisment: nu s-au găsit marcaje temporale în transcriere. Marcajele temporale sunt necesare pentru procesare.",

@@ -14,6 +14,9 @@ import type { JobHost, JobHostSettings, RenderedNote, TimestampPassOptions, Vaul
 import { sanitizeFilename } from "../utils/filename-sanitizer";
 import { NoCaptionsError } from "../utils/transcript-errors";
 import { DEFAULT_REQUEST_TIMEOUT_MS, requestTimeoutMessage } from "../utils/request-budget";
+import { effectiveTitle } from "../jobs/job-record";
+import { getLogger, getLogsForCallout, logMark } from "../utils/logger";
+import { DEBUG_CALLOUT_TITLE, DebugNotes } from "./debug-note";
 
 // Seam-level tests (#3 final review C1): the REAL JobRunner + REAL adapters +
 // REAL JobStore, driven through a host double that mirrors main.ts and a
@@ -98,6 +101,13 @@ class ObsidianLikeVault implements VaultLike<{ path: string }> {
     this.files.set(normalized, content);
     this.created.push(normalized);
     return Promise.resolve({ path: normalized });
+  }
+
+  // Vault.process: the atomic read-modify-write the debug callout is appended through.
+  process(file: { path: string }, fn: (data: string) => string): Promise<string> {
+    const next = fn(this.files.get(file.path) ?? "");
+    this.files.set(file.path, next);
+    return Promise.resolve(next);
   }
 }
 
@@ -374,7 +384,7 @@ describe("end-to-end: timestamps-stage failures surface as recoverable on the ru
     // A transient failure is NOT a verdict that the video can never work: it
     // surfaces as `interrupted`, never `failed`.
     expect(h.events.filter((e) => e.type === "failed")).toEqual([]);
-    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id }]);
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id, error: "Error adding timestamp links: fetch failed" }]);
   });
 
   it("(b) the strict pass is a single billed attempt: the host is called STRICT exactly once", async () => {
@@ -441,7 +451,7 @@ describe("end-to-end: extraction failures are classified, never disguised (#3 fi
     expect(h.store.findByVideoId("x1")?.id).toBe(id);
     // Transient, so never `failed` — and nothing paid was reached.
     expect(h.events.filter((e) => e.type === "failed")).toEqual([]);
-    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id }]);
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id, error: h.host.extractError.message }]);
     expect(h.host.summarizeCalls).toBe(0);
     expect(h.vault.files.size).toBe(0);
   });
@@ -490,7 +500,7 @@ describe("end-to-end: translation is a checkpointed paid stage — failures surf
     expect(h.store.findByVideoId("tr1")?.id).toBe(id);
     expect(h.events.filter((e) => e.type === "done")).toEqual([]);
     expect(h.events.filter((e) => e.type === "failed")).toEqual([]);
-    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id }]);
+    expect(h.events.filter((e) => e.type === "interrupted")).toEqual([{ type: "interrupted", id, error: "Translation error: fetch failed" }]);
   });
 
   it("(c) no frozen translation (en/US): the stage sequence never includes translation, zero translation calls, nothing frozen on the record", async () => {
@@ -788,5 +798,119 @@ describe("end-to-end: the create stage never overwrites — it steps to Obsidian
     expect(suffixed).toBe(suffixed.normalize("NFC"));
     expect(vault.created).toEqual([suffixed]);
     expect(vault.getFile(suffixed)).not.toBeNull();
+  });
+});
+
+// #32 / #31 through the real runner, adapters and logger: DebugNotes wired
+// exactly as main.ts wires it — the log mark taken first, the event logged,
+// then handed over — so the success path cannot quietly lose the callout
+// again while every unit stays green.
+const e2eLogger = getLogger("e2e");
+
+function debugHarness(options: { debugLogging: boolean }) {
+  const pending: Array<Promise<void>> = [];
+  const notices: string[] = [];
+  let debugNotes: DebugNotes<{ path: string }> | undefined;
+  const h = harness({
+    onEvent: (event) => {
+      const mark = logMark();
+      e2eLogger.info(`[jobs] ${event.id} ${event.type}${event.type === "interrupted" ? `: ${event.error}` : ""}`);
+      if (debugNotes !== undefined) {
+        pending.push(debugNotes.handle(event, mark));
+      }
+    },
+  });
+  debugNotes = new DebugNotes<{ path: string }>({
+    enabled: () => options.debugLogging,
+    logsSince: (mark) => getLogsForCallout(mark),
+    job: (id) => {
+      const record = h.store.get(id);
+      if (record === undefined) return undefined;
+      return {
+        title: effectiveTitle(record) ?? "Failed Youtube transcript",
+        url: record.url,
+        folder: record.folder,
+        notePath: record.notePath,
+      };
+    },
+    vault: h.vault,
+    ensureFolder: () => Promise.resolve(),
+    normalizePath: obsidianNormalizePath,
+    notify: (message) => notices.push(message),
+    logError: () => undefined,
+  });
+  const run = async (videoId: string): Promise<void> => {
+    await h.runner.submit(submitInput(videoId));
+    await settle();
+    await Promise.all(pending);
+  };
+  return { ...h, notices, run };
+}
+
+describe("end-to-end: debug logging puts the captured logs in every note (#32, #31)", () => {
+  it("debug ON: a SUCCESSFUL note ends with the collapsed debug callout (the regression)", async () => {
+    const h = debugHarness({ debugLogging: true });
+    h.host.onSummarize = () => e2eLogger.info("summary call for this video");
+    await h.run("ok1");
+    const note = h.vault.files.get(TARGET_PATH) ?? "";
+    expect(h.store.list()[0].status).toBe("done");
+    // After the timestamps pass, which is what the callout must never be sent through.
+    expect(note.startsWith(`RENDERED\n[Watch]\n\n${DEBUG_CALLOUT_TITLE}\n> \`\`\`\n`)).toBe(true);
+    expect(note).toContain("summary call for this video");
+    expect(note).toContain(`[jobs] ${h.store.list()[0].id} done`);
+    expect(note.endsWith("\n> ```")).toBe(true);
+    expect(h.vault.created).toEqual([TARGET_PATH]);
+  });
+
+  it("debug ON: an interrupted job writes a debug note carrying its error", async () => {
+    const h = debugHarness({ debugLogging: true });
+    h.host.extractError = new Error("connect ECONNREFUSED 127.0.0.1:1234");
+    await h.run("int1");
+    expect(h.store.list()[0].status).toBe("interrupted");
+    const path = "Inbox/Failed-Youtube-transcript.md";
+    expect(h.vault.created).toEqual([path]);
+    const note = h.vault.files.get(path) ?? "";
+    expect(note).toContain("> [!error] Processing was interrupted: connect ECONNREFUSED 127.0.0.1:1234");
+    expect(note).toContain("**URL:** https://youtu.be/int1");
+    expect(note).toContain(DEBUG_CALLOUT_TITLE);
+    expect(h.notices).toEqual(["Error note created with debug information: Failed-Youtube-transcript.md"]);
+  });
+
+  it("debug ON: two failures on the SAME video write two notes, not a \"File already exists.\" throw", async () => {
+    const h = debugHarness({ debugLogging: true });
+    h.host.extractError = new Error("socket hang up");
+    await h.run("same");
+    await h.run("same");
+    expect(h.vault.created).toEqual(["Inbox/Failed-Youtube-transcript.md", "Inbox/Failed-Youtube-transcript 1.md"]);
+    expect(h.notices).toEqual([
+      "Error note created with debug information: Failed-Youtube-transcript.md",
+      "Error note created with debug information: Failed-Youtube-transcript 1.md",
+    ]);
+  });
+
+  it("debug ON: the second job's note carries none of the first job's lines", async () => {
+    const h = debugHarness({ debugLogging: true });
+    h.host.onSummarize = () => e2eLogger.info(`summary call for ${h.host.title}`);
+    h.host.title = "First";
+    await h.run("s1");
+    h.host.title = "Second";
+    await h.run("s2");
+    const [first, second] = h.store.list();
+    const secondNote = h.vault.files.get(second.notePath ?? "") ?? "";
+    expect(h.vault.files.get(first.notePath ?? "")).toContain("summary call for First");
+    expect(secondNote).toContain("summary call for Second");
+    expect(secondNote).not.toContain("summary call for First");
+    expect(secondNote).not.toContain(first.id);
+  });
+
+  it("debug OFF: no callout and no debug note, on success or on interruption", async () => {
+    const h = debugHarness({ debugLogging: false });
+    await h.run("off1");
+    h.host.extractError = new Error("socket hang up");
+    await h.run("off2");
+    expect(h.store.list().map((record) => record.status)).toEqual(["done", "interrupted"]);
+    expect(h.vault.created).toEqual([TARGET_PATH]);
+    expect(h.vault.files.get(TARGET_PATH)).toBe("RENDERED\n[Watch]");
+    expect(h.notices).toEqual([]);
   });
 });

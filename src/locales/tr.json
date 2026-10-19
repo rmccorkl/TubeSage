@@ -508,8 +508,8 @@
         "translation": "İşleme iptal edildi"
     },
     "notice.job.interrupted": {
-        "original": "Processing was interrupted",
-        "translation": "İşleme kesintiye uğradı"
+        "original": "Processing was interrupted: {error}",
+        "translation": "İşleme kesintiye uğradı: {error}"
     },
     "notice.debugNote.created": {
         "original": "Error note created with debug information: {file}",

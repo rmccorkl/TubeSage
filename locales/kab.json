@@ -126,7 +126,7 @@
     "notice.baseUrl.invalid": "URL azadur udmawan ilaq ad yili d tansa taččurant i yebdan s http:// neɣ https://.",
     "notice.job.failed": "Tuccḍa: {error}",
     "notice.job.cancelled": "Asesfer yefsex",
-    "notice.job.interrupted": "Asesfer yeḥbes",
+    "notice.job.interrupted": "Asesfer yeḥbes: {error}",
     "notice.debugNote.created": "Tettwarna tzemmilt n tuccḍa s telɣut n usezreg: {file}",
     "notice.debugNote.failed": "Tuccḍa: {error} (ur tettwarna ara daɣen tzemmilt n usezreg)",
     "notice.transcript.noTimestamps": "Ɣur-k: ulac tirectiwin n wakud deg uḍris. Tirectiwin n wakud ilaqent i usesfer.",
