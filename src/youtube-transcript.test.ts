@@ -138,3 +138,24 @@ describe("YouTubeTranscriptExtractor.fetchTranscript — strict mode (#3 final r
     expect(new NoCaptionsError("x").name).toBe("NoCaptionsError");
   });
 });
+
+describe("YouTubeTranscriptExtractor.fetchTranscript — caption download (#34 #35)", () => {
+  it("downloads the caption baseUrl with ip=0.0.0.0 and ipbits=0 intact (YouTube signs both)", async () => {
+    const signedTrack = { ...EN_TRACK, baseUrl: "https://www.youtube.com/api/timedtext?v=test&ip=0.0.0.0&ipbits=0&lang=en" };
+    const json3 = JSON.stringify({ events: [{ tStartMs: 1000, dDurationMs: 2000, segs: [{ utf8: "hello" }] }] });
+    const urls = mockHttp(playerResponse([signedTrack]), () => Promise.resolve(new Response(json3, { status: 200 })));
+    await YouTubeTranscriptExtractor.fetchTranscript(videoId());
+    const captionUrl = new URL(urls[1]);
+    expect(captionUrl.searchParams.get("ip")).toBe("0.0.0.0");
+    expect(captionUrl.searchParams.get("ipbits")).toBe("0");
+  });
+
+  it("a caption fetch answered with HTTP 404 rejects with that status, not the network wording (still transient)", async () => {
+    mockHttp(playerResponse([EN_TRACK]), () => Promise.resolve(new Response("", { status: 404 })));
+    const failure = await YouTubeTranscriptExtractor.fetchTranscript(videoId(), { strict: true }).catch((error: unknown) => error);
+    expect(failure).not.toBeInstanceOf(NoCaptionsError);
+    const message = (failure as Error).message;
+    expect(message).toContain("HTTP 404");
+    expect(message).not.toContain("check your internet connection");
+  });
+});
