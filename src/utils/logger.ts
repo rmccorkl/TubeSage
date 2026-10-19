@@ -194,20 +194,23 @@ export function logMark(): number {
  * Gets the log entries formatted for Obsidian callouts
  * Each log entry is properly formatted to maintain callout structure
  * @param since A logMark(): only entries logged from that point on. Omitted, everything buffered.
+ * @param redact Applied to each entry before it is split and wrapped (the debug note masks secrets here).
  * @returns Formatted log messages for callout display
  */
-export function getLogsForCallout(since = 0): string {
+export function getLogsForCallout(since = 0, redact: (text: string) => string = (text) => text): string {
     const MAX_LINE_LENGTH = 120; // Prevent very long lines from breaking callouts
     
     return logBuffer.filter(entry => entry.sequence >= since).map(entry => {
         // Each log entry might contain multiple lines, so we need to add ">" prefix to each line
-        const lines = entry.formattedMessage.split('\n');
+        const lines = redact(entry.formattedMessage).split('\n');
         return lines.map(line => {
             // Clean the line to prevent callout breaking (keep URLs as-is for debugging)
             let cleanedLine = line
                 .replace(/\r/g, '') // Remove carriage returns
                 .replace(/\t/g, '    ') // Convert tabs to spaces
-                .replace(/[^\x20-\x7E\n]/g, ''); // Remove non-printable chars except newlines
+                // Control characters only: everything else, non-ASCII text included, is
+                // printable, and TubeSage's titles and errors arrive in 51 languages.
+                .replace(/\p{Cc}/gu, '');
                 // Note: Removed HTML entity escaping to show actual URLs in logs
             
             // Wrap very long lines to prevent callout breaking

@@ -807,7 +807,7 @@ describe("end-to-end: the create stage never overwrites — it steps to Obsidian
 // again while every unit stays green.
 const e2eLogger = getLogger("e2e");
 
-function debugHarness(options: { debugLogging: boolean }) {
+function debugHarness(options: { debugLogging: boolean; secrets?: string[] }) {
   const pending: Array<Promise<void>> = [];
   const notices: string[] = [];
   let debugNotes: DebugNotes<{ path: string }> | undefined;
@@ -822,7 +822,8 @@ function debugHarness(options: { debugLogging: boolean }) {
   });
   debugNotes = new DebugNotes<{ path: string }>({
     enabled: () => options.debugLogging,
-    logsSince: (mark) => getLogsForCallout(mark),
+    logsSince: (mark, redact) => getLogsForCallout(mark, redact),
+    secrets: () => options.secrets ?? [],
     job: (id) => {
       const record = h.store.get(id);
       if (record === undefined) return undefined;
@@ -901,6 +902,32 @@ describe("end-to-end: debug logging puts the captured logs in every note (#32, #
     expect(secondNote).toContain("summary call for Second");
     expect(secondNote).not.toContain("summary call for First");
     expect(secondNote).not.toContain(first.id);
+  });
+
+  it("debug ON: a configured key and a URL's user:pass are X'd out of the callout and the error line", async () => {
+    // A real OpenAI project key's length: longer than a callout line, so it would wrap mid-key.
+    const key = `sk-proj-${"a1B2c3D4".repeat(19)}`;
+    const h = debugHarness({ debugLogging: true, secrets: [key] });
+    h.host.onSummarize = () => {
+      e2eLogger.info("LangChain fetch: http://alice:s3cret-pass@proxy.local/v1/chat/completions");
+      throw new Error(`401 Incorrect API key provided: ${key}`);
+    };
+    await h.run("mask1");
+    const note = h.vault.files.get(h.vault.created[0]) ?? "";
+    expect(note).toContain("> [!error] Processing was interrupted: 401 Incorrect API key provided: XXXXXXXX");
+    expect(note).toContain("LangChain fetch: http://XXXXXXXX@proxy.local/v1/chat/completions");
+    expect(note).not.toContain("alice");
+    expect(note).not.toContain("s3cret-pass");
+    expect(note).not.toContain(key.slice(0, 40));
+    expect(note).not.toContain(key.slice(-40));
+  });
+
+  it("debug ON: a non-ASCII log line reaches the callout intact", async () => {
+    const h = debugHarness({ debugLogging: true });
+    h.host.extractError = new Error("接続が拒否されました (ECONNREFUSED)");
+    await h.run("ja1");
+    const note = h.vault.files.get(h.vault.created[0]) ?? "";
+    expect(note.slice(note.indexOf(DEBUG_CALLOUT_TITLE))).toContain("interrupted: 接続が拒否されました (ECONNREFUSED)");
   });
 
   it("debug OFF: no callout and no debug note, on success or on interruption", async () => {

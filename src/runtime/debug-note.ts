@@ -30,9 +30,42 @@ import { doneNoticeText } from "./job-progress-notice";
 
 export const DEBUG_CALLOUT_TITLE = "> [!info]- Debug Information (hidden)";
 
-/** The collapsed callout appended to a note: the captured lines inside a fenced block. */
+/**
+ * The collapsed callout appended to a note: the captured lines inside a fenced block. The fence is
+ * longer than any backtick run in the lines (CommonMark): a logged model reply routinely carries a
+ * code block, whose ``` would otherwise close a fixed three-backtick fence and spill the rest of the
+ * log into the note as markdown.
+ */
 function debugCallout(logs: string): string {
-  return `\n\n${DEBUG_CALLOUT_TITLE}\n> \`\`\`\n${logs}\n> \`\`\``;
+  const runs: string[] = logs.match(/`+/g) ?? [];
+  const longestRun = runs.reduce((longest, run) => Math.max(longest, run.length), 0);
+  const fence = "`".repeat(Math.max(3, longestRun + 1));
+  return `\n\n${DEBUG_CALLOUT_TITLE}\n> ${fence}\n${logs}\n> ${fence}`;
+}
+
+/** What every masked secret and URL credential becomes: a fixed run, so the note says nothing about its length. */
+const MASK = "XXXXXXXX";
+/** Shorter values are not masked: a blank or stub key must not X out ordinary words. */
+const MIN_SECRET_LENGTH = 8;
+// scheme://user:pass@ — the userinfo of a URL, such as a basic-auth proxy's base URL.
+const URL_USERINFO = /\b([a-z][a-z0-9+.-]*:\/\/)[^\s/?#@]+@/gi;
+
+/**
+ * Every configured secret value, and the userinfo of every URL, replaced with X's. A wrong key comes
+ * back in a 401 body ("Incorrect API key provided: …") and a credentialed base URL is logged on every
+ * request, so either would otherwise be written into the vault in plain text.
+ */
+function maskSecrets(text: string, secrets: ReadonlyArray<string | undefined>): string {
+  const values = secrets
+    .map((secret) => (typeof secret === "string" ? secret.trim() : ""))
+    .filter((secret) => secret.length >= MIN_SECRET_LENGTH)
+    // Longest first, so a key that contains another is masked whole.
+    .sort((a, b) => b.length - a.length);
+  let masked = text.replace(URL_USERINFO, `$1${MASK}@`);
+  for (const value of values) {
+    masked = masked.split(value).join(MASK);
+  }
+  return masked;
 }
 
 type OutcomeEvent = Extract<JobEvent, { type: "done" | "failed" | "interrupted" | "cancelled" }>;
@@ -76,8 +109,14 @@ export interface DebugNoteVault<F> {
 export interface DebugNoteDeps<F> {
   /** The one condition: is debug logging on. */
   enabled(): boolean;
-  /** The lines logged from `mark` on, formatted for a callout (getLogsForCallout). */
-  logsSince(mark: number): string;
+  /**
+   * The lines logged from `mark` on, formatted for a callout (getLogsForCallout), each passed through
+   * `redact` BEFORE it is wrapped: a real key is longer than the wrap width, so masking the formatted
+   * text would miss the halves of a key split across two lines.
+   */
+  logsSince(mark: number, redact: (text: string) => string): string;
+  /** Every configured secret value: provider keys, transcript-service keys, the YouTube Data API key. */
+  secrets(): ReadonlyArray<string | undefined>;
   job(id: string): DebugNoteJob | undefined;
   vault: DebugNoteVault<F>;
   ensureFolder(folder: string): Promise<void>;
@@ -112,7 +151,12 @@ export class DebugNotes<F> {
     if (job === undefined) {
       return;
     }
-    await this.writeDown(job, event, debugCallout(this.deps.logsSince(since)));
+    await this.writeDown(job, event, debugCallout(this.deps.logsSince(since, (text) => this.mask(text))));
+  }
+
+  // Applied to everything a note receives (#32): the callout's lines and the debug note's own text.
+  private mask(text: string): string {
+    return maskSecrets(text, this.deps.secrets());
   }
 
   // A job's first event marks where its lines begin; `run-ended` follows the
@@ -149,7 +193,7 @@ export class DebugNotes<F> {
   // auto-version, and a video that fails twice derives the same title — most
   // often the shared fallback title of a job that never got its own.
   private async writeDebugNote(job: DebugNoteJob, event: OutcomeEvent, callout: string): Promise<void> {
-    const content = `# ${job.title}\n\n> [!error] ${outcomeText(event)}\n\n**URL:** ${job.url}${callout}`;
+    const content = this.mask(`# ${job.title}\n\n> [!error] ${outcomeText(event)}\n\n**URL:** ${job.url}`) + callout;
     try {
       if (job.folder !== "") {
         await this.deps.ensureFolder(job.folder);

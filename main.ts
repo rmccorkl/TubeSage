@@ -284,7 +284,14 @@ export default class YouTubeTranscriptPlugin extends Plugin {
     // a job that never got a note of its own gets a debug note instead.
     private readonly debugNotes = new DebugNotes<TFile>({
         enabled: () => this.settings.debugLogging,
-        logsSince: (mark: number) => getLogsForCallout(mark),
+        logsSince: (mark: number, redact: (text: string) => string) => getLogsForCallout(mark, redact),
+        // Masked as X's wherever they appear in a note (#32).
+        secrets: () => [
+            ...SECRET_KEY_PROVIDERS.map((provider) => this.settings.apiKeys[provider]),
+            this.settings.scrapcreatorsApiKey,
+            this.settings.supadataApiKey,
+            this.settings.youtubeApiKey,
+        ],
         job: (id: string) => {
             const record = this.jobStore.get(id);
             if (record === undefined) return undefined;

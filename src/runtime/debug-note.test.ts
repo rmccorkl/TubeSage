@@ -42,6 +42,7 @@ function setup(options: { enabled?: boolean } = {}) {
   const notes = new DebugNotes<{ path: string }>({
     enabled: () => state.enabled,
     logsSince: (mark) => lines.slice(mark).map((line) => `> ${line}`).join("\n"),
+    secrets: () => [],
     job: (id) => jobs.get(id),
     vault,
     ensureFolder: (folder) => {
@@ -216,6 +217,20 @@ describe("the callout carries the job's own lines", () => {
     const once = s.vault.files.get(NOTE);
     await s.emit({ type: "run-ended", id: "j1" });
     expect(s.vault.files.get(NOTE)).toBe(once);
+  });
+});
+
+describe("the callout's fence", () => {
+  it("holds a logged code block: a triple-backtick run stays inside one unbroken fence", async () => {
+    const s = setup();
+    s.jobs.set("j1", { title: "Video", url: "https://youtu.be/v1", folder: "Inbox", notePath: NOTE });
+    s.vault.files.set(NOTE, "RENDERED");
+    await s.emit({ type: "progress", id: "j1", stage: "summary", message: "Summarizing transcript" });
+    s.lines.push("Anthropic response text (40 chars): ```ts", "const x = 1;", "```");
+    await s.emit(DONE);
+    const text = s.vault.files.get(NOTE) ?? "";
+    expect(text.split("\n").filter((line) => line.startsWith("> ```"))).toEqual(["> ````", "> ```", "> ````"]);
+    expect(text.endsWith("\n> ````")).toBe(true);
   });
 });
 
