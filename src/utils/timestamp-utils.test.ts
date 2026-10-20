@@ -4,6 +4,7 @@ import {
     convertTimeIndexToWatchUrls,
     countTimestampLinks,
     createOptimizedChunks,
+    dropBlankLinesBeforeFrontmatter,
     dropUnofferedTimeIndices,
     extractDocumentComponents,
     fitTranscriptToBudget,
@@ -57,6 +58,14 @@ describe("extractDocumentComponents / reconstructDocument", () => {
         expect(frontmatter).toBe(FRONTMATTER);
         expect(contentWithoutFrontmatter).toBe(BODY.trim());
         expect(transcript.startsWith("[00:00:00] [TimeIndex:0] spoken words")).toBe(true);
+    });
+
+    // Regression for #40: Templater keeps the blank lines a template starts
+    // with, so the note began with them and its transcript was never found.
+    it("finds the transcript once the blank lines above the frontmatter are dropped", () => {
+        const note = dropBlankLinesBeforeFrontmatter(`\n\n\n\n\n${FRONTMATTER}\n${BODY}`);
+        expect(note.startsWith("---\n")).toBe(true);
+        expect(extractDocumentComponents(note).transcript.startsWith("[00:00:00] [TimeIndex:0] spoken words")).toBe(true);
     });
 
     it("returns the whole text as the body when there is no frontmatter", () => {
