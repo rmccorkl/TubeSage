@@ -56,6 +56,20 @@ export function extractDocumentComponents(originalContent: string): DocumentComp
 }
 
 /**
+ * Drop the whitespace-only lines above an opening `---`, so the note starts
+ * with its frontmatter. Templater keeps the blank lines a template begins
+ * with, and frontmatter is only read from the first line (#40).
+ * Content whose first non-blank line is not `---` is returned unchanged.
+ *
+ * @param content The rendered note
+ * @returns The note, starting with `---` when it has frontmatter
+ */
+export function dropBlankLinesBeforeFrontmatter(content: string): string {
+    const blankLines = content.match(/^(?:[ \t\r]*\n)+(?=---\r?(?:\n|$))/);
+    return blankLines ? content.substring(blankLines[0].length) : content;
+}
+
+/**
  * Reconstruct the document with frontmatter and enhanced content
  * 
  * @param frontmatter The original frontmatter
