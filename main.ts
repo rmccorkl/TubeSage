@@ -25,6 +25,7 @@ import {
     fitTranscriptToBudget,
     offeredTimeIndices,
     dropUnofferedTimeIndices,
+    dropBlankLinesBeforeFrontmatter,
     SINGLE_PASS_TRANSCRIPT_BUDGET,
     MOBILE_CHUNK_TRANSCRIPT_BUDGET,
     convertTimestampToSeconds,
@@ -1528,7 +1529,9 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             logger.debug(`ctx.user.llmTags value: ${llmTags}`);
         }
         
-        const parsedContent = await templater.parser.parse_commands(templateContent, ctx);
+        // A template that starts with blank lines keeps them; the note must
+        // start with its frontmatter (#40).
+        const parsedContent = dropBlankLinesBeforeFrontmatter(await templater.parser.parse_commands(templateContent, ctx));
         
         // Debug logging to check parsed content
         if (this.settings.debugLogging) {
