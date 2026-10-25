@@ -77,9 +77,9 @@ The plugin uses a comprehensive settings system (`YouTubeTranscriptPluginSetting
 
 1. **LLM Provider Abstraction**: ALL LLM providers MUST use LangChain for consistent provider abstraction
    - Never bypass LangChain by calling provider APIs directly  
-   - Use the `ChatOpenAICompletions` and `ChatOllama` classes from their LangChain packages (not `ChatGoogleGenerativeAI`: see the Google exception below). `ChatOpenAICompletions` is the chat-completions class that `ChatOpenAI` delegates to; since @langchain/openai 1.7 plain `ChatOpenAI` silently routes some model ids (gpt-5.6, gpt-5.x-pro, anything containing "codex") to the Responses API, which returns content blocks the note cannot use, so the builders name the Completions class directly (#48)
+   - Use the `ChatOpenAICompletions` class from `@langchain/openai` (not `ChatGoogleGenerativeAI` or `ChatOllama`: see the Google and Ollama exceptions below). `ChatOpenAICompletions` is the chat-completions class that `ChatOpenAI` delegates to; since @langchain/openai 1.7 plain `ChatOpenAI` silently routes some model ids (gpt-5.6, gpt-5.x-pro, anything containing "codex") to the Responses API, which returns content blocks the note cannot use, so the builders name the Completions class directly (#48)
    - This ensures consistent interface, error handling, and maintainability across all providers
-   - All LLM calls must go through `src/llm/langchain-client.ts` using LangChain abstractions
+   - All LLM calls must go through `src/llm/langchain-client.ts` using LangChain abstractions, except Ollama's (see below)
    - **NO DIRECT API CALLS TO LLM PROVIDERS - USE LANGCHAIN ONLY**
    
    **EXCEPTION - Anthropic**: Uses direct API calls with `obsidianFetch` instead of LangChain
@@ -89,15 +89,17 @@ The plugin uses a comprehensive settings system (`YouTubeTranscriptPluginSetting
 
    **EXCEPTION - Google**: `GeminiClient` (`src/llm/gemini-client.ts`) calls the Gemini REST API directly with `obsidianFetch` instead of LangChain
    - `ChatGoogleGenerativeAI` ignores an injected fetch, so it would bypass the shim and fail on mobile; `@langchain/google-genai` is not even an installed dependency
-   - Anthropic and Google are the TWO exceptions; every other provider goes through LangChain
+
+   **EXCEPTION - Ollama**: `OllamaClient` (`src/llm/ollama-client.ts`) posts Ollama summaries directly to `<server>/api/generate` with `obsidianFetch` instead of LangChain (#44)
+   - It is the working path, and the owner chose to keep it: `TranscriptSummarizer.summarize()` hands provider `ollama` to `summarizeWithOllama()`, which checks `<server>/api/version`, then sends the system prompt, the user prompt with the transcript, the temperature, max tokens as `options.num_predict`, and `think: false` when reasoning effort is None (#43)
+   - `LangChainClient` used to build a `ChatOllama` that no summary ever reached; it and the `@langchain/ollama` dependency were removed rather than kept in step with an unused path
+   - Anthropic, Google and Ollama are the THREE exceptions; every other provider (OpenAI, OpenRouter, the OpenAI-compatible server) goes through LangChain
 
 2. **HTTP Abstraction Layer**: Use `obsidianFetch` from `src/utils/fetch-shim.ts` for cross-platform compatibility
    - This is critical for cross-platform compatibility (desktop and mobile)
    - **Every provider path goes through the shim (#19). There are no exceptions left.**
-   - The two LangChain shapes are NOT interchangeable, and a `fetch` in the wrong one is dropped in silence:
-     - `getOpenAiConfiguration()` puts it inside `configuration` — required by `ChatOpenAICompletions` (OpenAI, OpenRouter), which builds its client from `{apiKey, organization, dangerouslyAllowBrowser, ...fields.configuration}`
-     - `getLangChainConfiguration()` puts it at the top level — which is what `ChatOllama` reads
-   - Anthropic and Google (`GeminiClient`) call `obsidianFetch` directly. The claim that Google "doesn't support custom fetch" is obsolete: `ChatGoogleGenerativeAI` ignores an injected fetch, which is why Gemini bypasses LangChain and calls the shim itself — it was OpenAI and OpenRouter, not Google, that were off the shim until #19.
+   - `getOpenAiConfiguration()` puts it inside `configuration` — required by `ChatOpenAICompletions` (OpenAI, OpenRouter, the OpenAI-compatible server), which builds its client from `{apiKey, organization, dangerouslyAllowBrowser, ...fields.configuration}`. A `fetch` anywhere else is dropped in silence, which is how OpenAI and OpenRouter ran off the shim until #19
+   - Anthropic, Google (`GeminiClient`) and Ollama (`OllamaClient`) call `obsidianFetch` directly. The claim that Google "doesn't support custom fetch" is obsolete: `ChatGoogleGenerativeAI` ignores an injected fetch, which is why Gemini bypasses LangChain and calls the shim itself — it was OpenAI and OpenRouter, not Google, that were off the shim until #19.
    - The shim owns the per-request budget and honours `signal`. Because it honours signals, the OpenAI SDK's own timeout now lands — so `buildOpenAIModel` / `buildOpenRouterModel` must pass `timeout: requestBudgetMs()`, or the SDK's 600 s default silently caps whatever the user configured (#19 F1). The two clocks are aligned deliberately; on the other three paths the shim's budget is the only one, and the setting has no upper limit
    - Never use standard fetch directly - always prefer the shim where possible
 
