@@ -11,7 +11,7 @@ import type { LlmCallOutcome } from "./call-timing";
 import { obsidianFetch } from "../utils/fetch-shim";
 import { t } from "../i18n";
 import { PLACEHOLDER_API_KEY, parseExtraParams } from "./openai-compatible";
-import { effortToSend } from "./reasoning-effort";
+import { effortLogLine, effortToSend, ollamaEffortLogLine } from "./reasoning-effort";
 import type { ReasoningEffort } from "./reasoning-effort";
 import { parseBaseUrl, resolveBaseUrl } from "./base-url";
 
@@ -88,6 +88,11 @@ export function buildOpenAIModel(options: OpenAiModelOptions): ChatOpenAI {
   }
 
   const effort = effortToSend(options.reasoningEffort);
+  // useMaxCompletionTokens is our copy of the model gate LangChain applies to
+  // `reasoning` below, so the line can say when the level never went out.
+  logger.debug(effort && !useMaxCompletionTokens
+    ? `Reasoning effort: ${effort} (dropped: model is not an OpenAI reasoning model)`
+    : effortLogLine(effort, 'reasoning.effort'));
 
   // OpenAI: use maxCompletionTokens for o-series, fall back to maxTokens otherwise
   return new ChatOpenAI({
@@ -133,6 +138,7 @@ export function buildOpenAIModel(options: OpenAiModelOptions): ChatOpenAI {
  */
 export function buildOpenRouterModel(options: OpenAiModelOptions): ChatOpenAI {
   const effort = effortToSend(options.reasoningEffort);
+  logger.debug(effortLogLine(effort, 'reasoning.effort via modelKwargs'));
   return new ChatOpenAI({
     // The shim travels in `configuration` alongside the baseURL and the two
     // attribution headers (#19); see getOpenAiConfiguration for the timeout
@@ -196,6 +202,13 @@ export function buildOpenAiCompatibleModel(options: OpenAiCompatibleModelOptions
     throw new Error(t('notice.openaiCompatible.extraParamsUnreadable'));
   }
   const effort = effortToSend(options.reasoningEffort);
+  const extraKeys = Object.keys(extraParams);
+  // The user's fields win (below), so a reasoning_effort among them is what goes out.
+  logger.debug(extraKeys.includes('reasoning_effort')
+    ? `Reasoning effort: ${effort ?? 'default'} (overridden by extra request parameters)`
+    : effortLogLine(effort, 'reasoning_effort via modelKwargs'));
+  // Key names only: the values are the user's own and may hold anything.
+  logger.debug(`Extra request parameters: ${extraKeys.length > 0 ? `keys=${extraKeys.join(', ')}` : 'none'}`);
   return new ChatOpenAI({
     ...getOpenAiConfiguration({
       // `?? ''`: a hand-edited or pre-release data.json can leave the key out.
@@ -396,6 +409,7 @@ export class LangChainClient {
             logger.debug(`System prompt (${systemPromptContent.length} chars): ${truncateForDebug(systemPromptContent)}`);
             logger.debug(`User messages (${formattedMessages.length}): ${truncateForDebug(userPromptContent)}`);
             logger.debug(`Temperature: ${this.temperature}, MaxTokens: ${this.maxTokens}`);
+            if (effortToSend(this.reasoningEffort)) logger.debug('Reasoning effort: ignored by this provider');
             
             // Make the request directly using our fetch shim, at the user's
             // base URL or Anthropic's own (#29)
@@ -439,6 +453,7 @@ export class LangChainClient {
         case 'google': {
           logger.debug(`[GOOGLE] Using GeminiClient (direct obsidianFetch) for model: '${this.model}'`);
           logger.debug(`[GOOGLE] Temperature: ${this.temperature}, MaxTokens: ${this.maxTokens}`);
+          if (effortToSend(this.reasoningEffort)) logger.debug('Reasoning effort: ignored by this provider');
           logger.debug(`[GOOGLE] API Key present: ${!!this.apiKey}, length: ${this.apiKey?.length || 0}`);
 
           if (!this.model || typeof this.model !== 'string' || this.model.trim() === '') {
@@ -462,6 +477,7 @@ export class LangChainClient {
            
         case 'ollama': {
           logger.debug(`Using Ollama with model ${this.model}`);
+          logger.debug(ollamaEffortLogLine(this.reasoningEffort));
           // For Ollama, the API key is actually the base URL
           const model = new ChatOllama({
             ...config,
