@@ -136,7 +136,7 @@ describe("obsidianFetch — abort signals (#19 part 4)", () => {
     // The shim used to accept a signal and ignore it. That is what made the
     // OpenAI SDK's timeout a dead letter the moment #19 wired it up: the SDK
     // implements its timeout ONLY by aborting the signal it hands to fetch
-    // (openai@5.12.2 client.js:324-332).
+    // (openai@7.43.0 client.mjs:1083-1104).
     requestUrl.mockReturnValue(neverSettles());
     const controller = new AbortController();
     const call = track({ signal: controller.signal });
@@ -153,8 +153,8 @@ describe("obsidianFetch — abort signals (#19 part 4)", () => {
   });
 
   it("names the rejection AbortError, which is how callers tell an abort from a failure", async () => {
-    // openai@5.12.2 classifies by `err.name === 'AbortError'`
-    // (internal/errors.js isAbortError) and only then reports its own
+    // openai@7.43.0 classifies by `err.name === 'AbortError'`
+    // (internal/errors.mjs isAbortError) and only then reports its own
     // APIConnectionTimeoutError. Any other name and a timeout surfaces to the
     // user as an unexplained connection failure.
     requestUrl.mockReturnValue(neverSettles());

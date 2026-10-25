@@ -91,8 +91,8 @@ const normalizeHeaders = (headers?: HeadersInit): Record<string, string> => {
  * The rejection an aborted request produces.
  *
  * `name` is "AbortError" because that is the only thing callers look at:
- * `openai@5.12.2` classifies by `err.name === 'AbortError'`
- * (internal/errors.js, isAbortError) and reports its own
+ * `openai@7.43.0` classifies by `err.name === 'AbortError'`
+ * (internal/errors.mjs, isAbortError) and reports its own
  * APIConnectionTimeoutError only then — any other name and a timeout reaches
  * the user as an unexplained connection failure. A plain Error rather than a
  * DOMException, which is not guaranteed to exist in every runtime this

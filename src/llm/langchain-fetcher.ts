@@ -85,19 +85,20 @@ function createLangChainFetcher() {
 /**
  * The ChatOpenAI-shaped configuration: the shim goes INSIDE `configuration`.
  *
- * ChatOpenAI builds its client from
+ * ChatOpenAI, and the ChatOpenAICompletions the builders use (#48), build
+ * their client from
  * `{apiKey, organization, dangerouslyAllowBrowser, ...fields.configuration}`
- * (@langchain/openai@0.6.17 chat_models.cjs:625-630), so this is the only
+ * (@langchain/openai@1.7.0 chat_models/base.js:268-274), so this is the only
  * position a `fetch` survives from. The top-level shape below is what
- * ChatOllama reads (@langchain/ollama chat_models.cjs:545); the two are
+ * ChatOllama reads (@langchain/ollama@1.3.0 chat_models.js:362); the two are
  * genuinely different and neither works in the other's place, which is how
  * OpenAI and OpenRouter spent several releases silently on globalThis.fetch.
  *
  * WHO OWNS THE REQUEST TIMEOUT, now that this is wired (#19 part 2 — read
  * this before assuming two bounds apply):
  *
- *   `openai@5.12.2` implements its timeout ONLY by aborting the signal it
- *   hands to fetch (client.js:324-332): it calls `controller.abort()` and
+ *   `openai@7.43.0` implements its timeout by aborting the signal it
+ *   hands to fetch (client.mjs:1083-1104): it calls `controller.abort()` and
  *   waits for the fetch implementation to react. The shim honours `signal`
  *   now (#19 part 4), so that abort does land — but `requestUrl` cannot be
  *   cancelled, so what it achieves is that WE stop waiting while the request
@@ -137,7 +138,7 @@ export function getOpenAiConfiguration(
  * Configuration object for LangChain models that includes our custom fetcher.
  *
  * WHICH MODELS TAKE THIS SHAPE: `fetch` is returned at the TOP level, which
- * is what ChatOllama reads (@langchain/ollama chat_models.cjs:545). ChatOpenAI
+ * is what ChatOllama reads (@langchain/ollama@1.3.0 chat_models.js:362). ChatOpenAI
  * does NOT read it there, and used to be handed this shape — which is how
  * OpenAI and OpenRouter ran on globalThis.fetch until #19. Those two now use
  * `getOpenAiConfiguration` above; anything ChatOpenAI-backed must.
