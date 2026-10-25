@@ -491,16 +491,14 @@ describe("reasoning effort and extra request parameters, as they go out on the w
   describe("Ollama: none turns thinking off; every other level sends nothing", () => {
     const OLLAMA = "http://localhost:11434";
 
-    /** Ollama's own API: the version probe, then the generate or chat call. */
+    /** Ollama's own API: the version probe, then the generate call. */
     function answerOllama(): void {
       requestUrl.mockImplementation((request: { url: string }) => Promise.resolve({
         status: 200,
         headers: { "content-type": "application/json" },
         text: request.url.endsWith("/api/version")
           ? JSON.stringify({ version: "0.12.0" })
-          : request.url.endsWith("/api/generate")
-            ? JSON.stringify({ response: "ok", done: true })
-            : `${JSON.stringify({ model: "qwen3", message: { role: "assistant", content: "ok" }, done: true })}\n`,
+          : JSON.stringify({ response: "ok", done: true }),
       }));
     }
 
@@ -531,16 +529,6 @@ describe("reasoning effort and extra request parameters, as they go out on the w
       expect(await generateBody(effort)).not.toHaveProperty("think");
     });
 
-    it.each([
-      ["none", false],
-      ["default", undefined],
-      ["high", undefined],
-    ] as const)("ChatOllama, where LangChainClient builds it: %s sends think %s", async (reasoningEffort, think) => {
-      answerOllama();
-      const client = new LangChainClient({ provider: "ollama", model: "qwen3", apiKey: OLLAMA, baseURL: "", reasoningEffort });
-      await expect(client.generateCompletion("system", "user")).resolves.toBe("ok");
-      expect(bodySentTo("/api/chat").think).toBe(think);
-    });
   });
 });
 
@@ -570,7 +558,6 @@ describe("the debug callout names the reasoning effort that went out, as plain l
       });
       if (request.url.endsWith("/api/version")) return reply({ version: "0.12.0" });
       if (request.url.endsWith("/api/generate")) return reply({ response: "ok", done: true });
-      if (request.url.endsWith("/api/chat")) return reply({ model: "qwen3", message: { role: "assistant", content: "ok" }, done: true }, "\n");
       if (request.url.endsWith("/v1/messages")) return reply({ content: [{ type: "text", text: "ok" }] });
       if (request.url.includes(":generateContent")) return reply({ candidates: [{ content: { parts: [{ text: "ok" }] } }] });
       return reply({
@@ -590,7 +577,7 @@ describe("the debug callout names the reasoning effort that went out, as plain l
     const client = new LangChainClient({
       provider,
       model,
-      apiKey: provider === "ollama" ? OLLAMA : "sk-test-key",
+      apiKey: "sk-test-key",
       baseURL: provider === "openai-compatible" ? LOCAL_SERVER : "",
       reasoningEffort,
       openaiCompatibleExtraParams,
@@ -666,7 +653,7 @@ describe("the debug callout names the reasoning effort that went out, as plain l
     });
   });
 
-  describe("Ollama, on both paths: none is think:false, and the other levels say why nothing went", () => {
+  describe("Ollama: none is think:false, and the other levels say why nothing went", () => {
     const EXPECTED = [
       ["none", "Reasoning effort: none -> think:false"],
       ["default", "Reasoning effort: default (nothing sent)"],
@@ -684,11 +671,6 @@ describe("the debug callout names the reasoning effort that went out, as plain l
       );
       await expect(summarizer.summarize("a transcript", "ollama")).resolves.toBe("ok");
       expect(effortLines()).toEqual([`> [LLM] [DEBUG] ${line}`]);
-    });
-
-    it.each(EXPECTED)("ChatOllama, where LangChainClient builds it: %s", async (reasoningEffort, line) => {
-      await request("ollama", "qwen3", reasoningEffort);
-      expect(effortLines()).toEqual([`> [LANGCHAIN] [DEBUG] ${line}`]);
     });
   });
 

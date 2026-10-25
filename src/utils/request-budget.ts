@@ -17,8 +17,8 @@
  * WHAT IT COVERS — every provider path, since #19. The bound applies
  * wherever a request goes through `obsidianFetch`, and they all do now:
  * OpenAI and OpenRouter through ChatOpenAI's `configuration.fetch`
- * (getOpenAiConfiguration), Ollama through ChatOllama's top-level `fetch`,
- * the Anthropic direct call, GeminiClient, and every direct call in the
+ * (getOpenAiConfiguration), the Ollama, Anthropic and Gemini direct calls
+ * (OllamaClient, LangChainClient, GeminiClient), and every direct call in the
  * plugin — transcript extraction, the playlist and channel APIs, the model
  * lists. `requestUrl` is imported in one file and there is no bare `fetch(`
  * in `src/` or `main.ts`.
