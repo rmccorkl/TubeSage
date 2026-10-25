@@ -616,6 +616,11 @@ describe("the debug callout names the reasoning effort that went out, as plain l
       expect(effortLines()).toEqual(["> [LANGCHAIN] [DEBUG] Reasoning effort: default (nothing sent)"]);
     });
 
+    it("gpt-6, which LangChain 1.x's gate counts as reasoning, names reasoning.effort (#48)", async () => {
+      await request("openai", "gpt-6", "high");
+      expect(effortLines()).toEqual(["> [LANGCHAIN] [DEBUG] Reasoning effort: high -> reasoning.effort"]);
+    });
+
     it("a level on a model LangChain does not count as reasoning says it was dropped", async () => {
       await request("openai", "gpt-4o", "high");
       expect(effortLines()).toEqual(["> [LANGCHAIN] [DEBUG] Reasoning effort: high (dropped: model is not an OpenAI reasoning model)"]);
@@ -703,5 +708,34 @@ describe("the debug callout names the reasoning effort that went out, as plain l
       await request(provider, model, "default");
       expect(effortLines()).toEqual([]);
     });
+  });
+});
+
+describe("a model id LangChain 1.x would send to the Responses API still gets chat completions (#48)", () => {
+  // @langchain/openai 1.7's ChatOpenAI sends any id containing gpt-5.6, codex
+  // or gpt-5.x-pro to /responses, with no opt-out, and the answer comes back
+  // as content blocks that would reach the note as JSON. Each builder keeps
+  // every id on the chat-completions request it made before the upgrade.
+  it.each([
+    ["openai", "gpt-5.6", "https://api.openai.com/v1/chat/completions"],
+    ["openrouter", "openai/gpt-5.6", "https://openrouter.ai/api/v1/chat/completions"],
+    ["openai-compatible", "qwen3-codex", `${LOCAL_SERVER}/chat/completions`],
+  ])("%s %s posts to /chat/completions, and the note gets plain text", async (provider, model, url) => {
+    requestUrl.mockResolvedValue({
+      status: 200,
+      headers: { "content-type": "application/json" },
+      text: JSON.stringify({
+        id: "chatcmpl-test",
+        object: "chat.completion",
+        created: 0,
+        model,
+        choices: [{ index: 0, message: { role: "assistant", content: "ok" }, finish_reason: "stop" }],
+        usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 },
+      }),
+    });
+    const client = new LangChainClient({ provider, model, apiKey: "sk-test-key", baseURL: provider === "openai-compatible" ? LOCAL_SERVER : "" });
+    const text = await client.generateCompletion("system", "user").catch((error: unknown) => String(error));
+    expect((requestUrl.mock.calls[0]?.[0] as { url?: string } | undefined)?.url).toBe(url);
+    expect(text).toBe("ok");
   });
 });
