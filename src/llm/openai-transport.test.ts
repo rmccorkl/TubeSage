@@ -375,3 +375,169 @@ describe("the custom-base-URL toggle decides for chat and model list alike, end 
     expect(modelListUrl("anthropic", settings)).toBe(`${base}/v1/models`);
   });
 });
+
+describe("reasoning effort and extra request parameters, as they go out on the wire (#43)", () => {
+  /** A chat completion any ChatOpenAI path accepts; the content type and `usage` matter (see the OpenRouter header test). */
+  function answerChat(): void {
+    requestUrl.mockResolvedValue({
+      status: 200,
+      headers: { "content-type": "application/json" },
+      text: JSON.stringify({
+        id: "chatcmpl-test",
+        object: "chat.completion",
+        created: 0,
+        model: "m",
+        choices: [{ index: 0, message: { role: "assistant", content: "ok" }, finish_reason: "stop" }],
+        usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 },
+      }),
+    });
+  }
+
+  /** The JSON body of the one request that went out. */
+  function sentBody(): Record<string, unknown> {
+    expect(requestUrl).toHaveBeenCalledTimes(1);
+    return JSON.parse((requestUrl.mock.calls[0][0] as { body: string }).body) as Record<string, unknown>;
+  }
+
+  async function bodyFor(model: ChatOpenAI): Promise<Record<string, unknown>> {
+    answerChat();
+    await model.invoke(["hello"]);
+    return sentBody();
+  }
+
+  describe("OpenAI: LangChain's own reasoning option, which it sends for OpenAI's reasoning models", () => {
+    it.each(["none", "low", "medium", "high"] as const)("%s goes out as reasoning_effort, unchanged", async (effort) => {
+      const body = await bodyFor(buildOpenAIModel({ ...MODEL_OPTIONS, model: "gpt-5", reasoningEffort: effort }));
+      expect(body.reasoning_effort).toBe(effort);
+      expect(body).not.toHaveProperty("reasoning");
+    });
+
+    it("default sends nothing at all", async () => {
+      const body = await bodyFor(buildOpenAIModel({ ...MODEL_OPTIONS, model: "gpt-5", reasoningEffort: "default" }));
+      expect(body).not.toHaveProperty("reasoning_effort");
+      expect(body).not.toHaveProperty("reasoning");
+    });
+
+    it("a model that does not reason (gpt-4o) is not sent it, rather than refused with a 400", async () => {
+      const body = await bodyFor(buildOpenAIModel({ ...MODEL_OPTIONS, model: "gpt-4o", reasoningEffort: "low" }));
+      expect(body).not.toHaveProperty("reasoning_effort");
+    });
+  });
+
+  describe("OpenRouter: its own reasoning object, whatever the model id", () => {
+    it.each(["none", "low", "high"] as const)("%s goes out as reasoning.effort", async (effort) => {
+      const body = await bodyFor(buildOpenRouterModel({ ...MODEL_OPTIONS, model: "deepseek/deepseek-r1", reasoningEffort: effort }));
+      expect(body.reasoning).toEqual({ effort });
+      expect(body).not.toHaveProperty("reasoning_effort");
+    });
+
+    it("default sends nothing at all", async () => {
+      const body = await bodyFor(buildOpenRouterModel({ ...MODEL_OPTIONS, model: "deepseek/deepseek-r1", reasoningEffort: "default" }));
+      expect(body).not.toHaveProperty("reasoning");
+      expect(body).not.toHaveProperty("reasoning_effort");
+    });
+  });
+
+  describe("the OpenAI-compatible server: reasoning_effort as-is, plus the user's extra fields", () => {
+    const build = (options: { reasoningEffort?: "default" | "none" | "low" | "medium" | "high"; extraParams?: string }) =>
+      buildOpenAiCompatibleModel({ ...MODEL_OPTIONS, model: "qwen3-8b", baseURL: LOCAL_SERVER, ...options });
+
+    it.each(["none", "medium"] as const)("%s goes out as reasoning_effort, whatever the model id", async (effort) => {
+      const body = await bodyFor(build({ reasoningEffort: effort }));
+      expect(body.reasoning_effort).toBe(effort);
+      expect(body).not.toHaveProperty("reasoning");
+    });
+
+    it("default, with no extra fields, sends nothing new", async () => {
+      const body = await bodyFor(build({ reasoningEffort: "default", extraParams: "" }));
+      expect(body).not.toHaveProperty("reasoning_effort");
+      expect(body).not.toHaveProperty("reasoning");
+      expect(body).not.toHaveProperty("chat_template_kwargs");
+    });
+
+    it("merges the extra fields into the request as they were typed", async () => {
+      const body = await bodyFor(build({ extraParams: '{"chat_template_kwargs": {"enable_thinking": false}}' }));
+      expect(body.chat_template_kwargs).toEqual({ enable_thinking: false });
+      expect(body.model).toBe("qwen3-8b");
+    });
+
+    it("lets an extra reasoning_effort win over the setting: the raw JSON is the more specific instruction", async () => {
+      const body = await bodyFor(build({ reasoningEffort: "high", extraParams: '{"reasoning_effort": "low"}' }));
+      expect(body.reasoning_effort).toBe("low");
+    });
+
+    it("refuses stored extra fields that are not a JSON object, as a hand-edited data.json can hold, before any request", () => {
+      expect(() => build({ extraParams: "[1, 2]" })).toThrow(t("notice.openaiCompatible.extraParamsUnreadable"));
+      expect(requestUrl).not.toHaveBeenCalled();
+    });
+  });
+
+  it("the settings reach the request through TranscriptSummarizer and LangChainClient, as main.ts builds them", async () => {
+    answerChat();
+    const summarizer = new TranscriptSummarizer(
+      { model: "qwen3-8b", temperature: 0, maxTokens: 100, systemPrompt: "system", userPrompt: "user" },
+      {},
+      { "openai-compatible": LOCAL_SERVER },
+      { reasoningEffort: "low", openaiCompatibleExtraParams: '{"top_k": 20}' },
+    );
+    await expect(summarizer.summarize("a transcript", "openai-compatible")).resolves.toBe("ok");
+    const body = sentBody();
+    expect(body.reasoning_effort).toBe("low");
+    expect(body.top_k).toBe(20);
+  });
+
+  describe("Ollama: none turns thinking off; every other level sends nothing", () => {
+    const OLLAMA = "http://localhost:11434";
+
+    /** Ollama's own API: the version probe, then the generate or chat call. */
+    function answerOllama(): void {
+      requestUrl.mockImplementation((request: { url: string }) => Promise.resolve({
+        status: 200,
+        headers: { "content-type": "application/json" },
+        text: request.url.endsWith("/api/version")
+          ? JSON.stringify({ version: "0.12.0" })
+          : request.url.endsWith("/api/generate")
+            ? JSON.stringify({ response: "ok", done: true })
+            : `${JSON.stringify({ model: "qwen3", message: { role: "assistant", content: "ok" }, done: true })}\n`,
+      }));
+    }
+
+    function bodySentTo(path: string): Record<string, unknown> {
+      const call = requestUrl.mock.calls.find(([request]) => (request as { url: string }).url === `${OLLAMA}${path}`);
+      expect(call, `no request to ${path}`).toBeDefined();
+      return JSON.parse((call?.[0] as { body: string }).body) as Record<string, unknown>;
+    }
+
+    async function generateBody(reasoningEffort: "default" | "none" | "low" | "medium" | "high"): Promise<Record<string, unknown>> {
+      answerOllama();
+      // The path a note actually takes: summarize() hands Ollama to OllamaClient's /api/generate.
+      const summarizer = new TranscriptSummarizer(
+        { model: "qwen3", temperature: 0, maxTokens: 100, systemPrompt: "system", userPrompt: "user" },
+        { ollama: OLLAMA },
+        {},
+        { reasoningEffort },
+      );
+      await expect(summarizer.summarize("a transcript", "ollama")).resolves.toBe("ok");
+      return bodySentTo("/api/generate");
+    }
+
+    it("none sends think: false to /api/generate", async () => {
+      expect((await generateBody("none")).think).toBe(false);
+    });
+
+    it.each(["default", "low", "medium", "high"] as const)("%s sends no think field to /api/generate", async (effort) => {
+      expect(await generateBody(effort)).not.toHaveProperty("think");
+    });
+
+    it.each([
+      ["none", false],
+      ["default", undefined],
+      ["high", undefined],
+    ] as const)("ChatOllama, where LangChainClient builds it: %s sends think %s", async (reasoningEffort, think) => {
+      answerOllama();
+      const client = new LangChainClient({ provider: "ollama", model: "qwen3", apiKey: OLLAMA, baseURL: "", reasoningEffort });
+      await expect(client.generateCompletion("system", "user")).resolves.toBe("ok");
+      expect(bodySentTo("/api/chat").think).toBe(think);
+    });
+  });
+});

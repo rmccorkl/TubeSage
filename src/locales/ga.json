@@ -191,6 +191,14 @@
         "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
         "translation": "Bun-URL, a chríochnaíonn le /v1 de ghnáth. Stóráilte i sonraí an bhreiseáin. Is roghnach an eochair API thíos."
     },
+    "settings.llm.openaiCompatible.extraParams.name": {
+        "original": "Extra request parameters (JSON)",
+        "translation": "Paraiméadair iarratais bhreise (JSON)"
+    },
+    "settings.llm.openaiCompatible.extraParams.desc": {
+        "original": "Advanced. A JSON object whose fields are added to every request to this server exactly as typed, for example to turn a model's thinking off. They are sent unchecked and are your responsibility. Leave blank to send nothing extra.",
+        "translation": "Ardleibhéal. Réad JSON a gcuirtear a réimsí, díreach mar a clóscríobhadh iad, le gach iarratas chuig an bhfreastalaí seo, mar shampla chun smaoineamh múnla a mhúchadh. Seoltar iad gan seiceáil agus is ortsa atá an fhreagracht astu. Fág bán é chun gan aon rud breise a sheoladh."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Múnla {provider}"
@@ -274,6 +282,34 @@
     "settings.llm.temperature.desc": {
         "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
         "translation": "Rialaíonn sé randamacht an aschuir (0-1). Is dírithe an luach íseal, is cruthaithí an luach ard. Luach reatha: {value}"
+    },
+    "settings.llm.reasoningEffort.name": {
+        "original": "Reasoning effort",
+        "translation": "Iarracht réasúnaíochta"
+    },
+    "settings.llm.reasoningEffort.desc": {
+        "original": "How much a reasoning model thinks before it answers. Used by OpenAI, OpenRouter, the OpenAI-compatible server and Ollama; Anthropic and Google ignore it. Default sends nothing. None turns thinking off on OpenRouter and Ollama; Ollama ignores the other levels. Some OpenAI models refuse None, including the o-series and gpt-5: choose Low for them. If an OpenAI-compatible server needs a different switch, set it in its extra request parameters.",
+        "translation": "An méid a smaoiníonn múnla réasúnaíochta sula bhfreagraíonn sé. Úsáideann OpenAI, OpenRouter, an freastalaí atá comhoiriúnach le OpenAI agus Ollama é; déanann Anthropic agus Google neamhaird de. Ní sheolann \"Réamhshocrú\" faic. Múchann \"Dada\" an smaoineamh ar OpenRouter agus Ollama; déanann Ollama neamhaird de na leibhéil eile. Diúltaíonn roinnt múnlaí OpenAI do \"Dada\", an tsraith o agus gpt-5 ina measc: roghnaigh \"Íseal\" dóibh. Má theastaíonn lasc eile ó fhreastalaí atá comhoiriúnach le OpenAI, socraigh é sna paraiméadair iarratais bhreise."
+    },
+    "settings.llm.reasoningEffort.option.default": {
+        "original": "Default",
+        "translation": "Réamhshocrú"
+    },
+    "settings.llm.reasoningEffort.option.none": {
+        "original": "None",
+        "translation": "Dada"
+    },
+    "settings.llm.reasoningEffort.option.low": {
+        "original": "Low",
+        "translation": "Íseal"
+    },
+    "settings.llm.reasoningEffort.option.medium": {
+        "original": "Medium",
+        "translation": "Meánach"
+    },
+    "settings.llm.reasoningEffort.option.high": {
+        "original": "High",
+        "translation": "Ard"
     },
     "settings.noteFormat.heading": {
         "original": "Note format",
@@ -494,6 +530,14 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Níl ainm múnla socraithe don fhreastalaí atá comhoiriúnach le OpenAI. Cuir ceann leis i socruithe an bhreiseáin."
+    },
+    "notice.openaiCompatible.extraParamsInvalid": {
+        "original": "Extra request parameters must be a JSON object, or blank. This value was not saved.",
+        "translation": "Caithfidh na paraiméadair iarratais bhreise a bheith ina réad JSON nó bán. Níor sábháladh an luach seo."
+    },
+    "notice.openaiCompatible.extraParamsUnreadable": {
+        "original": "The saved extra request parameters for the OpenAI-compatible server are not a JSON object. Fix or clear them in the plugin settings.",
+        "translation": "Ní réad JSON iad na paraiméadair iarratais bhreise atá sábháilte don fhreastalaí atá comhoiriúnach le OpenAI. Ceartaigh nó glan iad i socruithe an bhreiseáin."
     },
     "notice.baseUrl.invalid": {
         "original": "The custom base URL must be a full address starting with http:// or https://.",

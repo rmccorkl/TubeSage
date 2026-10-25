@@ -191,6 +191,14 @@
         "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
         "translation": "Temel URL, genellikle /v1 ile biter. Eklenti verilerinde saklanır. Aşağıdaki API anahtarı isteğe bağlıdır."
     },
+    "settings.llm.openaiCompatible.extraParams.name": {
+        "original": "Extra request parameters (JSON)",
+        "translation": "Ek istek parametreleri (JSON)"
+    },
+    "settings.llm.openaiCompatible.extraParams.desc": {
+        "original": "Advanced. A JSON object whose fields are added to every request to this server exactly as typed, for example to turn a model's thinking off. They are sent unchecked and are your responsibility. Leave blank to send nothing extra.",
+        "translation": "Gelişmiş. Alanları, bu sunucuya giden her isteğe tam yazıldığı gibi eklenen bir JSON nesnesi; örneğin bir modelin düşünmesini kapatmak için. Denetlenmeden gönderilir ve sorumluluğu size aittir. Fazladan bir şey göndermemek için boş bırakın."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} modeli"
@@ -274,6 +282,34 @@
     "settings.llm.temperature.desc": {
         "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
         "translation": "Çıktının rastgeleliğini denetler (0-1). Düşük değer daha odaklı, yüksek değer daha yaratıcıdır. Geçerli değer: {value}"
+    },
+    "settings.llm.reasoningEffort.name": {
+        "original": "Reasoning effort",
+        "translation": "Akıl yürütme düzeyi"
+    },
+    "settings.llm.reasoningEffort.desc": {
+        "original": "How much a reasoning model thinks before it answers. Used by OpenAI, OpenRouter, the OpenAI-compatible server and Ollama; Anthropic and Google ignore it. Default sends nothing. None turns thinking off on OpenRouter and Ollama; Ollama ignores the other levels. Some OpenAI models refuse None, including the o-series and gpt-5: choose Low for them. If an OpenAI-compatible server needs a different switch, set it in its extra request parameters.",
+        "translation": "Akıl yürüten bir modelin yanıt vermeden önce ne kadar düşüneceği. OpenAI, OpenRouter, OpenAI uyumlu sunucu ve Ollama kullanır; Anthropic ve Google bunu yok sayar. \"Varsayılan\" hiçbir şey göndermez. \"Yok\", OpenRouter ve Ollama'da düşünmeyi kapatır; Ollama diğer düzeyleri yok sayar. o serisi ve gpt-5 dahil bazı OpenAI modelleri \"Yok\" değerini reddeder: bunlar için \"Düşük\" seçin. Bir OpenAI uyumlu sunucu başka bir anahtar gerektiriyorsa, bunu ek istek parametrelerinde ayarlayın."
+    },
+    "settings.llm.reasoningEffort.option.default": {
+        "original": "Default",
+        "translation": "Varsayılan"
+    },
+    "settings.llm.reasoningEffort.option.none": {
+        "original": "None",
+        "translation": "Yok"
+    },
+    "settings.llm.reasoningEffort.option.low": {
+        "original": "Low",
+        "translation": "Düşük"
+    },
+    "settings.llm.reasoningEffort.option.medium": {
+        "original": "Medium",
+        "translation": "Orta"
+    },
+    "settings.llm.reasoningEffort.option.high": {
+        "original": "High",
+        "translation": "Yüksek"
     },
     "settings.noteFormat.heading": {
         "original": "Note format",
@@ -494,6 +530,14 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "OpenAI uyumlu sunucu için model adı ayarlanmamış. Eklenti ayarlarından bir tane ekleyin."
+    },
+    "notice.openaiCompatible.extraParamsInvalid": {
+        "original": "Extra request parameters must be a JSON object, or blank. This value was not saved.",
+        "translation": "Ek istek parametreleri bir JSON nesnesi olmalı ya da boş bırakılmalıdır. Bu değer kaydedilmedi."
+    },
+    "notice.openaiCompatible.extraParamsUnreadable": {
+        "original": "The saved extra request parameters for the OpenAI-compatible server are not a JSON object. Fix or clear them in the plugin settings.",
+        "translation": "OpenAI uyumlu sunucu için kaydedilen ek istek parametreleri bir JSON nesnesi değil. Bunları eklenti ayarlarından düzeltin ya da temizleyin."
     },
     "notice.baseUrl.invalid": {
         "original": "The custom base URL must be a full address starting with http:// or https://.",

@@ -149,6 +149,10 @@ const POST_LEGACY_ROWS: string[] = [
   "Custom Anthropic base URL",
   "Custom Google base URL",
   "Custom OpenRouter base URL",
+  // #43: how hard a reasoning model thinks, and raw extra fields for the
+  // OpenAI-compatible server (rendered for every provider, shown for its own).
+  "Reasoning effort",
+  "Extra request parameters (JSON)",
 ];
 
 describe("buildSettingDefinitions — coverage of the legacy display() rows", () => {
@@ -607,5 +611,72 @@ describe("only the selected provider's configuration is shown (#28)", () => {
     for (const secret of ["sk-openai", "sk-ant", "g-key", "or-key", "local-server-key"]) {
       expect(JSON.stringify(writes)).not.toContain(secret);
     }
+  });
+});
+
+describe("reasoning effort and extra request parameters (#43)", () => {
+  const EFFORT_ROW = "Reasoning effort";
+  const EXTRA_ROW = "Extra request parameters (JSON)";
+
+  it("puts reasoning effort right after temperature, offers the five levels, and saves the one chosen", async () => {
+    const { host, spies } = makeHost();
+    const { ordered, leaves } = walk(buildSettingDefinitions(host));
+    expect(ordered[ordered.indexOf("Temperature") + 1]).toBe(EFFORT_ROW);
+
+    const effort = renderRow(leafNamed(leaves, EFFORT_ROW)).dropdowns[0];
+    expect(effort.options).toEqual(["default", "none", "low", "medium", "high"]);
+    // Default is today's behaviour: nothing is sent.
+    expect(effort.component.value).toBe("default");
+
+    effort.choose("low");
+    expect(host.settings.reasoningEffort).toBe("low");
+    await vi.waitFor(() => expect(spies.saveSettings).toHaveBeenCalledTimes(1));
+  });
+
+  it("shows the extra parameters field only for the OpenAI-compatible server, below its key, with a JSON example", () => {
+    const { ordered, leaves } = walk(buildSettingDefinitions(makeHost({ selectedLLM: "openai" }).host));
+    expect(ordered[ordered.indexOf("OpenAI-compatible server api key") + 1]).toBe(EXTRA_ROW);
+    expect(isVisible(leafNamed(leaves, EXTRA_ROW))).toBe(false);
+
+    const selected = walk(buildSettingDefinitions(makeHost({ selectedLLM: "openai-compatible" }).host)).leaves;
+    expect(isVisible(leafNamed(selected, EXTRA_ROW))).toBe(true);
+    const field = renderRow(leafNamed(selected, EXTRA_ROW)).texts[0];
+    expect(field.component.placeholder).toBe('{"chat_template_kwargs": {"enable_thinking": false}}');
+  });
+
+  it.each([
+    ["unparsable", '{"chat_template_kwargs": {'],
+    ["an array", "[1, 2]"],
+    ["a string", '"enable_thinking"'],
+    ["null", "null"],
+  ])("refuses %s on blur: a notice, and the stored value is unchanged", (_why, value) => {
+    const stored = '{"top_k": 20}';
+    const { host, spies } = makeHost({ selectedLLM: "openai-compatible", openaiCompatibleExtraParams: stored });
+    const field = renderRow(leafNamed(walk(buildSettingDefinitions(host)).leaves, EXTRA_ROW)).texts[0];
+    expect(field.component.value).toBe(stored);
+
+    field.type(value);
+    // Typing alone says nothing and saves nothing: half-typed JSON is not judged.
+    expect(spies.showNotice).not.toHaveBeenCalled();
+    field.blur();
+
+    expect(spies.showNotice).toHaveBeenCalledWith(t("notice.openaiCompatible.extraParamsInvalid"), 5000);
+    expect(host.settings.openaiCompatibleExtraParams).toBe(stored);
+    expect(spies.saveSettings).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["a JSON object", '{"chat_template_kwargs": {"enable_thinking": false}}'],
+    ["blank, which sends nothing extra", ""],
+  ])("saves %s on blur, with no notice", async (_why, value) => {
+    const { host, spies } = makeHost({ selectedLLM: "openai-compatible", openaiCompatibleExtraParams: '{"top_k": 20}' });
+    const field = renderRow(leafNamed(walk(buildSettingDefinitions(host)).leaves, EXTRA_ROW)).texts[0];
+
+    field.type(value);
+    field.blur();
+
+    expect(spies.showNotice).not.toHaveBeenCalled();
+    expect(host.settings.openaiCompatibleExtraParams).toBe(value);
+    await vi.waitFor(() => expect(spies.saveSettings).toHaveBeenCalledTimes(1));
   });
 });

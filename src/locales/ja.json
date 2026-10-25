@@ -191,6 +191,14 @@
         "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
         "translation": "ベース URL。通常は /v1 で終わります。プラグインのデータに保存されます。下の API キーは省略できます。"
     },
+    "settings.llm.openaiCompatible.extraParams.name": {
+        "original": "Extra request parameters (JSON)",
+        "translation": "追加のリクエストパラメーター (JSON)"
+    },
+    "settings.llm.openaiCompatible.extraParams.desc": {
+        "original": "Advanced. A JSON object whose fields are added to every request to this server exactly as typed, for example to turn a model's thinking off. They are sent unchecked and are your responsibility. Leave blank to send nothing extra.",
+        "translation": "上級者向け。このサーバーへのすべてのリクエストに、入力したとおりに追加される JSON オブジェクトです。たとえばモデルの思考をオフにするのに使います。内容は検証されずに送信され、その責任はユーザーにあります。何も追加しない場合は空欄のままにします。"
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} のモデル"
@@ -274,6 +282,34 @@
     "settings.llm.temperature.desc": {
         "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
         "translation": "出力のランダム性を制御します（0-1）。低いほど的確に、高いほど創造的になります。現在の値：{value}"
+    },
+    "settings.llm.reasoningEffort.name": {
+        "original": "Reasoning effort",
+        "translation": "推論の強度"
+    },
+    "settings.llm.reasoningEffort.desc": {
+        "original": "How much a reasoning model thinks before it answers. Used by OpenAI, OpenRouter, the OpenAI-compatible server and Ollama; Anthropic and Google ignore it. Default sends nothing. None turns thinking off on OpenRouter and Ollama; Ollama ignores the other levels. Some OpenAI models refuse None, including the o-series and gpt-5: choose Low for them. If an OpenAI-compatible server needs a different switch, set it in its extra request parameters.",
+        "translation": "推論モデルが回答前にどれだけ考えるかを指定します。OpenAI、OpenRouter、OpenAI 互換サーバー、Ollama で使われ、Anthropic と Google では無視されます。「デフォルト」は何も送信しません。「なし」は OpenRouter と Ollama で思考をオフにします。Ollama はほかのレベルを無視します。o シリーズや gpt-5 など一部の OpenAI モデルは「なし」を受け付けないため、「低」を選んでください。OpenAI 互換サーバーで別の切り替えが必要な場合は、追加のリクエストパラメーターで指定してください。"
+    },
+    "settings.llm.reasoningEffort.option.default": {
+        "original": "Default",
+        "translation": "デフォルト"
+    },
+    "settings.llm.reasoningEffort.option.none": {
+        "original": "None",
+        "translation": "なし"
+    },
+    "settings.llm.reasoningEffort.option.low": {
+        "original": "Low",
+        "translation": "低"
+    },
+    "settings.llm.reasoningEffort.option.medium": {
+        "original": "Medium",
+        "translation": "中"
+    },
+    "settings.llm.reasoningEffort.option.high": {
+        "original": "High",
+        "translation": "高"
     },
     "settings.noteFormat.heading": {
         "original": "Note format",
@@ -494,6 +530,14 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "OpenAI 互換サーバーのモデル名が設定されていません。プラグインの設定で追加してください。"
+    },
+    "notice.openaiCompatible.extraParamsInvalid": {
+        "original": "Extra request parameters must be a JSON object, or blank. This value was not saved.",
+        "translation": "追加のリクエストパラメーターは JSON オブジェクトか空欄にしてください。この値は保存されていません。"
+    },
+    "notice.openaiCompatible.extraParamsUnreadable": {
+        "original": "The saved extra request parameters for the OpenAI-compatible server are not a JSON object. Fix or clear them in the plugin settings.",
+        "translation": "保存されている OpenAI 互換サーバーの追加リクエストパラメーターが JSON オブジェクトではありません。プラグインの設定で修正するか削除してください。"
     },
     "notice.baseUrl.invalid": {
         "original": "The custom base URL must be a full address starting with http:// or https://.",

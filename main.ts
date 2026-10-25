@@ -615,7 +615,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
             maxTokens: this.getEffectiveMaxTokens(), // Use dynamic calculation for all models
             systemPrompt: this.settings.systemPrompt,
             userPrompt: this.settings.userPrompt
-        }, this.settings.apiKeys, baseUrlOverrides(this.settings));
+        }, this.settings.apiKeys, baseUrlOverrides(this.settings), this.settings);
     }
 
     private getModelForProvider(provider: string): string {
@@ -1228,7 +1228,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 maxTokens: promptConfig.maxTokens,
                 systemPrompt: promptConfig.systemPrompt,
                 userPrompt: promptConfig.userPrompt
-            }, this.settings.apiKeys, baseUrlOverrides(this.settings));
+            }, this.settings.apiKeys, baseUrlOverrides(this.settings), this.settings);
             llmLogger.debug(`[DEBUG] TranscriptSummarizer created successfully`);
             
             llmLogger.debug(`[DEBUG] About to call summarize with provider: '${selectedProvider}'`);
@@ -2045,7 +2045,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 maxTokens: maxTokens,
                 systemPrompt: timestampConfig.systemPrompt,
                 userPrompt: timestampConfig.userPrompt
-            }, this.settings.apiKeys, baseUrlOverrides(this.settings));
+            }, this.settings.apiKeys, baseUrlOverrides(this.settings), this.settings);
             
             // Add debug logging
             if (this.settings.debugLogging) {
@@ -2193,7 +2193,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                         maxTokens: reducedTokens,
                         systemPrompt: timestampConfig.systemPrompt,
                         userPrompt: timestampConfig.userPrompt
-                    }, this.settings.apiKeys, baseUrlOverrides(this.settings));
+                    }, this.settings.apiKeys, baseUrlOverrides(this.settings), this.settings);
                     
                     try {
                         enhancedContent = await reducedTokensSummarizer.summarize(
@@ -2358,7 +2358,7 @@ export default class YouTubeTranscriptPlugin extends Plugin {
                 maxTokens: this.getMaxTokensForTimestampPass(),
                 systemPrompt: "You are a highly accurate translator who preserves all formatting, links, and structure when translating content.",
                 userPrompt: "Translate the following content while preserving all Markdown formatting, links, and structure:"
-            }, this.settings.apiKeys, baseUrlOverrides(this.settings));
+            }, this.settings.apiKeys, baseUrlOverrides(this.settings), this.settings);
             
             // Create the translation prompt
             const translationPrompt = `
@@ -2439,7 +2439,7 @@ ${contentToTranslate}
             maxTokens: this.getMaxTokensForTimestampPass(),
             systemPrompt: "You are a highly accurate translator who preserves all formatting, links, and structure when translating content.",
             userPrompt: "Translate the following content while preserving all Markdown formatting, links, and structure:"
-        }, this.settings.apiKeys, baseUrlOverrides(this.settings));
+        }, this.settings.apiKeys, baseUrlOverrides(this.settings), this.settings);
 
         const translationPrompt = `
 TRANSLATION TASK: Translate the following content into ${language.toUpperCase()}-${country}.
@@ -2625,7 +2625,7 @@ ${contentWithoutFrontmatter}
                         maxTokens: maxTokens,
                         systemPrompt: timestampConfig.systemPrompt,
                         userPrompt: timestampConfig.userPrompt // Use the base prompt, not the complete chunk prompt
-                    }, this.settings.apiKeys, baseUrlOverrides(this.settings));
+                    }, this.settings.apiKeys, baseUrlOverrides(this.settings), this.settings);
                     
                     // Process the chunk
                     const processedChunk = await chunkSummarizer.summarize(

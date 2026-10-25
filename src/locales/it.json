@@ -191,6 +191,14 @@
         "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
         "translation": "URL di base, di solito termina con /v1. Salvato nei dati del plugin. La chiave API qui sotto è facoltativa."
     },
+    "settings.llm.openaiCompatible.extraParams.name": {
+        "original": "Extra request parameters (JSON)",
+        "translation": "Parametri di richiesta aggiuntivi (JSON)"
+    },
+    "settings.llm.openaiCompatible.extraParams.desc": {
+        "original": "Advanced. A JSON object whose fields are added to every request to this server exactly as typed, for example to turn a model's thinking off. They are sent unchecked and are your responsibility. Leave blank to send nothing extra.",
+        "translation": "Avanzato. Un oggetto JSON i cui campi vengono aggiunti così come sono a ogni richiesta verso questo server, ad esempio per disattivare il ragionamento di un modello. Vengono inviati senza controlli e sono sotto la tua responsabilità. Lascia vuoto per non inviare nulla in più."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Modello {provider}"
@@ -274,6 +282,34 @@
     "settings.llm.temperature.desc": {
         "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
         "translation": "Controlla la casualità dell'output (0-1). Più basso è più mirato, più alto è più creativo. Valore attuale: {value}"
+    },
+    "settings.llm.reasoningEffort.name": {
+        "original": "Reasoning effort",
+        "translation": "Sforzo di ragionamento"
+    },
+    "settings.llm.reasoningEffort.desc": {
+        "original": "How much a reasoning model thinks before it answers. Used by OpenAI, OpenRouter, the OpenAI-compatible server and Ollama; Anthropic and Google ignore it. Default sends nothing. None turns thinking off on OpenRouter and Ollama; Ollama ignores the other levels. Some OpenAI models refuse None, including the o-series and gpt-5: choose Low for them. If an OpenAI-compatible server needs a different switch, set it in its extra request parameters.",
+        "translation": "Quanto un modello di ragionamento riflette prima di rispondere. Usato da OpenAI, OpenRouter, il server compatibile con OpenAI e Ollama; Anthropic e Google lo ignorano. «Predefinito» non invia nulla. «Nessuno» disattiva il ragionamento su OpenRouter e Ollama; Ollama ignora gli altri livelli. Alcuni modelli OpenAI rifiutano «Nessuno», tra cui la serie o e gpt-5: scegli «Basso» per loro. Se un server compatibile con OpenAI richiede un'altra opzione, impostala nei suoi parametri di richiesta aggiuntivi."
+    },
+    "settings.llm.reasoningEffort.option.default": {
+        "original": "Default",
+        "translation": "Predefinito"
+    },
+    "settings.llm.reasoningEffort.option.none": {
+        "original": "None",
+        "translation": "Nessuno"
+    },
+    "settings.llm.reasoningEffort.option.low": {
+        "original": "Low",
+        "translation": "Basso"
+    },
+    "settings.llm.reasoningEffort.option.medium": {
+        "original": "Medium",
+        "translation": "Medio"
+    },
+    "settings.llm.reasoningEffort.option.high": {
+        "original": "High",
+        "translation": "Alto"
     },
     "settings.noteFormat.heading": {
         "original": "Note format",
@@ -494,6 +530,14 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Nessun nome di modello impostato per il server compatibile con OpenAI. Aggiungine uno nelle impostazioni del plugin."
+    },
+    "notice.openaiCompatible.extraParamsInvalid": {
+        "original": "Extra request parameters must be a JSON object, or blank. This value was not saved.",
+        "translation": "I parametri di richiesta aggiuntivi devono essere un oggetto JSON o restare vuoti. Questo valore non è stato salvato."
+    },
+    "notice.openaiCompatible.extraParamsUnreadable": {
+        "original": "The saved extra request parameters for the OpenAI-compatible server are not a JSON object. Fix or clear them in the plugin settings.",
+        "translation": "I parametri di richiesta aggiuntivi salvati per il server compatibile con OpenAI non sono un oggetto JSON. Correggili o svuotali nelle impostazioni del plugin."
     },
     "notice.baseUrl.invalid": {
         "original": "The custom base URL must be a full address starting with http:// or https://.",

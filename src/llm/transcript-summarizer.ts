@@ -2,6 +2,8 @@ import { getLogger } from '../utils/logger';
 import { LLMFactory } from './llm-factory';
 import { LangChainClient } from './langchain-client';
 import { isMissingApiKey } from './openai-compatible';
+import { effortToSend } from './reasoning-effort';
+import type { ReasoningEffort } from './reasoning-effort';
 
 interface LLMConfig {
     model: string;
@@ -9,6 +11,16 @@ interface LLMConfig {
     maxTokens: number;
     systemPrompt: string;
     userPrompt: string;
+}
+
+/**
+ * The settings that shape a request beyond its prompt (#43). main.ts passes
+ * the plugin settings, which satisfy it; absent fields send nothing, as
+ * before the setting existed.
+ */
+export interface LlmRequestOptions {
+    reasoningEffort?: ReasoningEffort;
+    openaiCompatibleExtraParams?: string;
 }
 
 // Get the logger for LLM operations
@@ -19,9 +31,10 @@ export class TranscriptSummarizer {
     private apiKeys: Record<string, string>;
     /** Each provider's base URL as the user set it, blank meaning its default (#29): baseUrlOverrides(). */
     private baseUrls: Record<string, string>;
+    private requestOptions: LlmRequestOptions;
     private llmFactory: LLMFactory;
 
-    constructor(config: LLMConfig, apiKeys: Record<string, string>, baseUrls: Record<string, string> = {}) {
+    constructor(config: LLMConfig, apiKeys: Record<string, string>, baseUrls: Record<string, string> = {}, requestOptions: LlmRequestOptions = {}) {
         // Validate config
         if (!config) {
             llmLogger.error('TranscriptSummarizer: config is null or undefined');
@@ -39,6 +52,11 @@ export class TranscriptSummarizer {
         
         this.apiKeys = apiKeys;
         this.baseUrls = baseUrls;
+        // Copied, not kept: main.ts hands over its whole settings object.
+        this.requestOptions = {
+            reasoningEffort: requestOptions.reasoningEffort,
+            openaiCompatibleExtraParams: requestOptions.openaiCompatibleExtraParams,
+        };
 
         // Validate that essential config properties are present
         if (!this.config.model) {
@@ -161,7 +179,9 @@ export class TranscriptSummarizer {
                 apiKey: this.apiKeys[provider],
                 temperature: this.config.temperature,
                 maxTokens: this.config.maxTokens,
-                baseURL: this.baseUrls[provider] ?? ''
+                baseURL: this.baseUrls[provider] ?? '',
+                reasoningEffort: this.requestOptions.reasoningEffort,
+                openaiCompatibleExtraParams: this.requestOptions.openaiCompatibleExtraParams
             });
             
             const promptToUse = userPrompt || this.config.userPrompt;
@@ -201,7 +221,10 @@ export class TranscriptSummarizer {
                 ],
                 {
                     temperature: this.config.temperature,
-                    max_tokens: this.config.maxTokens
+                    max_tokens: this.config.maxTokens,
+                    // #43: this is the path an Ollama note takes, so `none`
+                    // has to turn thinking off here; other levels send nothing.
+                    think: effortToSend(this.requestOptions.reasoningEffort) === 'none' ? false : undefined
                 }
             );
             
