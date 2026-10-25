@@ -89,10 +89,9 @@ function createLangChainFetcher() {
  * their client from
  * `{apiKey, organization, dangerouslyAllowBrowser, ...fields.configuration}`
  * (@langchain/openai@1.7.0 chat_models/base.js:268-274), so this is the only
- * position a `fetch` survives from. The top-level shape below is what
- * ChatOllama reads (@langchain/ollama@1.3.0 chat_models.js:362); the two are
- * genuinely different and neither works in the other's place, which is how
- * OpenAI and OpenRouter spent several releases silently on globalThis.fetch.
+ * position a `fetch` survives from. A top-level `fetch` is dropped in
+ * silence, which is how OpenAI and OpenRouter spent several releases on
+ * globalThis.fetch.
  *
  * WHO OWNS THE REQUEST TIMEOUT, now that this is wired (#19 part 2 — read
  * this before assuming two bounds apply):
@@ -131,21 +130,5 @@ export function getOpenAiConfiguration(
       ...options.configuration,
       fetch: createLangChainFetcher(),
     },
-  };
-}
-
-/**
- * Configuration object for LangChain models that includes our custom fetcher.
- *
- * WHICH MODELS TAKE THIS SHAPE: `fetch` is returned at the TOP level, which
- * is what ChatOllama reads (@langchain/ollama@1.3.0 chat_models.js:362). ChatOpenAI
- * does NOT read it there, and used to be handed this shape — which is how
- * OpenAI and OpenRouter ran on globalThis.fetch until #19. Those two now use
- * `getOpenAiConfiguration` above; anything ChatOpenAI-backed must.
- */
-export function getLangChainConfiguration(options: Record<string, unknown> = {}) {
-  return {
-    ...options,
-    fetch: createLangChainFetcher()
   };
 }

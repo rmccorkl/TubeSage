@@ -2,13 +2,13 @@
 //
 // The shim already times one HTTP request (fetch-shim.ts), and that stays —
 // the two answer different questions, transport against end-to-end. But the
-// shim cannot answer this one at all for OpenAI and OpenRouter, because
-// neither reaches it: `getLangChainConfiguration` returns `fetch` at the top
-// level and ChatOpenAI builds its client from
+// shim could not answer this one at all for OpenAI and OpenRouter, because
+// neither reached it: the shim was handed over as a top-level `fetch`, and
+// ChatOpenAI builds its client from
 // `{apiKey, organization, dangerouslyAllowBrowser, ...fields.configuration}`,
-// so the shim is dropped (#19). That is precisely the provider whose latency
+// so it was dropped (#19). That is precisely the provider whose latency
 // #16 needs measured, which is why the timing also lives here, around the
-// invocation itself, where all five paths are equal.
+// invocation itself, where every LangChainClient path is equal.
 //
 // No `obsidian` import, so the format is unit-testable; langchain-client.ts,
 // which cannot be loaded in a test, only calls it.
