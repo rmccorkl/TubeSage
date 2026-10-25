@@ -23,26 +23,36 @@ declare module '@langchain/openai' {
     // through `configuration` was invisible to the compiler for as long as it
     // was being dropped (#19). The two fields that carry it and the request
     // budget are named here so at least they are checked.
+    interface ChatOpenAIFields {
+        modelName?: string;
+        temperature?: number;
+        maxTokens?: number;
+        apiKey?: string;
+        maxRetries?: number;
+        /** Per-request budget handed to the OpenAI SDK; ours, not its default (#19). */
+        timeout?: number;
+        /** Where ChatOpenAI actually reads `fetch` from — see getOpenAiConfiguration. */
+        configuration?: Record<string, unknown>;
+        /**
+         * Sent as `reasoning_effort`, and only for what LangChain counts as
+         * an OpenAI reasoning model (#43). `none` is one of the bundled SDK's
+         * ReasoningEffort values (openai 7.43.0).
+         */
+        reasoning?: { effort: 'none' | 'low' | 'medium' | 'high' };
+        /** Spread into every request body as it stands (#43). */
+        modelKwargs?: Record<string, unknown>;
+    }
     export class ChatOpenAI {
-        constructor(config: {
-            modelName?: string;
-            temperature?: number;
-            maxTokens?: number;
-            apiKey?: string;
-            maxRetries?: number;
-            /** Per-request budget handed to the OpenAI SDK; ours, not its default (#19). */
-            timeout?: number;
-            /** Where ChatOpenAI actually reads `fetch` from — see getOpenAiConfiguration. */
-            configuration?: Record<string, unknown>;
-            /**
-             * Sent as `reasoning_effort`, and only for what LangChain counts as
-             * an OpenAI reasoning model (#43). `none` is not in the bundled
-             * SDK's type (openai 5.12.2); it is sent as it is.
-             */
-            reasoning?: { effort: 'none' | 'low' | 'medium' | 'high' };
-            /** Spread into every request body as it stands (#43). */
-            modelKwargs?: Record<string, unknown>;
-        });
+        constructor(config: ChatOpenAIFields);
+        invoke(messages: BaseMessageLike[]): Promise<unknown>;
+    }
+    /**
+     * What the builders construct (#48): the chat-completions class ChatOpenAI
+     * delegates to for every model id it does not send to the Responses API.
+     * It takes the same fields.
+     */
+    export class ChatOpenAICompletions {
+        constructor(config: ChatOpenAIFields);
         invoke(messages: BaseMessageLike[]): Promise<unknown>;
     }
 }

@@ -24,9 +24,9 @@
  * in `src/` or `main.ts`.
  *
  * On the two ChatOpenAI paths this number is ALSO handed to the OpenAI SDK
- * as its `timeout`, because `openai@5.12.2` implements a timeout by aborting
+ * as its `timeout`, because `openai@7.43.0` implements a timeout by aborting
  * the signal it hands to fetch and the shim honours signals: left unset, the
- * SDK's own DEFAULT_TIMEOUT of 600000 ms (client.js:100, :497) would cap
+ * SDK's own DEFAULT_TIMEOUT of 600000 ms (client.mjs:238, :1815) would cap
  * whatever is configured here (#19 F1). The two are deliberately the same
  * number. The SDK's timer, armed first, is the one that fires on those
  * paths; on the other three this budget is the only bound there is, and the

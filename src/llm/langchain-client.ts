@@ -1,4 +1,10 @@
-import { ChatOpenAI } from "@langchain/openai";
+// ChatOpenAICompletions, not ChatOpenAI (#48). Since @langchain/openai 1.x,
+// ChatOpenAI sends some model ids (gpt-5.6, codex, gpt-5.x-pro) to the
+// Responses API with no way to opt out, and that answer arrives as content
+// blocks, which would reach the note as JSON. This is the class ChatOpenAI
+// itself delegates every other id to, so each model keeps the
+// chat-completions request it got before the upgrade.
+import { ChatOpenAICompletions } from "@langchain/openai";
 import { ChatOllama } from "@langchain/ollama";
 import { GeminiClient } from "./gemini-client";
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
@@ -44,11 +50,14 @@ const extractContent = (response: unknown): string => {
   return JSON.stringify(response);
 };
 
-// Detect OpenAI reasoning (o-series) models which require max_completion_tokens
+// Detect OpenAI reasoning (o-series) models which require max_completion_tokens.
+// The same rules as @langchain/openai 1.7's own gate (utils/misc.js
+// isReasoningModel), which decides what goes on the wire.
 const isReasoningModel = (model: string): boolean => {
   if (!model) return false;
   if (/^o\d/i.test(model)) return true;
   if (model.startsWith('gpt-5') && !model.startsWith('gpt-5-chat')) return true;
+  if (model.startsWith('gpt-6') && !model.startsWith('gpt-6-chat')) return true;
   return false;
 };
 
@@ -74,7 +83,7 @@ export interface OpenAiModelOptions {
  * inspection — it is what happened before #19. Only an assertion on the
  * built client catches the regression.
  */
-export function buildOpenAIModel(options: OpenAiModelOptions): ChatOpenAI {
+export function buildOpenAIModel(options: OpenAiModelOptions): ChatOpenAICompletions {
   // Special handling for GPT-5 temperature restrictions
   let effectiveTemperature = options.temperature;
   if (options.model === 'gpt-5') {
@@ -95,7 +104,7 @@ export function buildOpenAIModel(options: OpenAiModelOptions): ChatOpenAI {
     : effortLogLine(effort, 'reasoning.effort'));
 
   // OpenAI: use maxCompletionTokens for o-series, fall back to maxTokens otherwise
-  return new ChatOpenAI({
+  return new ChatOpenAICompletions({
     // `configuration`, not the top level: see getOpenAiConfiguration, which
     // also records who owns the request timeout now (#19). The baseURL is the
     // user's override or OpenAI's own default (#29).
@@ -104,7 +113,7 @@ export function buildOpenAIModel(options: OpenAiModelOptions): ChatOpenAI {
       configuration: { baseURL: resolveBaseUrl('openai', options.baseURL) }
     }),
     // The SDK gets OUR budget, not its own ten-minute default (#19 F1).
-    // openai@5.12.2 implements a timeout by aborting the signal it hands to
+    // openai@7.43.0 implements a timeout by aborting the signal it hands to
     // fetch, and since the shim started honouring signals that abort lands —
     // so leaving this unset silently capped the setting at 600 s no matter
     // what the user configured. Read here, per call, so it tracks the
@@ -136,10 +145,10 @@ export function buildOpenAIModel(options: OpenAiModelOptions): ChatOpenAI {
  * headers travel on the same nested object as the transport, so one test can
  * hold all three to their promises.
  */
-export function buildOpenRouterModel(options: OpenAiModelOptions): ChatOpenAI {
+export function buildOpenRouterModel(options: OpenAiModelOptions): ChatOpenAICompletions {
   const effort = effortToSend(options.reasoningEffort);
   logger.debug(effortLogLine(effort, 'reasoning.effort via modelKwargs'));
-  return new ChatOpenAI({
+  return new ChatOpenAICompletions({
     // The shim travels in `configuration` alongside the baseURL and the two
     // attribution headers (#19); see getOpenAiConfiguration for the timeout
     // ownership that comes with it.
@@ -154,7 +163,7 @@ export function buildOpenRouterModel(options: OpenAiModelOptions): ChatOpenAI {
       }
     }),
     // The SDK gets OUR budget, not its own ten-minute default (#19 F1).
-    // openai@5.12.2 implements a timeout by aborting the signal it hands to
+    // openai@7.43.0 implements a timeout by aborting the signal it hands to
     // fetch, and since the shim started honouring signals that abort lands —
     // so leaving this unset silently capped the setting at 600 s no matter
     // what the user configured. Read here, per call, so it tracks the
@@ -192,7 +201,7 @@ interface OpenAiCompatibleModelOptions extends OpenAiModelOptions {
  * address is judged again here, not only in the settings tab, because a
  * hand-edited data.json can hold one the tab never saw.
  */
-export function buildOpenAiCompatibleModel(options: OpenAiCompatibleModelOptions): ChatOpenAI {
+export function buildOpenAiCompatibleModel(options: OpenAiCompatibleModelOptions): ChatOpenAICompletions {
   const baseURL = parseBaseUrl(options.baseURL);
   if (baseURL === null) {
     throw new Error(t('notice.openaiCompatible.invalidUrl'));
@@ -209,7 +218,7 @@ export function buildOpenAiCompatibleModel(options: OpenAiCompatibleModelOptions
     : effortLogLine(effort, 'reasoning_effort via modelKwargs'));
   // Key names only: the values are the user's own and may hold anything.
   logger.debug(`Extra request parameters: ${extraKeys.length > 0 ? `keys=${extraKeys.join(', ')}` : 'none'}`);
-  return new ChatOpenAI({
+  return new ChatOpenAICompletions({
     ...getOpenAiConfiguration({
       // `?? ''`: a hand-edited or pre-release data.json can leave the key out.
       apiKey: (options.apiKey ?? '').trim() || PLACEHOLDER_API_KEY,
@@ -309,7 +318,7 @@ export class LangChainClient {
    * exported builder: the same options, including this provider's base URL
    * (#29), which only the OpenAI-compatible server requires.
    */
-  private buildChatOpenAiModel(): ChatOpenAI {
+  private buildChatOpenAiModel(): ChatOpenAICompletions {
     const options = {
       apiKey: this.apiKey,
       model: this.model,
@@ -484,7 +493,7 @@ export class LangChainClient {
             baseUrl: this.apiKey, // Ollama uses the API key field to store the base URL
             model: this.model,
             temperature: this.temperature,
-            // #43: @langchain/ollama 0.2.4 only has the boolean, so `none`
+            // #43: @langchain/ollama 1.3.0 still only has the boolean, so `none`
             // turns thinking off and every other level sends nothing.
             ...(effortToSend(this.reasoningEffort) === 'none' ? { think: false } : {}),
           });
