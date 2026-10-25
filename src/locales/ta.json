@@ -191,6 +191,14 @@
         "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
         "translation": "அடிப்படை URL, பொதுவாக /v1 என முடியும். செருகுநிரல் தரவில் சேமிக்கப்படுகிறது. கீழே உள்ள API விசை விருப்பத்தேர்வு."
     },
+    "settings.llm.openaiCompatible.extraParams.name": {
+        "original": "Extra request parameters (JSON)",
+        "translation": "கூடுதல் கோரிக்கை அளவுருக்கள் (JSON)"
+    },
+    "settings.llm.openaiCompatible.extraParams.desc": {
+        "original": "Advanced. A JSON object whose fields are added to every request to this server exactly as typed, for example to turn a model's thinking off. They are sent unchecked and are your responsibility. Leave blank to send nothing extra.",
+        "translation": "மேம்பட்டது. இந்தச் சேவையகத்துக்கான ஒவ்வொரு கோரிக்கையிலும் தட்டச்சு செய்தபடியே சேர்க்கப்படும் புலங்களைக் கொண்ட JSON பொருள்; எடுத்துக்காட்டாக, மாடலின் சிந்தனையை அணைக்க. இவை சரிபார்க்கப்படாமல் அனுப்பப்படும், இவற்றுக்கு நீங்களே பொறுப்பு. கூடுதலாக எதையும் அனுப்ப வேண்டாம் எனில் காலியாக விடவும்."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} மாடல்"
@@ -274,6 +282,34 @@
     "settings.llm.temperature.desc": {
         "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
         "translation": "வெளியீட்டின் சீரற்ற தன்மையைக் கட்டுப்படுத்துகிறது (0-1). குறைவானது கூர்மையானது, அதிகமானது படைப்பாற்றல் மிக்கது. தற்போதைய மதிப்பு: {value}"
+    },
+    "settings.llm.reasoningEffort.name": {
+        "original": "Reasoning effort",
+        "translation": "பகுத்தறிவு முயற்சி"
+    },
+    "settings.llm.reasoningEffort.desc": {
+        "original": "How much a reasoning model thinks before it answers. Used by OpenAI, OpenRouter, the OpenAI-compatible server and Ollama; Anthropic and Google ignore it. Default sends nothing. None turns thinking off on OpenRouter and Ollama; Ollama ignores the other levels. Some OpenAI models refuse None, including the o-series and gpt-5: choose Low for them. If an OpenAI-compatible server needs a different switch, set it in its extra request parameters.",
+        "translation": "பகுத்தறியும் மாடல் பதிலளிக்கும் முன் எவ்வளவு சிந்திக்கிறது என்பதை அமைக்கிறது. OpenAI, OpenRouter, OpenAI-இணக்கமான சேவையகம், Ollama ஆகியவை இதைப் பயன்படுத்துகின்றன; Anthropic, Google இதைப் புறக்கணிக்கின்றன. \"இயல்புநிலை\" எதையும் அனுப்பாது. \"இல்லை\" OpenRouter, Ollama இல் சிந்தனையை அணைக்கிறது; Ollama பிற நிலைகளைப் புறக்கணிக்கிறது. o தொடர், gpt-5 உள்ளிட்ட சில OpenAI மாடல்கள் \"இல்லை\" என்பதை ஏற்காது: அவற்றுக்கு \"குறைவு\" என்பதைத் தேர்ந்தெடுக்கவும். OpenAI-இணக்கமான சேவையகத்துக்கு வேறு சுவிட்ச் தேவைப்பட்டால், அதன் கூடுதல் கோரிக்கை அளவுருக்களில் அமைக்கவும்."
+    },
+    "settings.llm.reasoningEffort.option.default": {
+        "original": "Default",
+        "translation": "இயல்புநிலை"
+    },
+    "settings.llm.reasoningEffort.option.none": {
+        "original": "None",
+        "translation": "இல்லை"
+    },
+    "settings.llm.reasoningEffort.option.low": {
+        "original": "Low",
+        "translation": "குறைவு"
+    },
+    "settings.llm.reasoningEffort.option.medium": {
+        "original": "Medium",
+        "translation": "நடுத்தரம்"
+    },
+    "settings.llm.reasoningEffort.option.high": {
+        "original": "High",
+        "translation": "அதிகம்"
     },
     "settings.noteFormat.heading": {
         "original": "Note format",
@@ -494,6 +530,14 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "OpenAI-இணக்கமான சேவையகத்திற்கு மாடல் பெயர் அமைக்கப்படவில்லை. செருகுநிரல் அமைப்புகளில் ஒன்றைச் சேர்க்கவும்."
+    },
+    "notice.openaiCompatible.extraParamsInvalid": {
+        "original": "Extra request parameters must be a JSON object, or blank. This value was not saved.",
+        "translation": "கூடுதல் கோரிக்கை அளவுருக்கள் JSON பொருளாக அல்லது காலியாக இருக்க வேண்டும். இந்த மதிப்பு சேமிக்கப்படவில்லை."
+    },
+    "notice.openaiCompatible.extraParamsUnreadable": {
+        "original": "The saved extra request parameters for the OpenAI-compatible server are not a JSON object. Fix or clear them in the plugin settings.",
+        "translation": "OpenAI-இணக்கமான சேவையகத்துக்குச் சேமிக்கப்பட்ட கூடுதல் கோரிக்கை அளவுருக்கள் JSON பொருள் அல்ல. செருகுநிரல் அமைப்புகளில் அவற்றைத் திருத்தவும் அல்லது அழிக்கவும்."
     },
     "notice.baseUrl.invalid": {
         "original": "The custom base URL must be a full address starting with http:// or https://.",

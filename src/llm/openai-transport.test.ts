@@ -467,7 +467,7 @@ describe("reasoning effort and extra request parameters, as they go out on the w
     });
 
     it("refuses stored extra fields that are not a JSON object, as a hand-edited data.json can hold, before any request", () => {
-      expect(() => build({ extraParams: "[1, 2]" })).toThrow(t("notice.openaiCompatible.extraParamsInvalid"));
+      expect(() => build({ extraParams: "[1, 2]" })).toThrow(t("notice.openaiCompatible.extraParamsUnreadable"));
       expect(requestUrl).not.toHaveBeenCalled();
     });
   });

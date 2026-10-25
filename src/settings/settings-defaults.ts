@@ -1,4 +1,5 @@
 import { DEFAULT_REQUEST_TIMEOUT_MS } from "../utils/request-budget";
+import type { ReasoningEffort } from "../llm/reasoning-effort";
 
 // The plugin settings shape and its defaults. Pure and Obsidian-free so the
 // declarative settings-tab builder (setting-definitions.ts) and its tests can
@@ -36,6 +37,17 @@ export interface YouTubeTranscriptSettings {
     customBaseUrlEnabled: Record<string, boolean>;
     temperature: number;
     maxTokens: number;
+    /**
+     * How hard a reasoning model thinks (#43), for OpenAI, OpenRouter, the
+     * OpenAI-compatible server and Ollama; Anthropic and Gemini ignore it.
+     * `default` sends nothing, so the provider's own default applies.
+     */
+    reasoningEffort: ReasoningEffort;
+    /**
+     * Extra fields for every request to the OpenAI-compatible server (#43):
+     * the text of a JSON object, sent as it stands, or blank for none.
+     */
+    openaiCompatibleExtraParams: string;
     
     // Custom model parameters (for models not in registry)
     customModelLimits: Record<string, {
@@ -131,6 +143,8 @@ export const DEFAULT_SETTINGS: YouTubeTranscriptSettings = {
     customBaseUrlEnabled: {},
     temperature: 0.7,
     maxTokens: 1000,
+    reasoningEffort: 'default',
+    openaiCompatibleExtraParams: '',
     
     // Custom model parameters (for models not in registry)
     customModelLimits: {},

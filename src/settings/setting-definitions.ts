@@ -27,6 +27,9 @@ import { t, tPlural } from '../i18n';
 import { getLogger, LogLevel, setGlobalLogLevel } from '../utils/logger';
 import { getEffectiveLimits, isModelSupported } from '../utils/model-limits-registry';
 import { DEFAULT_BASE_URLS, isUsableBaseUrl } from '../llm/base-url';
+import { parseExtraParams } from '../llm/openai-compatible';
+import { isReasoningEffort, REASONING_EFFORTS } from '../llm/reasoning-effort';
+import type { ReasoningEffort } from '../llm/reasoning-effort';
 import type { YouTubeTranscriptSettings } from './settings-defaults';
 import type { TranscriptKeyField } from '../runtime/settings-persist';
 
@@ -648,6 +651,9 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
             }),
         });
         llmItems.push(...customBaseUrlRows(host, provider, displayName, gated));
+        if (provider === 'openai-compatible') {
+            llmItems.push(openAiCompatibleExtraParamsRow(host, gated));
+        }
     }
 
     // Render the model config block for the currently-selected provider only.
@@ -700,6 +706,38 @@ export function buildSettingDefinitions(host: SettingsHost): SettingDefinitionIt
                                 await host.saveSettings();
                             })();
                         }));
+                }),
+            },
+            {
+                // #43: how hard a reasoning model thinks. `default` sends
+                // nothing; each provider's builder decides what the others
+                // become on the wire, and the description says where `none`
+                // has no honest equivalent.
+                name: t('settings.llm.reasoningEffort.name'),
+                desc: t('settings.llm.reasoningEffort.desc'),
+                render: gated((setting) => {
+                    // Literal keys, looked up while rendering, in the reader's language.
+                    const labels: Record<ReasoningEffort, string> = {
+                        default: t('settings.llm.reasoningEffort.option.default'),
+                        none: t('settings.llm.reasoningEffort.option.none'),
+                        low: t('settings.llm.reasoningEffort.option.low'),
+                        medium: t('settings.llm.reasoningEffort.option.medium'),
+                        high: t('settings.llm.reasoningEffort.option.high'),
+                    };
+                    setting.addDropdown(dropdown => {
+                        for (const effort of REASONING_EFFORTS) {
+                            dropdown.addOption(effort, labels[effort]);
+                        }
+                        return dropdown
+                            .setValue(host.settings.reasoningEffort)
+                            .onChange((value: string) => {
+                                if (!isReasoningEffort(value)) return;
+                                void (async () => {
+                                    host.settings.reasoningEffort = value;
+                                    await host.saveSettings();
+                                })();
+                            });
+                    });
                 }),
             },
         ],
@@ -1023,6 +1061,38 @@ function openAiCompatibleUrlRow(host: SettingsHost, gated: (render: Render) => R
         invalidNotice: t('notice.openaiCompatible.invalidUrl'),
         visible: () => host.settings.selectedLLM === 'openai-compatible',
     });
+}
+
+// Extra request fields for the OpenAI-compatible server (#43): the text of a
+// JSON object, merged into every request as it stands. Advanced, and the
+// user's responsibility, which the description says. Nothing is saved while
+// typing, because half-typed JSON never parses; on blur a JSON object or a
+// blank field is saved, and anything else gets a notice and leaves the stored
+// value as it was. The example is a value, not prose, so it is a constant.
+const OPENAI_COMPATIBLE_EXTRA_PARAMS_PLACEHOLDER = '{"chat_template_kwargs": {"enable_thinking": false}}';
+
+function openAiCompatibleExtraParamsRow(host: SettingsHost, gated: (render: Render) => Render): SettingDefinitionRender {
+    return {
+        name: t('settings.llm.openaiCompatible.extraParams.name'),
+        desc: t('settings.llm.openaiCompatible.extraParams.desc'),
+        visible: () => host.settings.selectedLLM === 'openai-compatible',
+        render: gated((setting) => {
+            setting.addText(text => {
+                text.setPlaceholder(OPENAI_COMPATIBLE_EXTRA_PARAMS_PLACEHOLDER)
+                    .setValue(host.settings.openaiCompatibleExtraParams);
+                text.inputEl?.addEventListener('blur', () => {
+                    const value = text.getValue();
+                    if (parseExtraParams(value) === null) {
+                        host.showNotice(t('notice.openaiCompatible.extraParamsInvalid'), 5000);
+                        return;
+                    }
+                    host.settings.openaiCompatibleExtraParams = value;
+                    void host.saveSettings();
+                });
+                return text;
+            });
+        }),
+    };
 }
 
 // A provider's custom base URL (#29), for the providers with a vendor default
