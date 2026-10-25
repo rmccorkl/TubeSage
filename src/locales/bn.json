@@ -191,6 +191,14 @@
         "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
         "translation": "বেস URL, সাধারণত /v1 দিয়ে শেষ হয়। প্লাগইন ডেটায় সংরক্ষিত। নিচের API কী ঐচ্ছিক।"
     },
+    "settings.llm.openaiCompatible.extraParams.name": {
+        "original": "Extra request parameters (JSON)",
+        "translation": "অতিরিক্ত অনুরোধ প্যারামিটার (JSON)"
+    },
+    "settings.llm.openaiCompatible.extraParams.desc": {
+        "original": "Advanced. A JSON object whose fields are added to every request to this server exactly as typed, for example to turn a model's thinking off. They are sent unchecked and are your responsibility. Leave blank to send nothing extra.",
+        "translation": "উন্নত। একটি JSON অবজেক্ট, যার ফিল্ডগুলো এই সার্ভারে পাঠানো প্রতিটি অনুরোধে হুবহু যেমন লেখা তেমনভাবে যোগ হয়; যেমন মডেলের ভাবনা বন্ধ করতে। এগুলো যাচাই ছাড়াই পাঠানো হয় এবং এর দায় আপনার। অতিরিক্ত কিছু না পাঠাতে ফাঁকা রাখুন।"
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} মডেল"
@@ -274,6 +282,34 @@
     "settings.llm.temperature.desc": {
         "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
         "translation": "আউটপুটের এলোমেলোভাব নিয়ন্ত্রণ করে (0-1)। কম মান বেশি নিবদ্ধ, বেশি মান বেশি সৃজনশীল। বর্তমান মান: {value}"
+    },
+    "settings.llm.reasoningEffort.name": {
+        "original": "Reasoning effort",
+        "translation": "যুক্তির মাত্রা"
+    },
+    "settings.llm.reasoningEffort.desc": {
+        "original": "How much a reasoning model thinks before it answers. Used by OpenAI, OpenRouter, the OpenAI-compatible server and Ollama; Anthropic and Google ignore it. Default sends nothing. None turns thinking off on OpenRouter and Ollama; Ollama ignores the other levels. Some OpenAI models refuse None, including the o-series and gpt-5: choose Low for them. If an OpenAI-compatible server needs a different switch, set it in its extra request parameters.",
+        "translation": "যুক্তি-মডেল উত্তর দেওয়ার আগে কতটা ভাববে তা ঠিক করে। OpenAI, OpenRouter, OpenAI-সামঞ্জস্যপূর্ণ সার্ভার এবং Ollama এটি ব্যবহার করে; Anthropic ও Google এটি উপেক্ষা করে। \"ডিফল্ট\" কিছুই পাঠায় না। \"কোনোটিই না\" OpenRouter ও Ollama-তে ভাবনা বন্ধ করে; Ollama অন্য মাত্রাগুলো উপেক্ষা করে। o সিরিজ ও gpt-5 সহ কিছু OpenAI মডেল \"কোনোটিই না\" গ্রহণ করে না: সেগুলোর জন্য \"কম\" বেছে নিন। কোনো OpenAI-সামঞ্জস্যপূর্ণ সার্ভারের অন্য সুইচ দরকার হলে, অতিরিক্ত অনুরোধ প্যারামিটারে তা সেট করুন।"
+    },
+    "settings.llm.reasoningEffort.option.default": {
+        "original": "Default",
+        "translation": "ডিফল্ট"
+    },
+    "settings.llm.reasoningEffort.option.none": {
+        "original": "None",
+        "translation": "কোনোটিই না"
+    },
+    "settings.llm.reasoningEffort.option.low": {
+        "original": "Low",
+        "translation": "কম"
+    },
+    "settings.llm.reasoningEffort.option.medium": {
+        "original": "Medium",
+        "translation": "মাঝারি"
+    },
+    "settings.llm.reasoningEffort.option.high": {
+        "original": "High",
+        "translation": "বেশি"
     },
     "settings.noteFormat.heading": {
         "original": "Note format",
@@ -494,6 +530,14 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "OpenAI-সামঞ্জস্যপূর্ণ সার্ভারের জন্য কোনো মডেলের নাম সেট করা নেই। প্লাগইন সেটিংসে একটি যোগ করুন।"
+    },
+    "notice.openaiCompatible.extraParamsInvalid": {
+        "original": "Extra request parameters must be a JSON object, or blank. This value was not saved.",
+        "translation": "অতিরিক্ত অনুরোধ প্যারামিটার অবশ্যই একটি JSON অবজেক্ট বা ফাঁকা হতে হবে। এই মান সংরক্ষিত হয়নি।"
+    },
+    "notice.openaiCompatible.extraParamsUnreadable": {
+        "original": "The saved extra request parameters for the OpenAI-compatible server are not a JSON object. Fix or clear them in the plugin settings.",
+        "translation": "OpenAI-সামঞ্জস্যপূর্ণ সার্ভারের জন্য সংরক্ষিত অতিরিক্ত অনুরোধ প্যারামিটার JSON অবজেক্ট নয়। প্লাগইন সেটিংসে সেগুলো ঠিক করুন বা মুছে দিন।"
     },
     "notice.baseUrl.invalid": {
         "original": "The custom base URL must be a full address starting with http:// or https://.",

@@ -191,6 +191,14 @@
         "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
         "translation": "URL gốc, thường kết thúc bằng /v1. Lưu trong dữ liệu plugin. Khoá API bên dưới là tuỳ chọn."
     },
+    "settings.llm.openaiCompatible.extraParams.name": {
+        "original": "Extra request parameters (JSON)",
+        "translation": "Tham số yêu cầu bổ sung (JSON)"
+    },
+    "settings.llm.openaiCompatible.extraParams.desc": {
+        "original": "Advanced. A JSON object whose fields are added to every request to this server exactly as typed, for example to turn a model's thinking off. They are sent unchecked and are your responsibility. Leave blank to send nothing extra.",
+        "translation": "Nâng cao. Một đối tượng JSON có các trường được thêm nguyên văn vào mọi yêu cầu gửi tới máy chủ này, chẳng hạn để tắt suy nghĩ của mô hình. Chúng được gửi mà không kiểm tra và bạn tự chịu trách nhiệm. Để trống nếu không muốn gửi thêm gì."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "Mô hình {provider}"
@@ -274,6 +282,34 @@
     "settings.llm.temperature.desc": {
         "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
         "translation": "Điều chỉnh mức ngẫu nhiên của đầu ra (0-1). Thấp thì tập trung hơn, cao thì sáng tạo hơn. Giá trị hiện tại: {value}"
+    },
+    "settings.llm.reasoningEffort.name": {
+        "original": "Reasoning effort",
+        "translation": "Mức suy luận"
+    },
+    "settings.llm.reasoningEffort.desc": {
+        "original": "How much a reasoning model thinks before it answers. Used by OpenAI, OpenRouter, the OpenAI-compatible server and Ollama; Anthropic and Google ignore it. Default sends nothing. None turns thinking off on OpenRouter and Ollama; Ollama ignores the other levels. Some OpenAI models refuse None, including the o-series and gpt-5: choose Low for them. If an OpenAI-compatible server needs a different switch, set it in its extra request parameters.",
+        "translation": "Mức độ mô hình suy luận suy nghĩ trước khi trả lời. Dùng cho OpenAI, OpenRouter, máy chủ tương thích OpenAI và Ollama; Anthropic và Google bỏ qua. \"Mặc định\" không gửi gì. \"Không\" tắt suy nghĩ trên OpenRouter và Ollama; Ollama bỏ qua các mức khác. Một số mô hình OpenAI từ chối \"Không\", gồm dòng o và gpt-5: hãy chọn \"Thấp\" cho chúng. Nếu máy chủ tương thích OpenAI cần một công tắc khác, hãy đặt nó trong tham số yêu cầu bổ sung."
+    },
+    "settings.llm.reasoningEffort.option.default": {
+        "original": "Default",
+        "translation": "Mặc định"
+    },
+    "settings.llm.reasoningEffort.option.none": {
+        "original": "None",
+        "translation": "Không"
+    },
+    "settings.llm.reasoningEffort.option.low": {
+        "original": "Low",
+        "translation": "Thấp"
+    },
+    "settings.llm.reasoningEffort.option.medium": {
+        "original": "Medium",
+        "translation": "Trung bình"
+    },
+    "settings.llm.reasoningEffort.option.high": {
+        "original": "High",
+        "translation": "Cao"
     },
     "settings.noteFormat.heading": {
         "original": "Note format",
@@ -494,6 +530,14 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "Chưa đặt tên mô hình cho máy chủ tương thích OpenAI. Hãy thêm tên trong cài đặt plugin."
+    },
+    "notice.openaiCompatible.extraParamsInvalid": {
+        "original": "Extra request parameters must be a JSON object, or blank. This value was not saved.",
+        "translation": "Tham số yêu cầu bổ sung phải là một đối tượng JSON hoặc để trống. Giá trị này chưa được lưu."
+    },
+    "notice.openaiCompatible.extraParamsUnreadable": {
+        "original": "The saved extra request parameters for the OpenAI-compatible server are not a JSON object. Fix or clear them in the plugin settings.",
+        "translation": "Tham số yêu cầu bổ sung đã lưu cho máy chủ tương thích OpenAI không phải là đối tượng JSON. Hãy sửa hoặc xoá chúng trong cài đặt plugin."
     },
     "notice.baseUrl.invalid": {
         "original": "The custom base URL must be a full address starting with http:// or https://.",

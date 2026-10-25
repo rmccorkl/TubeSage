@@ -191,6 +191,14 @@
         "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
         "translation": "საბაზისო URL, ჩვეულებრივ /v1-ით მთავრდება. ინახება მოდულის მონაცემებში. ქვემოთ მოცემული API გასაღები არასავალდებულოა."
     },
+    "settings.llm.openaiCompatible.extraParams.name": {
+        "original": "Extra request parameters (JSON)",
+        "translation": "მოთხოვნის დამატებითი პარამეტრები (JSON)"
+    },
+    "settings.llm.openaiCompatible.extraParams.desc": {
+        "original": "Advanced. A JSON object whose fields are added to every request to this server exactly as typed, for example to turn a model's thinking off. They are sent unchecked and are your responsibility. Leave blank to send nothing extra.",
+        "translation": "გაფართოებული. JSON ობიექტი, რომლის ველებიც ზუსტად ისე, როგორც აკრიფეთ, ემატება ამ სერვერზე გაგზავნილ ყველა მოთხოვნას, მაგალითად მოდელის ფიქრის გამოსართავად. ისინი იგზავნება შემოწმების გარეშე და მათზე პასუხისმგებელი თქვენ ხართ. დატოვეთ ცარიელი, თუ არაფრის დამატებით გაგზავნა არ გსურთ."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} მოდელი"
@@ -274,6 +282,34 @@
     "settings.llm.temperature.desc": {
         "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
         "translation": "აკონტროლებს გამოსავალის შემთხვევითობას (0-1). დაბალი უფრო ფოკუსირებულია, მაღალი უფრო შემოქმედებითი. მიმდინარე მნიშვნელობა: {value}"
+    },
+    "settings.llm.reasoningEffort.name": {
+        "original": "Reasoning effort",
+        "translation": "მსჯელობის დონე"
+    },
+    "settings.llm.reasoningEffort.desc": {
+        "original": "How much a reasoning model thinks before it answers. Used by OpenAI, OpenRouter, the OpenAI-compatible server and Ollama; Anthropic and Google ignore it. Default sends nothing. None turns thinking off on OpenRouter and Ollama; Ollama ignores the other levels. Some OpenAI models refuse None, including the o-series and gpt-5: choose Low for them. If an OpenAI-compatible server needs a different switch, set it in its extra request parameters.",
+        "translation": "რამდენს ფიქრობს მსჯელობის მოდელი პასუხის გაცემამდე. გამოიყენება OpenAI-ის, OpenRouter-ის, OpenAI-თან თავსებადი სერვერისა და Ollama-ს მიერ; Anthropic და Google მას უგულებელყოფენ. „ნაგულისხმევი“ არაფერს აგზავნის. „არცერთი“ თიშავს ფიქრს OpenRouter-სა და Ollama-ში; Ollama სხვა დონეებს უგულებელყოფს. OpenAI-ის ზოგიერთი მოდელი, მათ შორის o სერია და gpt-5, „არცერთს“ არ იღებს: მათთვის აირჩიეთ „დაბალი“. თუ OpenAI-თან თავსებად სერვერს სხვა გადამრთველი სჭირდება, მიუთითეთ ის მოთხოვნის დამატებით პარამეტრებში."
+    },
+    "settings.llm.reasoningEffort.option.default": {
+        "original": "Default",
+        "translation": "ნაგულისხმევი"
+    },
+    "settings.llm.reasoningEffort.option.none": {
+        "original": "None",
+        "translation": "არცერთი"
+    },
+    "settings.llm.reasoningEffort.option.low": {
+        "original": "Low",
+        "translation": "დაბალი"
+    },
+    "settings.llm.reasoningEffort.option.medium": {
+        "original": "Medium",
+        "translation": "საშუალო"
+    },
+    "settings.llm.reasoningEffort.option.high": {
+        "original": "High",
+        "translation": "მაღალი"
     },
     "settings.noteFormat.heading": {
         "original": "Note format",
@@ -494,6 +530,14 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "OpenAI-თან თავსებადი სერვერისთვის მოდელის სახელი არ არის მითითებული. დაამატეთ ის მოდულის პარამეტრებში."
+    },
+    "notice.openaiCompatible.extraParamsInvalid": {
+        "original": "Extra request parameters must be a JSON object, or blank. This value was not saved.",
+        "translation": "მოთხოვნის დამატებითი პარამეტრები უნდა იყოს JSON ობიექტი ან ცარიელი. ეს მნიშვნელობა არ შეინახა."
+    },
+    "notice.openaiCompatible.extraParamsUnreadable": {
+        "original": "The saved extra request parameters for the OpenAI-compatible server are not a JSON object. Fix or clear them in the plugin settings.",
+        "translation": "OpenAI-თან თავსებადი სერვერისთვის შენახული მოთხოვნის დამატებითი პარამეტრები არ არის JSON ობიექტი. გაასწორეთ ან გაასუფთავეთ ისინი მოდულის პარამეტრებში."
     },
     "notice.baseUrl.invalid": {
         "original": "The custom base URL must be a full address starting with http:// or https://.",

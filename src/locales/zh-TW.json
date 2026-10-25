@@ -191,6 +191,14 @@
         "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
         "translation": "基礎網址，通常以 /v1 結尾。存放在外掛資料中。下方的 API 金鑰可留空。"
     },
+    "settings.llm.openaiCompatible.extraParams.name": {
+        "original": "Extra request parameters (JSON)",
+        "translation": "額外請求參數 (JSON)"
+    },
+    "settings.llm.openaiCompatible.extraParams.desc": {
+        "original": "Advanced. A JSON object whose fields are added to every request to this server exactly as typed, for example to turn a model's thinking off. They are sent unchecked and are your responsibility. Leave blank to send nothing extra.",
+        "translation": "進階選項。一個 JSON 物件，其欄位會原樣加入傳往此伺服器的每個請求，例如用來關閉模型的思考。這些欄位不經檢查直接傳送，由你自行負責。留空則不傳送額外內容。"
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} 模型"
@@ -274,6 +282,34 @@
     "settings.llm.temperature.desc": {
         "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
         "translation": "控制輸出的隨機程度（0-1）。數值越低越聚焦，越高越有創意。目前值：{value}"
+    },
+    "settings.llm.reasoningEffort.name": {
+        "original": "Reasoning effort",
+        "translation": "推理強度"
+    },
+    "settings.llm.reasoningEffort.desc": {
+        "original": "How much a reasoning model thinks before it answers. Used by OpenAI, OpenRouter, the OpenAI-compatible server and Ollama; Anthropic and Google ignore it. Default sends nothing. None turns thinking off on OpenRouter and Ollama; Ollama ignores the other levels. Some OpenAI models refuse None, including the o-series and gpt-5: choose Low for them. If an OpenAI-compatible server needs a different switch, set it in its extra request parameters.",
+        "translation": "推理模型在回答前思考的程度。適用於 OpenAI、OpenRouter、OpenAI 相容伺服器和 Ollama；Anthropic 和 Google 會忽略此項。「預設」不會傳送任何內容。「無」會在 OpenRouter 和 Ollama 上關閉思考；Ollama 會忽略其他等級。部分 OpenAI 模型不接受「無」，包括 o 系列和 gpt-5：請為它們選擇「低」。如果 OpenAI 相容伺服器需要其他切換方式，請在其額外請求參數中設定。"
+    },
+    "settings.llm.reasoningEffort.option.default": {
+        "original": "Default",
+        "translation": "預設"
+    },
+    "settings.llm.reasoningEffort.option.none": {
+        "original": "None",
+        "translation": "無"
+    },
+    "settings.llm.reasoningEffort.option.low": {
+        "original": "Low",
+        "translation": "低"
+    },
+    "settings.llm.reasoningEffort.option.medium": {
+        "original": "Medium",
+        "translation": "中"
+    },
+    "settings.llm.reasoningEffort.option.high": {
+        "original": "High",
+        "translation": "高"
     },
     "settings.noteFormat.heading": {
         "original": "Note format",
@@ -494,6 +530,14 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "尚未替 OpenAI 相容伺服器設定模型名稱。請在外掛設定中加入。"
+    },
+    "notice.openaiCompatible.extraParamsInvalid": {
+        "original": "Extra request parameters must be a JSON object, or blank. This value was not saved.",
+        "translation": "額外請求參數必須是 JSON 物件或留空。此值未儲存。"
+    },
+    "notice.openaiCompatible.extraParamsUnreadable": {
+        "original": "The saved extra request parameters for the OpenAI-compatible server are not a JSON object. Fix or clear them in the plugin settings.",
+        "translation": "已儲存的 OpenAI 相容伺服器額外請求參數不是 JSON 物件。請在外掛設定中修正或清空。"
     },
     "notice.baseUrl.invalid": {
         "original": "The custom base URL must be a full address starting with http:// or https://.",

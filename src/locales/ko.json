@@ -191,6 +191,14 @@
         "original": "Base URL, usually ending in /v1. Stored in plugin data. The API key below is optional.",
         "translation": "기본 URL이며 보통 /v1로 끝납니다. 플러그인 데이터에 저장됩니다. 아래 API 키는 선택 사항입니다."
     },
+    "settings.llm.openaiCompatible.extraParams.name": {
+        "original": "Extra request parameters (JSON)",
+        "translation": "추가 요청 매개변수 (JSON)"
+    },
+    "settings.llm.openaiCompatible.extraParams.desc": {
+        "original": "Advanced. A JSON object whose fields are added to every request to this server exactly as typed, for example to turn a model's thinking off. They are sent unchecked and are your responsibility. Leave blank to send nothing extra.",
+        "translation": "고급 설정입니다. 이 서버로 보내는 모든 요청에 입력한 그대로 추가되는 JSON 객체로, 예를 들어 모델의 생각을 끌 때 사용합니다. 검사 없이 전송되며 책임은 사용자에게 있습니다. 추가로 보낼 것이 없으면 비워 두세요."
+    },
     "settings.llm.model.name": {
         "original": "{provider} model",
         "translation": "{provider} 모델"
@@ -274,6 +282,34 @@
     "settings.llm.temperature.desc": {
         "original": "Controls randomness of output (0-1). Lower is more focused, higher is more creative. Current value: {value}",
         "translation": "출력의 무작위성 조절(0-1). 낮을수록 집중되고 높을수록 창의적입니다. 현재 값: {value}"
+    },
+    "settings.llm.reasoningEffort.name": {
+        "original": "Reasoning effort",
+        "translation": "추론 강도"
+    },
+    "settings.llm.reasoningEffort.desc": {
+        "original": "How much a reasoning model thinks before it answers. Used by OpenAI, OpenRouter, the OpenAI-compatible server and Ollama; Anthropic and Google ignore it. Default sends nothing. None turns thinking off on OpenRouter and Ollama; Ollama ignores the other levels. Some OpenAI models refuse None, including the o-series and gpt-5: choose Low for them. If an OpenAI-compatible server needs a different switch, set it in its extra request parameters.",
+        "translation": "추론 모델이 답하기 전에 얼마나 생각할지 정합니다. OpenAI, OpenRouter, OpenAI 호환 서버, Ollama에서 사용되며 Anthropic과 Google은 무시합니다. '기본값'은 아무것도 보내지 않습니다. '없음'은 OpenRouter와 Ollama에서 생각을 끕니다. Ollama는 다른 단계를 무시합니다. o 시리즈와 gpt-5 등 일부 OpenAI 모델은 '없음'을 거부하므로 '낮음'을 선택하세요. OpenAI 호환 서버에 다른 스위치가 필요하면 추가 요청 매개변수에서 설정하세요."
+    },
+    "settings.llm.reasoningEffort.option.default": {
+        "original": "Default",
+        "translation": "기본값"
+    },
+    "settings.llm.reasoningEffort.option.none": {
+        "original": "None",
+        "translation": "없음"
+    },
+    "settings.llm.reasoningEffort.option.low": {
+        "original": "Low",
+        "translation": "낮음"
+    },
+    "settings.llm.reasoningEffort.option.medium": {
+        "original": "Medium",
+        "translation": "보통"
+    },
+    "settings.llm.reasoningEffort.option.high": {
+        "original": "High",
+        "translation": "높음"
     },
     "settings.noteFormat.heading": {
         "original": "Note format",
@@ -494,6 +530,14 @@
     "notice.openaiCompatible.modelMissing": {
         "original": "No model name is set for the OpenAI-compatible server. Add one in the plugin settings.",
         "translation": "OpenAI 호환 서버의 모델 이름이 설정되지 않았습니다. 플러그인 설정에서 추가하세요."
+    },
+    "notice.openaiCompatible.extraParamsInvalid": {
+        "original": "Extra request parameters must be a JSON object, or blank. This value was not saved.",
+        "translation": "추가 요청 매개변수는 JSON 객체이거나 비어 있어야 합니다. 이 값은 저장되지 않았습니다."
+    },
+    "notice.openaiCompatible.extraParamsUnreadable": {
+        "original": "The saved extra request parameters for the OpenAI-compatible server are not a JSON object. Fix or clear them in the plugin settings.",
+        "translation": "저장된 OpenAI 호환 서버의 추가 요청 매개변수가 JSON 객체가 아닙니다. 플러그인 설정에서 수정하거나 지우세요."
     },
     "notice.baseUrl.invalid": {
         "original": "The custom base URL must be a full address starting with http:// or https://.",

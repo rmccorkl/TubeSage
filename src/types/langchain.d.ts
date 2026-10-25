@@ -34,6 +34,14 @@ declare module '@langchain/openai' {
             timeout?: number;
             /** Where ChatOpenAI actually reads `fetch` from — see getOpenAiConfiguration. */
             configuration?: Record<string, unknown>;
+            /**
+             * Sent as `reasoning_effort`, and only for what LangChain counts as
+             * an OpenAI reasoning model (#43). `none` is not in the bundled
+             * SDK's type (openai 5.12.2); it is sent as it is.
+             */
+            reasoning?: { effort: 'none' | 'low' | 'medium' | 'high' };
+            /** Spread into every request body as it stands (#43). */
+            modelKwargs?: Record<string, unknown>;
         });
         invoke(messages: BaseMessageLike[]): Promise<unknown>;
     }

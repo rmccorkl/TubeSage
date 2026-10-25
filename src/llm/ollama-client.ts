@@ -71,9 +71,11 @@ export class OllamaClient {
       system?: string;
       temperature?: number;
       max_tokens?: number;
+      /** False turns a thinking model's thinking off (#43); absent sends nothing. */
+      think?: boolean;
     } = {}
   ): Promise<OllamaGenerateResponse> {
-    const { system, temperature = 0.7, max_tokens } = options;
+    const { system, temperature = 0.7, max_tokens, think } = options;
     
     try {
       const requestBody: {
@@ -81,6 +83,7 @@ export class OllamaClient {
         prompt: string;
         stream: boolean;
         system?: string;
+        think?: boolean;
         options: {
           temperature: number;
           num_predict?: number;
@@ -101,6 +104,10 @@ export class OllamaClient {
       
       if (max_tokens) {
         requestBody.options.num_predict = max_tokens;
+      }
+
+      if (think !== undefined) {
+        requestBody.think = think;
       }
       
       const response = await obsidianFetch(`${this.baseUrl}/api/generate`, {
@@ -135,6 +142,7 @@ export class OllamaClient {
       temperature?: number;
       max_tokens?: number;
       system?: string;
+      think?: boolean;
     } = {}
   ): Promise<OllamaChatCompletion> {
     try {
@@ -162,7 +170,8 @@ export class OllamaClient {
       const result = await this.generateCompletion(model, prompt, {
         system: systemPrompt,
         temperature: options.temperature,
-        max_tokens: options.max_tokens
+        max_tokens: options.max_tokens,
+        think: options.think
       });
       
       // Format the response to match OpenAI structure

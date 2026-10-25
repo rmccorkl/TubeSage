@@ -10,7 +10,9 @@ import { requestBudgetMs } from "../utils/request-budget";
 import type { LlmCallOutcome } from "./call-timing";
 import { obsidianFetch } from "../utils/fetch-shim";
 import { t } from "../i18n";
-import { PLACEHOLDER_API_KEY } from "./openai-compatible";
+import { PLACEHOLDER_API_KEY, parseExtraParams } from "./openai-compatible";
+import { effortToSend } from "./reasoning-effort";
+import type { ReasoningEffort } from "./reasoning-effort";
 import { parseBaseUrl, resolveBaseUrl } from "./base-url";
 
 const logger = getLogger('LANGCHAIN');
@@ -59,6 +61,8 @@ export interface OpenAiModelOptions {
   maxTokens: number;
   /** The user's base URL for this provider; blank or absent means its default (#29). */
   baseURL?: string;
+  /** How hard a reasoning model thinks (#43); `default` or absent sends nothing. */
+  reasoningEffort?: ReasoningEffort;
 }
 
 /**
@@ -83,6 +87,8 @@ export function buildOpenAIModel(options: OpenAiModelOptions): ChatOpenAI {
     logger.debug(`Reasoning model detected; using maxCompletionTokens to comply with OpenAI o-series requirements.`);
   }
 
+  const effort = effortToSend(options.reasoningEffort);
+
   // OpenAI: use maxCompletionTokens for o-series, fall back to maxTokens otherwise
   return new ChatOpenAI({
     // `configuration`, not the top level: see getOpenAiConfiguration, which
@@ -105,6 +111,12 @@ export function buildOpenAIModel(options: OpenAiModelOptions): ChatOpenAI {
       ? { maxCompletionTokens: options.maxTokens }
       : { maxTokens: options.maxTokens }),
     temperature: effectiveTemperature,
+    // #43: LangChain's own option. It goes out as `reasoning_effort` only for
+    // what LangChain counts as an OpenAI reasoning model (o-series, gpt-5), so
+    // a model that does not reason is never sent a field it would refuse.
+    // `none` is what gpt-5.1 and later accept; it goes out as it is, and older
+    // models refuse it, which the setting's description says.
+    reasoning: effort ? { effort } : undefined,
     // LangChain's AsyncCaller otherwise retries up to 6x on any non-4xx error, silently
     // re-billing a completion the provider may already have served; the job runner owns
     // retries explicitly.
@@ -120,6 +132,7 @@ export function buildOpenAIModel(options: OpenAiModelOptions): ChatOpenAI {
  * hold all three to their promises.
  */
 export function buildOpenRouterModel(options: OpenAiModelOptions): ChatOpenAI {
+  const effort = effortToSend(options.reasoningEffort);
   return new ChatOpenAI({
     // The shim travels in `configuration` alongside the baseURL and the two
     // attribution headers (#19); see getOpenAiConfiguration for the timeout
@@ -145,6 +158,11 @@ export function buildOpenRouterModel(options: OpenAiModelOptions): ChatOpenAI {
     modelName: options.model,
     maxTokens: options.maxTokens,
     temperature: options.temperature,
+    // #43: OpenRouter's own `reasoning` object, sent through modelKwargs
+    // because LangChain's `reasoning` option is dropped for any model id it
+    // does not recognise, and OpenRouter ids (deepseek/deepseek-r1) never are.
+    // OpenRouter documents `effort: "none"` as turning reasoning off.
+    modelKwargs: effort ? { reasoning: { effort } } : {},
     // LangChain's AsyncCaller otherwise retries up to 6x on any non-4xx error, silently
     // re-billing a completion the provider may already have served; the job runner owns
     // retries explicitly.
@@ -155,6 +173,8 @@ export function buildOpenRouterModel(options: OpenAiModelOptions): ChatOpenAI {
 /** The custom endpoint's address is not an override: there is no default to fall back to. */
 interface OpenAiCompatibleModelOptions extends OpenAiModelOptions {
   baseURL: string;
+  /** Extra request fields as the user typed them, a JSON object or blank (#43). */
+  extraParams?: string;
 }
 
 /**
@@ -171,6 +191,11 @@ export function buildOpenAiCompatibleModel(options: OpenAiCompatibleModelOptions
   if (baseURL === null) {
     throw new Error(t('notice.openaiCompatible.invalidUrl'));
   }
+  const extraParams = parseExtraParams(options.extraParams);
+  if (extraParams === null) {
+    throw new Error(t('notice.openaiCompatible.extraParamsUnreadable'));
+  }
+  const effort = effortToSend(options.reasoningEffort);
   return new ChatOpenAI({
     ...getOpenAiConfiguration({
       // `?? ''`: a hand-edited or pre-release data.json can leave the key out.
@@ -181,6 +206,11 @@ export function buildOpenAiCompatibleModel(options: OpenAiCompatibleModelOptions
     modelName: options.model,
     maxTokens: options.maxTokens,
     temperature: options.temperature,
+    // #43: `reasoning_effort` as it is, through modelKwargs for the reason
+    // given in buildOpenRouterModel; a generic server has no standard "off".
+    // The user's own fields go last, so they win: they are the more specific
+    // instruction, and the way to send what a server needs (chat_template_kwargs).
+    modelKwargs: { ...(effort ? { reasoning_effort: effort } : {}), ...extraParams },
     maxRetries: 0
   });
 }
@@ -195,6 +225,8 @@ export class LangChainClient {
   private temperature: number;
   private maxTokens: number;
   private baseURL: string;
+  private reasoningEffort: ReasoningEffort | undefined;
+  private openaiCompatibleExtraParams: string | undefined;
 
   constructor(options: {
     provider: string;
@@ -208,6 +240,10 @@ export class LangChainClient {
      * by Ollama, whose address is its apiKeys entry.
      */
     baseURL: string;
+    /** How hard a reasoning model thinks (#43); absent is `default`, which sends nothing. */
+    reasoningEffort?: ReasoningEffort;
+    /** The OpenAI-compatible server's extra request fields, a JSON object or blank (#43). */
+    openaiCompatibleExtraParams?: string;
   }) {
     this.provider = options.provider;
     this.model = options.model;
@@ -215,6 +251,8 @@ export class LangChainClient {
     this.temperature = options.temperature ?? 0.7;
     this.maxTokens = options.maxTokens ?? 1024;
     this.baseURL = options.baseURL;
+    this.reasoningEffort = options.reasoningEffort;
+    this.openaiCompatibleExtraParams = options.openaiCompatibleExtraParams;
     
     // Enhanced debugging for Google provider
     logger.debug(`[CONSTRUCTOR] Creating LangChain client for provider: '${this.provider}' with model: '${this.model}'`);
@@ -265,6 +303,8 @@ export class LangChainClient {
       temperature: this.temperature,
       maxTokens: this.maxTokens,
       baseURL: this.baseURL,
+      reasoningEffort: this.reasoningEffort,
+      extraParams: this.openaiCompatibleExtraParams,
     };
     if (this.provider === 'openai') return buildOpenAIModel(options);
     if (this.provider === 'openrouter') return buildOpenRouterModel(options);
@@ -428,6 +468,9 @@ export class LangChainClient {
             baseUrl: this.apiKey, // Ollama uses the API key field to store the base URL
             model: this.model,
             temperature: this.temperature,
+            // #43: @langchain/ollama 0.2.4 only has the boolean, so `none`
+            // turns thinking off and every other level sends nothing.
+            ...(effortToSend(this.reasoningEffort) === 'none' ? { think: false } : {}),
           });
 
           // Type cast needed for compatibility with LangChain's invoke() method
