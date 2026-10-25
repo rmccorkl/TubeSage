@@ -13,6 +13,8 @@ import { baseUrlOverrides, modelListUrl } from "./base-url";
 import { TranscriptSummarizer } from "./transcript-summarizer";
 import { DEFAULT_REQUEST_TIMEOUT_MS, setRequestBudgetMs } from "../utils/request-budget";
 import { t } from "../i18n";
+import { getLogsForCallout, LogLevel, logMark, setGlobalLogLevel } from "../utils/logger";
+import type { ReasoningEffort } from "./reasoning-effort";
 
 /**
  * The OpenAI client ChatOpenAI actually builds.
@@ -538,6 +540,168 @@ describe("reasoning effort and extra request parameters, as they go out on the w
       const client = new LangChainClient({ provider: "ollama", model: "qwen3", apiKey: OLLAMA, baseURL: "", reasoningEffort });
       await expect(client.generateCompletion("system", "user")).resolves.toBe("ok");
       expect(bodySentTo("/api/chat").think).toBe(think);
+    });
+  });
+});
+
+describe("the debug callout names the reasoning effort that went out, as plain lines (#46)", () => {
+  // Only a log call's message string reaches the callout; an object passed
+  // beside it is dropped, which is why #43's level never showed in a note.
+  // So every assertion reads the callout itself, the text the note gets.
+  const OLLAMA = "http://localhost:11434";
+  let mark = 0;
+
+  beforeEach(() => {
+    setGlobalLogLevel(LogLevel.DEBUG);
+    mark = logMark();
+  });
+
+  afterEach(() => {
+    setGlobalLogLevel(LogLevel.INFO);
+  });
+
+  /** One answer per provider API, told apart by the URL each one calls. */
+  function answerEveryProvider(): void {
+    requestUrl.mockImplementation((request: { url: string }) => {
+      const reply = (body: unknown, suffix = "") => Promise.resolve({
+        status: 200,
+        headers: { "content-type": "application/json" },
+        text: `${JSON.stringify(body)}${suffix}`,
+      });
+      if (request.url.endsWith("/api/version")) return reply({ version: "0.12.0" });
+      if (request.url.endsWith("/api/generate")) return reply({ response: "ok", done: true });
+      if (request.url.endsWith("/api/chat")) return reply({ model: "qwen3", message: { role: "assistant", content: "ok" }, done: true }, "\n");
+      if (request.url.endsWith("/v1/messages")) return reply({ content: [{ type: "text", text: "ok" }] });
+      if (request.url.includes(":generateContent")) return reply({ candidates: [{ content: { parts: [{ text: "ok" }] } }] });
+      return reply({
+        id: "chatcmpl-test",
+        object: "chat.completion",
+        created: 0,
+        model: "m",
+        choices: [{ index: 0, message: { role: "assistant", content: "ok" }, finish_reason: "stop" }],
+        usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 },
+      });
+    });
+  }
+
+  /** One request through LangChainClient, the path every provider but direct Ollama takes. */
+  async function request(provider: string, model: string, reasoningEffort: ReasoningEffort, openaiCompatibleExtraParams?: string): Promise<void> {
+    answerEveryProvider();
+    const client = new LangChainClient({
+      provider,
+      model,
+      apiKey: provider === "ollama" ? OLLAMA : "sk-test-key",
+      baseURL: provider === "openai-compatible" ? LOCAL_SERVER : "",
+      reasoningEffort,
+      openaiCompatibleExtraParams,
+    });
+    await expect(client.generateCompletion("system", "user")).resolves.toBe("ok");
+  }
+
+  /** The callout lines logged since the test began that start with `text` after their prefix. */
+  function calloutLinesAbout(text: string): string[] {
+    return getLogsForCallout(mark).split("\n").filter((line) => line.includes(`] ${text}`));
+  }
+
+  const effortLines = () => calloutLinesAbout("Reasoning effort:");
+
+  describe("OpenAI: LangChain's reasoning option, which its model gate can drop", () => {
+    it.each(["none", "low", "medium", "high"] as const)("%s on a reasoning model names reasoning.effort", async (effort) => {
+      await request("openai", "gpt-5", effort);
+      expect(effortLines()).toEqual([`> [LANGCHAIN] [DEBUG] Reasoning effort: ${effort} -> reasoning.effort`]);
+    });
+
+    it("default says nothing was sent", async () => {
+      await request("openai", "gpt-5", "default");
+      expect(effortLines()).toEqual(["> [LANGCHAIN] [DEBUG] Reasoning effort: default (nothing sent)"]);
+    });
+
+    it("a level on a model LangChain does not count as reasoning says it was dropped", async () => {
+      await request("openai", "gpt-4o", "high");
+      expect(effortLines()).toEqual(["> [LANGCHAIN] [DEBUG] Reasoning effort: high (dropped: model is not an OpenAI reasoning model)"]);
+    });
+  });
+
+  describe("OpenRouter: its own reasoning object, through modelKwargs", () => {
+    it.each(["none", "low", "medium", "high"] as const)("%s names reasoning.effort via modelKwargs", async (effort) => {
+      await request("openrouter", "deepseek/deepseek-r1", effort);
+      expect(effortLines()).toEqual([`> [LANGCHAIN] [DEBUG] Reasoning effort: ${effort} -> reasoning.effort via modelKwargs`]);
+    });
+
+    it("default says nothing was sent", async () => {
+      await request("openrouter", "deepseek/deepseek-r1", "default");
+      expect(effortLines()).toEqual(["> [LANGCHAIN] [DEBUG] Reasoning effort: default (nothing sent)"]);
+    });
+  });
+
+  describe("the OpenAI-compatible server: reasoning_effort, and the extra fields by key name only", () => {
+    it.each(["none", "low", "medium", "high"] as const)("%s names reasoning_effort via modelKwargs", async (effort) => {
+      await request("openai-compatible", "qwen3-8b", effort);
+      expect(effortLines()).toEqual([`> [LANGCHAIN] [DEBUG] Reasoning effort: ${effort} -> reasoning_effort via modelKwargs`]);
+    });
+
+    it("default says nothing was sent, and no extra fields says none", async () => {
+      await request("openai-compatible", "qwen3-8b", "default", "");
+      expect(effortLines()).toEqual(["> [LANGCHAIN] [DEBUG] Reasoning effort: default (nothing sent)"]);
+      expect(calloutLinesAbout("Extra request parameters:")).toEqual(["> [LANGCHAIN] [DEBUG] Extra request parameters: none"]);
+    });
+
+    it("names the extra fields' top-level keys and never their values", async () => {
+      await request("openai-compatible", "qwen3-8b", "default", '{"chat_template_kwargs": {"enable_thinking": false}, "top_k": "zz-secret-zz"}');
+      expect(calloutLinesAbout("Extra request parameters:")).toEqual(["> [LANGCHAIN] [DEBUG] Extra request parameters: keys=chat_template_kwargs, top_k"]);
+      const callout = getLogsForCallout(mark);
+      expect(callout).not.toContain("zz-secret-zz");
+      expect(callout).not.toContain("enable_thinking");
+    });
+
+    it("an extra reasoning_effort, which wins, is named as the override instead of the level", async () => {
+      await request("openai-compatible", "qwen3-8b", "high", '{"reasoning_effort": "low"}');
+      expect(effortLines()).toEqual(["> [LANGCHAIN] [DEBUG] Reasoning effort: high (overridden by extra request parameters)"]);
+      expect(calloutLinesAbout("Extra request parameters:")).toEqual(["> [LANGCHAIN] [DEBUG] Extra request parameters: keys=reasoning_effort"]);
+    });
+  });
+
+  describe("Ollama, on both paths: none is think:false, and the other levels say why nothing went", () => {
+    const EXPECTED = [
+      ["none", "Reasoning effort: none -> think:false"],
+      ["default", "Reasoning effort: default (nothing sent)"],
+      ["low", "Reasoning effort: low (nothing sent: Ollama can only turn thinking off)"],
+      ["high", "Reasoning effort: high (nothing sent: Ollama can only turn thinking off)"],
+    ] as const;
+
+    it.each(EXPECTED)("the path a note takes, OllamaClient's /api/generate: %s", async (reasoningEffort, line) => {
+      answerEveryProvider();
+      const summarizer = new TranscriptSummarizer(
+        { model: "qwen3", temperature: 0, maxTokens: 100, systemPrompt: "system", userPrompt: "user" },
+        { ollama: OLLAMA },
+        {},
+        { reasoningEffort },
+      );
+      await expect(summarizer.summarize("a transcript", "ollama")).resolves.toBe("ok");
+      expect(effortLines()).toEqual([`> [LLM] [DEBUG] ${line}`]);
+    });
+
+    it.each(EXPECTED)("ChatOllama, where LangChainClient builds it: %s", async (reasoningEffort, line) => {
+      await request("ollama", "qwen3", reasoningEffort);
+      expect(effortLines()).toEqual([`> [LANGCHAIN] [DEBUG] ${line}`]);
+    });
+  });
+
+  describe("Anthropic and Gemini ignore the setting, and say so only when a level is set", () => {
+    it.each([
+      ["anthropic", "claude-sonnet-4-5"],
+      ["google", "gemini-2.5-flash"],
+    ])("%s with a level: ignored by this provider", async (provider, model) => {
+      await request(provider, model, "high");
+      expect(effortLines()).toEqual(["> [LANGCHAIN] [DEBUG] Reasoning effort: ignored by this provider"]);
+    });
+
+    it.each([
+      ["anthropic", "claude-sonnet-4-5"],
+      ["google", "gemini-2.5-flash"],
+    ])("%s at default: no line at all", async (provider, model) => {
+      await request(provider, model, "default");
+      expect(effortLines()).toEqual([]);
     });
   });
 });
