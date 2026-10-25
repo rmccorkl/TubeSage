@@ -33,7 +33,7 @@ export function effortLogLine(effort: string | undefined, sentAs: string): strin
   return sent ? `Reasoning effort: ${sent} -> ${sentAs}` : "Reasoning effort: default (nothing sent)";
 }
 
-/** Ollama's line, on both its paths: it has only an off switch, so only `none` goes out. */
+/** Ollama's line, logged where OllamaClient's request is built: it has only an off switch, so only `none` goes out. */
 export function ollamaEffortLogLine(effort: string | undefined): string {
   const sent = effortToSend(effort);
   return sent && sent !== "none"

@@ -5,19 +5,18 @@
 // itself delegates every other id to, so each model keeps the
 // chat-completions request it got before the upgrade.
 import { ChatOpenAICompletions } from "@langchain/openai";
-import { ChatOllama } from "@langchain/ollama";
 import { GeminiClient } from "./gemini-client";
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { getLogger } from "../utils/logger";
 import { getSafeErrorMessage } from "../utils/error-utils";
-import { getLangChainConfiguration, getOpenAiConfiguration } from "./langchain-fetcher";
+import { getOpenAiConfiguration } from "./langchain-fetcher";
 import { llmCallTimingMessage } from "./call-timing";
 import { requestBudgetMs } from "../utils/request-budget";
 import type { LlmCallOutcome } from "./call-timing";
 import { obsidianFetch } from "../utils/fetch-shim";
 import { t } from "../i18n";
 import { PLACEHOLDER_API_KEY, parseExtraParams } from "./openai-compatible";
-import { effortLogLine, effortToSend, ollamaEffortLogLine } from "./reasoning-effort";
+import { effortLogLine, effortToSend } from "./reasoning-effort";
 import type { ReasoningEffort } from "./reasoning-effort";
 import { parseBaseUrl, resolveBaseUrl } from "./base-url";
 
@@ -258,8 +257,7 @@ export class LangChainClient {
     maxTokens?: number;
     /**
      * This provider's base URL as the user set it (#29): blank means the
-     * provider's default. Required for the OpenAI-compatible server; unused
-     * by Ollama, whose address is its apiKeys entry.
+     * provider's default. Required for the OpenAI-compatible server.
      */
     baseURL: string;
     /** How hard a reasoning model thinks (#43); absent is `default`, which sends nothing. */
@@ -296,12 +294,14 @@ export class LangChainClient {
    * Generate a completion using the appropriate LangChain model
    */
   async generateCompletion(systemPrompt: string, userPrompt: string): Promise<string> {
-    // Per-call timing for EVERY provider path (#16). The shim times one HTTP
-    // request, but OpenAI and OpenRouter never reach it (#19) — and they are
-    // the paths whose latency most needs measuring. Wrapped around the
-    // invocation, all five are equal: the two ChatOpenAI paths, ChatOllama,
-    // the Anthropic direct call and GeminiClient. A `finally`, so a call that
-    // gave up at the budget is timed exactly like one that answered.
+    // Per-call timing for every LangChainClient path (#16). The shim times one
+    // HTTP request, but OpenAI and OpenRouter never reach it (#19) — and they
+    // are the paths whose latency most needs measuring. Wrapped around the
+    // invocation, all of them are equal: the three ChatOpenAICompletions
+    // paths, the Anthropic direct call and GeminiClient. Ollama notes take
+    // OllamaClient, AGENTS.md's third exception, and never come here (#44).
+    // A `finally`, so a call that gave up at the budget is timed exactly like
+    // one that answered.
     const startedAt = Date.now();
     let outcome: LlmCallOutcome = "error";
     try {
@@ -336,11 +336,6 @@ export class LangChainClient {
   /** The provider switch itself. Timed by generateCompletion, which is what everything calls. */
   private async runCompletion(systemPrompt: string, userPrompt: string): Promise<string> {
     try {
-      // Common configuration with our custom fetcher
-      const config = getLangChainConfiguration({
-        apiKey: this.apiKey
-      });
-      
       // Create messages in LangChain format
       const messages = [
         new SystemMessage(systemPrompt),
@@ -484,25 +479,6 @@ export class LangChainClient {
           return geminiClient.extractText(geminiResponse);
         }
            
-        case 'ollama': {
-          logger.debug(`Using Ollama with model ${this.model}`);
-          logger.debug(ollamaEffortLogLine(this.reasoningEffort));
-          // For Ollama, the API key is actually the base URL
-          const model = new ChatOllama({
-            ...config,
-            baseUrl: this.apiKey, // Ollama uses the API key field to store the base URL
-            model: this.model,
-            temperature: this.temperature,
-            // #43: @langchain/ollama 1.3.0 still only has the boolean, so `none`
-            // turns thinking off and every other level sends nothing.
-            ...(effortToSend(this.reasoningEffort) === 'none' ? { think: false } : {}),
-          });
-
-          // Type cast needed for compatibility with LangChain's invoke() method
-          const response = await model.invoke(messages);
-          return String(extractContent(response));
-        }
-
         default:
           throw new Error(`Unsupported LangChain provider: ${this.provider}`);
       }
