@@ -2,7 +2,7 @@ import { getLogger } from '../utils/logger';
 import { LLMFactory } from './llm-factory';
 import { LangChainClient } from './langchain-client';
 import { isMissingApiKey } from './openai-compatible';
-import { effortToSend } from './reasoning-effort';
+import { effortToSend, ollamaEffortLogLine } from './reasoning-effort';
 import type { ReasoningEffort } from './reasoning-effort';
 
 interface LLMConfig {
@@ -211,6 +211,8 @@ export class TranscriptSummarizer {
             throw new Error("Ollama server is not accessible. Please ensure Ollama is running and accessible.");
         }
         
+        llmLogger.debug(ollamaEffortLogLine(this.requestOptions.reasoningEffort));
+
         // Try the chat completion API first (better for newer models)
         try {
             const response = await client.createChatCompletion(
